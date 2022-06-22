@@ -1,6 +1,5 @@
 import React from 'react'
 import logo from './logo.svg'
-import './App.css'
 import { Button, NativeBaseProvider, View, Image, Text } from 'native-base'
 import { StyleSheet } from 'react-native'
 
