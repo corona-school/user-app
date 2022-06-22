@@ -7,8 +7,8 @@ import { StyleSheet } from 'react-native'
 function App() {
   const styles = StyleSheet.create({
     text: {
-      color: 'red',
-    },
+      color: 'red'
+    }
   })
 
   return (
@@ -18,7 +18,7 @@ function App() {
           <Image
             style={{ width: 200, height: 200 }}
             source={{
-              uri: logo,
+              uri: logo
             }}
           />
           <Text style={styles.text}>Edit src/App.tsx and save to reload.</Text>
