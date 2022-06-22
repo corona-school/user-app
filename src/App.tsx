@@ -1,26 +1,24 @@
 import React from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { Button } from 'native-base'
+import { Button, NativeBaseProvider, View, Image, Text } from 'native-base'
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Button>TestButton</Button>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <NativeBaseProvider>
+      <View>
+        <View>
+          <Image
+            style={{ width: 200, height: 200 }}
+            source={{
+              uri: logo,
+            }}
+          />
+          <Text>Edit src/App.tsx and save to reload.</Text>
+          <Button onPress={() => alert('test')}>TestButton</Button>
+        </View>
+      </View>
+    </NativeBaseProvider>
   )
 }
 
