@@ -2,6 +2,7 @@ import React from 'react'
 import logo from './logo.svg'
 import { Button, NativeBaseProvider, View, Image, Text } from 'native-base'
 import { StyleSheet } from 'react-native'
+import Theme from './Theme'
 
 function App() {
   const styles = StyleSheet.create({
@@ -11,7 +12,7 @@ function App() {
   })
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={Theme}>
       <View>
         <View>
           <Image
