@@ -1,0 +1,18 @@
+{
+		"Lernfair Scaffold": {
+		"prefix": "lfc",
+		"body": [
+			"import { View, Text } from 'native-base'",
+			"",
+			"type Props = {}",
+			"",
+			"const ${TM_FILENAME_BASE}: React.FC<Props> = () => {",
+			"  return (",
+			"    <View><Text>${TM_FILENAME_BASE}$0</Text></View>",
+			"  )",
+			"}",
+			"export default ${TM_FILENAME_BASE}"
+		],
+		"description": "Lernfair Typescript Functional Component"
+	}
+}
