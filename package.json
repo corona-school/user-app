@@ -46,6 +46,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-web": "^0.17.7",
     "react-refresh": "^0.11.0",
+    "react-router-dom": "^6.3.0",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
     "semver": "^7.3.5",
