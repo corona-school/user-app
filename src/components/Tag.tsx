@@ -1,12 +1,34 @@
-import { View, Text } from 'native-base'
+import { View, Text, useTheme } from 'native-base'
 
 type Props = {
   text: string
+  borderRadius?: number
+  padding?: number | string
+  paddingX?: number | string
+  paddingY?: number | string
+  borderColor?: string
 }
 
-const Tag: React.FC<Props> = ({ text }) => {
+const Tag: React.FC<Props> = ({
+  text,
+  borderRadius,
+  padding,
+  paddingX,
+  paddingY,
+  borderColor
+}) => {
+  const padX = padding || paddingX || '1'
+  const padY = padding || paddingY || '1'
+
   return (
-    <Text fontSize={'xs'} padding="1" bg={'gray.300'} borderRadius={4}>
+    <Text
+      fontSize={'xs'}
+      paddingX={padX}
+      paddingY={padY}
+      bg={borderColor ? 'transparent' : 'gray.300'}
+      borderRadius={borderRadius || 4}
+      borderWidth={1}
+      borderColor={borderColor || 'transparent'}>
       {text}
     </Text>
   )

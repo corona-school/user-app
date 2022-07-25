@@ -1,0 +1,22 @@
+import { View, Text, useTheme } from 'native-base'
+import Tag from '../components/Tag'
+
+type Props = {
+  title: string
+  variant?: 'normal' | 'outline'
+}
+
+const SubjectTag: React.FC<Props> = ({ title, variant = 'normal' }) => {
+  const { space } = useTheme()
+
+  return (
+    <Tag
+      text={title}
+      paddingY={space['0.5']}
+      paddingX={space['1']}
+      borderRadius={20}
+      borderColor={variant === 'normal' ? undefined : 'gray.400'}
+    />
+  )
+}
+export default SubjectTag

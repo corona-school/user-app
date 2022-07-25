@@ -5,7 +5,15 @@ const Theme = extendTheme({
     xs: 10,
     sm: 12,
     md: 14,
-    lg: 16
+    lg: 16,
+    xl: 18
+  },
+  components: {
+    Heading: {
+      defaultProps: {
+        fontSize: 'xl'
+      }
+    }
   }
 })
 
