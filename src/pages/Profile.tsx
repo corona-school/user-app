@@ -36,6 +36,22 @@ const Profile: React.FC<Props> = () => {
             </Button>
           }
         />
+        <CTACard
+          variant="outline"
+          closeable={false}
+          title="Führungszeugnis"
+          content="Denke dran, dein Führungszeugnis einzureichen, damit du weiterhin bei uns mitmachen kannst. Hierfür hast du 2 Monate nach Registrierung Zeit."
+          button={
+            <VStack space={space['0.5']}>
+              <Button variant={'outline'} onPress={() => null}>
+                Vordruck herunterladen
+              </Button>
+              <Button onPress={() => null} bgColor="gray.600">
+                Einreichen
+              </Button>
+            </VStack>
+          }
+        />
         <Button onPress={() => null} bgColor="gray.600">
           Profil vervollständigen
         </Button>

@@ -1,4 +1,5 @@
-import { View, Text, useTheme } from 'native-base'
+import { View, Text, useTheme, Row, Box } from 'native-base'
+import { ReactNode, useMemo } from 'react'
 
 type Props = {
   text: string
@@ -7,6 +8,9 @@ type Props = {
   paddingX?: number | string
   paddingY?: number | string
   borderColor?: string
+  variant?: 'normal' | 'outline' | 'rating'
+  beforeElement?: ReactNode | ReactNode[]
+  afterElement?: ReactNode | ReactNode[]
 }
 
 const Tag: React.FC<Props> = ({
@@ -15,24 +19,49 @@ const Tag: React.FC<Props> = ({
   padding,
   paddingX,
   paddingY,
-  borderColor
+  borderColor,
+  variant = 'normal',
+  beforeElement,
+  afterElement
 }) => {
-  const padX = padding || paddingX || '1'
-  const padY = padding || paddingY || '1'
-  const { colors } = useTheme()
+  const { colors, space } = useTheme()
+
+  const pad = useMemo(
+    () => [padding || paddingX || '1', padding || paddingY || '1'],
+    [padding, paddingX, paddingY]
+  )
+
+  const bg = useMemo(
+    () =>
+      variant === 'normal'
+        ? 'gray.300'
+        : variant === 'outline'
+        ? 'transparent'
+        : colors.text['50'],
+    [colors.text, variant]
+  )
+
+  const color = useMemo(
+    () => (variant === 'normal' ? colors.text['50'] : colors.text['900']),
+    [colors.text, variant]
+  )
 
   return (
-    <Text
-      fontSize={'xs'}
-      paddingX={padX}
-      paddingY={padY}
-      bg={borderColor ? 'transparent' : 'gray.300'}
+    <Box
+      paddingX={pad[0]}
+      paddingY={pad[1]}
+      bg={bg}
       borderRadius={borderRadius || 4}
       borderWidth={1}
-      borderColor={borderColor || 'transparent'}
-      color={colors.text['50']}>
-      {text}
-    </Text>
+      borderColor={borderColor || 'transparent'}>
+      <Row space={space['0.5']}>
+        {beforeElement}
+        <Text fontSize={'xs'} color={color}>
+          {text}
+        </Text>
+        {afterElement}
+      </Row>
+    </Box>
   )
 }
 export default Tag

@@ -10,33 +10,45 @@ import {
 } from 'native-base'
 import Card from '../components/Card'
 
-import { ReactNode } from 'react'
+import { Fragment, ReactNode } from 'react'
 
 type Props = {
   title: string
   onClose?: () => any
   content: ReactNode | ReactNode[]
   button?: ReactNode
+  closeable?: boolean
+  variant?: 'normal' | 'outline'
 }
 
-const CTACard: React.FC<Props> = ({ title, content, button }) => {
+const CTACard: React.FC<Props> = ({
+  title,
+  content,
+  button,
+  closeable = true,
+  variant = 'normal'
+}) => {
   const { space } = useTheme()
 
+  const Wrapper = variant === 'normal' ? Card : Fragment
+
   return (
-    <Card flexibleWidth>
-      <Box padding={space['1']}>
+    <Wrapper flexibleWidth>
+      <Box padding={(variant === 'normal' && space['1']) || 0}>
         <Row>
           <Text fontSize={'lg'} flex="1">
             {title}
           </Text>
-          <Pressable onPress={() => alert('test')}>
-            <CloseIcon />
-          </Pressable>
+          {closeable && (
+            <Pressable onPress={() => alert('test')}>
+              <CloseIcon />
+            </Pressable>
+          )}
         </Row>
         {content}
         {button && <Box marginTop={space['1']}>{button}</Box>}
       </Box>
-    </Card>
+    </Wrapper>
   )
 }
 export default CTACard
