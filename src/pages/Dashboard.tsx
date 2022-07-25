@@ -1,6 +1,6 @@
-import { Row, useTheme, View } from 'native-base'
+import { View } from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
-import CourseOfferCard from '../widgets/CourseOfferCard'
+import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
 import SignInCard from '../widgets/SignInCard'
 import TwoColGrid from '../widgets/TwoColGrid'
@@ -24,7 +24,7 @@ export default function Dashboard() {
         {Array(4)
           .fill(0)
           .map((el, i) => (
-            <CourseOfferCard title="Gruppen-Lernunterstützung" />
+            <ServiceOfferCard title="Gruppen-Lernunterstützung" />
           ))}
       </TwoColGrid>
       <HSection title="Neu für Nele" showAll={true}>

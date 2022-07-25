@@ -5,10 +5,8 @@ import {
   Heading,
   useTheme,
   VStack,
-  Row,
-  Text
+  Row
 } from 'native-base'
-import DataRow from '../components/DataRow'
 import CTACard from '../widgets/CTACard'
 import SimpleDataRow from '../widgets/SimpleDataRow'
 import SubjectTag from '../widgets/SubjectTag'

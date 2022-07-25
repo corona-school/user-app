@@ -19,6 +19,7 @@ const Tag: React.FC<Props> = ({
 }) => {
   const padX = padding || paddingX || '1'
   const padY = padding || paddingY || '1'
+  const { colors } = useTheme()
 
   return (
     <Text
@@ -28,7 +29,8 @@ const Tag: React.FC<Props> = ({
       bg={borderColor ? 'transparent' : 'gray.300'}
       borderRadius={borderRadius || 4}
       borderWidth={1}
-      borderColor={borderColor || 'transparent'}>
+      borderColor={borderColor || 'transparent'}
+      color={colors.text['50']}>
       {text}
     </Text>
   )
