@@ -1,5 +1,5 @@
 import { View, Text, VStack, Heading, Avatar, useTheme, Box } from 'native-base'
-import NavigationDataRow from '../widgets/NavigationDataRow'
+import EditDataRow from '../widgets/EditDataRow'
 
 type Props = {}
 
@@ -20,17 +20,17 @@ const EditProfile: React.FC<Props> = () => {
         </Text>
       </VStack>
       <VStack space={space['0.5']} paddingX={space['1']}>
-        <NavigationDataRow
+        <EditDataRow
           label="Namen ändern"
           value="Rainer Zufall"
           onPress={() => alert('test')}
         />
-        <NavigationDataRow label="Schulform ändern" />
-        <NavigationDataRow label="Klasse ändern" value="6, 7, 8" />
-        <NavigationDataRow label="Geburtsdatum ändern" />
-        <NavigationDataRow label="Fächer ändern" value="Englisch, Informatik" />
-        <NavigationDataRow label="Art der Unterstützung:" value="1:1, Gruppe" />
-        <NavigationDataRow label="Verfügbarkeit verwalten" />
+        <EditDataRow label="Schulform ändern" />
+        <EditDataRow label="Klasse ändern" value="6, 7, 8" />
+        <EditDataRow label="Geburtsdatum ändern" />
+        <EditDataRow label="Fächer ändern" value="Englisch, Informatik" />
+        <EditDataRow label="Art der Unterstützung:" value="1:1, Gruppe" />
+        <EditDataRow label="Verfügbarkeit verwalten" />
       </VStack>
     </VStack>
   )

@@ -7,7 +7,7 @@ type Props = {
   onPress?: () => any
 }
 
-const NavigationDataRow: React.FC<Props> = ({ label, value, onPress }) => {
+const EditDataRow: React.FC<Props> = ({ label, value, onPress }) => {
   const { space } = useTheme()
 
   return (
@@ -20,4 +20,4 @@ const NavigationDataRow: React.FC<Props> = ({ label, value, onPress }) => {
     </Pressable>
   )
 }
-export default NavigationDataRow
+export default EditDataRow
