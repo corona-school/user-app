@@ -4,10 +4,12 @@ import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
 import SignInCard from '../widgets/SignInCard'
 import TwoColGrid from '../widgets/TwoColGrid'
+import StudentMatch from '../widgets/StudentMatch'
 
 export default function Dashboard() {
   return (
     <View>
+      <StudentMatch />
       <HSection title="Termin" showAll={true}>
         {Array(10)
           .fill(0)
