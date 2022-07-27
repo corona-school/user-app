@@ -6,11 +6,11 @@ import TestWrapper from '../../components/TestWrapper'
 test('Card renders children', () => {
   render(
     <Card>
-      <Text testID="text1">Lorem Ipsum</Text>
-      <Text testID="text2">Lorem Ipsum</Text>
+      <Text>Lorem Ipsum 1</Text>
+      <Text>Lorem Ipsum 2</Text>
     </Card>,
     { wrapper: TestWrapper }
   )
-  expect(screen.queryByTestId('text1')).toBeInTheDocument()
-  expect(screen.queryByTestId('text2')).toBeInTheDocument()
+  expect(screen.queryByText('Lorem Ipsum 1')).toBeInTheDocument()
+  expect(screen.queryByText('Lorem Ipsum 2')).toBeInTheDocument()
 })

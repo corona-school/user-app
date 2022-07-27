@@ -6,8 +6,7 @@ import { View } from 'native-base'
 
 test('renders Tag component with text', () => {
   render(<Tag text="Lorem Ipsum" />, { wrapper: TestWrapper })
-  const text = screen.getByTestId('text')
-  expect(text).toHaveTextContent('Lorem Ipsum')
+  expect(screen.queryByText('Lorem Ipsum')).toBeInTheDocument()
 })
 
 test('renders beforeElement', () => {

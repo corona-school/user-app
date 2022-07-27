@@ -6,9 +6,11 @@ import TestWrapper from '../../components/TestWrapper'
 test('DataRow renders children', () => {
   render(
     <DataRow>
-      <Text testID="text1">Lorem Ipsum</Text>
-      <Text testID="text2">Lorem Ipsum</Text>
+      <Text>Lorem Ipsum 1</Text>
+      <Text>Lorem Ipsum 2</Text>
     </DataRow>,
     { wrapper: TestWrapper }
   )
+  expect(screen.queryByText(/Lorem Ipsum 1/)).toBeInTheDocument()
+  expect(screen.queryByText(/Lorem Ipsum 2/)).toBeInTheDocument()
 })
