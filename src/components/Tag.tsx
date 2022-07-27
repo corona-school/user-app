@@ -56,7 +56,7 @@ const Tag: React.FC<Props> = ({
       borderColor={borderColor || 'transparent'}>
       <Row space={space['0.5']}>
         {beforeElement && <View testID="beforeElement">{beforeElement}</View>}
-        <Text fontSize={'xs'} color={color} testID="text">
+        <Text fontSize={'xs'} color={color}>
           {text}
         </Text>
         {afterElement && <View testID="afterElement">{afterElement}</View>}
