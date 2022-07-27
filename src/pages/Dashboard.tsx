@@ -1,4 +1,4 @@
-import { View } from 'native-base'
+import { View, CheckCircleIcon } from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
@@ -18,7 +18,7 @@ export default function Dashboard() {
           .map((el, i) => (
             <PersonListing
               variant="normal"
-              username="Benjamin Zekavica"
+              username="Milan"
               avatar="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
               link="http://localhost:3000/"
               avatarsize="md"
@@ -33,7 +33,7 @@ export default function Dashboard() {
           .map((el, i) => (
             <PersonListing
               variant="card"
-              username="Benjamin Zekavica"
+              username="Milan"
               avatar="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
               link="http://localhost:3000/"
               avatarsize="md"
@@ -73,6 +73,19 @@ export default function Dashboard() {
             <ServiceOfferCard title="Gruppen-Lernunterstützung" />
           ))}
       </TwoColGrid>
+      <HSection title="Angebote Slider">
+        {Array(4)
+          .fill(0)
+          .map((el, i) => (
+            <ServiceOfferCard 
+              title="Gruppen-Lernunterstützung" 
+              content="digitales Zuschalten der Helfer:innen 1x wöchentlich über 3-12 Monate"
+              icon={
+                <CheckCircleIcon size={10} />
+              }
+            />
+          ))}
+      </HSection>
       <HSection title="Neu für Nele" showAll={true}>
         {Array(10)
           .fill(0)

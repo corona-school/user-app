@@ -6,7 +6,7 @@ type Props = {
   usernamesize?: string
   usernameweight?: string
   avatar?: string
-  avatarsize?: string 
+  avatarsize?: 'xs' | 'md'
   align?: 'row' | 'column'
 }
 
@@ -18,12 +18,12 @@ const CommunityUser: React.FC<Props> = ({ align = 'row', name, avatar, avatarsiz
   return (
     <View alignItems={'center'} marginTop={space['1.5']} space={space['0.5']}>
       <Avatar 
-        size={ avatarsize? avatarsize : 'xs' } 
+        size={ avatarsize || 'xs' } 
         source={{
           uri: avatar
         }} 
       />
-      <Text maxW="140" textAlign="center" fontWeight={ usernameweight ? usernameweight : '' } fontSize={ usernamesize ? usernamesize : 'sm'}>{name}</Text>
+      <Text maxW="100" textAlign="center" fontWeight={ usernameweight ? usernameweight : '' } fontSize={ usernamesize ? usernamesize : 'sm'}>{name}</Text>
     </View>
   )
 }

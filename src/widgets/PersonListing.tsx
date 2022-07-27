@@ -11,23 +11,23 @@ type Props = {
     usernamesize?: string
     usernameweight?: string
     avatar?: string
-    avatarsize?: string
+    avatarsize?: 'xs' | 'md'
 }
 
 const PersonListing: React.FC<Props> = ({ variant, link, username, avatar, avatarsize, usernamesize, usernameweight }) => {
   const { space } = useTheme()
-  
-  const CardVariant = variant === 'card'
-  const Wrapper = CardVariant ? Card : View
+
+  const isCardVariant = variant === 'card'
+  const Wrapper = isCardVariant ? Card : View
 
   return (
-    <Wrapper>
+    <Wrapper flexibleWidth>
        <Link 
             href={link} 
-            paddingLeft={ CardVariant ? space['1.5'] : ''} 
-            paddingRight={ CardVariant ? space['1.5'] : ''} 
-            paddingBottom={ CardVariant ? space['1.5'] : '' } 
-            justifyContent={ CardVariant ? 'center' : ''}
+            paddingLeft={ isCardVariant ? space['1.5'] : ''} 
+            paddingRight={ isCardVariant ? space['1.5'] : ''} 
+            paddingBottom={ isCardVariant ? space['1.5'] : '' } 
+            justifyContent={ isCardVariant ? 'center' : ''}
         >
             <Flex 
                 flexDirection="row"
