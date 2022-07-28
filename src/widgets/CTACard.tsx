@@ -25,8 +25,9 @@ const CTACard: React.FC<Props> = ({
   title,
   content,
   button,
-  closeable = true,
-  variant = 'normal'
+  closeable = false,
+  variant = 'normal',
+  onClose
 }) => {
   const { space } = useTheme()
 
@@ -40,7 +41,7 @@ const CTACard: React.FC<Props> = ({
             {title}
           </Text>
           {closeable && (
-            <Pressable onPress={() => alert('test')}>
+            <Pressable testID="close" onPress={onClose}>
               <CloseIcon />
             </Pressable>
           )}
