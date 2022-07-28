@@ -6,7 +6,7 @@ type Props = {
   title?: string
   showAll?: boolean
   children: ReactNode | ReactNode[]
-  onShowAll: () => any
+  onShowAll?: () => any
 }
 
 const HSection: React.FC<Props> = ({
