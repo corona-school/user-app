@@ -17,8 +17,8 @@ const AppointmentCard: React.FC<Props> = ({ tags, date, title, child }) => {
     <Card>
       <Box bg="gray.500" h="120" padding={space['0.5']}>
         <Row space={space['0.5']}>
-          {tags.map(t => (
-            <Tag text={t} />
+          {tags.map((t, i) => (
+            <Tag key={`tag-${i}`} text={t} />
           ))}
         </Row>
       </Box>

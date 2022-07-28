@@ -3,18 +3,27 @@ import { ReactNode } from 'react'
 
 type Props = {
   name: string
+  usernamesize?: string
+  usernameweight?: string
+  avatar?: string
+  avatarsize?: 'xs' | 'md'
   align?: 'row' | 'column'
 }
 
-const CommunityUser: React.FC<Props> = ({ align = 'row', name }) => {
+const CommunityUser: React.FC<Props> = ({ align = 'row', name, avatar, avatarsize, usernamesize, usernameweight }) => {
   const { space } = useTheme()
 
   const View = align === 'row' ? Row : Column
 
   return (
     <View alignItems={'center'} marginTop={space['1.5']} space={space['0.5']}>
-      <Avatar size={'xs'} />
-      <Text>{name}</Text>
+      <Avatar 
+        size={ avatarsize || 'xs' } 
+        source={{
+          uri: avatar
+        }} 
+      />
+      <Text maxW="100" textAlign="center" fontWeight={ usernameweight ? usernameweight : '' } fontSize={ usernamesize ? usernamesize : 'sm'}>{name}</Text>
     </View>
   )
 }
