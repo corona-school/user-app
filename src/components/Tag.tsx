@@ -55,11 +55,11 @@ const Tag: React.FC<Props> = ({
       borderWidth={1}
       borderColor={borderColor || 'transparent'}>
       <Row space={space['0.5']}>
-        {beforeElement}
+        {beforeElement && <View testID="beforeElement">{beforeElement}</View>}
         <Text fontSize={'xs'} color={color}>
           {text}
         </Text>
-        {afterElement}
+        {afterElement && <View testID="afterElement">{afterElement}</View>}
       </Row>
     </Box>
   )

@@ -42,7 +42,12 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
       <Row overflowX={'scroll'} flexWrap="nowrap">
         {tabs.map(
           (tab, i) => (
-            <Tab tab={tab} index={i} active={i === currentIndex} />
+            <Tab
+              key={`tab-${i}`}
+              tab={tab}
+              index={i}
+              active={i === currentIndex}
+            />
           ),
           []
         )}
