@@ -49,7 +49,7 @@ export default function Dashboard() {
             <PostCards
               title="Hausaufgaben leicht gemacht"
               content="Hausaufgaben sind vor allem dazu da, das Gelernte zu vertiefen und anzuwenden."
-              link="http://localhost:3000/"
+              onPressLink={() => null}
               image="https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
             />
           ))}
