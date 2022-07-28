@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Tabs from '../../components/Tabs'
 import TestWrapper from '../../components/TestWrapper'
 
 test('renders Tabs correctly', () => {
-  render(
+  const { queryByText, getByText } = render(
     <Tabs
       tabs={[
         { title: 'Tab 1', content: 'content 1' },
@@ -15,11 +15,11 @@ test('renders Tabs correctly', () => {
     }
   )
 
-  expect(screen.queryByText(/Tab 1/)).toBeInTheDocument()
-  expect(screen.queryByText(/Tab 2/)).toBeInTheDocument()
-  expect(screen.queryByText(/content 1/)).toBeInTheDocument()
-  expect(screen.queryByText(/content 2/)).toBeNull()
-  fireEvent.click(screen.getByText(/Tab 2/))
-  expect(screen.queryByText(/content 2/)).toBeInTheDocument()
-  expect(screen.queryByText(/content 1/)).toBeNull()
+  expect(queryByText(/Tab 1/)).toBeInTheDocument()
+  expect(queryByText(/Tab 2/)).toBeInTheDocument()
+  expect(queryByText(/content 1/)).toBeInTheDocument()
+  expect(queryByText(/content 2/)).toBeNull()
+  fireEvent.click(getByText(/Tab 2/))
+  expect(queryByText(/content 2/)).toBeInTheDocument()
+  expect(queryByText(/content 1/)).toBeNull()
 })
