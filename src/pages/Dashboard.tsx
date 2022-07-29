@@ -1,4 +1,11 @@
-import { View, CheckCircleIcon, Row, Container, Text, Button } from 'native-base'
+import {
+  View,
+  CheckCircleIcon,
+  Row,
+  Container,
+  Text,
+  Button
+} from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
@@ -10,58 +17,56 @@ import CTACard from '../widgets/CTACard'
 import LearningPartner from '../widgets/LearningPartner'
 import RatingCard from '../widgets/RatingCard'
 
-
 export default function Dashboard() {
   return (
     <View>
-
       <HSection title="Deine Kinder – Variante 1" showAll={false}>
-        <RatingCard variant="bigger" name="Milan" rating={2}  content="Super Lehrerin, so macht Schule auch mal Spass." avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"/>
-        <RatingCard variant="normal" name="Milan" rating={2}  content="Super Lehrerin, so macht Schule auch mal Spass." avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"/>
+        <RatingCard
+          variant="bigger"
+          name="Milan"
+          rating={2}
+          content="Super Lehrerin, so macht Schule auch mal Spass."
+          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        />
+        <RatingCard
+          variant="normal"
+          name="Milan"
+          rating={2}
+          content="Super Lehrerin, so macht Schule auch mal Spass."
+          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        />
       </HSection>
 
+      <LearningPartner
+        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        name="Max Mustermann"
+        schulform="Realschule"
+        klasse={6}
+        fach={['Englisch', 'Deutsch']}
+      />
+      <LearningPartner
+        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        name="Max Mustermann"
+        schulform="Realschule"
+        klasse={6}
+        fach={['Englisch', 'Deutsch']}
+      />
+      <LearningPartner
+        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        name="Max Mustermann"
+        schulform="Realschule"
+        klasse={6}
+        fach={['Englisch', 'Deutsch']}
+      />
 
-        <LearningPartner avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" name="Max Mustermann" schulform="Realschule" klasse={6} fach={['Englisch', 'Deutsch']}/>
-        <LearningPartner avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" name="Max Mustermann" schulform="Realschule" klasse={6} fach={['Englisch', 'Deutsch']}/>
-        <LearningPartner avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" name="Max Mustermann" schulform="Realschule" klasse={6} fach={['Englisch', 'Deutsch']}/>
+      <CTACard
+        title="Dein Kind braucht Hilfe bei den Hausaufgaben?"
+        closeable={false}
+        content={<Text>Schreibe uns einfach an, wir helfen dir gerne.</Text>}
+        button={<Button>Chat beginnen</Button>}
+        icon={<CheckCircleIcon size={10} />}
+      />
 
-        <Container maxWidth="100%" marginTop="30" marginBottom="30">
-          <AppointmentCard
-              tags={['Mathematik', 'Gruppenkurs']}
-              child=""
-              button="Hallo"
-              buttonlink="http://localhost:3000/"
-              date={new Date()}
-              title="Mathematik Grundlagen Klasse 6"
-            />
-        </Container>
-        <CTACard 
-          title="Dein Kind braucht Hilfe bei den Hausaufgaben?" 
-          closeable={false}
-          content={
-            <Text>
-              Schreibe uns einfach an, wir helfen dir gerne.
-            </Text>
-          }
-          button={
-            <Button>
-              Chat beginnen
-            </Button>
-          }
-          icon={
-            <CheckCircleIcon size={10}  />
-          }
-        />
-
-        {
-        Array(4)
-          .fill(0)
-          .map((el, i) => (
-            <AppointmentCard avatarname="Milan" avatar="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" title="Flächeninhalt berechnen" date={ new Date() } tags={ ['Ja'] } child="Hallo" variant="horizontal" />
-          ))
-        }
-     
-    
       <HSection title="Deine Kinder – Variante 1" showAll={false}>
         {Array(10)
           .fill(0)
@@ -105,10 +110,11 @@ export default function Dashboard() {
           ))}
       </HSection>
       <HSection title="Termin" showAll={true}>
-        {Array(10)
+        {Array(2)
           .fill(0)
           .map((el, i) => (
             <AppointmentCard
+              description="Lorem Ipsum"
               tags={['Mathematik', 'Gruppenkurs']}
               child="Milan"
               date={new Date()}
