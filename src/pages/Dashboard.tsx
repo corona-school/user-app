@@ -16,10 +16,58 @@ import PostCards from '../widgets/PostCards'
 import CTACard from '../widgets/CTACard'
 import LearningPartner from '../widgets/LearningPartner'
 import RatingCard from '../widgets/RatingCard'
+import InstructionProgress from '../widgets/InstructionProgress'
 
 export default function Dashboard() {
   return (
     <View>
+      <InstructionProgress
+        currentIndex={1}
+        instructions={[
+          {
+            label: 'Verifizierung',
+            title: 'Verifizierung',
+            content: [
+              {
+                title: 'Mailadresse verifizieren',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              },
+              {
+                title: 'Persönliches Kennenlernen',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              }
+            ]
+          },
+          {
+            label: 'Matching',
+            title: 'Match anfragen',
+            content: [
+              {
+                title: 'Lernpartner:in kontaktieren',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              },
+              {
+                title: 'Kennenlernen vorbereiten',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              }
+            ]
+          },
+          {
+            label: 'Gruppenkurs',
+            title: 'Gruppenkurs geben',
+            content: [
+              {
+                title: 'Kurse erkunden',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              },
+              {
+                title: 'Kurse erstellen und freigeben lassen',
+                text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '
+              }
+            ]
+          }
+        ]}
+      />
       <HSection title="Deine Kinder – Variante 1" showAll={false}>
         <RatingCard
           variant="bigger"
