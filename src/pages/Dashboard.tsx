@@ -70,7 +70,7 @@ export default function Dashboard() {
               variant="normal"
               username="Milan"
               avatar="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-              link="http://localhost:3000/"
+              onPressLink={() => null}
               avatarsize="md"
               usernamesize="md"
               usernameweight="700"
@@ -85,7 +85,7 @@ export default function Dashboard() {
               variant="card"
               username="Milan"
               avatar="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-              link="http://localhost:3000/"
+              onPressLink={() => null}
               avatarsize="md"
               usernamesize="md"
               usernameweight="700"
@@ -96,10 +96,10 @@ export default function Dashboard() {
         {Array(10)
           .fill(0)
           .map((el, i) => (
-            <PostCards 
+            <PostCards
               title="Hausaufgaben leicht gemacht"
               content="Hausaufgaben sind vor allem dazu da, das Gelernte zu vertiefen und anzuwenden."
-              link="http://localhost:3000/"
+              onPressLink={() => null}
               image="https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
             />
           ))}
@@ -127,12 +127,10 @@ export default function Dashboard() {
         {Array(4)
           .fill(0)
           .map((el, i) => (
-            <ServiceOfferCard 
-              title="Gruppen-Lernunterstützung" 
+            <ServiceOfferCard
+              title="Gruppen-Lernunterstützung"
               content="digitales Zuschalten der Helfer:innen 1x wöchentlich über 3-12 Monate"
-              icon={
-                <CheckCircleIcon size={10} />
-              }
+              icon={<CheckCircleIcon size={10} />}
             />
           ))}
       </HSection>

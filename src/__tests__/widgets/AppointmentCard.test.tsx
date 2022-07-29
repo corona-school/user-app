@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import TestWrapper from '../../components/TestWrapper'
 import AppointmentCard from '../../widgets/AppointmentCard'
 
 test('renders AppointmentCard correctly', () => {
   const date = new Date()
 
-  render(
+  const { queryByText } = render(
     <AppointmentCard
       title="Lorem Ipsum"
       child="Nele"
@@ -16,9 +16,9 @@ test('renders AppointmentCard correctly', () => {
       wrapper: TestWrapper
     }
   )
-  expect(screen.queryByText(/Lorem Ipsum/)).toBeInTheDocument()
-  expect(screen.queryByText(/Nele/)).toBeInTheDocument()
-  expect(screen.queryByText(/Englisch/)).toBeInTheDocument()
-  expect(screen.queryByText(/Mathematik/)).toBeInTheDocument()
-  expect(screen.queryByText(`${date.toLocaleDateString()}`)).toBeInTheDocument()
+  expect(queryByText(/Lorem Ipsum/)).toBeInTheDocument()
+  expect(queryByText(/Nele/)).toBeInTheDocument()
+  expect(queryByText(/Englisch/)).toBeInTheDocument()
+  expect(queryByText(/Mathematik/)).toBeInTheDocument()
+  expect(queryByText(`${date.toLocaleDateString()}`)).toBeInTheDocument()
 })
