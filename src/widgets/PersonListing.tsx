@@ -1,11 +1,11 @@
-import { View, Text, Flex, Link, Avatar, Heading, useTheme } from 'native-base'
+import { View, Text, Flex, Link, Avatar, Heading, useTheme, Row } from 'native-base'
 import { ReactNode } from 'react'
 
 import CommunityUser from '../widgets/CommunityUser'
 import Card from '../components/Card'
 
 type Props = {
-    variant?: 'normal' | 'card'
+    variant: 'normal' | 'card'
     link: string
     username: string
     usernamesize?: string

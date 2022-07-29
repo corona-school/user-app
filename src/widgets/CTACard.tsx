@@ -6,7 +6,8 @@ import {
   Image,
   CloseIcon,
   Pressable,
-  useTheme
+  useTheme,
+  Container
 } from 'native-base'
 import Card from '../components/Card'
 
@@ -14,6 +15,7 @@ import { Fragment, ReactNode } from 'react'
 
 type Props = {
   title: string
+  icon?:  ReactNode
   onClose?: () => any
   content: ReactNode | ReactNode[]
   button?: ReactNode
@@ -25,6 +27,7 @@ const CTACard: React.FC<Props> = ({
   title,
   content,
   button,
+  icon,
   closeable = true,
   variant = 'normal'
 }) => {
@@ -35,17 +38,22 @@ const CTACard: React.FC<Props> = ({
   return (
     <Wrapper flexibleWidth>
       <Box padding={(variant === 'normal' && space['1']) || 0}>
-        <Row>
-          <Text fontSize={'lg'} flex="1">
-            {title}
-          </Text>
-          {closeable && (
-            <Pressable onPress={() => alert('test')}>
-              <CloseIcon />
-            </Pressable>
-          )}
-        </Row>
-        {content}
+          <Row justifyContent={ closeable ? "space-between" : ''}>
+              { icon && icon}
+              <Container>
+                  <Text width="100%" bold fontSize={'lg'} flex="1" marginBottom={ space['0.5'] } marginLeft={ icon ? space['1'] : ''}>
+                    {title}
+                  </Text>
+                  <Text marginLeft={ icon ? space['1'] : ''}>
+                    {content}
+                  </Text>
+              </Container>
+              {closeable && (
+                <Pressable onPress={() => alert('test')}>
+                  <CloseIcon />
+                </Pressable>
+              )}
+          </Row>
         {button && <Box marginTop={space['1']}>{button}</Box>}
       </Box>
     </Wrapper>
