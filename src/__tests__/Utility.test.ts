@@ -1,4 +1,4 @@
-import { toTimerString, secondsToTimerString } from '../Utility'
+import { toTimerString, secondsToTimerString, createToken } from '../Utility'
 
 describe('Utility - Timer', () => {
   test('should show 23:59', () => {
@@ -60,5 +60,12 @@ describe('Utility - Timer', () => {
   test('seconds = 01:12', () => {
     const s = secondsToTimerString(72)
     expect(s).toBe('01:12')
+  })
+})
+
+describe('Utility - Token', () => {
+  test('token is 32 characters long', () => {
+    const token = createToken()
+    expect(token.length).toBe(32)
   })
 })

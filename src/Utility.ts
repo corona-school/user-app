@@ -1,4 +1,5 @@
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000
+export const TOKEN_LENGTH = 32
 
 export const secondsToTimerString = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
@@ -19,5 +20,21 @@ export const toTimerString = (refDate: number, compareDate: number) => {
     .padStart(2, '0')}`
 }
 
-const Utility = { toTimerString, TIME_THRESHOLD }
+export const createToken = () => {
+  const subLength = 8
+
+  if (!Number.isInteger(TOKEN_LENGTH / subLength)) {
+    throw new Error('TOKEN_LENGTH must be dividable by 8')
+  }
+
+  let id = ''
+  for (let i = 0; i < TOKEN_LENGTH / subLength; i++) {
+    id += Math.random()
+      .toString(36)
+      .substring(2, 2 + subLength)
+  }
+  return id
+}
+
+const Utility = { createToken, toTimerString, TIME_THRESHOLD }
 export default Utility
