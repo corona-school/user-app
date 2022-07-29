@@ -17,10 +17,35 @@ import CTACard from '../widgets/CTACard'
 import LearningPartner from '../widgets/LearningPartner'
 import RatingCard from '../widgets/RatingCard'
 import InstructionProgress from '../widgets/InstructionProgress'
+import Downloads from '../components/Downloads'
 
 export default function Dashboard() {
   return (
     <View>
+      <RatingCard 
+          variant="horizontal"
+          name="Hallo"
+          content="Hallo"
+          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          rating={3}
+        />
+      <HSection title="Deine Kinder – Variante 1" showAll={false}>
+        <RatingCard 
+          variant="horizontal"
+          name="Hallo"
+          content="Hallo"
+          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          rating={3}
+        />
+        <RatingCard 
+          name="Hallo"
+          variant="teaser"
+          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          content="Hallo"
+          rating={3}
+        />
+      </HSection>
+        
       <InstructionProgress
         currentIndex={1}
         instructions={[
@@ -73,7 +98,6 @@ export default function Dashboard() {
           variant="bigger"
           name="Milan"
           rating={2}
-          content="Super Lehrerin, so macht Schule auch mal Spass."
           avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
         />
         <RatingCard
@@ -113,6 +137,40 @@ export default function Dashboard() {
         content={<Text>Schreibe uns einfach an, wir helfen dir gerne.</Text>}
         button={<Button>Chat beginnen</Button>}
         icon={<CheckCircleIcon size={10} />}
+        infotooltip="Lorem ipsum dolor sit amet, consetetur"
+      />
+
+      <CTACard
+        title="Dein Kind braucht Hilfe bei den Hausaufgaben?"
+        closeable={false}
+        content={<Text>Schreibe uns einfach an, wir helfen dir gerne.</Text>}
+        button={<Button>Chat beginnen</Button>}
+      />
+
+      <CTACard
+        title="Zertifikate"
+        closeable={false}
+        infotooltip="Lorem ipsum dolor sit amet, consetetur sadipscing elitr."
+        content={
+          <>
+            <Text>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+            </Text>
+            <Downloads 
+              label="Hallo Downloads"
+              link="https://docs.nativebase.io/icon"
+            />
+            <Downloads 
+              label="Hallo Downloads"
+              link="https://docs.nativebase.io/icon"
+            />
+            <Downloads 
+              label="Hallo Downloads"
+              link="https://docs.nativebase.io/icon"
+            />
+
+          </>
+        }
       />
 
       <HSection title="Deine Kinder – Variante 1" showAll={false}>
@@ -164,7 +222,6 @@ export default function Dashboard() {
             <AppointmentCard
               description="Lorem Ipsum"
               tags={['Mathematik', 'Gruppenkurs']}
-              child="Milan"
               date={new Date()}
               title="Mathematik Grundlagen Klasse 6"
             />
