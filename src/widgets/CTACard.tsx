@@ -15,7 +15,7 @@ import { Fragment, ReactNode } from 'react'
 
 type Props = {
   title: string
-  icon?:  ReactNode
+  icon?: ReactNode
   onClose?: () => any
   content: ReactNode | ReactNode[]
   button?: ReactNode
@@ -28,8 +28,9 @@ const CTACard: React.FC<Props> = ({
   content,
   button,
   icon,
-  closeable = true,
-  variant = 'normal'
+  closeable = false,
+  variant = 'normal',
+  onClose
 }) => {
   const { space } = useTheme()
 
@@ -38,22 +39,26 @@ const CTACard: React.FC<Props> = ({
   return (
     <Wrapper flexibleWidth>
       <Box padding={(variant === 'normal' && space['1']) || 0}>
-          <Row justifyContent={ closeable ? "space-between" : ''}>
-              { icon && icon}
-              <Container>
-                  <Text width="100%" bold fontSize={'lg'} flex="1" marginBottom={ space['0.5'] } marginLeft={ icon ? space['1'] : ''}>
-                    {title}
-                  </Text>
-                  <Text marginLeft={ icon ? space['1'] : ''}>
-                    {content}
-                  </Text>
-              </Container>
-              {closeable && (
-                <Pressable onPress={() => alert('test')}>
-                  <CloseIcon />
-                </Pressable>
-              )}
-          </Row>
+        <Row justifyContent={closeable ? 'space-between' : ''}>
+          {icon && icon}
+          <Container>
+            <Text
+              width="100%"
+              bold
+              fontSize={'lg'}
+              flex="1"
+              marginBottom={space['0.5']}
+              marginLeft={icon ? space['1'] : ''}>
+              {title}
+            </Text>
+            <Text marginLeft={icon ? space['1'] : ''}>{content}</Text>
+          </Container>
+          {closeable && (
+            <Pressable onPress={onClose} testID="close">
+              <CloseIcon />
+            </Pressable>
+          )}
+        </Row>
         {button && <Box marginTop={space['1']}>{button}</Box>}
       </Box>
     </Wrapper>

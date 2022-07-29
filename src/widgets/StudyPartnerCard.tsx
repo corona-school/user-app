@@ -14,8 +14,8 @@ const StudyPartnerCard: React.FC<Props> = ({ title, tags, date }) => {
   return (
     <LeftImageCard>
       <Row space={space['0.5']}>
-        {tags.map(t => (
-          <Tag text={t} />
+        {tags.map((t, i) => (
+          <Tag text={t} key={`tag-${i}`} />
         ))}
       </Row>
       <Row space={1}>

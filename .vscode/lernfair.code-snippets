@@ -18,12 +18,14 @@
 	"Lernfair Testing Scaffold": {
 		"prefix": "ltc",
 		"body": [
-			"import { render, screen } from '@testing-library/react'",
+			"import { render } from '@testing-library/react'",
 			"import TestWrapper from '../../components/TestWrapper'",
 			"",
-			"test('', () => {",
-			"    render(<></>, { wrapper: TestWrapper })",
-			"})"],
+			"describe('', () => {",
+			"    test('', () => {",
+			"        const {} = render(<></>, { wrapper: TestWrapper })",
+			"    })",
+		  "})"],
 		
 		"description": "Lernfair Testing Boilerplate"
 	}
