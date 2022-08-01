@@ -11,7 +11,7 @@ type Props = {
   date: Date
   title: string
   description: string
-  child: string
+  child?: string
   avatar?: string
   avatarname?: string
   button?: ReactNode
@@ -70,7 +70,7 @@ const AppointmentCard: React.FC<Props> = ({
               </Row>
             )}
             {isStartingSoon && (
-              <Row>
+              <Row paddingBottom={space['0.5']}>
                 <Text>Startet in: </Text>
                 <Text bold>{remainingTime}</Text>
               </Row>
@@ -80,7 +80,7 @@ const AppointmentCard: React.FC<Props> = ({
             </Text>
             {isStartingSoon && (
               <>
-                <Text>{description}</Text>
+                <Text paddingBottom={space['0.5']}>{description}</Text>
                 <Button onPress={onPressToCourse}>Zum Kurs</Button>
               </>
             )}
@@ -88,7 +88,7 @@ const AppointmentCard: React.FC<Props> = ({
 
             {button && (
               <Link href={buttonlink}>
-                <Button marginTop={space['1']} marginBottom={space['0.5']}>
+                <Button paddingTop={space['1.5']} paddingBottom={space['1.5']}>
                   {button}
                 </Button>
               </Link>
