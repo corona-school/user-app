@@ -7,15 +7,17 @@ type Props = {
   showAll?: boolean
   children: ReactNode | ReactNode[]
   onShowAll?: () => any
+  smallTitle?: boolean
 }
 
 const HSection: React.FC<Props> = ({
   title,
   showAll = false,
   children,
-  onShowAll
+  onShowAll,
+  smallTitle
 }) => {
-  const { space } = useTheme()
+  const { space, fontSizes } = useTheme()
   return (
     <Box>
       <Row
@@ -23,7 +25,13 @@ const HSection: React.FC<Props> = ({
         justifyContent={'flex-end'}
         paddingX={space['1']}
         paddingY={space['0.5']}>
-        {title && <Heading flex="1">{title}</Heading>}
+        {title && (
+          <Heading
+            flex="1"
+            fontSize={smallTitle ? fontSizes['md'] : fontSizes['xl']}>
+            {title}
+          </Heading>
+        )}
         {showAll && <Link onPress={onShowAll}>Alle</Link>}
       </Row>
       <Row

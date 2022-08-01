@@ -2,7 +2,7 @@ import { Text, Row, Column, Avatar, useTheme, Box } from 'native-base'
 import { ReactNode } from 'react'
 
 type Props = {
-  name: string | undefined
+  name?: string
   usernamesize?: string
   usernameweight?: string
   avatar?: string
