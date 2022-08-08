@@ -22,22 +22,22 @@ import Downloads from '../components/Downloads'
 export default function Dashboard() {
   return (
     <View>
-      <RatingCard 
-          variant="horizontal"
-          name="Hallo"
-          content="Hallo"
-          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          rating={3}
-        />
+      <RatingCard
+        variant="horizontal"
+        name="Hallo"
+        content="Hallo"
+        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        rating={3}
+      />
       <HSection title="Deine Kinder – Variante 1" showAll={false}>
-        <RatingCard 
+        <RatingCard
           variant="horizontal"
           name="Hallo"
           content="Hallo"
           avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
           rating={3}
         />
-        <RatingCard 
+        <RatingCard
           name="Hallo"
           variant="teaser"
           avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -45,7 +45,7 @@ export default function Dashboard() {
           rating={3}
         />
       </HSection>
-        
+
       <InstructionProgress
         currentIndex={1}
         instructions={[
@@ -156,19 +156,18 @@ export default function Dashboard() {
             <Text>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
             </Text>
-            <Downloads 
+            <Downloads
               label="Hallo Downloads"
               link="https://docs.nativebase.io/icon"
             />
-            <Downloads 
+            <Downloads
               label="Hallo Downloads"
               link="https://docs.nativebase.io/icon"
             />
-            <Downloads 
+            <Downloads
               label="Hallo Downloads"
               link="https://docs.nativebase.io/icon"
             />
-
           </>
         }
       />
