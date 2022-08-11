@@ -3,6 +3,7 @@ import useApollo from './hooks/useApollo'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
+import Playground from './pages/Playground'
 import Profile from './pages/Profile'
 
 export default function Navigator() {
@@ -12,6 +13,10 @@ export default function Navigator() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={token ? <Dashboard /> : <Login />} />
+        <Route
+          path="/playground"
+          element={token ? <Playground /> : <Login />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
