@@ -1,40 +1,56 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 
-import { Button } from 'native-base'
+import { Button, Input, Text, useTheme, View, VStack } from 'native-base'
 import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
+  const { space } = useTheme()
+  const [email, setEmail] = useState<string>()
+  const [password, setPassword] = useState<string>()
+
   const [login, { data, error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
   `)
 
-  const { createToken } = useApollo()
+  const { clearToken, setToken } = useApollo()
   const navigate = useNavigate()
 
-  const attemptLogin = async () => {
-    createToken()
-    login({
+  const attemptLogin = useCallback(async () => {
+    await login({
       variables: {
-        email: 'croeszies@giftgruen.com',
-        password: 'test123'
+        email: email,
+        password: password
       }
     })
-  }
+  }, [email, login, password])
 
   useEffect(() => {
+    if (loading) return
     if (data && data.loginPassword) {
-      navigate('/')
+      navigate(0)
+    } else {
+      clearToken()
     }
-  }, [data, navigate])
+  }, [clearToken, data, loading, navigate, setToken])
 
   return (
-    <div>
-      {error && <div>Falsche Daten! </div>}
-      <Button onPress={attemptLogin}></Button>
-    </div>
+    <VStack space={space['0.5']}>
+      <Input placeholder="Email-Addresse" onChangeText={setEmail} />
+      <Input placeholder="Password" onChangeText={setPassword} />
+      <Button variant={'outline'} onPress={attemptLogin}>
+        Einloggen
+      </Button>
+      <Button onPress={null}>Neu registrieren</Button>
+      {error && (
+        <Text>
+          Ihre Login-Daten stimmen nicht mit unseren Informationen überein.
+          Bitte überprüfe deine Angaben
+        </Text>
+      )}
+    </VStack>
   )
 }

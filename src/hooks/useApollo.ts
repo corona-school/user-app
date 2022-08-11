@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { useMemo, useState } from 'react'
 import Utility from '../Utility'
@@ -7,7 +7,11 @@ const useApollo = () => {
   const [token, setToken] = useState(localStorage.getItem('lernfair:token'))
 
   const tokenLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('lernfair:token')
+    let token = localStorage.getItem('lernfair:token')
+    if (!token) {
+      token = createToken()
+    }
+
     return {
       headers: {
         ...headers,
@@ -16,12 +20,15 @@ const useApollo = () => {
     }
   })
 
+  const uriLink = new HttpLink({
+    uri: process.env.REACT_APP_APOLLO_CLIENT_URI + '/apollo'
+  })
+
   const client = useMemo(
     () =>
       new ApolloClient({
-        uri: process.env.REACT_APP_APOLLO_CLIENT_URI + '/apollo',
         cache: new InMemoryCache(),
-        link: tokenLink
+        link: from([tokenLink, uriLink])
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -31,8 +38,14 @@ const useApollo = () => {
     let tok = Utility.createToken()
     setToken(tok)
     localStorage.setItem('lernfair:token', tok)
+    return tok
   }
 
-  return { client, createToken, token }
+  const clearToken = () => {
+    localStorage.removeItem('lernfair:token')
+    setToken(null)
+  }
+
+  return { client, createToken, clearToken, token, setToken }
 }
 export default useApollo
