@@ -1,15 +1,14 @@
 import { NativeBaseProvider, View } from 'native-base'
 import Theme from './Theme'
 import Navigator from './Navigator'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import Autoload from './Autoload'
 import useApollo from './hooks/useApollo'
 
 function App() {
   const { client } = useApollo()
   return (
-    <ApolloProvider
-      client={client || new ApolloClient({ cache: new InMemoryCache() })}>
+    <ApolloProvider client={client}>
       <NativeBaseProvider theme={Theme}>
         <Autoload />
         <Navigator />
