@@ -7,6 +7,9 @@ const COLOR_YELLOW = '#F4CC54'
 const COLOR_SECONDARY = COLOR_YELLOW
 const COLOR_BLUE = '#405B73'
 const COLOR_TERTIARY = COLOR_BLUE
+const COLOR_RED = '#D45D3A'
+const COLOR_DANGER = COLOR_RED
+const COLOR_WARNING = COLOR_RED
 
 const Theme = extendTheme({
   colors: {
@@ -42,6 +45,28 @@ const Theme = extendTheme({
       700: COLOR_TERTIARY,
       800: COLOR_TERTIARY,
       900: COLOR_TERTIARY
+    },
+    warning: {
+      100: COLOR_WARNING,
+      200: COLOR_WARNING,
+      300: COLOR_WARNING,
+      400: COLOR_WARNING,
+      500: COLOR_WARNING,
+      600: COLOR_WARNING,
+      700: COLOR_WARNING,
+      800: COLOR_WARNING,
+      900: COLOR_WARNING
+    },
+    danger: {
+      100: COLOR_DANGER,
+      200: COLOR_DANGER,
+      300: COLOR_DANGER,
+      400: COLOR_DANGER,
+      500: COLOR_DANGER,
+      600: COLOR_DANGER,
+      700: COLOR_DANGER,
+      800: COLOR_DANGER,
+      900: COLOR_DANGER
     }
   },
   fontSizes: {
