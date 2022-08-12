@@ -19,7 +19,7 @@ const Profile: React.FC<Props> = () => {
   return (
     <VStack space={space['1']}>
       <Box
-        bg={'gray.500'}
+        bg={'primary.100'}
         alignItems="center"
         paddingY={space['2']}
         borderBottomRadius={16}>
@@ -30,11 +30,7 @@ const Profile: React.FC<Props> = () => {
         <CTACard
           title="Wir möchten dich kennenlernen"
           content="Bevor du bei uns anfangen kannst möchten wir dich in einem persönlichen Gespräch kennenlernen. Vereinbare einfach einen Termin mit uns."
-          button={
-            <Button onPress={() => null} bgColor="gray.600">
-              Termin vereinbaren
-            </Button>
-          }
+          button={<Button onPress={() => null}>Termin vereinbaren</Button>}
         />
         <CTACard
           variant="outline"
@@ -46,15 +42,11 @@ const Profile: React.FC<Props> = () => {
               <Button variant={'outline'} onPress={() => null}>
                 Vordruck herunterladen
               </Button>
-              <Button onPress={() => null} bgColor="gray.600">
-                Einreichen
-              </Button>
+              <Button onPress={() => null}>Einreichen</Button>
             </VStack>
           }
         />
-        <Button onPress={() => null} bgColor="gray.600">
-          Profil vervollständigen
-        </Button>
+        <Button onPress={() => null}>Profil vervollständigen</Button>
         <VStack space={space['0.5']}>
           <Heading>Persönliche Daten</Heading>
           <SimpleDataRow label="Name" value="Rainer Zufall" />

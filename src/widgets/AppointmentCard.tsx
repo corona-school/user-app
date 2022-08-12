@@ -54,7 +54,7 @@ const AppointmentCard: React.FC<Props> = ({
     <View>
       {variant === 'card' ? (
         <Card flexibleWidth>
-          <Box bg="gray.500" h="120" padding={space['0.5']}>
+          <Box bg="primary.100" h="120" padding={space['0.5']}>
             <Row space={space['0.5']}>
               {tags.map((t, i) => (
                 <Tag key={`tag-${i}`} text={t} />
@@ -98,7 +98,7 @@ const AppointmentCard: React.FC<Props> = ({
       ) : (
         <Flex
           direction="row"
-          borderBottomColor="gray.300"
+          borderBottomColor="primary.100"
           borderBottomWidth="1"
           paddingLeft={space['0.5']}
           paddingRight={space['0.5']}

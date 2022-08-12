@@ -1,4 +1,13 @@
-import { View, Image, Avatar, Text, Row, useTheme, Column, Link } from 'native-base'
+import {
+  View,
+  Image,
+  Avatar,
+  Text,
+  Row,
+  useTheme,
+  Column,
+  Link
+} from 'native-base'
 import Card from '../components/Card'
 
 type Props = {
@@ -23,25 +32,31 @@ const RatingCard: React.FC<Props> = ({
   return (
     <View>
       <Link href={link}>
-        <Card flexibleWidth={ variant === 'horizontal' ||  variant === 'teaser' ? true : false }>
-          
-          { variant === 'horizontal' ||  variant === 'teaser' ?
-            <Row
-                flexDir={isBigger ? 'column' : 'row'}
-                alignItems="center">
-
-                <Column marginRight={4}>
-                  <Image source={{
+        <Card
+          flexibleWidth={
+            variant === 'horizontal' || variant === 'teaser' ? true : false
+          }>
+          {variant === 'horizontal' || variant === 'teaser' ? (
+            <Row flexDir={isBigger ? 'column' : 'row'} alignItems="center">
+              <Column marginRight={4}>
+                <Image
+                  source={{
                     uri: avatar
-                  }} alt={name} size="lg" />
-                </Column>
-                <Column>
-                  <Text bold fontSize={'lg'} marginBottom={ isBigger ? space['1'] : ''}>
-                    {name}
-                  </Text>
-                </Column>
-              </Row>
-            : 
+                  }}
+                  alt={name}
+                  size="lg"
+                />
+              </Column>
+              <Column>
+                <Text
+                  bold
+                  fontSize={'lg'}
+                  marginBottom={isBigger ? space['1'] : ''}>
+                  {name}
+                </Text>
+              </Column>
+            </Row>
+          ) : (
             <>
               <Row
                 paddingTop={space['1']}
@@ -57,22 +72,29 @@ const RatingCard: React.FC<Props> = ({
                     uri: avatar
                   }}
                 />
-                <Text bold fontSize={'lg'} marginBottom={ isBigger ? space['1'] : ''}>
+                <Text
+                  bold
+                  fontSize={'lg'}
+                  marginBottom={isBigger ? space['1'] : ''}>
                   {name}
                 </Text>
               </Row>
 
               {content && (
-                  <Row
-                    paddingTop={space['0.5']}
-                    paddingBottom={space['0.5']}
-                    paddingLeft={space['1']}
-                    paddingRight={space['1']}>
-                    <Text marginBottom={ !isBigger ? space['0.5'] : ''} textAlign={isBigger ? 'center' : 'left'}>{content}</Text>
-                  </Row>
+                <Row
+                  paddingTop={space['0.5']}
+                  paddingBottom={space['0.5']}
+                  paddingLeft={space['1']}
+                  paddingRight={space['1']}>
+                  <Text
+                    marginBottom={!isBigger ? space['0.5'] : ''}
+                    textAlign={isBigger ? 'center' : 'left'}>
+                    {content}
+                  </Text>
+                </Row>
               )}
             </>
-          }
+          )}
         </Card>
       </Link>
     </View>
