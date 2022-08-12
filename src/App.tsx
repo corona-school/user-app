@@ -1,12 +1,19 @@
 import { NativeBaseProvider, View } from 'native-base'
 import Theme from './Theme'
 import Navigator from './Navigator'
+import { ApolloProvider } from '@apollo/client'
+import Autoload from './Autoload'
+import useApollo from './hooks/useApollo'
 
 function App() {
+  const { client } = useApollo()
   return (
-    <NativeBaseProvider theme={Theme}>
-      <Navigator></Navigator>
-    </NativeBaseProvider>
+    <ApolloProvider client={client}>
+      <NativeBaseProvider theme={Theme}>
+        <Autoload />
+        <Navigator />
+      </NativeBaseProvider>
+    </ApolloProvider>
   )
 }
 

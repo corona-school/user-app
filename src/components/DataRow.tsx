@@ -11,7 +11,7 @@ const DataRow: React.FC<Props> = ({ children }) => {
   return (
     <Row
       borderBottomWidth={1}
-      borderBottomColor="gray.400"
+      borderBottomColor="primary.500"
       paddingBottom={space['0.5']}>
       {children}
     </Row>

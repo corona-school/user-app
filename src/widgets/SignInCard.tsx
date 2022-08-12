@@ -20,7 +20,7 @@ const SignInCard: React.FC<Props> = ({
   const { space } = useTheme()
   return (
     <Card>
-      <Box bg="gray.500" h="120" padding={space['0.5']}></Box>
+      <Box bg="primary.500" h="120" padding={space['0.5']}></Box>
       <Box padding={space['0.5']}>
         <Row space={space['0.5']} paddingY={space['0.5']}>
           {tags.map((t, i) => (
@@ -35,7 +35,7 @@ const SignInCard: React.FC<Props> = ({
         <Text bold fontSize={'md'}>
           {title}
         </Text>
-        <Button bg="gray.700" marginTop={space['1']} onPress={onClickSignIn}>
+        <Button marginTop={space['1']} onPress={onClickSignIn}>
           Anmelden
         </Button>
       </Box>
