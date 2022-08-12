@@ -9,7 +9,7 @@ type Props = {
 const Card: React.FC<Props> = ({ children, flexibleWidth = false }) => {
   return (
     <BaseCard
-      bg="gray.200"
+      bg="primary.100"
       borderRadius={8}
       padding={0}
       w={flexibleWidth ? 'auto' : '180'}>

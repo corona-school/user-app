@@ -10,7 +10,7 @@ const LeftImageCard: React.FC<Props> = ({ children }) => {
   return (
     <Card flexibleWidth>
       <Row>
-        <Box w={100} bg={'gray.600'}></Box>
+        <Box w={100} bg={'primary.100'}></Box>
         <VStack
           paddingX={space['0.5']}
           paddingY={space['1']}
