@@ -1,4 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ReactNode } from 'react'
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation
+} from 'react-router-dom'
 import useApollo from './hooks/useApollo'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
@@ -12,16 +19,66 @@ export default function Navigator() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={token ? <Dashboard /> : <Login />} />
+        {/* Public */}
+
+        <Route path="/login" element={<Login />} />
+
+        {/* Private */}
+
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/edit-profile"
+          element={
+            <RequireAuth>
+              <EditProfile />
+            </RequireAuth>
+          }
+        />
+
         <Route
           path="/playground"
-          element={token ? <Playground /> : <Login />}
+          element={
+            <RequireAuth>
+              <Playground />
+            </RequireAuth>
+          }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/login" element={<Login />} />
+
+        {/* Fallback */}
+        <Route
+          path="*"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
+}
+
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  const { token } = useApollo()
+  const location = useLocation()
+
+  if (!token) return <Navigate to="/login" state={{ from: location }} replace />
+  return children
 }

@@ -31,7 +31,7 @@ export default function Login() {
   useEffect(() => {
     if (loading) return
     if (data && data.loginPassword) {
-      navigate(0)
+      navigate('/')
     } else {
       clearToken()
     }
