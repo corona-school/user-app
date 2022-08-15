@@ -3,7 +3,7 @@ import { extendTheme, theme } from 'native-base'
 const COLOR_PRIMARY_LIGHT = '#EDF4F3'
 const COLOR_PRIMARY = '#82B1B0'
 const COLOR_PRIMARY_DARK = '#2B4B51'
-const COLOR_YELLOW = '#F4CC54'
+const COLOR_YELLOW = '#FEDA50'
 const COLOR_SECONDARY = COLOR_YELLOW
 const COLOR_BLUE = '#405B73'
 const COLOR_TERTIARY = COLOR_BLUE
@@ -90,7 +90,13 @@ const Theme = extendTheme({
     },
     Button: {
       defaultProps: {
-        backgroundColor: COLOR_YELLOW
+        backgroundColor: COLOR_YELLOW,
+        _text: {
+          color: COLOR_PRIMARY_DARK,
+          fontWeight: 600,
+          fontSize: 14,
+          padding: "3px 5px"
+        },
       },
       variants: {
         secondary: {

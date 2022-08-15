@@ -34,7 +34,7 @@ const Tag: React.FC<Props> = ({
   const bg = useMemo(
     () =>
       variant === 'normal'
-        ? 'primary.500'
+        ? 'primary.700'
         : variant === 'outline'
         ? 'transparent'
         : colors.text['50'],

@@ -7,6 +7,7 @@ import { toTimerString, TIME_THRESHOLD } from '../Utility'
 import useInterval from '../hooks/useInterval'
 
 type Props = {
+  isCourse?: boolean
   tags: string[]
   date: Date
   title: string
@@ -31,6 +32,7 @@ const AppointmentCard: React.FC<Props> = ({
   avatarname,
   button,
   buttonlink,
+  isCourse = true,
   onPressToCourse
 }) => {
   const { space } = useTheme()
@@ -54,14 +56,14 @@ const AppointmentCard: React.FC<Props> = ({
     <View>
       {variant === 'card' ? (
         <Card flexibleWidth>
-          <Box bg="primary.100" h="120" padding={space['0.5']}>
+          <Box bg="primary.100" h="120" padding={space['1']}>
             <Row space={space['0.5']}>
               {tags.map((t, i) => (
                 <Tag key={`tag-${i}`} text={t} />
               ))}
             </Row>
           </Box>
-          <Box padding={space['0.5']}>
+          <Box padding={space['1']}>
             {!isStartingSoon && (
               <Row paddingTop={space['1']} space={1}>
                 <Text>{date.toLocaleDateString()}</Text>
@@ -81,7 +83,9 @@ const AppointmentCard: React.FC<Props> = ({
             {isStartingSoon && (
               <>
                 <Text paddingBottom={space['0.5']}>{description}</Text>
-                <Button onPress={onPressToCourse}>Zum Kurs</Button>
+                {isCourse && (
+                  <Button onPress={onPressToCourse}>Zum Kurs</Button>
+                )}
               </>
             )}
             {child && <CommunityUser name={child} />}

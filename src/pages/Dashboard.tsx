@@ -24,6 +24,7 @@ import RatingCard from '../widgets/RatingCard'
 import InstructionProgress from '../widgets/InstructionProgress'
 import Downloads from '../components/Downloads'
 import HeaderCard from '../components/HeaderCard'
+import ProfilAvatar from '../widgets/ProfilAvatar'
 
 type Props = {}
 
@@ -33,7 +34,10 @@ const Dashboard: React.FC<Props> = () => {
     <VStack>
       <HeaderCard>
         <HStack space={space['1']} alignItems="center">
-          <Avatar size="md" />
+          <ProfilAvatar
+            size="md"
+            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          />
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
       </HeaderCard>
@@ -52,6 +56,7 @@ const Dashboard: React.FC<Props> = () => {
             .fill(0)
             .map((el, i) => (
               <AppointmentCard
+                isCourse={false}
                 description="Lorem Ipsum"
                 tags={['Mathematik', 'Gruppenkurs']}
                 date={new Date()}
