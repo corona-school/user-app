@@ -12,6 +12,7 @@ import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
 import Playground from './pages/Playground'
 import Profile from './pages/Profile'
+import Registration from './pages/Registration'
 
 export default function Navigator() {
   const { token } = useApollo()
@@ -22,6 +23,7 @@ export default function Navigator() {
         {/* Public */}
 
         <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
 
         {/* Private */}
 
