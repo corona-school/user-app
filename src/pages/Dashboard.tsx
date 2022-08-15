@@ -59,6 +59,45 @@ const Dashboard: React.FC<Props> = () => {
               />
             ))}
         </HSection>
+        <VStack space={space['0.5']} paddingX={space['1']}>
+          <Heading>Hausaufgabenhilfe</Heading>
+          <AppointmentCard
+            tags={['Mathematik', 'Gruppenkurs']}
+            date={new Date()}
+            title="Mathe Grundlagen Klasse 6"
+            description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+          />
+        </VStack>
+        <VStack space={space['0.5']} paddingX={space['1']}>
+          <Heading>Dein:e Lernpartner:in</Heading>
+          <AppointmentCard
+            tags={['Mathematik', 'Gruppenkurs']}
+            date={new Date()}
+            title="Mathe Grundlagen Klasse 6"
+            description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+          />
+        </VStack>
+        <HSection title="Vorschläge für dich" showAll={true}>
+          {Array(2)
+            .fill(0)
+            .map((el, i) => (
+              <AppointmentCard
+                description="Lorem Ipsum"
+                tags={['Mathematik', 'Gruppenkurs']}
+                date={new Date()}
+                title="Mathematik Grundlagen Klasse 6"
+              />
+            ))}
+        </HSection>
+        <VStack space={space['0.5']} paddingX={space['1']}>
+          <Heading>Angebote</Heading>
+          <AppointmentCard
+            tags={['Mathematik', 'Gruppenkurs']}
+            date={new Date()}
+            title="Mathe Grundlagen Klasse 6"
+            description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+          />
+        </VStack>
       </VStack>
     </VStack>
   )
