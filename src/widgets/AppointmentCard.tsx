@@ -7,7 +7,6 @@ import { toTimerString, TIME_THRESHOLD } from '../Utility'
 import useInterval from '../hooks/useInterval'
 
 type Props = {
-  isCourse?: boolean
   tags: string[]
   date: Date
   title: string
@@ -32,7 +31,6 @@ const AppointmentCard: React.FC<Props> = ({
   avatarname,
   button,
   buttonlink,
-  isCourse = true,
   onPressToCourse
 }) => {
   const { space } = useTheme()
@@ -52,10 +50,17 @@ const AppointmentCard: React.FC<Props> = ({
     [date, remainingTime]
   )
 
+  const textColor = useMemo(
+    () => (isStartingSoon ? 'white' : 'black'),
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [date, remainingTime]
+  )
+
   return (
     <View>
       {variant === 'card' ? (
-        <Card flexibleWidth>
+        <Card flexibleWidth variant={isStartingSoon ? 'dark' : 'normal'}>
           <Box bg="primary.100" h="120" padding={space['1']}>
             <Row space={space['0.5']}>
               {tags.map((t, i) => (
@@ -66,26 +71,30 @@ const AppointmentCard: React.FC<Props> = ({
           <Box padding={space['1']}>
             {!isStartingSoon && (
               <Row paddingTop={space['1']} space={1}>
-                <Text>{date.toLocaleDateString()}</Text>
-                <Text>•</Text>
-                <Text>{date.toLocaleTimeString().slice(0, -3)}</Text>
+                <Text color={textColor}>{date.toLocaleDateString()}</Text>
+                <Text color={textColor}>•</Text>
+                <Text color={textColor}>
+                  {date.toLocaleTimeString().slice(0, -3)}
+                </Text>
               </Row>
             )}
             {isStartingSoon && (
               <Row paddingBottom={space['0.5']}>
-                <Text>Startet in: </Text>
-                <Text bold>{remainingTime}</Text>
+                <Text color={textColor}>Startet in: </Text>
+                <Text bold color={textColor}>
+                  {remainingTime}
+                </Text>
               </Row>
             )}
-            <Text bold fontSize={'md'}>
+            <Text color={textColor} bold fontSize={'md'}>
               {title}
             </Text>
             {isStartingSoon && (
               <>
-                <Text paddingBottom={space['0.5']}>{description}</Text>
-                {isCourse && (
-                  <Button onPress={onPressToCourse}>Zum Kurs</Button>
-                )}
+                <Text paddingBottom={space['0.5']} color={textColor}>
+                  {description}
+                </Text>
+                <Button onPress={onPressToCourse}>Zum Kurs</Button>
               </>
             )}
             {child && <CommunityUser name={child} />}

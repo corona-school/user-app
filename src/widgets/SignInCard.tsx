@@ -35,7 +35,10 @@ const SignInCard: React.FC<Props> = ({
         <Text bold fontSize={'md'}>
           {title}
         </Text>
-        <Button marginTop={space['1']} onPress={onClickSignIn}>
+        <Button
+          variant="outline"
+          marginTop={space['1']}
+          onPress={onClickSignIn}>
           Anmelden
         </Button>
       </Box>

@@ -14,6 +14,7 @@ const Card: React.FC<Props> = ({
 }) => {
   return (
     <BaseCard
+      shadow="none"
       bg={variant === 'normal' ? 'primary.100' : 'primary.900'}
       borderRadius={8}
       padding={0}

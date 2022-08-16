@@ -1,9 +1,11 @@
 import { extendTheme, theme } from 'native-base'
+import { border } from 'native-base/lib/typescript/theme/styled-system'
 
 const COLOR_PRIMARY_LIGHT = '#EDF4F3'
 const COLOR_PRIMARY = '#82B1B0'
 const COLOR_PRIMARY_DARK = '#2B4B51'
 const COLOR_YELLOW = '#FEDA50'
+const COLOR_DARKYELLOW = '#d0b345'
 const COLOR_SECONDARY = COLOR_YELLOW
 const COLOR_BLUE = '#405B73'
 const COLOR_TERTIARY = COLOR_BLUE
@@ -14,6 +16,8 @@ const COLOR_WARNING = COLOR_RED
 const Theme = extendTheme({
   colors: {
     primary: {
+      translucent: '#EDF4F316',
+      darkTranslucent: 'rgba(31,76, 82, .73)',
       100: COLOR_PRIMARY_LIGHT,
       200: COLOR_PRIMARY_LIGHT,
       300: COLOR_PRIMARY_LIGHT,
@@ -90,17 +94,32 @@ const Theme = extendTheme({
     },
     Button: {
       defaultProps: {
-        backgroundColor: COLOR_YELLOW,
         _text: {
-          color: COLOR_PRIMARY_DARK,
-          fontWeight: 600,
-          fontSize: 14,
-          padding: "3px 5px"
+          fontWeight: 600
         },
       },
       variants: {
+        solid: {
+          backgroundColor: COLOR_YELLOW,
+          _text: {
+            color: COLOR_PRIMARY_DARK,
+            fontSize: 14,
+            padding: "3px 5px"
+          },
+          _hover: {
+            backgroundColor: COLOR_DARKYELLOW,
+          }
+        },
         secondary: {
           backgroundColor: COLOR_BLUE
+        }, 
+        outline: {
+          _light: {
+            borderColor: COLOR_PRIMARY,
+            _text: {
+              color: COLOR_PRIMARY_DARK
+            }
+          }
         }
       }
     }

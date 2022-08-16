@@ -11,6 +11,7 @@ import {
   Avatar,
   VStack
 } from 'native-base'
+import { useMemo } from 'react'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
@@ -30,6 +31,8 @@ type Props = {}
 
 const Dashboard: React.FC<Props> = () => {
   const { space } = useTheme()
+  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+
   return (
     <VStack>
       <HeaderCard>
@@ -56,10 +59,9 @@ const Dashboard: React.FC<Props> = () => {
             .fill(0)
             .map((el, i) => (
               <AppointmentCard
-                isCourse={false}
                 description="Lorem Ipsum"
                 tags={['Mathematik', 'Gruppenkurs']}
-                date={new Date()}
+                date={futureDate}
                 title="Mathematik Grundlagen Klasse 6"
               />
             ))}
@@ -86,11 +88,12 @@ const Dashboard: React.FC<Props> = () => {
           {Array(2)
             .fill(0)
             .map((el, i) => (
-              <AppointmentCard
-                description="Lorem Ipsum"
+              <SignInCard
                 tags={['Mathematik', 'Gruppenkurs']}
                 date={new Date()}
-                title="Mathematik Grundlagen Klasse 6"
+                numAppointments={5}
+                title="Flächeninhalt berechnen"
+                onClickSignIn={() => null}
               />
             ))}
         </HSection>
