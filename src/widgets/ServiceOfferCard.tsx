@@ -6,20 +6,23 @@ type Props = {
   title: string
   content?: string
   icon?: ReactNode | ReactNode[]
+  image?: string
 }
 
-const ServiceOfferCard: React.FC<Props> = ({ title, content, icon }) => {
+const ServiceOfferCard: React.FC<Props> = ({ title, content, icon, image }) => {
   const { space } = useTheme()
   return (
     <Card flexibleWidth={icon ? false : true}>
-      <Image
-        position="absolute"
-        w="100%"
-        h="100%"
-        source={{
-          uri: 'https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-        }}
-      />
+      {image && (
+        <Image
+          position="absolute"
+          w="100%"
+          h="100%"
+          source={{
+            uri: image
+          }}
+        />
+      )}
       <Box
         background="primary.darkTranslucent"
         h={icon ? 220 : 120}

@@ -214,6 +214,7 @@ const Playground: React.FC<Props> = () => {
           .fill(0)
           .map((el, i) => (
             <AppointmentCard
+              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
               description="Lorem Ipsum"
               tags={['Mathematik', 'Gruppenkurs']}
               date={new Date()}
@@ -248,6 +249,7 @@ const Playground: React.FC<Props> = () => {
               date={new Date()}
               numAppointments={5}
               title="Flächeninhalt berechnen"
+              image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
               onClickSignIn={() => null}
             />
           ))}

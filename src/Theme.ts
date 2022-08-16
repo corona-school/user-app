@@ -71,7 +71,8 @@ const Theme = extendTheme({
       700: COLOR_DANGER,
       800: COLOR_DANGER,
       900: COLOR_DANGER
-    }
+    }, 
+    darkText: COLOR_PRIMARY_DARK
   },
   fontSizes: {
     xs: 10,
@@ -95,7 +96,8 @@ const Theme = extendTheme({
     Button: {
       defaultProps: {
         _text: {
-          fontWeight: 600
+          fontWeight: 600,
+          fontSize: 14
         },
       },
       variants: {
@@ -118,6 +120,14 @@ const Theme = extendTheme({
             borderColor: COLOR_PRIMARY,
             _text: {
               color: COLOR_PRIMARY_DARK
+            }
+          }
+        },
+        outlinelight: {
+          borderColor: COLOR_PRIMARY,
+          _light: {
+            _text: {
+              color: 'white'
             }
           }
         }

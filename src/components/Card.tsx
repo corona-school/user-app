@@ -18,7 +18,7 @@ const Card: React.FC<Props> = ({
       bg={variant === 'normal' ? 'primary.100' : 'primary.900'}
       borderRadius={8}
       padding={0}
-      w={flexibleWidth ? 'auto' : '180'}>
+      w={flexibleWidth ? 'auto' : '190'}>
       {children}
     </BaseCard>
   )

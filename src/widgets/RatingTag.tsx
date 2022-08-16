@@ -6,6 +6,15 @@ type Props = {
 }
 
 const RatingTag: React.FC<Props> = ({ rating }) => {
-  return <Tag text={rating} variant="rating" afterElement={<FavouriteIcon />} />
+  return (
+    <Tag
+      borderRadius={15}
+      paddingX={3}
+      isReview
+      text={rating}
+      variant="rating"
+      afterElement={<FavouriteIcon />}
+    />
+  )
 }
 export default RatingTag

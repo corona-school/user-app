@@ -1,5 +1,16 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-import { View, Text, Row, useTheme, Box, Flex, Button, Link } from 'native-base'
+import {
+  View,
+  Text,
+  Row,
+  useTheme,
+  Box,
+  Flex,
+  Button,
+  Link,
+  Icon,
+  Image
+} from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
@@ -17,6 +28,8 @@ type Props = {
   button?: ReactNode
   buttonlink?: string
   variant?: 'card' | 'horizontal'
+  isTeaser?: boolean
+  image: string
   onPressToCourse?: () => any
 }
 
@@ -31,6 +44,8 @@ const AppointmentCard: React.FC<Props> = ({
   avatarname,
   button,
   buttonlink,
+  isTeaser = false,
+  image,
   onPressToCourse
 }) => {
   const { space } = useTheme()
@@ -51,7 +66,7 @@ const AppointmentCard: React.FC<Props> = ({
   )
 
   const textColor = useMemo(
-    () => (isStartingSoon ? 'white' : 'black'),
+    () => (isStartingSoon ? 'lightText' : 'darkText'),
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [date, remainingTime]
@@ -60,9 +75,22 @@ const AppointmentCard: React.FC<Props> = ({
   return (
     <View>
       {variant === 'card' ? (
-        <Card flexibleWidth variant={isStartingSoon ? 'dark' : 'normal'}>
-          <Box bg="primary.100" h="120" padding={space['1']}>
-            <Row space={space['0.5']}>
+        <Card
+          flexibleWidth={isTeaser ? true : false}
+          variant={isStartingSoon ? 'dark' : 'normal'}>
+          <Box h={isTeaser ? '170' : '120'} padding={space['1']}>
+            <Image
+              position="absolute"
+              left={0}
+              right={0}
+              top={0}
+              width="100%"
+              height="100%"
+              source={{
+                uri: image
+              }}
+            />
+            <Row space={space['0.5']} flexWrap="wrap">
               {tags.map((t, i) => (
                 <Tag key={`tag-${i}`} text={t} />
               ))}
@@ -81,17 +109,17 @@ const AppointmentCard: React.FC<Props> = ({
             {isStartingSoon && (
               <Row paddingBottom={space['0.5']}>
                 <Text color={textColor}>Startet in: </Text>
-                <Text bold color={textColor}>
+                <Text bold color="primary.400">
                   {remainingTime}
                 </Text>
               </Row>
             )}
-            <Text color={textColor} bold fontSize={'md'}>
+            <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
               {title}
             </Text>
             {isStartingSoon && (
               <>
-                <Text paddingBottom={space['0.5']} color={textColor}>
+                <Text paddingBottom={space['1']} color={textColor}>
                   {description}
                 </Text>
                 <Button onPress={onPressToCourse}>Zum Kurs</Button>
