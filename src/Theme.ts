@@ -4,6 +4,7 @@ const COLOR_PRIMARY_LIGHT = '#EDF4F3'
 const COLOR_PRIMARY = '#82B1B0'
 const COLOR_PRIMARY_DARK = '#2B4B51'
 const COLOR_YELLOW = '#FEDA50'
+const COLOR_PRIMARY_GREY = '#95A5A8'
 const COLOR_DARKYELLOW = '#d0b345'
 const COLOR_SECONDARY = COLOR_YELLOW
 const COLOR_BLUE = '#405B73'
@@ -17,6 +18,7 @@ const Theme = extendTheme({
     primary: {
       translucent: '#EDF4F316',
       darkTranslucent: 'rgba(31,76, 82, .73)',
+      grey: COLOR_PRIMARY_GREY,
       100: COLOR_PRIMARY_LIGHT,
       200: COLOR_PRIMARY_LIGHT,
       300: COLOR_PRIMARY_LIGHT,
@@ -77,8 +79,8 @@ const Theme = extendTheme({
     xs: 10,
     sm: 12,
     md: 14,
-    lg: 16,
-    xl: 18
+    lg: 17,
+    xl: 19
   },
   components: {
     Text: {
@@ -132,7 +134,7 @@ const Theme = extendTheme({
           }
         }
       }
-    }
+    },
   },
   config: {
     initialColorMode: 'light'

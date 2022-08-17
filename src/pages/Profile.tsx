@@ -1,15 +1,25 @@
 import {
   Button,
   Box,
-  Avatar,
+  Text,
   Heading,
   useTheme,
   VStack,
-  Row
+  Row,
+  ThreeDotsIcon,
+  Link,
+  Column,
+  AddIcon
 } from 'native-base'
 import CTACard from '../widgets/CTACard'
+import IconTagList from '../widgets/IconTagList'
+import ProfilAvatar from '../widgets/ProfilAvatar'
+import ProfileSettingItem from '../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../widgets/ProfileSettingRow'
 import SimpleDataRow from '../widgets/SimpleDataRow'
 import SubjectTag from '../widgets/SubjectTag'
+import UserAchievements from '../widgets/UserAchievements'
+import UserProgress from '../widgets/UserProgress'
 
 type Props = {}
 
@@ -19,48 +29,117 @@ const Profile: React.FC<Props> = () => {
   return (
     <VStack space={space['1']}>
       <Box
-        bg={'primary.100'}
+        bg={'primary.700'}
         alignItems="center"
         paddingY={space['2']}
         borderBottomRadius={16}>
-        <Avatar size="xl" />
-        <Heading color={colors.white}>Tina</Heading>
-      </Box>
-      <VStack paddingX={space['1']} space={space['1']}>
-        <CTACard
-          title="Wir möchten dich kennenlernen"
-          content="Bevor du bei uns anfangen kannst möchten wir dich in einem persönlichen Gespräch kennenlernen. Vereinbare einfach einen Termin mit uns."
-          button={<Button onPress={() => null}>Termin vereinbaren</Button>}
-        />
-        <CTACard
-          variant="outline"
-          closeable={false}
-          title="Führungszeugnis"
-          content="Denke dran, dein Führungszeugnis einzureichen, damit du weiterhin bei uns mitmachen kannst. Hierfür hast du 2 Monate nach Registrierung Zeit."
-          button={
-            <VStack space={space['0.5']}>
-              <Button variant={'outline'} onPress={() => null}>
-                Vordruck herunterladen
-              </Button>
-              <Button onPress={() => null}>Einreichen</Button>
-            </VStack>
-          }
-        />
-        <Button onPress={() => null}>Profil vervollständigen</Button>
-        <VStack space={space['0.5']}>
-          <Heading>Persönliche Daten</Heading>
-          <SimpleDataRow label="Name" value="Rainer Zufall" />
-          <SimpleDataRow label="Schulform" value="Gymnasium, Gesamtschule" />
-          <SimpleDataRow label="Klasse" value="6, 7, 8" />
-          <SimpleDataRow label="Art der Unterstützung" value="1:1 Betreuung" />
-          <SimpleDataRow label="Meine Verfügbarkeit" value="Wochenende" />
-        </VStack>
-        <Heading>Meine Fächer</Heading>
-        <Row space={space['0.5']}>
-          <SubjectTag title="Englisch" />
-          <SubjectTag title="Informatik" />
-          <SubjectTag title="Mathematik" />
+        <Box position="relative">
+          <ProfilAvatar
+            image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            size="xl"
+          />
+          <Box position="absolute" right={-17} bottom={0}>
+            <Link href="#">
+              <ThreeDotsIcon color="white" />
+            </Link>
+          </Box>
+        </Box>
+        <Heading
+          paddingTop={3}
+          paddingBottom={9}
+          color={colors.white}
+          bold
+          fontSize="xl">
+          Tina
+        </Heading>
+        <Row width="80%" justifyContent="space-around">
+          <Column textAlign="center">
+            <UserAchievements
+              points={30}
+              icon={<AddIcon size="3" color="primary.700" />}
+            />
+          </Column>
+          <Column textAlign="center">
+            <UserAchievements
+              points={4}
+              icon={<AddIcon size="3" color="primary.700" />}
+            />
+          </Column>
+          <Column textAlign="center">
+            <UserAchievements
+              points={90}
+              icon={<AddIcon size="3" color="primary.700" />}
+            />
+          </Column>
         </Row>
+      </Box>
+      <VStack paddingX={space['1.5']} space={space['1']}>
+        <ProfileSettingRow
+          title="Profilvollständigkeit"
+          help="Lorem Ipsum dolor sit amet">
+          <UserProgress procent={25} />
+        </ProfileSettingRow>
+      </VStack>
+      <VStack paddingX={space['1.5']} space={space['1']}>
+        <ProfileSettingRow title="Persönliche Daten">
+          <ProfileSettingItem title="Name">
+            <Row>
+              <Column marginRight={2}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={2}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+            </Row>
+          </ProfileSettingItem>
+
+          <ProfileSettingItem title="Fließende Sprache">
+            <Row>
+              <Column marginRight={2}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+            </Row>
+          </ProfileSettingItem>
+
+          <ProfileSettingItem title="Bundesland">
+            <Row>
+              <Column marginRight={2}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={2}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+            </Row>
+          </ProfileSettingItem>
+
+          <ProfileSettingItem title="Schulform">
+            <Row>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+            </Row>
+          </ProfileSettingItem>
+
+          <ProfileSettingItem title="Fächer, in denen ich mir Hilfe wünsche">
+            <Row>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+              <Column marginRight={3}>
+                <IconTagList icon="h" text="text" />
+              </Column>
+            </Row>
+          </ProfileSettingItem>
+        </ProfileSettingRow>
       </VStack>
     </VStack>
   )
