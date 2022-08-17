@@ -43,7 +43,7 @@ const CTACard: React.FC<Props> = ({
     <Wrapper flexibleWidth>
       <Box padding={(variant === 'normal' && space['1']) || 0}>
         <Row justifyContent={closeable ? 'space-between' : ''}>
-          {icon && icon}
+          <Box>{icon}</Box>
           <Container maxWidth="100%">
             <Text
               width="100%"
@@ -52,18 +52,16 @@ const CTACard: React.FC<Props> = ({
               flex="1"
               marginBottom={space['0.5']}
               marginLeft={icon ? space['1'] : ''}
-              display="flex"  
-            >
+              display="flex">
               {title}
 
-              { infotooltip && 
+              {infotooltip && (
                 <Tooltip label={infotooltip}>
                   <Box marginLeft="10px" marginRight="10px">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
-              }
-
+              )}
             </Text>
             <Text marginLeft={icon ? space['1'] : ''}>{content}</Text>
           </Container>

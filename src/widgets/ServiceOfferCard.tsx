@@ -1,4 +1,4 @@
-import { Text, Box, useTheme } from 'native-base'
+import { Text, Box, useTheme, Image } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
 
@@ -6,30 +6,39 @@ type Props = {
   title: string
   content?: string
   icon?: ReactNode | ReactNode[]
+  image?: string
 }
 
-const ServiceOfferCard: React.FC<Props> = ({ title, content, icon }) => {
+const ServiceOfferCard: React.FC<Props> = ({ title, content, icon, image }) => {
   const { space } = useTheme()
   return (
-    <Card flexibleWidth={ icon ? false : true }>
-      <Box h={ icon ? 220 : 120 } padding={space['1']} justifyContent={ icon ? 'center' : 'flex-end' }>
+    <Card flexibleWidth={icon ? false : true}>
+      {image && (
+        <Image
+          position="absolute"
+          w="100%"
+          h="100%"
+          source={{
+            uri: image
+          }}
+        />
+      )}
+      <Box
+        background="primary.darkTranslucent"
+        h={icon ? 220 : 120}
+        padding={space['1']}
+        justifyContent={icon ? 'center' : 'flex-end'}>
+        {icon && <Box mb={3}>{icon}</Box>}
 
-        {icon && (
-          <Box mb={3}>
-            {icon}
-          </Box> 
-        )}
-
-        <Text fontSize="md" bold mb={1}>
+        <Text color="lightText" fontSize="md" bold mb={1}>
           {title}
         </Text>
 
         {content && (
-          <Text fontSize="sm">
+          <Text color="lightText" fontSize="sm">
             {content}
-          </Text> 
+          </Text>
         )}
-
       </Box>
     </Card>
   )

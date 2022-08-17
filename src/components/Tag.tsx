@@ -11,6 +11,7 @@ type Props = {
   variant?: 'normal' | 'outline' | 'rating'
   beforeElement?: ReactNode | ReactNode[]
   afterElement?: ReactNode | ReactNode[]
+  isReview?: boolean
 }
 
 const Tag: React.FC<Props> = ({
@@ -22,7 +23,8 @@ const Tag: React.FC<Props> = ({
   borderColor,
   variant = 'normal',
   beforeElement,
-  afterElement
+  afterElement,
+  isReview
 }) => {
   const { colors, space } = useTheme()
 
@@ -34,9 +36,11 @@ const Tag: React.FC<Props> = ({
   const bg = useMemo(
     () =>
       variant === 'normal'
-        ? 'primary.500'
+        ? 'primary.700'
         : variant === 'outline'
         ? 'transparent'
+        : variant === 'rating'
+        ? 'primary.400'
         : colors.text['50'],
     [colors.text, variant]
   )
@@ -50,13 +54,14 @@ const Tag: React.FC<Props> = ({
     <Box
       paddingX={pad[0]}
       paddingY={pad[1]}
+      marginBottom={space['0.5']}
       bg={bg}
       borderRadius={borderRadius || 4}
       borderWidth={1}
       borderColor={borderColor || 'transparent'}>
       <Row space={space['0.5']}>
         {beforeElement && <View testID="beforeElement">{beforeElement}</View>}
-        <Text fontSize={'xs'} color={color}>
+        <Text fontSize={'xs'} color={color} bold={isReview ? true : false}>
           {text}
         </Text>
         {afterElement && <View testID="afterElement">{afterElement}</View>}
