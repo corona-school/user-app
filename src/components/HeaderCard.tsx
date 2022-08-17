@@ -33,7 +33,7 @@ const HeaderCard: React.FC<Props> = ({
         zIndex="1">
         <Row alignItems="center">
           <Box flex={1}>{leftContent}</Box>
-          <Heading color="lightText" flex="1">
+          <Heading color="lightText" flex="1" textAlign={'center'}>
             {title}
           </Heading>
           <Box flex={1} alignItems="flex-end">

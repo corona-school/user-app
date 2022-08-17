@@ -33,7 +33,7 @@ const Playground: React.FC<Props> = () => {
 
   return (
     <View>
-      <HeaderCard
+      {/* <HeaderCard
         title="Playground"
         leftContent={<HamburgerIcon size="xl" color="lightText" />}
         rightContent={
@@ -58,7 +58,7 @@ const Playground: React.FC<Props> = () => {
           />
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
-      </HeaderCard>
+      </HeaderCard> */}
       <RatingCard
         variant="horizontal"
         name="Hallo"
