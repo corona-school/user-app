@@ -1,3 +1,4 @@
+import { View, VStack } from 'native-base'
 import { ReactNode } from 'react'
 import {
   BrowserRouter,
@@ -6,6 +7,7 @@ import {
   Routes,
   useLocation
 } from 'react-router-dom'
+import BottomNavigationBar from './components/BottomNavigationBar'
 import useApollo from './hooks/useApollo'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
@@ -15,64 +17,67 @@ import Profile from './pages/Profile'
 import Registration from './pages/Registration'
 
 export default function Navigator() {
-  const { token } = useApollo()
-
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public */}
+      <View h="100vh">
+        <View flex="1" overflowY="scroll">
+          <Routes>
+            {/* Public */}
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/registration" element={<Registration />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
 
-        {/* Private */}
+            {/* Private */}
 
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
 
-        <Route
-          path="/profile"
-          element={
-            <RequireAuth>
-              <Profile />
-            </RequireAuth>
-          }
-        />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
 
-        <Route
-          path="/edit-profile"
-          element={
-            <RequireAuth>
-              <EditProfile />
-            </RequireAuth>
-          }
-        />
+            <Route
+              path="/edit-profile"
+              element={
+                <RequireAuth>
+                  <EditProfile />
+                </RequireAuth>
+              }
+            />
 
-        <Route
-          path="/playground"
-          element={
-            <RequireAuth>
-              <Playground />
-            </RequireAuth>
-          }
-        />
+            <Route
+              path="/playground"
+              element={
+                <RequireAuth>
+                  <Playground />
+                </RequireAuth>
+              }
+            />
 
-        {/* Fallback */}
-        <Route
-          path="*"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
-      </Routes>
+            {/* Fallback */}
+            <Route
+              path="*"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </View>
+        <BottomNavigationBar />
+      </View>
     </BrowserRouter>
   )
 }
