@@ -32,7 +32,7 @@ const TeacherCard: React.FC<Props> = ({
       </Text>
       <Row space={space['0.5']}>
         {tags.map(t => (
-          <Tag variant="rating" text={t} />
+          <Tag variant="secondary" text={t} />
         ))}
       </Row>
     </LeftImageCard>

@@ -13,7 +13,7 @@ const RatingTag: React.FC<Props> = ({ rating }) => {
       isReview
       text={rating}
       variant="rating"
-      afterElement={<FavouriteIcon />}
+      afterElement={<FavouriteIcon color="yellow.500" />}
     />
   )
 }

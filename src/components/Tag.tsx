@@ -8,7 +8,7 @@ type Props = {
   paddingX?: number | string
   paddingY?: number | string
   borderColor?: string
-  variant?: 'normal' | 'outline' | 'rating'
+  variant?: 'normal' | 'outline' | 'rating' | 'secondary'
   beforeElement?: ReactNode | ReactNode[]
   afterElement?: ReactNode | ReactNode[]
   isReview?: boolean
@@ -33,17 +33,20 @@ const Tag: React.FC<Props> = ({
     [padding, paddingX, paddingY]
   )
 
-  const bg = useMemo(
-    () =>
-      variant === 'normal'
-        ? 'primary.700'
-        : variant === 'outline'
-        ? 'transparent'
-        : variant === 'rating'
-        ? 'primary.400'
-        : colors.text['50'],
-    [colors.text, variant]
-  )
+  const bg = useMemo(() => {
+    switch (variant) {
+      case 'normal':
+        return 'primary.700'
+      case 'outline':
+        return 'transparent'
+      case 'rating':
+        return colors.text['50']
+      case 'secondary':
+        return 'primary.500'
+      default:
+        return colors.text['50']
+    }
+  }, [colors.text, variant])
 
   const color = useMemo(
     () => (variant === 'normal' ? colors.text['50'] : colors.text['900']),

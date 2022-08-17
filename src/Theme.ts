@@ -1,5 +1,4 @@
-import { extendTheme, theme } from 'native-base'
-import { border } from 'native-base/lib/typescript/theme/styled-system'
+import { extendTheme } from 'native-base'
 
 const COLOR_PRIMARY_LIGHT = '#EDF4F3'
 const COLOR_PRIMARY = '#82B1B0'
@@ -71,7 +70,7 @@ const Theme = extendTheme({
       700: COLOR_DANGER,
       800: COLOR_DANGER,
       900: COLOR_DANGER
-    }, 
+    },
     darkText: COLOR_PRIMARY_DARK
   },
   fontSizes: {
@@ -98,7 +97,7 @@ const Theme = extendTheme({
         _text: {
           fontWeight: 600,
           fontSize: 14
-        },
+        }
       },
       variants: {
         solid: {
@@ -106,15 +105,15 @@ const Theme = extendTheme({
           _text: {
             color: COLOR_PRIMARY_DARK,
             fontSize: 14,
-            padding: "3px 5px"
+            padding: '3px 5px'
           },
           _hover: {
-            backgroundColor: COLOR_DARKYELLOW,
+            backgroundColor: COLOR_DARKYELLOW
           }
         },
         secondary: {
           backgroundColor: COLOR_BLUE
-        }, 
+        },
         outline: {
           _light: {
             borderColor: COLOR_PRIMARY,
@@ -124,8 +123,9 @@ const Theme = extendTheme({
           }
         },
         outlinelight: {
-          borderColor: COLOR_PRIMARY,
           _light: {
+            borderColor: COLOR_PRIMARY,
+            borderWidth: 1,
             _text: {
               color: 'white'
             }
