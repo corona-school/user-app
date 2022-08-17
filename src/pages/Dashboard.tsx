@@ -10,7 +10,11 @@ import {
   HStack,
   useTheme,
   Avatar,
-  VStack
+  VStack,
+  Badge,
+  Box,
+  HamburgerIcon,
+  DeleteIcon
 } from 'native-base'
 import { useMemo } from 'react'
 import AppointmentCard from '../widgets/AppointmentCard'
@@ -37,7 +41,23 @@ const Dashboard: React.FC<Props> = () => {
 
   return (
     <VStack>
-      <HeaderCard>
+      <HeaderCard
+        leftContent={<HamburgerIcon size="xl" color="lightText" />}
+        rightContent={
+          <Box>
+            <Badge
+              bgColor={'danger.500'}
+              rounded="3xl"
+              zIndex={1}
+              variant="solid"
+              alignSelf="flex-end"
+              top="2"
+              right="-5">
+              {' '}
+            </Badge>
+            <DeleteIcon color="lightText" size="xl" />
+          </Box>
+        }>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar
             size="md"
