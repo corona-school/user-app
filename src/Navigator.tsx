@@ -1,4 +1,5 @@
-import { ReactNode } from 'react'
+import { View, Row, useBreakpointValue, HamburgerIcon } from 'native-base'
+
 import {
   BrowserRouter,
   Navigate,
@@ -6,6 +7,9 @@ import {
   Routes,
   useLocation
 } from 'react-router-dom'
+import BottomNavigationBar from './components/BottomNavigationBar'
+import HeaderCard from './components/HeaderCard'
+import SideBarMenu from './components/SideBarMenu'
 import useApollo from './hooks/useApollo'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
@@ -15,8 +19,6 @@ import Profile from './pages/Profile'
 import Registration from './pages/Registration'
 
 export default function Navigator() {
-  const { token } = useApollo()
-
   return (
     <BrowserRouter>
       <Routes>

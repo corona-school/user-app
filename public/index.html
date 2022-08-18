@@ -90,7 +90,21 @@
       font-weight: 900;
     }
 
-    div[role="button"] {transition: all .3s ease} 
+    div[role="button"] {
+      transition: all .3s ease
+    }
+
+    .navigation__item {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .navigation__item__icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   </style>
 </head>
 
