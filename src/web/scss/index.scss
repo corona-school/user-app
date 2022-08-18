@@ -69,3 +69,7 @@ body * {
 div[role="button"] {
   transition: all .3s ease
 }
+
+::placeholder {
+  color: var(--color-primary_dark) !important;
+}
