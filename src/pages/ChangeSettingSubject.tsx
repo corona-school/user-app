@@ -12,8 +12,14 @@ import {
   AddIcon,
   ArrowBackIcon,
   Badge,
-  DeleteIcon
+  DeleteIcon,
+  InputGroup,
+  Input,
+  FormControl,
+  Stack,
+  View
 } from 'native-base'
+import { useState } from 'react'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
@@ -27,7 +33,7 @@ import UserProgress from '../widgets/UserProgress'
 
 type Props = {}
 
-const ChangeSetting: React.FC<Props> = () => {
+const ChangeSettingSubject: React.FC<Props> = () => {
   const { colors, space } = useTheme()
 
   const subjects = [
@@ -54,9 +60,12 @@ const ChangeSetting: React.FC<Props> = () => {
     'Italienisch',
     'Russisch',
     'Niederländisch',
-    'Deutsch als Zweitsprache'
+    'Deutsch als Zweitsprache',
+    'Andere'
   ]
 
+  const [selections, setSelections] = useState<string[]>([])
+  console.log(selections, selections.includes('Andere'))
   return (
     <WithNavigation
       headerTitle="Fächer ändern"
@@ -83,13 +92,21 @@ const ChangeSetting: React.FC<Props> = () => {
         <Heading>Fächer, in denen ich mir Hilfe wünsche</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {Array(2)
-              .fill(0)
-              .map(subject => (
-                <Column marginRight={3} marginBottom={3}>
-                  <IconTagList icon="h" text="Mathe" />
-                </Column>
-              ))}
+            {selections.map((subject, index) => (
+              <Column marginRight={3} marginBottom={3}>
+                <IconTagList
+                  icon="h"
+                  text={subject}
+                  onPress={() =>
+                    setSelections(prev => {
+                      const res = [...prev]
+                      res.splice(index, 1)
+                      return res
+                    })
+                  }
+                />
+              </Column>
+            ))}
           </Row>
         </ProfileSettingItem>
       </VStack>
@@ -99,13 +116,42 @@ const ChangeSetting: React.FC<Props> = () => {
             border={false}
             isIcon={false}
             isHeaderspace={false}>
-            <Row flexWrap="wrap" width="100%">
-              {subjects.map(subject => (
-                <Column marginRight={3} marginBottom={3}>
-                  <IconTagList icon="h" text={subject} />
-                </Column>
-              ))}
-            </Row>
+            <VStack w="100%">
+              <Row flexWrap="wrap" width="100%">
+                {subjects.map(
+                  subject =>
+                    !selections.includes(subject) && (
+                      <Column marginRight={3} marginBottom={3}>
+                        <IconTagList
+                          icon="h"
+                          text={subject}
+                          onPress={() =>
+                            setSelections(prev => [...prev, subject])
+                          }
+                        />
+                      </Column>
+                    )
+                )}
+              </Row>
+              {selections.includes('Andere') && (
+                <Row>
+                  <FormControl>
+                    <Stack>
+                      <FormControl.Label>
+                        <Text bold>Anderes Fach</Text>
+                      </FormControl.Label>
+                      <Input
+                        type="text"
+                        multiline
+                        numberOfLines={3}
+                        h={70}
+                        placeholder="Welche Fächer möchtest du wählen?"
+                      />
+                    </Stack>
+                  </FormControl>
+                </Row>
+              )}
+            </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
@@ -115,4 +161,4 @@ const ChangeSetting: React.FC<Props> = () => {
     </WithNavigation>
   )
 }
-export default ChangeSetting
+export default ChangeSettingSubject
