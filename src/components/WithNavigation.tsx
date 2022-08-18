@@ -34,17 +34,11 @@ const WithNavigation: React.FC<Props> = ({
 
   return (
     <View h="100vh">
-      <HeaderCard
-        leftContent={headerLeft}
-        rightContent={headerRight}
-        title={headerTitle}>
-        {headerContent}
-      </HeaderCard>
       <View
         flex="1"
         overflowY="scroll"
         display="flex"
-        flexDirection={'row'}
+        flexDirection="column"
         flexWrap="nowrap"
         overflow="hidden"
         w="100vw"
@@ -52,7 +46,12 @@ const WithNavigation: React.FC<Props> = ({
         marginTop={'-72px'}
         paddingTop={'72px'}>
         {/* <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} /> */}
-
+        <HeaderCard
+          leftContent={headerLeft}
+          rightContent={headerRight}
+          title={headerTitle}>
+          {headerContent}
+        </HeaderCard>
         <View flex="1">{children}</View>
       </View>
       <BottomNavigationBar show={isMobile} navItems={navItems} />
