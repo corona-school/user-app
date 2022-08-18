@@ -13,6 +13,7 @@ import Login from './pages/Login'
 import Playground from './pages/Playground'
 import Profile from './pages/Profile'
 import Registration from './pages/Registration'
+import ChangeSetting from './pages/ChangeSetting'
 
 export default function Navigator() {
   const { token } = useApollo()
@@ -50,6 +51,15 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <EditProfile />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/change-setting"
+          element={
+            <RequireAuth>
+              <ChangeSetting />
             </RequireAuth>
           }
         />
