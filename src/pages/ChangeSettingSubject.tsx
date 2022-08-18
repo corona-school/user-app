@@ -14,6 +14,7 @@ import {
   Badge,
   DeleteIcon
 } from 'native-base'
+import { useState } from 'react'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
@@ -57,6 +58,8 @@ const ChangeSetting: React.FC<Props> = () => {
     'Deutsch als Zweitsprache'
   ]
 
+  const [selections, setSelections] = useState<string[]>([])
+
   return (
     <WithNavigation
       headerTitle="Fächer ändern"
@@ -83,13 +86,21 @@ const ChangeSetting: React.FC<Props> = () => {
         <Heading>Fächer, in denen ich mir Hilfe wünsche</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {Array(2)
-              .fill(0)
-              .map(subject => (
-                <Column marginRight={3} marginBottom={3}>
-                  <IconTagList icon="h" text="Mathe" />
-                </Column>
-              ))}
+            {selections.map((subject, index) => (
+              <Column marginRight={3} marginBottom={3}>
+                <IconTagList
+                  icon="h"
+                  text={subject}
+                  onPress={() =>
+                    setSelections(prev => {
+                      const res = [...prev]
+                      res.splice(index, 1)
+                      return res
+                    })
+                  }
+                />
+              </Column>
+            ))}
           </Row>
         </ProfileSettingItem>
       </VStack>
@@ -100,11 +111,20 @@ const ChangeSetting: React.FC<Props> = () => {
             isIcon={false}
             isHeaderspace={false}>
             <Row flexWrap="wrap" width="100%">
-              {subjects.map(subject => (
-                <Column marginRight={3} marginBottom={3}>
-                  <IconTagList icon="h" text={subject} />
-                </Column>
-              ))}
+              {subjects.map(
+                subject =>
+                  !selections.includes(subject) && (
+                    <Column marginRight={3} marginBottom={3}>
+                      <IconTagList
+                        icon="h"
+                        text={subject}
+                        onPress={() =>
+                          setSelections(prev => [...prev, subject])
+                        }
+                      />
+                    </Column>
+                  )
+              )}
             </Row>
           </ProfileSettingItem>
         </ProfileSettingRow>
