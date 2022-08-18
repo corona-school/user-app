@@ -134,7 +134,23 @@ const Theme = extendTheme({
           }
         }
       }
-    }
+    },  
+    Input: {
+      defaultProps: { 
+        paddingTop: 4,
+        paddingBottom: 4,
+        color: 'primary.900',
+        backgroundColor: "primary.100",
+        borderColor:"primary.100", 
+        borderRadius: 5, 
+        fontSize: 12, 
+        fontWeight: 500,
+        _hover: {
+          borderColor: "primary.100", 
+          backgroundColor: "primary.100", 
+        }, 
+      },
+    },
   },
   config: {
     initialColorMode: 'light'

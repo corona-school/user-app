@@ -20,6 +20,7 @@ import Registration from './pages/Registration'
 import ChangeSetting from './pages/ChangeSettingSubject'
 import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
+import Welcome from './pages/Welcome'
 
 export default function Navigator() {
   return (
@@ -29,6 +30,8 @@ export default function Navigator() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+
+        <Route path="/welcome" element={<Welcome />} />
 
         {/* Private */}
 
