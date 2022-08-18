@@ -12,7 +12,12 @@ import {
   AddIcon,
   ArrowBackIcon,
   Badge,
-  DeleteIcon
+  DeleteIcon,
+  InputGroup,
+  Input,
+  FormControl,
+  Stack,
+  View
 } from 'native-base'
 import { useState } from 'react'
 import WithNavigation from '../components/WithNavigation'
@@ -55,11 +60,12 @@ const ChangeSetting: React.FC<Props> = () => {
     'Italienisch',
     'Russisch',
     'Niederländisch',
-    'Deutsch als Zweitsprache'
+    'Deutsch als Zweitsprache',
+    'Andere'
   ]
 
   const [selections, setSelections] = useState<string[]>([])
-
+  console.log(selections, selections.includes('Andere'))
   return (
     <WithNavigation
       headerTitle="Fächer ändern"
@@ -110,22 +116,42 @@ const ChangeSetting: React.FC<Props> = () => {
             border={false}
             isIcon={false}
             isHeaderspace={false}>
-            <Row flexWrap="wrap" width="100%">
-              {subjects.map(
-                subject =>
-                  !selections.includes(subject) && (
-                    <Column marginRight={3} marginBottom={3}>
-                      <IconTagList
-                        icon="h"
-                        text={subject}
-                        onPress={() =>
-                          setSelections(prev => [...prev, subject])
-                        }
+            <VStack w="100%">
+              <Row flexWrap="wrap" width="100%">
+                {subjects.map(
+                  subject =>
+                    !selections.includes(subject) && (
+                      <Column marginRight={3} marginBottom={3}>
+                        <IconTagList
+                          icon="h"
+                          text={subject}
+                          onPress={() =>
+                            setSelections(prev => [...prev, subject])
+                          }
+                        />
+                      </Column>
+                    )
+                )}
+              </Row>
+              {selections.includes('Andere') && (
+                <Row>
+                  <FormControl>
+                    <Stack>
+                      <FormControl.Label>
+                        <Text bold>Anderes Fach</Text>
+                      </FormControl.Label>
+                      <Input
+                        type="text"
+                        multiline
+                        numberOfLines={3}
+                        h={70}
+                        placeholder="Welche Fächer möchtest du wählen?"
                       />
-                    </Column>
-                  )
+                    </Stack>
+                  </FormControl>
+                </Row>
               )}
-            </Row>
+            </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
