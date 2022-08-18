@@ -22,7 +22,7 @@ type Props = {
   content: ReactNode | ReactNode[]
   button?: ReactNode
   closeable?: boolean
-  variant?: 'normal' | 'outline'
+  variant?: 'normal' | 'outline' | 'dark'
 }
 
 const CTACard: React.FC<Props> = ({
@@ -41,17 +41,22 @@ const CTACard: React.FC<Props> = ({
 
   return (
     <Wrapper flexibleWidth>
-      <Box padding={(variant === 'normal' && space['1']) || 0}>
+      <Box
+        backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
+        padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}
+        borderRadius={15}>
         <Row justifyContent={closeable ? 'space-between' : ''}>
           <Box>{icon}</Box>
           <Container maxWidth="100%">
             <Text
               width="100%"
+              maxWidth={250}
               bold
               fontSize={'lg'}
               flex="1"
               marginBottom={space['0.5']}
               marginLeft={icon ? space['1'] : ''}
+              color={variant === 'dark' ? 'lightText' : ''}
               display="flex">
               {title}
 
@@ -63,7 +68,12 @@ const CTACard: React.FC<Props> = ({
                 </Tooltip>
               )}
             </Text>
-            <Text marginLeft={icon ? space['1'] : ''}>{content}</Text>
+            <Text
+              color={variant === 'dark' ? 'lightText' : ''}
+              maxWidth={250}
+              marginLeft={icon ? space['1'] : ''}>
+              {content}
+            </Text>
           </Container>
           {closeable && (
             <Pressable onPress={onClose} testID="close">

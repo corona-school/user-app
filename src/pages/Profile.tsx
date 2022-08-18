@@ -33,6 +33,7 @@ const Profile: React.FC<Props> = () => {
 
   return (
     <WithNavigation
+      headerTitle="Mein Profil"
       headerContent={
         <Box
           bg={'primary.700'}
@@ -150,7 +151,9 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Fächer, in denen ich mir Hilfe wünsche">
+            <ProfileSettingItem
+              border={false}
+              title="Fächer, in denen ich mir Hilfe wünsche">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />

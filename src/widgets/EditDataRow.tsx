@@ -13,9 +13,11 @@ const EditDataRow: React.FC<Props> = ({ label, value, onPress }) => {
   return (
     <Pressable onPress={onPress}>
       <DataRow>
-        <Text flex="1">{label}: </Text>
+        <Text flex="1" fontWeight={600}>
+          {label}
+        </Text>
         {value && <Text marginRight={space['0.5']}>{value}</Text>}
-        <ChevronRightIcon />
+        <ChevronRightIcon color="primary.700" />
       </DataRow>
     </Pressable>
   )

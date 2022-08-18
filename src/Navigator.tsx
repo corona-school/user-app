@@ -1,4 +1,4 @@
-import { View, Row, useBreakpointValue, HamburgerIcon } from 'native-base'
+import { View, Row, useBreakpointValue, HamburgerIcon, Text } from 'native-base'
 
 import {
   BrowserRouter,
@@ -17,7 +17,9 @@ import Login from './pages/Login'
 import Playground from './pages/Playground'
 import Profile from './pages/Profile'
 import Registration from './pages/Registration'
-import ChangeSetting from './pages/ChangeSetting'
+import ChangeSetting from './pages/ChangeSettingSubject'
+import Settings from './pages/Settings'
+import OnboardingTourList from './pages/OnboardingTourList'
 
 export default function Navigator() {
   return (
@@ -58,10 +60,28 @@ export default function Navigator() {
         />
 
         <Route
+          path="/settings"
+          element={
+            <RequireAuth>
+              <Settings />
+            </RequireAuth>
+          }
+        />
+
+        <Route
           path="/change-setting"
           element={
             <RequireAuth>
               <ChangeSetting />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/onboarding-list"
+          element={
+            <RequireAuth>
+              <OnboardingTourList />
             </RequireAuth>
           }
         />
