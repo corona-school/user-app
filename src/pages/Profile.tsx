@@ -84,10 +84,10 @@ const Profile: React.FC<Props> = () => {
         <ProfileSettingRow title="Persönliche Daten">
           <ProfileSettingItem title="Name">
             <Row>
-              <Column marginRight={2}>
+              <Column marginRight={3}>
                 <IconTagList icon="h" text="text" />
               </Column>
-              <Column marginRight={2}>
+              <Column marginRight={3}>
                 <IconTagList icon="h" text="text" />
               </Column>
             </Row>
@@ -95,7 +95,7 @@ const Profile: React.FC<Props> = () => {
 
           <ProfileSettingItem title="Fließende Sprache">
             <Row>
-              <Column marginRight={2}>
+              <Column marginRight={3}>
                 <IconTagList icon="h" text="text" />
               </Column>
             </Row>
@@ -103,7 +103,7 @@ const Profile: React.FC<Props> = () => {
 
           <ProfileSettingItem title="Bundesland">
             <Row>
-              <Column marginRight={2}>
+              <Column marginRight={3}>
                 <IconTagList icon="h" text="text" />
               </Column>
               <Column marginRight={2}>
