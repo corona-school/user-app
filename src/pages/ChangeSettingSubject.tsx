@@ -33,7 +33,7 @@ import UserProgress from '../widgets/UserProgress'
 
 type Props = {}
 
-const ChangeSetting: React.FC<Props> = () => {
+const ChangeSettingSubject: React.FC<Props> = () => {
   const { colors, space } = useTheme()
 
   const subjects = [
@@ -161,4 +161,4 @@ const ChangeSetting: React.FC<Props> = () => {
     </WithNavigation>
   )
 }
-export default ChangeSetting
+export default ChangeSettingSubject
