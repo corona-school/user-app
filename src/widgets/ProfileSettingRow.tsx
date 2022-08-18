@@ -5,13 +5,19 @@ type Props = {
   title: string
   children: ReactNode
   help?: string
+  isSpace?: boolean
 }
 
-const ProfileSettingRow: React.FC<Props> = ({ title, children, help }) => {
+const ProfileSettingRow: React.FC<Props> = ({
+  title,
+  children,
+  help,
+  isSpace = true
+}) => {
   return (
-    <View paddingY={3}>
+    <View paddingY={isSpace ? 3 : 0}>
       <Row>
-        <Column>
+        <Column mb={2}>
           <Heading fontSize="lg">{title}</Heading>
         </Column>
         {help && (
