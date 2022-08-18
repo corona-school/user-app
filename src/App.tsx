@@ -5,6 +5,8 @@ import { ApolloProvider } from '@apollo/client'
 import Autoload from './Autoload'
 import useApollo from './hooks/useApollo'
 
+import './web/scss/index.scss'
+
 function App() {
   const { client } = useApollo()
   return (

@@ -12,6 +12,7 @@ import { useMemo } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
+import '../web/scss/components/BottomNavigationBar.scss'
 
 type Props = {
   show?: boolean
