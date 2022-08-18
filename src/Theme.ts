@@ -1,79 +1,79 @@
 import { extendTheme } from 'native-base'
 
-const COLOR_PRIMARY_LIGHT = '#EDF4F3'
-const COLOR_PRIMARY = '#82B1B0'
-const COLOR_PRIMARY_DARK = '#2B4B51'
-const COLOR_YELLOW = '#FEDA50'
-const COLOR_PRIMARY_GREY = '#95A5A8'
-const COLOR_DARKYELLOW = '#d0b345'
-const COLOR_SECONDARY = COLOR_YELLOW
-const COLOR_BLUE = '#405B73'
-const COLOR_TERTIARY = COLOR_BLUE
-const COLOR_RED = '#D45D3A'
-const COLOR_DANGER = COLOR_RED
-const COLOR_WARNING = COLOR_RED
+const VAR_COLOR_PRIMARY_LIGHT = '#EDF4F3'
+const VAR_COLOR_PRIMARY = '#82B1B0'
+const VAR_COLOR_PRIMARY_DARK = '#2B4B51'
+const VAR_COLOR_YELLOW = '#FEDA50'
+const VAR_COLOR_PRIMARY_GREY = '#95A5A8'
+const VAR_COLOR_DARKYELLOW = '#d0b345'
+const VAR_COLOR_SECONDARY = VAR_COLOR_YELLOW
+const VAR_COLOR_BLUE = '#405B73'
+const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE
+const VAR_COLOR_RED = '#D45D3A'
+const VAR_COLOR_DANGER = VAR_COLOR_RED
+const VAR_COLOR_WARNING = VAR_COLOR_RED
 
 const Theme = extendTheme({
   colors: {
     primary: {
       translucent: '#EDF4F316',
       darkTranslucent: 'rgba(31,76, 82, .73)',
-      grey: COLOR_PRIMARY_GREY,
-      100: COLOR_PRIMARY_LIGHT,
-      200: COLOR_PRIMARY_LIGHT,
-      300: COLOR_PRIMARY_LIGHT,
-      400: COLOR_PRIMARY,
-      500: COLOR_PRIMARY,
-      600: COLOR_PRIMARY,
-      700: COLOR_PRIMARY_DARK,
-      800: COLOR_PRIMARY_DARK,
-      900: COLOR_PRIMARY_DARK
+      grey: VAR_COLOR_PRIMARY_GREY,
+      100: VAR_COLOR_PRIMARY_LIGHT,
+      200: VAR_COLOR_PRIMARY_LIGHT,
+      300: VAR_COLOR_PRIMARY_LIGHT,
+      400: VAR_COLOR_PRIMARY,
+      500: VAR_COLOR_PRIMARY,
+      600: VAR_COLOR_PRIMARY,
+      700: VAR_COLOR_PRIMARY_DARK,
+      800: VAR_COLOR_PRIMARY_DARK,
+      900: VAR_COLOR_PRIMARY_DARK
     },
     secondary: {
-      100: COLOR_SECONDARY,
-      200: COLOR_SECONDARY,
-      300: COLOR_SECONDARY,
-      400: COLOR_SECONDARY,
-      500: COLOR_SECONDARY,
-      600: COLOR_SECONDARY,
-      700: COLOR_SECONDARY,
-      800: COLOR_SECONDARY,
-      900: COLOR_SECONDARY
+      100: VAR_COLOR_SECONDARY,
+      200: VAR_COLOR_SECONDARY,
+      300: VAR_COLOR_SECONDARY,
+      400: VAR_COLOR_SECONDARY,
+      500: VAR_COLOR_SECONDARY,
+      600: VAR_COLOR_SECONDARY,
+      700: VAR_COLOR_SECONDARY,
+      800: VAR_COLOR_SECONDARY,
+      900: VAR_COLOR_SECONDARY
     },
     tertiary: {
-      100: COLOR_TERTIARY,
-      200: COLOR_TERTIARY,
-      300: COLOR_TERTIARY,
-      400: COLOR_TERTIARY,
-      500: COLOR_TERTIARY,
-      600: COLOR_TERTIARY,
-      700: COLOR_TERTIARY,
-      800: COLOR_TERTIARY,
-      900: COLOR_TERTIARY
+      100: VAR_COLOR_TERTIARY,
+      200: VAR_COLOR_TERTIARY,
+      300: VAR_COLOR_TERTIARY,
+      400: VAR_COLOR_TERTIARY,
+      500: VAR_COLOR_TERTIARY,
+      600: VAR_COLOR_TERTIARY,
+      700: VAR_COLOR_TERTIARY,
+      800: VAR_COLOR_TERTIARY,
+      900: VAR_COLOR_TERTIARY
     },
     warning: {
-      100: COLOR_WARNING,
-      200: COLOR_WARNING,
-      300: COLOR_WARNING,
-      400: COLOR_WARNING,
-      500: COLOR_WARNING,
-      600: COLOR_WARNING,
-      700: COLOR_WARNING,
-      800: COLOR_WARNING,
-      900: COLOR_WARNING
+      100: VAR_COLOR_WARNING,
+      200: VAR_COLOR_WARNING,
+      300: VAR_COLOR_WARNING,
+      400: VAR_COLOR_WARNING,
+      500: VAR_COLOR_WARNING,
+      600: VAR_COLOR_WARNING,
+      700: VAR_COLOR_WARNING,
+      800: VAR_COLOR_WARNING,
+      900: VAR_COLOR_WARNING
     },
     danger: {
-      100: COLOR_DANGER,
-      200: COLOR_DANGER,
-      300: COLOR_DANGER,
-      400: COLOR_DANGER,
-      500: COLOR_DANGER,
-      600: COLOR_DANGER,
-      700: COLOR_DANGER,
-      800: COLOR_DANGER,
-      900: COLOR_DANGER
+      100: VAR_COLOR_DANGER,
+      200: VAR_COLOR_DANGER,
+      300: VAR_COLOR_DANGER,
+      400: VAR_COLOR_DANGER,
+      500: VAR_COLOR_DANGER,
+      600: VAR_COLOR_DANGER,
+      700: VAR_COLOR_DANGER,
+      800: VAR_COLOR_DANGER,
+      900: VAR_COLOR_DANGER
     },
-    darkText: COLOR_PRIMARY_DARK
+    darkText: VAR_COLOR_PRIMARY_DARK
   },
   fontSizes: {
     xs: 10,
@@ -85,13 +85,13 @@ const Theme = extendTheme({
   components: {
     Text: {
       defaultProps: {
-        color: COLOR_PRIMARY_DARK
+        color: VAR_COLOR_PRIMARY_DARK
       }
     },
     Heading: {
       defaultProps: {
         fontSize: 'xl',
-        color: COLOR_PRIMARY_DARK
+        color: VAR_COLOR_PRIMARY_DARK
       }
     },
     Button: {
@@ -103,30 +103,30 @@ const Theme = extendTheme({
       },
       variants: {
         solid: {
-          backgroundColor: COLOR_YELLOW,
+          backgroundColor: VAR_COLOR_YELLOW,
           _text: {
-            color: COLOR_PRIMARY_DARK,
+            color: VAR_COLOR_PRIMARY_DARK,
             fontSize: 14,
             padding: '3px 5px'
           },
           _hover: {
-            backgroundColor: COLOR_DARKYELLOW
+            backgroundColor: VAR_COLOR_DARKYELLOW
           }
         },
         secondary: {
-          backgroundColor: COLOR_BLUE
+          backgroundColor: VAR_COLOR_BLUE
         },
         outline: {
           _light: {
-            borderColor: COLOR_PRIMARY,
+            borderColor: VAR_COLOR_PRIMARY,
             _text: {
-              color: COLOR_PRIMARY_DARK
+              color: VAR_COLOR_PRIMARY_DARK
             }
           }
         },
         outlinelight: {
           _light: {
-            borderColor: COLOR_PRIMARY,
+            borderColor: VAR_COLOR_PRIMARY,
             borderWidth: 1,
             _text: {
               color: 'white'
@@ -134,7 +134,7 @@ const Theme = extendTheme({
           }
         }
       }
-    },
+    }
   },
   config: {
     initialColorMode: 'light'
