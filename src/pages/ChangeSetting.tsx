@@ -23,7 +23,7 @@ import UserProgress from '../widgets/UserProgress'
 
 type Props = {}
 
-const Profile: React.FC<Props> = () => {
+const ChangeSetting: React.FC<Props> = () => {
   const { colors, space } = useTheme()
 
   return (
@@ -144,4 +144,4 @@ const Profile: React.FC<Props> = () => {
     </VStack>
   )
 }
-export default Profile
+export default ChangeSetting
