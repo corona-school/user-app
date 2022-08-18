@@ -4,6 +4,7 @@ import { gql, useMutation } from '@apollo/client'
 import { Button, Input, Text, useTheme, View, VStack } from 'native-base'
 import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
+import WithNavigation from '../components/WithNavigation'
 
 export default function Login() {
   const { space } = useTheme()
