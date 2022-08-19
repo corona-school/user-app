@@ -99,6 +99,9 @@ const Theme = extendTheme({
         _text: {
           fontWeight: 600,
           fontSize: 14
+        },
+        _disabled: {
+          backgroundColor: 'gray.500'
         }
       },
       variants: {
