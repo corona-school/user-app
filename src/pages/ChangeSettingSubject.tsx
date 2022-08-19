@@ -20,6 +20,7 @@ import {
   View
 } from 'native-base'
 import { useState } from 'react'
+import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
@@ -69,7 +70,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle="Fächer ändern"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
+      headerLeft={<BackButton />}
       headerRight={
         <Box>
           <Badge
