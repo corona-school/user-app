@@ -35,6 +35,7 @@ import TeacherCard from '../widgets/TeacherCard'
 import WithNavigation from '../components/WithNavigation'
 import { TouchableOpacity } from 'react-native'
 import { Navigate, useNavigate } from 'react-router-dom'
+import SettingsButton from '../components/SettingsButton'
 
 type Props = {}
 
@@ -54,11 +55,7 @@ const Dashboard: React.FC<Props> = () => {
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
       }
-      headerLeft={
-        <TouchableOpacity onPress={() => navigate('/settings')}>
-          <HamburgerIcon size="xl" color="lightText" />
-        </TouchableOpacity>
-      }
+      headerLeft={<SettingsButton />}
       headerRight={
         <Box>
           <Badge

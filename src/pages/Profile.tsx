@@ -1,7 +1,5 @@
 import {
-  Button,
   Box,
-  Text,
   Heading,
   useTheme,
   VStack,
@@ -10,19 +8,16 @@ import {
   Link,
   Column,
   AddIcon,
-  HStack,
-  HamburgerIcon,
   Badge,
   DeleteIcon
 } from 'native-base'
+import SettingsButton from '../components/SettingsButton'
 import WithNavigation from '../components/WithNavigation'
-import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingItem from '../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
-import SimpleDataRow from '../widgets/SimpleDataRow'
-import SubjectTag from '../widgets/SubjectTag'
+
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
 
@@ -81,7 +76,7 @@ const Profile: React.FC<Props> = () => {
           </Row>
         </Box>
       }
-      headerLeft={<HamburgerIcon size="xl" color="lightText" />}
+      headerLeft={<SettingsButton />}
       headerRight={
         <Box>
           <Badge
