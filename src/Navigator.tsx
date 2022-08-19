@@ -113,6 +113,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { token } = useApollo()
   const location = useLocation()
 
-  if (!token) return <Navigate to="/login" state={{ from: location }} replace />
+  if (!token)
+    return <Navigate to="/welcome" state={{ from: location }} replace />
   return children
 }

@@ -134,23 +134,26 @@ const Theme = extendTheme({
           }
         }
       }
-    },  
+    },
     Input: {
-      defaultProps: { 
+      defaultProps: {
         paddingTop: 4,
         paddingBottom: 4,
-        color: 'primary.900',
-        backgroundColor: "primary.100",
-        borderColor:"primary.100", 
-        borderRadius: 5, 
-        fontSize: 12, 
+        color: VAR_COLOR_PRIMARY_DARK,
+        backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
+        borderColor: VAR_COLOR_PRIMARY_LIGHT,
+        borderRadius: 5,
+        fontSize: 12,
         fontWeight: 500,
         _hover: {
-          borderColor: "primary.100", 
-          backgroundColor: "primary.100", 
-        }, 
-      },
-    },
+          borderColor: VAR_COLOR_PRIMARY_LIGHT,
+          backgroundColor: VAR_COLOR_PRIMARY_LIGHT
+        },
+        _light: {
+          placeholderTextColor: VAR_COLOR_PRIMARY_DARK
+        }
+      }
+    }
   },
   config: {
     initialColorMode: 'light'
