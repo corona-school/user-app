@@ -15,24 +15,19 @@ const EditDataRow: React.FC<Props> = ({
   isDisabled
 }) => {
   const { space } = useTheme()
-
+  const textColor = isDisabled ? 'gray.300' : 'darkText'
   return (
     <Pressable onPress={onPress} isDisabled={isDisabled}>
       <DataRow>
-        <Text
-          flex="1"
-          fontWeight={600}
-          color={isDisabled ? 'gray.500' : 'darkText'}>
+        <Text flex="1" fontWeight={600} color={textColor}>
           {label}
         </Text>
         {value && (
-          <Text
-            marginRight={space['0.5']}
-            color={isDisabled ? 'gray.500' : 'darkText'}>
+          <Text marginRight={space['0.5']} color={textColor}>
             {value}
           </Text>
         )}
-        <ChevronRightIcon color={isDisabled ? 'gray.500' : 'primary.700'} />
+        <ChevronRightIcon color={textColor} />
       </DataRow>
     </Pressable>
   )
