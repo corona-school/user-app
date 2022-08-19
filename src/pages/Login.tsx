@@ -90,6 +90,7 @@ export default function Login() {
             </Row>
             <Row marginBottom={3} width="100%">
               <Input
+                type="password"
                 width="100%"
                 isRequired={true}
                 placeholder="Passwort"
