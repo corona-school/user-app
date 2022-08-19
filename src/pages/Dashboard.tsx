@@ -33,12 +33,15 @@ import HeaderCard from '../components/HeaderCard'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import TeacherCard from '../widgets/TeacherCard'
 import WithNavigation from '../components/WithNavigation'
+import { TouchableOpacity } from 'react-native'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Dashboard: React.FC<Props> = () => {
   const { space } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  const navigate = useNavigate()
 
   return (
     <WithNavigation
@@ -51,7 +54,11 @@ const Dashboard: React.FC<Props> = () => {
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
       }
-      headerLeft={<HamburgerIcon size="xl" color="lightText" />}
+      headerLeft={
+        <TouchableOpacity onPress={() => navigate('/settings')}>
+          <HamburgerIcon size="xl" color="lightText" />
+        </TouchableOpacity>
+      }
       headerRight={
         <Box>
           <Badge
