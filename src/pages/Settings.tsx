@@ -9,7 +9,10 @@ import {
   DeleteIcon,
   HStack
 } from 'native-base'
+import { useNavigate } from 'react-router-dom'
+import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
+import useApollo from '../hooks/useApollo'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
@@ -18,12 +21,14 @@ type Props = {}
 
 const Settings: React.FC<Props> = () => {
   const { colors, space } = useTheme()
+  const navigate = useNavigate()
+  const { clearToken } = useApollo()
   const tabspace = 3
 
   return (
     <WithNavigation
       headerTitle="Einstellungen"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
+      headerLeft={<BackButton />}
       headerRight={
         <Box>
           <Badge
@@ -51,41 +56,50 @@ const Settings: React.FC<Props> = () => {
       <VStack paddingX={space['1.5']} space={space['1']}>
         <ProfileSettingRow title="Allgemein" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Profil" />
+            <EditDataRow label="Profil" onPress={() => navigate('/profile')} />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Sprachversion" />
+            <EditDataRow label="Sprachversion" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Benachrichtigungen" />
+            <EditDataRow label="Benachrichtigungen" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Onboarding-Tour" />
+            <EditDataRow
+              label="Onboarding-Tour"
+              onPress={() => navigate('/onboarding-list')}
+            />
           </Column>
         </ProfileSettingRow>
         <ProfileSettingRow title="Konto" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="E-Mail ändern" />
+            <EditDataRow label="E-Mail ändern" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Passwort ändern" />
+            <EditDataRow label="Passwort ändern" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Benutzer wechseln" />
+            <EditDataRow label="Benutzer wechseln" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Abmelden" />
+            <EditDataRow
+              label="Abmelden"
+              onPress={() => {
+                clearToken()
+                navigate(0)
+              }}
+            />
           </Column>
         </ProfileSettingRow>
         <ProfileSettingRow title="Rechtliches" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Impressum" />
+            <EditDataRow label="Impressum" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Datenschutz" />
+            <EditDataRow label="Datenschutz" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Nutzungsbedingungen" />
+            <EditDataRow label="Nutzungsbedingungen" isDisabled />
           </Column>
         </ProfileSettingRow>
       </VStack>
