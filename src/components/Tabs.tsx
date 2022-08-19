@@ -30,9 +30,15 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
       }}>
       <Box
         borderBottomWidth={(active && 3) || 1}
+        borderBottomColor={active ? 'primary.400' : 'primary.100'}
         paddingX={space['1']}
         paddingY={space['0.5']}>
-        <Text>{tab.title}</Text>
+        <Text
+          fontSize="md"
+          bold={active ? true : false}
+          color={active ? 'primary.900' : 'primary.grey'}>
+          {tab.title}
+        </Text>
       </Box>
     </Pressable>
   )
@@ -52,7 +58,9 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
           []
         )}
       </Row>
-      <Box>{tabs.map((tab, i) => i === currentIndex && tab.content)}</Box>
+      <Box paddingX={space['1']} paddingY={space['1.5']}>
+        {tabs.map((tab, i) => i === currentIndex && tab.content)}
+      </Box>
     </VStack>
   )
 }
