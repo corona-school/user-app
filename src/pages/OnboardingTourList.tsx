@@ -13,6 +13,7 @@ import {
   CheckCircleIcon,
   Stagger
 } from 'native-base'
+import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 import EditDataRow from '../widgets/EditDataRow'
@@ -50,7 +51,7 @@ const OnboardingTourList: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle="Onboarding-Tour"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
+      headerLeft={<BackButton />}
       headerRight={
         <Box>
           <Badge
