@@ -9,11 +9,12 @@ import {
   Button,
   Box
 } from 'native-base'
+import { useNavigate } from 'react-router-dom'
 type Props = {}
 
 const Welcome: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
-  const tabspace = 3
+  const { space } = useTheme()
+  const navigate = useNavigate()
 
   return (
     <View width="100vw" height="100vh" backgroundColor="primary.900">
@@ -46,12 +47,19 @@ const Welcome: React.FC<Props> = () => {
             dich registrieren?
           </Text>
           <Box marginX="90px" marginBottom={3} display="block" width="80%">
-            <Button variant="outlinelight" width="100%">
+            <Button
+              variant="outlinelight"
+              width="100%"
+              onPress={() => navigate('/login')}>
               Anmelden
             </Button>
           </Box>
           <Box marginX="90px" display="block" width="80%">
-            <Button width="100%">Neu registrieren</Button>
+            <Button
+              width="100%"
+              onPress={() => false && navigate('/registration')}>
+              Neu registrieren
+            </Button>
           </Box>
         </Row>
       </VStack>
