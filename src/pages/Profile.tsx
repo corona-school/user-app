@@ -102,7 +102,7 @@ const Profile: React.FC<Props> = () => {
         </VStack>
         <VStack paddingX={space['1.5']} space={space['1']}>
           <ProfileSettingRow title="Persönliche Daten">
-            <ProfileSettingItem title="Name">
+            <ProfileSettingItem title="Name" href="/change-setting/name">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -113,7 +113,9 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Fließende Sprache">
+            <ProfileSettingItem
+              title="Fließende Sprache"
+              href="/change-setting/language">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -121,7 +123,7 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Bundesland">
+            <ProfileSettingItem title="Bundesland" href="/change-setting/state">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -132,7 +134,9 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Schulform">
+            <ProfileSettingItem
+              title="Schulform"
+              href="/change-setting/schooltype">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -148,7 +152,8 @@ const Profile: React.FC<Props> = () => {
 
             <ProfileSettingItem
               border={false}
-              title="Fächer, in denen ich mir Hilfe wünsche">
+              title="Fächer, in denen ich mir Hilfe wünsche"
+              href="/change-setting/subjects">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
