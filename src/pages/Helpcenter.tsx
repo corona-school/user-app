@@ -65,8 +65,7 @@ const faq = [
 ]
 
 const HelpCenter: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
-  const tabspace = 3
+  const { space } = useTheme()
 
   return (
     <WithNavigation
@@ -162,9 +161,9 @@ const HelpCenter: React.FC<Props> = () => {
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>Deine Nachricht</FormControl.Label>
                       <TextArea
-                        autoCompleteType={true}
                         h={20}
                         placeholder="Deine Nachricht an uns"
+                        autoCompleteType={{}}
                       />
                     </Row>
                     <Row flexDirection="column" paddingY={space['1.5']}>
