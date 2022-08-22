@@ -12,11 +12,16 @@ import {
   TextArea,
   Checkbox,
   Link,
-  Button
+  Button,
+  Flex,
+  CheckCircleIcon,
+  VStack,
+  Stagger
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
+import CTACard from '../widgets/CTACard'
 
 type Props = {}
 
@@ -61,6 +66,46 @@ const faq = [
     title:
       'Nach welchen Kriterien werden Schüler:innen und Helfer:innen verbunden?',
     text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  }
+]
+
+const cards = [
+  {
+    title: 'Quickstart',
+    text: 'Alles, was du für den Anfang brauchst.',
+    subjects: 'Kennenlerngespräch • Ethik • Lehrpläne • PDF',
+    url: '/quick-start'
+  },
+  {
+    title: 'Pädagogik',
+    text: 'Wissen, wie du unterrichtest.',
+    subjects: 'Motivation • Lernatmosphäre • Feedback  • PDF',
+    url: '/quick-start'
+  },
+  {
+    title: 'Digitale Tools',
+    text: 'Lass dich von den kostenlosen digitalen Tools inspirieren.',
+    subjects: 'Lernspiele • Umfragen • Quiz • Digitale Tafel • und vieles mehr',
+    url: '/quick-start'
+  },
+  {
+    title: 'Kostenlose Lehrmaterialien',
+    text: 'Nutze vorbereitete Übungsblätter und kostenlose Lizenzen für Plattformen',
+    subjects:
+      'Sodatutor • Austauschbörse • Stdyflix • Lernwolf • und vieles mehr',
+    url: '/quick-start'
+  },
+  {
+    title: 'DaZ/DaF',
+    text: 'Für den Umgang mit Nicht-Muttersprachlern.',
+    subjects: 'Kommunikationstipps • Lernmaterialien • Niveaustufen (A0-B2)',
+    url: '/quick-start'
+  },
+  {
+    title: 'Zusätzliche Unterstützung',
+    text: 'Sonstige Hilfe für dich oder deine:n Schüler:in.',
+    subjects: 'Beratungsstelle • Angebotserweiterung • Sonstiges',
+    url: '/quick-start'
   }
 ]
 
@@ -125,10 +170,43 @@ const HelpCenter: React.FC<Props> = () => {
               content: (
                 <>
                   <Heading paddingBottom={1.5}>Hilfestellung</Heading>
-                  <Text>
+                  <Text paddingBottom={space['1']}>
                     Hier findest du die wichtigsten Informationen und
                     Hilfestellungen für dich als Helfer:in.
                   </Text>
+                  <VStack paddingX={0} paddingBottom={space['2']}>
+                    <Stagger
+                      initial={{ opacity: 0, translateY: 20 }}
+                      animate={{
+                        opacity: 1,
+                        translateY: 0,
+                        transition: { stagger: { offset: 60 }, duration: 500 }
+                      }}
+                      visible>
+                      {cards.map(({ title, text, subjects, url }, index) => (
+                        <Box
+                          key={'helpcard-' + index}
+                          marginBottom={space['1.5']}>
+                          <Link display="block" href={url}>
+                            <CTACard
+                              title={title}
+                              closeable={false}
+                              content={<Text>{text}</Text>}
+                              button={
+                                <Box flexDirection="row">
+                                  <Text bold marginRight={space['0.5']}>
+                                    Inhalte:
+                                  </Text>
+                                  <Text>{subjects}</Text>
+                                </Box>
+                              }
+                              icon={<CheckCircleIcon size="10" />}
+                            />
+                          </Link>
+                        </Box>
+                      ))}
+                    </Stagger>
+                  </VStack>
                 </>
               )
             },

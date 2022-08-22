@@ -58,7 +58,7 @@ const CTACard: React.FC<Props> = ({
               flex="1"
               marginBottom={space['0.5']}
               marginLeft={icon ? space['1'] : ''}
-              color={variant === 'dark' ? 'lightText' : ''}
+              color={variant === 'dark' ? 'lightText' : 'primary.800'}
               display="flex">
               {title}
 
@@ -71,7 +71,7 @@ const CTACard: React.FC<Props> = ({
               )}
             </Text>
             <Text
-              color={variant === 'dark' ? 'lightText' : ''}
+              color={variant === 'dark' ? 'lightText' : 'primary.800'}
               maxWidth={250}
               marginLeft={icon ? space['1'] : ''}>
               {content}
