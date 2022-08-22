@@ -1,16 +1,7 @@
-import {
-  Box,
-  Heading,
-  useTheme,
-  VStack,
-  Column,
-  ArrowBackIcon,
-  Badge,
-  DeleteIcon,
-  HStack
-} from 'native-base'
+import { Heading, useTheme, VStack, Column, HStack } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import useApollo from '../hooks/useApollo'
 import EditDataRow from '../widgets/EditDataRow'
@@ -20,7 +11,7 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 type Props = {}
 
 const Settings: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
+  const { space } = useTheme()
   const navigate = useNavigate()
   const { clearToken } = useApollo()
   const tabspace = 3
@@ -29,21 +20,7 @@ const Settings: React.FC<Props> = () => {
     <WithNavigation
       headerTitle="Einstellungen"
       headerLeft={<BackButton />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerRight={<NotificationAlert />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar
