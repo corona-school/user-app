@@ -1,4 +1,4 @@
-import { View, CheckCircleIcon, Text, Button, useTheme } from 'native-base'
+import { View, CheckCircleIcon, Text, Button } from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'

@@ -1,4 +1,4 @@
-import { NativeBaseProvider, View } from 'native-base'
+import { NativeBaseProvider } from 'native-base'
 import Theme from './Theme'
 import Navigator from './Navigator'
 import { ApolloProvider } from '@apollo/client'

@@ -14,6 +14,7 @@ import ToggleButton from '../components/ToggleButton'
 type Props = {}
 
 const Registration: React.FC<Props> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [legalChecked, setLegalChecked] = useState<boolean>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const { space } = useTheme()

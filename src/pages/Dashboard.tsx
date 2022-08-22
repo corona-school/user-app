@@ -26,6 +26,7 @@ type Props = {}
 const Dashboard: React.FC<Props> = () => {
   const { space } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
 
   return (
