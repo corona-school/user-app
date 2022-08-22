@@ -1,4 +1,4 @@
-import { View, Text, useTheme } from 'native-base'
+import { useTheme } from 'native-base'
 import Tag from '../components/Tag'
 
 type Props = {

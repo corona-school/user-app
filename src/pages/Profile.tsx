@@ -7,9 +7,7 @@ import {
   ThreeDotsIcon,
   Link,
   Column,
-  AddIcon,
-  Badge,
-  DeleteIcon
+  AddIcon
 } from 'native-base'
 import NotificationAlert from '../components/NotificationAlert'
 import SettingsButton from '../components/SettingsButton'

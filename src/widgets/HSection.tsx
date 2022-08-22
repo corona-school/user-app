@@ -1,6 +1,5 @@
 import { Box, Heading, Link, Row, useTheme } from 'native-base'
 import { ReactNode } from 'react'
-import AppointmentCard from '../widgets/AppointmentCard'
 
 type Props = {
   title?: string

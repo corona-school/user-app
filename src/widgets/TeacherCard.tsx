@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 import { Box, Row, Text, useTheme } from 'native-base'
 import Tag from '../components/Tag'
 import LeftImageCard from './LeftImageCard'
-import ProfilAvatar from './ProfilAvatar'
 import RatingTag from './RatingTag'
 
 type Props = {
@@ -31,8 +30,8 @@ const TeacherCard: React.FC<Props> = ({
         {name}
       </Text>
       <Row space={space['0.5']}>
-        {tags.map(t => (
-          <Tag variant="secondary" text={t} />
+        {tags.map((t, index) => (
+          <Tag variant="secondary" text={t} key={`tag-${index}`} />
         ))}
       </Row>
     </LeftImageCard>

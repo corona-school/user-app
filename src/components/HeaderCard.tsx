@@ -1,4 +1,4 @@
-import { View, Text, Box, useTheme, Heading, Row } from 'native-base'
+import { Box, useTheme, Heading, Row } from 'native-base'
 import { ReactNode } from 'react'
 
 type Props = {

@@ -1,21 +1,11 @@
 import {
-  View,
   CheckCircleIcon,
-  InfoIcon,
-  Row,
-  Container,
   Text,
   Button,
   Heading,
   HStack,
   useTheme,
-  Avatar,
-  VStack,
-  Badge,
-  Box,
-  HamburgerIcon,
-  DeleteIcon,
-  CircleIcon
+  VStack
 } from 'native-base'
 import { useMemo } from 'react'
 import AppointmentCard from '../widgets/AppointmentCard'
@@ -23,19 +13,11 @@ import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
 import SignInCard from '../widgets/SignInCard'
 import TwoColGrid from '../widgets/TwoColGrid'
-import PersonListing from '../widgets/PersonListing'
-import PostCards from '../widgets/PostCards'
 import CTACard from '../widgets/CTACard'
-import LearningPartner from '../widgets/LearningPartner'
-import RatingCard from '../widgets/RatingCard'
-import InstructionProgress from '../widgets/InstructionProgress'
-import Downloads from '../components/Downloads'
-import HeaderCard from '../components/HeaderCard'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import TeacherCard from '../widgets/TeacherCard'
 import WithNavigation from '../components/WithNavigation'
-import { TouchableOpacity } from 'react-native'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import SettingsButton from '../components/SettingsButton'
 import NotificationAlert from '../components/NotificationAlert'
 
@@ -44,6 +26,7 @@ type Props = {}
 const Dashboard: React.FC<Props> = () => {
   const { space } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
 
   return (
@@ -77,6 +60,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <AppointmentCard
+                  key={`appointment-${i}`}
                   description="Lorem Ipsum"
                   tags={['Mathematik', 'Gruppenkurs']}
                   date={futureDate}
@@ -112,6 +96,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <SignInCard
+                  key={`signincard-${i}`}
                   image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                   tags={[
                     'Mathematik',
@@ -131,6 +116,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <ServiceOfferCard
+                  key={`service-offer-${i}`}
                   title="Gruppen-Lernunterstützung"
                   image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 />

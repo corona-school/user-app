@@ -1,4 +1,4 @@
-import { View, Row, Column, Heading, AddIcon, Link } from 'native-base'
+import { View, Row, Heading, AddIcon, Link } from 'native-base'
 import { ReactNode } from 'react'
 
 type Props = {

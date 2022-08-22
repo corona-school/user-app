@@ -1,16 +1,4 @@
-import {
-  View,
-  CheckCircleIcon,
-  Text,
-  Button,
-  HamburgerIcon,
-  Box,
-  Badge,
-  DeleteIcon,
-  useTheme,
-  HStack,
-  Heading
-} from 'native-base'
+import { View, CheckCircleIcon, Text, Button } from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
@@ -23,14 +11,10 @@ import LearningPartner from '../widgets/LearningPartner'
 import RatingCard from '../widgets/RatingCard'
 import InstructionProgress from '../widgets/InstructionProgress'
 import Downloads from '../components/Downloads'
-import HeaderCard from '../components/HeaderCard'
-import ProfilAvatar from '../widgets/ProfilAvatar'
 
 type Props = {}
 
 const Playground: React.FC<Props> = () => {
-  const { space } = useTheme()
-
   return (
     <View>
       {/* <HeaderCard

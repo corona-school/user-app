@@ -1,4 +1,4 @@
-import { View, Text, Avatar } from 'native-base'
+import { View, Avatar } from 'native-base'
 
 type Props = {
   image: string

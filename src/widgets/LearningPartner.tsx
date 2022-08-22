@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import { View, Text, Row, Box, Avatar, useTheme } from 'native-base'
 import Card from '../components/Card'
 

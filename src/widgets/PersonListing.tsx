@@ -1,14 +1,4 @@
-import {
-  View,
-  Text,
-  Flex,
-  Link,
-  Avatar,
-  Heading,
-  useTheme,
-  Row
-} from 'native-base'
-import { ReactNode } from 'react'
+import { View, Flex, Link, useTheme } from 'native-base'
 
 import CommunityUser from '../widgets/CommunityUser'
 import Card from '../components/Card'

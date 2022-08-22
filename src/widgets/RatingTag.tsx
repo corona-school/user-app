@@ -1,4 +1,4 @@
-import { View, Text, FavouriteIcon } from 'native-base'
+import { FavouriteIcon } from 'native-base'
 import Tag from '../components/Tag'
 
 type Props = {

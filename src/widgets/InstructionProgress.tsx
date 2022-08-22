@@ -1,4 +1,4 @@
-import { View, Text, Row, Box, Circle, Divider, useTheme } from 'native-base'
+import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
 import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
