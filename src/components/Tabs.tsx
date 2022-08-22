@@ -1,5 +1,5 @@
-import { View, Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
-import { ReactNode, useState } from 'react'
+import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
+import { Fragment, ReactNode, useState } from 'react'
 
 type Tab = {
   title: string
@@ -59,7 +59,12 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
         )}
       </Row>
       <Box paddingX={space['1']} paddingY={space['1.5']}>
-        {tabs.map((tab, i) => i === currentIndex && tab.content)}
+        {tabs.map(
+          (tab, i) =>
+            i === currentIndex && (
+              <Fragment key={`tabcontent-${i}`}>{tab.content}</Fragment>
+            )
+        )}
       </Box>
     </VStack>
   )

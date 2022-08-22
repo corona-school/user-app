@@ -5,20 +5,14 @@ import {
   Heading,
   useTheme,
   VStack,
-  Column,
-  ArrowBackIcon,
   Badge,
   DeleteIcon,
-  HStack,
   CheckCircleIcon,
   Stagger
 } from 'native-base'
 import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
-import EditDataRow from '../widgets/EditDataRow'
-import ProfilAvatar from '../widgets/ProfilAvatar'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
 
 type Props = {}
 
@@ -83,8 +77,9 @@ const OnboardingTourList: React.FC<Props> = () => {
             transition: { stagger: { offset: 60 }, duration: 500 }
           }}
           visible>
-          {cards.map(({ title, text }) => (
+          {cards.map(({ title, text }, index) => (
             <CTACard
+              key={`ctacards-${index}`}
               marginBottom={space['1']}
               variant="dark"
               title={title}

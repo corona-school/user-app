@@ -66,7 +66,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
-              <Column marginRight={3} marginBottom={3}>
+              <Column
+                marginRight={3}
+                marginBottom={3}
+                key={`selection-${index}`}>
                 <IconTagList
                   icon="h"
                   text={subject}
@@ -92,9 +95,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
                 {subjects.map(
-                  subject =>
+                  (subject, index) =>
                     !selections.includes(subject) && (
-                      <Column marginRight={3} marginBottom={3}>
+                      <Column
+                        marginRight={3}
+                        marginBottom={3}
+                        key={`offers-${index}`}>
                         <IconTagList
                           icon="h"
                           text={subject}

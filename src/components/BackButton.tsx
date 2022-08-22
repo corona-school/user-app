@@ -1,4 +1,4 @@
-import { View, Text, ArrowBackIcon } from 'native-base'
+import { ArrowBackIcon } from 'native-base'
 import { TouchableOpacity } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 

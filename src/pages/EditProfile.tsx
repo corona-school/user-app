@@ -1,4 +1,4 @@
-import { View, Text, VStack, Heading, Avatar, useTheme, Box } from 'native-base'
+import { Text, VStack, Avatar, useTheme } from 'native-base'
 import EditDataRow from '../widgets/EditDataRow'
 
 type Props = {}

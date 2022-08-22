@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  useBreakpointValue,
   VStack,
   Link,
   Center,
@@ -43,7 +42,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
           left="0"
           bottom="0">
           {Object.entries(navItems).map(([key, item]) => (
-            <Link href={key}>
+            <Link href={key} key={key}>
               <Row alignItems={'center'} paddingX={space['0.5']}>
                 <Center>
                   <CSSWrapper className="navigation__item">

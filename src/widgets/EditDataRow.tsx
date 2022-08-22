@@ -1,4 +1,4 @@
-import { View, Text, ChevronRightIcon, useTheme, Pressable } from 'native-base'
+import { Text, ChevronRightIcon, useTheme, Pressable } from 'native-base'
 import DataRow from '../components/DataRow'
 
 type Props = {

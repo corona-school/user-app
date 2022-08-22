@@ -1,7 +1,6 @@
-import { View, Text, Row, Box, VStack, useTheme, Button } from 'native-base'
+import { Row, Box, VStack, useTheme } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
-import Tag from '../components/Tag'
 import ProfilAvatar from './ProfilAvatar'
 
 type Props = {
