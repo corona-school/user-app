@@ -23,6 +23,7 @@ type Props = {
   button?: ReactNode
   closeable?: boolean
   variant?: 'normal' | 'outline' | 'dark'
+  marginBottom?: number
 }
 
 const CTACard: React.FC<Props> = ({
@@ -33,7 +34,8 @@ const CTACard: React.FC<Props> = ({
   icon,
   closeable = false,
   variant = 'normal',
-  onClose
+  onClose,
+  marginBottom = 0
 }) => {
   const { space } = useTheme()
 
@@ -42,6 +44,7 @@ const CTACard: React.FC<Props> = ({
   return (
     <Wrapper flexibleWidth>
       <Box
+        mb={marginBottom}
         backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
         padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}
         borderRadius={15}>

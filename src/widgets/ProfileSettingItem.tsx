@@ -7,6 +7,7 @@ type Props = {
   border?: boolean
   isIcon?: boolean
   isHeaderspace?: boolean
+  href?: string
 }
 
 const ProfileSettingItem: React.FC<Props> = ({
@@ -14,7 +15,8 @@ const ProfileSettingItem: React.FC<Props> = ({
   children,
   border = true,
   isIcon = true,
-  isHeaderspace = true
+  isHeaderspace = true,
+  href
 }) => {
   return (
     <View
@@ -24,7 +26,7 @@ const ProfileSettingItem: React.FC<Props> = ({
       <Heading fontSize="md">
         {title}
         {isIcon && (
-          <Link marginLeft="1" marginTop="-1" href="">
+          <Link marginLeft="1" marginTop="-1" href={href}>
             <AddIcon size="3" color="primary.700" />
           </Link>
         )}

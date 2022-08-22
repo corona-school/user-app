@@ -10,8 +10,10 @@ import {
   Badge,
   DeleteIcon,
   HStack,
-  CheckCircleIcon
+  CheckCircleIcon,
+  Stagger
 } from 'native-base'
+import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 import EditDataRow from '../widgets/EditDataRow'
@@ -20,14 +22,36 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 
 type Props = {}
 
+const cards = [
+  {
+    title: 'Du brauchst Hife bei deinen Hausaufgaben?',
+    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  },
+  {
+    title: 'Onboarding-Tour 1:1 Matching',
+    text: ' Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  },
+  {
+    title: 'Onboarding-Tour Gruppenkurs',
+    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  },
+  {
+    title: 'Onboarding-Tour Hilfebereich',
+    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  },
+  {
+    title: 'Onboarding-Tour Termine',
+    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
+  }
+]
+
 const OnboardingTourList: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
-  const tabspace = 3
+  const { space } = useTheme()
 
   return (
     <WithNavigation
       headerTitle="Onboarding-Tour"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
+      headerLeft={<BackButton />}
       headerRight={
         <Box>
           <Badge
@@ -50,75 +74,27 @@ const OnboardingTourList: React.FC<Props> = () => {
           nonumy eirmod.
         </Text>
       </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        paddingBottom={space['2']}>
-        <CTACard
-          variant="dark"
-          title="Du brauchst Hife bei deinen Hausaufgaben?"
-          closeable={false}
-          content={
-            <Text>
-              Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir
-              zeigen dir die wichtigsten Funktionen.
-            </Text>
-          }
-          button={<Button>Tour starten</Button>}
-          icon={<CheckCircleIcon size="10" />}
-        />
-        <CTACard
-          variant="dark"
-          title="Onboarding-Tour 1:1 Matching"
-          closeable={false}
-          content={
-            <Text>
-              Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir
-              zeigen dir die wichtigsten Funktionen.
-            </Text>
-          }
-          button={<Button>Tour starten</Button>}
-          icon={<CheckCircleIcon size="10" />}
-        />
-        <CTACard
-          variant="dark"
-          title="Onboarding-Tour Gruppenkurs"
-          closeable={false}
-          content={
-            <Text>
-              Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir
-              zeigen dir die wichtigsten Funktionen.
-            </Text>
-          }
-          button={<Button>Tour starten</Button>}
-          icon={<CheckCircleIcon size="10" />}
-        />
-        <CTACard
-          variant="dark"
-          title="Onboarding-Tour Hilfebereich"
-          closeable={false}
-          content={
-            <Text>
-              Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir
-              zeigen dir die wichtigsten Funktionen.
-            </Text>
-          }
-          button={<Button>Tour starten</Button>}
-          icon={<CheckCircleIcon size="10" />}
-        />
-        <CTACard
-          variant="dark"
-          title="Onboarding-Tour Termine"
-          closeable={false}
-          content={
-            <Text>
-              Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir
-              zeigen dir die wichtigsten Funktionen.
-            </Text>
-          }
-          button={<Button>Tour starten</Button>}
-          icon={<CheckCircleIcon size="10" />}
-        />
+      <VStack paddingX={space['1.5']} paddingBottom={space['2']}>
+        <Stagger
+          initial={{ opacity: 0, translateY: 20 }}
+          animate={{
+            opacity: 1,
+            translateY: 0,
+            transition: { stagger: { offset: 60 }, duration: 500 }
+          }}
+          visible>
+          {cards.map(({ title, text }) => (
+            <CTACard
+              marginBottom={space['1']}
+              variant="dark"
+              title={title}
+              closeable={false}
+              content={<Text>{text}</Text>}
+              button={<Button>Tour starten</Button>}
+              icon={<CheckCircleIcon size="10" />}
+            />
+          ))}
+        </Stagger>
       </VStack>
     </WithNavigation>
   )

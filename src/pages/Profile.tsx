@@ -1,7 +1,5 @@
 import {
-  Button,
   Box,
-  Text,
   Heading,
   useTheme,
   VStack,
@@ -10,19 +8,17 @@ import {
   Link,
   Column,
   AddIcon,
-  HStack,
-  HamburgerIcon,
   Badge,
   DeleteIcon
 } from 'native-base'
+import NotificationAlert from '../components/NotificationAlert'
+import SettingsButton from '../components/SettingsButton'
 import WithNavigation from '../components/WithNavigation'
-import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingItem from '../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
-import SimpleDataRow from '../widgets/SimpleDataRow'
-import SubjectTag from '../widgets/SubjectTag'
+
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
 
@@ -81,22 +77,8 @@ const Profile: React.FC<Props> = () => {
           </Row>
         </Box>
       }
-      headerLeft={<HamburgerIcon size="xl" color="lightText" />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerLeft={<SettingsButton />}
+      headerRight={<NotificationAlert />}>
       <VStack space={space['1']}>
         <VStack paddingX={space['1.5']} space={space['1']}>
           <ProfileSettingRow
@@ -107,7 +89,7 @@ const Profile: React.FC<Props> = () => {
         </VStack>
         <VStack paddingX={space['1.5']} space={space['1']}>
           <ProfileSettingRow title="Persönliche Daten">
-            <ProfileSettingItem title="Name">
+            <ProfileSettingItem title="Name" href="/change-setting/name">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -118,7 +100,9 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Fließende Sprache">
+            <ProfileSettingItem
+              title="Fließende Sprache"
+              href="/change-setting/language">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -126,7 +110,7 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Bundesland">
+            <ProfileSettingItem title="Bundesland" href="/change-setting/state">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -137,7 +121,9 @@ const Profile: React.FC<Props> = () => {
               </Row>
             </ProfileSettingItem>
 
-            <ProfileSettingItem title="Schulform">
+            <ProfileSettingItem
+              title="Schulform"
+              href="/change-setting/schooltype">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />
@@ -153,7 +139,8 @@ const Profile: React.FC<Props> = () => {
 
             <ProfileSettingItem
               border={false}
-              title="Fächer, in denen ich mir Hilfe wünsche">
+              title="Fächer, in denen ich mir Hilfe wünsche"
+              href="/change-setting/subjects">
               <Row>
                 <Column marginRight={3}>
                   <IconTagList icon="h" text="text" />

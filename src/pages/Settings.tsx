@@ -1,15 +1,9 @@
-import {
-  Box,
-  Heading,
-  useTheme,
-  VStack,
-  Column,
-  ArrowBackIcon,
-  Badge,
-  DeleteIcon,
-  HStack
-} from 'native-base'
+import { Heading, useTheme, VStack, Column, HStack } from 'native-base'
+import { useNavigate } from 'react-router-dom'
+import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
+import useApollo from '../hooks/useApollo'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
@@ -17,28 +11,16 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 type Props = {}
 
 const Settings: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
+  const { space } = useTheme()
+  const navigate = useNavigate()
+  const { clearToken } = useApollo()
   const tabspace = 3
 
   return (
     <WithNavigation
       headerTitle="Einstellungen"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerLeft={<BackButton />}
+      headerRight={<NotificationAlert />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar
@@ -51,41 +33,50 @@ const Settings: React.FC<Props> = () => {
       <VStack paddingX={space['1.5']} space={space['1']}>
         <ProfileSettingRow title="Allgemein" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Profil" />
+            <EditDataRow label="Profil" onPress={() => navigate('/profile')} />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Sprachversion" />
+            <EditDataRow label="Sprachversion" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Benachrichtigungen" />
+            <EditDataRow label="Benachrichtigungen" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Onboarding-Tour" />
+            <EditDataRow
+              label="Onboarding-Tour"
+              onPress={() => navigate('/onboarding-list')}
+            />
           </Column>
         </ProfileSettingRow>
         <ProfileSettingRow title="Konto" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="E-Mail ändern" />
+            <EditDataRow label="E-Mail ändern" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Passwort ändern" />
+            <EditDataRow label="Passwort ändern" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Benutzer wechseln" />
+            <EditDataRow label="Benutzer wechseln" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Abmelden" />
+            <EditDataRow
+              label="Abmelden"
+              onPress={() => {
+                clearToken()
+                navigate(0)
+              }}
+            />
           </Column>
         </ProfileSettingRow>
         <ProfileSettingRow title="Rechtliches" isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Impressum" />
+            <EditDataRow label="Impressum" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Datenschutz" />
+            <EditDataRow label="Datenschutz" isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Nutzungsbedingungen" />
+            <EditDataRow label="Nutzungsbedingungen" isDisabled />
           </Column>
         </ProfileSettingRow>
       </VStack>

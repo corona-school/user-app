@@ -14,7 +14,8 @@ import {
   Badge,
   Box,
   HamburgerIcon,
-  DeleteIcon
+  DeleteIcon,
+  CircleIcon
 } from 'native-base'
 import { useMemo } from 'react'
 import AppointmentCard from '../widgets/AppointmentCard'
@@ -33,12 +34,17 @@ import HeaderCard from '../components/HeaderCard'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import TeacherCard from '../widgets/TeacherCard'
 import WithNavigation from '../components/WithNavigation'
+import { TouchableOpacity } from 'react-native'
+import { Navigate, useNavigate } from 'react-router-dom'
+import SettingsButton from '../components/SettingsButton'
+import NotificationAlert from '../components/NotificationAlert'
 
 type Props = {}
 
 const Dashboard: React.FC<Props> = () => {
   const { space } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  const navigate = useNavigate()
 
   return (
     <WithNavigation
@@ -51,22 +57,8 @@ const Dashboard: React.FC<Props> = () => {
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
       }
-      headerLeft={<HamburgerIcon size="xl" color="lightText" />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerRight={<SettingsButton />}
+      headerLeft={<NotificationAlert />}>
       <VStack>
         <VStack space={space['1']} marginTop={space['1']}>
           <VStack space={space['0.5']} paddingX={space['1']}>
