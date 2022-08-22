@@ -17,6 +17,7 @@ import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
 import ChangeSettingSubject from './pages/ChangeSettingSubject'
+import HelpCenter from './pages/Helpcenter'
 
 export default function Navigator() {
   return (
@@ -75,6 +76,16 @@ export default function Navigator() {
             </RequireAuth>
           }>
           <Route path="subjects" element={<ChangeSettingSubject />} />
+        </Route>
+
+        <Route
+          path="/hilfebereich"
+          element={
+            <RequireAuth>
+              <HelpCenter />
+            </RequireAuth>
+          }>
+          {/* <Route path="subject" element={<ChangeSettingSubject />} /> */}
         </Route>
 
         <Route

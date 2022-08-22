@@ -12,6 +12,7 @@ const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE
 const VAR_COLOR_RED = '#D45D3A'
 const VAR_COLOR_DANGER = VAR_COLOR_RED
 const VAR_COLOR_WARNING = VAR_COLOR_RED
+const VAR_COLOR_TEXT_LIGHT = '#ffffff'
 
 const Theme = extendTheme({
   colors: {
@@ -156,7 +157,26 @@ const Theme = extendTheme({
           placeholderTextColor: VAR_COLOR_PRIMARY_DARK
         }
       }
-    }
+    },
+    TextArea: {
+      defaultProps: {
+        paddingTop: 4,
+        paddingBottom: 4,
+        color: VAR_COLOR_PRIMARY_DARK,
+        backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
+        borderColor: VAR_COLOR_PRIMARY_LIGHT,
+        borderRadius: 5,
+        fontSize: 12,
+        fontWeight: 500,
+        _hover: {
+          borderColor: VAR_COLOR_PRIMARY_LIGHT,
+          backgroundColor: VAR_COLOR_PRIMARY_LIGHT
+        },
+        _light: {
+          placeholderTextColor: VAR_COLOR_PRIMARY_DARK
+        }
+      }
+    },
   },
   config: {
     initialColorMode: 'light'
