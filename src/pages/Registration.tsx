@@ -1,5 +1,4 @@
 import {
-  View,
   Text,
   VStack,
   Input,
@@ -7,7 +6,6 @@ import {
   Checkbox,
   Button,
   Modal,
-  ScrollView,
   useTheme
 } from 'native-base'
 import { useState } from 'react'

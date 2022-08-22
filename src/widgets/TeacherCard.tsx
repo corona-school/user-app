@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 import { Box, Row, Text, useTheme } from 'native-base'
 import Tag from '../components/Tag'
 import LeftImageCard from './LeftImageCard'
-import ProfilAvatar from './ProfilAvatar'
 import RatingTag from './RatingTag'
 
 type Props = {

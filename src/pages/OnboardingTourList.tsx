@@ -5,20 +5,14 @@ import {
   Heading,
   useTheme,
   VStack,
-  Column,
-  ArrowBackIcon,
   Badge,
   DeleteIcon,
-  HStack,
   CheckCircleIcon,
   Stagger
 } from 'native-base'
 import BackButton from '../components/BackButton'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
-import EditDataRow from '../widgets/EditDataRow'
-import ProfilAvatar from '../widgets/ProfilAvatar'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
 
 type Props = {}
 

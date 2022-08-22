@@ -6,7 +6,6 @@ import {
   useTheme,
   Row,
   Column,
-  Icon,
   ChevronDownIcon,
   PresenceTransition
 } from 'native-base'

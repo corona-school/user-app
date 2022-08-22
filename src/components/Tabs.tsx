@@ -1,4 +1,4 @@
-import { View, Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
+import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
 import { ReactNode, useState } from 'react'
 
 type Tab = {

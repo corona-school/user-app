@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  Box,
-  Row,
-  useTheme,
-  Button,
-  Image,
-  Icon
-} from 'native-base'
+import { Text, Box, Row, useTheme, Button, Image } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 

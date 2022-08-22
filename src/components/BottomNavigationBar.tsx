@@ -1,15 +1,6 @@
-import {
-  Text,
-  Row,
-  Box,
-  CircleIcon,
-  useTheme,
-  Link,
-  SunIcon,
-  Center
-} from 'native-base'
+import { Row, CircleIcon, useTheme, Link, SunIcon, Center } from 'native-base'
 import { useMemo } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
 import '../web/scss/components/BottomNavigationBar.scss'

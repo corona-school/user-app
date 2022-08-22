@@ -1,4 +1,4 @@
-import { View, Text, HamburgerIcon } from 'native-base'
+import { HamburgerIcon } from 'native-base'
 import { TouchableOpacity } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 

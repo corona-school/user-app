@@ -1,6 +1,5 @@
 import { View, useBreakpointValue } from 'native-base'
 import HeaderCard from './HeaderCard'
-import SideBarMenu from './SideBarMenu'
 import { NavigationItems } from '../types/navigation'
 import BottomNavigationBar from './BottomNavigationBar'
 import { ReactNode } from 'react'

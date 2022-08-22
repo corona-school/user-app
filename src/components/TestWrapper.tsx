@@ -1,4 +1,3 @@
-import { View, Text } from 'native-base'
 import { ReactNode } from 'react'
 import { NativeBaseProvider } from 'native-base'
 import Theme from '../Theme'

@@ -8,7 +8,6 @@ import {
   Flex,
   Button,
   Link,
-  Icon,
   Image
 } from 'native-base'
 import Card from '../components/Card'

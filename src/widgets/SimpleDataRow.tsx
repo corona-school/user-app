@@ -1,4 +1,4 @@
-import { View, Text } from 'native-base'
+import { Text } from 'native-base'
 import DataRow from '../components/DataRow'
 
 type Props = { label: string; value: string }

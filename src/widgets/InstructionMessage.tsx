@@ -1,4 +1,4 @@
-import { View, Text, VStack, useTheme } from 'native-base'
+import { Text, VStack, useTheme } from 'native-base'
 import Card from '../components/Card'
 
 export type IInstructionMessage = {

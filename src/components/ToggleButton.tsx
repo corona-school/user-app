@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'native-base'
+import { Button } from 'native-base'
 import { useState } from 'react'
 
 type Props = {

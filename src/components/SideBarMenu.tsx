@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  useBreakpointValue,
   VStack,
   Link,
   Center,

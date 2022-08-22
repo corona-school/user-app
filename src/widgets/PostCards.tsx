@@ -2,13 +2,11 @@ import {
   View,
   Text,
   Box,
-  Row,
   useTheme,
   Link,
   AspectRatio,
   Image
 } from 'native-base'
-import { ReactNode } from 'react'
 
 import Card from '../components/Card'
 
