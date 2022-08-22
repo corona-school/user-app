@@ -31,7 +31,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
         alignItems={'center'}
         paddingX={space['1']}>
         {Object.entries(navItems).map(([key, icon]) => (
-          <Link href={key}>
+          <Link href={key} key={key}>
             <Center>
               <CSSWrapper className="navigation__item">
                 <CircleIcon

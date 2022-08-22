@@ -21,8 +21,8 @@ const CourseOfferCard: React.FC<Props> = ({ title, tags, date }) => {
           flex="1"
           space={space['0.5']}>
           <Row space={space['0.5']}>
-            {tags.map(t => (
-              <Tag text={t} />
+            {tags.map((t, index) => (
+              <Tag text={t} key={`tag-${index}`} />
             ))}
           </Row>
           <Row space={1}>

@@ -30,8 +30,8 @@ const TeacherCard: React.FC<Props> = ({
         {name}
       </Text>
       <Row space={space['0.5']}>
-        {tags.map(t => (
-          <Tag variant="secondary" text={t} />
+        {tags.map((t, index) => (
+          <Tag variant="secondary" text={t} key={`tag-${index}`} />
         ))}
       </Row>
     </LeftImageCard>

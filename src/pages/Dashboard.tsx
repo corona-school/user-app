@@ -60,6 +60,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <AppointmentCard
+                  key={`appointment-${i}`}
                   description="Lorem Ipsum"
                   tags={['Mathematik', 'Gruppenkurs']}
                   date={futureDate}
@@ -95,6 +96,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <SignInCard
+                  key={`signincard-${i}`}
                   image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                   tags={[
                     'Mathematik',
@@ -114,6 +116,7 @@ const Dashboard: React.FC<Props> = () => {
               .fill(0)
               .map((el, i) => (
                 <ServiceOfferCard
+                  key={`service-offer-${i}`}
                   title="Gruppen-Lernunterstützung"
                   image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 />

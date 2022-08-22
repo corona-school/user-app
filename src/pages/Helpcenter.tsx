@@ -109,8 +109,8 @@ const HelpCenter: React.FC<Props> = () => {
                     Häufig gestellte Frage
                   </Heading>
 
-                  {faq.map(({ title, text }) => (
-                    <Accordion title={title}>
+                  {faq.map(({ title, text }, index) => (
+                    <Accordion title={title} key={`accordion-${index}`}>
                       <Text>{text}</Text>
                     </Accordion>
                   ))}
