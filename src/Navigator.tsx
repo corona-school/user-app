@@ -75,7 +75,7 @@ export default function Navigator() {
               <Outlet />
             </RequireAuth>
           }>
-          <Route path="subject" element={<ChangeSettingSubject />} />
+          <Route path="subjects" element={<ChangeSettingSubject />} />
         </Route>
 
         <Route
