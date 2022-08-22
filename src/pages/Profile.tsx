@@ -11,6 +11,7 @@ import {
   Badge,
   DeleteIcon
 } from 'native-base'
+import NotificationAlert from '../components/NotificationAlert'
 import SettingsButton from '../components/SettingsButton'
 import WithNavigation from '../components/WithNavigation'
 import IconTagList from '../widgets/IconTagList'
@@ -77,21 +78,7 @@ const Profile: React.FC<Props> = () => {
         </Box>
       }
       headerLeft={<SettingsButton />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerRight={<NotificationAlert />}>
       <VStack space={space['1']}>
         <VStack paddingX={space['1.5']} space={space['1']}>
           <ProfileSettingRow
