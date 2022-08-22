@@ -1,41 +1,27 @@
 import {
   Button,
-  Box,
   Text,
   Heading,
   useTheme,
   VStack,
   Row,
-  ThreeDotsIcon,
-  Link,
   Column,
-  AddIcon,
-  ArrowBackIcon,
-  Badge,
-  DeleteIcon,
-  InputGroup,
   Input,
   FormControl,
-  Stack,
-  View
+  Stack
 } from 'native-base'
 import { useState } from 'react'
 import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
-import CTACard from '../widgets/CTACard'
 import IconTagList from '../widgets/IconTagList'
-import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingItem from '../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
-import SimpleDataRow from '../widgets/SimpleDataRow'
-import SubjectTag from '../widgets/SubjectTag'
-import UserAchievements from '../widgets/UserAchievements'
-import UserProgress from '../widgets/UserProgress'
 
 type Props = {}
 
 const ChangeSettingSubject: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
+  const { space } = useTheme()
 
   const subjects = [
     'Mathematik',
@@ -66,26 +52,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   ]
 
   const [selections, setSelections] = useState<string[]>([])
-  console.log(selections, selections.includes('Andere'))
+
   return (
     <WithNavigation
       headerTitle="Fächer ändern"
       headerLeft={<BackButton />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
