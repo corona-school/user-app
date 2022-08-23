@@ -26,11 +26,16 @@ import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ViewPager from '../components/ViewPager'
+import useModal from '../hooks/useModal'
+import { useContext } from 'react'
+import { ModalContext } from '../widgets/FullPageModal'
 
 type Props = {}
 
 const Playground: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { setShow, setContent } = useContext(ModalContext)
+
   return (
     <View flex="1">
       <HeaderCard
@@ -45,7 +50,21 @@ const Playground: React.FC<Props> = () => {
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
       </HeaderCard>
-      <ViewPager onSkip={() => null} onNext={currentIndex => null} loop>
+      <ViewPager
+        onSkip={() => {
+          setContent(
+            <RatingCard
+              variant="horizontal"
+              name="Hallo"
+              content="Hallo"
+              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+              rating={3}
+            />
+          )
+          setShow(true)
+        }}
+        onNext={currentIndex => null}
+        loop>
         <Text>Lorem Ipsum</Text>
 
         <Text>Dolor Sit Amet</Text>
