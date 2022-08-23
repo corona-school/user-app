@@ -34,7 +34,7 @@ type Props = {}
 
 const Playground: React.FC<Props> = () => {
   const { space } = useTheme()
-  const { setShow, setContent } = useContext(ModalContext)
+  const { setShow, setContent, setVariant } = useContext(ModalContext)
 
   return (
     <View flex="1">
@@ -52,6 +52,7 @@ const Playground: React.FC<Props> = () => {
       </HeaderCard>
       <ViewPager
         onSkip={() => {
+          setVariant('dark')
           setContent(
             <RatingCard
               variant="horizontal"

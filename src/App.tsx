@@ -16,8 +16,10 @@ function App() {
   const {
     show,
     content,
+    variant,
     setShow: _setShow,
-    setContent: _setContent
+    setContent: _setContent,
+    setVariant: _setVariant
   } = useModal()
 
   return (
@@ -25,8 +27,10 @@ function App() {
       value={{
         show,
         content,
+        variant,
         setShow: val => _setShow(val),
-        setContent: val => _setContent(val)
+        setContent: val => _setContent(val),
+        setVariant: variant => _setVariant(variant)
       }}>
       <ApolloProvider client={client}>
         <NativeBaseProvider theme={Theme}>
