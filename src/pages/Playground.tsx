@@ -1,4 +1,14 @@
-import { View, CheckCircleIcon, Text, Button } from 'native-base'
+import {
+  View,
+  CheckCircleIcon,
+  Text,
+  Button,
+  HStack,
+  Heading,
+  useTheme,
+  PresenceTransition,
+  Stagger
+} from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
@@ -11,30 +21,22 @@ import LearningPartner from '../widgets/LearningPartner'
 import RatingCard from '../widgets/RatingCard'
 import InstructionProgress from '../widgets/InstructionProgress'
 import Downloads from '../components/Downloads'
+import HeaderCard from '../components/HeaderCard'
+import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
+import ProfilAvatar from '../widgets/ProfilAvatar'
+import ViewPager from '../components/ViewPager'
 
 type Props = {}
 
 const Playground: React.FC<Props> = () => {
+  const { space } = useTheme()
   return (
-    <View>
-      {/* <HeaderCard
+    <View flex="1">
+      <HeaderCard
         title="Playground"
-        leftContent={<HamburgerIcon size="xl" color="lightText" />}
-        rightContent={
-          <Box>
-            <Badge
-              bgColor={'danger.500'}
-              rounded="3xl"
-              zIndex={1}
-              variant="solid"
-              alignSelf="flex-end"
-              top="2"
-              right="-5">
-              {' '}
-            </Badge>
-            <DeleteIcon color="lightText" size="xl" />
-          </Box>
-        }>
+        rightContent={<BackButton />}
+        leftContent={<NotificationAlert />}>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar
             size="md"
@@ -42,7 +44,14 @@ const Playground: React.FC<Props> = () => {
           />
           <Heading color={'#fff'}>Hallo Milan!</Heading>
         </HStack>
-      </HeaderCard> */}
+      </HeaderCard>
+      <ViewPager onSkip={() => null} onNext={currentIndex => null} loop>
+        <Text>Lorem Ipsum</Text>
+
+        <Text>Dolor Sit Amet</Text>
+        <Text>Text 3</Text>
+        <Text>Noch ein weiterer Text (4)</Text>
+      </ViewPager>
       <RatingCard
         variant="horizontal"
         name="Hallo"
