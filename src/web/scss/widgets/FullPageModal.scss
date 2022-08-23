@@ -1,0 +1,11 @@
+.fullpagemodal{
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: top .4s ease;
+  &.show {
+    top: 0;
+  }
+}

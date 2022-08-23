@@ -8,18 +8,36 @@ import matomo from './matomo'
 import { MatomoProvider } from '@jonkoops/matomo-tracker-react'
 
 import './web/scss/index.scss'
+import FullPageModal, { ModalContext } from './widgets/FullPageModal'
+import useModal from './hooks/useModal'
 
 function App() {
   const { client } = useApollo()
+  const {
+    show,
+    content,
+    setShow: _setShow,
+    setContent: _setContent
+  } = useModal()
+
   return (
-    <ApolloProvider client={client}>
-      <NativeBaseProvider theme={Theme}>
-        <MatomoProvider value={matomo}>
-          <Autoload />
-          <Navigator />
-        </MatomoProvider>
-      </NativeBaseProvider>
-    </ApolloProvider>
+    <ModalContext.Provider
+      value={{
+        show,
+        content,
+        setShow: val => _setShow(val),
+        setContent: val => _setContent(val)
+      }}>
+      <ApolloProvider client={client}>
+        <NativeBaseProvider theme={Theme}>
+          <MatomoProvider value={matomo}>
+            <Autoload />
+            <Navigator />
+            <FullPageModal />
+          </MatomoProvider>
+        </NativeBaseProvider>
+      </ApolloProvider>
+    </ModalContext.Provider>
   )
 }
 
