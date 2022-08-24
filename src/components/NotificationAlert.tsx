@@ -1,5 +1,7 @@
 import { CircleIcon, Box, DeleteIcon } from 'native-base'
 
+import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
+
 type Props = {}
 
 const NotificationAlert: React.FC<Props> = () => {
@@ -12,7 +14,7 @@ const NotificationAlert: React.FC<Props> = () => {
         color="danger.500"
         size="sm"
       />
-      <DeleteIcon color="lightText" size="xl" />
+      <BellIcon />
     </Box>
   )
 }
