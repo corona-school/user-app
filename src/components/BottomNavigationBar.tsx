@@ -38,8 +38,11 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                   size="35px"
                   color={key === path ? 'primary.900' : 'transparent'}
                 />
-                <CSSWrapper className="navigation__item__icon">
-                  <SunIcon color={key === path ? 'lightText' : 'primary.900'} />
+                <CSSWrapper
+                  className={`navigation__item__icon ${
+                    key === path ? 'active' : ''
+                  }`}>
+                  {icon}
                 </CSSWrapper>
               </CSSWrapper>
             </Center>
