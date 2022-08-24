@@ -2,9 +2,6 @@ import {
   Box,
   Heading,
   useTheme,
-  ArrowBackIcon,
-  Badge,
-  DeleteIcon,
   Text,
   Row,
   FormControl,
@@ -13,12 +10,13 @@ import {
   Checkbox,
   Link,
   Button,
-  Flex,
   CheckCircleIcon,
   VStack,
   Stagger
 } from 'native-base'
 import Accordion from '../components/Accordion'
+import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
@@ -115,22 +113,8 @@ const HelpCenter: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle="Hilfebereich"
-      headerLeft={<ArrowBackIcon size="xl" color="lightText" />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerLeft={<BackButton />}
+      headerRight={<NotificationAlert />}>
       <Box
         paddingTop={space['4']}
         paddingBottom={space['1.5']}
