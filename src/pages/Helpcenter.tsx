@@ -12,7 +12,9 @@ import {
   Button,
   CheckCircleIcon,
   VStack,
-  Stagger
+  Stagger,
+  Pressable,
+  InfoIcon
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
@@ -20,6 +22,11 @@ import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
+import FullPageModal from '../widgets/FullPageModal'
+import { ModalContext } from '../widgets/FullPageModal'
+import { useContext } from 'react'
+import InfoScreen from '../widgets/InfoScreen'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
@@ -110,6 +117,9 @@ const cards = [
 const HelpCenter: React.FC<Props> = () => {
   const { space } = useTheme()
 
+  const { setShow, setContent, setVariant } = useContext(ModalContext)
+  const navigate = useNavigate()
+
   return (
     <WithNavigation
       headerTitle="Hilfebereich"
@@ -144,7 +154,9 @@ const HelpCenter: React.FC<Props> = () => {
                   ))}
 
                   <Box paddingY={space['1.5']}>
-                    <Button>Alle FAQ</Button>
+                    <Button onPress={() => navigate('/alle-faqs')}>
+                      Alle FAQ
+                    </Button>
                   </Box>
                 </>
               )
@@ -235,7 +247,22 @@ const HelpCenter: React.FC<Props> = () => {
                       </Checkbox>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
-                      <Button>Anfrage senden</Button>
+                      <Button
+                        onPress={() => {
+                          setVariant('light')
+                          setContent(
+                            <InfoScreen
+                              title="Vielen Dank!"
+                              icon={<InfoIcon />}
+                              content="Wir haben deine Anfrage erhalten und melden uns schnellstmöglich bei dir zurück."
+                              defaultButtonText="Weiter"
+                              defaultbuttonLink={() => setShow(false)}
+                            />
+                          )
+                          setShow(true)
+                        }}>
+                        Anfrage senden
+                      </Button>
                     </Row>
                   </FormControl>
                 </>

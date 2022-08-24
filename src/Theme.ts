@@ -177,6 +177,17 @@ const Theme = extendTheme({
         }
       }
     },
+    Checkbox: {
+      defaultProps: {
+        backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
+        padding: 1,
+        borderWidth: 0,
+
+        _checked: {
+          backgroundColor: VAR_COLOR_PRIMARY_DARK,
+        }
+      }
+    }
   },
   config: {
     initialColorMode: 'light'
