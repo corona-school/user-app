@@ -1,4 +1,4 @@
-import { CircleIcon, Box, DeleteIcon } from 'native-base'
+import { CircleIcon, Box } from 'native-base'
 
 import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
 

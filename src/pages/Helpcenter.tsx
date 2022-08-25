@@ -13,7 +13,6 @@ import {
   CheckCircleIcon,
   VStack,
   Stagger,
-  Pressable,
   InfoIcon
 } from 'native-base'
 import Accordion from '../components/Accordion'
@@ -22,7 +21,6 @@ import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
-import FullPageModal from '../widgets/FullPageModal'
 import { ModalContext } from '../widgets/FullPageModal'
 import { useContext } from 'react'
 import InfoScreen from '../widgets/InfoScreen'

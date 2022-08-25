@@ -1,17 +1,4 @@
-import {
-  View,
-  Text,
-  HStack,
-  Flex,
-  Box,
-  VStack,
-  Row,
-  CircleIcon,
-  useTheme,
-  Button,
-  PresenceTransition,
-  Center
-} from 'native-base'
+import { Flex, Row, CircleIcon, useTheme, Button } from 'native-base'
 import { ReactNode, useState } from 'react'
 
 type Props = {

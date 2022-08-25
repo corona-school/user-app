@@ -187,6 +187,14 @@ const Theme = extendTheme({
           backgroundColor: VAR_COLOR_PRIMARY_DARK,
         }
       }
+    }, 
+    Alert: {
+      defaultProps: {
+        background: VAR_COLOR_PRIMARY_LIGHT,
+        _icon: {
+          color: VAR_COLOR_PRIMARY_DARK,
+        }
+      }
     }
   },
   config: {

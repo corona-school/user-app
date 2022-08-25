@@ -5,9 +5,7 @@ import {
   Button,
   HStack,
   Heading,
-  useTheme,
-  PresenceTransition,
-  Stagger
+  useTheme
 } from 'native-base'
 import AppointmentCard from '../widgets/AppointmentCard'
 import ServiceOfferCard from '../widgets/ServiceOfferCard'
@@ -26,7 +24,6 @@ import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ViewPager from '../components/ViewPager'
-import useModal from '../hooks/useModal'
 import { useContext } from 'react'
 import { ModalContext } from '../widgets/FullPageModal'
 

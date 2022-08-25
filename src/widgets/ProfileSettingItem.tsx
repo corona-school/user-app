@@ -1,4 +1,4 @@
-import { View, Row, Heading, AddIcon, Link } from 'native-base'
+import { View, Row, Heading, Pressable } from 'native-base'
 import { ReactNode } from 'react'
 
 import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
@@ -9,7 +9,7 @@ type Props = {
   border?: boolean
   isIcon?: boolean
   isHeaderspace?: boolean
-  href?: string
+  href?: () => any
 }
 
 const ProfileSettingItem: React.FC<Props> = ({
@@ -28,9 +28,9 @@ const ProfileSettingItem: React.FC<Props> = ({
       <Heading fontSize="md">
         {title}
         {isIcon && (
-          <Link marginLeft="1" marginTop="-1" href={href}>
+          <Pressable marginLeft="1" marginTop="-1" onPress={href}>
             <EditIcon fill="primary.700" />
-          </Link>
+          </Pressable>
         )}
       </Heading>
       <Row paddingY={isHeaderspace ? '3' : ''}>{children}</Row>
