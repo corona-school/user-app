@@ -1,4 +1,4 @@
-import { Box, Heading, useTheme, Text, Column } from 'native-base'
+import { Box, Heading, useTheme, Text, Column, Stagger } from 'native-base'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
@@ -56,20 +56,29 @@ const QuickStart: React.FC<Props> = () => {
         </Text>
       </Box>
       <Box width="100%" paddingX={space['1.5']}>
-        {quickstartcardContent.map(
-          ({ title, text, image, readingtime, posttype, link }, index) => (
-            <Column key={index} marginBottom={space['1.5']}>
-              <QuickStartCard
-                image={image}
-                title={title}
-                readingtime={readingtime}
-                posttype={posttype}
-                url={link}
-                description={text}
-              />
-            </Column>
-          )
-        )}
+        <Stagger
+          initial={{ opacity: 0, translateY: 20 }}
+          animate={{
+            opacity: 1,
+            translateY: 0,
+            transition: { stagger: { offset: 60 }, duration: 500 }
+          }}
+          visible>
+          {quickstartcardContent.map(
+            ({ title, text, image, readingtime, posttype, link }, index) => (
+              <Column key={index} marginBottom={space['1.5']}>
+                <QuickStartCard
+                  image={image}
+                  title={title}
+                  readingtime={readingtime}
+                  posttype={posttype}
+                  url={link}
+                  description={text}
+                />
+              </Column>
+            )
+          )}
+        </Stagger>
       </Box>
     </WithNavigation>
   )

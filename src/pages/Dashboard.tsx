@@ -50,13 +50,13 @@ const Dashboard: React.FC<Props> = () => {
               tags={['Mathematik', 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
-              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+              image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
               title="Mathe Grundlagen Klasse 6"
               description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
             />
           </VStack>
           <HSection title="Meine Termine" showAll={true}>
-            {Array(4)
+            {/* {Array(4)
               .fill(0)
               .map((el, i) => (
                 <AppointmentCard
@@ -67,7 +67,31 @@ const Dashboard: React.FC<Props> = () => {
                   image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                   title="Diskussionen in Mathe!? – Die Kurvendiskussion"
                 />
-              ))}
+              ))} */}
+
+            <AppointmentCard
+              description="Lorem Ipsum"
+              tags={['Mathematik', 'Gruppenkurs']}
+              date={futureDate}
+              image="https://images.unsplash.com/photo-1585432959445-662c9bbcd91d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aG9tZSUyMHNjaG9vbGluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
+            />
+
+            <AppointmentCard
+              description="Lorem Ipsum"
+              tags={['Deutsch']}
+              date={futureDate}
+              image="https://images.unsplash.com/photo-1610484826967-09c5720778c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8aG9tZSUyMHNjaG9vbGluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+              title="Satzarten"
+            />
+
+            <AppointmentCard
+              description="Lorem Ipsum"
+              tags={['Mathematik']}
+              date={futureDate}
+              image="https://images.unsplash.com/photo-1585432959322-4db03962b004?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fGhvbWUlMjBzY2hvb2xpbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+              title="Statistiken auswerten"
+            />
           </HSection>
           <VStack space={space['0.5']} paddingX={space['1']}>
             <Heading>Hausaufgabenhilfe</Heading>
@@ -92,7 +116,7 @@ const Dashboard: React.FC<Props> = () => {
             />
           </VStack>
           <HSection title="Vorschläge für dich" showAll={true}>
-            {Array(4)
+            {/* {Array(4)
               .fill(0)
               .map((el, i) => (
                 <SignInCard
@@ -109,7 +133,31 @@ const Dashboard: React.FC<Props> = () => {
                   title="Flächeninhalt berechnen"
                   onClickSignIn={() => null}
                 />
-              ))}
+              ))} */}
+            <SignInCard
+              image="https://images.unsplash.com/photo-1560785477-d43d2b34e0df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
+              tags={['Mathematik', 'Gruppenkurs']}
+              date={new Date()}
+              numAppointments={5}
+              title="Flächeninhalt berechnen"
+              onClickSignIn={() => null}
+            />
+            <SignInCard
+              image="https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8d3JpdGluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+              tags={['Deutsch']}
+              date={new Date()}
+              numAppointments={5}
+              title="Rechtschreibung – Grundlagen"
+              onClickSignIn={() => null}
+            />
+            <SignInCard
+              image="https://images.unsplash.com/photo-1446329360995-b4642a139973?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fG1hdGhzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
+              tags={['Mathematik']}
+              date={new Date()}
+              numAppointments={5}
+              title="Satz des Pythagoras – Grundlagen"
+              onClickSignIn={() => null}
+            />
           </HSection>
           <TwoColGrid title="Angebote">
             {Array(2)
@@ -118,7 +166,7 @@ const Dashboard: React.FC<Props> = () => {
                 <ServiceOfferCard
                   key={`service-offer-${i}`}
                   title="Gruppen-Lernunterstützung"
-                  image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  image="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
                 />
               ))}
           </TwoColGrid>
