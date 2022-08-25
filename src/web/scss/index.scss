@@ -1,15 +1,30 @@
-@import '_generated';
+@import "_generated";
 
 html,
-body * {
-  font-family: "Montserrat" !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+body {
+  overscroll-behavior-y: contain;
+  overflow: hidden;
+  max-height: 100vh;
+  max-height: -webkit-fill-available;
+  max-height: -moz-available;
+  
+  * {
+    font-family: "Montserrat" !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 #root {
-  min-height: 100vh;
+  overflow-y: scroll;
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: -moz-available;
+
+
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 @font-face {
@@ -67,5 +82,5 @@ body * {
 }
 
 div[role="button"] {
-  transition: all .3s ease
+  transition: all 0.3s ease;
 }
