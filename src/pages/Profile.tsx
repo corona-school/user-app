@@ -20,8 +20,6 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
 
-import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
-
 type Props = {}
 
 const Profile: React.FC<Props> = () => {
