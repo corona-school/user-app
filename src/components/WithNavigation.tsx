@@ -36,7 +36,7 @@ const WithNavigation: React.FC<Props> = ({
     lg: false
   })
   const [view, setView] = useState(null)
-  const { space, sizes } = useTheme()
+  const { sizes } = useTheme()
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
     <>

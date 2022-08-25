@@ -1,5 +1,5 @@
 import { Box, useTheme, Heading, Row } from 'native-base'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 type Props = {
   children?: ReactNode | ReactNode[]
