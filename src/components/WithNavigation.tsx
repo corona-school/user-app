@@ -10,10 +10,10 @@ import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 
 const navItems: NavigationItems = {
-  dashboard: <LFHomeIcon />,
-  appointments: <LFAppointmentIcon />,
-  explore: <LFExploreIcon />,
-  help: <LFHelpIcon />
+  dashboard: LFHomeIcon,
+  appointments: LFAppointmentIcon,
+  explore: LFExploreIcon,
+  help: LFHelpIcon
 }
 
 type Props = {

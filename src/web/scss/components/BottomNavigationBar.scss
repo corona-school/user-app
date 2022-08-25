@@ -7,10 +7,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
 
-    &.active {
-      path{
-        fill: var(--color-text_light);
-      }
-    }
+    // &.active {
+    //   path{
+    //     fill: var(--color-text_light);
+    //   }
+    // }
   }
 }
