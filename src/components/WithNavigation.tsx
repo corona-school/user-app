@@ -4,11 +4,16 @@ import { NavigationItems } from '../types/navigation'
 import BottomNavigationBar from './BottomNavigationBar'
 import { ReactNode } from 'react'
 
+import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
+import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
+import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
+import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
+
 const navItems: NavigationItems = {
-  dashboard: null,
-  appointments: null,
-  explore: null,
-  help: null
+  dashboard: LFHomeIcon,
+  appointments: LFAppointmentIcon,
+  explore: LFExploreIcon,
+  help: LFHelpIcon
 }
 
 type Props = {

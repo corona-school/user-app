@@ -1,6 +1,8 @@
 import { View, Row, Heading, AddIcon, Link } from 'native-base'
 import { ReactNode } from 'react'
 
+import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
+
 type Props = {
   title?: string
   children: ReactNode
@@ -27,7 +29,7 @@ const ProfileSettingItem: React.FC<Props> = ({
         {title}
         {isIcon && (
           <Link marginLeft="1" marginTop="-1" href={href}>
-            <AddIcon size="3" color="primary.700" />
+            <EditIcon fill="primary.700" />
           </Link>
         )}
       </Heading>

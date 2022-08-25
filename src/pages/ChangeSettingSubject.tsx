@@ -11,6 +11,7 @@ import {
   Stack
 } from 'native-base'
 import { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
@@ -70,17 +71,21 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                 marginRight={3}
                 marginBottom={3}
                 key={`selection-${index}`}>
-                <IconTagList
-                  icon="h"
-                  text={subject}
+                <TouchableOpacity
                   onPress={() =>
                     setSelections(prev => {
                       const res = [...prev]
                       res.splice(index, 1)
                       return res
                     })
-                  }
-                />
+                  }>
+                  <Row alignItems="center" justifyContent="center">
+                    <IconTagList icon="h" text={subject} />
+                    <Text color={'danger.500'} fontSize="xl" ml="1" bold>
+                      x
+                    </Text>
+                  </Row>
+                </TouchableOpacity>
               </Column>
             ))}
           </Row>
