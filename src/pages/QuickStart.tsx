@@ -1,4 +1,4 @@
-import { Box, Heading, useTheme, Text, Card, Column } from 'native-base'
+import { Box, Heading, useTheme, Text, Column } from 'native-base'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'

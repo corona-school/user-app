@@ -1,9 +1,7 @@
-import { View, Text, Box, PresenceTransition } from 'native-base'
+import { Box, PresenceTransition } from 'native-base'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
 import CSSWrapper from '../components/CSSWrapper'
-import useModal from '../hooks/useModal'
 import '../web/scss/widgets/FullPageModal.scss'
-import RatingCard from './RatingCard'
 
 type Props = {}
 export type IModalTheme = 'light' | 'dark' | 'image'

@@ -8,7 +8,6 @@ import {
   Image,
   Heading,
   Column,
-  PlayIcon,
   Container,
   Button,
   InfoIcon,

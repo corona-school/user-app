@@ -1,55 +1,10 @@
 import { Box, Heading, useTheme, Text } from 'native-base'
-import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import WebServiceCard from '../widgets/WebServiceCard'
 
 type Props = {}
-
-const faq = [
-  {
-    title: 'Mein:e Lernpartner:in meldet sich nicht. Was soll ich tun?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Wie kann ich die Zusammenarbeit mit einem:r Lernpartner:in beenden?',
-    text: ' Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Kann ich mich für mehrere Angebote von Lern-Fair gleichzeitig registrieren?',
-    text: 'Ja, du kannst dich gerne für mehrere Angebote bei uns registrieren. Beachte dabei, dass manche Angebote spezielle Voraussetzungen fordern, mehr Details findest du auf den jeweiligen Projektseiten auf unserer Website.'
-  },
-  {
-    title: 'Wie oft treffen sich die Lernpaare pro Woche?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Nach welchen Kriterien werden Schüler:innen und Helfer:innen verbunden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Mein:e Lernpartner:in meldet sich nicht. Was soll ich tun?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Wie kann ich die Zusammenarbeit mit einem:r Lernpartner:in beenden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Wie oft treffen sich die Lernpaare pro Woche?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Nach welchen Kriterien werden Schüler:innen und Helfer:innen verbunden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  }
-]
 
 const DigitaleTools: React.FC<Props> = () => {
   const { space } = useTheme()
