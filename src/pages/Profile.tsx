@@ -24,11 +24,11 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
-import EditIcon from '../assets/icons/lernfair/lf-edit-white.svg'
+import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
 import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 type Props = {}
 
@@ -36,9 +36,9 @@ const Profile: React.FC<Props> = () => {
   const { colors, space } = useTheme()
   const navigate = useNavigate()
 
-  const [modalVisible, setModalVisible] = React.useState(false)
-  const initialRef = React.useRef(null)
-  const finalRef = React.useRef(null)
+  const [modalVisible, setModalVisible] = useState(false)
+  const initialRef = useRef(null)
+  const finalRef = useRef(null)
   const [profilName, setProfilName] = useState('Milan')
   const [userSettingChanged, setUserSettings] = useState(false)
 
@@ -58,7 +58,10 @@ const Profile: React.FC<Props> = () => {
             />
             <Box position="absolute" right="-37px" bottom="-14px">
               <Link href="#">
-                <LFIcon Icon={EditIcon} iconFill="#ffffff" />
+                <EditIcon
+                  fill={colors['lightText']}
+                  stroke={colors['lightText']}
+                />
               </Link>
             </Box>
           </Box>
