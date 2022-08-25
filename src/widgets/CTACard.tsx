@@ -49,9 +49,8 @@ const CTACard: React.FC<Props> = ({
         borderRadius={15}>
         <Row justifyContent={closeable ? 'space-between' : ''}>
           <Box>{icon}</Box>
-          <Container maxWidth="100%">
+          <Container>
             <Text
-              width="100%"
               maxWidth={250}
               bold
               fontSize={'lg'}
