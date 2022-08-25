@@ -21,6 +21,10 @@ import HelpCenter from './pages/Helpcenter'
 import AllFaq from './pages/AllFaq'
 import QuickStart from './pages/QuickStart'
 import DigitaleTools from './pages/DigitaleTools'
+import ChangeSettingSchoolType from './pages/ChangeSettingSchoolType'
+import ChangeSettingState from './pages/ChangeSettingState'
+import ChangeSettingLanguage from './pages/ChangeSettingLanguage'
+import ChangeSettingSchoolClass from './pages/ChangeSettingSchoolClass'
 
 export default function Navigator() {
   return (
@@ -79,6 +83,10 @@ export default function Navigator() {
             </RequireAuth>
           }>
           <Route path="subjects" element={<ChangeSettingSubject />} />
+          <Route path="school-type" element={<ChangeSettingSchoolType />} />
+          <Route path="state" element={<ChangeSettingState />} />
+          <Route path="language" element={<ChangeSettingLanguage />} />
+          <Route path="class" element={<ChangeSettingSchoolClass />} />
         </Route>
 
         <Route
