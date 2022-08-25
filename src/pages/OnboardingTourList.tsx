@@ -11,6 +11,7 @@ import {
   Stagger
 } from 'native-base'
 import BackButton from '../components/BackButton'
+import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
 
@@ -46,21 +47,7 @@ const OnboardingTourList: React.FC<Props> = () => {
     <WithNavigation
       headerTitle="Onboarding-Tour"
       headerLeft={<BackButton />}
-      headerRight={
-        <Box>
-          <Badge
-            bgColor={'danger.500'}
-            rounded="3xl"
-            zIndex={1}
-            variant="solid"
-            alignSelf="flex-end"
-            top="2"
-            right="-5">
-            {' '}
-          </Badge>
-          <DeleteIcon color="lightText" size="xl" />
-        </Box>
-      }>
+      headerRight={<NotificationAlert />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>Onboarding</Heading>
         <Text maxWidth={330}>
