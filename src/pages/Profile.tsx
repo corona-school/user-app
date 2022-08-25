@@ -20,6 +20,8 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
 
+import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
+
 type Props = {}
 
 const Profile: React.FC<Props> = () => {
@@ -53,6 +55,7 @@ const Profile: React.FC<Props> = () => {
             fontSize="xl">
             Tina
           </Heading>
+
           <Row width="80%" justifyContent="space-around">
             <Column textAlign="center">
               <UserAchievements
@@ -90,10 +93,10 @@ const Profile: React.FC<Props> = () => {
             <ProfileSettingItem title="Name" href="/change-setting/name">
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -103,7 +106,7 @@ const Profile: React.FC<Props> = () => {
               href="/change-setting/language">
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -111,10 +114,10 @@ const Profile: React.FC<Props> = () => {
             <ProfileSettingItem title="Bundesland" href="/change-setting/state">
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={2}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -124,13 +127,13 @@ const Profile: React.FC<Props> = () => {
               href="/change-setting/schooltype">
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -141,13 +144,13 @@ const Profile: React.FC<Props> = () => {
               href="/change-setting/subjects">
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList icon="h" text="text" />
+                  <IconTagList isDisabled icon="h" text="text" />
                 </Column>
               </Row>
             </ProfileSettingItem>

@@ -8,6 +8,7 @@ type Props = {
   variant?: 'normal' | 'full' | 'center'
   space?: number
   onPress?: () => any
+  isDisabled?: boolean
 }
 
 const IconTagList: React.FC<Props> = ({
@@ -16,7 +17,8 @@ const IconTagList: React.FC<Props> = ({
   link,
   variant = 'normal',
   space,
-  onPress
+  onPress,
+  isDisabled
 }) => {
   const [active, setActive] = useState<boolean>(false)
 
@@ -24,6 +26,7 @@ const IconTagList: React.FC<Props> = ({
     <View width={variant === 'full' ? '100%' : ''} paddingY={space}>
       <Link
         onPress={() => {
+          if (isDisabled) return
           setActive(prev => !prev)
           onPress && onPress()
         }}
