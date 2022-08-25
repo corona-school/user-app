@@ -13,7 +13,7 @@ const navItems: NavigationItems = {
   dashboard: LFHomeIcon,
   appointments: LFAppointmentIcon,
   explore: LFExploreIcon,
-  help: LFHelpIcon
+  hilfebereich: LFHelpIcon
 }
 
 type Props = {
