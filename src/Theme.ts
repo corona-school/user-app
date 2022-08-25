@@ -12,6 +12,7 @@ const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE
 const VAR_COLOR_RED = '#D45D3A'
 const VAR_COLOR_DANGER = VAR_COLOR_RED
 const VAR_COLOR_WARNING = VAR_COLOR_RED
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff'
 
 const Theme = extendTheme({
@@ -82,6 +83,10 @@ const Theme = extendTheme({
     md: 14,
     lg: 17,
     xl: 19
+  },
+  sizes: {
+    headerSizePx: 56,
+    headerPaddingYPx: 8
   },
   components: {
     Text: {
@@ -184,15 +189,15 @@ const Theme = extendTheme({
         borderWidth: 0,
 
         _checked: {
-          backgroundColor: VAR_COLOR_PRIMARY_DARK,
+          backgroundColor: VAR_COLOR_PRIMARY_DARK
         }
       }
-    }, 
+    },
     Alert: {
       defaultProps: {
         background: VAR_COLOR_PRIMARY_LIGHT,
         _icon: {
-          color: VAR_COLOR_PRIMARY_DARK,
+          color: VAR_COLOR_PRIMARY_DARK
         }
       }
     }
