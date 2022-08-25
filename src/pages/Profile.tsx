@@ -20,6 +20,9 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 import UserAchievements from '../widgets/UserAchievements'
 import UserProgress from '../widgets/UserProgress'
 
+import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
+import StarIcon from '../assets/icons/lernfair/lf-star.svg'
+
 type Props = {}
 
 const Profile: React.FC<Props> = () => {
@@ -41,7 +44,10 @@ const Profile: React.FC<Props> = () => {
             />
             <Box position="absolute" right={-17} bottom={0}>
               <Link href="#">
-                <ThreeDotsIcon color="white" />
+                <EditIcon
+                  fill={colors['lightText']}
+                  stroke={colors['lightText']}
+                />
               </Link>
             </Box>
           </Box>
@@ -56,22 +62,13 @@ const Profile: React.FC<Props> = () => {
 
           <Row width="80%" justifyContent="space-around">
             <Column textAlign="center">
-              <UserAchievements
-                points={30}
-                icon={<AddIcon size="3" color="primary.700" />}
-              />
+              <UserAchievements points={30} icon={<StarIcon />} />
             </Column>
             <Column textAlign="center">
-              <UserAchievements
-                points={4}
-                icon={<AddIcon size="3" color="primary.700" />}
-              />
+              <UserAchievements points={4} icon={<StarIcon />} />
             </Column>
             <Column textAlign="center">
-              <UserAchievements
-                points={90}
-                icon={<AddIcon size="3" color="primary.700" />}
-              />
+              <UserAchievements points={90} icon={<StarIcon />} />
             </Column>
           </Row>
         </Box>
