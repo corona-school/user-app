@@ -39,7 +39,7 @@ const WithNavigation: React.FC<Props> = ({
   const { sizes } = useTheme()
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
-    <>
+    <View flex="1">
       <View
         flex="1"
         display="flex"
@@ -47,7 +47,7 @@ const WithNavigation: React.FC<Props> = ({
         flexWrap="nowrap"
         overflow="hidden"
         w="100vw"
-        // h="100vh"
+        h="100%"
         // marginTop={'-72px'}
         // paddingTop={'72px'}
       >
@@ -70,7 +70,7 @@ const WithNavigation: React.FC<Props> = ({
         </View>
       </View>
       <BottomNavigationBar show={isMobile} navItems={navItems} />
-    </>
+    </View>
   )
 }
 export default WithNavigation

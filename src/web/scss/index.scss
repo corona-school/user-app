@@ -3,10 +3,13 @@
 html,
 body {
   overscroll-behavior-y: contain;
-  overflow: hidden;
-  max-height: 100vh;
-  max-height: -webkit-fill-available;
-  max-height: -moz-available;
+  
+  height: 100vh;
+  height: -webkit-fill-available;
+  // height: -moz-available;
+  // max-height: 100vh;
+  // max-height: -webkit-fill-available;
+  // max-height: -moz-available;
   
   * {
     font-family: "Montserrat" !important;
@@ -17,14 +20,13 @@ body {
 }
 
 #root {
-  overflow-y: scroll;
-  height: 100vh;
-  height: -webkit-fill-available;
-  height: -moz-available;
-
+  
 
   display: flex;
   flex-wrap: nowrap;
+  height: 100vh;
+  height: -webkit-fill-available;
+  // height: -moz-available;
 }
 
 @font-face {
