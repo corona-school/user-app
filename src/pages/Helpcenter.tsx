@@ -13,7 +13,6 @@ import {
   CheckCircleIcon,
   VStack,
   Stagger,
-  Pressable,
   InfoIcon
 } from 'native-base'
 import Accordion from '../components/Accordion'
@@ -22,9 +21,8 @@ import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
-import FullPageModal from '../widgets/FullPageModal'
 import { ModalContext } from '../widgets/FullPageModal'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import InfoScreen from '../widgets/InfoScreen'
 import { useNavigate } from 'react-router-dom'
 
@@ -116,6 +114,7 @@ const cards = [
 
 const HelpCenter: React.FC<Props> = () => {
   const { space } = useTheme()
+  const [dsgvo, setDSGVO] = useState<boolean>(false)
 
   const { setShow, setContent, setVariant } = useContext(ModalContext)
   const navigate = useNavigate()
@@ -241,13 +240,14 @@ const HelpCenter: React.FC<Props> = () => {
                       />
                     </Row>
                     <Row flexDirection="column" paddingY={space['1.5']}>
-                      <Checkbox value="dsgvo">
+                      <Checkbox value="dsgvo" onChange={val => setDSGVO(val)}>
                         Hiermit stimme ich der
                         <Link href="#">Datenschutzerklärung</Link> zu.
                       </Checkbox>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <Button
+                        isDisabled={!dsgvo}
                         onPress={() => {
                           setVariant('light')
                           setContent(
