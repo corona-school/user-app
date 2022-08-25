@@ -18,6 +18,9 @@ import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
 import ChangeSettingSubject from './pages/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
+import AllFaq from './pages/AllFaq'
+import QuickStart from './pages/QuickStart'
+import DigitaleTools from './pages/DigitaleTools'
 
 export default function Navigator() {
   return (
@@ -84,9 +87,31 @@ export default function Navigator() {
             <RequireAuth>
               <HelpCenter />
             </RequireAuth>
-          }>
-          {/* <Route path="subject" element={<ChangeSettingSubject />} /> */}
-        </Route>
+          }></Route>
+
+        <Route
+          path="/alle-faqs"
+          element={
+            <RequireAuth>
+              <AllFaq />
+            </RequireAuth>
+          }></Route>
+
+        <Route
+          path="/quick-start"
+          element={
+            <RequireAuth>
+              <QuickStart />
+            </RequireAuth>
+          }></Route>
+
+        <Route
+          path="/digitale-tools"
+          element={
+            <RequireAuth>
+              <DigitaleTools />
+            </RequireAuth>
+          }></Route>
 
         <Route
           path="/onboarding-list"
