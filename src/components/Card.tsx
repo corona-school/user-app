@@ -5,12 +5,14 @@ type Props = {
   children: ReactNode | ReactNode[]
   flexibleWidth?: boolean
   variant?: 'normal' | 'dark'
+  isFullHeight?: boolean
 }
 
 const Card: React.FC<Props> = ({
   children,
   flexibleWidth = false,
-  variant = 'normal'
+  variant = 'normal',
+  isFullHeight = true
 }) => {
   return (
     <BaseCard
@@ -18,7 +20,8 @@ const Card: React.FC<Props> = ({
       bg={variant === 'normal' ? 'primary.100' : 'primary.900'}
       borderRadius={8}
       padding={0}
-      w={flexibleWidth ? 'auto' : '190'}>
+      w={flexibleWidth ? 'auto' : '190'}
+      h={isFullHeight ? '100%' : ''}>
       {children}
     </BaseCard>
   )

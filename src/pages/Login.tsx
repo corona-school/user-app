@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
+import Logo from '../assets/icons/lernfair/lf-logo.svg'
 
 import {
   Box,
   Button,
   Heading,
-  Image,
   Input,
   Link,
   Row,
@@ -61,21 +61,15 @@ export default function Login() {
     <VStack>
       <Row flexDirection="column" justifyContent="center" alignItems="center">
         <Box
-          bgColor="primary.500"
+          bg="primary.400"
           width="100%"
           borderBottomRightRadius={15}
           borderBottomLeftRadius={15}
           justifyContent="center"
           paddingY={6}
           marginBottom={6}>
-          <Box textAlign="center" justifyContent="center">
-            <Image
-              marginX="auto"
-              size={20}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-              }}
-            />
+          <Box textAlign="center" alignItems="center" justifyContent="center">
+            <Logo />
           </Box>
           <Heading
             width="100%"

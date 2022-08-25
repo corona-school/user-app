@@ -19,7 +19,7 @@ const LeftImageCard: React.FC<Props> = ({
   const { space } = useTheme()
 
   return (
-    <Card flexibleWidth variant={variant}>
+    <Card flexibleWidth variant={variant} isFullHeight={false}>
       <Row>
         <Box w={100} padding={avatar ? '16px' : ''}>
           {avatar && <ProfilAvatar image={avatar} size="lg" />}

@@ -1,6 +1,6 @@
-import { FavouriteIcon } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import InfoScreen from '../widgets/InfoScreen'
+import Logo from '../assets/icons/lernfair/lf-party.svg'
 type Props = {}
 
 const Welcome: React.FC<Props> = () => {
@@ -14,7 +14,7 @@ const Welcome: React.FC<Props> = () => {
       outlinebuttonLink={() => navigate('/login')}
       defaultButtonText="Neu registrieren"
       defaultbuttonLink={() => navigate('/register')}
-      icon={<FavouriteIcon size="xl" color="white" />}
+      icon={<Logo />}
     />
   )
 }
