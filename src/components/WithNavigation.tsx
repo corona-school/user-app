@@ -1,4 +1,4 @@
-import { View, useBreakpointValue, useTheme } from 'native-base'
+import { View, useBreakpointValue, useTheme, Row, Column } from 'native-base'
 import HeaderCard from './HeaderCard'
 import { NavigationItems } from '../types/navigation'
 import BottomNavigationBar from './BottomNavigationBar'
@@ -8,12 +8,13 @@ import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
 import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
+import SideBarMenu from './SideBarMenu'
 
 const navItems: NavigationItems = {
-  dashboard: LFHomeIcon,
-  appointments: LFAppointmentIcon,
-  explore: LFExploreIcon,
-  hilfebereich: LFHelpIcon
+  dashboard: { label: 'Dashboard', icon: LFHomeIcon },
+  appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
+  explore: { label: 'Erkunden', icon: LFExploreIcon, disabled: true },
+  hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
 }
 
 type Props = {
@@ -47,11 +48,7 @@ const WithNavigation: React.FC<Props> = ({
         flexWrap="nowrap"
         overflow="hidden"
         w="100vw"
-        h="100%"
-        // marginTop={'-72px'}
-        // paddingTop={'72px'}
-      >
-        {/* <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} /> */}
+        h="100%">
         <HeaderCard
           leftContent={headerLeft}
           rightContent={headerRight}
@@ -60,13 +57,24 @@ const WithNavigation: React.FC<Props> = ({
           {headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
-          {view && (
-            <>
-              <View h={`${headerHeight}px`}></View>
-              {view}
-            </>
-          )}
-          {children}
+          <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden">
+            <Column>
+              <SideBarMenu
+                show={!isMobile}
+                navItems={navItems}
+                paddingTop={'72px'}
+              />
+            </Column>
+            <Column flex="1">
+              {view && (
+                <>
+                  <View h={`${headerHeight}px`}></View>
+                  {view}
+                </>
+              )}
+              {children}
+            </Column>
+          </Row>
         </View>
       </View>
       <BottomNavigationBar show={isMobile} navItems={navItems} />

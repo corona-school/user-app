@@ -1,5 +1,7 @@
-import { ReactNode } from 'react'
-
 export type NavigationItems = {
-  [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  [key: string]: {
+    icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+    label: string
+    disabled?: boolean
+  }
 }

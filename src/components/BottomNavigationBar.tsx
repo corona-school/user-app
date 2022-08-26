@@ -31,21 +31,29 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
           justifyContent={'space-between'}
           alignItems={'center'}
           paddingX={space['1']}>
-          {Object.entries(navItems).map(([key, Icon]) => (
-            <Link href={key} key={key}>
+          {Object.entries(navItems).map(([key, { icon: Icon, disabled }]) => (
+            <Link href={disabled ? undefined : key} key={key}>
               <Center>
                 <CSSWrapper className="navigation__item">
                   <CircleIcon
                     size="35px"
-                    color={key === path ? 'primary.900' : 'transparent'}
+                    color={
+                      disabled
+                        ? 'transparent'
+                        : key === path
+                        ? 'primary.900'
+                        : 'transparent'
+                    }
                   />
                   <CSSWrapper
                     className={`navigation__item__icon ${
-                      key === path ? 'active' : ''
+                      !disabled && key === path ? 'active' : ''
                     }`}>
                     <Icon
                       fill={
-                        key === path
+                        disabled
+                          ? colors['gray']['300']
+                          : key === path
                           ? colors['lightText']
                           : colors['primary']['900']
                       }
