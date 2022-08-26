@@ -45,7 +45,11 @@ const InfoScreen: React.FC<Props> = ({
           paddingY={space['4']}
           justifyContent="center"
           alignItems="center">
-          {icon && <Box>{icon}</Box>}
+          {icon && (
+            <Box width="100%" alignItems="center" textAlign="center">
+              {icon}
+            </Box>
+          )}
           <Heading
             maxWidth="220"
             textAlign="center"
