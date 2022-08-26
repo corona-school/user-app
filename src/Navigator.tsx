@@ -25,6 +25,7 @@ import ChangeSettingSchoolType from './pages/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/ChangeSettingState'
 import ChangeSettingLanguage from './pages/ChangeSettingLanguage'
 import ChangeSettingSchoolClass from './pages/ChangeSettingSchoolClass'
+import SingleCourse from './pages/SingleCourse'
 
 export default function Navigator() {
   return (
@@ -44,6 +45,15 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <Dashboard />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/single-course"
+          element={
+            <RequireAuth>
+              <SingleCourse />
             </RequireAuth>
           }
         />
