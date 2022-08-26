@@ -1,29 +1,36 @@
 import { Box, useTheme, Heading, Row } from 'native-base'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 type Props = {
   children?: ReactNode | ReactNode[]
   title?: string
   leftContent?: ReactNode | ReactNode[]
   rightContent?: ReactNode | ReactNode[]
+  portal?: any
 }
 
 const HeaderCard: React.FC<Props> = ({
   children,
   title,
   leftContent,
-  rightContent
+  rightContent,
+  portal
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
+
+  useEffect(() => {
+    portal && portal(children)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Box
       bgColor="primary.900"
-      paddingY={space['0.5']}
+      paddingY={`${sizes['headerPaddingYPx']}px`}
       borderBottomRadius={8}
       zIndex={9999}>
       <Box
-        h={'56px'}
+        h={`${sizes['headerSizePx']}px`}
         paddingX={space['1']}
         position="fixed"
         top="0"
@@ -43,11 +50,11 @@ const HeaderCard: React.FC<Props> = ({
           </Box>
         </Row>
       </Box>
-      {children && (
+      {/* {children && (
         <Box paddingX={space['1']} paddingTop={'56px'}>
           {children}
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }
