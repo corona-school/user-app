@@ -40,30 +40,44 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
           top="0"
           left="0"
           bottom="0">
-          {Object.entries(navItems).map(([key, { label, icon: Icon }]) => (
-            <Link href={key} key={key}>
-              <Row alignItems={'center'} paddingX={space['0.5']}>
-                <Center>
-                  <CSSWrapper className="navigation__item">
-                    <CircleIcon
-                      size="35px"
-                      color={key === path ? 'primary.900' : 'transparent'}
-                    />
-                    <CSSWrapper className="navigation__item__icon">
-                      <Icon
-                        fill={
-                          key === path
-                            ? colors['lightText']
-                            : colors['primary']['900']
+          {Object.entries(navItems).map(
+            ([key, { label, icon: Icon, disabled }]) => (
+              <Link href={disabled ? undefined : key} key={key}>
+                <Row alignItems={'center'} paddingX={space['0.5']}>
+                  <Center>
+                    <CSSWrapper className="navigation__item">
+                      <CircleIcon
+                        size="35px"
+                        color={
+                          disabled
+                            ? 'transparent'
+                            : key === path
+                            ? 'primary.900'
+                            : 'transparent'
                         }
                       />
+                      <CSSWrapper className="navigation__item__icon">
+                        <Icon
+                          fill={
+                            disabled
+                              ? colors['gray']['300']
+                              : key === path
+                              ? colors['lightText']
+                              : colors['primary']['900']
+                          }
+                        />
+                      </CSSWrapper>
                     </CSSWrapper>
-                  </CSSWrapper>
-                </Center>
-                <Text marginLeft={space['0.5']}>{label}</Text>
-              </Row>
-            </Link>
-          ))}
+                  </Center>
+                  <Text
+                    color={disabled ? colors['gray']['300'] : undefined}
+                    marginLeft={space['0.5']}>
+                    {label}
+                  </Text>
+                </Row>
+              </Link>
+            )
+          )}
         </VStack>
       </View>
     )) || <></>
