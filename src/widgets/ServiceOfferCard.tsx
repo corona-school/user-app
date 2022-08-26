@@ -18,6 +18,7 @@ const ServiceOfferCard: React.FC<Props> = ({ title, content, icon, image }) => {
           position="absolute"
           w="100%"
           h="100%"
+          alt={title}
           source={{
             uri: image
           }}
