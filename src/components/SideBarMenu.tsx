@@ -5,7 +5,6 @@ import {
   Link,
   Center,
   CircleIcon,
-  SunIcon,
   Row,
   useTheme
 } from 'native-base'
@@ -22,7 +21,7 @@ type Props = {
 
 const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
   const location = useLocation()
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
 
   const path = useMemo(() => {
     const p = location.pathname.replace('/', '')
@@ -36,12 +35,12 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
         <VStack
           paddingTop={paddingTop}
           position="fixed"
-          bgColor={'red.500'}
+          bgColor={'primary.100'}
           w="240"
           top="0"
           left="0"
           bottom="0">
-          {Object.entries(navItems).map(([key, item]) => (
+          {Object.entries(navItems).map(([key, { label, icon: Icon }]) => (
             <Link href={key} key={key}>
               <Row alignItems={'center'} paddingX={space['0.5']}>
                 <Center>
@@ -51,13 +50,17 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                       color={key === path ? 'primary.900' : 'transparent'}
                     />
                     <CSSWrapper className="navigation__item__icon">
-                      <SunIcon
-                        color={key === path ? 'lightText' : 'primary.900'}
+                      <Icon
+                        fill={
+                          key === path
+                            ? colors['lightText']
+                            : colors['primary']['900']
+                        }
                       />
                     </CSSWrapper>
                   </CSSWrapper>
                 </Center>
-                <Text marginLeft={space['0.5']}>{key}</Text>
+                <Text marginLeft={space['0.5']}>{label}</Text>
               </Row>
             </Link>
           ))}

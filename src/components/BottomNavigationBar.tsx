@@ -31,7 +31,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
           justifyContent={'space-between'}
           alignItems={'center'}
           paddingX={space['1']}>
-          {Object.entries(navItems).map(([key, Icon]) => (
+          {Object.entries(navItems).map(([key, { icon: Icon }]) => (
             <Link href={key} key={key}>
               <Center>
                 <CSSWrapper className="navigation__item">
