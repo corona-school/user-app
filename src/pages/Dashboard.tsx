@@ -51,6 +51,7 @@ const Dashboard: React.FC<Props> = () => {
           <VStack space={space['0.5']} paddingX={space['1']}>
             <Heading>Nächster Termin</Heading>
             <AppointmentCard
+              href={'/single-course'}
               tags={['Mathematik', 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
@@ -74,6 +75,7 @@ const Dashboard: React.FC<Props> = () => {
               ))} */}
 
             <AppointmentCard
+              href={'/single-course'}
               description="Lorem Ipsum"
               tags={['Mathematik', 'Gruppenkurs']}
               date={futureDate}
@@ -82,6 +84,7 @@ const Dashboard: React.FC<Props> = () => {
             />
 
             <AppointmentCard
+              href={'/single-course'}
               description="Lorem Ipsum"
               tags={['Deutsch']}
               date={futureDate}
@@ -90,6 +93,7 @@ const Dashboard: React.FC<Props> = () => {
             />
 
             <AppointmentCard
+              href={'/single-course'}
               description="Lorem Ipsum"
               tags={['Mathematik']}
               date={futureDate}
@@ -139,6 +143,7 @@ const Dashboard: React.FC<Props> = () => {
                 />
               ))} */}
             <SignInCard
+              href={'/single-course'}
               image="https://images.unsplash.com/photo-1560785477-d43d2b34e0df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
               tags={['Mathematik', 'Gruppenkurs']}
               date={new Date()}
@@ -147,6 +152,7 @@ const Dashboard: React.FC<Props> = () => {
               onClickSignIn={() => null}
             />
             <SignInCard
+              href={'/single-course'}
               image="https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8d3JpdGluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
               tags={['Deutsch']}
               date={new Date()}
@@ -155,6 +161,7 @@ const Dashboard: React.FC<Props> = () => {
               onClickSignIn={() => null}
             />
             <SignInCard
+              href={'/single-course'}
               image="https://images.unsplash.com/photo-1446329360995-b4642a139973?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fG1hdGhzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
               tags={['Mathematik']}
               date={new Date()}
