@@ -14,6 +14,12 @@ const Card: React.FC<Props> = ({
   variant = 'normal',
   isFullHeight = true
 }) => {
+  const p: { flex?: number } = {}
+
+  if (isFullHeight) {
+    p.flex = 1
+  }
+
   return (
     <BaseCard
       shadow="none"
@@ -21,7 +27,7 @@ const Card: React.FC<Props> = ({
       borderRadius={8}
       padding={0}
       w={flexibleWidth ? 'auto' : '190'}
-      h={isFullHeight ? '100%' : ''}>
+      {...p}>
       {children}
     </BaseCard>
   )

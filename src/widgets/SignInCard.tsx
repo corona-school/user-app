@@ -21,7 +21,7 @@ const SignInCard: React.FC<Props> = ({
 }) => {
   const { space } = useTheme()
   return (
-    <Card>
+    <Card isFullHeight={false}>
       <Box bg="primary.500" h="120" padding={space['0.5']}>
         <Image
           position="absolute"

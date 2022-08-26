@@ -130,14 +130,16 @@ export default function Navigator() {
           }
         />
 
-        <Route
-          path="/playground"
-          element={
-            <RequireAuth>
-              <Playground />
-            </RequireAuth>
-          }
-        />
+        {process.env.NODE_ENV === 'development' && (
+          <Route
+            path="/playground"
+            element={
+              <RequireAuth>
+                <Playground />
+              </RequireAuth>
+            }
+          />
+        )}
 
         {/* Fallback */}
         <Route
