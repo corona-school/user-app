@@ -29,6 +29,7 @@ const SingleCourse: React.FC<Props> = () => {
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
+            alt="kurvendiskussion"
             borderRadius="8px"
             position="absolute"
             w="100%"
