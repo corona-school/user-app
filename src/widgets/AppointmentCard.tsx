@@ -80,7 +80,7 @@ const AppointmentCard: React.FC<Props> = ({
         <Card
           flexibleWidth={isTeaser ? true : false}
           variant={isStartingSoon ? 'dark' : 'normal'}>
-          <Link>
+          <Link href={href}>
             <Column w="100%">
               <Box h={isTeaser ? '170' : '120'} padding={space['1']}>
                 <Image
