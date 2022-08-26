@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Box, Row, Text, useTheme } from 'native-base'
+import { Box, Link, Row, Text, useTheme } from 'native-base'
 import Tag from '../components/Tag'
 import LeftImageCard from './LeftImageCard'
 import RatingTag from './RatingTag'
@@ -10,6 +10,7 @@ type Props = {
   name: string
   avatar?: string
   button?: ReactNode | ReactNode[]
+  href?: string
 }
 
 const TeacherCard: React.FC<Props> = ({
@@ -17,7 +18,8 @@ const TeacherCard: React.FC<Props> = ({
   tags,
   name,
   avatar,
-  button
+  button,
+  href
 }) => {
   const { space } = useTheme()
 
@@ -26,9 +28,11 @@ const TeacherCard: React.FC<Props> = ({
       <Box alignSelf="flex-start">
         <RatingTag rating="4,1" />
       </Box>
-      <Text fontSize="md" bold color={variant === 'dark' ? 'lightText' : ''}>
-        {name}
-      </Text>
+      <Link href={href}>
+        <Text fontSize="md" bold color={variant === 'dark' ? 'lightText' : ''}>
+          {name}
+        </Text>
+      </Link>
       <Row space={space['0.5']}>
         {tags.map((t, index) => (
           <Tag variant="secondary" text={t} key={`tag-${index}`} />
