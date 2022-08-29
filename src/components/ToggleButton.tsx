@@ -12,6 +12,7 @@ const ToggleButton: React.FC<Props> = ({ label, onPress }) => {
   return (
     <Button
       bgColor={active ? 'primary.100' : 'primary.900'}
+      _text={{ color: active ? 'darkText' : 'lightText' }}
       onPress={() => {
         setActive(prev => !prev)
         onPress && onPress()
