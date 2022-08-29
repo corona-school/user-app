@@ -8,11 +8,11 @@ const Welcome: React.FC<Props> = () => {
   return (
     <InfoScreen
       variant="dark"
-      title="Herzlich willkommen bei Lern-Fair"
-      content="Hast du breits einen Account? Oder bist du neu bei uns und möchtest dich registrieren?"
-      outlineButtonText="Anmelden"
+      title="welcome.title"
+      content="welcome.subtitle"
+      outlineButtonText="welcome.btn.login"
       outlinebuttonLink={() => navigate('/login')}
-      defaultButtonText="Neu registrieren"
+      defaultButtonText="welcome.btn.signup"
       defaultbuttonLink={() => navigate('/register')}
       icon={<Logo />}
     />

@@ -9,6 +9,7 @@ import {
   Box
 } from 'native-base'
 import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   variant?: 'dark' | 'light'
@@ -33,6 +34,7 @@ const InfoScreen: React.FC<Props> = ({
   defaultbuttonLink
 }) => {
   const { space } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <View
@@ -56,14 +58,14 @@ const InfoScreen: React.FC<Props> = ({
             paddingTop={space['1.5']}
             paddingBottom={space['0.5']}
             color={variant === 'dark' ? 'lightText' : 'primary.700'}>
-            {title}
+            {t(title)}
           </Heading>
           <Text
             paddingBottom={space['2']}
             color={variant === 'dark' ? 'lightText' : 'primary.700'}
             textAlign="center"
             maxWidth="300">
-            {content}
+            {content && t(content)}
           </Text>
           {outlineButtonText && (
             <Box marginX="90px" marginBottom={3} display="block" width="80%">
@@ -71,14 +73,14 @@ const InfoScreen: React.FC<Props> = ({
                 variant={variant === 'dark' ? 'outlinelight' : 'outline'}
                 width="100%"
                 onPress={outlinebuttonLink}>
-                {outlineButtonText}
+                {t(outlineButtonText)}
               </Button>
             </Box>
           )}
           {defaultButtonText && (
             <Box marginX="90px" display="block" width="80%">
               <Button width="100%" onPress={defaultbuttonLink}>
-                {defaultButtonText}
+                {t(defaultButtonText)}
               </Button>
             </Box>
           )}
