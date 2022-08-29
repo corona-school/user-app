@@ -13,7 +13,7 @@ const Welcome: React.FC<Props> = () => {
       outlineButtonText="welcome.btn.login"
       outlinebuttonLink={() => navigate('/login')}
       defaultButtonText="welcome.btn.signup"
-      defaultbuttonLink={() => navigate('/register')}
+      defaultbuttonLink={() => navigate('/registration')}
       icon={<Logo />}
     />
   )
