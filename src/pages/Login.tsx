@@ -16,8 +16,10 @@ import {
 import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 export default function Login() {
+  const { t } = useTranslation()
   const { space } = useTheme()
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -100,6 +102,9 @@ export default function Login() {
               onKeyPress={handleKeyPress}
             />
           </Row>
+          <Text opacity={0.6} fontSize="xs">
+            {t('login.hint.mandatory')}
+          </Text>
         </Box>
         {error && (
           <Text
