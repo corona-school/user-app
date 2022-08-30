@@ -5,9 +5,10 @@ import {
   Heading,
   Checkbox,
   Button,
-  useTheme
+  useTheme,
+  Row
 } from 'native-base'
-import { useContext, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../components/ToggleButton'
 import { ModalContext } from '../widgets/FullPageModal'
@@ -23,17 +24,34 @@ const Registration: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useContext(ModalContext)
 
+  const onBarrierSolved = useCallback(
+    (isUserFit: boolean) => {
+      setShow(false)
+    },
+    [setShow]
+  )
+
   const showModal = () => {
     setVariant('dark')
     setContent(
       <VStack>
         <Heading color={'lightText'}>{t('registration.barrier.title')}</Heading>
         <Text color={'lightText'}>{t(`registration.barrier.text`)}</Text>
-        {new Array(10).fill(0).map((_, i) => (
-          <Text color={'lightText'}>
-            {t(`registration.barrier.point_${i}`)}
-          </Text>
-        ))}
+        <VStack>
+          {new Array(3).fill(0).map((_, i) => (
+            <Text color={'lightText'}>
+              {t(`registration.barrier.point_${i}`)}
+            </Text>
+          ))}
+        </VStack>
+        <Row>
+          <Button onPress={() => onBarrierSolved(true)}>
+            {t('registration.barrier.btn.yes')}
+          </Button>
+          <Button onPress={() => onBarrierSolved(false)}>
+            {t('registration.barrier.btn.no')}
+          </Button>
+        </Row>
       </VStack>
     )
     setShow(true)
@@ -43,8 +61,8 @@ const Registration: React.FC<Props> = () => {
     <>
       <VStack flex="1" paddingX={space['0.5']}>
         <VStack space={space['0.5']}>
-          <Input placeholder={t('registration.email')} />
-          <Input placeholder={t('registration.password')} />
+          <Input placeholder={t('email')} />
+          <Input placeholder={t('password')} />
           <Input placeholder={t('registration.password_repeat')} />
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>

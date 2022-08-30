@@ -1,9 +1,10 @@
 const welcome = {
-  title: 'giftGRUEN',
-  subtitle: 'Lernfair App',
+  title: 'Herzlich Willkommen bei Lern-Fair',
+  subtitle:
+    'Hast du bereits einen Account?\nOder bist du neu bei uns und möchtest dich registrieren?',
   btn: {
-    login: 'Login Mogin',
-    signup: 'Signup Mignup'
+    login: 'Anmelden',
+    signup: 'Neu registrieren'
   }
 }
 

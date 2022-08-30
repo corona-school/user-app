@@ -1,6 +1,4 @@
 const registration = {
-  email: 'Email',
-  password: 'Passwort',
   password_repeat: 'Passwort wiederholen',
   i_am: 'Ich bin',
   parent: 'Elternteil',
@@ -14,12 +12,9 @@ const registration = {
   barrier: {
     title: 'Wichtig',
     text: 'Unsere Angebote richten sich an bildungsbenachtiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit "ja" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.',
-    point_0:
-      'Unsere Angebote richten sich an bildungsbenachteiligten Schüler:innen. Du weißt nicht genau, ob du zu dieser Zielgruppe gehörst?',
-    point_1:
-      'Dann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit "ja" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.',
-    point_2:
-      'Sind deine Eltern/ Erziehungsberechtigten nicht in der Lage, eine Nachhilfe für dich zu finanzieren?',
+    point_0: 'Du brauchst Hilfe in der Schule',
+    point_1: 'Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
+    point_2: 'Deine Familie kann keine Nachhilfe für dich bezahlen',
     point_3: 'Sind beide Eltern/ Erziehungsberechtigten nicht erwerbstätig',
     point_4:
       'Sind beide Eltern/ Erziehungsberechtigten physisch oder psychisch (aufgrund einer Krankheit / eines Unfalls etc.) eingeschränkt?',
@@ -31,7 +26,11 @@ const registration = {
     point_8:
       'Können dir deine Eltern/ Erziehungsberechtigten wegen ihres Bildungsweges nicht bei den Hausaufgaben helfen?',
     point_9:
-      'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de'
+      'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de',
+    btn: {
+      yes: 'Ja, die Punkte treffen zu',
+      no: 'Nein, die Punkte treffen nicht zu'
+    }
   }
 }
 
