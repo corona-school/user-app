@@ -11,6 +11,7 @@ import {
   Stack
 } from 'native-base'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -44,17 +45,18 @@ const ChangeSettingState: React.FC<Props> = () => {
   ]
 
   const [selections, setSelections] = useState<string[]>([])
+  const { t } = useTranslation()
 
   return (
     <WithNavigation
-      headerTitle="Bundesland ändern"
+      headerTitle={t('profile.State.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>Mein Bundesland</Heading>
+        <Heading>{t('profile.State.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -83,7 +85,7 @@ const ChangeSettingState: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title="Weitere Bundesländer wählen">
+        <ProfileSettingRow title={t('profile.State.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
@@ -113,14 +115,18 @@ const ChangeSettingState: React.FC<Props> = () => {
                   <FormControl>
                     <Stack>
                       <FormControl.Label>
-                        <Text bold>Mein Bundesland</Text>
+                        <Text bold>
+                          {t('profile.State.single.option.label')}
+                        </Text>
                       </FormControl.Label>
                       <Input
                         type="text"
                         multiline
                         numberOfLines={3}
                         h={70}
-                        placeholder="In welchem Bundesland wohnst du?"
+                        placeholder={t(
+                          'profile.State.single.optional.placeholder'
+                        )}
                       />
                     </Stack>
                   </FormControl>
@@ -131,7 +137,7 @@ const ChangeSettingState: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>Speichern</Button>
+        <Button>{t('profile.State.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )

@@ -68,12 +68,7 @@ const SingleCourse: React.FC<Props> = () => {
         </Text>
 
         <Box>
-          <CourseTrafficLamp
-            status="last"
-            infoPopupTitle="Verfügbarkeit"
-            infoPopupContent="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. "
-            infoPopupLastContent="Erklärung zur Anmelden/Abmelden/In die Warteschlange setzen lassen …"
-          />
+          <CourseTrafficLamp status="last" />
         </Box>
 
         <Tabs
