@@ -8,6 +8,7 @@ import {
   Row,
   Button
 } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
@@ -20,6 +21,7 @@ type Props = {}
 
 const SingleCourse: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <WithNavigation
@@ -49,7 +51,10 @@ const SingleCourse: React.FC<Props> = () => {
             </Column>
           </Row>
         </Box>
-        <Text paddingBottom={space['0.5']}>Ab 28.07.22 • 13:30 Uhr</Text>
+        <Text paddingBottom={space['0.5']}>
+          {t('single.global.clockFrom')} 28.07.22 • 13:30{' '}
+          {t('single.global.clock')}
+        </Text>
         <Heading paddingBottom={1.5}>
           Diskussionen in Mathe!? – Die Kurvendiskussion
         </Heading>
@@ -74,7 +79,7 @@ const SingleCourse: React.FC<Props> = () => {
         <Tabs
           tabs={[
             {
-              title: 'Beschreibung',
+              title: t('single.tabs.description'),
               content: (
                 <>
                   <Text paddingBottom={space['0.5']}>
@@ -101,50 +106,54 @@ const SingleCourse: React.FC<Props> = () => {
               )
             },
             {
-              title: 'Hilfestellung',
+              title: t('single.tabs.help'),
               content: (
                 <>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      Kategorie:
+                      {t('single.global.category')}:
                     </Text>
                     <Text>Repetitorium</Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      Teilnehmende:
+                      {t('single.global.participating')}:
                     </Text>
                     <Text>4/20</Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      Anzahl:
+                      {t('single.global.quantity')}:
                     </Text>
                     <Text>5 Lektionen</Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      Dauer:
+                      {t('single.global.duration')}:
                     </Text>
                     <Text>Max. 60 Minuten</Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['1.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      Tutor:innen:
+                      {t('single.global.tutor')}:
                     </Text>
                     <Text>Max Mustermann</Text>
                   </Row>
                   <Box marginBottom={space['0.5']}>
-                    <Button marginBottom={space['0.5']}>Anmelden</Button>
+                    <Button marginBottom={space['0.5']}>
+                      {t('single.button.login')}
+                    </Button>
                   </Box>
                   <Box marginBottom={space['1.5']}>
-                    <Button variant="outline">Kontakt aufnehmen</Button>
+                    <Button variant="outline">
+                      {t('single.button.contact')}
+                    </Button>
                   </Box>
                 </>
               )
             },
             {
-              title: 'Lektionen',
+              title: t('single.tabs.lessons'),
               content: (
                 <>
                   <Row flexDirection="column" marginBottom={space['1.5']}>
@@ -152,7 +161,7 @@ const SingleCourse: React.FC<Props> = () => {
                       Lektion 1
                     </Heading>
                     <Text paddingBottom={space['0.5']}>
-                      28.07.22 • 13:30 Uhr
+                      28.07.22 • 13:30 {t('single.global.clock')}
                     </Text>
                     <Text paddingBottom={space['0.5']}>
                       Die 1te Lektion fand vor 4 Tagen statt und dauerte
@@ -165,7 +174,7 @@ const SingleCourse: React.FC<Props> = () => {
                       Lektion 2
                     </Heading>
                     <Text paddingBottom={space['0.5']}>
-                      28.07.22 • 13:30 Uhr
+                      28.07.22 • 13:30 {t('single.global.clock')}
                     </Text>
                     <Text paddingBottom={space['0.5']}>
                       Die 2te Lektion fand vor 3 Tagen statt und dauerte
@@ -178,7 +187,7 @@ const SingleCourse: React.FC<Props> = () => {
                       Lektion 3
                     </Heading>
                     <Text paddingBottom={space['0.5']}>
-                      28.07.22 • 13:30 Uhr
+                      28.07.22 • 13:30 {t('single.global.clock')}
                     </Text>
                     <Text paddingBottom={space['0.5']}>
                       Die 3te Lektion fand vor 3 Tagen statt und dauerte
@@ -191,7 +200,7 @@ const SingleCourse: React.FC<Props> = () => {
                       Lektion 4
                     </Heading>
                     <Text paddingBottom={space['0.5']}>
-                      28.07.22 • 13:30 Uhr
+                      28.07.22 • 13:30 {t('single.global.clock')}
                     </Text>
                     <Text paddingBottom={space['0.5']}>
                       Die 4te Lektion fand vor 3 Tagen statt und dauerte
@@ -204,7 +213,7 @@ const SingleCourse: React.FC<Props> = () => {
                       Lektion 5
                     </Heading>
                     <Text paddingBottom={space['0.5']}>
-                      28.07.22 • 13:30 Uhr
+                      28.07.22 • 13:30 {t('single.global.clock')}
                     </Text>
                     <Text paddingBottom={space['0.5']}>
                       Die 5te Lektion fand vor 3 Tagen statt und dauerte
@@ -213,16 +222,20 @@ const SingleCourse: React.FC<Props> = () => {
                     </Text>
                   </Row>
                   <Box marginBottom={space['0.5']}>
-                    <Button marginBottom={space['0.5']}>Anmelden</Button>
+                    <Button marginBottom={space['0.5']}>
+                      {t('single.button.login')}
+                    </Button>
                   </Box>
                   <Box marginBottom={space['1.5']}>
-                    <Button variant="outline">Kontakt aufnehmen</Button>
+                    <Button variant="outline">
+                      {t('single.button.contact')}
+                    </Button>
                   </Box>
                 </>
               )
             },
             {
-              title: 'Teilnehmer',
+              title: t('single.tabs.participant'),
               content: (
                 <>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -234,7 +247,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Linda</Heading>
-                      <Text>13 Jahre aus Köln</Text>
+                      <Text>13 Jahre {t('single.global.from')} Köln</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -246,7 +259,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Nadine</Heading>
-                      <Text>15 Jahre aus Essen</Text>
+                      <Text>15 Jahre {t('single.global.from')} Essen</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -258,7 +271,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Mario</Heading>
-                      <Text>13 Jahre aus Düsseldorf</Text>
+                      <Text>13 Jahre {t('single.global.from')} Düsseldorf</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -270,7 +283,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Philip</Heading>
-                      <Text>12 Jahre aus Aachen</Text>
+                      <Text>12 Jahre {t('single.global.from')} Aachen</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -282,7 +295,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Kevin</Heading>
-                      <Text>14 Jahre aus Aachen</Text>
+                      <Text>14 Jahre {t('single.global.from')} Aachen</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -294,7 +307,7 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Patrick</Heading>
-                      <Text>14 Jahre aus Stolberg</Text>
+                      <Text>14 Jahre {t('single.global.from')} Stolberg</Text>
                     </Column>
                   </Row>
                   <Row marginBottom={space['1.5']} alignItems="center">
@@ -306,14 +319,18 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Kevin</Heading>
-                      <Text>14 Jahre aus Düsseldorf</Text>
+                      <Text>14 Jahre {t('single.global.from')} Düsseldorf</Text>
                     </Column>
                   </Row>
                   <Box marginBottom={space['0.5']}>
-                    <Button marginBottom={space['0.5']}>Anmelden</Button>
+                    <Button marginBottom={space['0.5']}>
+                      {t('single.button.login')}
+                    </Button>
                   </Box>
                   <Box marginBottom={space['1.5']}>
-                    <Button variant="outline">Kontakt aufnehmen</Button>
+                    <Button variant="outline">
+                      {t('single.button.contact')}
+                    </Button>
                   </Box>
                 </>
               )
