@@ -2,7 +2,7 @@ import { Heading, Box, Row, Column, useTheme } from 'native-base'
 import { ReactNode } from 'react'
 
 type Props = {
-  title: string
+  title?: string
   children: ReactNode[] | ReactNode[]
 }
 
