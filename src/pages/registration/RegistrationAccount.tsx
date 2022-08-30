@@ -10,16 +10,17 @@ import {
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ToggleButton from '../components/ToggleButton'
-import { ModalContext } from '../widgets/FullPageModal'
+import { useNavigate } from 'react-router-dom'
+import ToggleButton from '../../components/ToggleButton'
+import { ModalContext } from '../../widgets/FullPageModal'
 
 type Props = {}
 
-const Registration: React.FC<Props> = () => {
+const RegistrationAccount: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [legalChecked, setLegalChecked] = useState<boolean>()
   const [typeSelection, setTypeSelection] = useState<string>()
-
+  const navigate = useNavigate()
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useContext(ModalContext)
@@ -27,8 +28,9 @@ const Registration: React.FC<Props> = () => {
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
       setShow(false)
+      navigate('/registration/2')
     },
-    [setShow]
+    [navigate, setShow]
   )
 
   const showModal = () => {
@@ -100,4 +102,4 @@ const Registration: React.FC<Props> = () => {
     </>
   )
 }
-export default Registration
+export default RegistrationAccount

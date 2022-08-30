@@ -128,7 +128,9 @@ export default function Login() {
 
         <Box paddingTop={10} paddingBottom={1}>
           <Text>{t('login.noaccount')}</Text>
-          <Link justifyContent="center">{t('login.btn.register')}</Link>
+          <Link href="/registration/1" justifyContent="center">
+            {t('login.btn.register')}
+          </Link>
         </Box>
       </Row>
     </VStack>
