@@ -1,4 +1,5 @@
 const questionnaire = {
+  step: 'Schritt',
   btn: {
     next: 'Weiter',
     back: 'Zurück',
