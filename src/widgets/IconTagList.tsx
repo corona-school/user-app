@@ -1,18 +1,18 @@
 import { View, Box, Link, Row, Column, Text, CircleIcon } from 'native-base'
 import { useMemo, useState } from 'react'
 
-type Props = {
+export type IIconTagList = {
   iconPath?: string
   textIcon?: string
   text: string
   link?: string
-  variant?: 'normal' | 'full' | 'center'
+  variant?: 'normal' | 'full' | 'center' | 'selection'
   space?: number
   onPress?: () => any
   isDisabled?: boolean
 }
 
-const IconTagList: React.FC<Props> = ({
+const IconTagList: React.FC<IIconTagList> = ({
   iconPath,
   textIcon,
   text,
@@ -30,7 +30,7 @@ const IconTagList: React.FC<Props> = ({
       const Res = require(`../assets/icons/lernfair/${iconPath}`).default
       return <Res />
     } catch (e) {}
-    return <CircleIcon size="30px" color="lightText" />
+    return <CircleIcon size={'30px'} color="lightText" />
   }, [iconPath])
 
   const renderText = useMemo(() => {
@@ -45,7 +45,7 @@ const IconTagList: React.FC<Props> = ({
         <CircleIcon
           color="lightText"
           position="absolute"
-          size="7"
+          size={'7'}
           top="0"
           left="0"
           zIndex="-1"
@@ -58,28 +58,42 @@ const IconTagList: React.FC<Props> = ({
   }, [iconPath, textIcon])
 
   return (
-    <View width={variant === 'full' ? '100%' : ''} paddingY={space}>
+    <View
+      width={variant === 'full' || variant === 'selection' ? '100%' : ''}
+      paddingY={space}>
       <Link
         onPress={() => {
           if (isDisabled) return
           setActive(prev => !prev)
           onPress && onPress()
         }}
-        display={variant === 'full' ? 'block' : ''}
+        display={variant === 'full' || variant === 'selection' ? 'block' : ''}
         href={link}>
         <Box
+          w={variant === 'full' || variant === 'selection' ? '100%' : undefined}
           backgroundColor={active ? 'primary.900' : 'primary.100'}
           borderRadius="5px"
           padding={variant === 'center' ? '30px 20px' : '10px 30px'}>
-          <Row flexDirection={variant === 'center' ? 'column' : 'row'}>
+          <Row
+            flexDirection={
+              variant === 'center' || variant === 'selection' ? 'column' : 'row'
+            }
+            alignItems="center">
             <Column
-              marginRight={2}
-              marginBottom={variant === 'center' ? 2 : ''}>
+              marginRight={variant !== 'selection' ? 2 : 0}
+              marginBottom={
+                variant === 'center' || variant === 'selection' ? 2 : ''
+              }>
               {(iconPath && renderIcon) || renderText}
             </Column>
             <Column alignItems="center" justifyContent="center">
               <Text
-                textAlign={variant === 'center' ? 'center' : 'left'}
+                fontWeight={variant === 'selection' ? 600 : 400}
+                textAlign={
+                  variant === 'center' || variant === 'selection'
+                    ? 'center'
+                    : 'left'
+                }
                 color={active ? 'lightText' : 'darkText'}>
                 {text}
               </Text>

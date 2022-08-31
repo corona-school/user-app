@@ -10,6 +10,7 @@ export type Question = {
   type: 'selection'
   options: ISelectionItem[]
   text?: string
+  imgRootPath: string
 }
 
 export type IQuestionnaire = {
