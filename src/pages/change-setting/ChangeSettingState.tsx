@@ -21,30 +21,33 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-
+type State = {
+  key: string
+  label: string
+}
 const ChangeSettingState: React.FC<Props> = () => {
   const { space } = useTheme()
 
-  const states = [
-    'Baden-Württemberg',
-    'Bayern',
-    'Berlin',
-    'Brandenburg',
-    'Bremen',
-    'Hamburg',
-    'Hessen',
-    'Mecklenburg-Vorpommern',
-    'Niedersachsen',
-    'Nordrhein-Westfalen',
-    'Rheinland-Pfalz',
-    'Saarland',
-    'Sachsen',
-    'Sachsen-Anhalt',
-    'Schleswig-Holstein',
-    'Thüringen'
+  const states: State[] = [
+    { key: 'baden-wuerttemberg', label: 'Baden-Württemberg' },
+    { key: 'bayern', label: 'Bayern' },
+    { key: 'berlin', label: 'Berlin' },
+    { key: 'brandenburg', label: 'Brandenburg' },
+    { key: 'bremen', label: 'Bremen' },
+    { key: 'hamburg', label: 'Hamburg' },
+    { key: 'hessen', label: 'Hessen' },
+    { key: 'mecklenburg-vorpommern', label: 'Mecklenburg-Vorpommern' },
+    { key: 'niedersachsen', label: 'Niedersachsen' },
+    { key: 'nordrhein-westfalen', label: 'Nordrhein-Westfalen' },
+    { key: 'rheinland-pfalz', label: 'Rheinland-Pfalz' },
+    { key: 'saarland', label: 'Saarland' },
+    { key: 'sachsen', label: 'Sachsen' },
+    { key: 'sachsen-anhalt', label: 'Sachsen-Anhalt' },
+    { key: 'schleswig-holstein', label: 'Schleswig-Holstein' },
+    { key: 'thueringen', label: 'Thüringen' }
   ]
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<State[]>([])
   const { t } = useTranslation()
 
   return (
@@ -74,8 +77,8 @@ const ChangeSettingState: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`states/icon_bundesland_${subject.toLowerCase()}.svg`}
-                      text={subject}
+                      iconPath={`states/icon_bundesland_${subject.key}.svg`}
+                      text={subject.label}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -97,14 +100,14 @@ const ChangeSettingState: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {states.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    !selections.find(sel => sel.key === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`states/icon_bundesland_${subject.toLowerCase()}.svg`}
-                          text={subject}
+                          iconPath={`states/icon_bundesland_${subject.key}.svg`}
+                          text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -113,7 +116,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {selections.find(sel => sel.key === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>

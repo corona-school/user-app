@@ -21,22 +21,23 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-
+type SchoolType = {
+  key: string
+  label: string
+}
 const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const schooltypes = [
-    'Grundschule',
-    'Hauptschule',
-    'Realschule',
-    'Gymnasium',
-    'Hochschule',
-    'Berufsschule',
-    'Andere'
+  const schooltypes: SchoolType[] = [
+    { label: 'Grundschule', key: 'grundschule' },
+    { label: 'Hauptschule', key: 'hauptschule' },
+    { label: 'Realschule', key: 'realschule' },
+    { label: 'Gymnasium', key: 'gymnasium' },
+    { label: 'Andere', key: 'andere' }
   ]
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<SchoolType[]>([])
 
   return (
     <WithNavigation
@@ -65,8 +66,12 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`schooltypes/icon_${subject.toLowerCase()}.svg`}
-                      text={subject}
+                      iconPath={`schooltypes/icon_${
+                        subject.key === 'hauptschule'
+                          ? 'realschule'
+                          : subject.key
+                      }.svg`}
+                      text={subject.label}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -88,14 +93,18 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {schooltypes.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    !selections.find(sel => sel.key === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`schooltypes/icon_${subject.toLowerCase()}.svg`}
-                          text={subject}
+                          iconPath={`schooltypes/icon_${
+                            subject.key === 'hauptschule'
+                              ? 'realschule'
+                              : subject.key
+                          }.svg`}
+                          text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -104,7 +113,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {selections.find(sel => sel.key === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>

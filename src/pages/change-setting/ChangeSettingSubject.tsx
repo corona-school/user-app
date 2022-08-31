@@ -21,40 +21,43 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-
+type Subject = {
+  key: string
+  label: string
+}
 const ChangeSettingSubject: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const subjects = [
-    'Mathematik',
-    'Deutsch',
-    'Englisch',
-    'Biologie',
-    'Chemie',
-    'Physik',
-    'Informatik',
-    'Sachkunde',
-    'Geschichte',
-    'Erdkunde',
-    'Wirtschaft',
-    'Politik',
-    'Philosophie',
-    'Kunst',
-    'Musik',
-    'Pädagogik',
-    'Französisch',
-    'Latein',
-    'Altgriechisch',
-    'Spanisch',
-    'Italienisch',
-    'Russisch',
-    'Niederländisch',
-    'Deutsch als Zweitsprache',
-    'Andere'
+  const subjects: Subject[] = [
+    { key: 'altgriechisch', label: 'Altgriechisch' },
+    { key: 'biologie', label: 'Biologie' },
+    { key: 'chemie', label: 'Chemie' },
+    { key: 'deutsch', label: 'Deutsch' },
+    { key: 'englisch', label: 'Englisch' },
+    { key: 'erdkunde', label: 'Erdkunde' },
+    { key: 'franzoesisch', label: 'Französisch' },
+    { key: 'geschichte', label: 'Geschichte' },
+    { key: 'informatik', label: 'Informatik' },
+    { key: 'italienisch', label: 'Italienisch' },
+    { key: 'kunst', label: 'Kunst' },
+    { key: 'latein', label: 'Latein' },
+    { key: 'mathe', label: 'Mathe' },
+    { key: 'musik', label: 'Musik' },
+    { key: 'niederlaendisch', label: 'Niederländisch' },
+    { key: 'paedagogik', label: 'Pädagogik' },
+    { key: 'philosophie', label: 'Philosophie' },
+    { key: 'physik', label: 'Physik' },
+    { key: 'politik', label: 'Politik' },
+    { key: 'russisch', label: 'Russisch' },
+    { key: 'sachkunde', label: 'Sachkunde' },
+    { key: 'sonstige', label: 'Sonstige' },
+    { key: 'spanisch', label: 'Spanisch' },
+    { key: 'wirtschaft', label: 'Wirtschaft' }
+    // { key: 'andere', label: 'Andere' }
   ]
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<Subject[]>([])
 
   return (
     <WithNavigation
@@ -83,8 +86,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`subjects/icon_${subject.toLowerCase()}.svg`}
-                      text={subject}
+                      iconPath={`subjects/icon_${subject.key}.svg`}
+                      text={subject.label}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -106,14 +109,14 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {subjects.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    !selections.find(sel => sel.key === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`subjects/icon_fach_${subject.toLowerCase()}.svg`}
-                          text={subject}
+                          iconPath={`subjects/icon_fach_${subject.key}.svg`}
+                          text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -122,7 +125,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {selections.find(sel => sel.key === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>

@@ -22,24 +22,103 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
 
+type Language = {
+  key: string
+  label: string
+}
+
 const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const languages = [
-    'Deutsch',
-    'Englisch',
-    'Französisch',
-    'Latein',
-    'Altgriechisch',
-    'Spanisch',
-    'Italienisch',
-    'Russisch',
-    'Niederländisch',
-    'Andere'
+  const languages: Language[] = [
+    {
+      key: 'albanisch',
+      label: 'Albanisch'
+    },
+    {
+      key: 'arabisch',
+      label: 'Arabisch'
+    },
+    {
+      key: 'armenisch',
+      label: 'Armenisch'
+    },
+    {
+      key: 'aserbaidschanisch',
+      label: 'Aserbaidschanisch'
+    },
+    {
+      key: 'bosnisch',
+      label: 'Bosnisch'
+    },
+    {
+      key: 'bulgarisch',
+      label: 'Bulgarisch'
+    },
+    {
+      key: 'chinesisch',
+      label: 'Chinesisch'
+    },
+    {
+      key: 'deutsch',
+      label: 'Deutsch'
+    },
+    {
+      key: 'englisch',
+      label: 'Englisch'
+    },
+    {
+      key: 'franzoesisch',
+      label: 'Französisch'
+    },
+    {
+      key: 'italienisch',
+      label: 'Italienisch'
+    },
+    {
+      key: 'kasachisch',
+      label: 'Kasachisch'
+    },
+    {
+      key: 'kurdisch',
+      label: 'Kurdisch'
+    },
+    {
+      key: 'polnisch',
+      label: 'Polnisch'
+    },
+    {
+      key: 'portugiesisch',
+      label: 'Portugiesisch'
+    },
+    {
+      key: 'russisch',
+      label: 'Russisch'
+    },
+    {
+      key: 'spanisch',
+      label: 'Spanisch'
+    },
+    {
+      key: 'tuerkisch',
+      label: 'Türkisch'
+    },
+    {
+      key: 'ukrainisch',
+      label: 'Ukrainisch'
+    },
+    {
+      key: 'vietnamesisch',
+      label: 'Vietnamesisch'
+    },
+    {
+      key: 'andere',
+      label: 'Andere'
+    }
   ]
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<Language[]>([])
 
   return (
     <WithNavigation
@@ -68,8 +147,8 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`states/icon_bundesland_${subject.toLowerCase()}.svg`}
-                      text={subject}
+                      iconPath={`languages/icon_${subject.key}.svg`}
+                      text={subject.label}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -92,14 +171,14 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {languages.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    !selections.find(sel => sel.key === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`languages/icon_${subject.toLowerCase()}.svg`}
-                          text={subject}
+                          iconPath={`languages/icon_${subject.key}.svg`}
+                          text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -108,7 +187,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {selections.find(sel => sel.key === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
