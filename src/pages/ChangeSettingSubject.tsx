@@ -82,7 +82,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                     })
                   }>
                   <Row alignItems="center" justifyContent="center">
-                    <IconTagList icon="h" text={subject} />
+                    <IconTagList
+                      iconPath={`subjects/icon_${subject.toLowerCase()}.svg`}
+                      text={subject}
+                    />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
                     </Text>
@@ -109,7 +112,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          icon="h"
+                          iconPath={`subjects/icon_fach_${subject.toLowerCase()}.svg`}
                           text={subject}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])

@@ -26,7 +26,9 @@ const IconTagList: React.FC<Props> = ({
     try {
       const Res = require(`../assets/icons/lernfair/${iconPath}`).default
       return <Res />
-    } catch (e) {}
+    } catch (e) {
+      console.log(e)
+    }
     return <CircleIcon size="30px" color="lightText" />
   }, [iconPath])
 
