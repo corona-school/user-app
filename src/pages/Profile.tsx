@@ -12,7 +12,8 @@ import {
   Input,
   Button,
   Alert,
-  HStack
+  HStack,
+  TextArea
 } from 'native-base'
 import NotificationAlert from '../components/NotificationAlert'
 import SettingsButton from '../components/SettingsButton'
@@ -38,12 +39,10 @@ const Profile: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const [nameModalVisible, setNameModalVisible] = useState(false)
-  const [aboutMeModalVisible, setAboutMeModalVisible] = useState(false)
-  const initialRef = useRef(null)
-  const finalRef = useRef(null)
-  const [profilName, setProfilName] = useState('Milan')
-  const [aboutMe, setAboutMe] = useState(
+  const [nameModalVisible, setNameModalVisible] = useState<boolean>(false)
+  const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false)
+  const [profilName, setProfilName] = useState<string>('Milan')
+  const [aboutMe, setAboutMe] = useState<string>(
     'Willkommen im Profil. Hier kannst du deinen Text anpassen.'
   )
   const [userSettingChanged, setUserSettings] = useState(false)
@@ -127,9 +126,7 @@ const Profile: React.FC<Props> = () => {
         <VStack paddingX={space['1.5']} space={space['1']}>
           <Modal
             isOpen={nameModalVisible}
-            onClose={() => setNameModalVisible(false)}
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}>
+            onClose={() => setNameModalVisible(false)}>
             <Modal.Content>
               <Modal.CloseButton />
               <Modal.Header>{t('profile.UserName.popup.header')}</Modal.Header>
@@ -143,7 +140,6 @@ const Profile: React.FC<Props> = () => {
                     onChangeText={text => {
                       setProfilName(text)
                     }}
-                    ref={initialRef}
                   />
                 </FormControl>
               </Modal.Body>
@@ -170,9 +166,7 @@ const Profile: React.FC<Props> = () => {
           </Modal>
           <Modal
             isOpen={aboutMeModalVisible}
-            onClose={() => setAboutMeModalVisible(false)}
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}>
+            onClose={() => setAboutMeModalVisible(false)}>
             <Modal.Content>
               <Modal.CloseButton />
               <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
@@ -181,12 +175,12 @@ const Profile: React.FC<Props> = () => {
                   <FormControl.Label>
                     {t('profile.AboutMe.popup.label')}
                   </FormControl.Label>
-                  <Input
+                  <TextArea
+                    autoCompleteType={{}}
                     value={aboutMe}
                     onChangeText={text => {
                       setAboutMe(text)
                     }}
-                    ref={initialRef}
                   />
                 </FormControl>
               </Modal.Body>
