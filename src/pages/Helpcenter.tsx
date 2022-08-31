@@ -35,7 +35,6 @@ const HelpCenter: React.FC<Props> = () => {
 
   const { setShow, setContent, setVariant } = useContext(ModalContext)
   const navigate = useNavigate()
-
   const { t } = useTranslation()
 
   return (
@@ -49,6 +48,13 @@ const HelpCenter: React.FC<Props> = () => {
         paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
         <Text>{t('helpcenter.subtitle')}</Text>
+      </Box>
+      <Box paddingBottom={space['2.5']} paddingX={space['1.5']}>
+        <Heading paddingBottom={space['0.5']}>Onboarding</Heading>
+        <Text paddingBottom={space['1.5']}>Hier geht es zum Onboarding.</Text>
+        <Button onPress={() => navigate('/onboarding-list')}>
+          zum Onboarding
+        </Button>
       </Box>
       <Box width="100%" paddingX={space['1.5']}>
         <Tabs

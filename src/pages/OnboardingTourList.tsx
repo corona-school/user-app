@@ -1,15 +1,14 @@
 import {
   Button,
-  Box,
   Text,
   Heading,
   useTheme,
   VStack,
-  Badge,
-  DeleteIcon,
   CheckCircleIcon,
   Stagger
 } from 'native-base'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
@@ -17,43 +16,21 @@ import CTACard from '../widgets/CTACard'
 
 type Props = {}
 
-const cards = [
-  {
-    title: 'Du brauchst Hife bei deinen Hausaufgaben?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Onboarding-Tour 1:1 Matching',
-    text: ' Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Onboarding-Tour Gruppenkurs',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Onboarding-Tour Hilfebereich',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Onboarding-Tour Termine',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  }
-]
-
 const OnboardingTourList: React.FC<Props> = () => {
   const { space } = useTheme()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <WithNavigation
-      headerTitle="Onboarding-Tour"
+      headerTitle={t('onboardingList.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
-        <Heading paddingBottom={space['0.5']}>Onboarding</Heading>
-        <Text maxWidth={330}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod.
-        </Text>
+        <Heading paddingBottom={space['0.5']}>
+          {t('onboardingList.title')}
+        </Heading>
+        <Text maxWidth={330}>{t('onboardingList.content')}</Text>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['2']}>
         <Stagger
@@ -64,15 +41,24 @@ const OnboardingTourList: React.FC<Props> = () => {
             transition: { stagger: { offset: 60 }, duration: 500 }
           }}
           visible>
-          {cards.map(({ title, text }, index) => (
+          {new Array(5).fill(0).map(({}, index) => (
             <CTACard
-              key={`ctacards-${index}`}
+              key={`card-${index}`}
               marginBottom={space['1']}
               variant="dark"
-              title={title}
+              title={t(`onboardingList.cards.card${index}.title`)}
               closeable={false}
-              content={<Text>{text}</Text>}
-              button={<Button>Tour starten</Button>}
+              content={
+                <Text>{t(`onboardingList.cards.card${index}.content`)}</Text>
+              }
+              button={
+                <Button
+                  onPress={() =>
+                    navigate(t(`onboardingList.cards.card${index}.url`))
+                  }>
+                  {t(`onboardingList.buttontext`)}
+                </Button>
+              }
               icon={<CheckCircleIcon size="10" />}
             />
           ))}

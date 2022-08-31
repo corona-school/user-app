@@ -7,6 +7,10 @@ import questionnaire from './questionnaire/de'
 import profile from './profile/de'
 import settings from './settings/de'
 import single from './single/de'
+import onboardingList from './onboarding/de'
+import quickstart from './quickstart/de'
+import digitaletools from './digitaletools/de'
+import dashboard from './dashboard/de'
 
 const de = {
   ...shared,
@@ -17,6 +21,10 @@ const de = {
   helpcenter,
   profile,
   single,
-  settings
+  settings, 
+  onboardingList,
+  quickstart,
+  digitaletools,
+  dashboard
 }
 export default de

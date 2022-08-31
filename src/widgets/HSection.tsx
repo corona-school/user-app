@@ -1,5 +1,6 @@
 import { Box, Heading, Link, Row, useTheme } from 'native-base'
 import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   title?: string
@@ -17,6 +18,7 @@ const HSection: React.FC<Props> = ({
   smallTitle
 }) => {
   const { space, fontSizes } = useTheme()
+  const { t } = useTranslation()
   return (
     <Box>
       <Row
@@ -31,7 +33,7 @@ const HSection: React.FC<Props> = ({
             {title}
           </Heading>
         )}
-        {showAll && <Link onPress={onShowAll}>Alle</Link>}
+        {showAll && <Link onPress={onShowAll}>{t('all')}</Link>}
       </Row>
       <Row
         flexWrap={'nowrap'}
