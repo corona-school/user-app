@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, VStack } from 'native-base'
+import { Box, Button, Flex, Heading, useTheme, VStack } from 'native-base'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
@@ -20,7 +20,7 @@ export type IQuestionnaire = {
 const Questionnaire: React.FC<IQuestionnaire> = ({ questions = [] }) => {
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
-
+  const { space } = useTheme()
   const currentQuestion = useMemo(
     () => questions[currentIndex],
     [questions, currentIndex]
@@ -31,10 +31,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({ questions = [] }) => {
   return (
     <Flex flex="1">
       <Box
-        h="200"
+        paddingY={space['2']}
         bgColor="primary.500"
         justifyContent="center"
-        alignItems="center">
+        alignItems="center"
+        borderBottomRadius={8}>
         <Heading>{currentQuestion.label}</Heading>
       </Box>
       <Flex flex="1" overflowY={'scroll'}>
@@ -42,14 +43,16 @@ const Questionnaire: React.FC<IQuestionnaire> = ({ questions = [] }) => {
           <QuestionnaireSelectionView {...currentQuestion} />
         )}
       </Flex>
-      <VStack>
+      <VStack paddingX={space['1']} space={space['0.5']}>
         <Button onPress={() => setCurrentIndex(prev => prev + 1)}>
           {t('questionnaire.btn.next')}
         </Button>
 
-        <Button>{t('questionnaire.btn.skip')}</Button>
+        <Button variant={'outline'}>{t('questionnaire.btn.skip')}</Button>
 
-        {currentIndex > 0 && <Button>{t('questionnaire.btn.back')}</Button>}
+        {currentIndex > 0 && (
+          <Button variant={'link'}>{t('questionnaire.btn.back')}</Button>
+        )}
       </VStack>
     </Flex>
   )
