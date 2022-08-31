@@ -13,12 +13,12 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
-import WithNavigation from '../components/WithNavigation'
-import IconTagList from '../widgets/IconTagList'
-import ProfileSettingItem from '../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
+import BackButton from '../../components/BackButton'
+import NotificationAlert from '../../components/NotificationAlert'
+import WithNavigation from '../../components/WithNavigation'
+import IconTagList from '../../widgets/IconTagList'
+import ProfileSettingItem from '../../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
 

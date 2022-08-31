@@ -13,45 +13,59 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
-import WithNavigation from '../components/WithNavigation'
-import IconTagList from '../widgets/IconTagList'
-import ProfileSettingItem from '../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
+import BackButton from '../../components/BackButton'
+import NotificationAlert from '../../components/NotificationAlert'
+import WithNavigation from '../../components/WithNavigation'
+import IconTagList from '../../widgets/IconTagList'
+import ProfileSettingItem from '../../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
 
-const ChangeSettingSchoolClass: React.FC<Props> = () => {
+const ChangeSettingSubject: React.FC<Props> = () => {
   const { space } = useTheme()
-
-  const schoolclass = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12'
-  ]
-  const [selections, setSelections] = useState<string[]>([])
   const { t } = useTranslation()
+
+  const subjects = [
+    'Mathematik',
+    'Deutsch',
+    'Englisch',
+    'Biologie',
+    'Chemie',
+    'Physik',
+    'Informatik',
+    'Sachkunde',
+    'Geschichte',
+    'Erdkunde',
+    'Wirtschaft',
+    'Politik',
+    'Philosophie',
+    'Kunst',
+    'Musik',
+    'Pädagogik',
+    'Französisch',
+    'Latein',
+    'Altgriechisch',
+    'Spanisch',
+    'Italienisch',
+    'Russisch',
+    'Niederländisch',
+    'Deutsch als Zweitsprache',
+    'Andere'
+  ]
+
+  const [selections, setSelections] = useState<string[]>([])
 
   return (
     <WithNavigation
-      headerTitle={t('profile.SchoolClass.single.header')}
+      headerTitle={t('profile.NeedHelpIn.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>{t('profile.SchoolClass.single.title')}</Heading>
+        <Heading>{t('profile.NeedHelpIn.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -69,8 +83,8 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      textIcon={subject}
-                      text={`${subject}. Klasse`}
+                      iconPath={`subjects/icon_${subject.toLowerCase()}.svg`}
+                      text={subject}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -83,14 +97,14 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
+        <ProfileSettingRow title={t('profile.NeedHelpIn.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {schoolclass.map(
+                {subjects.map(
                   (subject, index) =>
                     !selections.includes(subject) && (
                       <Column
@@ -98,8 +112,8 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          textIcon={subject}
-                          text={`${subject}. Klasse`}
+                          iconPath={`subjects/icon_fach_${subject.toLowerCase()}.svg`}
+                          text={subject}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -114,7 +128,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                     <Stack>
                       <FormControl.Label>
                         <Text bold>
-                          {t('profile.SchoolClass.single.optional.label')}
+                          {t('profile.NeedHelpIn.single.optional.label')}
                         </Text>
                       </FormControl.Label>
                       <Input
@@ -123,7 +137,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                         numberOfLines={3}
                         h={70}
                         placeholder={t(
-                          'profile.SchoolClass.single.optional.placeholder'
+                          'profile.NeedHelpIn.single.optional.placeholder'
                         )}
                       />
                     </Stack>
@@ -135,9 +149,9 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.SchoolClass.single.button')}</Button>
+        <Button>{t('profile.NeedHelpIn.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )
 }
-export default ChangeSettingSchoolClass
+export default ChangeSettingSubject
