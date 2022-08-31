@@ -1,8 +1,8 @@
-import { View, Box, Link, Row, Column, Icon, Text } from 'native-base'
-import { useState } from 'react'
+import { View, Box, Link, Row, Column, Text, CircleIcon } from 'native-base'
+import { useMemo, useState } from 'react'
 
 type Props = {
-  icon?: string
+  iconPath?: string
   text: string
   link?: string
   variant?: 'normal' | 'full' | 'center'
@@ -12,7 +12,7 @@ type Props = {
 }
 
 const IconTagList: React.FC<Props> = ({
-  icon,
+  iconPath,
   text,
   link,
   variant = 'normal',
@@ -21,6 +21,14 @@ const IconTagList: React.FC<Props> = ({
   isDisabled
 }) => {
   const [active, setActive] = useState<boolean>(false)
+
+  const renderIcon = useMemo(() => {
+    try {
+      const Res = require(`../assets/icons/lernfair/${iconPath}`).default
+      return <Res />
+    } catch (e) {}
+    return <CircleIcon size="30px" color="lightText" />
+  }, [iconPath])
 
   return (
     <View width={variant === 'full' ? '100%' : ''} paddingY={space}>
@@ -40,9 +48,9 @@ const IconTagList: React.FC<Props> = ({
             <Column
               marginRight={2}
               marginBottom={variant === 'center' ? 2 : ''}>
-              <Icon name={icon} />
+              {renderIcon}
             </Column>
-            <Column>
+            <Column alignItems="center" justifyContent="center">
               <Text
                 textAlign={variant === 'center' ? 'center' : 'left'}
                 color={active ? 'lightText' : 'darkText'}>

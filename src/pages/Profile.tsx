@@ -227,10 +227,10 @@ const Profile: React.FC<Props> = () => {
               href={() => navigate('/change-setting/language')}>
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="Deustch" />
+                  <IconTagList isDisabled iconPath="#" text="Deustch" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="Englisch" />
+                  <IconTagList isDisabled iconPath="#" text="Englisch" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -240,7 +240,7 @@ const Profile: React.FC<Props> = () => {
               href={() => navigate('/change-setting/state')}>
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="NRW" />
+                  <IconTagList isDisabled iconPath="#" text="NRW" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -250,7 +250,7 @@ const Profile: React.FC<Props> = () => {
               href={() => navigate('/change-setting/school-type')}>
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="Gymnasium" />
+                  <IconTagList isDisabled iconPath="#" text="Gymnasium" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -260,7 +260,7 @@ const Profile: React.FC<Props> = () => {
               href={() => navigate('/change-setting/class')}>
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="6" />
+                  <IconTagList isDisabled iconPath="#" text="6" />
                 </Column>
               </Row>
             </ProfileSettingItem>
@@ -271,10 +271,10 @@ const Profile: React.FC<Props> = () => {
               href={() => navigate('/change-setting/subjects')}>
               <Row>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="Mathe" />
+                  <IconTagList isDisabled iconPath="#" text="Mathe" />
                 </Column>
                 <Column marginRight={3}>
-                  <IconTagList isDisabled icon="h" text="Deutsch" />
+                  <IconTagList isDisabled iconPath="#" text="Deutsch" />
                 </Column>
               </Row>
             </ProfileSettingItem>
