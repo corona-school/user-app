@@ -16,8 +16,10 @@ import {
 import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 export default function Login() {
+  const { t } = useTranslation()
   const { space } = useTheme()
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -76,7 +78,7 @@ export default function Login() {
             textAlign="center"
             paddingTop={space['1.5']}
             paddingBottom={space['0.5']}>
-            Anmeldung
+            {t('login.title')}
           </Heading>
         </Box>
 
@@ -85,7 +87,7 @@ export default function Login() {
             <Input
               width="100%"
               isRequired={true}
-              placeholder="E-Mail"
+              placeholder={t('email')}
               onChangeText={setEmail}
               onKeyPress={handleKeyPress}
             />
@@ -95,11 +97,14 @@ export default function Login() {
               type="password"
               width="100%"
               isRequired={true}
-              placeholder="Passwort"
+              placeholder={t('password')}
               onChangeText={setPassword}
               onKeyPress={handleKeyPress}
             />
           </Row>
+          <Text opacity={0.6} fontSize="xs">
+            {t('login.hint.mandatory')}
+          </Text>
         </Box>
         {error && (
           <Text
@@ -108,23 +113,24 @@ export default function Login() {
             maxWidth={360}
             bold
             textAlign="center">
-            Ihre Login-Daten stimmen nicht mit unseren Informationen überein.
-            Bitte überprüfe deine Angaben
+            {t('login.error')}
           </Text>
         )}
 
         <Box paddingY={4}>
-          <Link>Passwort vergessen?</Link>
+          <Link>{t('login.btn.password')}</Link>
         </Box>
         <Box paddingTop={4} marginX="90px" display="block" width="80%">
           <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
-            Anmelden
+            {t('login.btn.login')}
           </Button>
         </Box>
 
         <Box paddingTop={10} paddingBottom={1}>
-          <Text>Ich habe doch noch keinen Account:</Text>
-          <Link justifyContent="center">Neu registrieren</Link>
+          <Text>{t('login.noaccount')}</Text>
+          <Link href="/registration/1" justifyContent="center">
+            {t('login.btn.register')}
+          </Link>
         </Box>
       </Row>
     </VStack>

@@ -1,20 +1,24 @@
 import { Button } from 'native-base'
-import { useState } from 'react'
 
 type Props = {
   label: string
-  onPress?: () => any
+  dataKey: string
+  isActive: boolean
+  onPress?: (key: string) => any
 }
 
-const ToggleButton: React.FC<Props> = ({ label, onPress }) => {
-  const [active, setActive] = useState<boolean>(false)
-
+const ToggleButton: React.FC<Props> = ({
+  label,
+  dataKey,
+  onPress,
+  isActive
+}) => {
   return (
     <Button
-      bgColor={active ? 'primary.100' : 'primary.900'}
+      bgColor={isActive ? 'primary.100' : 'primary.900'}
+      _text={{ color: isActive ? 'darkText' : 'lightText' }}
       onPress={() => {
-        setActive(prev => !prev)
-        onPress && onPress()
+        onPress && onPress(dataKey)
       }}>
       {label}
     </Button>
