@@ -14,6 +14,7 @@ import {
 } from 'native-base'
 
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ModalContext } from './FullPageModal'
 
 type Props = {
@@ -30,6 +31,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
   infoPopupLastContent
 }) => {
   const { space } = useTheme()
+  const { t } = useTranslation()
   const { setShow, setContent, setVariant } = useContext(ModalContext)
 
   return (
@@ -51,11 +53,11 @@ const CourseTrafficLamp: React.FC<Props> = ({
           />
           <Text marginRight={7} bold>
             {status === 'free'
-              ? 'Freie Plätze'
+              ? t('single.global.status.free')
               : status === 'last'
-              ? 'Wenige freie Plätze'
+              ? t('single.global.status.last')
               : status === 'full'
-              ? 'Ausgebucht'
+              ? t('single.global.status.full')
               : ''}
           </Text>
           {infoPopupTitle && (
@@ -96,7 +98,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
                             marginRight={3}
                           />
                           <Text marginRight={7} bold>
-                            Ausgebucht
+                            {t('single.global.status.full')}
                           </Text>
                         </Column>
                       </Row>
@@ -108,7 +110,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
                             marginRight={3}
                           />
                           <Text marginRight={7} bold>
-                            Wenige freie Plätze
+                            {t('single.global.status.last')}
                           </Text>
                         </Column>
                       </Row>
@@ -120,7 +122,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
                             marginRight={3}
                           />
                           <Text marginRight={7} bold>
-                            Freie Plätze
+                            {t('single.global.status.free')}
                           </Text>
                         </Column>
                       </Row>

@@ -1,4 +1,5 @@
 import { Heading, useTheme, VStack, Column, HStack } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -12,13 +13,14 @@ type Props = {}
 
 const Settings: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { clearToken } = useApollo()
   const tabspace = 3
 
   return (
     <WithNavigation
-      headerTitle="Einstellungen"
+      headerTitle={t('settings.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
@@ -31,36 +33,54 @@ const Settings: React.FC<Props> = () => {
         </HStack>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title="Allgemein" isSpace={false}>
+        <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Profil" onPress={() => navigate('/profile')} />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label="Sprachversion" isDisabled />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label="Benachrichtigungen" isDisabled />
+            <EditDataRow
+              label={t('settings.general.profile')}
+              onPress={() => navigate('/profile')}
+            />
           </Column>
           <Column mb={tabspace}>
             <EditDataRow
-              label="Onboarding-Tour"
+              label={t('settings.general.languageVersion')}
+              isDisabled
+            />
+          </Column>
+          <Column mb={tabspace}>
+            <EditDataRow
+              label={t('settings.general.notifications')}
+              isDisabled
+            />
+          </Column>
+          <Column mb={tabspace}>
+            <EditDataRow
+              label={t('settings.general.onboarding')}
               onPress={() => navigate('/onboarding-list')}
             />
           </Column>
         </ProfileSettingRow>
-        <ProfileSettingRow title="Konto" isSpace={false}>
+        <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="E-Mail ändern" isDisabled />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label="Passwort ändern" isDisabled />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label="Benutzer wechseln" isDisabled />
+            <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
           </Column>
           <Column mb={tabspace}>
             <EditDataRow
-              label="Abmelden"
+              label={t('settings.account.changePassword')}
+              isDisabled
+            />
+          </Column>
+          <Column mb={tabspace}>
+            <EditDataRow label={t('settings.account.changeUser')} isDisabled />
+          </Column>
+          <Column mb={tabspace}>
+            <EditDataRow
+              label={t('settings.account.deleteAccount')}
+              isDisabled
+            />
+          </Column>
+          <Column mb={tabspace}>
+            <EditDataRow
+              label={t('settings.account.logout')}
               onPress={() => {
                 clearToken()
                 navigate(0)
@@ -68,15 +88,15 @@ const Settings: React.FC<Props> = () => {
             />
           </Column>
         </ProfileSettingRow>
-        <ProfileSettingRow title="Rechtliches" isSpace={false}>
+        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label="Impressum" isDisabled />
+            <EditDataRow label={t('settings.legal.imprint')} isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Datenschutz" isDisabled />
+            <EditDataRow label={t('settings.legal.datapolicy')} isDisabled />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label="Nutzungsbedingungen" isDisabled />
+            <EditDataRow label={t('settings.legal.terms')} isDisabled />
           </Column>
         </ProfileSettingRow>
       </VStack>

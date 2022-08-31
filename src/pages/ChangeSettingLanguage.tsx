@@ -11,6 +11,7 @@ import {
   Stack
 } from 'native-base'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -23,6 +24,7 @@ type Props = {}
 
 const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { t } = useTranslation()
 
   const languages = [
     'Deutsch',
@@ -41,14 +43,14 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
 
   return (
     <WithNavigation
-      headerTitle="Sprachen ändern"
+      headerTitle={t('profile.FluentLanguagenalData.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>Meine Sprachen</Heading>
+        <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -77,7 +79,8 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title="Weitere Sprachen wählen">
+        <ProfileSettingRow
+          title={t('profile.FluentLanguagenalData.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
@@ -107,14 +110,20 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                   <FormControl>
                     <Stack>
                       <FormControl.Label>
-                        <Text bold>Andere Sprache</Text>
+                        <Text bold>
+                          {t(
+                            'profile.FluentLanguagenalData.single.optional.label'
+                          )}
+                        </Text>
                       </FormControl.Label>
                       <Input
                         type="text"
                         multiline
                         numberOfLines={3}
                         h={70}
-                        placeholder="Welche Sprache spricht du noch?"
+                        placeholder={t(
+                          'profile.FluentLanguagenalData.single.optional.placeholder'
+                        )}
                       />
                     </Stack>
                   </FormControl>
@@ -125,7 +134,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>Speichern</Button>
+        <Button>{t('profile.FluentLanguagenalData.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )
