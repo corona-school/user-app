@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Heading, useTheme, VStack } from 'native-base'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Progress,
+  Text,
+  useTheme,
+  VStack
+} from 'native-base'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
@@ -37,6 +46,16 @@ const Questionnaire: React.FC<IQuestionnaire> = ({ questions = [] }) => {
         alignItems="center"
         borderBottomRadius={8}>
         <Heading>{currentQuestion.label}</Heading>
+      </Box>
+      <Box paddingX={space['1']} mt={space['1']}>
+        <Progress
+          value={(currentIndex / questions.length) * 100}
+          h="3.5"
+          _filledTrack={{ backgroundColor: 'primary.900' }}
+        />
+        <Text fontWeight={600} mt={space['0.5']}>
+          Schritt {currentIndex + 1} / {questions.length}
+        </Text>
       </Box>
       <Flex flex="1" overflowY={'scroll'}>
         {currentQuestion.type === 'selection' && (
