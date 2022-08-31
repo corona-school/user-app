@@ -12,7 +12,7 @@ import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
 import Playground from './pages/Playground'
 import Profile from './pages/Profile'
-import Registration from './pages/Registration'
+
 import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
@@ -27,6 +27,10 @@ import ChangeSettingLanguage from './pages/ChangeSettingLanguage'
 import ChangeSettingSchoolClass from './pages/ChangeSettingSchoolClass'
 import SingleCourse from './pages/SingleCourse'
 
+import RegistrationAccount from './pages/registration/RegistrationAccount'
+import RegistrationPersonal from './pages/registration/RegistrationPersonal'
+import RegistrationData from './pages/registration/RegistrationData'
+
 export default function Navigator() {
   return (
     <BrowserRouter>
@@ -34,7 +38,11 @@ export default function Navigator() {
         {/* Public */}
 
         <Route path="/login" element={<Login />} />
-        <Route path="/registration" element={<Registration />} />
+        <Route path="/registration" element={<Outlet />}>
+          <Route path="1" element={<RegistrationAccount />} />
+          <Route path="2" element={<RegistrationPersonal />} />
+          <Route path="3" element={<RegistrationData />} />
+        </Route>
 
         <Route path="/welcome" element={<Welcome />} />
 

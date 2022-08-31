@@ -1,6 +1,14 @@
+import shared from './shared/de'
 import welcome from './welcome/de'
+import login from './login/de'
+import registration from './registration/de'
+import questionnaire from './questionnaire/de'
 
 const de = {
-  welcome
+  ...shared,
+  welcome,
+  login,
+  registration,
+  questionnaire
 }
 export default de
