@@ -13,59 +13,42 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
-import WithNavigation from '../components/WithNavigation'
-import IconTagList from '../widgets/IconTagList'
-import ProfileSettingItem from '../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
+import BackButton from '../../components/BackButton'
+import NotificationAlert from '../../components/NotificationAlert'
+import WithNavigation from '../../components/WithNavigation'
+import IconTagList from '../../widgets/IconTagList'
+import ProfileSettingItem from '../../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-
-const ChangeSettingSubject: React.FC<Props> = () => {
+type SchoolType = {
+  key: string
+  label: string
+}
+const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const subjects = [
-    'Mathematik',
-    'Deutsch',
-    'Englisch',
-    'Biologie',
-    'Chemie',
-    'Physik',
-    'Informatik',
-    'Sachkunde',
-    'Geschichte',
-    'Erdkunde',
-    'Wirtschaft',
-    'Politik',
-    'Philosophie',
-    'Kunst',
-    'Musik',
-    'Pädagogik',
-    'Französisch',
-    'Latein',
-    'Altgriechisch',
-    'Spanisch',
-    'Italienisch',
-    'Russisch',
-    'Niederländisch',
-    'Deutsch als Zweitsprache',
-    'Andere'
+  const schooltypes: SchoolType[] = [
+    { label: 'Grundschule', key: 'grundschule' },
+    { label: 'Hauptschule', key: 'hauptschule' },
+    { label: 'Realschule', key: 'realschule' },
+    { label: 'Gymnasium', key: 'gymnasium' },
+    { label: 'Andere', key: 'andere' }
   ]
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<SchoolType[]>([])
 
   return (
     <WithNavigation
-      headerTitle={t('profile.NeedHelpIn.single.header')}
+      headerTitle={t('profile.SchoolType.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>{t('profile.NeedHelpIn.single.title')}</Heading>
+        <Heading>{t('profile.SchoolType.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -82,7 +65,14 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                     })
                   }>
                   <Row alignItems="center" justifyContent="center">
-                    <IconTagList icon="h" text={subject} />
+                    <IconTagList
+                      iconPath={`schooltypes/icon_${
+                        subject.key === 'hauptschule'
+                          ? 'realschule'
+                          : subject.key
+                      }.svg`}
+                      text={subject.label}
+                    />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
                     </Text>
@@ -94,23 +84,27 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title={t('profile.NeedHelpIn.single.others')}>
+        <ProfileSettingRow title={t('profile.SchoolType.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {subjects.map(
+                {schooltypes.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    !selections.find(sel => sel.key === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          icon="h"
-                          text={subject}
+                          iconPath={`schooltypes/icon_${
+                            subject.key === 'hauptschule'
+                              ? 'realschule'
+                              : subject.key
+                          }.svg`}
+                          text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -119,13 +113,13 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {selections.find(sel => sel.key === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
                       <FormControl.Label>
                         <Text bold>
-                          {t('profile.NeedHelpIn.single.optional.label')}
+                          {t('profile.SchoolType.single.optional.label')}
                         </Text>
                       </FormControl.Label>
                       <Input
@@ -134,7 +128,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                         numberOfLines={3}
                         h={70}
                         placeholder={t(
-                          'profile.NeedHelpIn.single.optional.placeholder'
+                          'profile.SchoolType.single.optional.placeholder'
                         )}
                       />
                     </Stack>
@@ -146,9 +140,9 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.NeedHelpIn.single.button')}</Button>
+        <Button>{t('profile.SchoolType.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )
 }
-export default ChangeSettingSubject
+export default ChangeSettingSchoolType

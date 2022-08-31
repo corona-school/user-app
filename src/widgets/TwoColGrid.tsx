@@ -9,7 +9,7 @@ type Props = {
 const TwoColGrid: React.FC<Props> = ({ children, title }) => {
   const { space } = useTheme()
   return (
-    <Box paddingX={space['1']}>
+    <Box paddingX={space['1']} marginX={-space['1']}>
       <Row paddingY={space['0.5']}>
         {title && <Heading flex="1">{title}</Heading>}
       </Row>
