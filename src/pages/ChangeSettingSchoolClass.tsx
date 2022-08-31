@@ -11,6 +11,7 @@ import {
   Stack
 } from 'native-base'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -39,17 +40,18 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     '12'
   ]
   const [selections, setSelections] = useState<string[]>([])
+  const { t } = useTranslation()
 
   return (
     <WithNavigation
-      headerTitle="Schulklasse ändern"
+      headerTitle={t('profile.SchoolClass.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>Gewählte Schulklasse</Heading>
+        <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -78,7 +80,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title="Weitere Klassen">
+        <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
@@ -108,14 +110,18 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                   <FormControl>
                     <Stack>
                       <FormControl.Label>
-                        <Text bold>Weitere Klassen</Text>
+                        <Text bold>
+                          {t('profile.SchoolClass.single.optional.label')}
+                        </Text>
                       </FormControl.Label>
                       <Input
                         type="text"
                         multiline
                         numberOfLines={3}
                         h={70}
-                        placeholder="Welche Klasse bist du?"
+                        placeholder={t(
+                          'profile.SchoolClass.single.optional.placeholder'
+                        )}
                       />
                     </Stack>
                   </FormControl>
@@ -126,7 +132,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>Speichern</Button>
+        <Button>{t('profile.SchoolClass.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )

@@ -25,92 +25,9 @@ import { ModalContext } from '../widgets/FullPageModal'
 import { useContext, useState } from 'react'
 import InfoScreen from '../widgets/InfoScreen'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 type Props = {}
-
-const faq = [
-  {
-    title: 'Mein:e Lernpartner:in meldet sich nicht. Was soll ich tun?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Wie kann ich die Zusammenarbeit mit einem:r Lernpartner:in beenden?',
-    text: ' Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Kann ich mich für mehrere Angebote von Lern-Fair gleichzeitig registrieren?',
-    text: 'Ja, du kannst dich gerne für mehrere Angebote bei uns registrieren. Beachte dabei, dass manche Angebote spezielle Voraussetzungen fordern, mehr Details findest du auf den jeweiligen Projektseiten auf unserer Website.'
-  },
-  {
-    title: 'Wie oft treffen sich die Lernpaare pro Woche?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Nach welchen Kriterien werden Schüler:innen und Helfer:innen verbunden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Mein:e Lernpartner:in meldet sich nicht. Was soll ich tun?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Wie kann ich die Zusammenarbeit mit einem:r Lernpartner:in beenden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title: 'Wie oft treffen sich die Lernpaare pro Woche?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  },
-  {
-    title:
-      'Nach welchen Kriterien werden Schüler:innen und Helfer:innen verbunden?',
-    text: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.'
-  }
-]
-
-const cards = [
-  {
-    title: 'Quickstart',
-    text: 'Alles, was du für den Anfang brauchst.',
-    subjects: 'Kennenlerngespräch • Ethik • Lehrpläne • PDF',
-    url: '/quick-start'
-  },
-  {
-    title: 'Pädagogik',
-    text: 'Wissen, wie du unterrichtest.',
-    subjects: 'Motivation • Lernatmosphäre • Feedback  • PDF',
-    url: '/quick-start'
-  },
-  {
-    title: 'Digitale Tools',
-    text: 'Lass dich von den kostenlosen digitalen Tools inspirieren.',
-    subjects: 'Lernspiele • Umfragen • Quiz • Digitale Tafel • und vieles mehr',
-    url: '/quick-start'
-  },
-  {
-    title: 'Kostenlose Lehrmaterialien',
-    text: 'Nutze vorbereitete Übungsblätter und kostenlose Lizenzen für Plattformen',
-    subjects:
-      'Sodatutor • Austauschbörse • Stdyflix • Lernwolf • und vieles mehr',
-    url: '/quick-start'
-  },
-  {
-    title: 'DaZ/DaF',
-    text: 'Für den Umgang mit Nicht-Muttersprachlern.',
-    subjects: 'Kommunikationstipps • Lernmaterialien • Niveaustufen (A0-B2)',
-    url: '/quick-start'
-  },
-  {
-    title: 'Zusätzliche Unterstützung',
-    text: 'Sonstige Hilfe für dich oder deine:n Schüler:in.',
-    subjects: 'Beratungsstelle • Angebotserweiterung • Sonstiges',
-    url: '/quick-start'
-  }
-]
 
 const HelpCenter: React.FC<Props> = () => {
   const { space } = useTheme()
@@ -118,6 +35,8 @@ const HelpCenter: React.FC<Props> = () => {
 
   const { setShow, setContent, setVariant } = useContext(ModalContext)
   const navigate = useNavigate()
+
+  const { t } = useTranslation()
 
   return (
     <WithNavigation
@@ -128,46 +47,47 @@ const HelpCenter: React.FC<Props> = () => {
         paddingTop={space['4']}
         paddingBottom={space['1.5']}
         paddingX={space['1.5']}>
-        <Heading paddingBottom={1.5}>Du brauchst Hilfe?</Heading>
-        <Text>
-          Schau doch mal hier in unseren FAQ, ob du eine Antwort auf deine
-          Fragen findest. Solltest du nicht fündig werden kannst du dich auch an
-          unseren Support oder das Mentoring wenden.
-        </Text>
+        <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
+        <Text>{t('helpcenter.subtitle')}</Text>
       </Box>
       <Box width="100%" paddingX={space['1.5']}>
         <Tabs
           tabs={[
             {
-              title: 'FAQ',
+              title: t('helpcenter.faq.tabName'),
               content: (
                 <>
                   <Heading paddingBottom={space['2']}>
-                    Häufig gestellte Frage
+                    {t('helpcenter.faq.tabName')}
                   </Heading>
 
-                  {faq.map(({ title, text }, index) => (
-                    <Accordion title={title} key={`accordion-${index}`}>
-                      <Text>{text}</Text>
+                  {new Array(10).fill(0).map(index => (
+                    <Accordion
+                      title={t(`helpcenter.faq.accordion${index}.title`)}
+                      key={`accordion-${index}`}>
+                      <Text>
+                        {t(`helpcenter.faq.accordion${index}.content`)}
+                      </Text>
                     </Accordion>
                   ))}
 
                   <Box paddingY={space['1.5']}>
                     <Button onPress={() => navigate('/alle-faqs')}>
-                      Alle FAQ
+                      {t('helpcenter.btn.allfaq')}
                     </Button>
                   </Box>
                 </>
               )
             },
             {
-              title: 'Hilfestellung',
+              title: t('helpcenter.assistance.title'),
               content: (
                 <>
-                  <Heading paddingBottom={1.5}>Hilfestellung</Heading>
+                  <Heading paddingBottom={1.5}>
+                    {t('helpcenter.assistance.title')}
+                  </Heading>
                   <Text paddingBottom={space['1']}>
-                    Hier findest du die wichtigsten Informationen und
-                    Hilfestellungen für dich als Helfer:in.
+                    {t('helpcenter.assistance.content')}
                   </Text>
                   <VStack paddingX={0} paddingBottom={space['2']}>
                     <Stagger
@@ -178,21 +98,36 @@ const HelpCenter: React.FC<Props> = () => {
                         transition: { stagger: { offset: 60 }, duration: 500 }
                       }}
                       visible>
-                      {cards.map(({ title, text, subjects, url }, index) => (
+                      {new Array(6).fill(0).map(({}, index) => (
                         <Box
                           key={'helpcard-' + index}
                           marginBottom={space['1.5']}>
-                          <Link display="block" href={url}>
+                          <Link
+                            display="block"
+                            href={t(`helpcenter.assistance.card${index}.url`)}>
                             <CTACard
-                              title={title}
+                              title={t(
+                                `helpcenter.assistance.card${index}.title`
+                              )}
                               closeable={false}
-                              content={<Text>{text}</Text>}
+                              content={
+                                <Text>
+                                  {t(
+                                    `helpcenter.assistance.card${index}.content`
+                                  )}
+                                </Text>
+                              }
                               button={
                                 <Box flexDirection="row">
                                   <Text bold marginRight={space['0.5']}>
-                                    Inhalte:
+                                    {t('helpcenter.assistance.contenslabel')}
                                   </Text>
-                                  <Text>{subjects}</Text>
+                                  <Text>
+                                    {' '}
+                                    {t(
+                                      `helpcenter.assistance.card${index}.contentsContent`
+                                    )}
+                                  </Text>
                                 </Box>
                               }
                               icon={<CheckCircleIcon size="10" />}
@@ -206,43 +141,70 @@ const HelpCenter: React.FC<Props> = () => {
               )
             },
             {
-              title: 'Kontakt',
+              title: t('helpcenter.contact.tabName'),
               content: (
                 <>
                   <Heading paddingBottom={space['0.5']}>
-                    Kontaktformular
+                    {t('helpcenter.contact.title')}
                   </Heading>
                   <Text paddingBottom={space['1.5']}>
-                    Du hast Fragen oder bruchst Hilfe? Schreibe uns über das
-                    Kontaktformular, wir helfen dir gerne weiter.
+                    {t('helpcenter.contact.content')}
                   </Text>
 
                   <FormControl>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
-                        Wie können wir dir helfen?
+                        {t('helpcenter.contact.topic.label')}
                       </FormControl.Label>
                       <Select
-                        accessibilityLabel="Wähle das Thema"
-                        placeholder="Wähle das Thema"
+                        accessibilityLabel={t(
+                          'helpcenter.contact.topic.options.placeholder'
+                        )}
+                        placeholder={t(
+                          'helpcenter.contact.topic.options.placeholder'
+                        )}
                         mt="1">
-                        <Select.Item label="Support/Hilfe" value="support" />
-                        <Select.Item label="Technischer Support" value="tech" />
-                        <Select.Item label="Beratung" value="beratung" />
+                        <Select.Item
+                          label={t(
+                            'helpcenter.contact.topic.options.optionLabel1'
+                          )}
+                          value={t(
+                            'helpcenter.contact.topic.options.optionLabel1'
+                          )}
+                        />
+                        <Select.Item
+                          label={t(
+                            'helpcenter.contact.topic.options.optionLabel2'
+                          )}
+                          value={t(
+                            'helpcenter.contact.topic.options.optionLabel2'
+                          )}
+                        />
+                        <Select.Item
+                          label={t(
+                            'helpcenter.contact.topic.options.optionLabel3'
+                          )}
+                          value={t(
+                            'helpcenter.contact.topic.options.optionLabel3'
+                          )}
+                        />
                       </Select>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
-                      <FormControl.Label>Deine Nachricht</FormControl.Label>
+                      <FormControl.Label>
+                        {t('helpcenter.contact.message.label')}
+                      </FormControl.Label>
                       <TextArea
                         h={20}
-                        placeholder="Deine Nachricht an uns"
+                        placeholder={t(
+                          'helpcenter.contact.message.placeholder'
+                        )}
                         autoCompleteType={{}}
                       />
                     </Row>
                     <Row flexDirection="column" paddingY={space['1.5']}>
                       <Checkbox value="dsgvo" onChange={val => setDSGVO(val)}>
-                        Hiermit stimme ich der
-                        <Link href="#">Datenschutzerklärung</Link> zu.
+                        {t('helpcenter.contact.datapolicy.label')}
                       </Checkbox>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
@@ -252,16 +214,18 @@ const HelpCenter: React.FC<Props> = () => {
                           setVariant('light')
                           setContent(
                             <InfoScreen
-                              title="Vielen Dank!"
+                              title={t('helpcenter.contact.popupTitle')}
                               icon={<InfoIcon />}
-                              content="Wir haben deine Anfrage erhalten und melden uns schnellstmöglich bei dir zurück."
-                              defaultButtonText="Weiter"
+                              content={t('helpcenter.contact.popupContent')}
+                              defaultButtonText={t(
+                                'helpcenter.contact.popupBtn'
+                              )}
                               defaultbuttonLink={() => setShow(false)}
                             />
                           )
                           setShow(true)
                         }}>
-                        Anfrage senden
+                        {t('helpcenter.btn.formsubmit')}
                       </Button>
                     </Row>
                   </FormControl>

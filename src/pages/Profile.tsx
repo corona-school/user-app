@@ -29,22 +29,28 @@ import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type Props = {}
 
 const Profile: React.FC<Props> = () => {
   const { colors, space } = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const [nameModalVisible, setNameModalVisible] = useState(false)
+  const [aboutMeModalVisible, setAboutMeModalVisible] = useState(false)
   const initialRef = useRef(null)
   const finalRef = useRef(null)
   const [profilName, setProfilName] = useState('Milan')
+  const [aboutMe, setAboutMe] = useState(
+    'Willkommen im Profil. Hier kannst du deinen Text anpassen.'
+  )
   const [userSettingChanged, setUserSettings] = useState(false)
 
   return (
     <WithNavigation
-      headerTitle="Mein Profil"
+      headerTitle={t('profile.title')}
       headerContent={
         <Box
           bg={'primary.700'}
@@ -71,7 +77,7 @@ const Profile: React.FC<Props> = () => {
             color={colors.white}
             bold
             fontSize="xl">
-            Tina
+            Milan
           </Heading>
 
           <Row width="80%" justifyContent="space-around">
@@ -106,7 +112,7 @@ const Profile: React.FC<Props> = () => {
               justifyContent="space-between">
               <HStack space={2} flexShrink={1} alignItems="center">
                 <Alert.Icon />
-                <Text>Änderungen wurden erfolgreich gespeichert.</Text>
+                <Text>{t('profile.successmessage')}</Text>
               </HStack>
             </HStack>
           </VStack>
@@ -114,27 +120,24 @@ const Profile: React.FC<Props> = () => {
       )}
       <VStack space={space['1']}>
         <VStack paddingX={space['1.5']} space={space['1']}>
-          <ProfileSettingRow
-            title="Profilvollständigkeit"
-            helpHeadline="Ihr Profilstatus"
-            help="Allgemeiner Beschreibungstext zu den Stadien der Profilprüfung. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
-            ">
+          <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
             <UserProgress procent={25} />
           </ProfileSettingRow>
         </VStack>
         <VStack paddingX={space['1.5']} space={space['1']}>
           <Modal
-            isOpen={modalVisible}
-            onClose={() => setModalVisible(false)}
+            isOpen={nameModalVisible}
+            onClose={() => setNameModalVisible(false)}
             initialFocusRef={initialRef}
-            finalFocusRef={finalRef}
-            animationPreset="slide">
+            finalFocusRef={finalRef}>
             <Modal.Content>
               <Modal.CloseButton />
-              <Modal.Header>Name ändern</Modal.Header>
+              <Modal.Header>{t('profile.UserName.popup.header')}</Modal.Header>
               <Modal.Body>
                 <FormControl>
-                  <FormControl.Label>Dein Name</FormControl.Label>
+                  <FormControl.Label>
+                    {t('profile.UserName.popup.label')}
+                  </FormControl.Label>
                   <Input
                     value={profilName}
                     onChangeText={text => {
@@ -150,32 +153,83 @@ const Profile: React.FC<Props> = () => {
                     variant="ghost"
                     colorScheme="blueGray"
                     onPress={() => {
-                      setModalVisible(false)
+                      setNameModalVisible(false)
                     }}>
-                    Abbrechen
+                    {t('profile.UserName.popup.exit')}
                   </Button>
                   <Button
                     onPress={() => {
-                      setModalVisible(false)
+                      setNameModalVisible(false)
                       setUserSettings(true)
                     }}>
-                    Speichern
+                    {t('profile.UserName.popup.save')}
                   </Button>
                 </Button.Group>
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-          <ProfileSettingRow title="Persönliche Daten">
+          <Modal
+            isOpen={aboutMeModalVisible}
+            onClose={() => setAboutMeModalVisible(false)}
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}>
+            <Modal.Content>
+              <Modal.CloseButton />
+              <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
+              <Modal.Body>
+                <FormControl>
+                  <FormControl.Label>
+                    {t('profile.AboutMe.popup.label')}
+                  </FormControl.Label>
+                  <Input
+                    value={aboutMe}
+                    onChangeText={text => {
+                      setAboutMe(text)
+                    }}
+                    ref={initialRef}
+                  />
+                </FormControl>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button
+                    variant="ghost"
+                    colorScheme="blueGray"
+                    onPress={() => {
+                      setAboutMeModalVisible(false)
+                    }}>
+                    {t('profile.AboutMe.popup.exit')}
+                  </Button>
+                  <Button
+                    onPress={() => {
+                      setAboutMeModalVisible(false)
+                      setUserSettings(true)
+                    }}>
+                    {t('profile.AboutMe.popup.save')}
+                  </Button>
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+          <ProfileSettingRow title={t('profile.PersonalData')}>
             <ProfileSettingItem
-              title="Name"
+              title={t('profile.UserName.label')}
               href={() => {
-                setModalVisible(!modalVisible)
+                setNameModalVisible(!nameModalVisible)
               }}>
               <Text>{profilName}</Text>
             </ProfileSettingItem>
 
             <ProfileSettingItem
-              title="Fließende Sprache"
+              title={t('profile.AboutMe.label')}
+              href={() => {
+                setAboutMeModalVisible(!aboutMeModalVisible)
+              }}>
+              <Text>{aboutMe}</Text>
+            </ProfileSettingItem>
+
+            <ProfileSettingItem
+              title={t('profile.FluentLanguagenalData.label')}
               href={() => navigate('/change-setting/language')}>
               <Row>
                 <Column marginRight={3}>
@@ -188,7 +242,7 @@ const Profile: React.FC<Props> = () => {
             </ProfileSettingItem>
 
             <ProfileSettingItem
-              title="Bundesland"
+              title={t('profile.State.label')}
               href={() => navigate('/change-setting/state')}>
               <Row>
                 <Column marginRight={3}>
@@ -198,7 +252,7 @@ const Profile: React.FC<Props> = () => {
             </ProfileSettingItem>
 
             <ProfileSettingItem
-              title="Schulform"
+              title={t('profile.SchoolType.label')}
               href={() => navigate('/change-setting/school-type')}>
               <Row>
                 <Column marginRight={3}>
@@ -208,7 +262,7 @@ const Profile: React.FC<Props> = () => {
             </ProfileSettingItem>
 
             <ProfileSettingItem
-              title="Klasse"
+              title={t('profile.SchoolClass.label')}
               href={() => navigate('/change-setting/class')}>
               <Row>
                 <Column marginRight={3}>
@@ -219,7 +273,7 @@ const Profile: React.FC<Props> = () => {
 
             <ProfileSettingItem
               border={false}
-              title="Fächer, in denen ich mir Hilfe wünsche"
+              title={t('profile.NeedHelpIn.label')}
               href={() => navigate('/change-setting/subjects')}>
               <Row>
                 <Column marginRight={3}>
