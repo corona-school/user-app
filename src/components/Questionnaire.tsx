@@ -84,6 +84,14 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         if (question.label === 'Klasse') {
           const answer = answers['Schulform']
 
+          if (!answer) {
+            question.options = new Array(8).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+            return question
+          }
+
           if (answer['grundschule']) {
             question.options = new Array(4).fill(0).map((_, i) => ({
               key: `${i + 1}`,
@@ -115,7 +123,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   const modifyQuestionBeforeNext = useCallback(() => {
     if (currentQuestion.label === 'Sprache') {
-      if (!Object.keys(answers['Sprache']).includes('deutsch')) {
+      if (!answers['Sprache']) return
+      const answer = Object.keys(answers['Sprache'])
+
+      if (!answer) return
+      if (!answer.includes('deutsch')) {
         const q: Question = {
           type: 'selection',
           imgRootPath: 'text',
@@ -175,6 +187,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     currentQuestion.minSelections
   ])
 
+  const skip = useCallback(() => {
+    delete answers[currentQuestion.label]
+    next()
+  }, [answers, currentQuestion.label, next])
+
   if (questions.length === 0) return <></>
 
   return (
@@ -214,7 +231,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
             {t('questionnaire.btn.next')}
           </Button>
 
-          <Button variant={'outline'}>{t('questionnaire.btn.skip')}</Button>
+          <Button onPress={skip} variant={'outline'}>
+            {t('questionnaire.btn.skip')}
+          </Button>
 
           {currentIndex > 0 && (
             <Button variant={'link'}>{t('questionnaire.btn.back')}</Button>
