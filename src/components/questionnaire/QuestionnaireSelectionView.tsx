@@ -47,7 +47,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
         {options.map((opt, index) => (
           <IconTagList
             key={`${imgRootPath}-${index}`}
-            text={imgRootPath === 'text' ? `${opt.key}. Klasse` : opt.label}
+            text={opt.label}
             variant="selection"
             textIcon={(imgRootPath === 'text' && opt.key) || undefined}
             iconPath={

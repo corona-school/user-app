@@ -13,6 +13,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState
 } from 'react'
@@ -60,57 +61,99 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
 })
 
 const Questionnaire: React.FC<IQuestionnaire> = ({
-  questions = [],
+  questions: _questions = [],
   onQuestionnaireFinished
 }) => {
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
+  const [questions, setQuestions] = useState<Question[]>([])
   const [answers, setAnswers] = useState<{
     [key: string]: Answer
   }>({})
 
   const { space } = useTheme()
 
-  const modifyQuestionBefore: (question: Question) => Question = useCallback(
-    (question: Question) => {
-      if (question.label === 'Klasse') {
-        const answer = answers['Schulform']
+  useEffect(() => {
+    setQuestions(_questions)
+  }, [_questions])
 
-        if (answer['grundschule']) {
-          question.options = new Array(4)
-            .fill(0)
-            .map((_, i) => ({ key: `${i + 1}`, label: `${i + 1}` }))
-        } else {
-          question.options = new Array(6)
-            .fill(0)
-            .map((_, i) => ({ key: `${i + 5}`, label: `${i + 5}` }))
+  const modifyQuestionBeforeRender: (question: Question) => Question =
+    useCallback(
+      (question: Question) => {
+        if (question.label === 'Klasse') {
+          const answer = answers['Schulform']
+
+          if (answer['grundschule']) {
+            question.options = new Array(4).fill(0).map((_, i) => ({
+              key: `${i + 1}`,
+              label: t('lernfair.schoolclass', { class: i + 1 })
+            }))
+          } else {
+            question.options = new Array(6).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+          }
+          if (answer['gymnasium']) {
+            question.options = new Array(8).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+          }
         }
-        if (answer['gymnasium']) {
-          question.options = new Array(8)
-            .fill(0)
-            .map((_, i) => ({ key: `${i + 5}`, label: `${i + 5}` }))
-        }
-      }
 
-      return question
-    },
-    [answers]
-  )
-
+        return question
+      },
+      [answers, t]
+    )
   const currentQuestion = useMemo(() => {
     const question = { ...questions[currentIndex] }
-    modifyQuestionBefore(question)
+    modifyQuestionBeforeRender(question)
     return question
-  }, [questions, currentIndex, modifyQuestionBefore])
+  }, [questions, currentIndex, modifyQuestionBeforeRender])
+
+  const modifyQuestionBeforeNext = useCallback(() => {
+    if (currentQuestion.label === 'Sprache') {
+      if (!Object.keys(answers['Sprache']).includes('deutsch')) {
+        const q: Question = {
+          type: 'selection',
+          imgRootPath: 'text',
+          options: [
+            { key: '<1', label: 'Weniger als 1 Jahr' },
+            { key: '>1', label: 'Mehr als 1 Jahr' }
+          ],
+          label: 'Deutsch',
+          question: 'Seit wann lernst du Deutsch?'
+        }
+        const qs = [...questions]
+        qs.splice(currentIndex + 1, 0, q)
+        setQuestions(qs)
+      }
+    }
+    if (currentQuestion.label === 'Deutsch') {
+      if (Object.keys(answers['Deutsch']).includes('<1')) {
+        const qs = [...questions]
+        qs.splice(currentIndex + 1, 1)
+        setQuestions(qs)
+      }
+    }
+  }, [answers, currentIndex, currentQuestion.label, questions])
 
   const next = useCallback(() => {
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
+      modifyQuestionBeforeNext()
       setCurrentIndex(prev => prev + 1)
     }
-  }, [answers, currentIndex, onQuestionnaireFinished, questions.length])
+  }, [
+    answers,
+    currentIndex,
+    modifyQuestionBeforeNext,
+    onQuestionnaireFinished,
+    questions.length
+  ])
 
   const isValidAnswer: boolean = useMemo(() => {
     const currentAnswer = answers[currentQuestion.label]
