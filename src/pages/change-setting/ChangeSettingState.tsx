@@ -77,7 +77,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`states/icon_bundesland_${subject.key}.svg`}
+                      iconPath={`states/icon_${subject.key}.svg`}
                       text={subject.label}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
@@ -106,7 +106,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`states/icon_bundesland_${subject.key}.svg`}
+                          iconPath={`states/icon_${subject.key}.svg`}
                           text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
