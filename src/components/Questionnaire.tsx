@@ -192,6 +192,10 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     next()
   }, [answers, currentQuestion.label, next])
 
+  const back = useCallback(() => {
+    setCurrentIndex(prev => prev - 1)
+  }, [])
+
   if (questions.length === 0) return <></>
 
   return (
@@ -236,7 +240,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           </Button>
 
           {currentIndex > 0 && (
-            <Button variant={'link'}>{t('questionnaire.btn.back')}</Button>
+            <Button onPress={back} variant={'link'}>
+              {t('questionnaire.btn.back')}
+            </Button>
           )}
         </VStack>
       </Flex>
