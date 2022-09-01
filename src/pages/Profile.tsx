@@ -170,7 +170,7 @@ const Profile: React.FC<Props> = () => {
                   <Column marginRight={3}>
                     <IconTagList
                       isDisabled
-                      iconPath={'subjects/icon_nordrhein-westfalen.svg'}
+                      iconPath={'states/icon_nordrhein-westfalen.svg'}
                       text="NRW"
                     />
                   </Column>
@@ -199,7 +199,7 @@ const Profile: React.FC<Props> = () => {
                     <IconTagList
                       isDisabled
                       textIcon="6"
-                      text={t('lernfair.schoolclass, {class: 6')}
+                      text={t('lernfair.schoolclass', { class: 6 })}
                     />
                   </Column>
                 </Row>
