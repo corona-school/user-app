@@ -123,7 +123,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         </Box>
         <Box paddingX={space['1']} mt={space['1']}>
           <Progress
-            value={(currentIndex / questions.length) * 100}
+            value={((currentIndex + 1) / questions.length) * 100}
             h="3.5"
             _filledTrack={{ backgroundColor: 'primary.900' }}
           />
