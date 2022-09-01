@@ -16,15 +16,13 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
+import { Subject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-type Subject = {
-  key: string
-  label: string
-}
+
 const ChangeSettingSubject: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()

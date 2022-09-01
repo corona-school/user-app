@@ -16,15 +16,13 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
+import { State } from '../../types/lernfair/State'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-type State = {
-  key: string
-  label: string
-}
+
 const ChangeSettingState: React.FC<Props> = () => {
   const { space } = useTheme()
 

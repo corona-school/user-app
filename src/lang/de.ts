@@ -1,4 +1,5 @@
 import shared from './shared/de'
+import lernfair from './lernfair/de'
 import helpcenter from './helpcenter/de'
 import welcome from './welcome/de'
 import login from './login/de'
@@ -10,6 +11,7 @@ import single from './single/de'
 
 const de = {
   ...shared,
+  lernfair,
   welcome,
   login,
   registration,

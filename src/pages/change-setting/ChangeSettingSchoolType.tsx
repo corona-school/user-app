@@ -16,15 +16,13 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
+import { SchoolType } from '../../types/lernfair/SchoolType'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-type SchoolType = {
-  key: string
-  label: string
-}
+
 const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
