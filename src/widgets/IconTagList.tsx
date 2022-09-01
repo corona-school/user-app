@@ -59,9 +59,11 @@ const IconTagList: React.FC<IIconTagList> = ({
 
   return (
     <View
+      height={variant === 'selection' ? '100%' : undefined}
       width={variant === 'full' || variant === 'selection' ? '100%' : ''}
       paddingY={space}>
       <Link
+        height={variant === 'selection' ? '100%' : undefined}
         onPress={() => {
           if (isDisabled) return
           setActive(prev => !prev)
@@ -73,7 +75,8 @@ const IconTagList: React.FC<IIconTagList> = ({
           w={variant === 'full' || variant === 'selection' ? '100%' : undefined}
           backgroundColor={active ? 'primary.900' : 'primary.100'}
           borderRadius="5px"
-          padding={variant === 'center' ? '30px 20px' : '10px 30px'}>
+          padding={variant === 'center' ? '30px 20px' : '10px 30px'}
+          height={variant === 'selection' ? '100%' : undefined}>
           <Row
             flexDirection={
               variant === 'center' || variant === 'selection' ? 'column' : 'row'
