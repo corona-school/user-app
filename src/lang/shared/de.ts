@@ -4,7 +4,7 @@ const onboarding = {
   hallo: 'Hallo',
   visitcourse: 'zum Kurs',
   openchat: 'Chat beginnen',
-  openmatch: 'Match auflösen',
+  openmatch: 'Ansehen',
   login: 'Anmelden', 
   begin: 'Ab',
   all: 'Alle'
