@@ -227,7 +227,10 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         </Box>
         <Flex flex="1" overflowY={'scroll'}>
           {currentQuestion.type === 'selection' && (
-            <QuestionnaireSelectionView {...currentQuestion} />
+            <QuestionnaireSelectionView
+              {...currentQuestion}
+              prefill={answers[currentQuestion.label]}
+            />
           )}
         </Flex>
         <VStack paddingX={space['1']} space={space['0.5']}>
