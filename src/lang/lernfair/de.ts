@@ -50,21 +50,21 @@ const lernfair = {
     andere: 'Andere'
   },
   states: {
-    badenWuerttemberg: 'Baden-Württemberg',
+    'baden-wuerttemberg': 'Baden-Württemberg',
     bayern: 'Bayern',
     berlin: 'Berlin',
     brandenburg: 'Brandenburg',
     bremen: 'Bremen',
     hamburg: 'Hamburg',
     hessen: 'Hessen',
-    mecklenburgVorpommern: 'Mecklenburg-Vorpommern',
+    'mecklenburg-vorpommern': 'Mecklenburg-Vorpommern',
     niedersachsen: 'Niedersachsen',
-    nordrheinWestfalen: 'Nordrhein-Westfalen',
-    rheinlandPfalz: 'Rheinland-Pfalz',
+    'nordrhein-westfalen': 'Nordrhein-Westfalen',
+    'rheinland-pfalz': 'Rheinland-Pfalz',
     saarland: 'Saarland',
     sachsen: 'Sachsen',
     sachsenAnhalt: 'Sachsen-Anhalt',
-    schleswigHolstein: 'Schleswig-Holstein',
+    'schleswig-holstein': 'Schleswig-Holstein',
     thueringen: 'Thüringen'
   },
   schooltypes: {
