@@ -199,7 +199,7 @@ const Profile: React.FC<Props> = () => {
                     <IconTagList
                       isDisabled
                       textIcon="6"
-                      text={t('lernfair.schoolclass, {class: 6')}
+                      text={t('lernfair.schoolclass', { class: 6 })}
                     />
                   </Column>
                 </Row>
