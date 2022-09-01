@@ -30,6 +30,7 @@ const Dashboard: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+
   return (
     <WithNavigation
       headerContent={
@@ -42,7 +43,7 @@ const Dashboard: React.FC<Props> = () => {
             size="md"
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
           />
-          <Heading color={'#fff'}>Hallo Milan!</Heading>
+          <Heading color={'#fff'}>{t('hallo')} Milan!</Heading>
         </HStack>
       }
       headerRight={<SettingsButton />}
@@ -50,7 +51,7 @@ const Dashboard: React.FC<Props> = () => {
       <VStack>
         <VStack space={space['1']} marginTop={space['1']}>
           <VStack space={space['0.5']} paddingX={space['1']}>
-            <Heading>Nächster Termin</Heading>
+            <Heading>{t('dashboard.appointmentcard.header')}</Heading>
             <AppointmentCard
               href={'/single-course'}
               tags={[t('lernfair.subjects.altgriechisch'), 'Gruppenkurs']}
@@ -61,7 +62,7 @@ const Dashboard: React.FC<Props> = () => {
               description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
             />
           </VStack>
-          <HSection title="Meine Termine" showAll={true}>
+          <HSection title={t('dashboard.myappointments.header')} showAll={true}>
             {/* {Array(4)
               .fill(0)
               .map((el, i) => (
@@ -103,19 +104,17 @@ const Dashboard: React.FC<Props> = () => {
             />
           </HSection>
           <VStack space={space['0.5']} paddingX={space['1']}>
-            <Heading>Hausaufgabenhilfe</Heading>
+            <Heading>{t('dashboard.homework.header')}</Heading>
             <CTACard
-              title="Du brauchst Hife bei deinen Hausaufgaben?"
+              title={t('dashboard.homework.title')}
               closeable={false}
-              content={
-                <Text>Schreibe uns einfach an, wir helfen dir gerne.</Text>
-              }
-              button={<Button variant="outline">Chat beginnen</Button>}
+              content={<Text>{t('dashboard.homework.content')}</Text>}
+              button={<Button variant="outline">{t('openchat')}</Button>}
               icon={<CheckCircleIcon size="10" />}
             />
           </VStack>
           <VStack space={space['0.5']} paddingX={space['1']}>
-            <Heading>Dein:e Lernpartner:in</Heading>
+            <Heading>{t('dashboard.learningpartner.header')}</Heading>
             <TeacherCard
               name="Max Mustermann"
               variant="dark"
@@ -124,7 +123,7 @@ const Dashboard: React.FC<Props> = () => {
               button={<Button variant="outlinelight">Match auflösen</Button>}
             />
           </VStack>
-          <HSection title="Vorschläge für dich" showAll={true}>
+          <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {/* {Array(4)
               .fill(0)
               .map((el, i) => (
@@ -171,7 +170,7 @@ const Dashboard: React.FC<Props> = () => {
               onClickSignIn={() => null}
             />
           </HSection>
-          <TwoColGrid title="Angebote">
+          <TwoColGrid title={t('dashboard.offers.header')}>
             {Array(2)
               .fill(0)
               .map((el, i) => (
