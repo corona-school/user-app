@@ -47,11 +47,9 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
         {options.map((opt, index) => (
           <IconTagList
             key={`${imgRootPath}-${index}`}
-            text={imgRootPath === 'text' ? `${index + 1}. Klasse` : opt.label}
+            text={imgRootPath === 'text' ? `${opt.key}. Klasse` : opt.label}
             variant="selection"
-            textIcon={
-              (imgRootPath === 'text' && (index + 1).toString()) || undefined
-            }
+            textIcon={(imgRootPath === 'text' && opt.key) || undefined}
             iconPath={
               (imgRootPath !== 'text' &&
                 `${imgRootPath}/icon_${opt.key}.svg`) ||

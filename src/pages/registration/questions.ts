@@ -22,12 +22,7 @@ const questions: Question[] = [
     question: 'In welcher Klasse bist du?',
     type: 'selection',
     maxSelections: 1,
-    options: new Array<ISelectionItem>(12)
-      .fill({ key: '', label: '' })
-      .map((_, index) => ({
-        key: (index + 1).toString(),
-        label: (index + 1).toString()
-      }))
+    options: []
   },
   {
     imgRootPath: 'languages',

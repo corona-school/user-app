@@ -31,7 +31,9 @@ export type Question = {
   maxSelections?: number
 }
 
-export type Answer = {}
+export type Answer = {
+  [key: string]: boolean
+}
 
 export type IQuestionnaire = {
   questions: Question[]
@@ -69,10 +71,38 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   }>({})
 
   const { space } = useTheme()
-  const currentQuestion = useMemo(
-    () => questions[currentIndex],
-    [questions, currentIndex]
+
+  const modifyQuestionBefore: (question: Question) => Question = useCallback(
+    (question: Question) => {
+      if (question.label === 'Klasse') {
+        const answer = answers['Schulform']
+
+        if (answer['grundschule']) {
+          question.options = new Array(4)
+            .fill(0)
+            .map((_, i) => ({ key: `${i + 1}`, label: `${i + 1}` }))
+        } else {
+          question.options = new Array(6)
+            .fill(0)
+            .map((_, i) => ({ key: `${i + 5}`, label: `${i + 5}` }))
+        }
+        if (answer['gymnasium']) {
+          question.options = new Array(8)
+            .fill(0)
+            .map((_, i) => ({ key: `${i + 5}`, label: `${i + 5}` }))
+        }
+      }
+
+      return question
+    },
+    [answers]
   )
+
+  const currentQuestion = useMemo(() => {
+    const question = { ...questions[currentIndex] }
+    modifyQuestionBefore(question)
+    return question
+  }, [questions, currentIndex, modifyQuestionBefore])
 
   const next = useCallback(() => {
     if (currentIndex >= questions.length - 1) {
