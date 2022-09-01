@@ -20,6 +20,7 @@ import WithNavigation from '../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import SettingsButton from '../components/SettingsButton'
 import NotificationAlert from '../components/NotificationAlert'
+import { useTranslation } from 'react-i18next'
 
 type Props = {}
 
@@ -28,7 +29,7 @@ const Dashboard: React.FC<Props> = () => {
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
-
+  const { t } = useTranslation()
   return (
     <WithNavigation
       headerContent={
@@ -52,7 +53,7 @@ const Dashboard: React.FC<Props> = () => {
             <Heading>Nächster Termin</Heading>
             <AppointmentCard
               href={'/single-course'}
-              tags={['Mathematik', 'Gruppenkurs']}
+              tags={[t('lernfair.subjects.altgriechisch'), 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
               image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"

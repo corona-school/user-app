@@ -16,16 +16,12 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
+import { Language } from '../../types/lernfair/Language'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
-
-type Language = {
-  key: string
-  label: string
-}
 
 const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space } = useTheme()

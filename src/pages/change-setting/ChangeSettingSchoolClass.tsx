@@ -70,8 +70,11 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
                       textIcon={subject}
-                      text={`${subject}. Klasse`}
+                      text={t('lernfair.schoolclass', {
+                        class: subject
+                      })}
                     />
+
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
                     </Text>
@@ -99,7 +102,9 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                         key={`offers-${index}`}>
                         <IconTagList
                           textIcon={subject}
-                          text={`${subject}. Klasse`}
+                          text={t('lernfair.schoolclass', {
+                            class: subject
+                          })}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
