@@ -7,6 +7,7 @@ const questions: Question[] = [
     label: 'Schulform',
     question: 'Auf welche Schule gehst du?',
     type: 'selection',
+    maxSelections: 1,
     options: [
       { label: 'Grundschule', key: 'grundschule' },
       { label: 'Hauptschule', key: 'hauptschule' },
@@ -20,6 +21,7 @@ const questions: Question[] = [
     label: 'Klasse',
     question: 'In welcher Klasse bist du?',
     type: 'selection',
+    maxSelections: 1,
     options: new Array<ISelectionItem>(12)
       .fill({ key: '', label: '' })
       .map((_, index) => ({
@@ -125,6 +127,7 @@ const questions: Question[] = [
     question: 'In welchen Fächern benötigst du Unterstützung?',
     type: 'selection',
     text: 'Du kannst bis zu 3 Fächer auswählen',
+    maxSelections: 3,
     options: [
       { key: 'altgriechisch', label: 'Altgriechisch' },
       { key: 'biologie', label: 'Biologie' },
@@ -158,7 +161,7 @@ const questions: Question[] = [
     label: 'Bundesland',
     question: 'Aus welchem Bundesland kommst du?',
     type: 'selection',
-
+    maxSelections: 1,
     options: [
       { key: 'baden-wuerttemberg', label: 'Baden-Württemberg' },
       { key: 'bayern', label: 'Bayern' },

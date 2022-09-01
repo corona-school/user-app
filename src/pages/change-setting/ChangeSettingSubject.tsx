@@ -115,7 +115,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`subjects/icon_fach_${subject.key}.svg`}
+                          iconPath={`subjects/icon_${subject.key}.svg`}
                           text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
