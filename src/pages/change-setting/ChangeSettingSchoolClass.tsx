@@ -13,50 +13,45 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
-import WithNavigation from '../components/WithNavigation'
-import IconTagList from '../widgets/IconTagList'
-import ProfileSettingItem from '../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
+import BackButton from '../../components/BackButton'
+import NotificationAlert from '../../components/NotificationAlert'
+import WithNavigation from '../../components/WithNavigation'
+import IconTagList from '../../widgets/IconTagList'
+import ProfileSettingItem from '../../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 type Props = {}
 
-const ChangeSettingState: React.FC<Props> = () => {
+const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const { space } = useTheme()
 
-  const states = [
-    'Baden-Württemberg',
-    'Bayern',
-    'Berlin',
-    'Brandenburg',
-    'Bremen',
-    'Hamburg',
-    'Hessen',
-    'Mecklenburg-Vorpommern',
-    'Niedersachsen',
-    'Nordrhein-Westfalen',
-    'Rheinland-Pfalz',
-    'Saarland',
-    'Sachsen',
-    'Sachsen-Anhalt',
-    'Schleswig-Holstein',
-    'Thüringen'
+  const schoolclass = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12'
   ]
-
   const [selections, setSelections] = useState<string[]>([])
   const { t } = useTranslation()
 
   return (
     <WithNavigation
-      headerTitle={t('profile.State.single.header')}
+      headerTitle={t('profile.SchoolClass.single.header')}
       headerLeft={<BackButton />}
       headerRight={<NotificationAlert />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
         space={space['1']}>
-        <Heading>{t('profile.State.single.title')}</Heading>
+        <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             {selections.map((subject, index) => (
@@ -73,7 +68,13 @@ const ChangeSettingState: React.FC<Props> = () => {
                     })
                   }>
                   <Row alignItems="center" justifyContent="center">
-                    <IconTagList icon="h" text={subject} />
+                    <IconTagList
+                      textIcon={subject}
+                      text={t('lernfair.schoolclass', {
+                        class: subject
+                      })}
+                    />
+
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
                     </Text>
@@ -85,14 +86,14 @@ const ChangeSettingState: React.FC<Props> = () => {
         </ProfileSettingItem>
       </VStack>
       <VStack paddingX={space['1.5']} space={space['1']}>
-        <ProfileSettingRow title={t('profile.State.single.others')}>
+        <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {states.map(
+                {schoolclass.map(
                   (subject, index) =>
                     !selections.includes(subject) && (
                       <Column
@@ -100,8 +101,10 @@ const ChangeSettingState: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          icon="h"
-                          text={subject}
+                          textIcon={subject}
+                          text={t('lernfair.schoolclass', {
+                            class: subject
+                          })}
                           onPress={() =>
                             setSelections(prev => [...prev, subject])
                           }
@@ -116,7 +119,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                     <Stack>
                       <FormControl.Label>
                         <Text bold>
-                          {t('profile.State.single.option.label')}
+                          {t('profile.SchoolClass.single.optional.label')}
                         </Text>
                       </FormControl.Label>
                       <Input
@@ -125,7 +128,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                         numberOfLines={3}
                         h={70}
                         placeholder={t(
-                          'profile.State.single.optional.placeholder'
+                          'profile.SchoolClass.single.optional.placeholder'
                         )}
                       />
                     </Stack>
@@ -137,9 +140,9 @@ const ChangeSettingState: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.State.single.button')}</Button>
+        <Button>{t('profile.SchoolClass.single.button')}</Button>
       </VStack>
     </WithNavigation>
   )
 }
-export default ChangeSettingState
+export default ChangeSettingSchoolClass

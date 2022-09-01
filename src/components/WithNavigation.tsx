@@ -9,6 +9,7 @@ import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
 import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
+import SettingsButton from './SettingsButton'
 
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
@@ -51,7 +52,7 @@ const WithNavigation: React.FC<Props> = ({
         h="100%">
         <HeaderCard
           leftContent={headerLeft}
-          rightContent={headerRight}
+          rightContent={<SettingsButton />}
           title={headerTitle}
           portal={setView}>
           {headerContent}

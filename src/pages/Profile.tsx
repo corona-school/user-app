@@ -29,7 +29,7 @@ import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
 import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type Props = {}
@@ -147,10 +147,18 @@ const Profile: React.FC<Props> = () => {
                 href={() => navigate('/change-setting/language')}>
                 <Row>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="Deustch" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'subjects/icon_deutsch.svg'}
+                      text="Deustch"
+                    />
                   </Column>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="Englisch" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'subjects/icon_englisch.svg'}
+                      text="Englisch"
+                    />
                   </Column>
                 </Row>
               </ProfileSettingItem>
@@ -160,7 +168,11 @@ const Profile: React.FC<Props> = () => {
                 href={() => navigate('/change-setting/state')}>
                 <Row>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="NRW" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'subjects/icon_nordrhein-westfalen.svg'}
+                      text="NRW"
+                    />
                   </Column>
                 </Row>
               </ProfileSettingItem>
@@ -170,7 +182,11 @@ const Profile: React.FC<Props> = () => {
                 href={() => navigate('/change-setting/school-type')}>
                 <Row>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="Gymnasium" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'schooltypes/icon_gymnasium.svg'}
+                      text="Gymnasium"
+                    />
                   </Column>
                 </Row>
               </ProfileSettingItem>
@@ -180,7 +196,11 @@ const Profile: React.FC<Props> = () => {
                 href={() => navigate('/change-setting/class')}>
                 <Row>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="6" />
+                    <IconTagList
+                      isDisabled
+                      textIcon="6"
+                      text={t('lernfair.schoolclass, {class: 6')}
+                    />
                   </Column>
                 </Row>
               </ProfileSettingItem>
@@ -191,10 +211,18 @@ const Profile: React.FC<Props> = () => {
                 href={() => navigate('/change-setting/subjects')}>
                 <Row>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="Mathe" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'subjects/icon_mathe.svg'}
+                      text="Mathe"
+                    />
                   </Column>
                   <Column marginRight={3}>
-                    <IconTagList isDisabled icon="h" text="Deutsch" />
+                    <IconTagList
+                      isDisabled
+                      iconPath={'subjects/icon_deutsch.svg'}
+                      text="Deutsch"
+                    />
                   </Column>
                 </Row>
               </ProfileSettingItem>
