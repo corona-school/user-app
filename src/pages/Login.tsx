@@ -60,7 +60,7 @@ export default function Login() {
   }
 
   return (
-    <VStack>
+    <VStack overflowY={'auto'} height="100vh">
       <Row flexDirection="column" justifyContent="center" alignItems="center">
         <Box
           bg="primary.400"

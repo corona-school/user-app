@@ -206,7 +206,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         answers,
         setAnswers
       }}>
-      <Flex flex="1">
+      <Flex flex="1" pb={space['1']}>
         <Box
           paddingY={space['2']}
           bgColor="primary.500"

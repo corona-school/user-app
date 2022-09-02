@@ -1,7 +1,18 @@
-import { VStack, Input, Heading, Button, useTheme, TextArea } from 'native-base'
+import {
+  VStack,
+  Input,
+  Heading,
+  Button,
+  useTheme,
+  TextArea,
+  Flex,
+  Box
+} from 'native-base'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+
+import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 
 type Props = {}
 
@@ -11,8 +22,17 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   return (
-    <div>
-      <VStack space={space['1']}>
+    <Flex overflowY={'auto'} height="100vh">
+      <Box
+        paddingY={space['2']}
+        bgColor="primary.500"
+        justifyContent="center"
+        alignItems="center"
+        borderBottomRadius={8}>
+        <Logo />
+        <Heading mt={space['1']}>Neu registrieren</Heading>
+      </Box>
+      <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
         <Input placeholder={t('firstname')} />
         <Input placeholder={t('lastname')} />
         <>
@@ -29,7 +49,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
           Registrieren
         </Button>
       </VStack>
-    </div>
+    </Flex>
   )
 }
 export default RegistrationPersonal
