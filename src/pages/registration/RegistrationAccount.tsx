@@ -6,13 +6,21 @@ import {
   Checkbox,
   Button,
   useTheme,
-  Row
+  Row,
+  Box,
+  Flex
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 import { ModalContext } from '../../widgets/FullPageModal'
+
+import StudentIcon from '../../assets/icons/lernfair/ic_student.svg'
+import TutorIcon from '../../assets/icons/lernfair/ic_tutor.svg'
+import ParentIcon from '../../assets/icons/lernfair/ic_parent.svg'
+
+import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 
 type Props = {}
 
@@ -60,8 +68,17 @@ const RegistrationAccount: React.FC<Props> = () => {
   }
 
   return (
-    <>
-      <VStack flex="1" paddingX={space['0.5']}>
+    <Flex overflowY={'auto'} height="100vh">
+      <Box
+        paddingY={space['2']}
+        bgColor="primary.500"
+        justifyContent="center"
+        alignItems="center"
+        borderBottomRadius={8}>
+        <Logo />
+        <Heading mt={space['1']}>Neu registrieren</Heading>
+      </Box>
+      <VStack flex="1" paddingX={space['1']} mt={space['1']}>
         <VStack space={space['0.5']}>
           <Input placeholder={t('email')} />
           <Input placeholder={t('password')} />
@@ -70,18 +87,21 @@ const RegistrationAccount: React.FC<Props> = () => {
         <VStack space={space['0.5']} marginTop={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
           <ToggleButton
+            Icon={ParentIcon}
             label={t('registration.parent')}
             dataKey="parent"
             isActive={typeSelection === 'parent'}
             onPress={setTypeSelection}
           />
           <ToggleButton
+            Icon={StudentIcon}
             label={t('registration.student')}
             dataKey="student"
             isActive={typeSelection === 'student'}
             onPress={setTypeSelection}
           />
           <ToggleButton
+            Icon={TutorIcon}
             label={t('registration.tutor')}
             dataKey="tutor"
             isActive={typeSelection === 'tutor'}
@@ -99,7 +119,7 @@ const RegistrationAccount: React.FC<Props> = () => {
           </Button>
         </VStack>
       </VStack>
-    </>
+    </Flex>
   )
 }
 export default RegistrationAccount

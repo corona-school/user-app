@@ -5,8 +5,10 @@ const onboarding = {
   visitcourse: 'zum Kurs',
   openchat: 'Chat beginnen',
   openmatch: 'Ansehen',
-  login: 'Anmelden', 
+  login: 'Anmelden',
   begin: 'Ab',
-  all: 'Alle'
+  all: 'Alle',
+  firstname: 'Vorname',
+  lastname: 'Nachname'
 }
 export default onboarding

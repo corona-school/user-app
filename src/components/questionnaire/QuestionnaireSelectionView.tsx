@@ -2,7 +2,7 @@ import { Heading, Text, useTheme, VStack } from 'native-base'
 import { useContext, useEffect, useState } from 'react'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
-import { QuestionnaireContext } from '../Questionnaire'
+import { Answer, QuestionnaireContext } from '../Questionnaire'
 import { ISelectionItem } from './SelectionItem'
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
   text?: string
   imgRootPath: string
   label: string
+  prefill?: Answer
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
@@ -18,16 +19,19 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
   question,
   label,
   text,
-  imgRootPath
+  imgRootPath,
+  prefill
 }) => {
   const { setAnswers } = useContext(QuestionnaireContext)
   const [selections, setSelections] = useState<{ [key: string]: boolean }>({})
   const { space } = useTheme()
 
   useEffect(() => {
+    setSelections(prefill || {})
     return () => {
       setSelections({})
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question])
 
   useEffect(() => {
@@ -47,11 +51,10 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
         {options.map((opt, index) => (
           <IconTagList
             key={`${imgRootPath}-${index}`}
-            text={imgRootPath === 'text' ? `${index + 1}. Klasse` : opt.label}
+            initial={selections[opt.key]}
+            text={opt.label}
             variant="selection"
-            textIcon={
-              (imgRootPath === 'text' && (index + 1).toString()) || undefined
-            }
+            textIcon={(imgRootPath === 'text' && opt.key) || undefined}
             iconPath={
               (imgRootPath !== 'text' &&
                 `${imgRootPath}/icon_${opt.key}.svg`) ||

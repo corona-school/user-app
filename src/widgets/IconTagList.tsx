@@ -1,5 +1,5 @@
 import { View, Box, Link, Row, Column, Text, CircleIcon } from 'native-base'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export type IIconTagList = {
   iconPath?: string
@@ -10,6 +10,7 @@ export type IIconTagList = {
   space?: number
   onPress?: () => any
   isDisabled?: boolean
+  initial?: boolean
 }
 
 const IconTagList: React.FC<IIconTagList> = ({
@@ -20,9 +21,14 @@ const IconTagList: React.FC<IIconTagList> = ({
   variant = 'normal',
   space,
   onPress,
-  isDisabled
+  isDisabled,
+  initial
 }) => {
   const [active, setActive] = useState<boolean>(false)
+
+  useEffect(() => {
+    setActive(!!initial)
+  }, [initial])
 
   const renderIcon = useMemo(() => {
     if (!iconPath) return
