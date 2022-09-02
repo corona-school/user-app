@@ -20,6 +20,7 @@ import StudentIcon from '../../assets/icons/lernfair/ic_student.svg'
 import TutorIcon from '../../assets/icons/lernfair/ic_tutor.svg'
 import ParentIcon from '../../assets/icons/lernfair/ic_parent.svg'
 
+import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 
 type Props = {}
@@ -44,21 +45,22 @@ const RegistrationAccount: React.FC<Props> = () => {
   const showModal = () => {
     setVariant('dark')
     setContent(
-      <VStack>
+      <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+        <WarningIcon />
         <Heading color={'lightText'}>{t('registration.barrier.title')}</Heading>
         <Text color={'lightText'}>{t(`registration.barrier.text`)}</Text>
         <VStack>
           {new Array(3).fill(0).map((_, i) => (
-            <Text color={'lightText'}>
+            <Text fontSize={'md'} color={'lightText'}>
               {t(`registration.barrier.point_${i}`)}
             </Text>
           ))}
         </VStack>
-        <Row>
-          <Button onPress={() => onBarrierSolved(true)}>
+        <Row w="100%" space={space['1']}>
+          <Button onPress={() => onBarrierSolved(true)} flex="1">
             {t('registration.barrier.btn.yes')}
           </Button>
-          <Button onPress={() => onBarrierSolved(false)}>
+          <Button onPress={() => onBarrierSolved(false)} flex="1">
             {t('registration.barrier.btn.no')}
           </Button>
         </Row>
