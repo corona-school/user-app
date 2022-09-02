@@ -13,6 +13,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState
 } from 'react'
@@ -31,7 +32,9 @@ export type Question = {
   maxSelections?: number
 }
 
-export type Answer = {}
+export type Answer = {
+  [key: string]: boolean
+}
 
 export type IQuestionnaire = {
   questions: Question[]
@@ -58,29 +61,111 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
 })
 
 const Questionnaire: React.FC<IQuestionnaire> = ({
-  questions = [],
+  questions: _questions = [],
   onQuestionnaireFinished
 }) => {
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
+  const [questions, setQuestions] = useState<Question[]>([])
   const [answers, setAnswers] = useState<{
     [key: string]: Answer
   }>({})
 
   const { space } = useTheme()
-  const currentQuestion = useMemo(
-    () => questions[currentIndex],
-    [questions, currentIndex]
-  )
+
+  useEffect(() => {
+    setQuestions(_questions)
+  }, [_questions])
+
+  const modifyQuestionBeforeRender: (question: Question) => Question =
+    useCallback(
+      (question: Question) => {
+        if (question.label === 'Klasse') {
+          const answer = answers['Schulform']
+
+          if (!answer) {
+            question.options = new Array(8).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+            return question
+          }
+
+          if (answer['grundschule']) {
+            question.options = new Array(4).fill(0).map((_, i) => ({
+              key: `${i + 1}`,
+              label: t('lernfair.schoolclass', { class: i + 1 })
+            }))
+          } else {
+            question.options = new Array(6).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+          }
+          if (answer['gymnasium']) {
+            question.options = new Array(8).fill(0).map((_, i) => ({
+              key: `${i + 5}`,
+              label: t('lernfair.schoolclass', { class: i + 5 })
+            }))
+          }
+        }
+
+        return question
+      },
+      [answers, t]
+    )
+  const currentQuestion = useMemo(() => {
+    const question = { ...questions[currentIndex] }
+    modifyQuestionBeforeRender(question)
+    return question
+  }, [questions, currentIndex, modifyQuestionBeforeRender])
+
+  const modifyQuestionBeforeNext = useCallback(() => {
+    if (currentQuestion.label === 'Sprache') {
+      if (!answers['Sprache']) return
+      const answer = Object.keys(answers['Sprache'])
+
+      if (!answer) return
+      if (!answer.includes('deutsch')) {
+        const q: Question = {
+          type: 'selection',
+          imgRootPath: 'text',
+          options: [
+            { key: '<1', label: 'Weniger als 1 Jahr' },
+            { key: '>1', label: 'Mehr als 1 Jahr' }
+          ],
+          label: 'Deutsch',
+          question: 'Seit wann lernst du Deutsch?'
+        }
+        const qs = [...questions]
+        qs.splice(currentIndex + 1, 0, q)
+        setQuestions(qs)
+      }
+    }
+    if (currentQuestion.label === 'Deutsch') {
+      if (Object.keys(answers['Deutsch']).includes('<1')) {
+        const qs = [...questions]
+        qs.splice(currentIndex + 1, 1)
+        setQuestions(qs)
+      }
+    }
+  }, [answers, currentIndex, currentQuestion.label, questions])
 
   const next = useCallback(() => {
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
+      modifyQuestionBeforeNext()
       setCurrentIndex(prev => prev + 1)
     }
-  }, [answers, currentIndex, onQuestionnaireFinished, questions.length])
+  }, [
+    answers,
+    currentIndex,
+    modifyQuestionBeforeNext,
+    onQuestionnaireFinished,
+    questions.length
+  ])
 
   const isValidAnswer: boolean = useMemo(() => {
     const currentAnswer = answers[currentQuestion.label]
@@ -101,6 +186,15 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     currentQuestion.maxSelections,
     currentQuestion.minSelections
   ])
+
+  const skip = useCallback(() => {
+    delete answers[currentQuestion.label]
+    next()
+  }, [answers, currentQuestion.label, next])
+
+  const back = useCallback(() => {
+    setCurrentIndex(prev => prev - 1)
+  }, [])
 
   if (questions.length === 0) return <></>
 
@@ -133,7 +227,10 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         </Box>
         <Flex flex="1" overflowY={'scroll'}>
           {currentQuestion.type === 'selection' && (
-            <QuestionnaireSelectionView {...currentQuestion} />
+            <QuestionnaireSelectionView
+              {...currentQuestion}
+              prefill={answers[currentQuestion.label]}
+            />
           )}
         </Flex>
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -141,10 +238,14 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
             {t('questionnaire.btn.next')}
           </Button>
 
-          <Button variant={'outline'}>{t('questionnaire.btn.skip')}</Button>
+          <Button onPress={skip} variant={'outline'}>
+            {t('questionnaire.btn.skip')}
+          </Button>
 
           {currentIndex > 0 && (
-            <Button variant={'link'}>{t('questionnaire.btn.back')}</Button>
+            <Button onPress={back} variant={'link'}>
+              {t('questionnaire.btn.back')}
+            </Button>
           )}
         </VStack>
       </Flex>

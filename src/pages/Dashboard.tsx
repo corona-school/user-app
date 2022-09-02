@@ -48,9 +48,9 @@ const Dashboard: React.FC<Props> = () => {
       }
       headerRight={<SettingsButton />}
       headerLeft={<NotificationAlert />}>
-      <VStack>
+      <VStack paddingX={space['1']}>
         <VStack space={space['1']} marginTop={space['1']}>
-          <VStack space={space['0.5']} paddingX={space['1']}>
+          <VStack space={space['0.5']}>
             <Heading>{t('dashboard.appointmentcard.header')}</Heading>
             <AppointmentCard
               href={'/single-course'}
@@ -103,7 +103,7 @@ const Dashboard: React.FC<Props> = () => {
               title="Statistiken auswerten"
             />
           </HSection>
-          <VStack space={space['0.5']} paddingX={space['1']}>
+          <VStack space={space['0.5']}>
             <Heading>{t('dashboard.homework.header')}</Heading>
             <CTACard
               title={t('dashboard.homework.title')}
@@ -113,7 +113,7 @@ const Dashboard: React.FC<Props> = () => {
               icon={<CheckCircleIcon size="10" />}
             />
           </VStack>
-          <VStack space={space['0.5']} paddingX={space['1']}>
+          <VStack space={space['0.5']}>
             <Heading>{t('dashboard.learningpartner.header')}</Heading>
             <TeacherCard
               name="Max Mustermann"

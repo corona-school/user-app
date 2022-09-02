@@ -24,6 +24,7 @@ const HSection: React.FC<Props> = ({
       <Row
         alignItems={'center'}
         justifyContent={'flex-end'}
+        marginX={-space['1']}
         paddingX={space['1']}
         paddingY={space['0.5']}>
         {title && (
@@ -40,6 +41,7 @@ const HSection: React.FC<Props> = ({
         paddingX={space['1']}
         overflowX="scroll"
         space={space['1']}
+        marginX={-space['1']}
         paddingBottom={space['1']}>
         {children}
       </Row>

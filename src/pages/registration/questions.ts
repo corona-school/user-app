@@ -22,12 +22,7 @@ const questions: Question[] = [
     question: 'In welcher Klasse bist du?',
     type: 'selection',
     maxSelections: 1,
-    options: new Array<ISelectionItem>(12)
-      .fill({ key: '', label: '' })
-      .map((_, index) => ({
-        key: (index + 1).toString(),
-        label: (index + 1).toString()
-      }))
+    options: []
   },
   {
     imgRootPath: 'languages',
@@ -126,13 +121,13 @@ const questions: Question[] = [
     label: 'Fächer',
     question: 'In welchen Fächern benötigst du Unterstützung?',
     type: 'selection',
-    text: 'Du kannst bis zu 3 Fächer auswählen',
-    maxSelections: 3,
+    text: 'Du kannst mehrere Fächer auswählen',
     options: [
-      { key: 'altgriechisch', label: 'Altgriechisch' },
+      { key: 'arbeitslehre', label: 'Arbeitslehre' },
       { key: 'biologie', label: 'Biologie' },
       { key: 'chemie', label: 'Chemie' },
       { key: 'deutsch', label: 'Deutsch' },
+      { key: 'deutsch-2', label: 'Deutsch als Zweitsprache' },
       { key: 'englisch', label: 'Englisch' },
       { key: 'erdkunde', label: 'Erdkunde' },
       { key: 'franzoesisch', label: 'Französisch' },
@@ -143,7 +138,6 @@ const questions: Question[] = [
       { key: 'latein', label: 'Latein' },
       { key: 'mathe', label: 'Mathe' },
       { key: 'musik', label: 'Musik' },
-      { key: 'niederlaendisch', label: 'Niederländisch' },
       { key: 'paedagogik', label: 'Pädagogik' },
       { key: 'philosophie', label: 'Philosophie' },
       { key: 'physik', label: 'Physik' },
@@ -152,7 +146,9 @@ const questions: Question[] = [
       { key: 'sachkunde', label: 'Sachkunde' },
       { key: 'sonstige', label: 'Sonstige' },
       { key: 'spanisch', label: 'Spanisch' },
+      { key: 'tuerkisch', label: 'Türkisch' },
       { key: 'wirtschaft', label: 'Wirtschaft' }
+
       // { key: 'andere', label: 'Andere' }
     ]
   },
