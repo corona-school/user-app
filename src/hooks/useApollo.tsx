@@ -1,10 +1,34 @@
-import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  ApolloProvider,
+  from,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject
+} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { useMemo, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useMemo, useState } from 'react'
 import Utility from '../Utility'
 
+export type LFApollo = {
+  client: ApolloClient<NormalizedCacheObject>
+  createToken: () => any
+  clearToken: () => any
+  token: string
+}
+
+export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({
+  children
+}) => {
+  const { client } = useApollo()
+
+  return <ApolloProvider client={client}>{children}</ApolloProvider>
+}
+
 const useApollo = () => {
-  const [token, setToken] = useState(localStorage.getItem('lernfair:token'))
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('lernfair:token')
+  )
 
   const tokenLink = setContext((_, { headers }) => {
     let token = localStorage.getItem('lernfair:token')
@@ -46,6 +70,6 @@ const useApollo = () => {
     setToken(null)
   }
 
-  return { client, createToken, clearToken, token, setToken }
+  return { client, createToken, clearToken, token } as LFApollo
 }
 export default useApollo
