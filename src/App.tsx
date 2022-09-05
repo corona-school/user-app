@@ -2,7 +2,6 @@ import { NativeBaseProvider } from 'native-base'
 import Theme from './Theme'
 import Navigator from './Navigator'
 
-import Autoload from './Autoload'
 import { LFApolloProvider } from './hooks/useApollo'
 import matomo from './matomo'
 import { MatomoProvider } from '@jonkoops/matomo-tracker-react'
@@ -17,7 +16,6 @@ function App() {
       <LFApolloProvider>
         <NativeBaseProvider theme={Theme}>
           <MatomoProvider value={matomo}>
-            <Autoload />
             <Navigator />
             <FullPageModal />
           </MatomoProvider>
