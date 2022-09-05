@@ -7,7 +7,7 @@ import {
   NormalizedCacheObject
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { Dispatch, ReactNode, SetStateAction, useMemo, useState } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import Utility from '../Utility'
 
 export type LFApollo = {
