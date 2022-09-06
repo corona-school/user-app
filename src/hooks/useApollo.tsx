@@ -32,9 +32,6 @@ const useApollo = () => {
 
   const tokenLink = setContext((_, { headers }) => {
     let token = localStorage.getItem('lernfair:token')
-    if (!token) {
-      token = createToken()
-    }
 
     return {
       headers: {
