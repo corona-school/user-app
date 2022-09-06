@@ -10,17 +10,20 @@ import { IModalTheme } from '../widgets/FullPageModal'
 
 type LFModal = {
   show: boolean
-  setShow?: Dispatch<SetStateAction<boolean>>
+  setShow: Dispatch<SetStateAction<boolean>>
   content: ReactNode
-  setContent?: Dispatch<SetStateAction<ReactNode>>
+  setContent: Dispatch<SetStateAction<ReactNode>>
   variant: IModalTheme
-  setVariant?: Dispatch<SetStateAction<IModalTheme>>
+  setVariant: Dispatch<SetStateAction<IModalTheme>>
 }
 
-const LFModalContext = createContext<LFModal>({
+export const LFModalContext = createContext<LFModal>({
   show: false,
   content: null,
-  variant: 'light'
+  variant: 'light',
+  setShow: () => null,
+  setContent: () => null,
+  setVariant: () => null
 })
 
 export const LFModalProvider: React.FC<{ children: ReactNode }> = ({
@@ -40,6 +43,7 @@ const useProvideModal = () => {
   const [show, setShow] = useState<boolean>(false)
   const [content, setContent] = useState<ReactNode>()
   const [variant, setVariant] = useState<IModalTheme>('light')
+
   return { show, setShow, content, setContent, variant, setVariant }
 }
 export default useModal
