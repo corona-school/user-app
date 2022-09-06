@@ -30,7 +30,7 @@ export default function Login() {
     }
   `)
 
-  const { clearToken, setToken } = useApollo()
+  const { clearToken } = useApollo()
   const navigate = useNavigate()
 
   const attemptLogin = useCallback(async () => {
@@ -49,7 +49,7 @@ export default function Login() {
     } else {
       clearToken()
     }
-  }, [clearToken, data, loading, navigate, setToken])
+  }, [clearToken, data, loading, navigate])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
