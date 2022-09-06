@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
+import useRegistration from '../../hooks/useRegistration'
 
 type Props = {}
 
@@ -20,6 +21,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { space } = useTheme()
   const navigate = useNavigate()
+  const { setRegistrationData } = useRegistration()
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -33,8 +35,14 @@ const RegistrationPersonal: React.FC<Props> = () => {
         <Heading mt={space['1']}>Neu registrieren</Heading>
       </Box>
       <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
-        <Input placeholder={t('firstname')} />
-        <Input placeholder={t('lastname')} />
+        <Input
+          placeholder={t('firstname')}
+          onChangeText={t => setRegistrationData({ firstname: t })}
+        />
+        <Input
+          placeholder={t('lastname')}
+          onChangeText={t => setRegistrationData({ lastname: t })}
+        />
         <>
           <Heading>Über mich</Heading>
           <TextArea

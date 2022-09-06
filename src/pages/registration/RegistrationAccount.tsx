@@ -10,11 +10,10 @@ import {
   Box,
   Flex
 } from 'native-base'
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
-import { ModalContext } from '../../widgets/FullPageModal'
 
 import StudentIcon from '../../assets/icons/lernfair/ic_student.svg'
 import TutorIcon from '../../assets/icons/lernfair/ic_tutor.svg'
@@ -22,6 +21,9 @@ import ParentIcon from '../../assets/icons/lernfair/ic_parent.svg'
 
 import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
+import useRegistration from '../../hooks/useRegistration'
+import useModal from '../../hooks/useModal'
+import useApollo from '../../hooks/useApollo'
 
 type Props = {}
 
@@ -32,7 +34,13 @@ const RegistrationAccount: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { space } = useTheme()
   const { t } = useTranslation()
-  const { setContent, setShow, setVariant } = useContext(ModalContext)
+  const { setContent, setShow, setVariant } = useModal()
+  const { setRegistrationData } = useRegistration()
+  const { createToken } = useApollo()
+
+  useEffect(() => {
+    createToken()
+  }, [])
 
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
@@ -42,9 +50,9 @@ const RegistrationAccount: React.FC<Props> = () => {
     [navigate, setShow]
   )
 
-  const showModal = () => {
+  const showModal = useCallback(() => {
     setVariant('dark')
-    setContent(
+    setContent(() => (
       <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
         <WarningIcon />
         <Heading color={'lightText'}>{t('registration.barrier.title')}</Heading>
@@ -65,9 +73,9 @@ const RegistrationAccount: React.FC<Props> = () => {
           </Button>
         </Row>
       </VStack>
-    )
+    ))
     setShow(true)
-  }
+  }, [onBarrierSolved, setContent, setShow, setVariant, space, t])
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -82,8 +90,14 @@ const RegistrationAccount: React.FC<Props> = () => {
       </Box>
       <VStack flex="1" paddingX={space['1']} mt={space['1']}>
         <VStack space={space['0.5']}>
-          <Input placeholder={t('email')} />
-          <Input placeholder={t('password')} />
+          <Input
+            placeholder={t('email')}
+            onChangeText={t => setRegistrationData({ email: t })}
+          />
+          <Input
+            placeholder={t('password')}
+            onChangeText={t => setRegistrationData({ password: t })}
+          />
           <Input placeholder={t('registration.password_repeat')} />
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>
@@ -115,7 +129,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             {t('registration.check_legal')}
           </Checkbox>
           <Button
-            onPress={() => showModal()}
+            onPress={showModal}
             isDisabled={!legalChecked || !typeSelection}>
             {t('registration.btn.next')}
           </Button>
