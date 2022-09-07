@@ -21,15 +21,26 @@ import { useNavigate } from 'react-router-dom'
 import SettingsButton from '../components/SettingsButton'
 import NotificationAlert from '../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
+import { gql, useQuery } from '@apollo/client'
 
 type Props = {}
 
 const Dashboard: React.FC<Props> = () => {
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        firstname
+      }
+    }
+  `)
+
   const { space } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+
+  if (loading) return <></>
 
   return (
     <WithNavigation
@@ -43,7 +54,9 @@ const Dashboard: React.FC<Props> = () => {
             size="md"
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
           />
-          <Heading color={'#fff'}>{t('hallo')} Milan!</Heading>
+          <Heading color={'#fff'}>
+            {t('hallo')} {data?.me?.firstname}!
+          </Heading>
         </HStack>
       }
       headerRight={<SettingsButton />}
