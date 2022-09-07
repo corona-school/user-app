@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
+import useApollo from './useApollo'
 
 type LFRegistration = {
   firstname: string
@@ -22,6 +29,13 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const reg = useRegistrationProvider()
+  const { createToken, token } = useApollo()
+
+  useEffect(() => {
+    console.log(`Bearer ${token || localStorage.getItem('lernfair:token')}`)
+    createToken()
+  }, [])
+
   return (
     <LFRegistrationContext.Provider value={reg}>
       {children}

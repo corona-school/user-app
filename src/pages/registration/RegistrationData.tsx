@@ -14,7 +14,7 @@ type Props = {}
 const RegistrationData: React.FC<Props> = () => {
   const { space } = useTheme()
   const navigate = useNavigate()
-  const { createToken } = useApollo()
+
   const { setShow, setContent, setVariant } = useModal()
   const { firstname, lastname, email, password } = useRegistration()
 
@@ -23,34 +23,44 @@ const RegistrationData: React.FC<Props> = () => {
       $firstname: String!
       $lastname: String!
       $email: String!
-      $password: String!
     ) {
       meRegisterStudent(
-        firstname: $firstname
-        lastname: $lastname
-        email: $email
-        password: $password
-        newsletter: false
-        registrationSource: normal
-        redirectTo: null
-      )
+        data: {
+          firstname: $firstname
+          lastname: $lastname
+          email: $email
+          newsletter: false
+          registrationSource: normal
+          redirectTo: null
+        }
+      ) {
+        id
+      }
     }
   `)
 
+  const [setPassword, { data: pwData, error: pwError, loading: pwLoading }] =
+    useMutation(
+      gql`
+        mutation setPassword($password: String!) {
+          passwordCreate(password: $password)
+        }
+      `
+    )
+
   const registerStudent = useCallback(async () => {
-    await register({ variables: { firstname, lastname, email, password } })
-  }, [email, firstname, lastname, password, register])
+    await register({ variables: { firstname, lastname, email } })
+  }, [email, firstname, lastname, register])
 
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      console.log(email, firstname, lastname, password)
       await registerStudent()
     },
-    [email, firstname, lastname, password, registerStudent]
+    [registerStudent]
   )
 
   useEffect(() => {
-    if (data) {
+    if (pwData && pwData.passwordCreate) {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
@@ -63,10 +73,8 @@ const RegistrationData: React.FC<Props> = () => {
           <Button
             w="100%"
             onPress={() => {
-              localStorage.setItem('token', 'meintoken')
-              createToken()
-              navigate('/dashboard')
               setShow(false)
+              navigate('/login')
             }}>
             Zur Anwendung
           </Button>
@@ -74,10 +82,10 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
-  }, [createToken, data, navigate, setContent, setShow, setVariant, space])
+  }, [navigate, pwData, setContent, setShow, setVariant, space])
 
   useEffect(() => {
-    if (error) {
+    if (error || pwError) {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
@@ -87,7 +95,13 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
-  }, [error, setContent, setShow, setVariant, space])
+  }, [error, pwError, setContent, setShow, setVariant, space])
+
+  useEffect(() => {
+    if (data) {
+      setPassword({ variables: { password } })
+    }
+  }, [data, password, setPassword])
 
   return (
     <Flex flex="1">
