@@ -191,10 +191,9 @@ export default function Navigator() {
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { token } = useApollo()
-  const { user } = useLernfair()
   const location = useLocation()
 
-  if (!token || !user)
+  if (!token)
     return <Navigate to="/welcome" state={{ from: location }} replace />
   return children
 }
