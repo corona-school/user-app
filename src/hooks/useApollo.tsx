@@ -6,6 +6,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject
 } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 import { setContext } from '@apollo/client/link/context'
 import { ReactNode, useMemo, useState } from 'react'
 import Utility from '../Utility'
@@ -30,26 +31,39 @@ const useApollo = () => {
     localStorage.getItem('lernfair:token')
   )
 
-  const tokenLink = setContext((_, { headers }) => {
-    let token = localStorage.getItem('lernfair:token')
+  const tokenLink = useMemo(
+    () =>
+      setContext((_, { headers }) => ({
+        headers: {
+          ...headers,
+          authorization: token
+            ? `Bearer ${token || localStorage.getItem('lernfair:token')}`
+            : ''
+        }
+      })),
 
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : ''
-      }
-    }
-  })
+    [token]
+  )
 
   const uriLink = new HttpLink({
     uri: process.env.REACT_APP_APOLLO_CLIENT_URI + '/apollo'
+  })
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        console.log(`[GraphQL error]: Message: ${message}, Path: ${path}`)
+        console.log('[GraphQL error]', { locations })
+      })
+
+    if (networkError) console.log(`[Network error]: ${networkError}`)
   })
 
   const client = useMemo(
     () =>
       new ApolloClient({
         cache: new InMemoryCache(),
-        link: from([tokenLink, uriLink])
+        link: from([errorLink, tokenLink, uriLink])
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
