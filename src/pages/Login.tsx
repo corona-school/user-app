@@ -30,17 +30,18 @@ export default function Login() {
     }
   `)
 
-  const { clearToken } = useApollo()
+  const { clearToken, createToken } = useApollo()
   const navigate = useNavigate()
 
   const attemptLogin = useCallback(async () => {
+    createToken()
     await login({
       variables: {
         email: email,
         password: password
       }
     })
-  }, [email, login, password])
+  }, [createToken, email, login, password])
 
   useEffect(() => {
     if (loading) return
