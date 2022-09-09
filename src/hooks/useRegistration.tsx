@@ -29,11 +29,11 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const reg = useRegistrationProvider()
-  const { createToken, token } = useApollo()
+  const { createToken } = useApollo()
 
   useEffect(() => {
-    console.log(`Bearer ${token || localStorage.getItem('lernfair:token')}`)
     createToken()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
