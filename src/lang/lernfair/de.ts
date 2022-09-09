@@ -23,10 +23,11 @@ const lernfair = {
     andere: 'Andere'
   },
   subjects: {
-    altgriechisch: 'Neugriechisch',
+    arbeitslehre: 'Arbeitslehre',
     biologie: 'Biologie',
     chemie: 'Chemie',
     deutsch: 'Deutsch',
+    'deutsch-2': 'Deutsch als Zweitsprache',
     englisch: 'Englisch',
     erdkunde: 'Erdkunde',
     franzoesisch: 'Französisch',
@@ -37,7 +38,6 @@ const lernfair = {
     latein: 'Latein',
     mathe: 'Mathe',
     musik: 'Musik',
-    niederlaendisch: 'Niederländisch',
     paedagogik: 'Pädagogik',
     philosophie: 'Philosophie',
     physik: 'Physik',
@@ -46,6 +46,7 @@ const lernfair = {
     sachkunde: 'Sachkunde',
     sonstige: 'Sonstige',
     spanisch: 'Spanisch',
+    tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',
     andere: 'Andere'
   },
