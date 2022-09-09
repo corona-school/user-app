@@ -10,7 +10,6 @@ import useApollo from './hooks/useApollo'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
-import Playground from './pages/Playground'
 import Profile from './pages/Profile'
 
 import Settings from './pages/Settings'
@@ -163,17 +162,6 @@ export default function Navigator() {
             </RequireAuth>
           }
         />
-
-        {process.env.NODE_ENV === 'development' && (
-          <Route
-            path="/playground"
-            element={
-              <RequireAuth>
-                <Playground />
-              </RequireAuth>
-            }
-          />
-        )}
 
         {/* Fallback */}
         <Route
