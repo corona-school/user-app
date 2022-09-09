@@ -36,9 +36,9 @@ const useApollo = () => {
       setContext((_, { headers }) => ({
         headers: {
           ...headers,
-          authorization: token
-            ? `Bearer ${token || localStorage.getItem('lernfair:token')}`
-            : ''
+          authorization: `Bearer ${
+            token || localStorage.getItem('lernfair:token')
+          }`
         }
       })),
 
