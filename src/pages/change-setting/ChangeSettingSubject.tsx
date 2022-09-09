@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -10,13 +11,12 @@ import {
   FormControl,
   Stack
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
-import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
-import { Subject } from '../../types/lernfair/Subject'
+import { subjects } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -27,41 +27,41 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const subjects: Subject[] = [
-    { key: 'altgriechisch', label: 'Altgriechisch' },
-    { key: 'biologie', label: 'Biologie' },
-    { key: 'chemie', label: 'Chemie' },
-    { key: 'deutsch', label: 'Deutsch' },
-    { key: 'englisch', label: 'Englisch' },
-    { key: 'erdkunde', label: 'Erdkunde' },
-    { key: 'franzoesisch', label: 'Französisch' },
-    { key: 'geschichte', label: 'Geschichte' },
-    { key: 'informatik', label: 'Informatik' },
-    { key: 'italienisch', label: 'Italienisch' },
-    { key: 'kunst', label: 'Kunst' },
-    { key: 'latein', label: 'Latein' },
-    { key: 'mathe', label: 'Mathe' },
-    { key: 'musik', label: 'Musik' },
-    { key: 'niederlaendisch', label: 'Niederländisch' },
-    { key: 'paedagogik', label: 'Pädagogik' },
-    { key: 'philosophie', label: 'Philosophie' },
-    { key: 'physik', label: 'Physik' },
-    { key: 'politik', label: 'Politik' },
-    { key: 'russisch', label: 'Russisch' },
-    { key: 'sachkunde', label: 'Sachkunde' },
-    { key: 'sonstige', label: 'Sonstige' },
-    { key: 'spanisch', label: 'Spanisch' },
-    { key: 'wirtschaft', label: 'Wirtschaft' }
-    // { key: 'andere', label: 'Andere' }
-  ]
+  const [selections, setSelections] = useState<string[]>([])
 
-  const [selections, setSelections] = useState<Subject[]>([])
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        pupil {
+          subjectsFormatted {
+            name
+          }
+        }
+      }
+    }
+  `)
+
+  const [updateSubjects, _updateSubjects] = useMutation(gql`
+    mutation updateSubjects($subjects: [String!]) {
+      meUpdate(update: { pupil: { subjects: $subjects } })
+    }
+  `)
+
+  useEffect(() => {
+    if (data?.me?.pupil?.subjectsFormatted) {
+      const s = data?.me?.pupil?.subjectsFormatted.map(
+        (s: { name: string }) => s.name
+      )
+      setSelections(s)
+    }
+  }, [data?.me?.pupil?.subjectsFormatted])
+
+  if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.NeedHelpIn.single.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
@@ -84,8 +84,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`subjects/icon_${subject.key}.svg`}
-                      text={subject.label}
+                      iconPath={`subjects/icon_${subject.toLowerCase()}.svg`}
+                      text={t(`lernfair.subjects.${subject.toLowerCase()}`)}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -107,23 +107,23 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {subjects.map(
                   (subject, index) =>
-                    !selections.find(sel => sel.key === subject.key) && (
+                    !selections.find(sel => sel === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
                           iconPath={`subjects/icon_${subject.key}.svg`}
-                          text={subject.label}
+                          text={t(`lernfair.subjects.${subject.key}`)}
                           onPress={() =>
-                            setSelections(prev => [...prev, subject])
+                            setSelections(prev => [...prev, subject.key])
                           }
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel.key === 'andere') && (
+              {selections.find(sel => sel === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -150,7 +150,17 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.NeedHelpIn.single.button')}</Button>
+        <Button
+          isDisabled
+          onPress={() => {
+            updateSubjects({
+              variables: {
+                selections
+              }
+            })
+          }}>
+          {t('profile.NeedHelpIn.single.button')}
+        </Button>
       </VStack>
     </WithNavigation>
   )
