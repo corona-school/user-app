@@ -10,7 +10,7 @@ import {
   Box,
   Flex
 } from 'native-base'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
@@ -35,11 +35,14 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
-  const { setRegistrationData } = useRegistration()
+  const { setRegistrationData, email, password } = useRegistration()
   const { createToken } = useApollo()
+
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('')
 
   useEffect(() => {
     createToken()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onBarrierSolved = useCallback(
@@ -96,9 +99,18 @@ const RegistrationAccount: React.FC<Props> = () => {
           />
           <Input
             placeholder={t('password')}
+            type="password"
             onChangeText={t => setRegistrationData({ password: t })}
           />
-          <Input placeholder={t('registration.password_repeat')} />
+          <Input
+            placeholder={t('registration.password_repeat')}
+            type="password"
+            onChangeText={setPasswordConfirm}
+          />
+          <Text fontSize="xs" opacity=".6">
+            Das Password muss mindestens 6 Zeichen enthalten.
+            {/* TODO ADD TRANSLATION */}
+          </Text>
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
@@ -130,9 +142,33 @@ const RegistrationAccount: React.FC<Props> = () => {
           </Checkbox>
           <Button
             onPress={showModal}
-            isDisabled={!legalChecked || !typeSelection}>
+            isDisabled={
+              !legalChecked ||
+              !typeSelection ||
+              password.length < 6 ||
+              password !== passwordConfirm ||
+              email.length < 6
+            }>
             {t('registration.btn.next')}
           </Button>
+          {!typeSelection && (
+            <Text color="danger.500">
+              Bitte identifiziere deine Rolle
+              {/* TODO ADD TRANSLATION */}
+            </Text>
+          )}
+          {email.length < 6 && (
+            <Text color="danger.500">
+              Ungültige Email-Adresse
+              {/* TODO ADD TRANSLATION */}
+            </Text>
+          )}
+          <Text
+            color="danger.500"
+            opacity={password !== passwordConfirm ? 1 : 0}>
+            Die Passwörter stimmen nicht überein
+            {/* TODO ADD TRANSLATION */}
+          </Text>
         </VStack>
       </VStack>
     </Flex>
