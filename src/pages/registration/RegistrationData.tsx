@@ -1,13 +1,23 @@
 import { Button, Flex, Heading, Text, useTheme, VStack } from 'native-base'
-import { useCallback, useEffect } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect
+} from 'react'
 import { useNavigate } from 'react-router-dom'
-import Questionnaire, { Answer } from '../../components/Questionnaire'
-import useApollo from '../../hooks/useApollo'
+import Questionnaire, {
+  Answer,
+  Question,
+  QuestionnaireContext
+} from '../../components/Questionnaire'
 import questions from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
 import useRegistration from '../../hooks/useRegistration'
+import { useTranslation } from 'react-i18next'
 
 type Props = {}
 
@@ -15,6 +25,8 @@ const RegistrationData: React.FC<Props> = () => {
   const { space } = useTheme()
   const navigate = useNavigate()
 
+  const { t } = useTranslation()
+  const { answers } = useContext(QuestionnaireContext)
   const { setShow, setContent, setVariant } = useModal()
   const { firstname, lastname, email, password } = useRegistration()
 
@@ -23,8 +35,13 @@ const RegistrationData: React.FC<Props> = () => {
       $firstname: String!
       $lastname: String!
       $email: String!
+      $schooltype: SchoolType!
+      $state: State!
+      $password: String!
+      $gradeAsInt: Int!
+      $subjects: [String!]
     ) {
-      meRegisterStudent(
+      meRegisterPupil(
         data: {
           firstname: $firstname
           lastname: $lastname
@@ -32,35 +49,52 @@ const RegistrationData: React.FC<Props> = () => {
           newsletter: false
           registrationSource: normal
           redirectTo: null
+          schooltype: $schooltype
+          state: $state
         }
       ) {
         id
       }
+      passwordCreate(password: $password)
+      meUpdate(
+        update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+      )
     }
   `)
 
-  const [setPassword, { data: pwData, error: pwError, loading: pwLoading }] =
-    useMutation(
-      gql`
-        mutation setPassword($password: String!) {
-          passwordCreate(password: $password)
-        }
-      `
-    )
+  const registerPupil = useCallback(
+    async (answers: { [key: string]: Answer }) => {
+      const state = Object.keys(answers.Bundesland)[0]
+      const schooltype = Object.keys(answers.Schulform)[0]
 
-  const registerStudent = useCallback(async () => {
-    await register({ variables: { firstname, lastname, email } })
-  }, [email, firstname, lastname, register])
+      const gradeAsInt = parseInt(Object.keys(answers.Klasse)[0])
+      const subjects = Object.keys(answers.Fächer)
+
+      await register({
+        variables: {
+          firstname,
+          lastname,
+          email,
+          state,
+          schooltype,
+          password,
+          gradeAsInt,
+          subjects
+        }
+      })
+    },
+    [email, firstname, lastname, password, register]
+  )
 
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      await registerStudent()
+      await registerPupil(answers)
     },
-    [registerStudent]
+    [registerPupil]
   )
 
   useEffect(() => {
-    if (pwData && pwData.passwordCreate) {
+    if (data && !error) {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
@@ -82,10 +116,10 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
-  }, [navigate, pwData, setContent, setShow, setVariant, space])
+  }, [navigate, data, error, setContent, setShow, setVariant, space])
 
   useEffect(() => {
-    if (error || pwError) {
+    if (error) {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
@@ -95,13 +129,7 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
-  }, [error, pwError, setContent, setShow, setVariant, space])
-
-  useEffect(() => {
-    if (data) {
-      setPassword({ variables: { password } })
-    }
-  }, [data, password, setPassword])
+  }, [error, setContent, setShow, setVariant, space])
 
   return (
     <Flex flex="1">
