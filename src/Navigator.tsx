@@ -31,8 +31,7 @@ import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
 import RegistrationData from './pages/registration/RegistrationData'
 import { RegistrationProvider } from './hooks/useRegistration'
-import useLernfair from './hooks/useLernfair'
-import { useEffect } from 'react'
+import Explore from './pages/Explore'
 
 export default function Navigator() {
   return (
@@ -40,14 +39,7 @@ export default function Navigator() {
       <Routes>
         {/* Public */}
 
-        <Route
-          path="/login"
-          element={
-            <RemoveAuth>
-              <Login />
-            </RemoveAuth>
-          }
-        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/registration"
           element={
@@ -73,6 +65,14 @@ export default function Navigator() {
           }
         />
 
+        <Route
+          path="/explore"
+          element={
+            <RequireAuth>
+              <Explore />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/single-course"
           element={
@@ -195,13 +195,5 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
 
   if (!token)
     return <Navigate to="/welcome" state={{ from: location }} replace />
-  return children
-}
-
-const RemoveAuth = ({ children }: { children: JSX.Element }) => {
-  const { clearToken } = useApollo()
-
-  useEffect(() => clearToken(), [clearToken])
-
   return children
 }
