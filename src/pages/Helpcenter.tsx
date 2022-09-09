@@ -38,10 +38,7 @@ const HelpCenter: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   return (
-    <WithNavigation
-      headerTitle="Hilfebereich"
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+    <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
       <Box
         paddingTop={space['4']}
         paddingBottom={space['1.5']}

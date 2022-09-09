@@ -54,10 +54,7 @@ const AllFaq: React.FC<Props> = () => {
   const { space } = useTheme()
 
   return (
-    <WithNavigation
-      headerTitle="Alle FAQ"
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+    <WithNavigation headerTitle="Alle FAQ" headerLeft={<BackButton />}>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>Alle Fragen und Antworten</Heading>
         <Text paddingBottom={space['1']}>
