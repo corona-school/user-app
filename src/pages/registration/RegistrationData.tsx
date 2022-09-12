@@ -55,6 +55,10 @@ const RegistrationData: React.FC<Props> = () => {
     }
   `)
 
+  useEffect(() => {
+    if (!firstname && !lastname) navigate('/registration/2')
+  }, [email, firstname, lastname, navigate, password])
+
   const registerPupil = useCallback(
     async (answers: { [key: string]: Answer }) => {
       const state = Object.keys(answers.Bundesland)[0]

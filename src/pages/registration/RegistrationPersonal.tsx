@@ -8,6 +8,7 @@ import {
   Flex,
   Box
 } from 'native-base'
+import { useEffect } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +23,11 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { space } = useTheme()
   const navigate = useNavigate()
-  const { setRegistrationData } = useRegistration()
+  const { setRegistrationData, email, password } = useRegistration()
+
+  useEffect(() => {
+    if (!email && !password) navigate('/registration/1')
+  }, [email, navigate, password])
 
   return (
     <Flex overflowY={'auto'} height="100vh">
