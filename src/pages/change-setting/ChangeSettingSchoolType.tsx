@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -10,13 +11,11 @@ import {
   FormControl,
   Stack
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
-import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
-import { SchoolType } from '../../types/lernfair/SchoolType'
+import { schooltypes } from '../../types/lernfair/SchoolType'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -27,21 +26,34 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const schooltypes: SchoolType[] = [
-    { label: 'Grundschule', key: 'grundschule' },
-    { label: 'Hauptschule', key: 'hauptschule' },
-    { label: 'Realschule', key: 'realschule' },
-    { label: 'Gymnasium', key: 'gymnasium' },
-    { label: 'Andere', key: 'andere' }
-  ]
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        pupil {
+          schooltype
+        }
+      }
+    }
+  `)
 
-  const [selections, setSelections] = useState<SchoolType[]>([])
+  const [updateSchooltype, _updateSchooltype] = useMutation(gql`
+    mutation updateSchooltype($schooltype: String!) {
+      meUpdate(update: { pupil: { schooltype: $schooltype } })
+    }
+  `)
+
+  const [selections, setSelections] = useState<string>('')
+
+  useEffect(() => {
+    setSelections(data?.me?.pupil?.schooltype)
+  }, [data?.me?.pupil?.schooltype])
+
+  if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolType.single.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
@@ -49,35 +61,15 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
         <Heading>{t('profile.SchoolType.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {selections.map((subject, index) => (
-              <Column
-                marginRight={3}
-                marginBottom={3}
-                key={`selection-${index}`}>
-                <TouchableOpacity
-                  onPress={() =>
-                    setSelections(prev => {
-                      const res = [...prev]
-                      res.splice(index, 1)
-                      return res
-                    })
-                  }>
-                  <Row alignItems="center" justifyContent="center">
-                    <IconTagList
-                      iconPath={`schooltypes/icon_${
-                        subject.key === 'hauptschule'
-                          ? 'realschule'
-                          : subject.key
-                      }.svg`}
-                      text={subject.label}
-                    />
-                    <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                      x
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-              </Column>
-            ))}
+            <Column marginRight={3} marginBottom={3}>
+              <IconTagList
+                isDisabled
+                iconPath={`schooltypes/icon_${
+                  selections === 'hauptschule' ? 'realschule' : selections
+                }.svg`}
+                text={t(`lernfair.schooltypes.${data?.me?.pupil?.schooltype}`)}
+              />
+            </Column>
           </Row>
         </ProfileSettingItem>
       </VStack>
@@ -90,28 +82,26 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
                 {schooltypes.map(
-                  (subject, index) =>
-                    !selections.find(sel => sel.key === subject.key) && (
+                  (schooltype, index) =>
+                    selections !== schooltype.key && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
                           iconPath={`schooltypes/icon_${
-                            subject.key === 'hauptschule'
+                            schooltype.key === 'hauptschule'
                               ? 'realschule'
-                              : subject.key
+                              : schooltype.key
                           }.svg`}
-                          text={subject.label}
-                          onPress={() =>
-                            setSelections(prev => [...prev, subject])
-                          }
+                          text={schooltype.label}
+                          onPress={() => setSelections(schooltype.key)}
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel.key === 'andere') && (
+              {selections === 'andere' && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -138,7 +128,13 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.SchoolType.single.button')}</Button>
+        <Button
+          isDisabled
+          onPress={() => {
+            updateSchooltype({ variables: { schooltype: selections } })
+          }}>
+          {t('profile.SchoolType.single.button')}
+        </Button>
       </VStack>
     </WithNavigation>
   )

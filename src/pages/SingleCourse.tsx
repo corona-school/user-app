@@ -24,10 +24,7 @@ const SingleCourse: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   return (
-    <WithNavigation
-      headerTitle="Kurvendiskussion"
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+    <WithNavigation headerTitle="Kurvendiskussion" headerLeft={<BackButton />}>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
