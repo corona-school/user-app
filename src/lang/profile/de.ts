@@ -2,11 +2,15 @@ const profile = {
   title: 'Mein Profil',
   successmessage: 'Änderungen wurden erfolgreich gespeichert.',
   ProfileCompletion: {
-    name: 'Profilvollständigkeit',
+    name: 'Profilvollständigkeit'
   },
   PersonalData: 'Persönliche Daten',
   UserName: {
-    label: 'Name',
+    label: {
+      title: 'Dein Name',
+      firstname: 'Vorname',
+      lastname: 'Nachname'
+    },
     popup: {
       header: 'Name ändern',
       label: 'Dein Name',

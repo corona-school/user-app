@@ -14,7 +14,7 @@ import SettingsButton from './SettingsButton'
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
   appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
-  explore: { label: 'Erkunden', icon: LFExploreIcon, disabled: true },
+  explore: { label: 'Erkunden', icon: LFExploreIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
 }
 

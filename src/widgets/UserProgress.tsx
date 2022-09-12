@@ -1,10 +1,10 @@
 import { View, Progress, Heading } from 'native-base'
 
 type Props = {
-  procent: number
+  percent: number
 }
 
-const UserProgress: React.FC<Props> = ({ procent }) => {
+const UserProgress: React.FC<Props> = ({ percent }) => {
   return (
     <View>
       <Progress
@@ -14,9 +14,9 @@ const UserProgress: React.FC<Props> = ({ procent }) => {
         _filledTrack={{
           bg: 'primary.900'
         }}
-        value={procent}
+        value={percent}
       />
-      <Heading fontSize="sm">{procent} %</Heading>
+      <Heading fontSize="sm">{percent} %</Heading>
     </View>
   )
 }

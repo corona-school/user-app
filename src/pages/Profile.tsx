@@ -16,7 +16,6 @@ import {
   TextArea
 } from 'native-base'
 import NotificationAlert from '../components/NotificationAlert'
-import SettingsButton from '../components/SettingsButton'
 import WithNavigation from '../components/WithNavigation'
 import IconTagList from '../widgets/IconTagList'
 import ProfilAvatar from '../widgets/ProfilAvatar'
@@ -29,8 +28,9 @@ import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
 import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { gql, useMutation, useQuery } from '@apollo/client'
 
 type Props = {}
 
@@ -39,13 +39,47 @@ const Profile: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
+  const [firstName, setFirstName] = useState<string>()
+  const [lastName, setLastName] = useState<string>()
+
   const [nameModalVisible, setNameModalVisible] = useState<boolean>(false)
   const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false)
-  const [profilName, setProfilName] = useState<string>('Milan')
+
   const [aboutMe, setAboutMe] = useState<string>(
     'Willkommen im Profil. Hier kannst du deinen Text anpassen.'
   )
-  const [userSettingChanged, setUserSettings] = useState(false)
+  const [userSettingChanged, setUserSettings] = useState<boolean>(false)
+
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        firstname
+        lastname
+        pupil {
+          state
+          schooltype
+          subjectsFormatted {
+            name
+          }
+          gradeAsInt
+        }
+      }
+    }
+  `)
+
+  const [changeName, _changeName] = useMutation(gql`
+    mutation changeName($firstname: String!, $lastname: String!) {
+      meUpdate(update: { firstname: $firstname, lastname: $lastname })
+    }
+  `)
+
+  useEffect(() => {
+    if (_changeName.data) {
+      setUserSettings(true)
+    }
+  }, [_changeName.data])
+
+  if (loading) return <></>
 
   return (
     <>
@@ -77,7 +111,7 @@ const Profile: React.FC<Props> = () => {
               color={colors.white}
               bold
               fontSize="xl">
-              Milan
+              {data?.me?.firstname}
             </Heading>
 
             <Row width="80%" justifyContent="space-around">
@@ -96,8 +130,7 @@ const Profile: React.FC<Props> = () => {
             </Row>
           </Box>
         }
-        headerLeft={<SettingsButton />}
-        headerRight={<NotificationAlert />}>
+        headerLeft={<NotificationAlert />}>
         {userSettingChanged && (
           <Alert
             marginY={10}
@@ -121,17 +154,19 @@ const Profile: React.FC<Props> = () => {
         <VStack space={space['1']}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress procent={25} />
+              <UserProgress percent={25} />
             </ProfileSettingRow>
           </VStack>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem
-                title={t('profile.UserName.label')}
+                title={t('profile.UserName.label.title')}
                 href={() => {
                   setNameModalVisible(!nameModalVisible)
                 }}>
-                <Text>{profilName}</Text>
+                <Text>
+                  {data?.me?.firstname} {data?.me?.lastname}
+                </Text>
               </ProfileSettingItem>
 
               <ProfileSettingItem
@@ -167,13 +202,15 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.State.label')}
                 href={() => navigate('/change-setting/state')}>
                 <Row>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'states/icon_nordrhein-westfalen.svg'}
-                      text="NRW"
-                    />
-                  </Column>
+                  {data?.me?.pupil.state && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        iconPath={`states/icon_${data?.me?.pupil.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.pupil.state}`)}
+                      />
+                    </Column>
+                  )}
                 </Row>
               </ProfileSettingItem>
 
@@ -181,13 +218,17 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.SchoolType.label')}
                 href={() => navigate('/change-setting/school-type')}>
                 <Row>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'schooltypes/icon_gymnasium.svg'}
-                      text="Gymnasium"
-                    />
-                  </Column>
+                  {data?.me?.pupil?.schooltype && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        iconPath={`schooltypes/icon_${data.me.pupil.schooltype}.svg`}
+                        text={t(
+                          `lernfair.schooltypes.${data?.me?.pupil.schooltype}`
+                        )}
+                      />
+                    </Column>
+                  )}
                 </Row>
               </ProfileSettingItem>
 
@@ -195,13 +236,17 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.SchoolClass.label')}
                 href={() => navigate('/change-setting/class')}>
                 <Row>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      textIcon="6"
-                      text={t('lernfair.schoolclass', { class: 6 })}
-                    />
-                  </Column>
+                  {data?.me?.pupil?.gradeAsInt && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        textIcon={data?.me?.pupil?.gradeAsInt}
+                        text={t('lernfair.schoolclass', {
+                          class: data?.me?.pupil?.gradeAsInt
+                        })}
+                      />
+                    </Column>
+                  )}
                 </Row>
               </ProfileSettingItem>
 
@@ -210,20 +255,17 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.NeedHelpIn.label')}
                 href={() => navigate('/change-setting/subjects')}>
                 <Row>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'subjects/icon_mathe.svg'}
-                      text="Mathe"
-                    />
-                  </Column>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'subjects/icon_deutsch.svg'}
-                      text="Deutsch"
-                    />
-                  </Column>
+                  {data?.me?.pupil?.subjectsFormatted?.map(
+                    (sub: { name: string; __typename: string }) => (
+                      <Column marginRight={3}>
+                        <IconTagList
+                          isDisabled
+                          iconPath={'subjects/icon_mathe.svg'}
+                          text={sub.name}
+                        />
+                      </Column>
+                    )
+                  )}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
@@ -239,12 +281,23 @@ const Profile: React.FC<Props> = () => {
           <Modal.Body>
             <FormControl>
               <FormControl.Label>
-                {t('profile.UserName.popup.label')}
+                {t('profile.UserName.label.firstname')}
               </FormControl.Label>
               <Input
-                value={profilName}
+                value={(!!firstName && firstName) || data?.me?.firstname}
                 onChangeText={text => {
-                  setProfilName(text)
+                  setFirstName(text)
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>
+                {t('profile.UserName.label.lastname')}
+              </FormControl.Label>
+              <Input
+                value={(!!lastName && lastName) || data?.me?.lastname}
+                onChangeText={text => {
+                  setLastName(text)
                 }}
               />
             </FormControl>
@@ -262,7 +315,9 @@ const Profile: React.FC<Props> = () => {
               <Button
                 onPress={() => {
                   setNameModalVisible(false)
-                  setUserSettings(true)
+                  changeName({
+                    variables: { firstname: firstName, lastname: lastName }
+                  })
                 }}>
                 {t('profile.UserName.popup.save')}
               </Button>
