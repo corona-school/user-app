@@ -25,6 +25,7 @@ const TextInput: React.FC<Props> = props => {
       <Input
         {...props}
         style={{ paddingTop: space['6'], paddingBottom: space['3'] }}
+        placeholder={undefined}
       />
     </VStack>
   )
