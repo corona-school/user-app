@@ -1,5 +1,16 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-import { View, Text, Row, useTheme, Box, Flex, Button, Link } from 'native-base'
+import {
+  View,
+  Text,
+  Row,
+  useTheme,
+  Box,
+  Flex,
+  Button,
+  Link,
+  Image,
+  Column
+} from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
@@ -17,7 +28,10 @@ type Props = {
   button?: ReactNode
   buttonlink?: string
   variant?: 'card' | 'horizontal'
+  isTeaser?: boolean
+  image: string
   onPressToCourse?: () => any
+  href?: string
 }
 
 const AppointmentCard: React.FC<Props> = ({
@@ -31,7 +45,10 @@ const AppointmentCard: React.FC<Props> = ({
   avatarname,
   button,
   buttonlink,
-  onPressToCourse
+  isTeaser = false,
+  image,
+  onPressToCourse,
+  href
 }) => {
   const { space } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
@@ -50,55 +67,89 @@ const AppointmentCard: React.FC<Props> = ({
     [date, remainingTime]
   )
 
+  const textColor = useMemo(
+    () => (isStartingSoon ? 'lightText' : 'darkText'),
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [date, remainingTime]
+  )
+
   return (
     <View>
       {variant === 'card' ? (
-        <Card flexibleWidth>
-          <Box bg="gray.500" h="120" padding={space['0.5']}>
-            <Row space={space['0.5']}>
-              {tags.map((t, i) => (
-                <Tag key={`tag-${i}`} text={t} />
-              ))}
-            </Row>
-          </Box>
-          <Box padding={space['0.5']}>
-            {!isStartingSoon && (
-              <Row paddingTop={space['1']} space={1}>
-                <Text>{date.toLocaleDateString()}</Text>
-                <Text>•</Text>
-                <Text>{date.toLocaleTimeString().slice(0, -3)}</Text>
-              </Row>
-            )}
-            {isStartingSoon && (
-              <Row paddingBottom={space['0.5']}>
-                <Text>Startet in: </Text>
-                <Text bold>{remainingTime}</Text>
-              </Row>
-            )}
-            <Text bold fontSize={'md'}>
-              {title}
-            </Text>
-            {isStartingSoon && (
-              <>
-                <Text paddingBottom={space['0.5']}>{description}</Text>
-                <Button onPress={onPressToCourse}>Zum Kurs</Button>
-              </>
-            )}
-            {child && <CommunityUser name={child} />}
+        <Card
+          flexibleWidth={isTeaser ? true : false}
+          variant={isStartingSoon ? 'dark' : 'normal'}>
+          <Link href={href}>
+            <Column w="100%">
+              <Box h={isTeaser ? '170' : '120'} padding={space['1']}>
+                <Image
+                  position="absolute"
+                  left={0}
+                  right={0}
+                  top={0}
+                  width="100%"
+                  height="100%"
+                  alt={title}
+                  source={{
+                    uri: image
+                  }}
+                />
+                <Row space={space['0.5']} flexWrap="wrap">
+                  {tags.map((t, i) => (
+                    <Tag key={`tag-${i}`} text={t} />
+                  ))}
+                </Row>
+              </Box>
 
-            {button && (
-              <Link href={buttonlink}>
-                <Button paddingTop={space['1.5']} paddingBottom={space['1.5']}>
-                  {button}
-                </Button>
-              </Link>
-            )}
-          </Box>
+              <Box padding={space['1']}>
+                {!isStartingSoon && (
+                  <Row paddingTop={space['1']} space={1}>
+                    <Text color={textColor}>{date.toLocaleDateString()}</Text>
+                    <Text color={textColor}>•</Text>
+                    <Text color={textColor}>
+                      {date.toLocaleTimeString().slice(0, -3)}
+                    </Text>
+                  </Row>
+                )}
+                {isStartingSoon && (
+                  <Row paddingBottom={space['0.5']}>
+                    <Text color={textColor}>Startet in: </Text>
+                    <Text bold color="primary.400">
+                      {remainingTime}
+                    </Text>
+                  </Row>
+                )}
+                <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
+                  {title}
+                </Text>
+                {isStartingSoon && (
+                  <>
+                    <Text paddingBottom={space['1']} color={textColor}>
+                      {description}
+                    </Text>
+                    <Button onPress={onPressToCourse}>Zum Kurs</Button>
+                  </>
+                )}
+                {child && <CommunityUser name={child} />}
+
+                {button && (
+                  <Link href={buttonlink}>
+                    <Button
+                      paddingTop={space['1.5']}
+                      paddingBottom={space['1.5']}>
+                      {button}
+                    </Button>
+                  </Link>
+                )}
+              </Box>
+            </Column>
+          </Link>
         </Card>
       ) : (
         <Flex
           direction="row"
-          borderBottomColor="gray.300"
+          borderBottomColor="primary.100"
           borderBottomWidth="1"
           paddingLeft={space['0.5']}
           paddingRight={space['0.5']}

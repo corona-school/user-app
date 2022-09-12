@@ -1,12 +1,27 @@
-import { NativeBaseProvider, View } from 'native-base'
+import { NativeBaseProvider } from 'native-base'
 import Theme from './Theme'
 import Navigator from './Navigator'
 
+import { LFApolloProvider } from './hooks/useApollo'
+import matomo from './matomo'
+import { MatomoProvider } from '@jonkoops/matomo-tracker-react'
+
+import './web/scss/index.scss'
+import FullPageModal from './widgets/FullPageModal'
+import { LFModalProvider } from './hooks/useModal'
+
 function App() {
   return (
-    <NativeBaseProvider theme={Theme}>
-      <Navigator></Navigator>
-    </NativeBaseProvider>
+    <LFModalProvider>
+      <LFApolloProvider>
+        <NativeBaseProvider theme={Theme}>
+          <MatomoProvider value={matomo}>
+            <Navigator />
+            <FullPageModal />
+          </MatomoProvider>
+        </NativeBaseProvider>
+      </LFApolloProvider>
+    </LFModalProvider>
   )
 }
 

@@ -1,4 +1,4 @@
-import { View, Text, VStack, Heading, Avatar, useTheme, Box } from 'native-base'
+import { Text, VStack, Avatar, useTheme } from 'native-base'
 import EditDataRow from '../widgets/EditDataRow'
 
 type Props = {}
@@ -10,7 +10,7 @@ const EditProfile: React.FC<Props> = () => {
     <VStack space={space['2']}>
       <VStack
         space={space['1']}
-        bg={'gray.500'}
+        bg={'primary.100'}
         alignItems="center"
         paddingY={space['2']}
         borderBottomRadius={16}>

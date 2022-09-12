@@ -1,6 +1,6 @@
 import { Box, Heading, Link, Row, useTheme } from 'native-base'
 import { ReactNode } from 'react'
-import AppointmentCard from '../widgets/AppointmentCard'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   title?: string
@@ -18,11 +18,13 @@ const HSection: React.FC<Props> = ({
   smallTitle
 }) => {
   const { space, fontSizes } = useTheme()
+  const { t } = useTranslation()
   return (
     <Box>
       <Row
         alignItems={'center'}
         justifyContent={'flex-end'}
+        marginX={-space['1']}
         paddingX={space['1']}
         paddingY={space['0.5']}>
         {title && (
@@ -32,13 +34,14 @@ const HSection: React.FC<Props> = ({
             {title}
           </Heading>
         )}
-        {showAll && <Link onPress={onShowAll}>Alle</Link>}
+        {showAll && <Link onPress={onShowAll}>{t('all')}</Link>}
       </Row>
       <Row
         flexWrap={'nowrap'}
         paddingX={space['1']}
         overflowX="scroll"
         space={space['1']}
+        marginX={-space['1']}
         paddingBottom={space['1']}>
         {children}
       </Row>

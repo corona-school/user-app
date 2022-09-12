@@ -1,4 +1,4 @@
-import { View, Text, Row, Box, VStack, useTheme } from 'native-base'
+import { Text, Row, Box, VStack, useTheme } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 
@@ -14,15 +14,15 @@ const CourseOfferCard: React.FC<Props> = ({ title, tags, date }) => {
   return (
     <Card flexibleWidth>
       <Row>
-        <Box w={100} bg={'gray.600'}></Box>
+        <Box w={100} bg={'primary.100'}></Box>
         <VStack
           paddingX={space['0.5']}
           paddingY={space['1']}
           flex="1"
           space={space['0.5']}>
           <Row space={space['0.5']}>
-            {tags.map(t => (
-              <Tag text={t} />
+            {tags.map((t, index) => (
+              <Tag text={t} key={`tag-${index}`} />
             ))}
           </Row>
           <Row space={1}>

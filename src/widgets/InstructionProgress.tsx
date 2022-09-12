@@ -1,4 +1,4 @@
-import { View, Text, Row, Box, Circle, Divider, useTheme } from 'native-base'
+import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
 import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
@@ -31,7 +31,7 @@ const InstructionProgress: React.FC<Props> = ({
               flex={isActive ? 1 : 0}
               flexBasis={sizes['6'] + 'px'}
               mr={!isLast ? space['0.5'] : 0}>
-              <Circle bg={'gray.400'} size={sizes['1.5']}>
+              <Circle bg={'primary.100'} size={sizes['1.5']}>
                 <Text>{index}</Text>
               </Circle>
               {isActive && (
