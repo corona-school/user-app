@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
+import TextInput from '../../components/TextInput'
 import useRegistration from '../../hooks/useRegistration'
 
 type Props = {}
@@ -35,11 +36,11 @@ const RegistrationPersonal: React.FC<Props> = () => {
         <Heading mt={space['1']}>Neu registrieren</Heading>
       </Box>
       <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
-        <Input
+        <TextInput
           placeholder={t('firstname')}
           onChangeText={t => setRegistrationData({ firstname: t })}
         />
-        <Input
+        <TextInput
           placeholder={t('lastname')}
           onChangeText={t => setRegistrationData({ lastname: t })}
         />

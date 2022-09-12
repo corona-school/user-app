@@ -1,15 +1,8 @@
 import { Button, Flex, Heading, Text, useTheme, VStack } from 'native-base'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect
-} from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Questionnaire, {
   Answer,
-  Question,
   QuestionnaireContext
 } from '../../components/Questionnaire'
 import questions from './questions'

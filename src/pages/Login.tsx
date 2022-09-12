@@ -17,6 +17,7 @@ import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import TextInput from '../components/TextInput'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -85,7 +86,7 @@ export default function Login() {
 
         <Box marginX="90px" width="80%">
           <Row marginBottom={3}>
-            <Input
+            <TextInput
               width="100%"
               isRequired={true}
               placeholder={t('email')}
@@ -94,7 +95,7 @@ export default function Login() {
             />
           </Row>
           <Row marginBottom={3} width="100%">
-            <Input
+            <TextInput
               type="password"
               width="100%"
               isRequired={true}

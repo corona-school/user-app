@@ -24,6 +24,7 @@ import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import useRegistration from '../../hooks/useRegistration'
 import useModal from '../../hooks/useModal'
 import useApollo from '../../hooks/useApollo'
+import TextInput from '../../components/TextInput'
 
 type Props = {}
 
@@ -93,16 +94,17 @@ const RegistrationAccount: React.FC<Props> = () => {
       </Box>
       <VStack flex="1" paddingX={space['1']} mt={space['1']}>
         <VStack space={space['0.5']}>
-          <Input
+          <TextInput
+            keyboardType="email-address"
             placeholder={t('email')}
             onChangeText={t => setRegistrationData({ email: t })}
           />
-          <Input
+          <TextInput
             placeholder={t('password')}
             type="password"
             onChangeText={t => setRegistrationData({ password: t })}
           />
-          <Input
+          <TextInput
             placeholder={t('registration.password_repeat')}
             type="password"
             onChangeText={setPasswordConfirm}
