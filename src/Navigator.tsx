@@ -31,6 +31,8 @@ import RegistrationPersonal from './pages/registration/RegistrationPersonal'
 import RegistrationData from './pages/registration/RegistrationData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
+import OnBoardingWelcome from './pages/onboarding/OnBoardingWelcome'
+import OnBoardingMatching from './pages/onboarding/OnBoardingMatching'
 
 export default function Navigator() {
   return (
@@ -159,6 +161,24 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <OnboardingTourList />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/onboarding-welcome"
+          element={
+            <RequireAuth>
+              <OnBoardingWelcome />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/onboarding-matching"
+          element={
+            <RequireAuth>
+              <OnBoardingMatching />
             </RequireAuth>
           }
         />
