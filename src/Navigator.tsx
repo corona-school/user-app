@@ -31,8 +31,14 @@ import RegistrationPersonal from './pages/registration/RegistrationPersonal'
 import RegistrationData from './pages/registration/RegistrationData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
-import OnBoardingWelcome from './pages/onboarding/OnBoardingWelcome'
-import OnBoardingMatching from './pages/onboarding/OnBoardingMatching'
+
+import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
+import OnBoardingStudentMatching from './pages/onboarding/student/OnBoardingStudentMatching'
+import OnBoardingStudentCourse from './pages/onboarding/student/OnBoardingStudentCourse'
+import OnBoardingStudentHelpCenter from './pages/onboarding/student/OnBoardingStudentHelpCenter'
+import OnBoardingStudentProfile from './pages/onboarding/student/OnBoardingStudentProfile'
+import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher'
+import OnBoardingStudentAppointments from './pages/onboarding/student/OnBoardingStudentAppointments'
 
 export default function Navigator() {
   return (
@@ -165,22 +171,41 @@ export default function Navigator() {
           }
         />
 
+        {/* Onboarding Students */}
         <Route
-          path="/onboarding-welcome"
+          path="/onboarding-students"
           element={
             <RequireAuth>
-              <OnBoardingWelcome />
+              <OnBoardingStudentWelcome />
             </RequireAuth>
-          }
+          }></Route>
+        <Route
+          path="/onboarding-students/welcome"
+          element={<OnBoardingStudentWelcome />}
         />
-
         <Route
-          path="/onboarding-matching"
-          element={
-            <RequireAuth>
-              <OnBoardingMatching />
-            </RequireAuth>
-          }
+          path="/onboarding-students/matching"
+          element={<OnBoardingStudentMatching />}
+        />
+        <Route
+          path="/onboarding-students/groups"
+          element={<OnBoardingStudentCourse />}
+        />
+        <Route
+          path="/onboarding-students/appointments"
+          element={<OnBoardingStudentAppointments />}
+        />
+        <Route
+          path="/onboarding-students/helpcenter"
+          element={<OnBoardingStudentHelpCenter />}
+        />
+        <Route
+          path="/onboarding-students/profil"
+          element={<OnBoardingStudentProfile />}
+        />
+        <Route
+          path="/onboarding-students/finish"
+          element={<OnBoardingStudentFinisher />}
         />
 
         {/* Fallback */}

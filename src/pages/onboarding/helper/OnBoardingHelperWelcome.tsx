@@ -1,14 +1,14 @@
 import { Heading, useTheme, Text, View } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import Logo from '../../assets/icons/lernfair/lf-party.svg'
-import InfoScreen from '../../widgets/InfoScreen'
-import { ModalContext } from '../../widgets/FullPageModal'
+import Logo from '../../../assets/icons/lernfair/lf-party.svg'
 import { useContext } from 'react'
+import InfoScreen from '../../../widgets/InfoScreen'
+import { ModalContext } from '../../../widgets/FullPageModal'
 
 type Props = {}
 
-const OnBoardingWelcome: React.FC<Props> = () => {
+const OnBoardingHelperWelcome: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -18,13 +18,12 @@ const OnBoardingWelcome: React.FC<Props> = () => {
     <View>
       <InfoScreen
         variant="dark"
-        title="Herzlich willkommen bei Lern-Fair"
+        title={t('onboardingList.Wizard.helper.welcome.title')}
         isOutlineButtonLink={true}
         content={
           <>
             <Text color="lightText" paddingBottom={space['1.5']}>
-              Wir freuen uns, dass du bildungs-benachteiligte Kinder aktiv
-              unterstützen möchtest.
+              {t('onboardingList.Wizard.helper.welcome.content')}
             </Text>
             <Text
               maxWidth="240px"
@@ -32,14 +31,14 @@ const OnBoardingWelcome: React.FC<Props> = () => {
               bold
               color="lightText"
               paddingBottom={space['0.5']}>
-              Möchtest du sehen, was unsere Plattform alles zu bieten hat?
+              {t('onboardingList.Wizard.helper.welcome.question')}
             </Text>
             <Text color="lightText">
-              Wir zeigen dir die wichtigsten Funktionen.
+              {t('onboardingList.Wizard.helper.welcome.answer')}
             </Text>
           </>
         }
-        outlineButtonText="Tour überspringen"
+        outlineButtonText={t('onboardingList.Wizard.helper.welcome.skipTour')}
         outlinebuttonLink={() => {
           setVariant('light')
           setContent(
@@ -69,11 +68,11 @@ const OnBoardingWelcome: React.FC<Props> = () => {
           )
           setShow(true)
         }}
-        defaultButtonText="Tour starten"
-        defaultbuttonLink={() => navigate('/onboarding-matching')}
+        defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
+        defaultbuttonLink={() => navigate('/onboarding-students/matching')}
         icon={<Logo />}
       />
     </View>
   )
 }
-export default OnBoardingWelcome
+export default OnBoardingHelperWelcome
