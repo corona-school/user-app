@@ -92,7 +92,7 @@ const onboardingList = {
           content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.',
           defaultButtonText: 'Nein, Tour beginnen',
           outlineButtonText: 'Ja, Tour überspringen',
-        } 
+        }
       },
       matching: {
         title: '1:1 Matching',
