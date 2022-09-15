@@ -8,7 +8,8 @@ import {
   useTheme,
   Row,
   Box,
-  Flex
+  Flex,
+  Image
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -84,11 +85,23 @@ const RegistrationAccount: React.FC<Props> = () => {
   return (
     <Flex overflowY={'auto'} height="100vh">
       <Box
+        position="relative"
         paddingY={space['2']}
         bgColor="primary.500"
         justifyContent="center"
         alignItems="center"
         borderBottomRadius={8}>
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          zIndex="-1"
+          borderBottomRadius={15}
+          width="100%"
+          height="100%"
+          source={{
+            uri: require('../../assets/images/globals/lf-bg.png')
+          }}
+        />
         <Logo />
         <Heading mt={space['1']}>Neu registrieren</Heading>
       </Box>

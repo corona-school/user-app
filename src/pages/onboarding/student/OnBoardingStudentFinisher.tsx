@@ -9,7 +9,7 @@ import {
   Image
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
+import Logo from '../../../assets/icons/lernfair/lf-logo-big.svg'
 
 type Props = {}
 
@@ -23,6 +23,8 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
         <Image
           alt="Lernfair"
           position="absolute"
+          width="100%"
+          height="100%"
           source={{ uri: require('../../../assets/images/globals/lf-bg.png') }}
         />
         <Container maxWidth="100%">
