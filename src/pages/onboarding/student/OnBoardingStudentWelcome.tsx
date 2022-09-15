@@ -40,7 +40,7 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         }
         outlineButtonText={t('onboardingList.Wizard.students.welcome.skipTour')}
         outlinebuttonLink={() => {
-          setVariant('light')
+          setVariant('dark')
           setContent(
             <InfoScreen
               icon={<Logo />}

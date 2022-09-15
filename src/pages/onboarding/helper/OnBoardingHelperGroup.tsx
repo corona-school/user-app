@@ -35,7 +35,7 @@ const OnBoardingHelperGroup: React.FC<Props> = () => {
                 </Box>
                 <Box width="100%" padding={space['1']}>
                   <ViewPager
-                    onSkip={() => navigate('/onboarding-students/finish')}
+                    onSkip={() => navigate('/onboarding-helper/helpcenter')}
                     onNext={() => null}
                     loop={false}>
                     <Image

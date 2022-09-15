@@ -69,7 +69,7 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
           setShow(true)
         }}
         defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
-        defaultbuttonLink={() => navigate('/onboarding-students/matching')}
+        defaultbuttonLink={() => navigate('/onboarding-helper/matching')}
         icon={<Logo />}
       />
     </View>

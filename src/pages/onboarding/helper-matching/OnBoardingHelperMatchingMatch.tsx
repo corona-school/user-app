@@ -15,7 +15,7 @@ const OnBoardingHelperMatchingMatch: React.FC<Props> = () => {
     <>
       <View backgroundColor="primary.100" height="100%">
         <WithNavigation
-          headerTitle={t('onboardingList.Wizard.students.groupCourse.title')}
+          headerTitle={t('onboardingList.Wizard.helperMatching.match.title')}
           headerContent={
             <>
               <Container maxWidth="100%">
@@ -28,13 +28,15 @@ const OnBoardingHelperMatchingMatch: React.FC<Props> = () => {
                     borderBottomRadius="15px"
                     backgroundColor="primary.700">
                     <Text color="lightText" textAlign="center" maxWidth="278px">
-                      {t('onboardingList.Wizard.students.groupCourse.content')}
+                      {t('onboardingList.Wizard.helperMatching.match.content')}
                     </Text>
                   </View>
                 </Box>
                 <Box width="100%" padding={space['1']}>
                   <ViewPager
-                    onSkip={() => navigate('/onboarding-students/appointments')}
+                    onSkip={() =>
+                      navigate('/onboarding-helper-matching/contact')
+                    }
                     onNext={() => null}
                     loop={false}>
                     <Image

@@ -5,7 +5,8 @@ import {
   Container,
   Row,
   Column,
-  Heading
+  Heading,
+  Image
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
@@ -18,7 +19,12 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
 
   return (
     <>
-      <View backgroundColor="primary.400" height="100%" justifyContent="center">
+      <View position="relative" height="100%" justifyContent="center">
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          source={{ uri: require('../../../assets/images/globals/lf-bg.png') }}
+        />
         <Container maxWidth="100%">
           <Row flexDirection="column" width="100%" alignItems="center">
             <Column padding={space['2']}>

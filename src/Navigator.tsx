@@ -39,6 +39,21 @@ import OnBoardingStudentHelpCenter from './pages/onboarding/student/OnBoardingSt
 import OnBoardingStudentProfile from './pages/onboarding/student/OnBoardingStudentProfile'
 import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher'
 import OnBoardingStudentAppointments from './pages/onboarding/student/OnBoardingStudentAppointments'
+import OnBoardingHelperWelcome from './pages/onboarding/helper/OnBoardingHelperWelcome'
+import OnBoardingHelperMatch from './pages/onboarding/helper/OnBoardingHelperMatch'
+import OnBoardingHelperGroup from './pages/onboarding/helper/OnBoardingHelperGroup'
+import OnBoardingHelperHelpCenter from './pages/onboarding/helper/OnBoardingHelperHelpCenter'
+import OnBoardingHelperProfile from './pages/onboarding/helper/OnBoardingHelperProfile'
+import OnBoardingHelperSettings from './pages/onboarding/helper/OnBoardingHelperSettings'
+import OnBoardingHelperFinisher from './pages/onboarding/helper/OnBoardingHelperFinisher'
+import OnBoardingHelperNotification from './pages/onboarding/helper/OnBoardingHelperNotification'
+import OnBoardingHelperMatchingWelcome from './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome'
+import OnBoardingHelperMatchingRequestMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequestMatch'
+import OnBoardingHelperMatchingRequest from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequest'
+import OnBoardingHelperMatchingMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingMatch'
+import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/OnBoardingHelperMatchingContact'
+import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
+import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 
 export default function Navigator() {
   return (
@@ -206,6 +221,84 @@ export default function Navigator() {
         <Route
           path="/onboarding-students/finish"
           element={<OnBoardingStudentFinisher />}
+        />
+
+        {/* Onboarding Helper */}
+        <Route
+          path="/onboarding-helper"
+          element={
+            <RequireAuth>
+              <OnBoardingHelperWelcome />
+            </RequireAuth>
+          }></Route>
+        <Route
+          path="/onboarding-helper/welcome"
+          element={<OnBoardingHelperWelcome />}
+        />
+        <Route
+          path="/onboarding-helper/matching"
+          element={<OnBoardingHelperMatch />}
+        />
+        <Route
+          path="/onboarding-helper/groups"
+          element={<OnBoardingHelperGroup />}
+        />
+        <Route
+          path="/onboarding-helper/helpcenter"
+          element={<OnBoardingHelperHelpCenter />}
+        />
+        <Route
+          path="/onboarding-helper/profil"
+          element={<OnBoardingHelperProfile />}
+        />
+        <Route
+          path="/onboarding-helper/settings"
+          element={<OnBoardingHelperSettings />}
+        />
+        <Route
+          path="/onboarding-helper/notification"
+          element={<OnBoardingHelperNotification />}
+        />
+        <Route
+          path="/onboarding-helper/finish"
+          element={<OnBoardingHelperFinisher />}
+        />
+
+        {/* Onboarding Helper Matching */}
+        <Route
+          path="/onboarding-helper-matching"
+          element={
+            <RequireAuth>
+              <OnBoardingHelperMatchingWelcome />
+            </RequireAuth>
+          }></Route>
+        <Route
+          path="/onboarding-helper-matching/welcome"
+          element={<OnBoardingHelperMatchingWelcome />}
+        />
+        <Route
+          path="/onboarding-helper-matching/request-matching"
+          element={<OnBoardingHelperMatchingRequestMatch />}
+        />
+        <Route
+          path="/onboarding-helper-matching/request"
+          element={<OnBoardingHelperMatchingRequest />}
+        />
+        <Route
+          path="/onboarding-helper-matching/match"
+          element={<OnBoardingHelperMatchingMatch />}
+        />
+        <Route
+          path="/onboarding-helper-matching/contact"
+          element={<OnBoardingHelperMatchingContact />}
+        />
+        <Route
+          path="/onboarding-helper-matching/solve-matching"
+          element={<OnBoardingHelperMatchingSolveMatching />}
+        />
+        <Route
+          path="/onboarding-helper-matching/finish"
+          element={<OnBoardingHelperMatchingFinisher />}
         />
 
         {/* Fallback */}

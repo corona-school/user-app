@@ -34,7 +34,7 @@ const onboardingList = {
     students: {
       welcome: {
         title: 'Herzlich willkommen bei Lern-Fair',
-        content: 'Wir freuen uns, dass du bildungs-benachteiligte Kinder aktiv unterstützen möchtest.', 
+        content: 'Wir freuen uns, dass du unser Angebot nutzt.', 
         question: 'Möchtest du sehen, was unsere Plattform alles zu bieten hat?',
         answer: 'Wir zeigen dir die wichtigsten Funktionen.',
         startTour: 'Tour starten',
@@ -113,39 +113,40 @@ const onboardingList = {
     },
     helperMatching: {
       welcome: {
-        title: 'Onboarding-Tour 1:1 Matching',
-        content: 'Wir zeigen dir hier alle wichtigen Informationen, die du über das 1:1 Matching wissen musst.', 
-        question: 'Wie fordere ich ein Match an? Wie nehme ich Kontakt mit meinem/meiner Lernpartner:in auf? Wir kann ich ein Match auflösen?',
+        title: 'Onboarding-Tour 1:1-Lernunterstützung',
+        content: 'Wir zeigen dir hier alle wichtigen Informationen, die du über die 1:1-Lernunterstützung wissen musst.', 
+        question: 'Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?',
         answer: 'Wir zeigen dir die wichtigsten Funktionen.',
         startTour: 'Tour starten',
         skipTour: 'Tour überspringen' 
       },
       matching: {
-        title: 'Match anfordern',
-        content: 'Über den Button „Match anfordern“ auf dem  Dashboard oder im Bereich 1:1 Lernunterstützung kannst du ein neues Match anfordern.'
+        title: 'Lernpartner:in anfordern',
+        content: 'Über den Button “Lernpartner:in” anfordern auf dem Dashboard oder im Bereich 1:1-Lernunterstützung kannst du eine:n neue:n Lernpartner:in anfordern.'
       },
       request: {
         title: 'Anfrage stellen',
-        content: 'Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, benötigen wir ein paar Informationen über dich und dein Angebot.'
+        content: 'Damit wir dir eine:n Lernpartner:in zuteilen können, benötigen wir ein paar Informationen über dich und dein Angebot.'
       },
       match: {
-        title: 'Matching',
-        content: 'Nachdem du deine Anfrage gestellt hast, begeben wir uns auf die Suche nach einem/einer passenden Lernpartner:in für dich. Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich 1:1 Lernunterstützung sind alle deine Anfragen aufgeführt. '
+        title: 'Zuteilung des Lernpaars',
+        content: 'Nachdem du deine Anfrage abgeschickt hast, suchen wir nach einem:r passenden Lernpartner:in für dich. Du kannst eine laufende Anfrage jederzeit zurückziehen. Aber du kannst auch mehrere Anfragen gleichzeitig stellen und mehrere Kinder in der 1:1-Lerunterstützung fördern.'
       },
       contact: {
         title: 'Kontaktaufnahme',
-        content: 'Wurdest du gematcht kannst du deine:n Lernpartner:in direkt über den Button „Kontakt aufnehmen“ in der Benachrichtigung kontaktieren. Möchtest du deine:n Lernpartner:in zu einen späteren Zeitpunkt kontaktieren, kannst du dies auch über das Profil deines/deiner Lernpartners/Lernpartnerin tun.',
+        content: 'Sobald du eine:n Lernpartner:in zugeteilt bekommen hast, kannst du deine:n Lernpartner:in direkt über den Button “Kontakt aufnehmen” in der erscheinenden Benachrichtigung kontaktieren. Möchtest du deine:n Lernpartner:in zu einem späteren Zeitpunkt kontaktieren, kannst du dies über das Profil deines:r Lernpartner:in tun.',
       },
       matchSolve: {
-        title: 'Match auflösen',
-        content: 'Solltest du ein Match auflösen wollen, kannst du dies unter dem Punkt 1:1 Lernunterstützung unter Matches über den Button „Match auflösen“ tun.'
+        title: 'Lernpaar auflösen',
+        content: 'Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt 1:1-Lernunterstützung unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.'
       },
       finisher: {
         title: 'Geschafft',
-        firstContent: 'Super, du hast die Onboarding-Tour zum 1:1 Matching abgeschlossen.',
+        firstContent: 'Glückwunsch, du hast die Onboarding-Tour zur 1:1-Lernunterstützung abgeschlossen.',
         headlineContent: 'Hast du alles verstanden?',
-        answer: 'Du kannst dir die Tour nochmal ansehen oder in unserem Hilfebreich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.',
+        answer: 'Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.',
         linkText: 'Zum Hilfebereich',
+        helpcenter: 'Zum Hilfebereich',
         buttonText: 'Tour beenden',
         buttonLinkText: 'Tour nochmal ansehen'
       }
