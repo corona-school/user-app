@@ -52,17 +52,23 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
                     color="lightText"
                     fontSize="md"
                     paddingY={space['1']}>
-                    Bist du sicher, dass du die Tour überspringen möchtest?
+                    {t(
+                      'onboardingList.Wizard.helperMatching.welcome.popup.title'
+                    )}
                   </Heading>
                   <Text color="lightText">
-                    Du kannst die Tour auch jederzeit neu starten. Du findest
-                    den Punkt unter deinen Einstellungen als Punkt
-                    „Onboarding-Tour“.
+                    {t(
+                      'onboardingList.Wizard.helperMatching.welcome.popup.content'
+                    )}
                   </Text>
                 </>
               }
-              defaultButtonText="Nein, Tour beginnen"
-              outlineButtonText="Ja, Tour überspringen"
+              defaultButtonText={t(
+                'onboardingList.Wizard.helperMatching.welcome.popup.defaultButtonText'
+              )}
+              outlineButtonText={t(
+                'onboardingList.Wizard.helperMatching.welcome.popup.outlineButtonText'
+              )}
               isdefaultButtonFirst={true}
               defaultbuttonLink={() => navigate('/')}
               outlinebuttonLink={() => setShow(false)}

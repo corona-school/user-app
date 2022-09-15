@@ -1,7 +1,8 @@
 import { Heading, useTheme, Text, View } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import Logo from '../../../assets/icons/lernfair/lf-party.svg'
+import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
+import Warning from '../../../assets/icons/lernfair/lf-warning.svg'
 import { useContext } from 'react'
 import InfoScreen from '../../../widgets/InfoScreen'
 import { ModalContext } from '../../../widgets/FullPageModal'
@@ -43,24 +44,26 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
           setVariant('dark')
           setContent(
             <InfoScreen
-              icon={<Logo />}
+              icon={<Warning />}
               content={
                 <>
                   <Heading
                     color="lightText"
                     fontSize="md"
                     paddingY={space['1']}>
-                    Bist du sicher, dass du die Tour überspringen möchtest?
+                    {t('onboardingList.Wizard.students.welcome.popup.title')}
                   </Heading>
                   <Text color="lightText">
-                    Du kannst die Tour auch jederzeit neu starten. Du findest
-                    den Punkt unter deinen Einstellungen als Punkt
-                    „Onboarding-Tour“.
+                    {t('onboardingList.Wizard.students.welcome.popup.content')}
                   </Text>
                 </>
               }
-              defaultButtonText="Nein, Tour beginnen"
-              outlineButtonText="Ja, Tour überspringen"
+              defaultButtonText={t(
+                'onboardingList.Wizard.students.welcome.popup.defaultButtonText'
+              )}
+              outlineButtonText={t(
+                'onboardingList.Wizard.students.welcome.popup.outlineButtonText'
+              )}
               isdefaultButtonFirst={true}
               defaultbuttonLink={() => navigate('/')}
               outlinebuttonLink={() => setShow(false)}

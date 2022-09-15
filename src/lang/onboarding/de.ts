@@ -38,7 +38,13 @@ const onboardingList = {
         question: 'Möchtest du sehen, was unsere Plattform alles zu bieten hat?',
         answer: 'Wir zeigen dir die wichtigsten Funktionen.',
         startTour: 'Tour starten',
-        skipTour: 'Tour überspringen' 
+        skipTour: 'Tour überspringen',
+        popup: {
+          title: 'Bist du sicher, dass du die Tour überspringen möchtest?',
+          content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding“.',
+          defaultButtonText: 'Nein, Tour beginnen',
+          outlineButtonText: 'Ja, Tour überspringen',
+        } 
       },
       matching: {
         title: '1:1 Lernunterstützung',
@@ -80,7 +86,13 @@ const onboardingList = {
         question: 'Möchtest du sehen, was unsere Plattform alles zu bieten hat?',
         answer: 'Wir zeigen dir die wichtigsten Funktionen.',
         startTour: 'Tour starten',
-        skipTour: 'Tour überspringen' 
+        skipTour: 'Tour überspringen',
+        popup: {
+          title: 'Bist du sicher, dass du die Tour überspringen möchtest?',
+          content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.',
+          defaultButtonText: 'Nein, Tour beginnen',
+          outlineButtonText: 'Ja, Tour überspringen',
+        } 
       },
       matching: {
         title: '1:1 Matching',
@@ -118,7 +130,13 @@ const onboardingList = {
         question: 'Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?',
         answer: 'Wir zeigen dir die wichtigsten Funktionen.',
         startTour: 'Tour starten',
-        skipTour: 'Tour überspringen' 
+        skipTour: 'Tour überspringen',
+        popup: {
+          title: 'Bist du sicher, dass du die Tour überspringen möchtest?',
+          content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.',
+          defaultButtonText: 'Nein, Tour beginnen',
+          outlineButtonText: 'Ja, Tour überspringen',
+        } 
       },
       matching: {
         title: 'Lernpartner:in anfordern',
