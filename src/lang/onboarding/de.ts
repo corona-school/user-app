@@ -22,12 +22,12 @@ const onboardingList = {
     card3: {
       title: 'Onboarding-Tour Hilfebereich',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/'
+      url: '/onboarding-students/helpcenter/'
     },
     card4: {
       title: 'Onboarding-Tour Termine',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/'
+      url: '/onboarding-students/appointments/'
     },
   },
   Wizard: {

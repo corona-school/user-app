@@ -54,6 +54,7 @@ import OnBoardingHelperMatchingMatch from './pages/onboarding/helper-matching/On
 import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/OnBoardingHelperMatchingContact'
 import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
+import ProfileHelper from './pages/ProfileHelper'
 
 export default function Navigator() {
   return (
@@ -109,6 +110,15 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <Profile />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/profile-helper"
+          element={
+            <RequireAuth>
+              <ProfileHelper />
             </RequireAuth>
           }
         />
