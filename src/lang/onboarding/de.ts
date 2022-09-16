@@ -5,28 +5,28 @@ const onboardingList = {
   content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
   cards: {
     card0: {
-      title: 'Du brauchst Hife bei deinen Hausaufgaben?',
+      title: 'Onboarding-Tour allgemein',
       content: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.',
-      url: '/'
+      url: '/onboarding-students/'
     },
     card1: {
-      title: 'Onboarding-Tour 1:1-Lernunterstützung',
-      content: 'Möchtest du wissen, wie die 1:1-Lernunterstützung funktioniert? Wir zeigen dir die wichtigsten Schritte.',
-      url: '/'
+      title: 'Onboarding-Tour 1:1 Matching',
+      content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
+      url: '/onboarding-helper-matching/welcome/'
     },
     card2: {
-      title: 'Onboarding-Tour Gruppen-Nachhilfe',
-      content: 'Möchtest du wissen, wie die Gruppen-Nachhilfe funktioniert? Wir zeigen dir, was du wissen musst.',
-      url: '/'
+      title: 'Onboarding-Tour Gruppenkurs',
+      content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
+      url: '/onboarding-helper/groups/'
     },
     card3: {
-      title: 'Onboarding-Tour Gruppen-Nachhilfe',
-      content: 'Möchtest du wissen, wie die Gruppen-Nachhilfe funktioniert? Wir zeigen dir, was du wissen musst.',
+      title: 'Onboarding-Tour Hilfebereich',
+      content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
       url: '/'
     },
     card4: {
-      title: 'Onboarding-Tour Gruppen-Nachhilfe',
-      content: 'Möchtest du wissen, wie die Gruppen-Nachhilfe funktioniert? Wir zeigen dir, was du wissen musst.',
+      title: 'Onboarding-Tour Termine',
+      content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
       url: '/'
     },
   },
