@@ -15,6 +15,7 @@ const VAR_COLOR_DANGER = VAR_COLOR_RED
 const VAR_COLOR_WARNING = VAR_COLOR_RED
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff'
+const VAR_COLOR_MODAL_BG = '#EDF4F3'
 
 const Theme = extendTheme({
   colors: {
@@ -77,7 +78,8 @@ const Theme = extendTheme({
       800: VAR_COLOR_DANGER,
       900: VAR_COLOR_DANGER
     },
-    darkText: VAR_COLOR_PRIMARY_DARK
+    darkText: VAR_COLOR_PRIMARY_DARK,
+    modalbg: VAR_COLOR_MODAL_BG
   },
   fontSizes: {
     xs: 10,

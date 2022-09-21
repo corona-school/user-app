@@ -43,7 +43,7 @@ const onboardingList = {
         skipTour: 'Tour überspringen',
         popup: {
           title: 'Bist du sicher, dass du die Tour überspringen möchtest?',
-          content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding“.',
+          content: 'Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt im Hilfebereich unter “Onboarding”.',
           defaultButtonText: 'Nein, Tour beginnen',
           outlineButtonText: 'Ja, Tour überspringen',
         } 

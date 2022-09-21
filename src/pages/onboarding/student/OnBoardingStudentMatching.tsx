@@ -10,13 +10,10 @@ import {
   Link,
   HStack,
   Column,
-  Modal,
-  Heading,
-  Button
+  Modal
 } from 'native-base'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Pressable } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../../../components/WithNavigation'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
@@ -30,7 +27,7 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
 
   const [cancelModal, setCancelModal] = useState<boolean>(false)
 
-  const img = require('../../../assets/images/onboarding/onboarding-matching.png')
+  const img = require('../../../assets/images/onboarding/student/All_Schueler_Matching_1_1.png')
 
   return (
     <>
@@ -69,13 +66,17 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
                     space="10px"
                     alignItems="center"
                     justifyContent="center">
-                    <CircleIcon
-                      size="xs"
-                      stroke="primary.900"
-                      strokeWidth="2"
-                      color="primary.900"
-                    />
-                    <Link>
+                    <Link
+                      onPress={() => navigate('/onboarding-students/matching')}>
+                      <CircleIcon
+                        size="xs"
+                        stroke="primary.900"
+                        strokeWidth="2"
+                        color="primary.900"
+                      />
+                    </Link>
+                    <Link
+                      onPress={() => navigate('/onboarding-students/groups')}>
                       <CircleIcon
                         size="xs"
                         stroke="primary.900"
@@ -83,7 +84,10 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
                         color="transparent"
                       />
                     </Link>
-                    <Link>
+                    <Link
+                      onPress={() =>
+                        navigate('/onboarding-students/appointments')
+                      }>
                       <CircleIcon
                         size="xs"
                         stroke="primary.900"
@@ -91,7 +95,10 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
                         color="transparent"
                       />
                     </Link>
-                    <Link>
+                    <Link
+                      onPress={() =>
+                        navigate('/onboarding-students/helpcenter')
+                      }>
                       <CircleIcon
                         size="xs"
                         stroke="primary.900"
@@ -99,7 +106,8 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
                         color="transparent"
                       />
                     </Link>
-                    <Link>
+                    <Link
+                      onPress={() => navigate('/onboarding-students/profil')}>
                       <CircleIcon
                         size="xs"
                         stroke="primary.900"
@@ -128,6 +136,7 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Link
+                        onPress={() => navigate('/onboarding-students/groups')}
                         _text={{
                           color: 'primary.900',
                           fontWeight: 600

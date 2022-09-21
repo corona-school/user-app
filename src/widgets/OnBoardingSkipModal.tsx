@@ -16,27 +16,12 @@ import { Pressable } from 'react-native'
 import WarningIcon from '../assets/icons/lernfair/ic_warning.svg'
 
 type Props = {
-  title?: string
-  content?: string
-  defaultButtonText?: string
-  defaultButtonLink?: string
-
-  outlineButtonText?: string
-  outlineButtonLink?: string
-
   onPressClose?: () => any
   onPressDefaultButton?: () => any
   onPressOutlineButton?: () => any
 }
 
 const OnBoardingSkipModal: React.FC<Props> = ({
-  title,
-  content,
-  defaultButtonText,
-  defaultButtonLink,
-
-  outlineButtonText,
-  outlineButtonLink,
   onPressClose,
   onPressDefaultButton,
   onPressOutlineButton
@@ -64,21 +49,22 @@ const OnBoardingSkipModal: React.FC<Props> = ({
               textAlign="center"
               color="lightText"
               marginBottom={space['0.5']}>
-              Hallo
+              {t('onboardingList.Wizard.students.welcome.popup.title')}
             </Heading>
             <Text
               textAlign="center"
               color="lightText"
               maxWidth="330px"
               marginX="auto">
-              Du kannst die Tour auch jederzeit neu starten. Du findest den
-              Punkt unter deinen Einstellungen als Punkt „Onboarding“.
+              {t('onboardingList.Wizard.students.welcome.popup.content')}
             </Text>
           </Box>
           <Box paddingY={space['1']}>
             <Row marginBottom={space['0.5']}>
               <Button onPress={onPressDefaultButton} width="100%">
-                Nein, Tour beginnen
+                {t(
+                  'onboardingList.Wizard.students.welcome.popup.defaultButtonText'
+                )}
               </Button>
             </Row>
             <Row>
@@ -86,7 +72,9 @@ const OnBoardingSkipModal: React.FC<Props> = ({
                 onPress={onPressOutlineButton}
                 width="100%"
                 variant="outlinelight">
-                Ja, Tour überspringen
+                {t(
+                  'onboardingList.Wizard.students.welcome.popup.outlineButtonText'
+                )}
               </Button>
             </Row>
           </Box>
