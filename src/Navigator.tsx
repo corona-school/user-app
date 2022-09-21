@@ -55,6 +55,8 @@ import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/
 import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 import ProfileHelper from './pages/ProfileHelper'
+import OnBoardingHelperMatchingAppointments from './pages/onboarding/helper/OnBoardingHelperAppointments'
+import OnBoardingHelperAppointments from './pages/onboarding/helper/OnBoardingHelperAppointments'
 
 export default function Navigator() {
   return (
@@ -252,6 +254,10 @@ export default function Navigator() {
         <Route
           path="/onboarding-helper/groups"
           element={<OnBoardingHelperGroup />}
+        />
+        <Route
+          path="/onboarding-helper/appointments"
+          element={<OnBoardingHelperAppointments />}
         />
         <Route
           path="/onboarding-helper/helpcenter"

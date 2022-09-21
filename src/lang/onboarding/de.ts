@@ -150,11 +150,13 @@ const onboardingList = {
       },
       match: {
         title: 'Zuteilung des Lernpaars',
-        content: 'Nachdem du deine Anfrage abgeschickt hast, suchen wir nach einem:r passenden Lernpartner:in für dich. Du kannst eine laufende Anfrage jederzeit zurückziehen. Aber du kannst auch mehrere Anfragen gleichzeitig stellen und mehrere Kinder in der 1:1-Lerunterstützung fördern.'
+        content: 'Nachdem du deine Anfrage gestellt hast, begeben wir uns auf die Suche nach einem/einer passenden Lernpartner:in für dich.',
+        contentsec: 'Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich 1:1 Lernunterstützung sind alle deine Anfragen aufgeführt.'
       },
       contact: {
         title: 'Kontaktaufnahme',
-        content: 'Sobald du eine:n Lernpartner:in zugeteilt bekommen hast, kannst du deine:n Lernpartner:in direkt über den Button “Kontakt aufnehmen” in der erscheinenden Benachrichtigung kontaktieren. Möchtest du deine:n Lernpartner:in zu einem späteren Zeitpunkt kontaktieren, kannst du dies über das Profil deines:r Lernpartner:in tun.',
+        content: 'Wurdest du gematcht kannst du deine:n Lernpartner:in direkt über den Button „Kontakt aufnehmen“ in der Benachrichtigung kontaktieren.',
+        contentsec: 'Möchtest du deine:n Lernpartner:in zu einen späteren Zeitpunkt kontaktieren, kannst du dies auch über das Profil deines/deiner Lernpartners/Lernpartnerin tun.',
       },
       matchSolve: {
         title: 'Lernpaar auflösen',
