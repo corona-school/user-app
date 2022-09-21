@@ -50,7 +50,10 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
         }
         icon={<MatchingCard />}
       />
-      <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+      <Modal
+        bg="modalbg"
+        isOpen={cancelModal}
+        onClose={() => setCancelModal(false)}>
         <OnBoardingSkipModal
           onPressClose={() => setCancelModal(false)}
           onPressDefaultButton={() => setCancelModal(false)}

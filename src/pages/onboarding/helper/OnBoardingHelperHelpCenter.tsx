@@ -15,6 +15,7 @@ import {
 import { Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import Bullet from '../../../components/Bullet'
 import WithNavigation from '../../../components/WithNavigation'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
 
@@ -37,7 +38,7 @@ const OnBoardingHelperHelpCenter: React.FC<Props> = () => {
           headerContent={
             <>
               <Container maxWidth="100%">
-                <Box width="100%" marginBottom={space['2']}>
+                <Box width="100%">
                   <View
                     paddingX={space['1']}
                     paddingBottom={space['1']}
@@ -68,68 +69,33 @@ const OnBoardingHelperHelpCenter: React.FC<Props> = () => {
                     justifyContent="center">
                     <Link
                       onPress={() => navigate('/onboarding-helper/matching')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link onPress={() => navigate('/onboarding-helper/groups')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper/appointment')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() => navigate('/onboarding-helper/helpcenter')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="primary.900"
-                      />
+                      <Bullet isActive={true} />
                     </Link>
                     <Link onPress={() => navigate('/onboarding-helper/profil')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() => navigate('/onboarding-helper/settings')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper/notification')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                   </HStack>
                 </Box>
@@ -168,7 +134,10 @@ const OnBoardingHelperHelpCenter: React.FC<Props> = () => {
             </>
           }
         />
-        <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+        <Modal
+          bg="modalbg"
+          isOpen={cancelModal}
+          onClose={() => setCancelModal(false)}>
           <OnBoardingSkipModal
             onPressClose={() => setCancelModal(false)}
             onPressDefaultButton={() => setCancelModal(false)}

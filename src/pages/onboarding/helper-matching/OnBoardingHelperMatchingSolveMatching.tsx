@@ -15,6 +15,7 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import Bullet from '../../../components/Bullet'
 import WithNavigation from '../../../components/WithNavigation'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
 
@@ -39,7 +40,7 @@ const OnBoardingHelperMatchingSolveMatching: React.FC<Props> = () => {
           headerContent={
             <>
               <Container maxWidth="100%">
-                <Box width="100%" marginBottom={space['2']}>
+                <Box width="100%">
                   <View
                     paddingX={space['1']}
                     paddingBottom={space['1']}
@@ -74,56 +75,31 @@ const OnBoardingHelperMatchingSolveMatching: React.FC<Props> = () => {
                       onPress={() =>
                         navigate('/onboarding-helper-matching/request-matching')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper-matching/request')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper-matching/match')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper-matching/contact')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-helper-matching/solve-matching')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="primary.900"
-                      />
+                      <Bullet isActive={true} />
                     </Link>
                   </HStack>
                 </Box>
@@ -164,7 +140,10 @@ const OnBoardingHelperMatchingSolveMatching: React.FC<Props> = () => {
             </>
           }
         />
-        <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+        <Modal
+          bg="modalbg"
+          isOpen={cancelModal}
+          onClose={() => setCancelModal(false)}>
           <OnBoardingSkipModal
             onPressClose={() => setCancelModal(false)}
             onPressDefaultButton={() => setCancelModal(false)}

@@ -44,7 +44,10 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
         defaultbuttonLink={() => navigate('/onboarding-helper/matching')}
         icon={<Logo />}
       />
-      <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+      <Modal
+        bg="modalbg"
+        isOpen={cancelModal}
+        onClose={() => setCancelModal(false)}>
         <OnBoardingSkipModal
           onPressClose={() => setCancelModal(false)}
           onPressDefaultButton={() => setCancelModal(false)}
