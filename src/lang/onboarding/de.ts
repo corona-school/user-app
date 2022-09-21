@@ -104,6 +104,10 @@ const onboardingList = {
         title: 'Gruppenkurse',
         content: 'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen. Unter „Meine Kurse“ werden alle deine Gruppenkurse angezeigt. Hier hast du auch die Möglichkeit, neue Kurse zu erstellen.'
       },
+      appointment: {
+        title: 'Termine',
+        content: 'Unter „Meine Termine“ werden dir all deine Termine, angeordnet in Tabs und sortiert nach Datum, angezeigt.'
+      },
       helpCenter: {
         title: 'Hilfebereich',
         content: 'Solltest du Hilfe benötigen, findest du die wichtigsten Informationen in unserem Hilfebereich.'

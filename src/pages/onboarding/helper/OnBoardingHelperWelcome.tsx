@@ -1,11 +1,10 @@
-import { Heading, useTheme, Text, View } from 'native-base'
+import { useTheme, Text, View, Modal } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
-import Warning from '../../../assets/icons/lernfair/lf-warning.svg'
-import { useContext } from 'react'
+import { useState } from 'react'
 import InfoScreen from '../../../widgets/InfoScreen'
-import { ModalContext } from '../../../widgets/FullPageModal'
+import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
 
 type Props = {}
 
@@ -13,7 +12,7 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { setShow, setContent, setVariant } = useContext(ModalContext)
+  const [cancelModal, setCancelModal] = useState<boolean>(false)
 
   return (
     <View>
@@ -40,41 +39,18 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
           </>
         }
         outlineButtonText={t('onboardingList.Wizard.helper.welcome.skipTour')}
-        outlinebuttonLink={() => {
-          setVariant('light')
-          setContent(
-            <InfoScreen
-              icon={<Warning />}
-              content={
-                <>
-                  <Heading
-                    color="lightText"
-                    fontSize="md"
-                    paddingY={space['1']}>
-                    {t('onboardingList.Wizard.helper.welcome.popup.title')}
-                  </Heading>
-                  <Text color="lightText">
-                    {t('onboardingList.Wizard.helper.welcome.popup.content')}
-                  </Text>
-                </>
-              }
-              defaultButtonText={t(
-                'onboardingList.Wizard.helper.welcome.popup.defaultButtonText'
-              )}
-              outlineButtonText={t(
-                'onboardingList.Wizard.helper.welcome.popup.outlineButtonText'
-              )}
-              isdefaultButtonFirst={true}
-              defaultbuttonLink={() => navigate('/')}
-              outlinebuttonLink={() => setShow(false)}
-            />
-          )
-          setShow(true)
-        }}
+        outlinebuttonLink={() => setCancelModal(true)}
         defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
         defaultbuttonLink={() => navigate('/onboarding-helper/matching')}
         icon={<Logo />}
       />
+      <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+        <OnBoardingSkipModal
+          onPressClose={() => setCancelModal(false)}
+          onPressDefaultButton={() => setCancelModal(false)}
+          onPressOutlineButton={() => navigate('/')}
+        />
+      </Modal>
     </View>
   )
 }

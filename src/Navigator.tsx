@@ -55,8 +55,7 @@ import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/
 import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 import ProfileHelper from './pages/ProfileHelper'
-import OnBoardingHelperMatchingAppointments from './pages/onboarding/helper/OnBoardingHelperAppointments'
-import OnBoardingHelperAppointments from './pages/onboarding/helper/OnBoardingHelperAppointments'
+import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
 
 export default function Navigator() {
   return (
@@ -192,9 +191,9 @@ export default function Navigator() {
         <Route
           path="/onboarding-list"
           element={
-            <RequireAuth>
-              <OnboardingTourList />
-            </RequireAuth>
+            // <RequireAuth>
+            <OnboardingTourList />
+            // </RequireAuth>
           }
         />
 
@@ -202,9 +201,9 @@ export default function Navigator() {
         <Route
           path="/onboarding-students"
           element={
-            <RequireAuth>
-              <OnBoardingStudentWelcome />
-            </RequireAuth>
+            // <RequireAuth>
+            <OnBoardingStudentWelcome />
+            // </RequireAuth>
           }></Route>
         <Route
           path="/onboarding-students/welcome"
@@ -239,9 +238,9 @@ export default function Navigator() {
         <Route
           path="/onboarding-helper"
           element={
-            <RequireAuth>
-              <OnBoardingHelperWelcome />
-            </RequireAuth>
+            // <RequireAuth>
+            <OnBoardingHelperWelcome />
+            // </RequireAuth>
           }></Route>
         <Route
           path="/onboarding-helper/welcome"
@@ -256,8 +255,8 @@ export default function Navigator() {
           element={<OnBoardingHelperGroup />}
         />
         <Route
-          path="/onboarding-helper/appointments"
-          element={<OnBoardingHelperAppointments />}
+          path="/onboarding-helper/appointment"
+          element={<OnBoardingHelperAppointment />}
         />
         <Route
           path="/onboarding-helper/helpcenter"
@@ -284,9 +283,9 @@ export default function Navigator() {
         <Route
           path="/onboarding-helper-matching"
           element={
-            <RequireAuth>
-              <OnBoardingHelperMatchingWelcome />
-            </RequireAuth>
+            // <RequireAuth>
+            <OnBoardingHelperMatchingWelcome />
+            // </RequireAuth>
           }></Route>
         <Route
           path="/onboarding-helper-matching/welcome"

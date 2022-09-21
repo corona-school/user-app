@@ -6,10 +6,12 @@ import {
   Row,
   Column,
   Heading,
-  Image
+  Image,
+  Button
 } from 'native-base'
 import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo-big.svg'
 
 type Props = {}
@@ -17,6 +19,7 @@ type Props = {}
 const OnBoardingHelperFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   return (
     <Fragment>
@@ -38,9 +41,13 @@ const OnBoardingHelperFinisher: React.FC<Props> = () => {
               <Heading textAlign="center" marginBottom={space['0.5']}>
                 {t('onboardingList.Wizard.helper.finisher.title')}
               </Heading>
-              <Text textAlign="center" maxWidth="250px">
+              <Text
+                textAlign="center"
+                maxWidth="250px"
+                marginBottom={space['1']}>
                 {t('onboardingList.Wizard.helper.finisher.content')}
               </Text>
+              <Button onPress={() => navigate('/')}>zum Dashboard</Button>
             </Column>
             <Column paddingY={space['2']}>
               <Logo />
