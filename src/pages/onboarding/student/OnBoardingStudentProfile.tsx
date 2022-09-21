@@ -8,13 +8,13 @@ import {
   Row,
   HStack,
   Link,
-  CircleIcon,
   Column,
   Modal
 } from 'native-base'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import Bullet from '../../../components/Bullet'
 import WithNavigation from '../../../components/WithNavigation'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
 
@@ -32,11 +32,12 @@ const OnBoardingStudentProfile: React.FC<Props> = () => {
     <>
       <View backgroundColor="primary.100" height="100%">
         <WithNavigation
+          isSidebarMenu={false}
           headerTitle={t('onboardingList.Wizard.students.profile.title')}
           headerContent={
             <>
               <Container maxWidth="100%">
-                <Box width="100%" marginBottom={space['2']}>
+                <Box width="100%">
                   <View
                     paddingX={space['1']}
                     paddingBottom={space['1']}
@@ -67,58 +68,34 @@ const OnBoardingStudentProfile: React.FC<Props> = () => {
                     justifyContent="center">
                     <Link
                       onPress={() => navigate('/onboarding-students/matching')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() => navigate('/onboarding-students/groups')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-students/appointments')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() =>
                         navigate('/onboarding-students/helpcenter')
                       }>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="transparent"
-                      />
+                      <Bullet />
                     </Link>
                     <Link
                       onPress={() => navigate('/onboarding-students/profil')}>
-                      <CircleIcon
-                        size="xs"
-                        stroke="primary.900"
-                        strokeWidth="2"
-                        color="primary.900"
-                      />
+                      <Bullet isActive={true} />
                     </Link>
                   </HStack>
                 </Box>
                 <Box width="100%" marginY={space['1']} alignItems="center">
                   <HStack
                     space={space['1.5']}
+                    paddingX={space['1']}
                     width="100%"
                     maxWidth="350px"
                     justifyContent="space-between">
@@ -150,7 +127,10 @@ const OnBoardingStudentProfile: React.FC<Props> = () => {
             </>
           }
         />
-        <Modal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+        <Modal
+          bg="modalbg"
+          isOpen={cancelModal}
+          onClose={() => setCancelModal(false)}>
           <OnBoardingSkipModal
             onPressClose={() => setCancelModal(false)}
             onPressDefaultButton={() => setCancelModal(false)}

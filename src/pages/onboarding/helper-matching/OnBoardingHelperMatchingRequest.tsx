@@ -32,6 +32,7 @@ const OnBoardingHelperMatchingRequest: React.FC<Props> = () => {
     <>
       <View backgroundColor="primary.100" height="100%">
         <WithNavigation
+          isSidebarMenu={false}
           headerTitle={t('onboardingList.Wizard.helperMatching.request.title')}
           headerContent={
             <>
@@ -127,6 +128,7 @@ const OnBoardingHelperMatchingRequest: React.FC<Props> = () => {
                 <Box width="100%" marginY={space['1']} alignItems="center">
                   <HStack
                     space={space['1.5']}
+                    paddingX={space['1']}
                     width="100%"
                     maxWidth="350px"
                     justifyContent="space-between">

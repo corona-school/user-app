@@ -31,7 +31,7 @@ const OnBoardingSkipModal: React.FC<Props> = ({
 
   return (
     <>
-      <Modal.Content width="284px" marginX="auto">
+      <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
         <Box position="absolute" zIndex="1" right="20px" top="14px">
           <Pressable onPress={onPressClose}>
             <CloseIcon color="white" />

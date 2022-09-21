@@ -24,6 +24,7 @@ type Props = {
   headerRight?: ReactNode | ReactNode[]
   headerContent?: ReactNode | ReactNode[]
   headerTitle?: string
+  isSidebarMenu?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -31,7 +32,8 @@ const WithNavigation: React.FC<Props> = ({
   headerLeft,
   headerRight,
   headerContent,
-  headerTitle
+  headerTitle,
+  isSidebarMenu = true
 }) => {
   const isMobile = useBreakpointValue({
     base: true,
@@ -52,7 +54,7 @@ const WithNavigation: React.FC<Props> = ({
         h="100%">
         <HeaderCard
           leftContent={headerLeft}
-          rightContent={<SettingsButton />}
+          rightContent={isSidebarMenu ? <SettingsButton /> : ''}
           title={headerTitle}
           portal={setView}>
           {headerContent}

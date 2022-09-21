@@ -33,6 +33,7 @@ const OnBoardingHelperProfile: React.FC<Props> = () => {
     <>
       <View backgroundColor="primary.100" height="100%">
         <WithNavigation
+          isSidebarMenu={false}
           headerTitle={t('onboardingList.Wizard.helper.profile.title')}
           headerContent={
             <>
@@ -136,6 +137,7 @@ const OnBoardingHelperProfile: React.FC<Props> = () => {
                 <Box width="100%" marginY={space['1']} alignItems="center">
                   <HStack
                     space={space['1.5']}
+                    paddingX={space['1']}
                     width="100%"
                     maxWidth="350px"
                     justifyContent="space-between">
