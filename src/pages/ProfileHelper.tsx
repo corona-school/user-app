@@ -30,9 +30,9 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import CTACard from '../widgets/CTACard'
-import ParyIcon from '../assets/icons/lernfair/ic_event.svg'
-import LFIcon from '../components/LFIcon'
+import Tabs from '../components/Tabs'
+import HSection from '../widgets/HSection'
+import HelperCardCertificates from '../widgets/HelperCardCertificates'
 
 type Props = {}
 
@@ -270,46 +270,61 @@ const ProfileHelper: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            <ProfileSettingRow title="Meine Untersützung">
-              <Container maxWidth="100%" width="100%" marginBottom={space['1']}>
-                <CTACard
-                  width="100%"
-                  variant="normal"
-                  title="Gruppen-Lernuntersützung"
-                  closeable={false}
-                  content={
-                    <Text>
-                      Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                      sed diam nonumy eirmod.
-                    </Text>
-                  }
-                  button={
-                    <Button onPress={() => navigate('/')}>
-                      Zu meinen Kursen
-                    </Button>
-                  }
-                  icon={<ParyIcon />}
+            <ProfileSettingRow title="Meine Bescheinigungen">
+              <Container
+                maxWidth="100%"
+                width="100%"
+                marginBottom={space['1']}
+                alignItems="stretch">
+                <Tabs
+                  tabs={[
+                    {
+                      title: 'Bestätigt',
+                      content: (
+                        <>
+                          <HSection>
+                            {Array(2)
+                              .fill(0)
+                              .map((el, i) => (
+                                <HelperCardCertificates
+                                  name="Nele Mustermann"
+                                  subject="Mathe"
+                                  status="Manuell bestätigt"
+                                  createDate="01.09.22"
+                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                  download={() => alert('Hallo')}
+                                />
+                              ))}
+                          </HSection>
+                        </>
+                      )
+                    },
+                    {
+                      title: 'Ausstehend',
+                      content: (
+                        <>
+                          <HSection>
+                            {Array(2)
+                              .fill(0)
+                              .map((el, i) => (
+                                <HelperCardCertificates
+                                  name="Nele Mustermann"
+                                  subject="Mathe"
+                                  status="Manuell bestätigt"
+                                  createDate="01.09.22"
+                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                  download={() => alert('Hallo')}
+                                />
+                              ))}
+                          </HSection>
+                        </>
+                      )
+                    }
+                  ]}
                 />
               </Container>
-              <Container maxWidth="100%" width="100%">
-                <CTACard
-                  width="100%"
-                  variant="dark"
-                  title="1:1 Lernuntersützung"
-                  closeable={false}
-                  content={
-                    <Text>
-                      Du bist aktuell nicht für die 1:1 Lernuntersützung
-                      freigeschaltet.
-                    </Text>
-                  }
-                  button={
-                    <Button onPress={() => navigate('/')}>
-                      Freischalten lassen
-                    </Button>
-                  }
-                  icon={<LFIcon iconSize="50px" Icon={ParyIcon} />}
-                />
+              <Container maxWidth="100%" width="100%" alignItems="stretch">
+                <Button>Bescheinigung anfordern</Button>
               </Container>
             </ProfileSettingRow>
           </VStack>
