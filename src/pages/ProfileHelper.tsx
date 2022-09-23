@@ -33,6 +33,7 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import Tabs from '../components/Tabs'
 import HSection from '../widgets/HSection'
 import HelperCardCertificates from '../widgets/HelperCardCertificates'
+import HelperWizard from '../widgets/HelperWizard'
 
 type Props = {}
 
@@ -192,6 +193,11 @@ const ProfileHelper: React.FC<Props> = () => {
             </VStack>
           </Alert>
         )}
+
+        <VStack paddingX={space['1.5']} paddingY={space['2']}>
+          <HelperWizard />
+        </VStack>
+
         <VStack space={space['1']}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>

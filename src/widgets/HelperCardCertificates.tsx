@@ -42,7 +42,7 @@ const HelperCardCertificates: React.FC<Props> = ({
         width="100%"
         maxWidth="100%"
         alignItems="stretch">
-        <Row space={space['1']} marginBottom={space['1']}>
+        <Row space={space['1']} marginBottom={space['1']} alignItems="center">
           <Column>
             <ProfilAvatar size="md" image={avatar} />
           </Column>

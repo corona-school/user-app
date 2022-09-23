@@ -56,6 +56,7 @@ import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-mat
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 import ProfileHelper from './pages/ProfileHelper'
 import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
+import DashboardHelper from './pages/DashboardHelper'
 
 export default function Navigator() {
   return (
@@ -88,6 +89,8 @@ export default function Navigator() {
             </RequireAuth>
           }
         />
+
+        <Route path="/dashboard-helper" element={<DashboardHelper />} />
 
         <Route
           path="/explore"
