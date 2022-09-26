@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Heading,
+  Image,
   Input,
   Link,
   Row,
@@ -65,13 +66,23 @@ export default function Login() {
     <VStack overflowY={'auto'} height="100vh">
       <Row flexDirection="column" justifyContent="center" alignItems="center">
         <Box
-          bg="primary.400"
+          position="relative"
           width="100%"
-          borderBottomRightRadius={15}
-          borderBottomLeftRadius={15}
           justifyContent="center"
           paddingY={6}
           marginBottom={6}>
+          <Image
+            alt="Lernfair"
+            position="absolute"
+            zIndex="-1"
+            borderBottomRightRadius={15}
+            borderBottomLeftRadius={15}
+            width="100%"
+            height="100%"
+            source={{
+              uri: require('../assets/images/globals/lf-bg.png')
+            }}
+          />
           <Box textAlign="center" alignItems="center" justifyContent="center">
             <Logo />
           </Box>
