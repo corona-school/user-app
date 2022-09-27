@@ -25,11 +25,15 @@ export type Question = {
   label: string
   question: string
   type: 'selection'
-  options: ISelectionItem[]
   text?: string
+}
+
+export interface SelectionQuestion extends Question {
   imgRootPath: string
   minSelections?: number
   maxSelections?: number
+  options: ISelectionItem[]
+  viewType?: 'normal' | 'large'
 }
 
 export type Answer = {
@@ -78,43 +82,56 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     setQuestions(_questions)
   }, [_questions])
 
-  const modifyQuestionBeforeRender: (question: Question) => Question =
-    useCallback(
-      (question: Question) => {
-        if (question.label === 'Klasse') {
-          const answer = answers['Schulform']
+  const modifySelectionQuestionBeforeRender: (
+    question: SelectionQuestion
+  ) => SelectionQuestion = useCallback(
+    (question: SelectionQuestion) => {
+      if (question.label === 'Klasse') {
+        const answer = answers['Schulform']
 
-          if (!answer) {
-            question.options = new Array(8).fill(0).map((_, i) => ({
-              key: `${i + 5}`,
-              label: t('lernfair.schoolclass', { class: i + 5 })
-            }))
-            return question
-          }
-
-          if (answer['grundschule']) {
-            question.options = new Array(4).fill(0).map((_, i) => ({
-              key: `${i + 1}`,
-              label: t('lernfair.schoolclass', { class: i + 1 })
-            }))
-          } else {
-            question.options = new Array(6).fill(0).map((_, i) => ({
-              key: `${i + 5}`,
-              label: t('lernfair.schoolclass', { class: i + 5 })
-            }))
-          }
-          if (answer['gymnasium']) {
-            question.options = new Array(8).fill(0).map((_, i) => ({
-              key: `${i + 5}`,
-              label: t('lernfair.schoolclass', { class: i + 5 })
-            }))
-          }
+        if (!answer) {
+          question.options = new Array(8).fill(0).map((_, i) => ({
+            key: `${i + 5}`,
+            label: t('lernfair.schoolclass', { class: i + 5 })
+          }))
+          return question
         }
 
-        return question
+        if (answer['grundschule']) {
+          question.options = new Array(4).fill(0).map((_, i) => ({
+            key: `${i + 1}`,
+            label: t('lernfair.schoolclass', { class: i + 1 })
+          }))
+        } else {
+          question.options = new Array(6).fill(0).map((_, i) => ({
+            key: `${i + 5}`,
+            label: t('lernfair.schoolclass', { class: i + 5 })
+          }))
+        }
+        if (answer['gymnasium']) {
+          question.options = new Array(8).fill(0).map((_, i) => ({
+            key: `${i + 5}`,
+            label: t('lernfair.schoolclass', { class: i + 5 })
+          }))
+        }
+      }
+      return question
+    },
+    [answers, t]
+  )
+
+  const modifyQuestionBeforeRender: (question: Question) => Question =
+    useCallback(
+      (q: Question) => {
+        if (q.type === 'selection') {
+          q = modifySelectionQuestionBeforeRender(q as SelectionQuestion)
+        }
+
+        return q
       },
-      [answers, t]
+      [modifySelectionQuestionBeforeRender]
     )
+
   const currentQuestion = useMemo(() => {
     const question = { ...questions[currentIndex] }
     modifyQuestionBeforeRender(question)
@@ -128,7 +145,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
       if (!answer) return
       if (!answer.includes('deutsch')) {
-        const q: Question = {
+        const q: SelectionQuestion = {
           type: 'selection',
           imgRootPath: 'text',
           options: [
@@ -138,6 +155,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           label: 'Deutsch',
           question: 'Seit wann lernst du Deutsch?'
         }
+
         const qs = [...questions]
         qs.splice(currentIndex + 1, 0, q)
         setQuestions(qs)
@@ -167,24 +185,30 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     questions.length
   ])
 
+  const isValidSelectionAnswer: (answer: Answer) => boolean = useCallback(
+    (answer: Answer) => {
+      const question = currentQuestion as SelectionQuestion
+      const answercount = Object.values(answer || {}).filter(a => a).length
+      return (
+        answercount >= (question.minSelections || 1) &&
+        (question.maxSelections ? answercount <= question.maxSelections : true)
+      )
+    },
+    [currentQuestion]
+  )
+
   const isValidAnswer: boolean = useMemo(() => {
     const currentAnswer = answers[currentQuestion.label]
-
     if (!currentAnswer) return false
-
-    const answercount = Object.values(currentAnswer || {}).filter(a => a).length
-
-    return (
-      answercount >= (currentQuestion.minSelections || 1) &&
-      (currentQuestion.maxSelections
-        ? answercount <= currentQuestion.maxSelections
-        : true)
-    )
+    if (currentQuestion.type === 'selection') {
+      return isValidSelectionAnswer(currentAnswer)
+    }
+    return false
   }, [
     answers,
     currentQuestion.label,
-    currentQuestion.maxSelections,
-    currentQuestion.minSelections
+    currentQuestion.type,
+    isValidSelectionAnswer
   ])
 
   const skip = useCallback(() => {
@@ -228,7 +252,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         <Flex flex="1" overflowY={'scroll'}>
           {currentQuestion.type === 'selection' && (
             <QuestionnaireSelectionView
-              {...currentQuestion}
+              {...(currentQuestion as SelectionQuestion)}
               prefill={answers[currentQuestion.label]}
             />
           )}
