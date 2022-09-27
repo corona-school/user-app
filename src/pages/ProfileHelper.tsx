@@ -117,7 +117,7 @@ const ProfileHelper: React.FC<Props> = () => {
               {data?.me?.firstname}
             </Heading>
 
-            <Row width="80%" justifyContent="space-between">
+            {/* <Row width="80%" justifyContent="space-between">
               <Column
                 width="33%"
                 textAlign="center"
@@ -169,7 +169,7 @@ const ProfileHelper: React.FC<Props> = () => {
                   Bewertungen
                 </Text>
               </Column>
-            </Row>
+            </Row> */}
           </Box>
         }
         headerLeft={<NotificationAlert />}>

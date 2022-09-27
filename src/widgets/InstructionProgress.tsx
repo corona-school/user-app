@@ -4,23 +4,25 @@ import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
 type Instruction = {
   label: string
-  title: string
+  title?: string
   content: IInstructionMessage[]
 }
 
 type Props = {
   instructions: Instruction[]
   currentIndex?: number
+  isDark?: boolean
 }
 
 const InstructionProgress: React.FC<Props> = ({
+  isDark,
   instructions,
   currentIndex = 0
 }) => {
   const { space, sizes } = useTheme()
   return (
     <View>
-      <Row paddingX={space['1']}>
+      <Row>
         {instructions.map((instruction, index) => {
           const isLast = index >= instructions.length - 1
           const isActive = index === currentIndex
@@ -31,26 +33,38 @@ const InstructionProgress: React.FC<Props> = ({
               flex={isActive ? 1 : 0}
               flexBasis={sizes['6'] + 'px'}
               mr={!isLast ? space['0.5'] : 0}>
-              <Circle bg={'primary.100'} size={sizes['1.5']}>
-                <Text>{index}</Text>
+              <Circle
+                bg={isActive ? 'primary.400' : 'primary.800'}
+                borderColor="primary.grey"
+                borderWidth={isActive ? 0 : 1}
+                size={sizes['1.5']}>
+                <Text bold color={isActive ? 'lightText' : 'primary.grey'}>
+                  {index + 1}
+                </Text>
               </Circle>
               {isActive && (
-                <Text bold ml={space['0.5']}>
+                <Text
+                  color={isDark ? 'lightText' : 'primary.400'}
+                  bold
+                  ml={space['0.5']}>
                   {instruction.label}
                 </Text>
               )}
               {isActive && !isLast && (
                 <View flex="1" px={space['1']}>
-                  <Divider />
+                  <Divider
+                    borderColor={isActive ? 'lightText' : 'primary.grey'}
+                  />
                 </View>
               )}
             </Row>
           )
         })}
       </Row>
-      <HSection title={instructions[currentIndex].title} smallTitle>
+      <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
         {instructions[currentIndex].content.map((instruction, i) => (
           <InstructionMessage
+            isDark={isDark ? true : false}
             key={`instruction-${i}`}
             title={instruction.title}
             text={instruction.text}

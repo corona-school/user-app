@@ -1,18 +1,31 @@
-import { Text, VStack, useTheme } from 'native-base'
+import { Text, VStack, useTheme, Heading } from 'native-base'
+import { ReactNode } from 'react'
 import Card from '../components/Card'
+import CSSWrapper from '../components/CSSWrapper'
 
 export type IInstructionMessage = {
-  title: string
-  text: string
+  title?: string
+  text: ReactNode
+  isDark?: boolean
 }
 
-const InstructionMessage: React.FC<IInstructionMessage> = ({ title, text }) => {
+const InstructionMessage: React.FC<IInstructionMessage> = ({
+  title,
+  text,
+  isDark
+}) => {
   const { space } = useTheme()
   return (
-    <Card>
-      <VStack space={space['1']} padding={space['1']}>
-        <Text bold>{title}</Text>
-        <Text>{text}</Text>
+    <Card variant="dark">
+      <VStack>
+        <Heading
+          fontSize="md"
+          color={isDark ? 'lightText' : 'primary.400'}
+          marginY={space['1']}
+          bold>
+          {title}
+        </Heading>
+        <Text color={isDark ? 'lightText' : 'primary.400'}>{text}</Text>
       </VStack>
     </Card>
   )

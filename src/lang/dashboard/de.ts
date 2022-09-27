@@ -25,7 +25,8 @@ const dashboard = {
     header: 'Vorschläge für dich'
   },
   offers: {
-    header: 'Angebote'
+    header: 'Angebote',
+    match: 'Match auflösen'
   }
 }
 export default dashboard
