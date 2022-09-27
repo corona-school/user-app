@@ -50,21 +50,24 @@ const useRegistrationProvider = () => {
   const [lastname, setLastname] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [userType, setUserType] = useState<string>('')
 
-  const setRegistrationData = (data: LFRegistration) => {
+  const setRegistrationData = (data: Partial<LFRegistration>) => {
     data.firstname && setFirstname(data.firstname)
     data.lastname && setLastname(data.lastname)
     data.email && setEmail(data.email)
     data.password && setPassword(data.password)
+    data.userType && setUserType(data.userType)
   }
-
-  return {
+  const d: LFRegistration = {
     firstname,
     lastname,
     email,
     password,
+    userType,
     setRegistrationData
-  } as LFRegistration
+  }
+  return d
 }
 
 export default useRegistration
