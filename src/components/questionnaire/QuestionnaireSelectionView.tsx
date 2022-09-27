@@ -23,7 +23,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
   prefill
 }) => {
   const { setAnswers } = useContext(QuestionnaireContext)
-  const [selections, setSelections] = useState<{ [key: string]: boolean }>({})
+  const [selections, setSelections] = useState<Answer>({})
   const { space } = useTheme()
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
 
   useEffect(() => {
     if (!setAnswers) return
-    const sel = { ...selections }
+    const sel: Answer = { ...selections }
     for (const key in sel) {
       if (!sel[key]) delete sel[key]
     }
@@ -51,7 +51,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
         {options.map((opt, index) => (
           <IconTagList
             key={`${imgRootPath}-${index}`}
-            initial={selections[opt.key]}
+            initial={!!selections[opt.key]}
             text={opt.label}
             variant="selection"
             textIcon={(imgRootPath === 'text' && opt.key) || undefined}

@@ -36,8 +36,8 @@ export interface SelectionQuestion extends Question {
   viewType?: 'normal' | 'large'
 }
 
-export type Answer = {
-  [key: string]: boolean
+export type Answer<T = boolean | number> = {
+  [key: string]: T
 }
 
 export type IQuestionnaire = {
