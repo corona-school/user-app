@@ -12,6 +12,7 @@ type LFRegistration = {
   lastname: string
   email: string
   password: string
+  userType: string | 'pupil' | 'tutor'
   setRegistrationData: (data: Partial<LFRegistration>) => any
 }
 
@@ -20,7 +21,8 @@ const LFRegistrationContext = createContext<LFRegistration>({
   lastname: '',
   email: '',
   password: '',
-  setRegistrationData: () => null
+  setRegistrationData: () => null,
+  userType: ''
 })
 
 export const useRegistration = () => useContext(LFRegistrationContext)

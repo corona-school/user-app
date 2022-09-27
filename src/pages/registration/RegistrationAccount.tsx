@@ -32,12 +32,11 @@ type Props = {}
 const RegistrationAccount: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [legalChecked, setLegalChecked] = useState<boolean>()
-  const [typeSelection, setTypeSelection] = useState<string>()
   const navigate = useNavigate()
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
-  const { setRegistrationData, email, password } = useRegistration()
+  const { setRegistrationData, email, password, userType } = useRegistration()
   const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
@@ -49,6 +48,7 @@ const RegistrationAccount: React.FC<Props> = () => {
 
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
+      // TODO react to barrier result
       setShow(false)
       navigate('/registration/2')
     },
@@ -129,26 +129,26 @@ const RegistrationAccount: React.FC<Props> = () => {
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
-          <ToggleButton
+          {/* <ToggleButton
             Icon={ParentIcon}
             label={t('registration.parent')}
             dataKey="parent"
             isActive={typeSelection === 'parent'}
             onPress={setTypeSelection}
-          />
+          /> */}
           <ToggleButton
             Icon={StudentIcon}
             label={t('registration.student')}
             dataKey="student"
-            isActive={typeSelection === 'student'}
-            onPress={setTypeSelection}
+            isActive={userType === 'pupil'}
+            onPress={() => setRegistrationData({ userType: 'pupil' })}
           />
           <ToggleButton
             Icon={TutorIcon}
             label={t('registration.tutor')}
             dataKey="tutor"
-            isActive={typeSelection === 'tutor'}
-            onPress={setTypeSelection}
+            isActive={userType === 'tutor'}
+            onPress={() => setRegistrationData({ userType: 'tutor' })}
           />
         </VStack>
         <VStack space={space['1']} marginTop={space['1']}>
@@ -159,14 +159,14 @@ const RegistrationAccount: React.FC<Props> = () => {
             onPress={showModal}
             isDisabled={
               !legalChecked ||
-              !typeSelection ||
+              !userType ||
               password.length < 6 ||
               password !== passwordConfirm ||
               email.length < 6
             }>
             {t('registration.btn.next')}
           </Button>
-          {!typeSelection && (
+          {!userType && (
             <Text color="danger.500">
               Bitte identifiziere deine Rolle
               {/* TODO ADD TRANSLATION */}

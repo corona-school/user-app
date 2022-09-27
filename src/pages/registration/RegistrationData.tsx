@@ -5,7 +5,7 @@ import Questionnaire, {
   Answer,
   QuestionnaireContext
 } from '../../components/Questionnaire'
-import questions from './questions'
+import { pupilQuestions, tutorQuestions } from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
@@ -14,6 +14,39 @@ import { useTranslation } from 'react-i18next'
 
 type Props = {}
 
+const mutPupil = `mutation register(
+  $firstname: String!
+  $lastname: String!
+  $email: String!
+  $schooltype: SchoolType!
+  $state: State!
+  $password: String!
+  $gradeAsInt: Int!
+  $subjects: [String!]
+) {
+  meRegisterPupil(
+    data: {
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      newsletter: false
+      registrationSource: normal
+      redirectTo: null
+      schooltype: $schooltype
+      state: $state
+    }
+  ) {
+    id
+  }
+  passwordCreate(password: $password)
+  meUpdate(
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+  )
+}
+`
+
+const mutTutor = ``
+
 const RegistrationData: React.FC<Props> = () => {
   const { space } = useTheme()
   const navigate = useNavigate()
@@ -21,39 +54,11 @@ const RegistrationData: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { answers } = useContext(QuestionnaireContext)
   const { setShow, setContent, setVariant } = useModal()
-  const { firstname, lastname, email, password } = useRegistration()
+  const { firstname, lastname, email, password, userType } = useRegistration()
 
-  const [register, { data, error, loading }] = useMutation(gql`
-    mutation register(
-      $firstname: String!
-      $lastname: String!
-      $email: String!
-      $schooltype: SchoolType!
-      $state: State!
-      $password: String!
-      $gradeAsInt: Int!
-      $subjects: [String!]
-    ) {
-      meRegisterPupil(
-        data: {
-          firstname: $firstname
-          lastname: $lastname
-          email: $email
-          newsletter: false
-          registrationSource: normal
-          redirectTo: null
-          schooltype: $schooltype
-          state: $state
-        }
-      ) {
-        id
-      }
-      passwordCreate(password: $password)
-      meUpdate(
-        update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
-      )
-    }
-  `)
+  const [register, { data, error, loading }] = useMutation(
+    gql(userType === 'pupil' ? mutPupil : mutTutor)
+  )
 
   useEffect(() => {
     if (!firstname && !lastname) navigate('/registration/2')
@@ -131,7 +136,7 @@ const RegistrationData: React.FC<Props> = () => {
   return (
     <Flex flex="1">
       <Questionnaire
-        questions={questions}
+        questions={userType === 'pupil' ? pupilQuestions : tutorQuestions}
         onQuestionnaireFinished={onQuestionnaireFinished}
       />
     </Flex>
