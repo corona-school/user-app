@@ -139,7 +139,7 @@ const RegistrationAccount: React.FC<Props> = () => {
           <ToggleButton
             Icon={StudentIcon}
             label={t('registration.student')}
-            dataKey="student"
+            dataKey="pupil"
             isActive={userType === 'pupil'}
             onPress={() => setRegistrationData({ userType: 'pupil' })}
           />
