@@ -1,28 +1,26 @@
 import {
-  CheckCircleIcon,
   Text,
   Button,
   Heading,
   HStack,
   useTheme,
-  VStack
+  VStack,
+  CheckCircleIcon
 } from 'native-base'
 import { useMemo } from 'react'
 import AppointmentCard from '../widgets/AppointmentCard'
-import ServiceOfferCard from '../widgets/ServiceOfferCard'
 import HSection from '../widgets/HSection'
 import SignInCard from '../widgets/SignInCard'
-import TwoColGrid from '../widgets/TwoColGrid'
-import CTACard from '../widgets/CTACard'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import TeacherCard from '../widgets/TeacherCard'
 import WithNavigation from '../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
-import SettingsButton from '../components/SettingsButton'
 import NotificationAlert from '../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../types/lernfair/Course'
+import CTACard from '../widgets/CTACard'
+import BooksIcon from '../assets/icons/lernfair/lf-books.svg'
 
 type Props = {}
 
@@ -82,10 +80,12 @@ const Dashboard: React.FC<Props> = () => {
       <VStack paddingX={space['1']}>
         <VStack space={space['1']} marginTop={space['1']}>
           <VStack space={space['0.5']}>
-            <Heading>{t('dashboard.appointmentcard.header')}</Heading>
+            <Heading marginY={space['1']}>
+              {t('dashboard.appointmentcard.header')}
+            </Heading>
             <AppointmentCard
               href={'/single-course'}
-              tags={[t('lernfair.subjects.altgriechisch'), 'Gruppenkurs']}
+              tags={[t('lernfair.subjects.mathe'), 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
               image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
@@ -106,23 +106,31 @@ const Dashboard: React.FC<Props> = () => {
             ))}
           </HSection>
           <VStack space={space['0.5']}>
-            <Heading>{t('dashboard.homework.header')}</Heading>
+            <Heading marginY={space['1']}>
+              {t('dashboard.homework.header')}
+            </Heading>
             <CTACard
               title={t('dashboard.homework.title')}
               closeable={false}
               content={<Text>{t('dashboard.homework.content')}</Text>}
               button={<Button variant="outline">{t('openchat')}</Button>}
-              icon={<CheckCircleIcon size="10" />}
+              icon={<BooksIcon />}
             />
           </VStack>
           <VStack space={space['0.5']}>
-            <Heading>{t('dashboard.learningpartner.header')}</Heading>
+            <Heading marginY={space['1']}>
+              {t('dashboard.learningpartner.header')}
+            </Heading>
             <TeacherCard
               name="Max Mustermann"
               variant="dark"
               tags={['Mathematik', 'Gruppenkurs']}
               avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-              button={<Button variant="outlinelight">Match auflösen</Button>}
+              button={
+                <Button variant="outlinelight">
+                  {t('dashboard.offers.match')}
+                </Button>
+              }
             />
           </VStack>
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
@@ -130,7 +138,7 @@ const Dashboard: React.FC<Props> = () => {
               <SignInCard data={sc} onClickSignIn={() => null} />
             ))}
           </HSection>
-          <TwoColGrid title={t('dashboard.offers.header')}>
+          {/* <TwoColGrid title={t('dashboard.offers.header')}>
             {Array(2)
               .fill(0)
               .map((el, i) => (
@@ -140,7 +148,7 @@ const Dashboard: React.FC<Props> = () => {
                   image="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
                 />
               ))}
-          </TwoColGrid>
+          </TwoColGrid> */}
         </VStack>
       </VStack>
     </WithNavigation>

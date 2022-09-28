@@ -8,11 +8,15 @@ type Props = {
   children: ReactNode | ReactNode[]
   onShowAll?: () => any
   smallTitle?: boolean
+  isDark?: boolean
+  scrollable?: boolean
 }
 
 const HSection: React.FC<Props> = ({
   title,
+  isDark = false,
   showAll = false,
+  scrollable = true,
   children,
   onShowAll,
   smallTitle
@@ -29,6 +33,7 @@ const HSection: React.FC<Props> = ({
         paddingY={space['0.5']}>
         {title && (
           <Heading
+            color={isDark ? 'lightText' : 'primary.900'}
             flex="1"
             fontSize={smallTitle ? fontSizes['md'] : fontSizes['xl']}>
             {title}
@@ -39,7 +44,7 @@ const HSection: React.FC<Props> = ({
       <Row
         flexWrap={'nowrap'}
         paddingX={space['1']}
-        overflowX="scroll"
+        overflowX={scrollable ? 'scroll' : 'hidden'}
         space={space['1']}
         marginX={-space['1']}
         paddingBottom={space['1']}>

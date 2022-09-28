@@ -22,6 +22,9 @@ import NotificationAlert from '../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../types/lernfair/Course'
+import BooksIcon from '../assets/icons/lernfair/lf-books.svg'
+import PartyIcon from '../assets/icons/lernfair/lf-pary-small.svg'
+import HelperWizard from '../widgets/HelperWizard'
 
 type Props = {}
 
@@ -80,11 +83,16 @@ const DashboardHelper: React.FC<Props> = () => {
       headerLeft={<NotificationAlert />}>
       <VStack paddingX={space['1']}>
         <VStack space={space['1']} marginTop={space['1']}>
+          <VStack paddingY={space['1']}>
+            <HelperWizard index={0} />
+          </VStack>
           <VStack space={space['0.5']}>
-            <Heading>{t('dashboard.appointmentcard.header')}</Heading>
+            <Heading marginY={space['1']}>
+              {t('dashboard.appointmentcard.header')}
+            </Heading>
             <AppointmentCard
               href={'/single-course'}
-              tags={[t('lernfair.subjects.altgriechisch'), 'Gruppenkurs']}
+              tags={[t('lernfair.subjects.mathe'), 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
               image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
@@ -105,7 +113,11 @@ const DashboardHelper: React.FC<Props> = () => {
             ))}
           </HSection>
           <VStack space={space['0.5']}>
-            <Heading>Wichtige Meldungen</Heading>
+            <Heading marginY={space['1']}>Meine Kurse</Heading>
+            <Button>Neuen Kurs eintragen</Button>
+          </VStack>
+          <VStack space={space['0.5']}>
+            <Heading marginY={space['1']}>Wichtige Meldungen</Heading>
             <CTACard
               title="Neues Angebot"
               closeable={false}
@@ -116,11 +128,11 @@ const DashboardHelper: React.FC<Props> = () => {
                 </Text>
               }
               button={<Button variant="outline">Angebot ansehen</Button>}
-              icon={<CheckCircleIcon size="10" />}
+              icon={<PartyIcon />}
             />
           </VStack>
           <VStack space={space['0.5']}>
-            <Heading>Meine Lernpartner:innen</Heading>
+            <Heading marginY={space['1']}>Meine Lernpartner:innen</Heading>
             <TeacherCard
               name="Max Mustermann"
               variant="dark"
@@ -130,19 +142,8 @@ const DashboardHelper: React.FC<Props> = () => {
             />
             <Button marginY={space['1']}>Neues Match anfordern</Button>
           </VStack>
-          <TwoColGrid title={t('dashboard.offers.header')}>
-            {Array(2)
-              .fill(0)
-              .map((el, i) => (
-                <ServiceOfferCard
-                  key={`service-offer-${i}`}
-                  title="Gruppen-Lernunterstützung"
-                  image="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                />
-              ))}
-          </TwoColGrid>
           <VStack space={space['0.5']} marginBottom={space['1.5']}>
-            <Heading marginBottom={space['1']}>Empfehle uns weiter</Heading>
+            <Heading marginY={space['1']}>Empfehle uns weiter</Heading>
             <CTACard
               title="Empfehle Lern-Fair deinen Freunden"
               closeable={false}
@@ -153,7 +154,7 @@ const DashboardHelper: React.FC<Props> = () => {
                 </Text>
               }
               button={<Button variant="outline">Jetzt empfehlen</Button>}
-              icon={<CheckCircleIcon size="10" />}
+              icon={<BooksIcon />}
             />
           </VStack>
         </VStack>

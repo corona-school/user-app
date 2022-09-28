@@ -99,7 +99,7 @@ const ProfileHelper: React.FC<Props> = () => {
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
               />
-              <Box position="absolute" right="-5px" bottom="-5px">
+              <Box position="absolute" right="-10px" bottom="5px">
                 <Link href="#">
                   <EditIcon
                     fill={colors['lightText']}
@@ -117,7 +117,7 @@ const ProfileHelper: React.FC<Props> = () => {
               {data?.me?.firstname}
             </Heading>
 
-            <Row width="80%" justifyContent="space-between">
+            {/* <Row width="80%" justifyContent="space-between">
               <Column
                 width="33%"
                 textAlign="center"
@@ -169,7 +169,7 @@ const ProfileHelper: React.FC<Props> = () => {
                   Bewertungen
                 </Text>
               </Column>
-            </Row>
+            </Row> */}
           </Box>
         }
         headerLeft={<NotificationAlert />}>
@@ -194,8 +194,8 @@ const ProfileHelper: React.FC<Props> = () => {
           </Alert>
         )}
 
-        <VStack paddingX={space['1.5']} paddingY={space['2']}>
-          <HelperWizard />
+        <VStack paddingY={space['1']}>
+          <HelperWizard index={0} />
         </VStack>
 
         <VStack space={space['1']}>

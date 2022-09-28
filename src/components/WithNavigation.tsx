@@ -10,6 +10,7 @@ import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
+import CSSWrapper from './CSSWrapper'
 
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
