@@ -26,6 +26,7 @@ import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 
 type Props = {}
 
+// GraqhQL pupil mutation
 const mutPupil = `mutation register(
   $firstname: String!
   $lastname: String!
@@ -57,6 +58,7 @@ const mutPupil = `mutation register(
 }
 `
 
+// GraphQL student mutation
 const mutTutor = `mutation register(
   $firstname: String!
   $lastname: String!
@@ -96,15 +98,20 @@ const RegistrationData: React.FC<Props> = () => {
   // have to track classes seperately can't find the bug
   const [classes, setClasses] = useState<{ [key: string]: number }>({})
 
+  // show global modal
   const { setShow, setContent, setVariant } = useModal()
+
+  // data provided by previous slides
   const { firstname, lastname, email, password, userType } = useRegistration()
 
+  // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
   const [focusedSelection, setFocusedSelection] = useState<ISelectionItem>({
     key: '',
     label: ''
   })
 
+  // use different string depending on userType
   const [register, { data, error, loading }] = useMutation(
     gql`
       ${userType === 'pupil' ? mutPupil : mutTutor}
@@ -112,9 +119,12 @@ const RegistrationData: React.FC<Props> = () => {
   )
 
   useEffect(() => {
+    // go to next slide if data is provided
+    // TODO validate email
     if (!firstname && !lastname) navigate('/registration/2')
   }, [email, firstname, lastname, navigate, password])
 
+  // at the end register the pupil with all data
   const registerPupil = useCallback(
     async (answers: { [key: string]: Answer }) => {
       const state = Object.keys(answers.Bundesland)[0]
@@ -139,9 +149,11 @@ const RegistrationData: React.FC<Props> = () => {
     [email, firstname, lastname, password, register]
   )
 
-  const registerTutor = useCallback(async () => {
+  // at the end register the student with all data
+  const registerStudent = useCallback(async () => {
     const subjects = []
     for (let [sub, isSelected] of Object.entries(answers.Fächer)) {
+      // assosiate subject with selected class range
       let minClass = 0
       let maxClass = 0
 
@@ -180,17 +192,19 @@ const RegistrationData: React.FC<Props> = () => {
     })
   }, [answers.Fächer, classes, email, firstname, lastname, password, register])
 
+  // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
       if (userType === 'pupil') {
         await registerPupil(answers)
       } else {
-        await registerTutor()
+        await registerStudent()
       }
     },
-    [registerPupil, registerTutor, userType]
+    [registerPupil, registerStudent, userType]
   )
 
+  // registration went through without error
   useEffect(() => {
     if (data && !error) {
       setVariant('dark')
@@ -216,6 +230,7 @@ const RegistrationData: React.FC<Props> = () => {
     }
   }, [navigate, data, error, setContent, setShow, setVariant, space])
 
+  // registration has an error
   useEffect(() => {
     if (error) {
       setVariant('dark')
@@ -229,6 +244,7 @@ const RegistrationData: React.FC<Props> = () => {
     }
   }, [answers, error, setContent, setShow, setVariant, space])
 
+  // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
     (item: ISelectionItem) => {
       if (answers?.Fächer && answers?.Fächer[item.key]) return
@@ -238,10 +254,12 @@ const RegistrationData: React.FC<Props> = () => {
     [answers?.Fächer]
   )
 
+  // populate questions depending on userType
   useEffect(() => {
     setQuestions(userType === 'pupil' ? pupilQuestions : tutorQuestions)
   }, [userType])
 
+  // set state => class range for corresponding subject
   const answerFocusSelection = useCallback(
     (val: number) => {
       setClasses(prev => ({
@@ -252,9 +270,12 @@ const RegistrationData: React.FC<Props> = () => {
     [focusedSelection.key]
   )
 
+  // modify selection question based on answers etc
   const modifySelectionQuestionBeforeRender = useCallback(
     (question: SelectionQuestion) => {
+      // is question about schoolclass?
       if (question.label === 'Klasse') {
+        // change displayed classes based on selected schoolform
         const answer = answers['Schulform']
 
         if (!answer) {
@@ -288,6 +309,7 @@ const RegistrationData: React.FC<Props> = () => {
     [answers, t]
   )
 
+  // modify questions based on answers etc
   const modifyQuestionBeforeRender = useCallback(
     (question: Question) => {
       if (question.type === 'selection') {
@@ -297,6 +319,7 @@ const RegistrationData: React.FC<Props> = () => {
     [modifySelectionQuestionBeforeRender]
   )
 
+  // get the current question in modified state
   const currentModifiedQuestion = useMemo(() => {
     const question = { ...questions[currentIndex] }
     modifyQuestionBeforeRender(question)
@@ -304,13 +327,17 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
   }, [questions, currentIndex, modifyQuestionBeforeRender])
 
+  // modify question before moving on to the next
   const modifyQuestionBeforeNext = () => {
     const currentQuestion = questions[currentIndex]
+    // is question about language?
     if (currentQuestion.label === 'Sprache') {
       if (!answers['Sprache']) return
       const answer = Object.keys(answers['Sprache'])
 
       if (!answer) return
+
+      // if answer does not include "deutsch" ask for more information
       if (!answer.includes('deutsch')) {
         const q: SelectionQuestion = {
           type: 'selection',
@@ -328,6 +355,8 @@ const RegistrationData: React.FC<Props> = () => {
         setQuestions && setQuestions(qs)
       }
     }
+    // if question is followup question to "Sprache"/language
+    // react to answer and add new question to questionnaire
     if (currentQuestion.label === 'Deutsch') {
       if (Object.keys(answers['Deutsch']).includes('<1')) {
         const qs = [...questions]
@@ -397,7 +426,6 @@ const RegistrationData: React.FC<Props> = () => {
             <Button
               onPress={() => {
                 setShowFocusSelection(false)
-                // TODO save selection
               }}>
               Speichern
             </Button>
