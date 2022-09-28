@@ -66,8 +66,8 @@ const registration = {
   },
   questions: {
     deutsch2: {
-      lower: '',
-      higher: ''
+      lower: 'weniger als 1 Jahr',
+      higher: 'mehr als 1 Jahr'
     }
   },
   pupil: { label: 'Schüler:in' },
