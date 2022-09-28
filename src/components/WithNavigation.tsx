@@ -70,12 +70,12 @@ const WithNavigation: React.FC<Props> = ({
               />
             </Column>
             <Column flex="1">
-              {view && (
+              {(view && (
                 <>
                   <View h={`${headerHeight}px`}></View>
                   {view}
                 </>
-              )}
+              )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}
             </Column>
           </Row>
