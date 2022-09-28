@@ -1,5 +1,7 @@
 import { Heading, Text, useTheme, VStack } from 'native-base'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { UserType } from '../../types/lernfair/User'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 import { Answer, QuestionnaireContext } from '../Questionnaire'
@@ -7,23 +9,22 @@ import { ISelectionItem } from './SelectionItem'
 
 type Props = {
   options: ISelectionItem[]
-  question: string
   id: string
-  text?: string
   imgRootPath: string
   prefill?: Answer
   onPressSelection: undefined | ((selection: ISelectionItem) => any)
+  userType: UserType
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
   options,
-  question,
   id,
-  text,
+  userType,
   imgRootPath,
   prefill,
   onPressSelection
 }) => {
+  const { t } = useTranslation()
   const { setAnswers } = useContext(QuestionnaireContext)
   const [selections, setSelections] = useState<Answer>({})
   const { space } = useTheme()
@@ -34,7 +35,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
       setSelections({})
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question])
+  }, [id])
 
   useEffect(() => {
     if (!setAnswers) return
@@ -45,10 +46,18 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
     setAnswers(prev => ({ ...prev, [id]: sel }))
   }, [id, selections, setAnswers])
 
+  const textFormatted = useMemo(
+    () =>
+      t(`registration.questions.${userType}.${id}.text`, { defaultValue: '' }),
+    [t, userType, id]
+  )
+
   return (
     <VStack paddingX={space['1']} paddingTop={space['1']}>
-      <Heading>{question}</Heading>
-      {text && <Text>{text}</Text>}
+      <Heading>
+        {t(`registration.questions.${userType}.${id}.question`)}
+      </Heading>
+      {textFormatted && <Text>{textFormatted}</Text>}
       <TwoColGrid>
         {options.map((opt, index) => (
           <IconTagList

@@ -17,13 +17,14 @@ import {
   useMemo
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import useRegistration from '../hooks/useRegistration'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
 import { ISelectionItem } from './questionnaire/SelectionItem'
 
 export type Question = {
   id: string
-  label: string
-  question: string
+  label?: string
+  question?: string
   type: 'selection'
   text?: string
 }
@@ -81,6 +82,8 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   const { t } = useTranslation()
   const { space } = useTheme()
 
+  const { userType } = useRegistration()
+
   const { currentIndex, questions, answers, setCurrentIndex, currentQuestion } =
     useContext(QuestionnaireContext)
 
@@ -111,6 +114,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     (answer: Answer) => {
       const question = currentQuestion as SelectionQuestion
       const answercount = Object.values(answer || {}).filter(a => !!a).length
+
       return (
         answercount >= (question.minSelections || 1) &&
         (question.maxSelections ? answercount <= question.maxSelections : true)
@@ -122,6 +126,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   // check if current answer is appropriate for corresponding type
   const isValidAnswer: boolean = useMemo(() => {
     const currentAnswer = answers[currentQuestion.id]
+
     let isValid = false
     if (!currentAnswer) return false
     if (currentQuestion.type === 'selection') {
@@ -129,12 +134,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     }
 
     return isValid
-  }, [
-    answers,
-    currentQuestion.id,
-    currentQuestion.type,
-    isValidSelectionAnswer
-  ])
+  }, [answers, currentQuestion, isValidSelectionAnswer])
 
   // skip one question
   const skip = useCallback(() => {
@@ -148,7 +148,6 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   }, [setCurrentIndex])
 
   if (questions.length === 0) return <></>
-
   return (
     <Flex flex="1" pb={space['1']}>
       <Box
@@ -157,7 +156,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         justifyContent="center"
         alignItems="center"
         borderBottomRadius={8}>
-        <Heading>{currentQuestion.label}</Heading>
+        <Heading>
+          {t(`registration.questions.${userType}.${currentQuestion.id}.label`)}
+        </Heading>
       </Box>
       <Box paddingX={space['1']} mt={space['1']}>
         <Progress
@@ -172,8 +173,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
       <Flex flex="1" overflowY={'scroll'}>
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
-            {...(currentQuestion as SelectionQuestion)}
+            id={currentQuestion.id}
             prefill={answers[currentQuestion.id]}
+            userType={userType}
+            imgRootPath={(currentQuestion as SelectionQuestion).imgRootPath}
+            options={(currentQuestion as SelectionQuestion).options}
             onPressSelection={onPressItem}
           />
         )}

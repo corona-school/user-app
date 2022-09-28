@@ -5,6 +5,7 @@ import {
   useEffect,
   useState
 } from 'react'
+import { UserType } from '../types/lernfair/User'
 import useApollo from './useApollo'
 
 type LFRegistration = {
@@ -12,7 +13,7 @@ type LFRegistration = {
   lastname: string
   email: string
   password: string
-  userType: string | 'pupil' | 'student'
+  userType: UserType
   setRegistrationData: (data: Partial<LFRegistration>) => any
 }
 

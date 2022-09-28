@@ -35,3 +35,5 @@ export interface User {
   isOfficial?: boolean
   isCodu?: boolean
 }
+
+export type UserType = string | 'pupil' | 'student'

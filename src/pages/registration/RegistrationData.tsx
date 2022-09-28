@@ -361,9 +361,7 @@ const RegistrationData: React.FC<Props> = () => {
           options: [
             { key: '<1', label: t('registration.questions.deutsch2.lower') },
             { key: '>1', label: t('registration.questions.deutsch2.higher') }
-          ],
-          label: 'Deutsch',
-          question: 'Seit wann lernst du Deutsch?'
+          ]
         }
 
         const qs = [...questions]
