@@ -57,6 +57,7 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 import ProfileHelper from './pages/ProfileHelper'
 import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
 import DashboardHelper from './pages/DashboardHelper'
+import CreateCourse from './pages/CreateCourse'
 
 export default function Navigator() {
   return (
@@ -318,6 +319,8 @@ export default function Navigator() {
           path="/onboarding-helper-matching/finish"
           element={<OnBoardingHelperMatchingFinisher />}
         />
+
+        <Route path="/create-course" element={<CreateCourse />} />
 
         {/* Fallback */}
         <Route
