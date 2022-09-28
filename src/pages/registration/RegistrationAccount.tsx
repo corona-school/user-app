@@ -156,7 +156,9 @@ const RegistrationAccount: React.FC<Props> = () => {
             {t('registration.check_legal')}
           </Checkbox>
           <Button
-            onPress={showModal}
+            onPress={() =>
+              userType === 'pupil' ? showModal() : navigate('/registration/2')
+            }
             isDisabled={
               !legalChecked ||
               !userType ||
