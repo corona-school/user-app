@@ -76,11 +76,17 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   modifyQuestionBeforeNext
 }) => {
   const { t } = useTranslation()
+  const { space } = useTheme()
+
   const { currentIndex, questions, answers, setCurrentIndex, currentQuestion } =
     useContext(QuestionnaireContext)
 
-  const { space } = useTheme()
-
+  /**
+   * check if index is not at the tail end of questions
+   * if it is, end the questionnaire
+   * else move on after modifying the question
+   * if the prop exists
+   */
   const next = useCallback(() => {
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
@@ -97,6 +103,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     setCurrentIndex
   ])
 
+  // check if answer is valid when question type is selection
   const isValidSelectionAnswer: (answer: Answer) => boolean = useCallback(
     (answer: Answer) => {
       const question = currentQuestion as SelectionQuestion
@@ -109,6 +116,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     [currentQuestion]
   )
 
+  // check if current answer is appropriate for corresponding type
   const isValidAnswer: boolean = useMemo(() => {
     const currentAnswer = answers[currentQuestion.label]
     let isValid = false
@@ -125,11 +133,13 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     isValidSelectionAnswer
   ])
 
+  // skip one question
   const skip = useCallback(() => {
     delete answers[currentQuestion.label]
     next()
   }, [answers, currentQuestion.label, next])
 
+  // go one question back
   const back = useCallback(() => {
     setCurrentIndex && setCurrentIndex(prev => prev - 1)
   }, [setCurrentIndex])
