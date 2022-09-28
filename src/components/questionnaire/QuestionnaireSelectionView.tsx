@@ -12,6 +12,7 @@ type Props = {
   imgRootPath: string
   label: string
   prefill?: Answer
+  onPressSelection: undefined | ((selection: ISelectionItem) => any)
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
@@ -20,7 +21,8 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
   label,
   text,
   imgRootPath,
-  prefill
+  prefill,
+  onPressSelection
 }) => {
   const { setAnswers } = useContext(QuestionnaireContext)
   const [selections, setSelections] = useState<Answer>({})
@@ -60,12 +62,13 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
                 `${imgRootPath}/icon_${opt.key}.svg`) ||
               undefined
             }
-            onPress={() =>
+            onPress={() => {
               setSelections(prev => ({
                 ...prev,
                 [opt.key]: !selections[opt.key]
               }))
-            }
+              onPressSelection && onPressSelection(opt)
+            }}
           />
         ))}
       </TwoColGrid>
