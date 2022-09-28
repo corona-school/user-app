@@ -1,10 +1,11 @@
-import { Question } from '../../components/Questionnaire'
+import { SelectionQuestion } from '../../components/Questionnaire'
 import { languages } from '../../types/lernfair/Language'
 import { schooltypes } from '../../types/lernfair/SchoolType'
 import { states } from '../../types/lernfair/State'
 import { subjects } from '../../types/lernfair/Subject'
+import { offers } from '../../types/lernfair/Offer'
 
-const questions: Question[] = [
+export const pupilQuestions: SelectionQuestion[] = [
   {
     imgRootPath: 'schooltypes',
     label: 'Schulform',
@@ -19,6 +20,7 @@ const questions: Question[] = [
     question: 'In welcher Klasse bist du?',
     type: 'selection',
     maxSelections: 1,
+    // options are populated dynamically
     options: []
   },
   {
@@ -42,9 +44,30 @@ const questions: Question[] = [
     question: 'Aus welchem Bundesland kommst du?',
     type: 'selection',
     maxSelections: 1,
-
     options: states
   }
 ]
 
+export const studentQuestions: SelectionQuestion[] = [
+  {
+    imgRootPath: 'offers',
+    label: 'Unterstützung',
+    question: 'Welche Art der Unterstützung möchtest du anbieten?',
+    text: 'Eine Mehrfachauswahl ist möglich',
+    type: 'selection',
+    options: offers,
+    viewType: 'large'
+  },
+  {
+    imgRootPath: 'subjects',
+    label: 'Fächer',
+    question: 'In welchen Fächern kannst du unterstützen?',
+    type: 'selection',
+    text: 'Du kannst bis zu Fächer auswählen',
+    options: subjects,
+    maxSelections: 3
+  }
+]
+
+const questions = { pupilQuestions, studentQuestions }
 export default questions

@@ -1,7 +1,6 @@
 import {
   Text,
   VStack,
-  Input,
   Heading,
   Checkbox,
   Button,
@@ -16,9 +15,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
-import StudentIcon from '../../assets/icons/lernfair/ic_student.svg'
-import TutorIcon from '../../assets/icons/lernfair/ic_tutor.svg'
-import ParentIcon from '../../assets/icons/lernfair/ic_parent.svg'
+import PupilIcon from '../../assets/icons/lernfair/ic_student.svg'
+import StudentIcon from '../../assets/icons/lernfair/ic_tutor.svg'
 
 import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
@@ -32,12 +30,11 @@ type Props = {}
 const RegistrationAccount: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [legalChecked, setLegalChecked] = useState<boolean>()
-  const [typeSelection, setTypeSelection] = useState<string>()
   const navigate = useNavigate()
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
-  const { setRegistrationData, email, password } = useRegistration()
+  const { setRegistrationData, email, password, userType } = useRegistration()
   const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
@@ -49,6 +46,7 @@ const RegistrationAccount: React.FC<Props> = () => {
 
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
+      // TODO react to barrier result
       setShow(false)
       navigate('/registration/2')
     },
@@ -103,7 +101,7 @@ const RegistrationAccount: React.FC<Props> = () => {
           }}
         />
         <Logo />
-        <Heading mt={space['1']}>Neu registrieren</Heading>
+        <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
       <VStack flex="1" paddingX={space['1']} mt={space['1']}>
         <VStack space={space['0.5']}>
@@ -123,32 +121,31 @@ const RegistrationAccount: React.FC<Props> = () => {
             onChangeText={setPasswordConfirm}
           />
           <Text fontSize="xs" opacity=".6">
-            Das Password muss mindestens 6 Zeichen enthalten.
-            {/* TODO ADD TRANSLATION */}
+            {t('registration.hint.password.length')}
           </Text>
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
-          <ToggleButton
+          {/* <ToggleButton
             Icon={ParentIcon}
             label={t('registration.parent')}
             dataKey="parent"
             isActive={typeSelection === 'parent'}
             onPress={setTypeSelection}
+          /> */}
+          <ToggleButton
+            Icon={PupilIcon}
+            label={t('registration.pupil.label')}
+            dataKey="pupil"
+            isActive={userType === 'pupil'}
+            onPress={() => setRegistrationData({ userType: 'pupil' })}
           />
           <ToggleButton
             Icon={StudentIcon}
-            label={t('registration.student')}
+            label={t('registration.student.label')}
             dataKey="student"
-            isActive={typeSelection === 'student'}
-            onPress={setTypeSelection}
-          />
-          <ToggleButton
-            Icon={TutorIcon}
-            label={t('registration.tutor')}
-            dataKey="tutor"
-            isActive={typeSelection === 'tutor'}
-            onPress={setTypeSelection}
+            isActive={userType === 'student'}
+            onPress={() => setRegistrationData({ userType: 'student' })}
           />
         </VStack>
         <VStack space={space['1']} marginTop={space['1']}>
@@ -156,33 +153,32 @@ const RegistrationAccount: React.FC<Props> = () => {
             {t('registration.check_legal')}
           </Checkbox>
           <Button
-            onPress={showModal}
+            onPress={() =>
+              userType === 'pupil' ? showModal() : navigate('/registration/2')
+            }
             isDisabled={
               !legalChecked ||
-              !typeSelection ||
+              !userType ||
               password.length < 6 ||
               password !== passwordConfirm ||
               email.length < 6
             }>
             {t('registration.btn.next')}
           </Button>
-          {!typeSelection && (
+          {!userType && (
             <Text color="danger.500">
-              Bitte identifiziere deine Rolle
-              {/* TODO ADD TRANSLATION */}
+              {t('registration.hint.userType.missing')}
             </Text>
           )}
           {email.length < 6 && (
             <Text color="danger.500">
-              Ungültige Email-Adresse
-              {/* TODO ADD TRANSLATION */}
+              {t('registration.hint.email.invalid')}
             </Text>
           )}
           <Text
             color="danger.500"
             opacity={password !== passwordConfirm ? 1 : 0}>
-            Die Passwörter stimmen nicht überein
-            {/* TODO ADD TRANSLATION */}
+            {t('registration.hint.password.nomatch')}
           </Text>
         </VStack>
       </VStack>

@@ -52,8 +52,13 @@ const useApollo = () => {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) => {
-        console.log(`[GraphQL error]: Message: ${message}, Path: ${path}`)
-        console.log('[GraphQL error]', { locations })
+        if (
+          message ===
+          "Access denied! You don't have permission for this action!"
+        ) {
+          // if message is basically a 401 Unauthorized then redirect to login
+          window.location.pathname = '/login'
+        }
       })
 
     if (networkError) console.log(`[Network error]: ${networkError}`)

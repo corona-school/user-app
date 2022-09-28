@@ -1,6 +1,5 @@
 import {
   VStack,
-  Input,
   Heading,
   Button,
   useTheme,
@@ -49,7 +48,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
           }}
         />
         <Logo />
-        <Heading mt={space['1']}>Neu registrieren</Heading>
+        <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
       <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
         <TextInput
@@ -61,17 +60,15 @@ const RegistrationPersonal: React.FC<Props> = () => {
           onChangeText={t => setRegistrationData({ lastname: t })}
         />
         <>
-          <Heading>Über mich</Heading>
+          <Heading>{t('registration.personal.about.label')}</Heading>
           <TextArea
             h={150}
-            placeholder={t(
-              'Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können.'
-            )}
+            placeholder={t('registration.personal.about.text')}
             autoCompleteType={{}}
           />
         </>
         <Button onPress={() => navigate('/registration/3')}>
-          Registrieren
+          {t('registration.register')}
         </Button>
       </VStack>
     </Flex>
