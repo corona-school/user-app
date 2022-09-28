@@ -379,6 +379,7 @@ const RegistrationData: React.FC<Props> = () => {
       }}>
       <Flex flex="1">
         <Questionnaire
+          disableNavigation={loading}
           onQuestionnaireFinished={onQuestionnaireFinished}
           onPressItem={(item: ISelectionItem) => {
             if (userType === 'tutor') {

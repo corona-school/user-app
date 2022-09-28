@@ -68,12 +68,14 @@ export type IQuestionnaire = {
   onQuestionChanged?: (question: Question) => any
   modifySelectionQuestionBeforeRender?: () => any
   modifyQuestionBeforeNext?: () => any
+  disableNavigation?: boolean
 }
 
 const Questionnaire: React.FC<IQuestionnaire> = ({
   onQuestionnaireFinished,
   onPressItem,
-  modifyQuestionBeforeNext
+  modifyQuestionBeforeNext,
+  disableNavigation
 }) => {
   const { t } = useTranslation()
   const { space } = useTheme()
@@ -176,16 +178,22 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         )}
       </Flex>
       <VStack paddingX={space['1']} space={space['0.5']}>
-        <Button isDisabled={!isValidAnswer} onPress={next}>
+        <Button isDisabled={disableNavigation || !isValidAnswer} onPress={next}>
           {t('questionnaire.btn.next')}
         </Button>
 
-        <Button onPress={skip} variant={'outline'}>
+        <Button
+          isDisabled={disableNavigation}
+          onPress={skip}
+          variant={'outline'}>
           {t('questionnaire.btn.skip')}
         </Button>
 
         {currentIndex > 0 && (
-          <Button onPress={back} variant={'link'}>
+          <Button
+            isDisabled={disableNavigation}
+            onPress={back}
+            variant={'link'}>
             {t('questionnaire.btn.back')}
           </Button>
         )}
