@@ -127,11 +127,11 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the pupil with all data
   const registerPupil = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      const state = Object.keys(answers.Bundesland)[0]
-      const schooltype = Object.keys(answers.Schulform)[0]
+      const state = Object.keys(answers.state)[0]
+      const schooltype = Object.keys(answers.schooltype)[0]
 
-      const gradeAsInt = parseInt(Object.keys(answers.Klasse)[0])
-      const subjects = Object.keys(answers.Fächer)
+      const gradeAsInt = parseInt(Object.keys(answers.schoolclass)[0])
+      const subjects = Object.keys(answers.subjects)
 
       await register({
         variables: {
@@ -152,7 +152,7 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the student with all data
   const registerStudent = useCallback(async () => {
     const subjects = []
-    for (let [sub, isSelected] of Object.entries(answers.Fächer)) {
+    for (let [sub, isSelected] of Object.entries(answers.subjects)) {
       // assosiate subject with selected class range
       let minClass = 0
       let maxClass = 0
@@ -190,7 +190,15 @@ const RegistrationData: React.FC<Props> = () => {
         subjects
       }
     })
-  }, [answers.Fächer, classes, email, firstname, lastname, password, register])
+  }, [
+    answers.subjects,
+    classes,
+    email,
+    firstname,
+    lastname,
+    password,
+    register
+  ])
 
   // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
@@ -254,11 +262,11 @@ const RegistrationData: React.FC<Props> = () => {
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
     (item: ISelectionItem) => {
-      if (answers?.Fächer && answers?.Fächer[item.key]) return
+      if (answers?.subjects && answers?.subjects[item.key]) return
       setFocusedSelection(item)
       setShowFocusSelection(true)
     },
-    [answers?.Fächer]
+    [answers?.subjects]
   )
 
   // populate questions depending on userType
@@ -281,9 +289,9 @@ const RegistrationData: React.FC<Props> = () => {
   const modifySelectionQuestionBeforeRender = useCallback(
     (question: SelectionQuestion) => {
       // is question about schoolclass?
-      if (question.label === 'Klasse') {
+      if (question.id === 'schoolclass') {
         // change displayed classes based on selected schoolform
-        const answer = answers['Schulform']
+        const answer = answers.schooltype
 
         if (!answer) {
           question.options = new Array(8).fill(0).map((_, i) => ({
@@ -338,15 +346,16 @@ const RegistrationData: React.FC<Props> = () => {
   const modifyQuestionBeforeNext = () => {
     const currentQuestion = questions[currentIndex]
     // is question about language?
-    if (currentQuestion.label === 'Sprache') {
-      if (!answers['Sprache']) return
-      const answer = Object.keys(answers['Sprache'])
+    if (currentQuestion.id === 'language') {
+      if (!answers['language']) return
+      const answer = Object.keys(answers['language'])
 
       if (!answer) return
 
       // if answer does not include "deutsch" ask for more information
       if (!answer.includes('deutsch')) {
         const q: SelectionQuestion = {
+          id: 'deutsch',
           type: 'selection',
           imgRootPath: 'text',
           options: [
@@ -364,8 +373,8 @@ const RegistrationData: React.FC<Props> = () => {
     }
     // if question is followup question to "Sprache"/language
     // react to answer and add new question to questionnaire
-    if (currentQuestion.label === 'Deutsch') {
-      if (Object.keys(answers['Deutsch']).includes('<1')) {
+    if (currentQuestion.id === 'deutsch') {
+      if (Object.keys(answers['deutsch']).includes('<1')) {
         const qs = [...questions]
         qs.splice(currentIndex + 1, 1)
         setQuestions && setQuestions(qs)
@@ -390,7 +399,7 @@ const RegistrationData: React.FC<Props> = () => {
           onQuestionnaireFinished={onQuestionnaireFinished}
           onPressItem={(item: ISelectionItem) => {
             if (userType === 'student') {
-              if (currentModifiedQuestion?.label === 'Fächer') {
+              if (currentModifiedQuestion?.id === 'subjects') {
                 askSchoolClassForSelection(item)
               }
             }

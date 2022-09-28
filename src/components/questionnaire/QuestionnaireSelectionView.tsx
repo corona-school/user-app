@@ -8,9 +8,9 @@ import { ISelectionItem } from './SelectionItem'
 type Props = {
   options: ISelectionItem[]
   question: string
+  id: string
   text?: string
   imgRootPath: string
-  label: string
   prefill?: Answer
   onPressSelection: undefined | ((selection: ISelectionItem) => any)
 }
@@ -18,7 +18,7 @@ type Props = {
 const QuestionnaireSelectionView: React.FC<Props> = ({
   options,
   question,
-  label,
+  id,
   text,
   imgRootPath,
   prefill,
@@ -39,11 +39,11 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
   useEffect(() => {
     if (!setAnswers) return
     const sel: Answer = { ...selections }
-    for (const key in sel) {
-      if (!sel[key]) delete sel[key]
+    for (const k in sel) {
+      if (!sel[k]) delete sel[k]
     }
-    setAnswers(prev => ({ ...prev, [label]: sel }))
-  }, [label, selections, setAnswers])
+    setAnswers(prev => ({ ...prev, [id]: sel }))
+  }, [id, selections, setAnswers])
 
   return (
     <VStack paddingX={space['1']} paddingTop={space['1']}>

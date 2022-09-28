@@ -21,6 +21,7 @@ import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionVi
 import { ISelectionItem } from './questionnaire/SelectionItem'
 
 export type Question = {
+  id: string
   label: string
   question: string
   type: 'selection'
@@ -59,7 +60,7 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
   questions: [],
   currentIndex: 0,
   answers: {},
-  currentQuestion: { label: '', question: '', type: 'selection' }
+  currentQuestion: { label: '', question: '', type: 'selection', id: '' }
 })
 
 export type IQuestionnaire = {
@@ -120,7 +121,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // check if current answer is appropriate for corresponding type
   const isValidAnswer: boolean = useMemo(() => {
-    const currentAnswer = answers[currentQuestion.label]
+    const currentAnswer = answers[currentQuestion.id]
     let isValid = false
     if (!currentAnswer) return false
     if (currentQuestion.type === 'selection') {
@@ -130,16 +131,16 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     return isValid
   }, [
     answers,
-    currentQuestion.label,
+    currentQuestion.id,
     currentQuestion.type,
     isValidSelectionAnswer
   ])
 
   // skip one question
   const skip = useCallback(() => {
-    delete answers[currentQuestion.label]
+    delete answers[currentQuestion.id]
     next()
-  }, [answers, currentQuestion.label, next])
+  }, [answers, currentQuestion.id, next])
 
   // go one question back
   const back = useCallback(() => {
@@ -172,7 +173,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
             {...(currentQuestion as SelectionQuestion)}
-            prefill={answers[currentQuestion.label]}
+            prefill={answers[currentQuestion.id]}
             onPressSelection={onPressItem}
           />
         )}
