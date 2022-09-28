@@ -1,4 +1,5 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
+import CSSWrapper from '../components/CSSWrapper'
 import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 

@@ -2,9 +2,11 @@ import { View, Text, Heading, Row, useTheme, Button, Box } from 'native-base'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
 
-type Props = {}
+type Props = {
+  index?: number
+}
 
-const HelperWizard: React.FC<Props> = () => {
+const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space } = useTheme()
 
   return (
@@ -16,6 +18,7 @@ const HelperWizard: React.FC<Props> = () => {
           </Heading>
 
           <InstructionProgress
+            currentIndex={index}
             isDark={true}
             instructions={[
               {
@@ -45,7 +48,24 @@ const HelperWizard: React.FC<Props> = () => {
                 content: [
                   {
                     title: 'Führungszeugnis beantragen',
-                    text: 'Denke dran, dein Führungszeugnis einzureichen, damit du weiterhin bei uns mitmachen kannst. Hierfür hast du 2 Monate nach Registrierung Zeit.'
+                    text: (
+                      <>
+                        <Box flexDirection="row" marginBottom={space['0.5']}>
+                          <Text marginRight="5px">Einreichen bis:</Text>
+                          <Text bold color="primary.400">
+                            tt.mm.jjjj
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text marginBottom={space['1']}>
+                            Denke dran, dein Führungszeugnis einzureichen, damit
+                            du weiterhin bei uns mitmachen kannst. Hierfür hast
+                            du 2 Monate nach Registrierung Zeit.
+                          </Text>
+                          <Button>Vorduck herunterladen</Button>
+                        </Box>
+                      </>
+                    )
                   }
                 ]
               },
@@ -55,7 +75,18 @@ const HelperWizard: React.FC<Props> = () => {
                 content: [
                   {
                     title: 'Angebot erstellen',
-                    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.'
+                    text: (
+                      <>
+                        <Box>
+                          <Text marginBottom={space['1']}>
+                            Lorem ipsum dolor sit amet, consetetur sadipscing
+                            elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat.
+                          </Text>
+                          <Button>Angebot erstellen</Button>
+                        </Box>
+                      </>
+                    )
                   }
                 ]
               },
@@ -65,7 +96,18 @@ const HelperWizard: React.FC<Props> = () => {
                 content: [
                   {
                     title: 'Führungszeugnis hochladen',
-                    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.'
+                    text: (
+                      <>
+                        <Box>
+                          <Text marginBottom={space['1']}>
+                            Lorem ipsum dolor sit amet, consetetur sadipscing
+                            elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat.
+                          </Text>
+                          <Button>Hochladen</Button>
+                        </Box>
+                      </>
+                    )
                   }
                 ]
               }

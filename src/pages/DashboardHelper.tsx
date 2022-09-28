@@ -24,6 +24,7 @@ import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../types/lernfair/Course'
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg'
 import PartyIcon from '../assets/icons/lernfair/lf-pary-small.svg'
+import HelperWizard from '../widgets/HelperWizard'
 
 type Props = {}
 
@@ -82,6 +83,9 @@ const DashboardHelper: React.FC<Props> = () => {
       headerLeft={<NotificationAlert />}>
       <VStack paddingX={space['1']}>
         <VStack space={space['1']} marginTop={space['1']}>
+          <VStack paddingY={space['1']}>
+            <HelperWizard index={0} />
+          </VStack>
           <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.appointmentcard.header')}

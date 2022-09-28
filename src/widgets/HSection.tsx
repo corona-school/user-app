@@ -33,7 +33,7 @@ const HSection: React.FC<Props> = ({
         paddingY={space['0.5']}>
         {title && (
           <Heading
-            color={isDark ? 'lightText' : 'primary.400'}
+            color={isDark ? 'lightText' : 'primary.900'}
             flex="1"
             fontSize={smallTitle ? fontSizes['md'] : fontSizes['xl']}>
             {title}
