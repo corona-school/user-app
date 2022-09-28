@@ -1,16 +1,29 @@
-import { View, Text, Row, Box, VStack, useTheme } from 'native-base'
+import { Row, Box, VStack, useTheme } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
-import Tag from '../components/Tag'
+import ProfilAvatar from './ProfilAvatar'
 
-type Props = { children: ReactNode | ReactNode[] }
+type Props = {
+  children: ReactNode | ReactNode[]
+  avatar?: string
+  button?: ReactNode | ReactNode[]
+  variant?: 'normal' | 'dark'
+}
 
-const LeftImageCard: React.FC<Props> = ({ children }) => {
+const LeftImageCard: React.FC<Props> = ({
+  children,
+  avatar,
+  button,
+  variant = 'normal'
+}) => {
   const { space } = useTheme()
+
   return (
-    <Card flexibleWidth>
+    <Card flexibleWidth variant={variant} isFullHeight={false}>
       <Row>
-        <Box w={100} bg={'gray.600'}></Box>
+        <Box w={100} padding={avatar ? '16px' : ''}>
+          {avatar && <ProfilAvatar image={avatar} size="lg" />}
+        </Box>
         <VStack
           paddingX={space['0.5']}
           paddingY={space['1']}
@@ -19,6 +32,16 @@ const LeftImageCard: React.FC<Props> = ({ children }) => {
           {children}
         </VStack>
       </Row>
+
+      {button && (
+        <Row
+          display="block"
+          paddingLeft={space['1']}
+          paddingRight={space['1']}
+          paddingBottom={space['1']}>
+          {button}
+        </Row>
+      )}
     </Card>
   )
 }

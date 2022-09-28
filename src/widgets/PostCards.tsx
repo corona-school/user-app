@@ -1,14 +1,4 @@
-import {
-  View,
-  Text,
-  Box,
-  Row,
-  useTheme,
-  Link,
-  AspectRatio,
-  Image
-} from 'native-base'
-import { ReactNode } from 'react'
+import { View, Text, Box, Link, AspectRatio, Image } from 'native-base'
 
 import Card from '../components/Card'
 
@@ -20,8 +10,6 @@ type Props = {
 }
 
 const PostCards: React.FC<Props> = ({ title, content, onPressLink, image }) => {
-  const { space } = useTheme()
-
   return (
     <View>
       <Card>

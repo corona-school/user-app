@@ -1,5 +1,4 @@
-import { View, Text, Row, Box, VStack, useTheme } from 'native-base'
-import Card from '../components/Card'
+import { Text, Row, useTheme } from 'native-base'
 import Tag from '../components/Tag'
 import LeftImageCard from './LeftImageCard'
 

@@ -1,5 +1,4 @@
 import {
-  View,
   Text,
   Box,
   Row,
@@ -22,10 +21,13 @@ type Props = {
   content: ReactNode | ReactNode[]
   button?: ReactNode
   closeable?: boolean
-  variant?: 'normal' | 'outline'
+  variant?: 'normal' | 'outline' | 'dark'
+  marginBottom?: number
+  width?: number | string
 }
 
 const CTACard: React.FC<Props> = ({
+  width,
   title,
   infotooltip,
   content,
@@ -33,39 +35,48 @@ const CTACard: React.FC<Props> = ({
   icon,
   closeable = false,
   variant = 'normal',
-  onClose
+  onClose,
+  marginBottom = 0
 }) => {
   const { space } = useTheme()
 
   const Wrapper = variant === 'normal' ? Card : Fragment
 
   return (
-    <Wrapper flexibleWidth>
-      <Box padding={(variant === 'normal' && space['1']) || 0}>
+    <Wrapper flexibleWidth width={width}>
+      <Box
+        mb={marginBottom}
+        backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
+        padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}
+        borderRadius={15}>
         <Row justifyContent={closeable ? 'space-between' : ''}>
-          {icon && icon}
-          <Container maxWidth="100%">
+          <Box>{icon}</Box>
+          <Container>
             <Text
-              width="100%"
+              maxWidth={250}
               bold
               fontSize={'lg'}
               flex="1"
               marginBottom={space['0.5']}
               marginLeft={icon ? space['1'] : ''}
-              display="flex"  
-            >
+              color={variant === 'dark' ? 'lightText' : 'primary.800'}
+              display="flex">
               {title}
 
-              { infotooltip && 
+              {infotooltip && (
                 <Tooltip label={infotooltip}>
                   <Box marginLeft="10px" marginRight="10px">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
-              }
-
+              )}
             </Text>
-            <Text marginLeft={icon ? space['1'] : ''}>{content}</Text>
+            <Text
+              color={variant === 'dark' ? 'lightText' : 'primary.800'}
+              maxWidth={250}
+              marginLeft={icon ? space['1'] : ''}>
+              {content}
+            </Text>
           </Container>
           {closeable && (
             <Pressable onPress={onClose} testID="close">

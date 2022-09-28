@@ -1,4 +1,4 @@
-import { View, Text, FavouriteIcon } from 'native-base'
+import { FavouriteIcon } from 'native-base'
 import Tag from '../components/Tag'
 
 type Props = {
@@ -6,6 +6,15 @@ type Props = {
 }
 
 const RatingTag: React.FC<Props> = ({ rating }) => {
-  return <Tag text={rating} variant="rating" afterElement={<FavouriteIcon />} />
+  return (
+    <Tag
+      borderRadius={15}
+      paddingX={3}
+      isReview
+      text={rating}
+      variant="rating"
+      afterElement={<FavouriteIcon color="yellow.500" />}
+    />
+  )
 }
 export default RatingTag
