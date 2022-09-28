@@ -7,6 +7,7 @@ export interface ISelectionItem {
   label: string
   onPress?: () => any
   selected?: boolean
+  text?: string
 }
 const SelectionItem: React.FC<ISelectionItem> = ({
   onPress,

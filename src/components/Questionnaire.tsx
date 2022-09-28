@@ -29,12 +29,13 @@ export type Question = {
   text?: string
 }
 
+export type QuestionnaireViewType = string | 'normal' | 'large'
 export interface SelectionQuestion extends Question {
   imgRootPath: string
   minSelections?: number
   maxSelections?: number
   options: ISelectionItem[]
-  viewType?: 'normal' | 'large'
+  viewType?: QuestionnaireViewType
 }
 
 export type Answer<T = boolean | number> = {
@@ -61,7 +62,12 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
   questions: [],
   currentIndex: 0,
   answers: {},
-  currentQuestion: { label: '', question: '', type: 'selection', id: '' }
+  currentQuestion: {
+    label: '',
+    question: '',
+    type: 'selection',
+    id: ''
+  }
 })
 
 export type IQuestionnaire = {
@@ -173,11 +179,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
       <Flex flex="1" overflowY={'scroll'}>
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
-            id={currentQuestion.id}
+            currentQuestion={currentQuestion as SelectionQuestion}
             prefill={answers[currentQuestion.id]}
             userType={userType}
-            imgRootPath={(currentQuestion as SelectionQuestion).imgRootPath}
-            options={(currentQuestion as SelectionQuestion).options}
             onPressSelection={onPressItem}
           />
         )}
