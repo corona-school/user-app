@@ -12,7 +12,7 @@ type LFRegistration = {
   lastname: string
   email: string
   password: string
-  userType: string | 'pupil' | 'tutor'
+  userType: string | 'pupil' | 'student'
   setRegistrationData: (data: Partial<LFRegistration>) => any
 }
 

@@ -1,7 +1,6 @@
 import {
   Text,
   VStack,
-  Input,
   Heading,
   Checkbox,
   Button,
@@ -16,9 +15,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
-import StudentIcon from '../../assets/icons/lernfair/ic_student.svg'
-import TutorIcon from '../../assets/icons/lernfair/ic_tutor.svg'
-import ParentIcon from '../../assets/icons/lernfair/ic_parent.svg'
+import PupilIcon from '../../assets/icons/lernfair/ic_student.svg'
+import StudentIcon from '../../assets/icons/lernfair/ic_tutor.svg'
 
 import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
@@ -103,7 +101,7 @@ const RegistrationAccount: React.FC<Props> = () => {
           }}
         />
         <Logo />
-        <Heading mt={space['1']}>Neu registrieren</Heading>
+        <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
       <VStack flex="1" paddingX={space['1']} mt={space['1']}>
         <VStack space={space['0.5']}>
@@ -123,8 +121,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             onChangeText={setPasswordConfirm}
           />
           <Text fontSize="xs" opacity=".6">
-            Das Password muss mindestens 6 Zeichen enthalten.
-            {/* TODO ADD TRANSLATION */}
+            {t('registration.hint.password.length')}
           </Text>
         </VStack>
         <VStack space={space['0.5']} marginTop={space['1']}>
@@ -137,18 +134,18 @@ const RegistrationAccount: React.FC<Props> = () => {
             onPress={setTypeSelection}
           /> */}
           <ToggleButton
-            Icon={StudentIcon}
-            label={t('registration.student')}
+            Icon={PupilIcon}
+            label={t('registration.pupil.label')}
             dataKey="pupil"
             isActive={userType === 'pupil'}
             onPress={() => setRegistrationData({ userType: 'pupil' })}
           />
           <ToggleButton
-            Icon={TutorIcon}
-            label={t('registration.tutor')}
-            dataKey="tutor"
-            isActive={userType === 'tutor'}
-            onPress={() => setRegistrationData({ userType: 'tutor' })}
+            Icon={StudentIcon}
+            label={t('registration.student.label')}
+            dataKey="student"
+            isActive={userType === 'student'}
+            onPress={() => setRegistrationData({ userType: 'student' })}
           />
         </VStack>
         <VStack space={space['1']} marginTop={space['1']}>
@@ -170,21 +167,18 @@ const RegistrationAccount: React.FC<Props> = () => {
           </Button>
           {!userType && (
             <Text color="danger.500">
-              Bitte identifiziere deine Rolle
-              {/* TODO ADD TRANSLATION */}
+              {t('registration.hint.userType.missing')}
             </Text>
           )}
           {email.length < 6 && (
             <Text color="danger.500">
-              Ungültige Email-Adresse
-              {/* TODO ADD TRANSLATION */}
+              {t('registration.hint.email.invalid')}
             </Text>
           )}
           <Text
             color="danger.500"
             opacity={password !== passwordConfirm ? 1 : 0}>
-            Die Passwörter stimmen nicht überein
-            {/* TODO ADD TRANSLATION */}
+            {t('registration.hint.password.nomatch')}
           </Text>
         </VStack>
       </VStack>

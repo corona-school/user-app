@@ -15,7 +15,7 @@ import Questionnaire, {
   QuestionnaireContext,
   SelectionQuestion
 } from '../../components/Questionnaire'
-import { pupilQuestions, tutorQuestions } from './questions'
+import { pupilQuestions, studentQuestions } from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
@@ -59,7 +59,7 @@ const mutPupil = `mutation register(
 `
 
 // GraphQL student mutation
-const mutTutor = `mutation register(
+const mutStudent = `mutation register(
   $firstname: String!
   $lastname: String!
   $email: String!
@@ -114,7 +114,7 @@ const RegistrationData: React.FC<Props> = () => {
   // use different string depending on userType
   const [register, { data, error, loading }] = useMutation(
     gql`
-      ${userType === 'pupil' ? mutPupil : mutTutor}
+      ${userType === 'pupil' ? mutPupil : mutStudent}
     `
   )
 
@@ -211,10 +211,11 @@ const RegistrationData: React.FC<Props> = () => {
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <EventIcon />
-          <Heading color="lightText">Erledigt!</Heading>
+          <Heading color="lightText">
+            {t('registration.result.success.title')}
+          </Heading>
           <Text color="lightText" fontSize={'lg'}>
-            Dein Account wurde erfolgreich erstellt. Du kannst nun das Angebot
-            von Lern-Fair nutzen!
+            {t('registration.result.success.text')}
           </Text>
           <Button
             w="100%"
@@ -222,13 +223,13 @@ const RegistrationData: React.FC<Props> = () => {
               setShow(false)
               navigate('/login')
             }}>
-            Zur Anwendung
+            {t('registration.result.success.btn')}
           </Button>
         </VStack>
       )
       setShow(true)
     }
-  }, [navigate, data, error, setContent, setShow, setVariant, space])
+  }, [navigate, data, error, setContent, setShow, setVariant, space, t])
 
   // registration has an error
   useEffect(() => {
@@ -236,13 +237,19 @@ const RegistrationData: React.FC<Props> = () => {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
-          <Text color="lightText">{error.message}</Text>
-          <Button onPress={() => setShow(false)}>Zurück</Button>
+          <Text color="lightText">
+            {t(`registration.error.message.${error.message}`, {
+              defaultValue: error.message
+            })}
+          </Text>
+          <Button onPress={() => setShow(false)}>
+            {t('registration.result.error.btn')}
+          </Button>
         </VStack>
       )
       setShow(true)
     }
-  }, [answers, error, setContent, setShow, setVariant, space])
+  }, [answers, error, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
@@ -256,7 +263,7 @@ const RegistrationData: React.FC<Props> = () => {
 
   // populate questions depending on userType
   useEffect(() => {
-    setQuestions(userType === 'pupil' ? pupilQuestions : tutorQuestions)
+    setQuestions(userType === 'pupil' ? pupilQuestions : studentQuestions)
   }, [userType])
 
   // set state => class range for corresponding subject
@@ -343,8 +350,8 @@ const RegistrationData: React.FC<Props> = () => {
           type: 'selection',
           imgRootPath: 'text',
           options: [
-            { key: '<1', label: 'Weniger als 1 Jahr' },
-            { key: '>1', label: 'Mehr als 1 Jahr' }
+            { key: '<1', label: t('registration.questions.deutsch2.lower') },
+            { key: '>1', label: t('registration.questions.deutsch2.higher') }
           ],
           label: 'Deutsch',
           question: 'Seit wann lernst du Deutsch?'
@@ -382,7 +389,7 @@ const RegistrationData: React.FC<Props> = () => {
           disableNavigation={loading}
           onQuestionnaireFinished={onQuestionnaireFinished}
           onPressItem={(item: ISelectionItem) => {
-            if (userType === 'tutor') {
+            if (userType === 'student') {
               if (currentModifiedQuestion?.label === 'Fächer') {
                 askSchoolClassForSelection(item)
               }
@@ -395,29 +402,29 @@ const RegistrationData: React.FC<Props> = () => {
       <Modal isOpen={showFocusSelection}>
         <Modal.Content>
           <Modal.Header>
-            <Heading>In welchen Klassen kannst du unterstützen?</Heading>
+            <Heading>{t('registration.student.classSelection.title')}</Heading>
           </Modal.Header>
           <Modal.Body>
             <ToggleButton
-              label={'1-4 Klasse'}
+              label={t('registration.student.classSelection.range1')}
               dataKey="1"
               isActive={classes[focusedSelection.key] === 1}
               onPress={key => answerFocusSelection(1)}
             />
             <ToggleButton
-              label={'5-8 Klasse'}
+              label={t('registration.student.classSelection.range2')}
               dataKey="2"
               isActive={classes[focusedSelection.key] === 2}
               onPress={key => answerFocusSelection(2)}
             />
             <ToggleButton
-              label={'9-10 Klasse'}
+              label={t('registration.student.classSelection.range3')}
               dataKey="3"
               isActive={classes[focusedSelection.key] === 3}
               onPress={key => answerFocusSelection(3)}
             />
             <ToggleButton
-              label={'11-13 Klasse'}
+              label={t('registration.student.classSelection.range4')}
               dataKey="4"
               isActive={classes[focusedSelection.key] === 4}
               onPress={key => answerFocusSelection(4)}
@@ -428,7 +435,7 @@ const RegistrationData: React.FC<Props> = () => {
               onPress={() => {
                 setShowFocusSelection(false)
               }}>
-              Speichern
+              {t('registration.student.classSelection.btn')}
             </Button>
           </Modal.Footer>
         </Modal.Content>

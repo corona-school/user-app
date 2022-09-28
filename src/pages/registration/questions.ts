@@ -48,7 +48,7 @@ export const pupilQuestions: SelectionQuestion[] = [
   }
 ]
 
-export const tutorQuestions: SelectionQuestion[] = [
+export const studentQuestions: SelectionQuestion[] = [
   {
     imgRootPath: 'offers',
     label: 'Unterstützung',
@@ -69,5 +69,5 @@ export const tutorQuestions: SelectionQuestion[] = [
   }
 ]
 
-const questions = { pupilQuestions, tutorQuestions }
+const questions = { pupilQuestions, studentQuestions }
 export default questions
