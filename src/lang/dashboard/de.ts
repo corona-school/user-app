@@ -27,6 +27,27 @@ const dashboard = {
   offers: {
     header: 'Angebote',
     match: 'Match auflösen'
+  },
+  helpers: {
+    headlines: {
+      newOffer: 'Neues Angebot',
+      course: 'Meine Kurse',
+      importantNews: 'Wichtige Meldungen',
+      myLearningPartner: 'Meine Lernpartner:innen',
+      recommend: 'Empfehle uns weiter',
+      recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
+    },
+    contents: {
+      newOffer: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
+      recommendFriends: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.'
+    },
+    buttons: {
+      course: 'Neuen Kurs eintragen',
+      offer: 'Wichtige Meldungen',
+      requestMatch: 'Neues Match anfordern',
+      solveMatch: 'Match auflösen',
+      recommend: 'Jetzt empfehlen'
+    }
   }
 }
 export default dashboard

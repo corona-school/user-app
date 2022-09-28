@@ -194,7 +194,7 @@ const ProfileHelper: React.FC<Props> = () => {
           </Alert>
         )}
 
-        <VStack paddingY={space['1']}>
+        <VStack paddingX={space['1']} paddingY={space['1']}>
           <HelperWizard index={0} />
         </VStack>
 
@@ -276,19 +276,20 @@ const ProfileHelper: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            <ProfileSettingRow title="Meine Bescheinigungen">
+            <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
               <Container
                 maxWidth="100%"
                 width="100%"
                 marginBottom={space['1']}
                 alignItems="stretch">
                 <Tabs
+                  removeSpace={true}
                   tabs={[
                     {
-                      title: 'Bestätigt',
+                      title: t('profile.Helper.certificate.tabbestaetigt'),
                       content: (
                         <>
-                          <HSection>
+                          <HSection isNoSpace={true}>
                             {Array(2)
                               .fill(0)
                               .map((el, i) => (
@@ -306,7 +307,7 @@ const ProfileHelper: React.FC<Props> = () => {
                       )
                     },
                     {
-                      title: 'Ausstehend',
+                      title: t('profile.Helper.certificate.tabbestaetigt'),
                       content: (
                         <>
                           <HSection>
@@ -330,7 +331,7 @@ const ProfileHelper: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button>Bescheinigung anfordern</Button>
+                <Button>{t('profile.Helper.certificate.button')}</Button>
               </Container>
             </ProfileSettingRow>
           </VStack>
