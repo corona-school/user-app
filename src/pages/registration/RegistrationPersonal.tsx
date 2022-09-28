@@ -1,12 +1,12 @@
 import {
   VStack,
-  Input,
   Heading,
   Button,
   useTheme,
   TextArea,
   Flex,
-  Box
+  Box,
+  Image
 } from 'native-base'
 import { useEffect } from 'react'
 
@@ -32,13 +32,23 @@ const RegistrationPersonal: React.FC<Props> = () => {
   return (
     <Flex overflowY={'auto'} height="100vh">
       <Box
+        position="relative"
         paddingY={space['2']}
-        bgColor="primary.500"
         justifyContent="center"
-        alignItems="center"
-        borderBottomRadius={8}>
+        alignItems="center">
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          zIndex="-1"
+          borderBottomRadius={15}
+          width="100%"
+          height="100%"
+          source={{
+            uri: require('../../assets/images/globals/lf-bg.png')
+          }}
+        />
         <Logo />
-        <Heading mt={space['1']}>Neu registrieren</Heading>
+        <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
       <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
         <TextInput
@@ -50,17 +60,15 @@ const RegistrationPersonal: React.FC<Props> = () => {
           onChangeText={t => setRegistrationData({ lastname: t })}
         />
         <>
-          <Heading>Über mich</Heading>
+          <Heading>{t('registration.personal.about.label')}</Heading>
           <TextArea
             h={150}
-            placeholder={t(
-              'Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können.'
-            )}
+            placeholder={t('registration.personal.about.text')}
             autoCompleteType={{}}
           />
         </>
         <Button onPress={() => navigate('/registration/3')}>
-          Registrieren
+          {t('registration.register')}
         </Button>
       </VStack>
     </Flex>

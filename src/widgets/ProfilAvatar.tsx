@@ -1,7 +1,7 @@
 import { View, Avatar } from 'native-base'
 
 type Props = {
-  image: string
+  image: string | undefined
   size: string
 }
 

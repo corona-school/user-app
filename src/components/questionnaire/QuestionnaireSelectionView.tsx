@@ -12,6 +12,7 @@ type Props = {
   imgRootPath: string
   label: string
   prefill?: Answer
+  onPressSelection: undefined | ((selection: ISelectionItem) => any)
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
@@ -20,10 +21,11 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
   label,
   text,
   imgRootPath,
-  prefill
+  prefill,
+  onPressSelection
 }) => {
   const { setAnswers } = useContext(QuestionnaireContext)
-  const [selections, setSelections] = useState<{ [key: string]: boolean }>({})
+  const [selections, setSelections] = useState<Answer>({})
   const { space } = useTheme()
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
 
   useEffect(() => {
     if (!setAnswers) return
-    const sel = { ...selections }
+    const sel: Answer = { ...selections }
     for (const key in sel) {
       if (!sel[key]) delete sel[key]
     }
@@ -51,7 +53,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
         {options.map((opt, index) => (
           <IconTagList
             key={`${imgRootPath}-${index}`}
-            initial={selections[opt.key]}
+            initial={!!selections[opt.key]}
             text={opt.label}
             variant="selection"
             textIcon={(imgRootPath === 'text' && opt.key) || undefined}
@@ -60,12 +62,13 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
                 `${imgRootPath}/icon_${opt.key}.svg`) ||
               undefined
             }
-            onPress={() =>
+            onPress={() => {
               setSelections(prev => ({
                 ...prev,
                 [opt.key]: !selections[opt.key]
               }))
-            }
+              onPressSelection && onPressSelection(opt)
+            }}
           />
         ))}
       </TwoColGrid>

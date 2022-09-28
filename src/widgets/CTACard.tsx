@@ -23,9 +23,11 @@ type Props = {
   closeable?: boolean
   variant?: 'normal' | 'outline' | 'dark'
   marginBottom?: number
+  width?: number | string
 }
 
 const CTACard: React.FC<Props> = ({
+  width,
   title,
   infotooltip,
   content,
@@ -41,7 +43,7 @@ const CTACard: React.FC<Props> = ({
   const Wrapper = variant === 'normal' ? Card : Fragment
 
   return (
-    <Wrapper flexibleWidth>
+    <Wrapper flexibleWidth width={width}>
       <Box
         mb={marginBottom}
         backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
