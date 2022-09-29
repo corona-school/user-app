@@ -65,9 +65,48 @@ const registration = {
     }
   },
   questions: {
-    deutsch2: {
-      lower: 'weniger als 1 Jahr',
-      higher: 'mehr als 1 Jahr'
+    pupil: {
+      schooltype: {
+        label: 'Schulform',
+        question: 'Auf welche Schule gehst du?'
+      },
+      schoolclass: {
+        label: 'Klasse',
+        question: 'In welcher Klasse bist du?'
+      },
+      languages: {
+        label: 'Sprache',
+        question: 'Welche Sprache(n) sprichst du zu Hause?'
+      },
+      subjects: {
+        label: 'Fächer',
+        question: 'In welchen Fächern benötigst du Unterstützung?',
+        text: 'Du kannst mehrere Fächer auswählen'
+      },
+      state: {
+        label: 'Bundesland',
+        question: 'Aus welchem Bundesland kommst du?'
+      },
+      deutsch: {
+        label: 'Deutsch',
+        question: 'Seit wann lernst du Deutsch?'
+      },
+      deutsch2: {
+        lower: 'weniger als 1 Jahr',
+        higher: 'mehr als 1 Jahr'
+      }
+    },
+    student: {
+      offers: {
+        label: 'Unterstützung',
+        question: 'Welche Art der Unterstützung möchtest du anbieten?',
+        text: 'Eine Mehrfachauswahl ist möglich'
+      },
+      subjects: {
+        label: 'Fächer',
+        question: 'In welchen Fächern kannst du unterstützen?',
+        text: 'Du kannst bis zu Fächer auswählen'
+      }
     }
   },
   pupil: { label: 'Schüler:in' },

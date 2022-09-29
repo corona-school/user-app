@@ -7,41 +7,35 @@ import { offers } from '../../types/lernfair/Offer'
 
 export const pupilQuestions: SelectionQuestion[] = [
   {
+    id: 'schooltype',
     imgRootPath: 'schooltypes',
-    label: 'Schulform',
-    question: 'Auf welche Schule gehst du?',
     type: 'selection',
     maxSelections: 1,
     options: schooltypes
   },
   {
+    id: 'schoolclass',
     imgRootPath: 'text',
-    label: 'Klasse',
-    question: 'In welcher Klasse bist du?',
     type: 'selection',
     maxSelections: 1,
     // options are populated dynamically
     options: []
   },
   {
+    id: 'languages',
     imgRootPath: 'languages',
-    label: 'Sprache',
-    question: 'Welche Sprache(n) sprichst du zu Hause?',
     type: 'selection',
     options: languages
   },
   {
+    id: 'subjects',
     imgRootPath: 'subjects',
-    label: 'Fächer',
-    question: 'In welchen Fächern benötigst du Unterstützung?',
     type: 'selection',
-    text: 'Du kannst mehrere Fächer auswählen',
     options: subjects
   },
   {
+    id: 'state',
     imgRootPath: 'states',
-    label: 'Bundesland',
-    question: 'Aus welchem Bundesland kommst du?',
     type: 'selection',
     maxSelections: 1,
     options: states
@@ -50,20 +44,16 @@ export const pupilQuestions: SelectionQuestion[] = [
 
 export const studentQuestions: SelectionQuestion[] = [
   {
+    id: 'offers',
     imgRootPath: 'offers',
-    label: 'Unterstützung',
-    question: 'Welche Art der Unterstützung möchtest du anbieten?',
-    text: 'Eine Mehrfachauswahl ist möglich',
     type: 'selection',
     options: offers,
     viewType: 'large'
   },
   {
+    id: 'subjects',
     imgRootPath: 'subjects',
-    label: 'Fächer',
-    question: 'In welchen Fächern kannst du unterstützen?',
     type: 'selection',
-    text: 'Du kannst bis zu Fächer auswählen',
     options: subjects,
     maxSelections: 3
   }

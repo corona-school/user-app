@@ -20,7 +20,7 @@ const lernfair = {
     tuerkisch: 'Türkisch',
     ukrainisch: 'Ukrainisch',
     vietnamesisch: 'Vietnamesisch',
-    andere: 'Andere'
+    other: 'Andere'
   },
   subjects: {
     arbeitslehre: 'Arbeitslehre',
@@ -48,7 +48,7 @@ const lernfair = {
     spanisch: 'Spanisch',
     tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',
-    andere: 'Andere'
+    other: 'Andere'
   },
   states: {
     bw: 'Baden-Württemberg',
@@ -73,7 +73,7 @@ const lernfair = {
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
-    andere: 'Andere'
+    other: 'Andere'
   },
   schoolclass: '{{class}}. Klasse'
 }
