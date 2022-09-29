@@ -122,7 +122,7 @@ const DashboardHelper: React.FC<Props> = () => {
               {t('dashboard.helpers.buttons.course')}
             </Button>
           </HSection>
-          <VStack space={space['0.5']}>
+          {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.helpers.headlines.importantNews')}
             </Heading>
@@ -137,7 +137,7 @@ const DashboardHelper: React.FC<Props> = () => {
               }
               icon={<PartyIcon />}
             />
-          </VStack>
+          </VStack> */}
           <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.helpers.headlines.myLearningPartner')}
