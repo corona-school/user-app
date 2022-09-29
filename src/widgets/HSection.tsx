@@ -10,6 +10,8 @@ type Props = {
   smallTitle?: boolean
   isDark?: boolean
   scrollable?: boolean
+  wrap?: boolean
+  isNoSpace?: boolean
 }
 
 const HSection: React.FC<Props> = ({
@@ -19,7 +21,9 @@ const HSection: React.FC<Props> = ({
   scrollable = true,
   children,
   onShowAll,
-  smallTitle
+  wrap,
+  smallTitle,
+  isNoSpace = false
 }) => {
   const { space, fontSizes } = useTheme()
   const { t } = useTranslation()
@@ -28,8 +32,8 @@ const HSection: React.FC<Props> = ({
       <Row
         alignItems={'center'}
         justifyContent={'flex-end'}
-        marginX={-space['1']}
-        paddingX={space['1']}
+        marginX={isNoSpace === false ? -space['1'] : 0}
+        paddingX={isNoSpace === false ? space['1'] : 0}
         paddingY={space['0.5']}>
         {title && (
           <Heading
@@ -42,8 +46,10 @@ const HSection: React.FC<Props> = ({
         {showAll && <Link onPress={onShowAll}>{t('all')}</Link>}
       </Row>
       <Row
-        flexWrap={'nowrap'}
+        flexWrap={wrap ? 'wrap' : 'nowrap'}
+        flexDirection={wrap ? 'column' : 'row'}
         paddingX={space['1']}
+        paddingY={space['0.5']}
         overflowX={scrollable ? 'scroll' : 'hidden'}
         space={space['1']}
         marginX={-space['1']}

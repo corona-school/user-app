@@ -7,10 +7,11 @@ type Tab = {
 }
 type Props = {
   tabs: Tab[]
+  removeSpace?: boolean
   onPressTab?: (tab: Tab) => any
 }
 
-const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
+const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { space } = useTheme()
 
@@ -58,7 +59,9 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
           []
         )}
       </Row>
-      <Box paddingX={space['1']} paddingY={space['1.5']}>
+      <Box
+        paddingX={removeSpace === false ? space['1'] : ''}
+        paddingY={space['1.5']}>
         {tabs.map(
           (tab, i) =>
             i === currentIndex && (

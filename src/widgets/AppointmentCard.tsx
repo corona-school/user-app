@@ -32,12 +32,14 @@ type Props = {
   image: string
   onPressToCourse?: () => any
   href?: string
+  countCourse?: number
 }
 
 const AppointmentCard: React.FC<Props> = ({
   tags,
   date,
   title,
+  countCourse,
   description,
   child,
   variant = 'card',
@@ -149,36 +151,43 @@ const AppointmentCard: React.FC<Props> = ({
       ) : (
         <Flex
           direction="row"
-          borderBottomColor="primary.100"
-          borderBottomWidth="1"
-          paddingLeft={space['0.5']}
-          paddingRight={space['0.5']}
-          paddingTop={space['1.5']}
-          paddingBottom={space['1.5']}>
-          <Box marginRight={space['1']}>
-            <CommunityUser
-              align="column"
-              avatar={avatar}
-              avatarsize="md"
-              name={avatarname || ''}
-              usernameweight="400"
-            />
-          </Box>
-          <Box>
-            <Row space={1}>
-              <Text>{date.toLocaleDateString()}</Text>
-              <Text>•</Text>
-              <Text>{date.toLocaleTimeString().slice(0, -3)}</Text>
-            </Row>
-            <Text bold fontSize={'md'} mb={space['0.5']}>
-              {title}
-            </Text>
-            <Row space={space['0.5']}>
-              {tags.map((t, i) => (
-                <Tag key={`tag-${i}`} text={t} />
-              ))}
-            </Row>
-          </Box>
+          borderRadius="15px"
+          backgroundColor="primary.100"
+          marginBottom={space['1']}>
+          <Link onPress={onPressToCourse} width="100%" height="100%">
+            <Box marginRight={space['1']}>
+              <Image
+                width="110px"
+                borderTopLeftRadius="15px"
+                borderBottomLeftRadius="15px"
+                height="100%"
+                source={{ uri: image }}
+              />
+            </Box>
+            <Box paddingX={space['0.5']} paddingY={space['1.5']}>
+              <Row space={space['0.5']}>
+                {tags.map((t, i) => (
+                  <Tag key={`tag-${i}`} text={t} />
+                ))}
+              </Row>
+              <Row space={1} marginY={space['0.5']}>
+                <Text>
+                  {'Ab'} {date.toLocaleDateString()}
+                </Text>
+                {countCourse && (
+                  <>
+                    <Text>•</Text>
+                    <Text>
+                      {countCourse} {'Termine'}
+                    </Text>
+                  </>
+                )}
+              </Row>
+              <Text bold fontSize={'md'} mb={space['0.5']} maxWidth="200px">
+                {title}
+              </Text>
+            </Box>
+          </Link>
         </Flex>
       )}
     </View>

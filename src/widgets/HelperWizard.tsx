@@ -1,4 +1,5 @@
 import { View, Text, Heading, Row, useTheme, Button, Box } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
 
@@ -8,13 +9,14 @@ type Props = {
 
 const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <View>
       <Card variant="dark" flexibleWidth>
         <Row padding="30px" flexDirection="column">
           <Heading fontSize="lg" color="lightText" marginBottom="17px">
-            Die nächsten Schritte
+            {t('helperwizard.nextStep')}
           </Heading>
 
           <InstructionProgress
@@ -22,20 +24,20 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
             isDark={true}
             instructions={[
               {
-                label: 'Kennenlernen',
+                label: t('helperwizard.kennenlernen.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Wir möchten dich kennenlernen',
+                    title: t('helperwizard.kennenlernen.title'),
                     text: (
                       <>
                         <Box>
                           <Text marginBottom={space['1']}>
-                            Bevor du bei uns anfangen kannst möchten wir dich in
-                            einem persönlichen Gespräch kennenlernen. Vereinbare
-                            einfach einen Termin mit uns.
+                            {t('helperwizard.kennenlernen.content')}
                           </Text>
-                          <Button>Termin vereinbaren</Button>
+                          <Button>
+                            {t('helperwizard.kennenlernen.button')}
+                          </Button>
                         </Box>
                       </>
                     )
@@ -43,26 +45,26 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                 ]
               },
               {
-                label: 'Führungszeugnis',
+                label: t('helperwizard.zeugnis.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Führungszeugnis beantragen',
+                    title: t('helperwizard.zeugnis.title'),
                     text: (
                       <>
                         <Box flexDirection="row" marginBottom={space['0.5']}>
-                          <Text marginRight="5px">Einreichen bis:</Text>
+                          <Text marginRight="5px">
+                            {t('helperwizard.zeugnis.einreichen')}
+                          </Text>
                           <Text bold color="primary.400">
                             tt.mm.jjjj
                           </Text>
                         </Box>
                         <Box>
                           <Text marginBottom={space['1']}>
-                            Denke dran, dein Führungszeugnis einzureichen, damit
-                            du weiterhin bei uns mitmachen kannst. Hierfür hast
-                            du 2 Monate nach Registrierung Zeit.
+                            {t('helperwizard.zeugnis.content')}
                           </Text>
-                          <Button>Vorduck herunterladen</Button>
+                          <Button>{t('helperwizard.zeugnis.button')}</Button>
                         </Box>
                       </>
                     )
@@ -70,20 +72,18 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                 ]
               },
               {
-                label: 'Angebot',
+                label: t('helperwizard.angebot.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Angebot erstellen',
+                    title: t('helperwizard.angebot.title'),
                     text: (
                       <>
                         <Box>
                           <Text marginBottom={space['1']}>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat.
+                            {t('helperwizard.angebot.content')}
                           </Text>
-                          <Button>Angebot erstellen</Button>
+                          <Button>{t('helperwizard.angebot.button')}</Button>
                         </Box>
                       </>
                     )
@@ -91,20 +91,20 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                 ]
               },
               {
-                label: 'Führungszeugnis',
+                label: t('helperwizard.zeugnisHochladen.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Führungszeugnis hochladen',
+                    title: t('helperwizard.zeugnisHochladen.title'),
                     text: (
                       <>
                         <Box>
                           <Text marginBottom={space['1']}>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat.
+                            {t('helperwizard.zeugnisHochladen.content')}
                           </Text>
-                          <Button>Hochladen</Button>
+                          <Button>
+                            {t('helperwizard.zeugnisHochladen.button')}
+                          </Button>
                         </Box>
                       </>
                     )
