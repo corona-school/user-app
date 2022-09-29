@@ -28,7 +28,7 @@ import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
 import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 
@@ -78,6 +78,30 @@ const Profile: React.FC<Props> = () => {
       setUserSettings(true)
     }
   }, [_changeName.data])
+
+  const profileCompleteness = useMemo(() => {
+    const max = 7.0
+    let complete = 0.0
+
+    data?.me?.firstname && data?.me?.lastname && (complete += 1)
+    data?.me?.aboutMe && (complete += 1)
+    data?.me?.pupil?.languages?.length && (complete += 1)
+    data?.me?.pupil?.state && (complete += 1)
+    data?.me?.pupil?.schooltype && (complete += 1)
+    data?.me?.pupil?.gradeAsInt && (complete += 1)
+    data?.me?.pupil?.subjectsFormatted?.length && (complete += 1)
+
+    return Math.floor((complete / max) * 100)
+  }, [
+    data?.me?.aboutMe,
+    data?.me?.firstname,
+    data?.me?.lastname,
+    data?.me?.pupil?.gradeAsInt,
+    data?.me?.pupil?.languages?.length,
+    data?.me?.pupil?.schooltype,
+    data?.me?.pupil?.state,
+    data?.me?.pupil?.subjectsFormatted?.length
+  ])
 
   if (loading) return <></>
 
@@ -154,7 +178,7 @@ const Profile: React.FC<Props> = () => {
         <VStack space={space['1']}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={25} />
+              <UserProgress percent={profileCompleteness} />
             </ProfileSettingRow>
           </VStack>
           <VStack paddingX={space['1.5']} space={space['1']}>
@@ -202,12 +226,12 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.State.label')}
                 href={() => navigate('/change-setting/state')}>
                 <Row>
-                  {data?.me?.pupil.state && (
+                  {data?.me?.pupil?.state && (
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
-                        iconPath={`states/icon_${data?.me?.pupil.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.pupil.state}`)}
+                        iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
                       />
                     </Column>
                   )}
@@ -222,9 +246,9 @@ const Profile: React.FC<Props> = () => {
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
-                        iconPath={`schooltypes/icon_${data.me.pupil.schooltype}.svg`}
+                        iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
                         text={t(
-                          `lernfair.schooltypes.${data?.me?.pupil.schooltype}`
+                          `lernfair.schooltypes.${data?.me?.pupil?.schooltype}`
                         )}
                       />
                     </Column>
