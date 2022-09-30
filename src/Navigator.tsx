@@ -167,9 +167,9 @@ export default function Navigator() {
         <Route
           path="/hilfebereich"
           element={
-            <RequireAuth>
-              <HelpCenter />
-            </RequireAuth>
+            // <RequireAuth>
+            <HelpCenter />
+            // </RequireAuth>
           }></Route>
 
         <Route
@@ -349,7 +349,10 @@ export default function Navigator() {
           path="*"
           element={
             <RequireAuth>
-              <Dashboard />
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardHelper />}
+              />
             </RequireAuth>
           }
         />
