@@ -215,6 +215,9 @@ const HelpCenter: React.FC<Props> = () => {
                         placeholder={t(
                           'helpcenter.contact.topic.options.placeholder'
                         )}
+                        onValueChange={val =>
+                          setMentorCategory(val as MentorCategory)
+                        }
                         mt="1">
                         <Select.Item
                           label={t(
