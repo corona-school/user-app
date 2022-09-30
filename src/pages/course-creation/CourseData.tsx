@@ -10,7 +10,7 @@ import {
   Button,
   useTheme
 } from 'native-base'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
 import IconTagList from '../../widgets/IconTagList'
@@ -24,33 +24,75 @@ type Props = {
 const subjects = [
   {
     name: 'Informatik',
-    grade: {
-      min: 11,
-      max: 13
-    }
+    minGrade: 11,
+    maxGrade: 13
   },
   {
     name: 'Englisch',
-    grade: {
-      min: 7,
-      max: 13
-    }
+    minGrade: 7,
+    maxGrade: 11
   }
 ]
 
 const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
   const { space } = useTheme()
   const {
+    courseName,
     setCourseName,
     subject,
     setSubject,
+    courseClasses,
+    setCourseClasses,
+    outline,
     setOutline,
+    description,
     setDescription,
     setTags,
+    maxParticipantCount,
     setMaxParticipantCount,
     setJoinAfterStart,
     setAllowContact
   } = useContext(CreateCourseContext)
+
+  type SplitGrade = { minGrade: number; maxGrade: number; id: number }
+
+  const splitGrades: SplitGrade[] = useMemo(() => {
+    const arr: SplitGrade[] = []
+
+    if (subject?.maxGrade && subject.minGrade) {
+      if (subject.minGrade < 13 && subject.maxGrade >= 11) {
+        arr.push({ minGrade: 11, maxGrade: 13, id: 4 })
+      }
+      if (subject.minGrade < 10 && subject.maxGrade >= 9) {
+        arr.push({ minGrade: 9, maxGrade: 10, id: 3 })
+      }
+      if (subject.minGrade < 8 && subject.maxGrade >= 5) {
+        arr.push({ minGrade: 5, maxGrade: 8, id: 2 })
+      }
+      if (subject.minGrade > 1 && subject.maxGrade < 4) {
+        arr.push({ minGrade: 1, maxGrade: 4, id: 1 })
+      }
+    }
+
+    return arr.reverse()
+  }, [subject])
+
+  const isValidInput: boolean = useMemo(() => {
+    if (!courseName || courseName?.length < 3) return false
+    if (!subject) return false
+    if (!courseClasses || !courseClasses.length) return false
+    if (!outline || outline.length < 5) return false
+    if (!description || description.length < 5) return false
+    if (!maxParticipantCount) return false
+    return true
+  }, [
+    courseClasses,
+    courseName,
+    description,
+    maxParticipantCount,
+    outline,
+    subject
+  ])
 
   return (
     <VStack space={space['1']}>
@@ -66,10 +108,13 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
       <FormControl>
         <FormControl.Label isRequired>Fach</FormControl.Label>
         <Row>
-          {subjects.map(subject => (
+          {subjects.map(sub => (
             <IconTagList
-              text={subject.name}
-              onPress={() => setSubject && setSubject({ key: '', label: '' })}
+              initial={subject?.name === sub.name}
+              text={sub.name}
+              onPress={() =>
+                setSubject && setSubject({ ...sub, key: '', label: '' })
+              }
             />
           ))}
         </Row>
@@ -119,13 +164,25 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         <FormControl.Label>
           Für welche Klassen ist der Kurs geeignet?
         </FormControl.Label>
-
-        <ToggleButton
-          isActive={false}
-          dataKey={subject?.key || 'subject'}
-          // TODO split grades into selectable class ranges
-          label={`${subject?.minGrade}. - ${subject?.maxGrade}. Klasse`}
-        />
+        {splitGrades.map((grade: SplitGrade, i) => (
+          <ToggleButton
+            isActive={courseClasses?.includes(grade?.id) || false}
+            dataKey={subject?.key || 'subject'}
+            label={`${grade.minGrade}. - ${grade.maxGrade}. Klasse`}
+            onPress={() => {
+              if (courseClasses?.includes(grade?.id)) {
+                setCourseClasses &&
+                  setCourseClasses(prev => {
+                    prev.splice(i, 1)
+                    return [...prev]
+                  })
+              } else {
+                setCourseClasses &&
+                  setCourseClasses(prev => [...prev, grade.id])
+              }
+            }}
+          />
+        ))}
       </FormControl>
       <FormControl>
         <FormControl.Label isRequired>Max Teilnehmerzahl</FormControl.Label>
@@ -145,7 +202,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         <Text flex="1">Kontaktaufnahme erlauben</Text>
         <Switch onValueChange={setAllowContact} />
       </Row>
-      <Button onPress={onNext}>Weiter</Button>
+      <Button isDisabled={!isValidInput} onPress={onNext}>
+        Weiter
+      </Button>
       <Button variant={'outline'} onPress={onCancel}>
         Abbrechen
       </Button>

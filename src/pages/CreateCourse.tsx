@@ -19,11 +19,19 @@ import CoursePreview from './course-creation/CoursePreview'
 
 type Props = {}
 
+type Lecture = {
+  date: any
+  time: any
+  duration: any
+}
+
 type ICreateCourseContext = {
   courseName?: string
   setCourseName?: Dispatch<SetStateAction<string>>
   subject?: Subject
   setSubject?: Dispatch<SetStateAction<Subject>>
+  courseClasses?: number[]
+  setCourseClasses?: Dispatch<SetStateAction<number[]>>
   outline?: string
   setOutline?: Dispatch<SetStateAction<string>>
   description?: string
@@ -36,6 +44,8 @@ type ICreateCourseContext = {
   setJoinAfterStart?: Dispatch<SetStateAction<boolean>>
   allowContact?: boolean
   setAllowContact?: Dispatch<SetStateAction<boolean>>
+  lectures?: Lecture[]
+  setLectures?: Dispatch<SetStateAction<Lecture[]>>
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({})
@@ -43,12 +53,14 @@ export const CreateCourseContext = createContext<ICreateCourseContext>({})
 const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [subject, setSubject] = useState<Subject>({ key: '', label: '' })
+  const [courseClasses, setCourseClasses] = useState<number[]>([])
   const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
   const [maxParticipantCount, setMaxParticipantCount] = useState<string>('0')
   const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false)
   const [allowContact, setAllowContact] = useState<boolean>(false)
+  const [lectures, setLectures] = useState<Lecture[]>([])
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { space } = useTheme()
@@ -80,6 +92,8 @@ const CreateCourse: React.FC<Props> = () => {
         value={{
           courseName,
           setCourseName,
+          courseClasses,
+          setCourseClasses,
           subject,
           setSubject,
           outline,
@@ -93,27 +107,32 @@ const CreateCourse: React.FC<Props> = () => {
           joinAfterStart,
           setJoinAfterStart,
           allowContact,
-          setAllowContact
+          setAllowContact,
+          lectures,
+          setLectures
         }}>
         <VStack space={space['1']} padding={space['1']}>
           <InstructionProgress
             currentIndex={currentIndex}
             instructions={[
               {
-                label: 'Kurs'
+                label: 'Kurs',
+                content: []
               },
               {
-                label: 'Termine'
+                label: 'Termine',
+                content: []
               },
               {
-                label: 'Angaben prüfen'
+                label: 'Angaben prüfen',
+                content: []
               }
             ]}
           />
-          {currentIndex === 0 && (
+          {currentIndex === 1 && (
             <CourseData onNext={onNext} onCancel={onCancel} />
           )}
-          {currentIndex === 1 && (
+          {currentIndex === 0 && (
             <CourseAppointments onNext={onNext} onBack={onBack} />
           )}
           {currentIndex === 2 && (

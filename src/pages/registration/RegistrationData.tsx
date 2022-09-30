@@ -23,6 +23,7 @@ import useRegistration from '../../hooks/useRegistration'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
+import Utility from '../../Utility'
 
 type Props = {}
 
@@ -153,31 +154,9 @@ const RegistrationData: React.FC<Props> = () => {
   const registerStudent = useCallback(async () => {
     const subjects = []
     for (let [sub, isSelected] of Object.entries(answers.subjects)) {
-      // assosiate subject with selected class range
-      let minClass = 0
-      let maxClass = 0
-
-      switch (classes[sub]) {
-        case 1:
-          minClass = 1
-          maxClass = 4
-          break
-        case 2:
-          minClass = 5
-          maxClass = 8
-          break
-        case 3:
-          minClass = 9
-          maxClass = 10
-          break
-        case 4:
-          minClass = 11
-          maxClass = 13
-          break
-      }
-
-      if (isSelected && minClass > 0 && maxClass > 0) {
-        subjects.push({ name: sub, grade: { min: minClass, max: maxClass } })
+      const grades = Utility.intToClassRange(classes[sub])
+      if (isSelected && grades.min > 0 && grades.max > 0) {
+        subjects.push({ name: sub, grade: grades })
       }
     }
 
