@@ -105,7 +105,7 @@ const Dashboard: React.FC<Props> = () => {
               />
             ))}
           </HSection>
-          <VStack space={space['0.5']}>
+          {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.homework.header')}
             </Heading>
@@ -116,7 +116,7 @@ const Dashboard: React.FC<Props> = () => {
               button={<Button variant="outline">{t('openchat')}</Button>}
               icon={<BooksIcon />}
             />
-          </VStack>
+          </VStack> */}
           <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.learningpartner.header')}

@@ -59,6 +59,8 @@ import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHel
 import DashboardHelper from './pages/DashboardHelper'
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
+import MatchingBlocker from './pages/matching/1-1/MatchingBlocker'
+import CourseBlocker from './pages/course/CourseBlocker'
 
 export default function Navigator() {
   return (
@@ -199,6 +201,24 @@ export default function Navigator() {
           element={
             // <RequireAuth>
             <OnboardingTourList />
+            // </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/matching-1-1"
+          element={
+            // <RequireAuth>
+            <MatchingBlocker />
+            // </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/course"
+          element={
+            // <RequireAuth>
+            <CourseBlocker />
             // </RequireAuth>
           }
         />
