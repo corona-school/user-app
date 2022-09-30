@@ -13,6 +13,8 @@ import quickstart from './quickstart/de'
 import digitaletools from './digitaletools/de'
 import dashboard from './dashboard/de'
 import helperwizard from './helperwizard/de'
+import matching from './matching/de'
+import course from './course/de'
 
 const de = {
   ...shared,
@@ -29,6 +31,8 @@ const de = {
   quickstart,
   digitaletools,
   dashboard,
-  helperwizard
+  helperwizard,
+  matching,
+  course
 }
 export default de

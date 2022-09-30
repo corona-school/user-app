@@ -57,6 +57,8 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 import ProfileHelper from './pages/ProfileHelper'
 import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
 import DashboardHelper from './pages/DashboardHelper'
+import MatchingBlocker from './pages/matching/1-1/MatchingBlocker'
+import CourseBlocker from './pages/course/CourseBlocker'
 
 export default function Navigator() {
   return (
@@ -196,6 +198,24 @@ export default function Navigator() {
           element={
             // <RequireAuth>
             <OnboardingTourList />
+            // </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/matching-1-1"
+          element={
+            // <RequireAuth>
+            <MatchingBlocker />
+            // </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/course"
+          element={
+            // <RequireAuth>
+            <CourseBlocker />
             // </RequireAuth>
           }
         />
