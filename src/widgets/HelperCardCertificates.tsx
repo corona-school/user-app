@@ -11,9 +11,8 @@ import {
   Column,
   Button
 } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
-
-import { Fragment } from 'react'
 import ProfilAvatar from './ProfilAvatar'
 
 type Props = {

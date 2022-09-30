@@ -87,6 +87,14 @@ const profile = {
         placeholder: 'Welche Fächer möchtest du wählen?'
       }
     }
+  },
+  Helper: {
+    certificate: {
+      title: 'Meine Bescheinigungen',
+      tabbestaetigt: 'Bestätigt',
+      tabausstehend: 'Ausstehend',
+      button: 'Bescheinigung anfordern'
+    }
   }
 }
 
