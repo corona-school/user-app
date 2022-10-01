@@ -8,9 +8,10 @@ import { CreateCourseContext } from '../CreateCourse'
 type Props = {
   onNext: () => any
   onBack: () => any
+  isDisabled?: boolean
 }
 
-const CoursePreview: React.FC<Props> = ({ onNext, onBack }) => {
+const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
   const { space } = useTheme()
   const {
     courseName,
@@ -23,21 +24,6 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack }) => {
     allowContact,
     lectures
   } = useContext(CreateCourseContext)
-
-  // const [createCourse, { data, error, loading }] = useMutation(gql`
-  //   mutation createCourse(
-  //     $user: Float!
-  //     $course: PublicCourseCreateInput!
-  //     $sub: PublicSubcourseCreateInput!
-  //     $lec: [PublicLectureInput!]
-  //   ) {
-  //     courseCreate(studentId: $user, course: $course) {
-  //       id
-  //     }
-  //     subcourseCreate(courseId: id, subcourse: $sub}){id}
-  //     lectureCreate(subcourseId: id, lecture: $lec)
-  //   }
-  // `)
 
   return (
     <VStack space={space['1']}>
@@ -98,10 +84,26 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack }) => {
       </Row>
 
       <Heading>Termine zum Kurs</Heading>
-      {lectures && lectures.map(lec => null)}
+      {lectures &&
+        lectures.map((lec, i) => (
+          <VStack>
+            <Heading>Termin {`${i + 1}`.padStart(2, '0')}</Heading>
+            <Text bold>
+              Datum:<Text>{lec.date}</Text>
+            </Text>
+            <Text bold>
+              Uhrzeit:<Text>{lec.time}</Text>
+            </Text>
+            <Text bold>
+              Dauer:<Text>{lec.duration}</Text>
+            </Text>
+          </VStack>
+        ))}
 
-      <Button onPress={onNext}>Kurs veröffentlichen</Button>
-      <Button variant={'outline'} onPress={onBack}>
+      <Button onPress={onNext} isDisabled={isDisabled}>
+        Kurs veröffentlichen
+      </Button>
+      <Button variant={'outline'} onPress={onBack} isDisabled={isDisabled}>
         Daten bearbeiten
       </Button>
     </VStack>

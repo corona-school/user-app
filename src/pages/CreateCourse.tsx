@@ -1,9 +1,11 @@
+import { gql, useMutation } from '@apollo/client'
 import { useTheme, VStack } from 'native-base'
 import {
   createContext,
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +18,8 @@ import InstructionProgress from '../widgets/InstructionProgress'
 import CourseAppointments from './course-creation/CourseAppointments'
 import CourseData from './course-creation/CourseData'
 import CoursePreview from './course-creation/CoursePreview'
+
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -63,12 +67,35 @@ const CreateCourse: React.FC<Props> = () => {
   const [lectures, setLectures] = useState<Lecture[]>([])
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+
+  // TODO just put in to satisfy graphql errors
+  // mutation createCourse(
+  //   $user: Float!
+  //   $course: PublicCourseCreateInput!
+  //   $sub: PublicSubcourseCreateInput!
+  //   $lec: [PublicLectureInput!]
+  // ) {
+  //   courseCreate(studentId: $user, course: $course) {
+  //     id
+  //   }
+  //   subcourseCreate(courseId: id, subcourse: $sub}){id}
+  //   lectureCreate(subcourseId: id, lecture: $lec)
+  // }
+  const [createCourse, { data, error, loading }] = useMutation(gql`
+    mutation createCourse($course: PublicCourseCreateInput!) {
+      courseCreate(course: $course)
+    }
+  `)
+
   const { space } = useTheme()
   const navigate = useNavigate()
 
-  const onFinish = () => {
-    console.log('finished')
-  }
+  const onFinish = useCallback(() => {
+    // TODO collect all data
+    // TODO format lectures correctly
+    // TODO unsplash
+    createCourse({ variables: {} })
+  }, [createCourse])
 
   const onNext = useCallback(() => {
     if (currentIndex >= 2) {
@@ -76,7 +103,7 @@ const CreateCourse: React.FC<Props> = () => {
     } else {
       setCurrentIndex(prev => prev + 1)
     }
-  }, [currentIndex])
+  }, [currentIndex, onFinish])
 
   const onBack = useCallback(() => {
     setCurrentIndex(prev => prev - 1)
@@ -85,6 +112,11 @@ const CreateCourse: React.FC<Props> = () => {
   const onCancel = useCallback(() => {
     navigate(-1)
   }, [navigate])
+
+  useEffect(() => {
+    if (data) {
+    }
+  }, [data])
 
   return (
     <WithNavigation>
@@ -129,14 +161,18 @@ const CreateCourse: React.FC<Props> = () => {
               }
             ]}
           />
-          {currentIndex === 1 && (
+          {currentIndex === 0 && (
             <CourseData onNext={onNext} onCancel={onCancel} />
           )}
-          {currentIndex === 0 && (
+          {currentIndex === 1 && (
             <CourseAppointments onNext={onNext} onBack={onBack} />
           )}
           {currentIndex === 2 && (
-            <CoursePreview onNext={onNext} onBack={onBack} />
+            <CoursePreview
+              onNext={onNext}
+              onBack={onBack}
+              isDisabled={loading}
+            />
           )}
         </VStack>
       </CreateCourseContext.Provider>
