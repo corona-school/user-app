@@ -17,23 +17,23 @@ import {
   Circle,
   Container
 } from 'native-base'
-import NotificationAlert from '../components/NotificationAlert'
-import WithNavigation from '../components/WithNavigation'
-import IconTagList from '../widgets/IconTagList'
-import ProfilAvatar from '../widgets/ProfilAvatar'
-import ProfileSettingItem from '../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../widgets/ProfileSettingRow'
+import NotificationAlert from '../../components/NotificationAlert'
+import WithNavigation from '../../components/WithNavigation'
+import IconTagList from '../../widgets/IconTagList'
+import ProfilAvatar from '../../widgets/ProfilAvatar'
+import ProfileSettingItem from '../../widgets/ProfileSettingItem'
+import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-import UserProgress from '../widgets/UserProgress'
+import UserProgress from '../../widgets/UserProgress'
 import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import Tabs from '../components/Tabs'
-import HSection from '../widgets/HSection'
-import HelperCardCertificates from '../widgets/HelperCardCertificates'
-import HelperWizard from '../widgets/HelperWizard'
+import Tabs from '../../components/Tabs'
+import HSection from '../../widgets/HSection'
+import HelperCardCertificates from '../../widgets/HelperCardCertificates'
+import HelperWizard from '../../widgets/HelperWizard'
 
 type Props = {}
 
