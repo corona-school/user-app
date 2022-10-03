@@ -7,10 +7,10 @@ import {
   useLocation
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/pupil/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
-import Profile from './pages/Profile'
+import Profile from './pages/pupil/Profile'
 
 import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
