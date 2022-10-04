@@ -223,6 +223,22 @@ export default function Navigator() {
           }
         />
 
+        <Route
+          path="/onboarding"
+          element={
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route
+            path="students-welcome"
+            element={<OnBoardingStudentWelcome />}
+          />
+          <Route
+            path="students-matching"
+            element={<OnBoardingStudentMatching />}
+          />
+        </Route>
         {/* Onboarding Students */}
         <Route
           path="/onboarding-students"

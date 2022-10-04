@@ -13,6 +13,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -25,6 +26,7 @@ type Props = {
   onNext?: (currentIndex: number) => any
   loop?: boolean
   isOnboarding?: boolean
+  onFinish?: () => any
 }
 
 export type IViewPagerContext = {
@@ -44,7 +46,8 @@ const ViewPager: React.FC<Props> = ({
   onPrev,
   onNext,
   loop,
-  isOnboarding
+  isOnboarding,
+  onFinish
 }) => {
   const navigate = useNavigate()
 
@@ -117,7 +120,16 @@ const ViewPager: React.FC<Props> = ({
                     ? 0
                     : currentIndex
                 setCurrentIndex(i)
-                onNext && onNext(i)
+
+                if (isMultiple) {
+                  if (currentIndex + 1 === children?.length) {
+                    onFinish && onFinish()
+                  } else {
+                    onNext && onNext(i)
+                  }
+                } else {
+                  onFinish && onFinish()
+                }
               }}>
               <Box
                 width="32px"
