@@ -13,6 +13,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -25,6 +26,7 @@ type Props = {
   onNext?: (currentIndex: number) => any
   loop?: boolean
   isOnboarding?: boolean
+  onFinish?: () => any
 }
 
 export type IViewPagerContext = {
@@ -44,13 +46,21 @@ const ViewPager: React.FC<Props> = ({
   onPrev,
   onNext,
   loop,
-  isOnboarding
+  isOnboarding,
+  onFinish
 }) => {
   const navigate = useNavigate()
 
   const isMultiple = Array.isArray(children)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [cancelModal, setCancelModal] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!isMultiple) return
+    if (currentIndex + 1 >= children?.length) {
+      onFinish && onFinish()
+    }
+  }, [children, currentIndex, isMultiple, onFinish])
 
   return (
     <ViewPagerContext.Provider
