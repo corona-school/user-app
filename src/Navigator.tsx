@@ -54,13 +54,13 @@ import OnBoardingHelperMatchingMatch from './pages/onboarding/helper-matching/On
 import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/OnBoardingHelperMatchingContact'
 import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
-import ProfileHelper from './pages/ProfileHelper'
+import ProfileHelper from './pages/student/ProfileStudent'
 import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
-import DashboardHelper from './pages/DashboardHelper'
+import DashboardHelper from './pages/student/DashboardStudent'
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
-import MatchingBlocker from './pages/matching/1-1/MatchingBlocker'
-import CourseBlocker from './pages/course/CourseBlocker'
+import MatchingBlocker from './pages/student/MatchingBlocker'
+import CourseBlocker from './pages/student/CourseBlocker'
 
 export default function Navigator() {
   return (
