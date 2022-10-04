@@ -6,8 +6,11 @@ const single = {
     category: 'Kategorie',
     participating: 'Teilnehmende',
     quantity: 'Anzahl',
+    lesson: 'Lektion',
+    lessons: 'Lektionen',
     duration: 'Dauer',
     tutor: 'Tutor:innen',
+    years: 'Jahre',
     status: {
       free: 'Freie Plätze',
       last: 'Wenige freie Plätze',
