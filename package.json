@@ -40,6 +40,7 @@
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
+    "luxon": "^3.0.4",
     "mini-css-extract-plugin": "^2.6.1",
     "native-base": "^3.4.7",
     "postcss": "^8.4.16",
@@ -152,6 +153,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^7.0.2"
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/luxon": "^3.0.1"
   }
 }
