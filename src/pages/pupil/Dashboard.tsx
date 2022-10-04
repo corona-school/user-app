@@ -42,10 +42,20 @@ const Dashboard: React.FC<Props> = () => {
       }
 
       subcoursesPublic(take: 10, skip: 2) {
+        minGrade
+        maxGrade
+        maxParticipants
+        joinAfterStart
+        maxParticipants
+        participantsCount
         course {
           name
           description
           outline
+        }
+        lectures {
+          start
+          duration
         }
       }
     }
@@ -94,16 +104,21 @@ const Dashboard: React.FC<Props> = () => {
             />
           </VStack>
           <HSection title={t('dashboard.myappointments.header')} showAll={true}>
-            {data?.me?.pupil?.subcoursesJoined.map((el: any, i: number) => (
-              <AppointmentCard
-                key={`appointment-${i}`}
-                description="Lorem Ipsum"
-                tags={['Mathematik', 'Gruppenkurs']}
-                date={futureDate}
-                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                title={el?.course?.name}
-              />
-            ))}
+            {data?.me?.pupil?.subcoursesJoined.map(
+              (el: LFSubCourse, i: number) => (
+                <AppointmentCard
+                  onPressToCourse={() =>
+                    navigate('/single-course', { state: { course: el } })
+                  }
+                  key={`appointment-${i}`}
+                  description="Lorem Ipsum"
+                  tags={['Mathematik', 'Gruppenkurs']}
+                  date={futureDate}
+                  image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  title={el?.name}
+                />
+              )
+            )}
           </HSection>
           {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
@@ -135,7 +150,13 @@ const Dashboard: React.FC<Props> = () => {
           </VStack>
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
-              <SignInCard data={sc} onClickSignIn={() => null} />
+              <SignInCard
+                data={sc}
+                onClickSignIn={() => null}
+                onPress={() =>
+                  navigate('/single-course', { state: { course: sc } })
+                }
+              />
             ))}
           </HSection>
           {/* <TwoColGrid title={t('dashboard.offers.header')}>
