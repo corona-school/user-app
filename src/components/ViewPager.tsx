@@ -55,13 +55,6 @@ const ViewPager: React.FC<Props> = ({
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [cancelModal, setCancelModal] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (!isMultiple) return
-    if (currentIndex >= children?.length) {
-      onFinish && onFinish()
-    }
-  }, [children, currentIndex, isMultiple, onFinish])
-
   return (
     <ViewPagerContext.Provider
       value={{
@@ -127,7 +120,16 @@ const ViewPager: React.FC<Props> = ({
                     ? 0
                     : currentIndex
                 setCurrentIndex(i)
-                onNext && onNext(i)
+
+                if (isMultiple) {
+                  if (currentIndex + 1 === children?.length) {
+                    onFinish && onFinish()
+                  } else {
+                    onNext && onNext(i)
+                  }
+                } else {
+                  onFinish && onFinish()
+                }
               }}>
               <Box
                 width="32px"
