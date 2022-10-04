@@ -127,7 +127,8 @@ const onboardingList = {
       },
       finisher: {
         title: 'Fertig!',
-        content: 'Einen Moment, dein persönliches Dashboard wird geladen.'
+        content: 'Einen Moment, dein persönliches Dashboard wird geladen.',
+        button: 'zum Dashboard'
       }
     },
     helperMatching: {

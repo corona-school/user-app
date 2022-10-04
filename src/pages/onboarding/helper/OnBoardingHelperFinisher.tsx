@@ -47,7 +47,9 @@ const OnBoardingHelperFinisher: React.FC<Props> = () => {
                 marginBottom={space['1']}>
                 {t('onboardingList.Wizard.helper.finisher.content')}
               </Text>
-              <Button onPress={() => navigate('/')}>zum Dashboard</Button>
+              <Button onPress={() => navigate('/')}>
+                {t('onboardingList.Wizard.helper.finisher.button')}
+              </Button>
             </Column>
             <Column paddingY={space['2']}>
               <Logo />
