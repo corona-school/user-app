@@ -43,7 +43,9 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
       height="100%"
       alignItems="stretch">
       <View flex={1}>
-        <ViewPager isOnboarding={true} onFinish={onFinish}>
+        <ViewPager
+          isOnboarding={true}
+          onFinish={() => navigate('/onboarding-students/finish')}>
           {/* Matching */}
           <OnboardingView
             title={t('onboardingList.Wizard.students.matching.title')}
