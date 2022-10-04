@@ -57,7 +57,7 @@ const ViewPager: React.FC<Props> = ({
 
   useEffect(() => {
     if (!isMultiple) return
-    if (currentIndex + 1 >= children?.length) {
+    if (currentIndex >= children?.length) {
       onFinish && onFinish()
     }
   }, [children, currentIndex, isMultiple, onFinish])
