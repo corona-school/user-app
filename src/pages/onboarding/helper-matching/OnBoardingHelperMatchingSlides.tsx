@@ -15,12 +15,10 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
   const [cancelModal, setCancelModal] = useState<boolean>(false)
 
   const imgRequestMatching = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Match_anfordern.png')
-  const imgGroup = require('../../../assets/images/onboarding/helper/All_Helfer_Matching_Gruppe.png')
-  const imgAppointments = require('../../../assets/images/onboarding/helper/All_Helfer_Termine.png')
-  const imgHelpCenter = require('../../../assets/images/onboarding/helper/All_Helfer_Hilfe.png')
-  const imgProfile = require('../../../assets/images/onboarding/helper/All_Helfer_Matching_Profil.png')
-  const imgSettings = require('../../../assets/images/onboarding/helper/All_Helfer_Einstellungen.png')
-  const imgNotification = require('../../../assets/images/onboarding/helper/All_Helfer_Matching_Benachrichtigung.png')
+  const imgRequest = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Anfrage stellen.png')
+  const imgMatch = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Matching.png')
+  const imgContact = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Kontaktaufnahme.png')
+  const imgSolveMatching = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Match_aufloesen.png')
 
   const onFinish = useCallback(() => {}, [])
 
@@ -33,7 +31,7 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
       <View flex={1}>
         <ViewPager
           isOnboarding={true}
-          onFinish={() => navigate('/onboarding-helper/finish')}>
+          onFinish={() => navigate('/onboarding/helpermatching/finish')}>
           {/* Request Matching */}
           <OnboardingView
             title={t('onboardingList.Wizard.helperMatching.matching.title')}
@@ -41,46 +39,40 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
             image={imgRequestMatching}
           />
 
-          {/* Group */}
+          {/* Request */}
           <OnboardingView
-            title={t('onboardingList.Wizard.helper.groupCourse.title')}
-            content={t('onboardingList.Wizard.helper.groupCourse.content')}
-            image={imgGroup}
+            title={t('onboardingList.Wizard.helperMatching.request.title')}
+            content={t('onboardingList.Wizard.helperMatching.request.content')}
+            image={imgRequest}
           />
 
-          {/* Appointments */}
+          {/* Match */}
           <OnboardingView
-            title={t('onboardingList.Wizard.helper.appointment.title')}
-            content={t('onboardingList.Wizard.helper.appointment.content')}
-            image={imgAppointments}
+            title={t('onboardingList.Wizard.helperMatching.match.title')}
+            content={t('onboardingList.Wizard.helperMatching.match.content')}
+            contentEnd={t(
+              'onboardingList.Wizard.helperMatching.match.contentsec'
+            )}
+            image={imgMatch}
           />
 
-          {/* HelpCenter */}
+          {/* Contact */}
           <OnboardingView
-            title={t('onboardingList.Wizard.helper.helpCenter.title')}
-            content={t('onboardingList.Wizard.helper.helpCenter.content')}
-            image={imgHelpCenter}
+            title={t('onboardingList.Wizard.helperMatching.contact.title')}
+            content={t('onboardingList.Wizard.helperMatching.contact.content')}
+            contentEnd={t(
+              'onboardingList.Wizard.helperMatching.contact.contentsec'
+            )}
+            image={imgContact}
           />
 
-          {/* Profil */}
+          {/* Solve Matching */}
           <OnboardingView
-            title={t('onboardingList.Wizard.helper.profile.title')}
-            content={t('onboardingList.Wizard.helper.profile.content')}
-            image={imgProfile}
-          />
-
-          {/* Settings */}
-          <OnboardingView
-            title={t('onboardingList.Wizard.helper.settings.title')}
-            content={t('onboardingList.Wizard.helper.settings.content')}
-            image={imgSettings}
-          />
-
-          {/* Notification */}
-          <OnboardingView
-            title={t('onboardingList.Wizard.helper.notification.title')}
-            content={t('onboardingList.Wizard.helper.notification.content')}
-            image={imgNotification}
+            title={t('onboardingList.Wizard.helperMatching.matchSolve.title')}
+            content={t(
+              'onboardingList.Wizard.helperMatching.matchSolve.content'
+            )}
+            image={imgSolveMatching}
           />
         </ViewPager>
       </View>

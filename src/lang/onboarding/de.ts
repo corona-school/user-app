@@ -9,27 +9,27 @@ const onboardingList = {
     card0: {
       title: 'Onboarding-Tour allgemein',
       content: 'Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.',
-      url: '/onboarding-students/'
+      url: '/onboarding/students/'
     },
     card1: {
       title: 'Onboarding-Tour 1:1 Matching',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/onboarding-helper-matching/welcome/'
+      url: '/onboarding/helpermatching/'
     },
     card2: {
       title: 'Onboarding-Tour Gruppenkurs',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/onboarding-helper/groups/'
+      url: '/'
     },
     card3: {
       title: 'Onboarding-Tour Hilfebereich',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/onboarding-students/helpcenter/'
+      url: '/'
     },
     card4: {
       title: 'Onboarding-Tour Termine',
       content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
-      url: '/onboarding-students/appointments/'
+      url: '/'
     },
   },
   Wizard: {

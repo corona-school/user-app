@@ -29,7 +29,7 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
       <View flex={1}>
         <ViewPager
           isOnboarding={true}
-          onFinish={() => navigate('/onboarding-students/finish')}>
+          onFinish={() => navigate('/onboarding/students/finish')}>
           {/* Matching */}
           <OnboardingView
             title={t('onboardingList.Wizard.students.matching.title')}

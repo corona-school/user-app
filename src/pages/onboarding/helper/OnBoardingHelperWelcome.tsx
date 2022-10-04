@@ -41,7 +41,7 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
         outlineButtonText={t('onboardingList.Wizard.helper.welcome.skipTour')}
         outlinebuttonLink={() => setCancelModal(true)}
         defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
-        defaultbuttonLink={() => navigate('/onboarding-helper/wizard')}
+        defaultbuttonLink={() => navigate('/onboarding/helper/wizard/')}
         icon={<Logo />}
       />
       <Modal

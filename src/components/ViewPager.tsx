@@ -16,6 +16,7 @@ import {
   useEffect,
   useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import OnBoardingSkipModal from '../widgets/OnBoardingSkipModal'
 
@@ -54,6 +55,7 @@ const ViewPager: React.FC<Props> = ({
   const isMultiple = Array.isArray(children)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [cancelModal, setCancelModal] = useState<boolean>(false)
+  const { t } = useTranslation()
 
   return (
     <ViewPagerContext.Provider
@@ -107,7 +109,7 @@ const ViewPager: React.FC<Props> = ({
                     textDecoration: 'none',
                     fontSize: '14px'
                   }}>
-                  Überspringen
+                  {t('skip')}
                 </Link>
               </Box>
             )}

@@ -216,6 +216,7 @@ export default function Navigator() {
           }
         />
 
+        {/* Onboarding Subpages */}
         <Route
           path="/onboarding"
           element={
@@ -223,18 +224,17 @@ export default function Navigator() {
               <Outlet />
             </RequireAuth>
           }>
+          <Route path="students" element={<OnBoardingStudentWelcome />} />
+          <Route path="helper" element={<OnBoardingHelperWelcome />} />
           <Route
-            path="students-welcome"
-            element={<OnBoardingStudentWelcome />}
-          />
-          <Route
-            path="students-matching"
-            element={<OnBoardingStudentMatching />}
+            path="helpermatching"
+            element={<OnBoardingHelperMatchingWelcome />}
           />
         </Route>
+
         {/* Onboarding Students */}
         <Route
-          path="/onboarding-students"
+          path="/onboarding/students"
           element={
             <RequireAuth>
               <Outlet />
@@ -248,7 +248,7 @@ export default function Navigator() {
 
         {/* Onboarding Helper */}
         <Route
-          path="/onboarding-helper"
+          path="/onboarding/helper"
           element={
             <RequireAuth>
               <Outlet />
@@ -263,7 +263,7 @@ export default function Navigator() {
         {/* Onboarding Helper Matching */}
 
         <Route
-          path="/onboarding-helper-matching"
+          path="/onboarding/helpermatching"
           element={
             <RequireAuth>
               <Outlet />

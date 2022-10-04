@@ -66,7 +66,7 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
             'onboardingList.Wizard.helperMatching.finisher.buttonLinkText'
           )}
           outlinebuttonLink={() => {
-            navigate('/onboarding-helper-matching/welcome')
+            navigate('/onboarding/helpermatching/')
           }}
           defaultButtonText={t(
             'onboardingList.Wizard.helperMatching.finisher.buttonText'
