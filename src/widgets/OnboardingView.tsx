@@ -8,16 +8,15 @@ import {
   Row,
   Pressable
 } from 'native-base'
+import { useContext } from 'react'
 import Bullet from '../components/Bullet'
+import { ViewPagerContext } from '../components/ViewPager'
 
 type Props = {
   title: string
   content?: string
   contentEnd?: string
   image: string
-  // itemCount?: number
-  // currentIndex?: number
-  // setCurrentIndex: (i: number) => any
 }
 
 const OnboardingView: React.FC<Props> = ({
@@ -25,13 +24,10 @@ const OnboardingView: React.FC<Props> = ({
   content,
   contentEnd,
   image
-  // itemCount,
-  // currentIndex,
-  // setCurrentIndex
 }) => {
   const { space } = useTheme()
-  // const isMultiple = Array.isArray(itemCount)
-
+  const { currentIndex, setCurrentIndex, itemCount } =
+    useContext(ViewPagerContext)
   return (
     <>
       <Box width="100%">
@@ -75,21 +71,23 @@ const OnboardingView: React.FC<Props> = ({
         </View>
       </Box>
       {image && (
-        <Box flex={1} justifyContent="center">
-          <Image
-            width="100%"
-            height="350px"
-            alt="Matching"
-            resizeMode="contain"
-            source={{ uri: image }}
-          />
-          {/* <Row space={space['0.5']} justifyContent="center" alignItems="center">
-            {new Array((isMultiple && itemCount) || 0).fill(0).map((_, i) => (
+        <Box justifyContent="center" flex="1">
+          <Box justifyContent="center">
+            <Image
+              width="100%"
+              height="350px"
+              alt="Matching"
+              resizeMode="contain"
+              source={{ uri: image }}
+            />
+          </Box>
+          <Row space={space['0.5']} justifyContent="center" alignItems="center">
+            {new Array(itemCount).fill(0).map((_, i) => (
               <Pressable onPress={() => setCurrentIndex(i)}>
                 <Bullet isActive={i === currentIndex ? true : false} />
               </Pressable>
             ))}
-          </Row> */}
+          </Row>
         </Box>
       )}
     </>

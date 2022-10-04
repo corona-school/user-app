@@ -57,6 +57,8 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 import ProfileHelper from './pages/ProfileHelper'
 import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
 import DashboardHelper from './pages/DashboardHelper'
+import CreateCourse from './pages/CreateCourse'
+import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/matching/1-1/MatchingBlocker'
 import CourseBlocker from './pages/course/CourseBlocker'
 
@@ -87,12 +89,13 @@ export default function Navigator() {
           path="/"
           element={
             <RequireAuth>
-              <Dashboard />
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardHelper />}
+              />
             </RequireAuth>
           }
         />
-
-        <Route path="/dashboard-helper" element={<DashboardHelper />} />
 
         <Route
           path="/explore"
@@ -339,6 +342,8 @@ export default function Navigator() {
           element={<OnBoardingHelperMatchingFinisher />}
         />
 
+        <Route path="/create-course" element={<CreateCourse />} />
+
         {/* Fallback */}
         <Route
           path="*"
@@ -360,4 +365,38 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   if (!token)
     return <Navigate to="/welcome" state={{ from: location }} replace />
   return children
+}
+
+const SwitchUserType = ({
+  pupilComponent,
+  studentComponent
+}: {
+  pupilComponent: JSX.Element
+  studentComponent: JSX.Element
+}) => {
+  const location = useLocation()
+
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        pupil {
+          id
+        }
+        student {
+          id
+        }
+      }
+    }
+  `)
+  const me = data?.me
+
+  if (loading) return <></>
+  if (!me || error)
+    return <Navigate to="/welcome" state={{ from: location }} replace />
+
+  if (!!me.student) {
+    return studentComponent
+  } else {
+    return pupilComponent
+  }
 }

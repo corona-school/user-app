@@ -1,12 +1,11 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
-import CSSWrapper from '../components/CSSWrapper'
 import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
 type Instruction = {
   label: string
   title?: string
-  content: IInstructionMessage[]
+  content?: IInstructionMessage[]
 }
 
 type Props = {
@@ -62,16 +61,18 @@ const InstructionProgress: React.FC<Props> = ({
           )
         })}
       </Row>
-      <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
-        {instructions[currentIndex].content.map((instruction, i) => (
-          <InstructionMessage
-            isDark={isDark ? true : false}
-            key={`instruction-${i}`}
-            title={instruction.title}
-            text={instruction.text}
-          />
-        ))}
-      </HSection>
+      {instructions[currentIndex].content && (
+        <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
+          {instructions[currentIndex].content?.map((instruction, i) => (
+            <InstructionMessage
+              isDark={isDark ? true : false}
+              key={`instruction-${i}`}
+              title={instruction.title}
+              text={instruction.text}
+            />
+          ))}
+        </HSection>
+      )}
     </View>
   )
 }

@@ -12,7 +12,7 @@ import {
   Modal,
   Heading
 } from 'native-base'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Bullet from '../../../components/Bullet'
@@ -34,6 +34,8 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
   const imgGroup = require('../../../assets/images/onboarding/student/All_Schueler_Matching_Gruppe.png')
   const imgAppointments = require('../../../assets/images/onboarding/student/All_Schueler_Termine.png')
 
+  const onFinish = useCallback(() => {}, [])
+
   return (
     <Container
       backgroundColor="primary.100"
@@ -41,7 +43,7 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
       height="100%"
       alignItems="stretch">
       <View flex={1}>
-        <ViewPager isOnboarding={true}>
+        <ViewPager isOnboarding={true} onFinish={onFinish}>
           {/* Matching */}
           <OnboardingView
             title={t('onboardingList.Wizard.students.matching.title')}
