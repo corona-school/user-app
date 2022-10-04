@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -10,16 +11,37 @@ import {
   FormControl,
   Stack
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
-import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
-import { Language } from '../../types/lernfair/Language'
+import { languages } from '../../types/lernfair/Language'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+
+const queryStudent = `query {
+  me {
+    student {
+      languages
+    }
+  }
+}`
+const queryPupil = `query {
+  me {
+    pupil {
+      languages
+    }
+  }
+}`
+const mutStudent = `mutation updateLanguage($languages: [String!]) {
+  meUpdate(update: { student: { languages: $languages } })
+}`
+const mutPupil = `mutation updateLanguage($languages: [String!]) {
+  meUpdate(update: { pupil: { languages: $languages } })
+}`
 
 type Props = {}
 
@@ -27,100 +49,30 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
-  const languages: Language[] = [
-    {
-      key: 'albanisch',
-      label: 'Albanisch'
-    },
-    {
-      key: 'arabisch',
-      label: 'Arabisch'
-    },
-    {
-      key: 'armenisch',
-      label: 'Armenisch'
-    },
-    {
-      key: 'aserbaidschanisch',
-      label: 'Aserbaidschanisch'
-    },
-    {
-      key: 'bosnisch',
-      label: 'Bosnisch'
-    },
-    {
-      key: 'bulgarisch',
-      label: 'Bulgarisch'
-    },
-    {
-      key: 'chinesisch',
-      label: 'Chinesisch'
-    },
-    {
-      key: 'deutsch',
-      label: 'Deutsch'
-    },
-    {
-      key: 'englisch',
-      label: 'Englisch'
-    },
-    {
-      key: 'franzoesisch',
-      label: 'Französisch'
-    },
-    {
-      key: 'italienisch',
-      label: 'Italienisch'
-    },
-    {
-      key: 'kasachisch',
-      label: 'Kasachisch'
-    },
-    {
-      key: 'kurdisch',
-      label: 'Kurdisch'
-    },
-    {
-      key: 'polnisch',
-      label: 'Polnisch'
-    },
-    {
-      key: 'portugiesisch',
-      label: 'Portugiesisch'
-    },
-    {
-      key: 'russisch',
-      label: 'Russisch'
-    },
-    {
-      key: 'spanisch',
-      label: 'Spanisch'
-    },
-    {
-      key: 'tuerkisch',
-      label: 'Türkisch'
-    },
-    {
-      key: 'ukrainisch',
-      label: 'Ukrainisch'
-    },
-    {
-      key: 'vietnamesisch',
-      label: 'Vietnamesisch'
-    },
-    {
-      key: 'andere',
-      label: 'Andere'
+  const location = useLocation()
+  const { state } = location as { state: { userType: string } }
+
+  const [selections, setSelections] = useState<string[]>([])
+
+  const { data, error, loading } = useQuery(gql`
+    ${state?.userType === ' student' ? queryStudent : queryPupil}
+  `)
+
+  const [updateLanguage, _updateLanguage] = useMutation(gql`
+    ${state?.userType === ' student' ? mutStudent : mutPupil}
+  `)
+
+  useEffect(() => {
+    if (data?.me?.pupil?.languages) {
+      setSelections(data?.me?.pupil?.languages)
     }
-  ]
+  }, [data?.me?.pupil?.languages])
 
-  const [selections, setSelections] = useState<Language[]>([])
-
+  if (loading) return <></>
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
@@ -128,7 +80,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {selections.map((subject, index) => (
+            {selections.map((language, index) => (
               <Column
                 marginRight={3}
                 marginBottom={3}
@@ -143,8 +95,9 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`languages/icon_${subject.key}.svg`}
-                      text={subject.label}
+                      isDisabled
+                      iconPath={`languages/icon_${language}.svg`}
+                      text={t(`lernfair.languages.${language}`)}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -167,7 +120,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {languages.map(
                   (subject, index) =>
-                    !selections.find(sel => sel.key === subject.key) && (
+                    !selections.find(sel => sel === subject.key) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
@@ -176,14 +129,14 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                           iconPath={`languages/icon_${subject.key}.svg`}
                           text={subject.label}
                           onPress={() =>
-                            setSelections(prev => [...prev, subject])
+                            setSelections(prev => [...prev, subject.key])
                           }
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel.key === 'andere') && (
+              {selections.find(sel => sel === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -212,7 +165,12 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.FluentLanguagenalData.single.button')}</Button>
+        <Button
+          onPress={() => {
+            updateLanguage({ variables: { languages: selections } })
+          }}>
+          {t('profile.FluentLanguagenalData.single.button')}
+        </Button>
       </VStack>
     </WithNavigation>
   )

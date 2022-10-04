@@ -10,9 +10,14 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import CTACard from '../widgets/CTACard'
+
+import IconApp from '../assets/icons/lernfair/onboarding/lf-onboarding-app.svg'
+import IconContact from '../assets/icons/lernfair/onboarding/lf-onboarding-contact.svg'
+import IconGroup from '../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
+import IconHelp from '../assets/icons/lernfair/onboarding/lf-onboarding-help.svg'
+import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-calender.svg'
 
 type Props = {}
 
@@ -24,8 +29,7 @@ const OnboardingTourList: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('onboardingList.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
           {t('onboardingList.title')}
@@ -59,7 +63,21 @@ const OnboardingTourList: React.FC<Props> = () => {
                   {t(`onboardingList.buttontext`)}
                 </Button>
               }
-              icon={<CheckCircleIcon size="10" />}
+              icon={
+                index === 0 ? (
+                  <IconApp />
+                ) : index === 1 ? (
+                  <IconContact />
+                ) : index === 2 ? (
+                  <IconGroup />
+                ) : index === 3 ? (
+                  <IconHelp />
+                ) : index === 4 ? (
+                  <IconCalender />
+                ) : (
+                  ''
+                )
+              }
             />
           ))}
         </Stagger>

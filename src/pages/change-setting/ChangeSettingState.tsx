@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -10,49 +11,77 @@ import {
   FormControl,
   Stack
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
-import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
-import { State } from '../../types/lernfair/State'
+import { states } from '../../types/lernfair/State'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+
+const queryPupil = `query {
+  me {
+    pupil {
+      state
+    }
+  }
+}`
+const queryStudent = `query {
+  me {
+    student {
+      state
+    }
+  }
+}`
+
+const mutStudent = `mutation updateState($state: String!) {
+  meUpdate(update: { student: { state: $state } })
+}`
+const mutPupil = `mutation updateState($state: String!) {
+  meUpdate(update: { pupil: { state: $state } })
+}`
 
 type Props = {}
 
 const ChangeSettingState: React.FC<Props> = () => {
   const { space } = useTheme()
+  const location = useLocation()
+  const { state: locState } = location as { state: { userType: string } }
 
-  const states: State[] = [
-    { key: 'baden-wuerttemberg', label: 'Baden-Württemberg' },
-    { key: 'bayern', label: 'Bayern' },
-    { key: 'berlin', label: 'Berlin' },
-    { key: 'brandenburg', label: 'Brandenburg' },
-    { key: 'bremen', label: 'Bremen' },
-    { key: 'hamburg', label: 'Hamburg' },
-    { key: 'hessen', label: 'Hessen' },
-    { key: 'mecklenburg-vorpommern', label: 'Mecklenburg-Vorpommern' },
-    { key: 'niedersachsen', label: 'Niedersachsen' },
-    { key: 'nordrhein-westfalen', label: 'Nordrhein-Westfalen' },
-    { key: 'rheinland-pfalz', label: 'Rheinland-Pfalz' },
-    { key: 'saarland', label: 'Saarland' },
-    { key: 'sachsen', label: 'Sachsen' },
-    { key: 'sachsen-anhalt', label: 'Sachsen-Anhalt' },
-    { key: 'schleswig-holstein', label: 'Schleswig-Holstein' },
-    { key: 'thueringen', label: 'Thüringen' }
-  ]
-
-  const [selections, setSelections] = useState<State[]>([])
+  const [userState, setUserState] = useState<string>('')
   const { t } = useTranslation()
+
+  const { data, loading, error } = useQuery(gql`
+    ${locState?.userType === ' student' ? queryStudent : queryPupil}
+  `)
+
+  const [updateState, _updateState] = useMutation(gql`
+    ${locState?.userType === ' student' ? mutStudent : mutPupil}
+  `)
+
+  useEffect(() => {
+    if (data?.me?.pupil?.state) {
+      setUserState(data?.me?.pupil?.state)
+    }
+  }, [data?.me?.pupil?.state])
+
+  const state = useMemo(
+    () =>
+      states.find(state => state.key === userState) || {
+        key: '',
+        label: ''
+      },
+    [userState]
+  )
+
+  if (loading) <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.State.single.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
@@ -60,31 +89,15 @@ const ChangeSettingState: React.FC<Props> = () => {
         <Heading>{t('profile.State.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {selections.map((subject, index) => (
-              <Column
-                marginRight={3}
-                marginBottom={3}
-                key={`selection-${index}`}>
-                <TouchableOpacity
-                  onPress={() =>
-                    setSelections(prev => {
-                      const res = [...prev]
-                      res.splice(index, 1)
-                      return res
-                    })
-                  }>
-                  <Row alignItems="center" justifyContent="center">
-                    <IconTagList
-                      iconPath={`states/icon_${subject.key}.svg`}
-                      text={subject.label}
-                    />
-                    <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                      x
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
+            {userState && (
+              <Column marginRight={3} marginBottom={3}>
+                <IconTagList
+                  isDisabled
+                  iconPath={`states/icon_${state.key}.svg`}
+                  text={state?.label}
+                />
               </Column>
-            ))}
+            )}
           </Row>
         </ProfileSettingItem>
       </VStack>
@@ -97,24 +110,22 @@ const ChangeSettingState: React.FC<Props> = () => {
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
                 {states.map(
-                  (subject, index) =>
-                    !selections.find(sel => sel.key === subject.key) && (
+                  (s, index) =>
+                    state.key !== s.key && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`states/icon_${subject.key}.svg`}
-                          text={subject.label}
-                          onPress={() =>
-                            setSelections(prev => [...prev, subject])
-                          }
+                          iconPath={`states/icon_${s.key}.svg`}
+                          text={s.label}
+                          onPress={() => setUserState(s.key)}
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel.key === 'andere') && (
+              {userState === 'andere' && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -141,7 +152,12 @@ const ChangeSettingState: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.State.single.button')}</Button>
+        <Button
+          onPress={() => {
+            updateState({ variables: { state: state } })
+          }}>
+          {t('profile.State.single.button')}
+        </Button>
       </VStack>
     </WithNavigation>
   )

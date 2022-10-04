@@ -10,11 +10,12 @@ import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
+import CSSWrapper from './CSSWrapper'
 
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
   appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
-  explore: { label: 'Erkunden', icon: LFExploreIcon, disabled: true },
+  explore: { label: 'Erkunden', icon: LFExploreIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
 }
 
@@ -24,6 +25,7 @@ type Props = {
   headerRight?: ReactNode | ReactNode[]
   headerContent?: ReactNode | ReactNode[]
   headerTitle?: string
+  isSidebarMenu?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -31,7 +33,8 @@ const WithNavigation: React.FC<Props> = ({
   headerLeft,
   headerRight,
   headerContent,
-  headerTitle
+  headerTitle,
+  isSidebarMenu = true
 }) => {
   const isMobile = useBreakpointValue({
     base: true,
@@ -52,7 +55,7 @@ const WithNavigation: React.FC<Props> = ({
         h="100%">
         <HeaderCard
           leftContent={headerLeft}
-          rightContent={<SettingsButton />}
+          rightContent={isSidebarMenu ? <SettingsButton /> : ''}
           title={headerTitle}
           portal={setView}>
           {headerContent}
@@ -67,12 +70,12 @@ const WithNavigation: React.FC<Props> = ({
               />
             </Column>
             <Column flex="1">
-              {view && (
+              {(view && (
                 <>
                   <View h={`${headerHeight}px`}></View>
                   {view}
                 </>
-              )}
+              )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}
             </Column>
           </Row>

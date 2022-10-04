@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Heading,
+  Image,
   Input,
   Link,
   Row,
@@ -17,6 +18,7 @@ import useApollo from '../hooks/useApollo'
 import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import TextInput from '../components/TextInput'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -30,17 +32,18 @@ export default function Login() {
     }
   `)
 
-  const { clearToken, setToken } = useApollo()
+  const { clearToken, createToken } = useApollo()
   const navigate = useNavigate()
 
   const attemptLogin = useCallback(async () => {
+    createToken()
     await login({
       variables: {
         email: email,
         password: password
       }
     })
-  }, [email, login, password])
+  }, [createToken, email, login, password])
 
   useEffect(() => {
     if (loading) return
@@ -49,7 +52,7 @@ export default function Login() {
     } else {
       clearToken()
     }
-  }, [clearToken, data, loading, navigate, setToken])
+  }, [clearToken, data, loading, navigate])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
@@ -63,13 +66,23 @@ export default function Login() {
     <VStack overflowY={'auto'} height="100vh">
       <Row flexDirection="column" justifyContent="center" alignItems="center">
         <Box
-          bg="primary.400"
+          position="relative"
           width="100%"
-          borderBottomRightRadius={15}
-          borderBottomLeftRadius={15}
           justifyContent="center"
           paddingY={6}
           marginBottom={6}>
+          <Image
+            alt="Lernfair"
+            position="absolute"
+            zIndex="-1"
+            borderBottomRightRadius={15}
+            borderBottomLeftRadius={15}
+            width="100%"
+            height="100%"
+            source={{
+              uri: require('../assets/images/globals/lf-bg.png')
+            }}
+          />
           <Box textAlign="center" alignItems="center" justifyContent="center">
             <Logo />
           </Box>
@@ -84,7 +97,7 @@ export default function Login() {
 
         <Box marginX="90px" width="80%">
           <Row marginBottom={3}>
-            <Input
+            <TextInput
               width="100%"
               isRequired={true}
               placeholder={t('email')}
@@ -93,7 +106,7 @@ export default function Login() {
             />
           </Row>
           <Row marginBottom={3} width="100%">
-            <Input
+            <TextInput
               type="password"
               width="100%"
               isRequired={true}

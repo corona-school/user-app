@@ -20,13 +20,14 @@ const lernfair = {
     tuerkisch: 'Türkisch',
     ukrainisch: 'Ukrainisch',
     vietnamesisch: 'Vietnamesisch',
-    andere: 'Andere'
+    other: 'Andere'
   },
   subjects: {
-    altgriechisch: 'Neugriechisch',
+    arbeitslehre: 'Arbeitslehre',
     biologie: 'Biologie',
     chemie: 'Chemie',
     deutsch: 'Deutsch',
+    'deutsch-2': 'Deutsch als Zweitsprache',
     englisch: 'Englisch',
     erdkunde: 'Erdkunde',
     franzoesisch: 'Französisch',
@@ -37,7 +38,6 @@ const lernfair = {
     latein: 'Latein',
     mathe: 'Mathe',
     musik: 'Musik',
-    niederlaendisch: 'Niederländisch',
     paedagogik: 'Pädagogik',
     philosophie: 'Philosophie',
     physik: 'Physik',
@@ -46,33 +46,34 @@ const lernfair = {
     sachkunde: 'Sachkunde',
     sonstige: 'Sonstige',
     spanisch: 'Spanisch',
+    tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',
-    andere: 'Andere'
+    other: 'Andere'
   },
   states: {
-    'baden-wuerttemberg': 'Baden-Württemberg',
-    bayern: 'Bayern',
-    berlin: 'Berlin',
-    brandenburg: 'Brandenburg',
-    bremen: 'Bremen',
-    hamburg: 'Hamburg',
-    hessen: 'Hessen',
-    'mecklenburg-vorpommern': 'Mecklenburg-Vorpommern',
-    niedersachsen: 'Niedersachsen',
-    'nordrhein-westfalen': 'Nordrhein-Westfalen',
-    'rheinland-pfalz': 'Rheinland-Pfalz',
-    saarland: 'Saarland',
-    sachsen: 'Sachsen',
-    sachsenAnhalt: 'Sachsen-Anhalt',
-    'schleswig-holstein': 'Schleswig-Holstein',
-    thueringen: 'Thüringen'
+    bw: 'Baden-Württemberg',
+    by: 'Bayern',
+    be: 'Berlin',
+    bb: 'Brandenburg',
+    hb: 'Bremen',
+    hh: 'Hamburg',
+    he: 'Hessen',
+    mv: 'Mecklenburg-Vorpommern',
+    ni: 'Niedersachsen',
+    nw: 'Nordrhein-Westfalen',
+    rp: 'Rheinland-Pfalz',
+    sl: 'Saarland',
+    sn: 'Sachsen',
+    st: 'Sachsen-Anhalt',
+    sh: 'Schleswig-Holstein',
+    th: 'Thüringen'
   },
   schooltypes: {
     grundschule: 'Grundschule',
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
-    andere: 'Andere'
+    other: 'Andere'
   },
   schoolclass: '{{class}}. Klasse'
 }

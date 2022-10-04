@@ -1,6 +1,7 @@
 import { Box, PresenceTransition } from 'native-base'
-import { createContext, ReactNode, useContext, useMemo } from 'react'
+import { createContext, ReactNode, useMemo } from 'react'
 import CSSWrapper from '../components/CSSWrapper'
+import useModal from '../hooks/useModal'
 import '../web/scss/widgets/FullPageModal.scss'
 
 type Props = {}
@@ -24,7 +25,7 @@ export const ModalContext = createContext<IModalContent>({
 })
 
 const FullPageModal: React.FC<Props> = () => {
-  const { show, content, variant } = useContext(ModalContext)
+  const { show, content, variant } = useModal()
 
   const bgColor = useMemo(() => {
     switch (variant) {

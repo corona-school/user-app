@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -5,48 +6,87 @@ import {
   useTheme,
   VStack,
   Row,
-  Column,
-  Input,
-  FormControl,
-  Stack
+  Column
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
-import NotificationAlert from '../../components/NotificationAlert'
+
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+
+const queryStudent = `query {
+  me {
+    student {
+      schooltype
+      gradeAsInt
+    }
+  }
+}`
+const queryPupil = `query {
+  me {
+    pupil {
+      schooltype
+      gradeAsInt
+    }
+  }
+}`
+const mutStudent = `mutation updateSchoolGrade($grade: Int!) {
+  meUpdate(update: { student: { gradeAsInt: $grade } })
+}`
+const mutPupil = `mutation updateSchoolGrade($grade: Int!) {
+  meUpdate(update: { pupil: { gradeAsInt: $grade } })
+}`
 
 type Props = {}
 
 const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const { space } = useTheme()
 
-  const schoolclass = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12'
-  ]
-  const [selections, setSelections] = useState<string[]>([])
   const { t } = useTranslation()
+
+  const location = useLocation()
+  const { state } = location as { state: { userType: string } }
+
+  const { data, error, loading } = useQuery(gql`
+    ${state?.userType === ' student' ? queryStudent : queryPupil}
+  `)
+
+  const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
+    ${state?.userType === ' student' ? mutStudent : mutPupil}
+  `)
+
+  const schoolGrades = useMemo(() => {
+    if (!data?.me?.pupil?.schooltype) {
+      return new Array(8).fill(0).map((_, i) => i + 5)
+    }
+
+    if (data?.me?.pupil?.schooltype === 'grundschule') {
+      return new Array(4).fill(0).map((_, i) => i + 1)
+    } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
+      return new Array(8).fill(0).map((_, i) => i + 5)
+    } else {
+      return new Array(6).fill(0).map((_, i) => i + 5)
+    }
+  }, [data?.me?.pupil?.schooltype])
+
+  const [selectedGrade, setSelectedGrade] = useState<number>(1)
+
+  useEffect(() => {
+    if (data?.me?.pupil?.gradeAsInt) {
+      setSelectedGrade(data?.me?.pupil?.gradeAsInt)
+    }
+  }, [data?.me?.pupil?.gradeAsInt])
+
+  if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolClass.single.header')}
-      headerLeft={<BackButton />}
-      headerRight={<NotificationAlert />}>
+      headerLeft={<BackButton />}>
       <VStack
         paddingTop={space['4']}
         paddingX={space['1.5']}
@@ -54,34 +94,18 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
-            {selections.map((subject, index) => (
-              <Column
-                marginRight={3}
-                marginBottom={3}
-                key={`selection-${index}`}>
-                <TouchableOpacity
-                  onPress={() =>
-                    setSelections(prev => {
-                      const res = [...prev]
-                      res.splice(index, 1)
-                      return res
-                    })
-                  }>
-                  <Row alignItems="center" justifyContent="center">
-                    <IconTagList
-                      textIcon={subject}
-                      text={t('lernfair.schoolclass', {
-                        class: subject
-                      })}
-                    />
-
-                    <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                      x
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-              </Column>
-            ))}
+            <Column
+              marginRight={3}
+              marginBottom={3}
+              key={`selection-${selectedGrade}`}>
+              <IconTagList
+                isDisabled
+                textIcon={`${selectedGrade}`}
+                text={t('lernfair.schoolclass', {
+                  class: selectedGrade
+                })}
+              />
+            </Column>
           </Row>
         </ProfileSettingItem>
       </VStack>
@@ -93,27 +117,25 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {schoolclass.map(
+                {schoolGrades?.map(
                   (subject, index) =>
-                    !selections.includes(subject) && (
+                    selectedGrade !== subject && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          textIcon={subject}
+                          textIcon={`${subject}`}
                           text={t('lernfair.schoolclass', {
                             class: subject
                           })}
-                          onPress={() =>
-                            setSelections(prev => [...prev, subject])
-                          }
+                          onPress={() => setSelectedGrade(subject)}
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.includes('Andere') && (
+              {/* {selections.includes('Andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -134,13 +156,18 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                     </Stack>
                   </FormControl>
                 </Row>
-              )}
+              )} */}
             </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
-        <Button>{t('profile.SchoolClass.single.button')}</Button>
+        <Button
+          onPress={() =>
+            updateSchoolGrade({ variables: { grade: selectedGrade } })
+          }>
+          {t('profile.SchoolClass.single.button')}
+        </Button>
       </VStack>
     </WithNavigation>
   )
