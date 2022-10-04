@@ -88,18 +88,19 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
-      <Box
-        paddingTop={space['4']}
-        paddingBottom={space['1.5']}
-        paddingX={space['1.5']}>
+      <Box paddingBottom={space['1.5']} paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
         <Text>{t('helpcenter.subtitle')}</Text>
       </Box>
       <Box paddingBottom={space['2.5']} paddingX={space['1.5']}>
-        <Heading paddingBottom={space['0.5']}>Onboarding</Heading>
-        <Text paddingBottom={space['1.5']}>Hier geht es zum Onboarding.</Text>
+        <Heading paddingBottom={space['0.5']}>
+          {t('helpcenter.onboarding.title')}
+        </Heading>
+        <Text paddingBottom={space['1.5']}>
+          {t('helpcenter.onboarding.content')}
+        </Text>
         <Button onPress={() => navigate('/onboarding-list')}>
-          zum Onboarding
+          {t('helpcenter.onboarding.button')}
         </Button>
       </Box>
       <Box width="100%" paddingX={space['1.5']}>
