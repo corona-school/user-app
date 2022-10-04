@@ -13,7 +13,6 @@ import {
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import { states } from '../../types/lernfair/State'
@@ -137,9 +136,9 @@ const ChangeSettingState: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
+          isDisabled={!state}
           onPress={() => {
-            updateState({ variables: { state: userState } })
+            updateState({ variables: { state: state } })
           }}>
           {t('profile.State.single.button')}
         </Button>

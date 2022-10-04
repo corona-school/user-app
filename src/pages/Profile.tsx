@@ -79,6 +79,13 @@ const Profile: React.FC<Props> = () => {
     }
   }, [_changeName.data])
 
+  useEffect(() => {
+    if (data?.me) {
+      setFirstName(data?.me?.firstname)
+      setLastName(data?.me?.lastname)
+    }
+  }, [data?.me])
+
   const profileCompleteness = useMemo(() => {
     const max = 7.0
     let complete = 0.0
@@ -204,29 +211,26 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.FluentLanguagenalData.label')}
                 href={() => navigate('/change-setting/language')}>
-                <Row>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'subjects/icon_deutsch.svg'}
-                      text="Deustch"
-                    />
-                  </Column>
-                  <Column marginRight={3}>
-                    <IconTagList
-                      isDisabled
-                      iconPath={'subjects/icon_englisch.svg'}
-                      text="Englisch"
-                    />
-                  </Column>
-                </Row>
+                {(data?.me?.pupil?.languages?.length && (
+                  <Row>
+                    {data?.me?.pupil?.languages.map((lang: string) => (
+                      <Column marginRight={3}>
+                        <IconTagList
+                          isDisabled
+                          iconPath={`subjects/icon_${lang.toLowerCase()}.svg`}
+                          text={lang}
+                        />
+                      </Column>
+                    ))}
+                  </Row>
+                )) || <Text>Es wurden keine Sprachen angegeben</Text>}
               </ProfileSettingItem>
 
               <ProfileSettingItem
                 title={t('profile.State.label')}
                 href={() => navigate('/change-setting/state')}>
                 <Row>
-                  {data?.me?.pupil?.state && (
+                  {(data?.me?.pupil?.state && (
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
@@ -234,7 +238,7 @@ const Profile: React.FC<Props> = () => {
                         text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
                       />
                     </Column>
-                  )}
+                  )) || <Text>Es wurde kein Bundesland angegeben</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -242,7 +246,7 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.SchoolType.label')}
                 href={() => navigate('/change-setting/school-type')}>
                 <Row>
-                  {data?.me?.pupil?.schooltype && (
+                  {(data?.me?.pupil?.schooltype && (
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
@@ -252,7 +256,7 @@ const Profile: React.FC<Props> = () => {
                         )}
                       />
                     </Column>
-                  )}
+                  )) || <Text>Es wurde keine Schulform angegeben</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -260,7 +264,7 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.SchoolClass.label')}
                 href={() => navigate('/change-setting/class')}>
                 <Row>
-                  {data?.me?.pupil?.gradeAsInt && (
+                  {(data?.me?.pupil?.gradeAsInt && (
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
@@ -270,7 +274,7 @@ const Profile: React.FC<Props> = () => {
                         })}
                       />
                     </Column>
-                  )}
+                  )) || <Text>Es wurde keine Klasse angegeben</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -279,17 +283,18 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.NeedHelpIn.label')}
                 href={() => navigate('/change-setting/subjects')}>
                 <Row>
-                  {data?.me?.pupil?.subjectsFormatted?.map(
-                    (sub: { name: string; __typename: string }) => (
-                      <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={'subjects/icon_mathe.svg'}
-                          text={sub.name}
-                        />
-                      </Column>
-                    )
-                  )}
+                  {(data?.me?.pupil?.subjectsFormatted?.length &&
+                    data?.me?.pupil?.subjectsFormatted?.map(
+                      (sub: { name: string; __typename: string }) => (
+                        <Column marginRight={3}>
+                          <IconTagList
+                            isDisabled
+                            iconPath={'subjects/icon_mathe.svg'}
+                            text={sub.name}
+                          />
+                        </Column>
+                      )
+                    )) || <Text>Es wurde keine Fächer angegeben</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
@@ -308,7 +313,7 @@ const Profile: React.FC<Props> = () => {
                 {t('profile.UserName.label.firstname')}
               </FormControl.Label>
               <Input
-                value={(!!firstName && firstName) || data?.me?.firstname}
+                value={firstName}
                 onChangeText={text => {
                   setFirstName(text)
                 }}
@@ -319,7 +324,7 @@ const Profile: React.FC<Props> = () => {
                 {t('profile.UserName.label.lastname')}
               </FormControl.Label>
               <Input
-                value={(!!lastName && lastName) || data?.me?.lastname}
+                value={lastName}
                 onChangeText={text => {
                   setLastName(text)
                 }}

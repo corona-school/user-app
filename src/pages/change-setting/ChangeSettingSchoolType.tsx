@@ -129,7 +129,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
+          isDisabled={!selections}
           onPress={() => {
             updateSchooltype({ variables: { schooltype: selections } })
           }}>
