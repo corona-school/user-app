@@ -14,7 +14,6 @@ import {
   Alert,
   HStack,
   TextArea,
-  Circle,
   Container
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
@@ -25,7 +24,7 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,9 +47,7 @@ const ProfileHelper: React.FC<Props> = () => {
   const [nameModalVisible, setNameModalVisible] = useState<boolean>(false)
   const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false)
 
-  const [aboutMe, setAboutMe] = useState<string>(
-    'Willkommen im Profil. Hier kannst du deinen Text anpassen.'
-  )
+  const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
   const { data, error, loading } = useQuery(gql`
@@ -58,7 +55,7 @@ const ProfileHelper: React.FC<Props> = () => {
       me {
         firstname
         lastname
-        pupil {
+        student {
           state
           schooltype
           subjectsFormatted {
@@ -81,6 +78,13 @@ const ProfileHelper: React.FC<Props> = () => {
       setUserSettings(true)
     }
   }, [_changeName.data])
+
+  useEffect(() => {
+    if (data?.me) {
+      setFirstName(data?.me?.firstname)
+      setLastName(data?.me?.lastname)
+    }
+  }, [data?.me])
 
   if (loading) return <></>
 
@@ -349,7 +353,7 @@ const ProfileHelper: React.FC<Props> = () => {
                 {t('profile.UserName.label.firstname')}
               </FormControl.Label>
               <Input
-                value={(!!firstName && firstName) || data?.me?.firstname}
+                value={firstName}
                 onChangeText={text => {
                   setFirstName(text)
                 }}
@@ -360,7 +364,7 @@ const ProfileHelper: React.FC<Props> = () => {
                 {t('profile.UserName.label.lastname')}
               </FormControl.Label>
               <Input
-                value={(!!lastName && lastName) || data?.me?.lastname}
+                value={lastName}
                 onChangeText={text => {
                   setLastName(text)
                 }}
@@ -378,6 +382,7 @@ const ProfileHelper: React.FC<Props> = () => {
                 {t('profile.UserName.popup.exit')}
               </Button>
               <Button
+                isDisabled={!firstName || !lastName}
                 onPress={() => {
                   setNameModalVisible(false)
                   changeName({
