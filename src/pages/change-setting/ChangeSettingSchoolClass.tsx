@@ -10,12 +10,36 @@ import {
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+
+const queryStudent = `query {
+  me {
+    student {
+      schooltype
+      gradeAsInt
+    }
+  }
+}`
+const queryPupil = `query {
+  me {
+    pupil {
+      schooltype
+      gradeAsInt
+    }
+  }
+}`
+const mutStudent = `mutation updateSchoolGrade($grade: Int!) {
+  meUpdate(update: { student: { gradeAsInt: $grade } })
+}`
+const mutPupil = `mutation updateSchoolGrade($grade: Int!) {
+  meUpdate(update: { pupil: { gradeAsInt: $grade } })
+}`
 
 type Props = {}
 
@@ -24,21 +48,15 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
 
   const { t } = useTranslation()
 
+  const location = useLocation()
+  const { state } = location as { state: { userType: string } }
+
   const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          schooltype
-          gradeAsInt
-        }
-      }
-    }
+    ${state?.userType === ' student' ? queryStudent : queryPupil}
   `)
 
   const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
-    mutation updateSchoolGrade($grade: Int!) {
-      meUpdate(update: { pupil: { gradeAsInt: $grade } })
-    }
+    ${state?.userType === ' student' ? mutStudent : mutPupil}
   `)
 
   const schoolGrades = useMemo(() => {
@@ -99,7 +117,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {schoolGrades.map(
+                {schoolGrades?.map(
                   (subject, index) =>
                     selectedGrade !== subject && (
                       <Column
@@ -145,7 +163,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
           onPress={() =>
             updateSchoolGrade({ variables: { grade: selectedGrade } })
           }>

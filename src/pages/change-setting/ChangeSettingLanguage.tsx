@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import { languages } from '../../types/lernfair/Language'
@@ -21,28 +22,44 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
+const queryStudent = `query {
+  me {
+    student {
+      languages
+    }
+  }
+}`
+const queryPupil = `query {
+  me {
+    pupil {
+      languages
+    }
+  }
+}`
+const mutStudent = `mutation updateLanguage($languages: [String!]) {
+  meUpdate(update: { student: { languages: $languages } })
+}`
+const mutPupil = `mutation updateLanguage($languages: [String!]) {
+  meUpdate(update: { pupil: { languages: $languages } })
+}`
+
 type Props = {}
 
 const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
+  const location = useLocation()
+  const { state } = location as { state: { userType: string } }
+
   const [selections, setSelections] = useState<string[]>([])
 
   const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          languages
-        }
-      }
-    }
+    ${state?.userType === ' student' ? queryStudent : queryPupil}
   `)
 
   const [updateLanguage, _updateLanguage] = useMutation(gql`
-    mutation updateLanguage($languages: [String!]) {
-      meUpdate(update: { pupil: { languages: $languages } })
-    }
+    ${state?.userType === ' student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {
@@ -149,7 +166,6 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
           onPress={() => {
             updateLanguage({ variables: { languages: selections } })
           }}>
