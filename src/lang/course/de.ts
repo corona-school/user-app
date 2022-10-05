@@ -57,6 +57,30 @@ const course = {
       duration: 'Dauer',
       durationPlaceholder: 'Bessere Absprache zu UX',
       repeatAppoint: 'Termin wiederholen'
+    },
+    Preview: {
+      yes: 'Ja',
+      no: 'Nein',
+      headline: 'Angaben überprüfen',
+      content: 'Bitte überpüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
+      infoHeadline: 'Allgemeine Informationen zu deinem Kurs',
+      courseName: 'Kursname:',
+      courseSubject: 'Fach',
+      shortDesc: 'Kurzbeschreibung',
+      desc: 'Beschreibung',
+      tagHeadline: 'Tags',
+      classHeadline: 'Klassen',
+      membersCountLabel: 'Teilnehmerzahl:',
+      membersCountMaxLabel: 'Max',
+      startDateLabel: 'Beitreten nach Kursbeginn:',
+      allowContactLabel: 'Kontaktaufnahme erlauben:',
+      appointmentHeadline: 'Termine zum Kurs',
+      appointmentLabel: 'Termin',
+      appointmentDate: 'Datum:',
+      appointmentTime: 'Uhrzeit:',
+      appointmentDuration: 'Dauer:',
+      publishCourse: 'Kurs veröffentlichen',
+      editCourse: 'Daten bearbeiten'
     }
   }
 }
