@@ -96,7 +96,10 @@ const Dashboard: React.FC<Props> = () => {
               {t('dashboard.appointmentcard.header')}
             </Heading>
             <AppointmentCard
-              href={'/single-course'}
+              // TODO
+              // onPress={() =>
+              //   navigate('/single-course', { state: { course: null } })
+              // }
               tags={[t('lernfair.subjects.mathe'), 'Gruppenkurs']}
               date={new Date()}
               isTeaser={true}
