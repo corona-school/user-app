@@ -1,4 +1,4 @@
-import { Text, VStack, Heading, Box, Button } from 'native-base'
+import { Text, VStack, Heading, Box, Button, useTheme } from 'native-base'
 import CTACard from '../../widgets/CTACard'
 
 type Props = {
@@ -6,8 +6,9 @@ type Props = {
 }
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
+  const { space } = useTheme()
   return (
-    <VStack>
+    <VStack space={space['1']} paddingX={space['1']}>
       <Heading>Unterstützung anfragen</Heading>
       <Box bgColor="gray.500" h="150px"></Box>
       <Text>

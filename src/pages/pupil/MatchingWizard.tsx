@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { Text, VStack, Heading, TextArea, Button } from 'native-base'
+import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LFSubject } from '../../types/lernfair/Subject'
@@ -15,7 +15,7 @@ const subs: LFSubject[] = [
 
 const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
-
+  const { space } = useTheme()
   const { data, error, loading } = useQuery(gql`
     query {
       me {
@@ -33,7 +33,7 @@ const MatchingWizard: React.FC<Props> = () => {
   const onRequestMatch = useCallback(() => {}, [])
 
   return (
-    <VStack>
+    <VStack space={space['1']} paddingX={space['1']}>
       <Heading>Überprüfen deine Daten</Heading>
       <Text>
         Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten
