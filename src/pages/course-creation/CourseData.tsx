@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client'
 import {
   Text,
   VStack,
@@ -14,6 +15,7 @@ import { useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
+import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 
@@ -22,20 +24,17 @@ type Props = {
   onCancel: () => any
 }
 
-const subjects = [
-  {
-    name: 'Informatik',
-    minGrade: 11,
-    maxGrade: 13
-  },
-  {
-    name: 'Englisch',
-    minGrade: 7,
-    maxGrade: 11
-  }
-]
-
 const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        student {
+          subjectsFormatted
+        }
+      }
+    }
+  `)
+
   const { space } = useTheme()
   const { t } = useTranslation()
   const {
@@ -61,17 +60,17 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
   const splitGrades: SplitGrade[] = useMemo(() => {
     const arr: SplitGrade[] = []
 
-    if (subject?.maxGrade && subject.minGrade) {
-      if (subject.minGrade < 13 && subject.maxGrade >= 11) {
+    if (subject?.grade?.max && subject.grade?.min) {
+      if (subject.grade?.min < 13 && subject?.grade?.max >= 11) {
         arr.push({ minGrade: 11, maxGrade: 13, id: 4 })
       }
-      if (subject.minGrade < 10 && subject.maxGrade >= 9) {
+      if (subject.grade?.min < 10 && subject?.grade?.max >= 9) {
         arr.push({ minGrade: 9, maxGrade: 10, id: 3 })
       }
-      if (subject.minGrade < 8 && subject.maxGrade >= 5) {
+      if (subject.grade?.min < 8 && subject?.grade?.max >= 5) {
         arr.push({ minGrade: 5, maxGrade: 8, id: 2 })
       }
-      if (subject.minGrade > 1 && subject.maxGrade < 4) {
+      if (subject.grade?.min > 1 && subject?.grade?.max < 4) {
         arr.push({ minGrade: 1, maxGrade: 4, id: 1 })
       }
     }
@@ -114,13 +113,11 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
         <Row>
-          {subjects.map(sub => (
+          {data?.me?.student?.subjectsFormatted.map((sub: LFSubject) => (
             <IconTagList
               initial={subject?.name === sub.name}
               text={sub.name}
-              onPress={() =>
-                setSubject && setSubject({ ...sub, key: '', label: '' })
-              }
+              onPress={() => setSubject && setSubject({ ...sub })}
             />
           ))}
         </Row>
@@ -183,7 +180,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         {splitGrades.map((grade: SplitGrade, i) => (
           <ToggleButton
             isActive={courseClasses?.includes(grade?.id) || false}
-            dataKey={subject?.key || 'subject'}
+            dataKey={subject?.name || 'subject'}
             label={`${grade.minGrade}. - ${grade.maxGrade}. Klasse`}
             onPress={() => {
               if (courseClasses?.includes(grade?.id)) {

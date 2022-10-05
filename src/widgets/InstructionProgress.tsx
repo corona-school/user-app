@@ -9,7 +9,7 @@ type Instruction = {
 }
 
 type Props = {
-  instructions: Instruction[]
+  instructions?: Instruction[]
   currentIndex?: number
   isDark?: boolean
 }
@@ -23,7 +23,7 @@ const InstructionProgress: React.FC<Props> = ({
   return (
     <View>
       <Row>
-        {instructions.map((instruction, index) => {
+        {instructions?.map((instruction, index) => {
           const isLast = index >= instructions.length - 1
           const isActive = index === currentIndex
           return (
@@ -61,7 +61,7 @@ const InstructionProgress: React.FC<Props> = ({
           )
         })}
       </Row>
-      {instructions[currentIndex].content && (
+      {instructions && instructions[currentIndex]?.content && (
         <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
           {instructions[currentIndex].content?.map((instruction, i) => (
             <InstructionMessage

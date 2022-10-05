@@ -35,10 +35,10 @@ const queryPupil = `query {
     }
   }
 }`
-const mutStudent = `mutation updateSchooltype($schooltype: String!) {
+const mutStudent = `mutation updateSchooltype($schooltype: SchoolType!) {
   meUpdate(update: { student: { schooltype: $schooltype } })
 }`
-const mutPupil = `mutation updateSchooltype($schooltype: String!) {
+const mutPupil = `mutation updateSchooltype($schooltype: SchoolType!) {
   meUpdate(update: { pupil: { schooltype: $schooltype } })
 }`
 
@@ -81,7 +81,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                 iconPath={`schooltypes/icon_${
                   selections === 'hauptschule' ? 'realschule' : selections
                 }.svg`}
-                text={t(`lernfair.schooltypes.${data?.me?.pupil?.schooltype}`)}
+                text={t(`lernfair.schooltypes.${selections}`)}
               />
             </Column>
           </Row>

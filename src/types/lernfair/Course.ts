@@ -12,7 +12,7 @@ export interface LFSubCourse extends LFCourse {
   image?: string
   participants?: Pupil[]
   maxParticipants?: number
-  participantCount?: number
+  participantsCount?: number
   course: LFCourse
 }
 

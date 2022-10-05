@@ -21,6 +21,7 @@ import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../../types/lernfair/Course'
 import CTACard from '../../widgets/CTACard'
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg'
+import { LFMatch } from '../../types/lernfair/Match'
 
 type Props = {}
 
@@ -42,6 +43,7 @@ const Dashboard: React.FC<Props> = () => {
       }
 
       subcoursesPublic(take: 10, skip: 2) {
+        id
         minGrade
         maxGrade
         maxParticipants
@@ -103,7 +105,7 @@ const Dashboard: React.FC<Props> = () => {
               description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
             />
           </VStack>
-          <HSection title={t('dashboard.myappointments.header')} showAll={true}>
+          <HSection title={t('dashboard.myappointments.header')} showAll>
             {data?.me?.pupil?.subcoursesJoined.map(
               (el: LFSubCourse, i: number) => (
                 <AppointmentCard
@@ -132,7 +134,31 @@ const Dashboard: React.FC<Props> = () => {
               icon={<BooksIcon />}
             />
           </VStack> */}
-          <VStack space={space['0.5']}>
+          <HSection showAll title={t('dashboard.learningpartner.header')}>
+            {data?.me?.pupil?.matches
+              ?.slice(0, 1)
+              .map((match: LFMatch) => (
+                <TeacherCard
+                  name={`${match.student.firstname} ${match.student.lastname}`}
+                  variant="dark"
+                  tags={match.subjectsFormatted.map(s => s.name)}
+                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  button={
+                    <Button variant="outlinelight">
+                      {t('dashboard.offers.match')}
+                    </Button>
+                  }
+                />
+              )) || (
+              <VStack>
+                <Text>Du hast noch keine Matches</Text>
+                <Button onPress={() => navigate('/matching')}>
+                  Match anfordern
+                </Button>
+              </VStack>
+            )}
+          </HSection>
+          {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.learningpartner.header')}
             </Heading>
@@ -147,7 +173,7 @@ const Dashboard: React.FC<Props> = () => {
                 </Button>
               }
             />
-          </VStack>
+          </VStack> */}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
               <SignInCard
