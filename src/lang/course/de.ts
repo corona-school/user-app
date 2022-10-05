@@ -21,6 +21,34 @@ const course = {
     check: 'Angaben prüfen',
     saveDraft: 'Als Entwurf speichern',
     prevPage: ' Zur vorherigen Seite'
+  },
+  CourseDate: {
+    headline: 'Allgemeine Informationen zu deinem Kurs',
+    form: {
+      courseNameHeadline: 'Kursname',
+      courseNamePlaceholder: 'Kursname*',
+      courseSubjectLabel: 'Fach',
+      coursePhotoLabel: 'Foto',
+      courseAddOntherLeadText: 'Weitere Kursleiter hinzufügen',
+      shortDescriptionLabel: 'Kurzbeschreibung', 
+      shortDescriptionPlaceholder: 'Kurzbeschreibung*', 
+      shortDescriptionLimitNotice: 'Max. Zeichenanzahl: 140*', 
+      descriptionLabel: 'Beschreibung', 
+      descriptionPlaceholder: 'Beschreibung*', 
+      tagsLabel: 'Tags',
+      tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
+      detailsHeadline: 'Details',
+      detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
+      maxMembersLabel: 'Max Teilnehmerzahl',
+      maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
+      otherHeadline: 'Sonstiges',
+      otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+      otherOptionContact: 'Kontaktaufnahme erlauben',
+      button: {
+        continue: 'Weiter',
+        cancel: 'Abbrechen'
+      }
+    }
   }
 }
 

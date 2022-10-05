@@ -98,17 +98,21 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
 
   return (
     <VStack space={space['1']}>
-      <Heading>Allgemeine Informationen zu deinem Kurs</Heading>
+      <Heading>{t('course.CourseDate.headline')}</Heading>
       <FormControl>
-        <FormControl.Label isRequired>Kursname</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.courseNameHeadline')}
+        </FormControl.Label>
         <TextArea
-          placeholder="Kursname*"
+          placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setCourseName}
         />
       </FormControl>
       <FormControl>
-        <FormControl.Label isRequired>Fach</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.courseSubjectLabel')}
+        </FormControl.Label>
         <Row>
           {subjects.map(sub => (
             <IconTagList
@@ -123,48 +127,58 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
       </FormControl>
 
       <FormControl>
-        <FormControl.Label isRequired>Foto</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.coursePhotoLabel')}
+        </FormControl.Label>
         <Box bg={'primary.100'} w="100" h="100"></Box>
       </FormControl>
       <FormControl>
-        <FormControl.Label>Weitere Kursleiter hinzufügen</FormControl.Label>
+        <FormControl.Label>
+          {t('course.CourseDate.form.courseAddOntherLeadText')}
+        </FormControl.Label>
         <Row>
           <Box bg={'primary.900'} w="32px" h="32px"></Box>
-          <Text>Weiteren Kursleiter hinzufügen</Text>
+          <Text>{t('course.CourseDate.form.courseAddOntherLeadText')}</Text>
         </Row>
       </FormControl>
       <FormControl>
-        <FormControl.Label isRequired>Kurzbeschreibung</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.shortDescriptionLabel')}
+        </FormControl.Label>
         <TextArea
-          placeholder="Kurzbeschreibung*"
+          placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setOutline}
         />
-        <Text fontSize={'sm'}>Max. Zeichenanzahl: 140</Text>
+        <Text fontSize={'sm'}>
+          {t('course.CourseDate.form.shortDescriptionLimitNotice')}
+        </Text>
       </FormControl>
       <FormControl>
-        <FormControl.Label isRequired>Beschreibung</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.descriptionLabel')}
+        </FormControl.Label>
         <TextArea
-          placeholder="Beschreibung*"
+          placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setDescription}
         />
       </FormControl>
       <FormControl>
-        <FormControl.Label>Tags</FormControl.Label>
+        <FormControl.Label>
+          {t('course.CourseDate.form.tagsLabel')}
+        </FormControl.Label>
         <TextArea
-          placeholder="Tags"
+          placeholder={t('course.CourseDate.form.tagsLabel')}
           autoCompleteType={'normal'}
           onChangeText={setTags}
         />
-        <Text fontSize={'sm'}>
-          Die einzelnen Tags müssen durch ein Komma (,) getrennt werden
-        </Text>
+        <Text fontSize={'sm'}>{t('course.CourseDate.form.tagsInfo')}</Text>
       </FormControl>
-      <Heading>Details</Heading>
+      <Heading>{t('course.CourseDate.form.detailsHeadline')}</Heading>
       <FormControl>
         <FormControl.Label>
-          Für welche Klassen ist der Kurs geeignet?
+          {t('course.CourseDate.form.detailsContent')}
         </FormControl.Label>
         {splitGrades.map((grade: SplitGrade, i) => (
           <ToggleButton
@@ -187,28 +201,29 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         ))}
       </FormControl>
       <FormControl>
-        <FormControl.Label isRequired>Max Teilnehmerzahl</FormControl.Label>
+        <FormControl.Label isRequired>
+          {t('course.CourseDate.form.maxMembersLabel')}
+        </FormControl.Label>
         <TextInput onChangeText={setMaxParticipantCount} />
         <Text fontSize={'sm'}>
-          Gerne eine höhere Zahl angeben, da meist nur die Hälfte der
-          angemeldeten Schüler:innen erscheint.
+          {t('course.CourseDate.form.maxMembersInfo')}
         </Text>
       </FormControl>
 
-      <Heading>Sonstiges</Heading>
+      <Heading>{t('course.CourseDate.form.otherHeadline')}</Heading>
       <Row>
-        <Text flex="1">Teilnehmende dürfen nach Kursbeginn beitreten</Text>
+        <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
         <Switch onValueChange={setJoinAfterStart} />
       </Row>
       <Row>
-        <Text flex="1">Kontaktaufnahme erlauben</Text>
+        <Text flex="1">{t('course.CourseDate.form.otherOptionContact')}</Text>
         <Switch onValueChange={setAllowContact} />
       </Row>
       <Button isDisabled={!isValidInput} onPress={onNext}>
-        Weiter
+        {t('course.CourseDate.form.button.continue')}
       </Button>
       <Button variant={'outline'} onPress={onCancel}>
-        Abbrechen
+        {t('course.CourseDate.form.button.cancel')}
       </Button>
     </VStack>
   )
