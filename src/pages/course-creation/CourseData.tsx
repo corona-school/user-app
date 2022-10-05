@@ -11,6 +11,7 @@ import {
   useTheme
 } from 'native-base'
 import { useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
 import IconTagList from '../../widgets/IconTagList'
@@ -36,6 +37,7 @@ const subjects = [
 
 const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
   const { space } = useTheme()
+  const { t } = useTranslation()
   const {
     courseName,
     setCourseName,

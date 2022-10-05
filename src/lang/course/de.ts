@@ -13,6 +13,14 @@ const course = {
       content: 'Wenn du dir noch nicht sicher bist, ob das Format der Gruppen-Nachhilfe tatsächlich zu dir passt, klick dich durch das Onboarding für den Gruppen-Nachhilfe Bereich und erhalte so eine genauere Idee von der Tätigkeit.',
       button: 'Tour starten'
     }
+  },
+  appointments: {
+    headline: 'Lege Termine für deinen Kurs fest',
+    content: 'Termine erstellen*',
+    addOtherAppointment: 'Weiteren Termin anlegen',
+    check: 'Angaben prüfen',
+    saveDraft: 'Als Entwurf speichern',
+    prevPage: ' Zur vorherigen Seite'
   }
 }
 

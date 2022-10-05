@@ -1,5 +1,6 @@
 import { Text, FormControl, Row, Switch, Heading, VStack } from 'native-base'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
 import { CreateCourseContext } from '../CreateCourse'
@@ -10,6 +11,7 @@ type Props = {
 
 const CourseDateWizard: React.FC<Props> = ({ index }) => {
   const { lectures, setLectures } = useContext(CreateCourseContext)
+  const { t } = useTranslation()
 
   return (
     <VStack w="100%">

@@ -1,6 +1,10 @@
 const profile = {
   title: 'Mein Profil',
   successmessage: 'Änderungen wurden erfolgreich gespeichert.',
+  editprofile: 'Profilbild ändern',
+  birthday: 'Geburtsdatum ändern',
+  type: 'Art der Unterstützung:',
+  availability: "Verfügbarkeit verwalten",
   ProfileCompletion: {
     name: 'Profilvollständigkeit'
   },
