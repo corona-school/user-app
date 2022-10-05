@@ -17,13 +17,15 @@ type Props = {
   content?: string
   contentEnd?: string
   image: string
+  isBigger?: boolean
 }
 
 const OnboardingView: React.FC<Props> = ({
   title,
   content,
   contentEnd,
-  image
+  image,
+  isBigger = false
 }) => {
   const { space } = useTheme()
   const { currentIndex, setCurrentIndex, itemCount } =
@@ -75,7 +77,7 @@ const OnboardingView: React.FC<Props> = ({
           <Box justifyContent="center">
             <Image
               width="100%"
-              height="350px"
+              height={isBigger ? '400px' : '350px'}
               alt="Matching"
               resizeMode="contain"
               source={{ uri: image }}

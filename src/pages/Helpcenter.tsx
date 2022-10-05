@@ -276,7 +276,7 @@ const HelpCenter: React.FC<Props> = () => {
                         />
                       </Select>
                     </Row>
-                    <Row flexDirection="column" paddingY={space['0.5']}>
+                    {/* <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
                         {t('helpcenter.contact.message.label')}
                       </FormControl.Label>
@@ -286,7 +286,7 @@ const HelpCenter: React.FC<Props> = () => {
                           'helpcenter.contact.message.placeholder'
                         )}
                       />
-                    </Row>
+                    </Row> */}
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
                         {t('helpcenter.contact.message.label')}

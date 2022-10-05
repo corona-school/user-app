@@ -33,7 +33,7 @@ const Settings: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('settings.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
+      <VStack paddingBottom={7} paddingX={space['1.5']}>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar
             size="md"

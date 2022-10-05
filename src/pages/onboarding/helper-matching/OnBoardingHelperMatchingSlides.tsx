@@ -44,6 +44,7 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
             title={t('onboardingList.Wizard.helperMatching.request.title')}
             content={t('onboardingList.Wizard.helperMatching.request.content')}
             image={imgRequest}
+            isBigger={true}
           />
 
           {/* Match */}
@@ -54,6 +55,7 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
               'onboardingList.Wizard.helperMatching.match.contentsec'
             )}
             image={imgMatch}
+            isBigger={true}
           />
 
           {/* Contact */}
