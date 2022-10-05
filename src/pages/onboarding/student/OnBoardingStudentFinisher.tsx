@@ -42,7 +42,9 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
                 marginBottom={space['1']}>
                 {t('onboardingList.Wizard.students.finisher.content')}
               </Text>
-              <Button onPress={() => navigate('/')}>zum Dashboard</Button>
+              <Button onPress={() => navigate('/')}>
+                {t('onboardingList.Wizard.students.finisher.button')}
+              </Button>
             </Column>
             <Column paddingY={space['2']}>
               <Logo />

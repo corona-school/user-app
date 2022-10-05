@@ -45,9 +45,7 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
         defaultButtonText={t(
           'onboardingList.Wizard.helperMatching.welcome.startTour'
         )}
-        defaultbuttonLink={() =>
-          navigate('/onboarding-helper-matching/request-matching')
-        }
+        defaultbuttonLink={() => navigate('/onboarding/helpermatching/wizard')}
         icon={<MatchingCard />}
       />
       <Modal

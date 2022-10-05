@@ -45,7 +45,7 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         defaultButtonText={t(
           'onboardingList.Wizard.students.welcome.startTour'
         )}
-        defaultbuttonLink={() => navigate('/onboarding-students/matching')}
+        defaultbuttonLink={() => navigate('/onboarding/students/wizard')}
         icon={<Logo />}
       />
       <Modal

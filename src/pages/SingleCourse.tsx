@@ -56,7 +56,7 @@ const SingleCourse: React.FC<Props> = () => {
           </Row>
         </Box>
         <Text paddingBottom={space['0.5']}>
-          {t('single.global.clockFrom')} 28.07.22 • 13:30{' '}
+          {t('single.global.clockFrom')} 28.07.22 • 13:30
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={1.5}>{course?.course?.name}</Heading>
@@ -81,12 +81,18 @@ const SingleCourse: React.FC<Props> = () => {
               title: t('single.tabs.description'),
               content: (
                 <>
-                  <Text>{course?.course?.description}</Text>
+                  <Text marginBottom={space['1']}>
+                    {course?.course?.description}
+                  </Text>
                   <Box marginBottom={space['0.5']}>
-                    <Button marginBottom={space['0.5']}>Anmelden</Button>
+                    <Button marginBottom={space['0.5']}>
+                      {t('single.button.login')}
+                    </Button>
                   </Box>
                   <Box marginBottom={space['1.5']}>
-                    <Button variant="outline">Kontakt aufnehmen</Button>
+                    <Button variant="outline">
+                      {t('single.button.contact')}
+                    </Button>
                   </Box>
                 </>
               )
@@ -113,7 +119,9 @@ const SingleCourse: React.FC<Props> = () => {
                     <Text bold marginRight={space['0.5']}>
                       {t('single.global.quantity')}:
                     </Text>
-                    <Text>{course?.lectures?.length} Lektionen</Text>
+                    <Text>
+                      {course?.lectures?.length} {t('single.global.lessons')}:
+                    </Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
@@ -149,7 +157,8 @@ const SingleCourse: React.FC<Props> = () => {
                   {course?.lectures?.map((lec, i) => (
                     <Row flexDirection="column" marginBottom={space['1.5']}>
                       <Heading paddingBottom={space['0.5']} fontSize="md">
-                        Lektion {`${i + 1}`.padStart(2, '0')}
+                        {t('single.global.lesson')}
+                        {`${i + 1}`.padStart(2, '0')}
                       </Heading>
                       <Text paddingBottom={space['0.5']}>
                         {/* {lec?.start && lec?.start.toDateString()} */}
@@ -184,7 +193,10 @@ const SingleCourse: React.FC<Props> = () => {
                     </Column>
                     <Column>
                       <Heading fontSize="md">Linda</Heading>
-                      <Text>13 Jahre {t('single.global.from')} Köln</Text>
+                      <Text>
+                        13 {t('single.global.years')} {t('single.global.from')}
+                        Köln
+                      </Text>
                     </Column>
                   </Row>
                   {course?.participants?.map(p => (

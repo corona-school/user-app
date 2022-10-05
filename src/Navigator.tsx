@@ -32,31 +32,24 @@ import RegistrationData from './pages/registration/RegistrationData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
 
+// Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
-import OnBoardingStudentMatching from './pages/onboarding/student/OnBoardingStudentMatching'
-import OnBoardingStudentCourse from './pages/onboarding/student/OnBoardingStudentCourse'
-import OnBoardingStudentHelpCenter from './pages/onboarding/student/OnBoardingStudentHelpCenter'
-import OnBoardingStudentProfile from './pages/onboarding/student/OnBoardingStudentProfile'
+import OnBoardingStudentSlides from './pages/onboarding/student/OnBoardingStudentSlides'
 import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher'
-import OnBoardingStudentAppointments from './pages/onboarding/student/OnBoardingStudentAppointments'
+
+// Onboarding Helper
 import OnBoardingHelperWelcome from './pages/onboarding/helper/OnBoardingHelperWelcome'
-import OnBoardingHelperMatch from './pages/onboarding/helper/OnBoardingHelperMatch'
-import OnBoardingHelperGroup from './pages/onboarding/helper/OnBoardingHelperGroup'
-import OnBoardingHelperHelpCenter from './pages/onboarding/helper/OnBoardingHelperHelpCenter'
-import OnBoardingHelperProfile from './pages/onboarding/helper/OnBoardingHelperProfile'
-import OnBoardingHelperSettings from './pages/onboarding/helper/OnBoardingHelperSettings'
+import OnBoardingHelperSlides from './pages/onboarding/helper/OnBoardingHelperSlides'
 import OnBoardingHelperFinisher from './pages/onboarding/helper/OnBoardingHelperFinisher'
-import OnBoardingHelperNotification from './pages/onboarding/helper/OnBoardingHelperNotification'
+
+// Onboarding Helper Matching
 import OnBoardingHelperMatchingWelcome from './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome'
-import OnBoardingHelperMatchingRequestMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequestMatch'
-import OnBoardingHelperMatchingRequest from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequest'
-import OnBoardingHelperMatchingMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingMatch'
-import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/OnBoardingHelperMatchingContact'
-import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
+import OnBoardingHelperMatchingSlides from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
-import ProfileHelper from './pages/student/ProfileStudent'
-import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
-import DashboardHelper from './pages/student/DashboardStudent'
+
+// Profile
+import ProfileHelper from './pages/ProfileHelper'
+import DashboardHelper from './pages/DashboardHelper'
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
@@ -199,30 +192,31 @@ export default function Navigator() {
         <Route
           path="/onboarding-list"
           element={
-            // <RequireAuth>
-            <OnboardingTourList />
-            // </RequireAuth>
+            <RequireAuth>
+              <OnboardingTourList />
+            </RequireAuth>
           }
         />
 
         <Route
           path="/matching-1-1"
           element={
-            // <RequireAuth>
-            <MatchingBlocker />
-            // </RequireAuth>
+            <RequireAuth>
+              <MatchingBlocker />
+            </RequireAuth>
           }
         />
 
         <Route
           path="/course"
           element={
-            // <RequireAuth>
-            <CourseBlocker />
-            // </RequireAuth>
+            <RequireAuth>
+              <CourseBlocker />
+            </RequireAuth>
           }
         />
 
+        {/* Onboarding Subpages */}
         <Route
           path="/onboarding"
           element={
@@ -230,135 +224,66 @@ export default function Navigator() {
               <Outlet />
             </RequireAuth>
           }>
+          <Route path="students" element={<OnBoardingStudentWelcome />} />
+          <Route path="helper" element={<OnBoardingHelperWelcome />} />
           <Route
-            path="students-welcome"
-            element={<OnBoardingStudentWelcome />}
-          />
-          <Route
-            path="students-matching"
-            element={<OnBoardingStudentMatching />}
+            path="helpermatching"
+            element={<OnBoardingHelperMatchingWelcome />}
           />
         </Route>
+
         {/* Onboarding Students */}
         <Route
-          path="/onboarding-students"
+          path="/onboarding/students"
           element={
-            // <RequireAuth>
-            <OnBoardingStudentWelcome />
-            // </RequireAuth>
-          }></Route>
-        <Route
-          path="/onboarding-students/welcome"
-          element={<OnBoardingStudentWelcome />}
-        />
-        <Route
-          path="/onboarding-students/matching"
-          element={<OnBoardingStudentMatching />}
-        />
-        <Route
-          path="/onboarding-students/groups"
-          element={<OnBoardingStudentCourse />}
-        />
-        <Route
-          path="/onboarding-students/appointments"
-          element={<OnBoardingStudentAppointments />}
-        />
-        <Route
-          path="/onboarding-students/helpcenter"
-          element={<OnBoardingStudentHelpCenter />}
-        />
-        <Route
-          path="/onboarding-students/profil"
-          element={<OnBoardingStudentProfile />}
-        />
-        <Route
-          path="/onboarding-students/finish"
-          element={<OnBoardingStudentFinisher />}
-        />
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingStudentWelcome />} />
+          <Route path="wizard" element={<OnBoardingStudentSlides />} />
+          <Route path="finish" element={<OnBoardingStudentFinisher />} />
+          <Route path="*" element={<OnBoardingStudentWelcome />} />
+        </Route>
 
         {/* Onboarding Helper */}
         <Route
-          path="/onboarding-helper"
+          path="/onboarding/helper"
           element={
-            // <RequireAuth>
-            <OnBoardingHelperWelcome />
-            // </RequireAuth>
-          }></Route>
-        <Route
-          path="/onboarding-helper/welcome"
-          element={<OnBoardingHelperWelcome />}
-        />
-        <Route
-          path="/onboarding-helper/matching"
-          element={<OnBoardingHelperMatch />}
-        />
-        <Route
-          path="/onboarding-helper/groups"
-          element={<OnBoardingHelperGroup />}
-        />
-        <Route
-          path="/onboarding-helper/appointment"
-          element={<OnBoardingHelperAppointment />}
-        />
-        <Route
-          path="/onboarding-helper/helpcenter"
-          element={<OnBoardingHelperHelpCenter />}
-        />
-        <Route
-          path="/onboarding-helper/profil"
-          element={<OnBoardingHelperProfile />}
-        />
-        <Route
-          path="/onboarding-helper/settings"
-          element={<OnBoardingHelperSettings />}
-        />
-        <Route
-          path="/onboarding-helper/notification"
-          element={<OnBoardingHelperNotification />}
-        />
-        <Route
-          path="/onboarding-helper/finish"
-          element={<OnBoardingHelperFinisher />}
-        />
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingHelperWelcome />} />
+          <Route path="wizard" element={<OnBoardingHelperSlides />} />
+          <Route path="finish" element={<OnBoardingHelperFinisher />} />
+          <Route path="*" element={<OnBoardingHelperWelcome />} />
+        </Route>
 
         {/* Onboarding Helper Matching */}
-        <Route
-          path="/onboarding-helper-matching"
-          element={
-            // <RequireAuth>
-            <OnBoardingHelperMatchingWelcome />
-            // </RequireAuth>
-          }></Route>
-        <Route
-          path="/onboarding-helper-matching/welcome"
-          element={<OnBoardingHelperMatchingWelcome />}
-        />
-        <Route
-          path="/onboarding-helper-matching/request-matching"
-          element={<OnBoardingHelperMatchingRequestMatch />}
-        />
-        <Route
-          path="/onboarding-helper-matching/request"
-          element={<OnBoardingHelperMatchingRequest />}
-        />
-        <Route
-          path="/onboarding-helper-matching/match"
-          element={<OnBoardingHelperMatchingMatch />}
-        />
-        <Route
-          path="/onboarding-helper-matching/contact"
-          element={<OnBoardingHelperMatchingContact />}
-        />
-        <Route
-          path="/onboarding-helper-matching/solve-matching"
-          element={<OnBoardingHelperMatchingSolveMatching />}
-        />
-        <Route
-          path="/onboarding-helper-matching/finish"
-          element={<OnBoardingHelperMatchingFinisher />}
-        />
 
-        <Route path="/create-course" element={<CreateCourse />} />
+        <Route
+          path="/onboarding/helpermatching"
+          element={
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingHelperMatchingWelcome />} />
+          <Route path="wizard" element={<OnBoardingHelperMatchingSlides />} />
+          <Route path="finish" element={<OnBoardingHelperMatchingFinisher />} />
+          <Route path="*" element={<OnBoardingHelperMatchingWelcome />} />
+        </Route>
+
+        {/* Create Course */}
+        <Route
+          path="/create-course"
+          element={
+            <RequireAuth>
+              <CreateCourse />
+            </RequireAuth>
+          }
+        />
 
         {/* Fallback */}
         <Route

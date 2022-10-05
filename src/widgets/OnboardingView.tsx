@@ -81,7 +81,11 @@ const OnboardingView: React.FC<Props> = ({
               source={{ uri: image }}
             />
           </Box>
-          <Row space={space['0.5']} justifyContent="center" alignItems="center">
+          <Row
+            space={space['0.5']}
+            marginY={space['1']}
+            justifyContent="center"
+            alignItems="center">
             {new Array(itemCount).fill(0).map((_, i) => (
               <Pressable onPress={() => setCurrentIndex(i)}>
                 <Bullet isActive={i === currentIndex ? true : false} />

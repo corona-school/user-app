@@ -302,6 +302,7 @@ const Profile: React.FC<Props> = () => {
         </VStack>
       </WithNavigation>
       <Modal
+        bg="modalbg"
         isOpen={nameModalVisible}
         onClose={() => setNameModalVisible(false)}>
         <Modal.Content>
@@ -355,6 +356,7 @@ const Profile: React.FC<Props> = () => {
         </Modal.Content>
       </Modal>
       <Modal
+        bg="modalbg"
         isOpen={aboutMeModalVisible}
         onClose={() => setAboutMeModalVisible(false)}>
         <Modal.Content>

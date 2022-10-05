@@ -30,7 +30,7 @@ const OnboardingTourList: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('onboardingList.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
+      <VStack paddingBottom={7} paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
           {t('onboardingList.title')}
         </Heading>

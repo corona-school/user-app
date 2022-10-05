@@ -1,29 +1,13 @@
-import {
-  useTheme,
-  Text,
-  View,
-  Box,
-  Container,
-  Image,
-  Row,
-  Link,
-  HStack,
-  Column,
-  Modal,
-  Heading
-} from 'native-base'
+import { useTheme, View, Container } from 'native-base'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import Bullet from '../../../components/Bullet'
 import ViewPager from '../../../components/ViewPager'
-import WithNavigation from '../../../components/WithNavigation'
-import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
 import OnboardingView from '../../../widgets/OnboardingView'
 
 type Props = {}
 
-const OnBoardingStudentMatching: React.FC<Props> = () => {
+const OnBoardingStudentSlides: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -43,7 +27,9 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
       height="100%"
       alignItems="stretch">
       <View flex={1}>
-        <ViewPager isOnboarding={true} onFinish={onFinish}>
+        <ViewPager
+          isOnboarding={true}
+          onFinish={() => navigate('/onboarding/students/finish')}>
           {/* Matching */}
           <OnboardingView
             title={t('onboardingList.Wizard.students.matching.title')}
@@ -68,4 +54,4 @@ const OnBoardingStudentMatching: React.FC<Props> = () => {
     </Container>
   )
 }
-export default OnBoardingStudentMatching
+export default OnBoardingStudentSlides
