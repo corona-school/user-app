@@ -48,6 +48,15 @@ const course = {
         continue: 'Weiter',
         cancel: 'Abbrechen'
       }
+    },
+    Wizard: {
+      headline: 'Termin',
+      date: 'Datum',
+      dateInfo: 'Ein Kurs muss 7 Tage vor Kursbeginn angelegt werden.',
+      time: 'Uhrzeit',
+      duration: 'Dauer',
+      durationPlaceholder: 'Bessere Absprache zu UX',
+      repeatAppoint: 'Termin wiederholen'
     }
   }
 }
