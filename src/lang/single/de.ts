@@ -23,7 +23,7 @@ const single = {
   },
   tabs:{
     description: 'Beschreibung',
-    help: 'Hilfestellung',
+    help: 'Details',
     lessons: 'Lektionen', 
     participant: 'Teilnehmer'
   }

@@ -82,10 +82,7 @@ const ChangeSettingState: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('profile.State.single.header')}
       headerLeft={<BackButton />}>
-      <VStack
-        paddingTop={space['4']}
-        paddingX={space['1.5']}
-        space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']}>
         <Heading>{t('profile.State.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">

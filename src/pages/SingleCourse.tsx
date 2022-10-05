@@ -32,7 +32,7 @@ const SingleCourse: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={course?.course?.name}
       headerLeft={<BackButton />}>
-      <Box paddingTop={space['4']} paddingX={space['1.5']}>
+      <Box paddingX={space['1.5']}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
             alt={course?.course?.name}
@@ -59,7 +59,7 @@ const SingleCourse: React.FC<Props> = () => {
           {t('single.global.clockFrom')} 28.07.22 • 13:30
           {t('single.global.clock')}
         </Text>
-        <Heading paddingBottom={1.5}>{course?.course?.name}</Heading>
+        <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
         <Row alignItems="center" paddingBottom={space['1']}>
           <ProfilAvatar
             size="sm"
@@ -157,7 +157,7 @@ const SingleCourse: React.FC<Props> = () => {
                   {course?.lectures?.map((lec, i) => (
                     <Row flexDirection="column" marginBottom={space['1.5']}>
                       <Heading paddingBottom={space['0.5']} fontSize="md">
-                        {t('single.global.lesson')}
+                        {t('single.global.lesson')}{' '}
                         {`${i + 1}`.padStart(2, '0')}
                       </Heading>
                       <Text paddingBottom={space['0.5']}>
@@ -194,7 +194,8 @@ const SingleCourse: React.FC<Props> = () => {
                     <Column>
                       <Heading fontSize="md">Linda</Heading>
                       <Text>
-                        13 {t('single.global.years')} {t('single.global.from')}
+                        13 {t('single.global.years') + ' '}
+                        {t('single.global.from') + ' '}
                         Köln
                       </Text>
                     </Column>
