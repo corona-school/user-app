@@ -1,8 +1,6 @@
-import { gql, useMutation } from '@apollo/client'
 import { VStack, Button, useTheme, Heading, Text, Row, Box } from 'native-base'
 import { useContext } from 'react'
 import IconTagList from '../../widgets/IconTagList'
-import TwoColGrid from '../../widgets/TwoColGrid'
 import { CreateCourseContext } from '../CreateCourse'
 
 type Props = {
@@ -56,7 +54,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           <Heading>Tags</Heading>
           <Row>
             {tags.split(',').map(t => (
-              <IconTagList text={t} />
+              <IconTagList text={t} isDisabled />
             ))}
           </Row>
         </>

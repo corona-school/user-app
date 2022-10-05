@@ -95,8 +95,19 @@ const CreateCourse: React.FC<Props> = () => {
     createCourse,
     { data: courseData, error: courseError, loading: courseLoading }
   ] = useMutation(gql`
-    mutation createCourse($course: PublicCourseCreateInput!) {
-      courseCreate(course: $course)
+    mutation createCourse(
+      $studentId: Float!
+      $course: PublicCourseCreateInput!
+      $subcourse: PublicSubcourseCreateInput!
+    ) {
+      courseCreate(studentId: $studentId, course: $course) {
+        id
+      }
+      subcourseCreate(
+        studentId: $studentId
+        courseId: id
+        subcourse: $subcourse
+      )
     }
   `)
 
@@ -144,7 +155,8 @@ const CreateCourse: React.FC<Props> = () => {
     createCourse({
       variables: {
         studentId: data?.me?.student?.id,
-        course
+        course,
+        subcourse
       }
     })
   }, [
@@ -206,16 +218,13 @@ const CreateCourse: React.FC<Props> = () => {
             currentIndex={currentIndex}
             instructions={[
               {
-                label: 'Kurs',
-                content: []
+                label: 'Kurs'
               },
               {
-                label: 'Termine',
-                content: []
+                label: 'Termine'
               },
               {
-                label: 'Angaben prüfen',
-                content: []
+                label: 'Angaben prüfen'
               }
             ]}
           />
