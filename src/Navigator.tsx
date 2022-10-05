@@ -7,10 +7,10 @@ import {
   useLocation
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/pupil/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
-import Profile from './pages/Profile'
+import Profile from './pages/pupil/Profile'
 
 import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
@@ -52,8 +52,8 @@ import ProfileHelper from './pages/ProfileHelper'
 import DashboardHelper from './pages/DashboardHelper'
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
-import MatchingBlocker from './pages/matching/1-1/MatchingBlocker'
-import CourseBlocker from './pages/course/CourseBlocker'
+import MatchingBlocker from './pages/student/MatchingBlocker'
+import CourseBlocker from './pages/student/CourseBlocker'
 
 export default function Navigator() {
   return (

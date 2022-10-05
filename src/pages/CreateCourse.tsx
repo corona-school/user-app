@@ -1,9 +1,11 @@
+import { gql, useMutation } from '@apollo/client'
 import { useTheme, VStack } from 'native-base'
 import {
   createContext,
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -17,13 +19,23 @@ import CourseAppointments from './course-creation/CourseAppointments'
 import CourseData from './course-creation/CourseData'
 import CoursePreview from './course-creation/CoursePreview'
 
+import { DateTime } from 'luxon'
+
 type Props = {}
+
+type Lecture = {
+  date: any
+  time: any
+  duration: any
+}
 
 type ICreateCourseContext = {
   courseName?: string
   setCourseName?: Dispatch<SetStateAction<string>>
   subject?: Subject
   setSubject?: Dispatch<SetStateAction<Subject>>
+  courseClasses?: number[]
+  setCourseClasses?: Dispatch<SetStateAction<number[]>>
   outline?: string
   setOutline?: Dispatch<SetStateAction<string>>
   description?: string
@@ -36,6 +48,8 @@ type ICreateCourseContext = {
   setJoinAfterStart?: Dispatch<SetStateAction<boolean>>
   allowContact?: boolean
   setAllowContact?: Dispatch<SetStateAction<boolean>>
+  lectures?: Lecture[]
+  setLectures?: Dispatch<SetStateAction<Lecture[]>>
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({})
@@ -43,20 +57,45 @@ export const CreateCourseContext = createContext<ICreateCourseContext>({})
 const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [subject, setSubject] = useState<Subject>({ key: '', label: '' })
+  const [courseClasses, setCourseClasses] = useState<number[]>([])
   const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
   const [maxParticipantCount, setMaxParticipantCount] = useState<string>('0')
   const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false)
   const [allowContact, setAllowContact] = useState<boolean>(false)
+  const [lectures, setLectures] = useState<Lecture[]>([])
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+
+  // TODO just put in to satisfy graphql errors
+  // mutation createCourse(
+  //   $user: Float!
+  //   $course: PublicCourseCreateInput!
+  //   $sub: PublicSubcourseCreateInput!
+  //   $lec: [PublicLectureInput!]
+  // ) {
+  //   courseCreate(studentId: $user, course: $course) {
+  //     id
+  //   }
+  //   subcourseCreate(courseId: id, subcourse: $sub}){id}
+  //   lectureCreate(subcourseId: id, lecture: $lec)
+  // }
+  const [createCourse, { data, error, loading }] = useMutation(gql`
+    mutation createCourse($course: PublicCourseCreateInput!) {
+      courseCreate(course: $course)
+    }
+  `)
+
   const { space } = useTheme()
   const navigate = useNavigate()
 
-  const onFinish = () => {
-    console.log('finished')
-  }
+  const onFinish = useCallback(() => {
+    // TODO collect all data
+    // TODO format lectures correctly
+    // TODO unsplash
+    createCourse({ variables: {} })
+  }, [createCourse])
 
   const onNext = useCallback(() => {
     if (currentIndex >= 2) {
@@ -64,7 +103,7 @@ const CreateCourse: React.FC<Props> = () => {
     } else {
       setCurrentIndex(prev => prev + 1)
     }
-  }, [currentIndex])
+  }, [currentIndex, onFinish])
 
   const onBack = useCallback(() => {
     setCurrentIndex(prev => prev - 1)
@@ -74,12 +113,19 @@ const CreateCourse: React.FC<Props> = () => {
     navigate(-1)
   }, [navigate])
 
+  useEffect(() => {
+    if (data) {
+    }
+  }, [data])
+
   return (
     <WithNavigation>
       <CreateCourseContext.Provider
         value={{
           courseName,
           setCourseName,
+          courseClasses,
+          setCourseClasses,
           subject,
           setSubject,
           outline,
@@ -93,20 +139,25 @@ const CreateCourse: React.FC<Props> = () => {
           joinAfterStart,
           setJoinAfterStart,
           allowContact,
-          setAllowContact
+          setAllowContact,
+          lectures,
+          setLectures
         }}>
         <VStack space={space['1']} padding={space['1']}>
           <InstructionProgress
             currentIndex={currentIndex}
             instructions={[
               {
-                label: 'Kurs'
+                label: 'Kurs',
+                content: []
               },
               {
-                label: 'Termine'
+                label: 'Termine',
+                content: []
               },
               {
-                label: 'Angaben prüfen'
+                label: 'Angaben prüfen',
+                content: []
               }
             ]}
           />
@@ -117,7 +168,11 @@ const CreateCourse: React.FC<Props> = () => {
             <CourseAppointments onNext={onNext} onBack={onBack} />
           )}
           {currentIndex === 2 && (
-            <CoursePreview onNext={onNext} onBack={onBack} />
+            <CoursePreview
+              onNext={onNext}
+              onBack={onBack}
+              isDisabled={loading}
+            />
           )}
         </VStack>
       </CreateCourseContext.Provider>

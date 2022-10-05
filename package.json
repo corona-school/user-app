@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "serve": "^13.0.4"
+  },
+  "devDependencies": {
     "@apollo/client": "^3.6.9",
     "@babel/core": "^7.16.0",
     "@jonkoops/matomo-tracker-react": "^0.7.0",
@@ -40,6 +43,7 @@
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
+    "luxon": "^3.0.4",
     "mini-css-extract-plugin": "^2.6.1",
     "native-base": "^3.4.7",
     "postcss": "^8.4.16",
@@ -71,12 +75,15 @@
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1"
+    "workbox-webpack-plugin": "^6.4.1",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/luxon": "^3.0.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "serve": "serve -l $PORT"
   },
   "eslintConfig": {
     "extends": [
@@ -150,8 +157,5 @@
     "presets": [
       "react-app"
     ]
-  },
-  "devDependencies": {
-    "@testing-library/react-hooks": "^7.0.2"
   }
 }

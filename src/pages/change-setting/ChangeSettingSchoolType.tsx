@@ -13,6 +13,7 @@ import {
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import { schooltypes } from '../../types/lernfair/SchoolType'
@@ -20,26 +21,42 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
+const queryStudent = `query {
+  me {
+    student {
+      schooltype
+    }
+  }
+}`
+const queryPupil = `query {
+  me {
+    pupil {
+      schooltype
+    }
+  }
+}`
+const mutStudent = `mutation updateSchooltype($schooltype: String!) {
+  meUpdate(update: { student: { schooltype: $schooltype } })
+}`
+const mutPupil = `mutation updateSchooltype($schooltype: String!) {
+  meUpdate(update: { pupil: { schooltype: $schooltype } })
+}`
+
 type Props = {}
 
 const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
+  const location = useLocation()
+  const { state } = location as { state: { userType: string } }
+
   const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          schooltype
-        }
-      }
-    }
+    ${state?.userType === ' student' ? queryStudent : queryPupil}
   `)
 
   const [updateSchooltype, _updateSchooltype] = useMutation(gql`
-    mutation updateSchooltype($schooltype: String!) {
-      meUpdate(update: { pupil: { schooltype: $schooltype } })
-    }
+    ${state?.userType === ' student' ? mutStudent : mutPupil}
   `)
 
   const [selections, setSelections] = useState<string>('')
@@ -129,7 +146,6 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
           onPress={() => {
             updateSchooltype({ variables: { schooltype: selections } })
           }}>

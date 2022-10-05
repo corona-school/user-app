@@ -1,3 +1,5 @@
+import { ClassRange } from './types/lernfair/SchoolClass'
+
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000
 export const TOKEN_LENGTH = 32
 
@@ -36,5 +38,31 @@ export const createToken = () => {
   return id
 }
 
-const Utility = { createToken, toTimerString, TIME_THRESHOLD }
+export const intToClassRange: (num: number) => ClassRange = (num: number) => {
+  let minClass = 0
+  let maxClass = 0
+
+  switch (num) {
+    case 1:
+      minClass = 1
+      maxClass = 4
+      break
+    case 2:
+      minClass = 5
+      maxClass = 8
+      break
+    case 3:
+      minClass = 9
+      maxClass = 10
+      break
+    case 4:
+      minClass = 11
+      maxClass = 13
+      break
+  }
+
+  return { min: minClass, max: maxClass } as ClassRange
+}
+
+const Utility = { createToken, toTimerString, TIME_THRESHOLD, intToClassRange }
 export default Utility

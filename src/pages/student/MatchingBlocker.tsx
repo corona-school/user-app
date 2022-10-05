@@ -7,11 +7,11 @@ import {
   useTheme,
   Image
 } from 'native-base'
-import WithNavigation from '../../../components/WithNavigation'
-import BackButton from '../../../components/BackButton'
-import CTACard from '../../../widgets/CTACard'
-import LFIconBook from '../../../assets/icons/lernfair/lf-books.svg'
-import LFImageLearing from '../../../assets/images/matching/1-1-matching.jpg'
+import WithNavigation from '../../components/WithNavigation'
+import BackButton from '../../components/BackButton'
+import CTACard from '../../widgets/CTACard'
+import LFIconBook from '../../assets/icons/lernfair/lf-books.svg'
+import LFImageLearing from '../../assets/images/matching/1-1-matching.jpg'
 import { useTranslation } from 'react-i18next'
 
 type Props = {}

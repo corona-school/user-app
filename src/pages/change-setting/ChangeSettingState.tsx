@@ -13,7 +13,7 @@ import {
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import { states } from '../../types/lernfair/State'
@@ -21,28 +21,44 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
+const queryPupil = `query {
+  me {
+    pupil {
+      state
+    }
+  }
+}`
+const queryStudent = `query {
+  me {
+    student {
+      state
+    }
+  }
+}`
+
+const mutStudent = `mutation updateState($state: String!) {
+  meUpdate(update: { student: { state: $state } })
+}`
+const mutPupil = `mutation updateState($state: String!) {
+  meUpdate(update: { pupil: { state: $state } })
+}`
+
 type Props = {}
 
 const ChangeSettingState: React.FC<Props> = () => {
   const { space } = useTheme()
+  const location = useLocation()
+  const { state: locState } = location as { state: { userType: string } }
 
   const [userState, setUserState] = useState<string>('')
   const { t } = useTranslation()
 
   const { data, loading, error } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          state
-        }
-      }
-    }
+    ${locState?.userType === ' student' ? queryStudent : queryPupil}
   `)
 
   const [updateState, _updateState] = useMutation(gql`
-    mutation updateState($state: String!) {
-      meUpdate(update: { pupil: { state: $state } })
-    }
+    ${locState?.userType === ' student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {
@@ -137,9 +153,8 @@ const ChangeSettingState: React.FC<Props> = () => {
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
-          isDisabled
           onPress={() => {
-            updateState({ variables: { state: userState } })
+            updateState({ variables: { state: state } })
           }}>
           {t('profile.State.single.button')}
         </Button>

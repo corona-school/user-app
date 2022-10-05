@@ -6,9 +6,9 @@ import ProfilAvatar from './ProfilAvatar'
 type Props = {
   avatar?: string
   name: string
-  fach: string[]
-  schulform: string
-  klasse: number
+  subjects: string[]
+  schooltype: string
+  schoolclass: number
   isDark?: boolean
   button?: ReactNode
 }
@@ -16,9 +16,9 @@ type Props = {
 const LearningPartner: React.FC<Props> = ({
   avatar,
   name,
-  fach,
-  schulform,
-  klasse,
+  subjects,
+  schooltype,
+  schoolclass,
   isDark = false,
   button
 }) => {
@@ -44,21 +44,21 @@ const LearningPartner: React.FC<Props> = ({
               </Text>
             )}
 
-            {fach && (
+            {subjects && (
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Fach: {fach.join(', ')}
+                Fach: {subjects.join(', ')}
               </Text>
             )}
 
-            {schulform && (
+            {schooltype && (
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Schulform: {schulform}
+                Schulform: {schooltype}
               </Text>
             )}
 
-            {klasse && (
+            {schoolclass && (
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Klasse: {klasse}
+                Klasse: {schoolclass}
               </Text>
             )}
           </Box>
