@@ -6,16 +6,17 @@ import { ReactNode, useState } from 'react'
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
-import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
+import LFMatchingIcon from '../assets/icons/lernfair/lf-matching.svg'
+import LFGroupIcon from '../assets/icons/lernfair/lf-users.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
-import CSSWrapper from './CSSWrapper'
 
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
   appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
-  explore: { label: 'Erkunden', icon: LFExploreIcon },
+  group: { label: 'Gruppe', icon: LFGroupIcon },
+  matching: { label: 'Einzel', icon: LFMatchingIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
 }
 
