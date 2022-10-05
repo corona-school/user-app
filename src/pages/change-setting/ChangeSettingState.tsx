@@ -36,10 +36,10 @@ const queryStudent = `query {
   }
 }`
 
-const mutStudent = `mutation updateState($state: String!) {
+const mutStudent = `mutation updateState($state: State!) {
   meUpdate(update: { student: { state: $state } })
 }`
-const mutPupil = `mutation updateState($state: String!) {
+const mutPupil = `mutation updateState($state: State!) {
   meUpdate(update: { pupil: { state: $state } })
 }`
 
@@ -154,7 +154,7 @@ const ChangeSettingState: React.FC<Props> = () => {
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
           onPress={() => {
-            updateState({ variables: { state: state } })
+            updateState({ variables: { state: state.key } })
           }}>
           {t('profile.State.single.button')}
         </Button>
