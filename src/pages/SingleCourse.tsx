@@ -18,6 +18,7 @@ import WithNavigation from '../components/WithNavigation'
 import { LFSubCourse } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 import ProfilAvatar from '../widgets/ProfilAvatar'
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -30,7 +31,11 @@ const SingleCourse: React.FC<Props> = () => {
 
   return (
     <WithNavigation
-      headerTitle={course?.course?.name}
+      headerTitle={
+        course?.course?.name.length > 20
+          ? course?.course?.name.substring(0, 20)
+          : course?.course?.name
+      }
       headerLeft={<BackButton />}>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Box height="178px" marginBottom={space['1.5']}>
@@ -56,7 +61,10 @@ const SingleCourse: React.FC<Props> = () => {
           </Row>
         </Box>
         <Text paddingBottom={space['0.5']}>
-          {t('single.global.clockFrom')} 28.07.22 • 13:30
+          {t('single.global.clockFrom')}{' '}
+          {DateTime.fromISO(
+            course?.lectures[0]?.start.toString()
+          ).toLocaleString(DateTime.DATETIME_MED, { locale: 'de' })}
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={1.5}>{course?.course?.name}</Heading>
@@ -112,7 +120,7 @@ const SingleCourse: React.FC<Props> = () => {
                       {t('single.global.participating')}:
                     </Text>
                     <Text>
-                      {course?.participantCount}/{course?.maxParticipants}
+                      {course?.participantsCount}/{course?.maxParticipants}
                     </Text>
                   </Row>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
@@ -161,8 +169,14 @@ const SingleCourse: React.FC<Props> = () => {
                         {`${i + 1}`.padStart(2, '0')}
                       </Heading>
                       <Text paddingBottom={space['0.5']}>
-                        {/* {lec?.start && lec?.start.toDateString()} */}
+                        {DateTime.fromISO(lec?.start.toString()).toLocaleString(
+                          DateTime.DATETIME_MED,
+                          { locale: 'de' }
+                        )}{' '}
                         {t('single.global.clock')}
+                      </Text>
+                      <Text>
+                        <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden
                       </Text>
                     </Row>
                   ))}
