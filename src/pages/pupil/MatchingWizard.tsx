@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { Text, VStack, Heading, TextArea, Button } from 'native-base'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
@@ -15,6 +16,7 @@ const subs: LFSubject[] = [
 
 const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { data, error, loading } = useQuery(gql`
     query {
@@ -34,35 +36,32 @@ const MatchingWizard: React.FC<Props> = () => {
 
   return (
     <VStack>
-      <Heading>Überprüfen deine Daten</Heading>
-      <Text>
-        Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten
-        wir dich deine persönlichen Informationen noch einmal zu überprüfen und
-        zu vervollständigen.
-      </Text>
-      <Text bold>Persönliche Daten</Text>
+      <Heading>{t('matching.request.headline')}</Heading>
+      <Text>{t('matching.request.content')}</Text>
+      <Text bold>{t('matching.request.yourDetails')}</Text>
 
       <Text>
-        <Text bold>Schulform:</Text> {data?.me?.pupil?.schooltype}
+        <Text bold>{t('matching.request.schoolType')}</Text>{' '}
+        {data?.me?.pupil?.schooltype}
       </Text>
       <Text>
-        <Text bold>Klasse:</Text> {data?.me?.pupil?.gradeAsInt}
+        <Text bold>{t('matching.request.grade')}</Text>{' '}
+        {data?.me?.pupil?.gradeAsInt}
       </Text>
-      <Text bold>In welchem Fach benötigst du Hilfe?</Text>
-      <Text>
-        Solltest du in mehreren Fächern gleich drigend Hilfe benötigen, ist eine
-        Mehrfachauswahl möglich.
-      </Text>
+      <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
+      <Text>{t('matching.request.needHelpInContent')}</Text>
       <TwoColGrid>
         {subs.map((sub: any) => (
           <IconTagList text={sub.name} variant="selection" />
         ))}
       </TwoColGrid>
-      <Text bold>Beschreibung</Text>
+      <Text bold>{t('matching.request.describ')}</Text>
       <TextArea autoCompleteType={{}} />
-      <Button onPress={onRequestMatch}>Match anfordern</Button>
+      <Button onPress={onRequestMatch}>
+        {t('matching.request.buttons.request')}
+      </Button>
       <Button variant={'outline'} onPress={() => navigate(-1)}>
-        Abbrechen
+        {t('matching.request.buttons.cancel')}
       </Button>
     </VStack>
   )

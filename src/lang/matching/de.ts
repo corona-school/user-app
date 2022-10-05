@@ -8,7 +8,63 @@ const matching = {
     contentBox2: 'langen Wartezeiten von 3-6 Monaten',
     contentBox3: 'bieten wir zusätzlich Gruppen-Nachhilfe an.',
     button: 'Unterstützung anfragen',
+    ctaCardHeader: 'Gruppen-Lernunterstützung',
+    ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
     ctaCardButton: 'Zu den Gruppenkursen'
+  },
+  modal: {
+    header: 'Unterstützung anfragen',
+    content: 'Mit unserem Angebot möchten wir vor allem Schüler:innen erreichen, die herkömmliche Nachhilfe aufgrund persönlicher, sozialer, kultureller oder finanzieller Ressourcen nicht oder nur sehr schwer wahrnehmen können. Bitte fordere nur dann eine:n neue:n Lernpartner:in an, wenn du keine andere Möglichkeit hast, Hilfe zu erhalten.',
+    important: 'Wichtig',
+    firstContent: 'Da es bei der 1:1 Lernunterstützung zu langen',
+    middleContentBold: 'Wartezeiten von 3 - 6 Monaten',
+    lastContent: 'kommen kann, bieten wir zusätzlich Gruppen-Lernunterstützung an.',
+    buttons: {
+      continue: 'Weiter',
+      showGroupCourse: 'Zu den Gruppenkursen'
+    }
+  },
+  pending: {
+    header: 'Dein Match',
+    content: 'Wir haben deine Anfrage bei uns aufgenommen und sind nun auf der Suche nach einem/einer optimalen Lernpartner:in für dich. Sobald wir ein Match für dich gefunden haben, wirst du benachrichtigt.',
+    requestFrom: 'Anfrage vom:',
+    waitingTime: 'Voraussichtliche Wartezeit:',
+    waitingTimeMonth: 'Monat',
+    waitingTimeMonthCa: 'ca.',
+    cta: {
+      title: 'Gruppen-Lernunterstützung',
+      content: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen'
+    },
+    buttons: {
+      cancel: 'Anfrage zurücknehmen',
+      cta: 'Zu den Gruppenkursen'
+    },
+    modal: {
+      radiobuttons: {
+        mark: 'Ich habe meine Note erreicht',
+        groupCourse: 'Ich habe einen passenden Gruppenkurs gefunden',
+        other: 'Sonstiges'
+      },
+      buttons: {
+        shareFeedback: 'Feedback teilen',
+        nothing: 'Keine Angabe machen'
+      }
+    }
+  },
+  request: {
+    headline: 'Überprüfen deine Daten',
+    content: 'Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.',
+    yourDetails: 'Persönliche Daten',
+    schoolType: 'Schulform:',
+    grade: 'Klasse:',
+    needHelpInHeadline: 'In welchem Fach benötigst du Hilfe?',
+    needHelpInContent: 'Solltest du in mehreren Fächern gleich drigend Hilfe benötigen, ist eine Mehrfachauswahl möglich.',
+    describ: 'Beschreibung',
+    buttons: {
+      request: 'Match anfordern',
+      cancel: 'Abbrechen'
+    }
+
   }
 }
 

@@ -99,6 +99,13 @@ const profile = {
       tabausstehend: 'Ausstehend',
       button: 'Bescheinigung anfordern'
     }
+  }, 
+  Notice: {
+    noLanguage: 'Es wurden keine Sprachen angegeben',
+    noState: 'Es wurde kein Bundesland angegeben',
+    noSchoolType: 'Es wurde keine Schulform angegeben',
+    noSchoolGrade: 'Es wurde keine Klasse angegeben',
+    noSchoolSubject: 'Es wurde keine Fächer angegeben',
   }
 }
 

@@ -26,7 +26,9 @@ const dashboard = {
   },
   offers: {
     header: 'Angebote',
-    match: 'Match auflösen'
+    match: 'Match auflösen',
+    noMatching: 'Du hast noch keine Matches',
+    requestMatching: 'Match anfordern'
   },
   helpers: {
     headlines: {

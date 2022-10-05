@@ -223,7 +223,7 @@ const Profile: React.FC<Props> = () => {
                       </Column>
                     ))}
                   </Row>
-                )) || <Text>Es wurden keine Sprachen angegeben</Text>}
+                )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
               </ProfileSettingItem>
 
               <ProfileSettingItem
@@ -238,7 +238,7 @@ const Profile: React.FC<Props> = () => {
                         text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
                       />
                     </Column>
-                  )) || <Text>Es wurde kein Bundesland angegeben</Text>}
+                  )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -256,7 +256,7 @@ const Profile: React.FC<Props> = () => {
                         )}
                       />
                     </Column>
-                  )) || <Text>Es wurde keine Schulform angegeben</Text>}
+                  )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -274,7 +274,7 @@ const Profile: React.FC<Props> = () => {
                         })}
                       />
                     </Column>
-                  )) || <Text>Es wurde keine Klasse angegeben</Text>}
+                  )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -294,7 +294,7 @@ const Profile: React.FC<Props> = () => {
                           />
                         </Column>
                       )
-                    )) || <Text>Es wurde keine Fächer angegeben</Text>}
+                    )) || <Text>{t('profile.Notice.noSchoolSubject')}</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>

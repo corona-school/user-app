@@ -151,9 +151,9 @@ const Dashboard: React.FC<Props> = () => {
                 />
               )) || (
               <VStack>
-                <Text>Du hast noch keine Matches</Text>
+                <Text>{t('dashboard.offers.noMatching')}</Text>
                 <Button onPress={() => navigate('/matching')}>
-                  Match anfordern
+                  {t('dashboard.offers.requestMatching')}
                 </Button>
               </VStack>
             )}

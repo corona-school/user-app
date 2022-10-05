@@ -1,4 +1,5 @@
 import { Text, VStack, Heading, Box, Button } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
 type Props = {
@@ -6,32 +7,26 @@ type Props = {
 }
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
+  const { t } = useTranslation()
+
   return (
     <VStack>
-      <Heading>Unterstützung anfragen</Heading>
+      <Heading>{t('matching.blocker.title')}</Heading>
       <Box bgColor="gray.500" h="150px"></Box>
+      <Text>{t('matching.blocker.firstContent')}</Text>
+      <Text bold>{t('matching.blocker.headlineContent')}</Text>
       <Text>
-        Du benötigts individuelle Unterstützung? Dann ist die 1:1
-        Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in
-        anfordern, die dich beim Lernen unterstützt.
-      </Text>
-      <Text bold>Wichtig</Text>
-      <Text>
-        Da es bei der 1:1 Lernunterstützung zu langen{' '}
-        <Text bold>Wartezeiten von 3 - 6</Text>
-        Monaten kommen kann, bieten wir zusätzlich Gruppen-Lernunterstützung an.
+        {t('matching.blocker.contentBox1')}{' '}
+        <Text bold> {t('matching.blocker.contentBox2')}</Text>
+        {t('matching.blocker.contentBox3')}
       </Text>
       <Button variant="outline" onPress={onRequestMatch}>
-        Unterstützung anfragen
+        {t('matching.blocker.button')}
       </Button>
       <CTACard
-        title="Gruppen-Lernunterstützung"
-        content={
-          <Text>
-            Kurzfristige Unterstützung bei spezifischen Problemen und Fragen
-          </Text>
-        }
-        button={<Button>Zu den Gruppenkursen</Button>}
+        title={t('matching.blocker.ctaCardHeader')}
+        content={<Text>{t('matching.blocker.ctaCardContent')}</Text>}
+        button={<Button>{t('matching.blocker.ctaCardButton')}</Button>}
       />
     </VStack>
   )

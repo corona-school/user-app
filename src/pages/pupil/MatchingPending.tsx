@@ -1,5 +1,6 @@
 import { Text, VStack, Heading, Button, Modal, Radio } from 'native-base'
 import { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
 type Props = {}
@@ -7,6 +8,7 @@ type Props = {}
 const MatchingPending: React.FC<Props> = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [feedback, setFeedback] = useState<string>()
+  const { t } = useTranslation()
 
   const cancelMatchRequest = useCallback((sendFeedback: boolean) => {
     setShowModal(false)
@@ -16,30 +18,24 @@ const MatchingPending: React.FC<Props> = () => {
   return (
     <>
       <VStack>
-        <Heading>Dein Match</Heading>
+        <Heading>{t('matching.pending.header')}</Heading>
         <Text>
-          <Text bold>Anfrage vom:</Text> 25.07.2022
+          <Text bold>{t('matching.pending.requestFrom')}</Text> 25.07.2022
         </Text>
         <Text>
-          <Text bold>Voraussichtliche Wartezeit:</Text> ca. 1 Monat
+          <Text bold>{t('matching.pending.waitingTime')}</Text>{' '}
+          {t('matching.pending.waitingTimeMonthCa')} 1{' '}
+          {t('matching.pending.waitingTimeMonth')}
         </Text>
-        <Text>
-          Wir haben deine Anfrage bei uns aufgenommen und sind nun auf der Suche
-          nach einem/einer optimalen Lernpartner:in für dich. Sobald wir ein
-          Match für dich gefunden haben, wirst du benachrichtigt.
-        </Text>
+        <Text>{t('matching.pending.content')}</Text>
         <Button variant="outline" onPress={() => setShowModal(true)}>
-          Anfrage zurücknehmen
+          {t('matching.pending.buttons.cancel')}
         </Button>
 
         <CTACard
-          title="Gruppen-Lernunterstützung"
-          content={
-            <Text>
-              Kurzfristige Unterstützung bei spezifischen Problemen und Fragen
-            </Text>
-          }
-          button={<Button>Zu den Gruppenkursen</Button>}
+          title={t('matching.pending.cta.title')}
+          content={<Text>{t('matching.pending.cta.content')}</Text>}
+          button={<Button>{t('matching.pending.buttons.cta')}</Button>}
         />
       </VStack>
       <Modal isOpen={showModal}>
@@ -53,13 +49,13 @@ const MatchingPending: React.FC<Props> = () => {
               value={feedback}
               onChange={setFeedback}>
               <Radio value="grade" my={1}>
-                Ich habe meine Note erreicht
+                {t('matching.pending.modal.radiobuttons.mark')}
               </Radio>
               <Radio value="group" my={1}>
-                Ich habe einen passenden Gruppenkurs gefunden
+                {t('matching.pending.modal.radiobuttons.groupCourse')}
               </Radio>
               <Radio value="other" my={1}>
-                Sonstiges
+                {t('matching.pending.modal.radiobuttons.other')}
               </Radio>
             </Radio.Group>
           </Modal.Body>
@@ -68,12 +64,12 @@ const MatchingPending: React.FC<Props> = () => {
               variant={'outline'}
               isDisabled={!feedback}
               onPress={() => cancelMatchRequest(false)}>
-              Feedback teilen
+              {t('matching.pending.modal.buttons.shareFeedback')}
             </Button>
             <Button
               variant={'outline'}
               onPress={() => cancelMatchRequest(false)}>
-              Keine Angabe machen
+              {t('matching.pending.modal.buttons.nothing')}
             </Button>
           </Modal.Footer>
         </Modal.Content>
