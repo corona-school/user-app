@@ -11,6 +11,7 @@ import {
   Pressable
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
 import { CreateCourseContext } from '../CreateCourse'
@@ -23,6 +24,7 @@ type Props = {
 
 const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
   const { space } = useTheme()
+  const { t } = useTranslation()
   const { lectures, setLectures } = useContext(CreateCourseContext)
 
   const isValidInput = useMemo(() => {
@@ -45,8 +47,8 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
   console.log(lectures)
   return (
     <VStack space={space['1']}>
-      <Heading>Lege Termine für deinen Kurs fest</Heading>
-      <Text bold>Termine erstellen*</Text>
+      <Heading>{t('course.appointments.headline')}</Heading>
+      <Text bold>{t('course.appointments.content')}</Text>
 
       {lectures?.map((lec, i) => (
         <Row>
@@ -62,16 +64,16 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
         }>
         <Row>
           <Box bg={'primary.900'} w="32px" h="32px"></Box>
-          <Text>Weiteren Termin anlegen</Text>
+          <Text>{t('course.appointments.addOtherAppointment')}</Text>
         </Row>
       </Pressable>
 
       <Button isDisabled={!isValidInput} onPress={onNext}>
-        Angaben prüfen
+        {t('course.appointments.check')}
       </Button>
-      <Button variant={'outline'}>Als Entwurf speichern</Button>
+      <Button variant={'outline'}>{t('course.appointments.saveDraft')}</Button>
       <Button variant={'outline'} onPress={onBack}>
-        Zur vorherigen Seite
+        {t('course.appointments.prevPage')}
       </Button>
     </VStack>
   )

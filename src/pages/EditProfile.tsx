@@ -1,10 +1,12 @@
 import { Text, VStack, Avatar, useTheme } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import EditDataRow from '../widgets/EditDataRow'
 
 type Props = {}
 
 const EditProfile: React.FC<Props> = () => {
   const { colors, space } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <VStack space={space['2']}>
@@ -16,21 +18,27 @@ const EditProfile: React.FC<Props> = () => {
         borderBottomRadius={16}>
         <Avatar size="xl" />
         <Text color={colors.white} fontWeight={'thin'}>
-          Profilbild ändern
+          {t('profile.editprofile')}
         </Text>
       </VStack>
       <VStack space={space['0.5']} paddingX={space['1']}>
         <EditDataRow
-          label="Namen ändern"
+          label={t('profile.UserName.popup.header')}
           value="Rainer Zufall"
           onPress={() => alert('test')}
         />
-        <EditDataRow label="Schulform ändern" />
-        <EditDataRow label="Klasse ändern" value="6, 7, 8" />
-        <EditDataRow label="Geburtsdatum ändern" />
-        <EditDataRow label="Fächer ändern" value="Englisch, Informatik" />
-        <EditDataRow label="Art der Unterstützung:" value="1:1, Gruppe" />
-        <EditDataRow label="Verfügbarkeit verwalten" />
+        <EditDataRow label={t('profile.SchoolType.single.header')} />
+        <EditDataRow
+          label={t('profile.SchoolClass.single.header')}
+          value="6, 7, 8"
+        />
+        <EditDataRow label={t('profile.birthday')} />
+        <EditDataRow
+          label={t('profile.NeedHelpIn.single.header')}
+          value="Englisch, Informatik"
+        />
+        <EditDataRow label={t('profile.type')} value="1:1, Gruppe" />
+        <EditDataRow label={t('profile.availability')} />
       </VStack>
     </VStack>
   )

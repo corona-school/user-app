@@ -24,7 +24,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserAchievements from '../../widgets/UserAchievements'
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../assets/icons/lernfair/lf-edit.svg'
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
 import Star from '../assets/icons/lernfair/lf-star.svg'
 import LFIcon from '../../components/LFIcon'
 import { useNavigate } from 'react-router-dom'

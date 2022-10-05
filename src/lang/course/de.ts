@@ -13,6 +13,75 @@ const course = {
       content: 'Wenn du dir noch nicht sicher bist, ob das Format der Gruppen-Nachhilfe tatsächlich zu dir passt, klick dich durch das Onboarding für den Gruppen-Nachhilfe Bereich und erhalte so eine genauere Idee von der Tätigkeit.',
       button: 'Tour starten'
     }
+  },
+  appointments: {
+    headline: 'Lege Termine für deinen Kurs fest',
+    content: 'Termine erstellen*',
+    addOtherAppointment: 'Weiteren Termin anlegen',
+    check: 'Angaben prüfen',
+    saveDraft: 'Als Entwurf speichern',
+    prevPage: ' Zur vorherigen Seite'
+  },
+  CourseDate: {
+    headline: 'Allgemeine Informationen zu deinem Kurs',
+    form: {
+      courseNameHeadline: 'Kursname',
+      courseNamePlaceholder: 'Kursname*',
+      courseSubjectLabel: 'Fach',
+      coursePhotoLabel: 'Foto',
+      courseAddOntherLeadText: 'Weitere Kursleiter hinzufügen',
+      shortDescriptionLabel: 'Kurzbeschreibung', 
+      shortDescriptionPlaceholder: 'Kurzbeschreibung*', 
+      shortDescriptionLimitNotice: 'Max. Zeichenanzahl: 140*', 
+      descriptionLabel: 'Beschreibung', 
+      descriptionPlaceholder: 'Beschreibung*', 
+      tagsLabel: 'Tags',
+      tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
+      detailsHeadline: 'Details',
+      detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
+      maxMembersLabel: 'Max Teilnehmerzahl',
+      maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
+      otherHeadline: 'Sonstiges',
+      otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+      otherOptionContact: 'Kontaktaufnahme erlauben',
+      button: {
+        continue: 'Weiter',
+        cancel: 'Abbrechen'
+      }
+    },
+    Wizard: {
+      headline: 'Termin',
+      date: 'Datum',
+      dateInfo: 'Ein Kurs muss 7 Tage vor Kursbeginn angelegt werden.',
+      time: 'Uhrzeit',
+      duration: 'Dauer',
+      durationPlaceholder: 'Bessere Absprache zu UX',
+      repeatAppoint: 'Termin wiederholen'
+    },
+    Preview: {
+      yes: 'Ja',
+      no: 'Nein',
+      headline: 'Angaben überprüfen',
+      content: 'Bitte überpüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
+      infoHeadline: 'Allgemeine Informationen zu deinem Kurs',
+      courseName: 'Kursname:',
+      courseSubject: 'Fach',
+      shortDesc: 'Kurzbeschreibung',
+      desc: 'Beschreibung',
+      tagHeadline: 'Tags',
+      classHeadline: 'Klassen',
+      membersCountLabel: 'Teilnehmerzahl:',
+      membersCountMaxLabel: 'Max',
+      startDateLabel: 'Beitreten nach Kursbeginn:',
+      allowContactLabel: 'Kontaktaufnahme erlauben:',
+      appointmentHeadline: 'Termine zum Kurs',
+      appointmentLabel: 'Termin',
+      appointmentDate: 'Datum:',
+      appointmentTime: 'Uhrzeit:',
+      appointmentDuration: 'Dauer:',
+      publishCourse: 'Kurs veröffentlichen',
+      editCourse: 'Daten bearbeiten'
+    }
   }
 }
 

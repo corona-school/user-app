@@ -48,12 +48,13 @@ import OnBoardingHelperMatchingSlides from './pages/onboarding/helper-matching/O
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 
 // Profile
-import ProfileHelper from './pages/ProfileHelper'
-import DashboardHelper from './pages/DashboardHelper'
+
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
 import CourseBlocker from './pages/student/CourseBlocker'
+import DashboardHelper from './pages/student/DashboardStudent'
+import ProfileHelper from './pages/student/ProfileStudent'
 
 export default function Navigator() {
   return (
