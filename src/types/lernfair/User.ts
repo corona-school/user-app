@@ -38,8 +38,14 @@ export interface User {
 }
 
 export type UserType = string | 'pupil' | 'student'
+
 export type Pupil = {
   firstname?: string
   lastname?: string
   state?: State
+}
+
+export type Student = {
+  firstname: string
+  lastname: string
 }

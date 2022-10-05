@@ -61,6 +61,8 @@ import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
 import CourseBlocker from './pages/student/CourseBlocker'
+import Matching from './pages/pupil/Matching'
+import RequestMatch from './pages/student/RequestMatch'
 
 export default function Navigator() {
   return (
@@ -360,6 +362,17 @@ export default function Navigator() {
 
         <Route path="/create-course" element={<CreateCourse />} />
 
+        <Route
+          path="/matching"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<Matching />}
+                studentComponent={<RequestMatch />}
+              />
+            </RequireAuth>
+          }
+        />
         {/* Fallback */}
         <Route
           path="*"

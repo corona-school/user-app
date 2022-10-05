@@ -2,10 +2,16 @@ import { gql, useQuery } from '@apollo/client'
 import { Text, VStack, Heading, TextArea, Button } from 'native-base'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
 type Props = {}
+
+const subs: LFSubject[] = [
+  { name: 'Englisch', grade: { min: 1, max: 11 }, mandatory: false },
+  { name: 'Informatik', grade: { min: 1, max: 11 }, mandatory: false }
+]
 
 const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
@@ -16,7 +22,9 @@ const MatchingWizard: React.FC<Props> = () => {
         pupil {
           schooltype
           gradeAsInt
-          subjects
+          subjectsFormatted {
+            name
+          }
         }
       }
     }
@@ -46,8 +54,8 @@ const MatchingWizard: React.FC<Props> = () => {
         Mehrfachauswahl möglich.
       </Text>
       <TwoColGrid>
-        {data?.me?.pupil?.subjects.map((sub: any) => (
-          <IconTagList text={sub.name} />
+        {subs.map((sub: any) => (
+          <IconTagList text={sub.name} variant="selection" />
         ))}
       </TwoColGrid>
       <Text bold>Beschreibung</Text>
