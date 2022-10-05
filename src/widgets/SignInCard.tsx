@@ -13,6 +13,7 @@ type Props = {
   data: LFSubCourse
   onClickSignIn?: () => any
   flexibleWidth?: boolean
+  onPress?: () => any
 }
 
 const SignInCard: React.FC<Props> = ({
@@ -24,11 +25,12 @@ const SignInCard: React.FC<Props> = ({
   // href,
   data,
   onClickSignIn,
-  flexibleWidth
+  flexibleWidth,
+  onPress
 }) => {
   const { space } = useTheme()
   return (
-    <Link href={'/single-course'} width={flexibleWidth ? '100%' : undefined}>
+    <Link onPress={onPress} width={flexibleWidth ? '100%' : undefined}>
       <Card isFullHeight={false} width={'100%'}>
         <Box bg="primary.500" h="120" padding={space['0.5']}>
           <Image
@@ -52,7 +54,12 @@ const SignInCard: React.FC<Props> = ({
           </Row>
           <Row space={1.5}>
             {data?.lectures && (
-              <Text>Ab {data.lectures[0].start.toLocaleDateString()}</Text>
+              <Text>
+                Ab{' '}
+                {
+                  // data.lectures[0] && data.lectures[0].start?.toDateString())
+                }
+              </Text>
             )}
             <Text>•</Text>
             <Text>{data.lectures?.length} Termine</Text>

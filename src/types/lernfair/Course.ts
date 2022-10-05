@@ -1,13 +1,18 @@
+import { Pupil } from './User'
+
 export type LFCourse = {
   name: string
   description: string
   outline: string
 }
 
-export type LFSubCourse = {
+export interface LFSubCourse extends LFCourse {
   id?: number
   lectures: LFLecture[]
   image?: string
+  participants?: Pupil[]
+  maxParticipants?: number
+  participantCount?: number
   course: LFCourse
 }
 

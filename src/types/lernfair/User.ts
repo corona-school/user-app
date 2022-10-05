@@ -1,3 +1,4 @@
+import { State } from './State'
 import { Subject } from './Subject'
 
 export interface User {
@@ -37,3 +38,8 @@ export interface User {
 }
 
 export type UserType = string | 'pupil' | 'student'
+export type Pupil = {
+  firstname?: string
+  lastname?: string
+  state?: State
+}
