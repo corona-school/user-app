@@ -1,5 +1,5 @@
 import { State } from './State'
-import { Subject } from './Subject'
+import { LFSubject } from './Subject'
 
 export interface User {
   id: string
@@ -19,7 +19,7 @@ export interface User {
   isParticipant?: boolean
   isProjectCoach?: boolean
   // projectFields?: ProjectInformation[]
-  subjects: Subject[]
+  subjects: LFSubject[]
   // matches: Match[]
   // dissolvedMatches: Match[]
   // projectMatches: ProjectMatch[]

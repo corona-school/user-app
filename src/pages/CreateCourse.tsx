@@ -1,17 +1,16 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useTheme, VStack } from 'native-base'
 import {
   createContext,
   Dispatch,
   SetStateAction,
   useCallback,
-  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import WithNavigation from '../components/WithNavigation'
-import { Subject } from '../types/lernfair/Subject'
+import { LFSubject } from '../types/lernfair/Subject'
 
 import InstructionProgress from '../widgets/InstructionProgress'
 
@@ -20,20 +19,21 @@ import CourseData from './course-creation/CourseData'
 import CoursePreview from './course-creation/CoursePreview'
 
 import { DateTime } from 'luxon'
+import { LFLecture } from '../types/lernfair/Course'
 
 type Props = {}
 
 type Lecture = {
-  date: any
-  time: any
-  duration: any
+  date: string
+  time: string
+  duration: string
 }
 
 type ICreateCourseContext = {
   courseName?: string
   setCourseName?: Dispatch<SetStateAction<string>>
-  subject?: Subject
-  setSubject?: Dispatch<SetStateAction<Subject>>
+  subject?: LFSubject
+  setSubject?: Dispatch<SetStateAction<LFSubject>>
   courseClasses?: number[]
   setCourseClasses?: Dispatch<SetStateAction<number[]>>
   outline?: string
@@ -56,7 +56,7 @@ export const CreateCourseContext = createContext<ICreateCourseContext>({})
 
 const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
-  const [subject, setSubject] = useState<Subject>({ key: '', label: '' })
+  const [subject, setSubject] = useState<LFSubject>({ name: '' })
   const [courseClasses, setCourseClasses] = useState<number[]>([])
   const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
@@ -67,6 +67,16 @@ const CreateCourse: React.FC<Props> = () => {
   const [lectures, setLectures] = useState<Lecture[]>([])
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        student {
+          id
+        }
+      }
+    }
+  `)
 
   // TODO just put in to satisfy graphql errors
   // mutation createCourse(
@@ -81,7 +91,10 @@ const CreateCourse: React.FC<Props> = () => {
   //   subcourseCreate(courseId: id, subcourse: $sub}){id}
   //   lectureCreate(subcourseId: id, lecture: $lec)
   // }
-  const [createCourse, { data, error, loading }] = useMutation(gql`
+  const [
+    createCourse,
+    { data: courseData, error: courseError, loading: courseLoading }
+  ] = useMutation(gql`
     mutation createCourse($course: PublicCourseCreateInput!) {
       courseCreate(course: $course)
     }
@@ -91,11 +104,61 @@ const CreateCourse: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const onFinish = useCallback(() => {
-    // TODO collect all data
-    // TODO format lectures correctly
     // TODO unsplash
-    createCourse({ variables: {} })
-  }, [createCourse])
+
+    const course = {
+      outline,
+      description,
+      subject: subject.name,
+      schooltype: 'gymnasium', // TODO
+      name: courseName,
+      category: 'club', // TODO
+      allowContact
+    }
+
+    const subcourse: {
+      minGrade: number
+      maxGrade: number
+      maxParticipants: number
+      joinAfterStart: boolean
+      lecture: LFLecture[]
+    } = {
+      minGrade: 0,
+      maxGrade: 0,
+      maxParticipants: parseInt(maxParticipantCount),
+      joinAfterStart,
+      lecture: []
+    }
+
+    for (const lec of lectures) {
+      const l: LFLecture = {
+        start: new Date(),
+        duration: parseInt(lec.duration)
+      }
+      const dt = DateTime.fromISO(lec.date)
+      const t = DateTime.fromISO(lec.time)
+      dt.set({ hour: t.hour, minute: t.minute, second: t.second })
+      subcourse.lecture.push(l)
+    }
+
+    createCourse({
+      variables: {
+        studentId: data?.me?.student?.id,
+        course
+      }
+    })
+  }, [
+    outline,
+    description,
+    subject.name,
+    courseName,
+    allowContact,
+    maxParticipantCount,
+    joinAfterStart,
+    createCourse,
+    data?.me?.student?.id,
+    lectures
+  ])
 
   const onNext = useCallback(() => {
     if (currentIndex >= 2) {
@@ -112,11 +175,6 @@ const CreateCourse: React.FC<Props> = () => {
   const onCancel = useCallback(() => {
     navigate(-1)
   }, [navigate])
-
-  useEffect(() => {
-    if (data) {
-    }
-  }, [data])
 
   return (
     <WithNavigation>

@@ -1,12 +1,13 @@
-export type Subject = {
-  name?: string
-  minGrade?: number
-  maxGrade?: number
-  key: string
-  label: string
+export type LFSubject = {
+  name: string
+  grade?: {
+    min: number
+    max: number
+  }
+  mandatory?: boolean
 }
 
-export const subjects: Subject[] = [
+export const subjects: { key: string; label: string }[] = [
   { key: 'arbeitslehre', label: 'Arbeitslehre' },
   { key: 'biologie', label: 'Biologie' },
   { key: 'chemie', label: 'Chemie' },
