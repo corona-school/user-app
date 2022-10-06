@@ -18,7 +18,7 @@ const RequestMatch: React.FC<Props> = () => {
     [key: string]: { [key: string]: boolean }
   }>({})
 
-  const [focusedSubject, setFocusedSubject] = useState<any>()
+  const [focusedSubject, setFocusedSubject] = useState<any>({ name: 'Test' })
   const [showModal, setShowModal] = useState<boolean>(false)
   const [description, setDescription] = useState<string>('')
 
@@ -94,14 +94,18 @@ const RequestMatch: React.FC<Props> = () => {
               <ToggleButton
                 label="1. - 4. Klasse"
                 dataKey="1"
-                isActive={selectedClasses[focusedSubject.name]['1']}
-                onPress={() =>
-                  setSelectedClasses(prev => ({
-                    [focusedSubject.name]: {
-                      1: !prev[focusedSubject.name]['1']
-                    }
-                  }))
+                isActive={
+                  selectedClasses[focusedSubject] &&
+                  focusedSubject &&
+                  selectedClasses[focusedSubject.name]['1']
                 }
+                // onPress={() =>
+                //   setSelectedClasses(prev => ({
+                //     [focusedSubject.name]: {
+                //       1: !prev[focusedSubject.name]['1']
+                //     }
+                //   }))
+                // }
               />
             </VStack>
           </Modal.Body>
