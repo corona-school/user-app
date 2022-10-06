@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon'
 import { VStack, Button, useTheme, Heading, Text, Row, Box } from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 
@@ -103,11 +105,16 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
             </Heading>
             <Text bold>
               {t('course.CourseDate.Preview.appointmentDate')}
-              <Text>{lec.date}</Text>
+              <Text>{Utility.formatDate(new Date(lec.date))}</Text>
             </Text>
             <Text bold>
               {t('course.CourseDate.Preview.appointmentTime')}
-              <Text>{lec.time}</Text>
+              <Text>
+                {Utility.formatDate(
+                  new Date(lec.time),
+                  DateTime.TIME_24_SIMPLE
+                )}
+              </Text>
             </Text>
             <Text bold>
               {t('course.CourseDate.Preview.appointmentDuration')}
