@@ -80,14 +80,12 @@ export const findMinMaxClassRange: (nums: number[]) => ClassRange = (
 }
 
 export const formatDate: (
-  lec: LFLecture,
+  date: Date,
   format?: Intl.DateTimeFormatOptions,
   locale?: string
-) => string = (
-  lec: LFLecture,
-  format = DateTime.DATETIME_MED,
-  locale: string = 'de'
-) => DateTime.fromISO(lec?.start.toString()).toLocaleString(format, { locale })
+) => string = (date, format = DateTime.DATETIME_MED, locale = 'de') => {
+  return DateTime.fromISO(date.toString()).toLocaleString(format, { locale })
+}
 
 const Utility = {
   createToken,

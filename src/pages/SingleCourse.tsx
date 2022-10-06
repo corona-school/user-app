@@ -62,7 +62,7 @@ const SingleCourse: React.FC<Props> = () => {
         </Box>
         <Text paddingBottom={space['0.5']}>
           {t('single.global.clockFrom')}{' '}
-          {Utility.formatDate(course?.lectures[0])}
+          {Utility.formatDate(course?.lectures[0].start)}
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
@@ -167,7 +167,8 @@ const SingleCourse: React.FC<Props> = () => {
                         {`${i + 1}`.padStart(2, '0')}
                       </Heading>
                       <Text paddingBottom={space['0.5']}>
-                        {Utility.formatDate(lec)} {t('single.global.clock')}
+                        {Utility.formatDate(lec.start)}{' '}
+                        {t('single.global.clock')}
                       </Text>
                       <Text>
                         <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden

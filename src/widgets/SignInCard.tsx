@@ -59,7 +59,8 @@ const SignInCard: React.FC<Props> = ({
           <Row space={1.5}>
             {data?.lectures && data?.lectures[0] && (
               <Text>
-                Ab {Utility.formatDate(data.lectures[0], DateTime.DATE_MED)}
+                Ab{' '}
+                {Utility.formatDate(data.lectures[0].start, DateTime.DATE_MED)}
               </Text>
             )}
             <Text>•</Text>
