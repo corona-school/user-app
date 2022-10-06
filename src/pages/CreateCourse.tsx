@@ -1,5 +1,16 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useTheme, VStack } from 'native-base'
+import {
+  Box,
+  Button,
+  CloseIcon,
+  Heading,
+  Modal,
+  Row,
+  Text,
+  useTheme,
+  VStack,
+  WarningIcon
+} from 'native-base'
 import {
   createContext,
   Dispatch,
@@ -20,6 +31,10 @@ import CoursePreview from './course-creation/CoursePreview'
 
 import { DateTime } from 'luxon'
 import { LFLecture } from '../types/lernfair/Course'
+import { useTranslation } from 'react-i18next'
+import BackButton from '../components/BackButton'
+import { Pressable } from 'react-native'
+import LFParty from '../assets/icons/lernfair/lf-party.svg'
 
 type Props = {}
 
@@ -113,6 +128,8 @@ const CreateCourse: React.FC<Props> = () => {
 
   const { space } = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation()
+  const [showModal, setShowModal] = useState(false)
 
   const onFinish = useCallback(() => {
     // TODO unsplash
@@ -178,6 +195,8 @@ const CreateCourse: React.FC<Props> = () => {
     } else {
       setCurrentIndex(prev => prev + 1)
     }
+    // TODO: Nach der Erstellung anzeigen
+    // setShowModal(true)
   }, [currentIndex, onFinish])
 
   const onBack = useCallback(() => {
@@ -189,7 +208,9 @@ const CreateCourse: React.FC<Props> = () => {
   }, [navigate])
 
   return (
-    <WithNavigation>
+    <WithNavigation
+      headerTitle={t('course.header')}
+      headerLeft={<BackButton />}>
       <CreateCourseContext.Provider
         value={{
           courseName,
@@ -215,16 +236,17 @@ const CreateCourse: React.FC<Props> = () => {
         }}>
         <VStack space={space['1']} padding={space['1']}>
           <InstructionProgress
+            isDark={false}
             currentIndex={currentIndex}
             instructions={[
               {
-                label: 'Kurs'
+                label: t('course.CourseDate.tabs.course')
               },
               {
-                label: 'Termine'
+                label: t('course.CourseDate.tabs.appointments')
               },
               {
-                label: 'Angaben prüfen'
+                label: t('course.CourseDate.tabs.checker')
               }
             ]}
           />
@@ -235,11 +257,57 @@ const CreateCourse: React.FC<Props> = () => {
             <CourseAppointments onNext={onNext} onBack={onBack} />
           )}
           {currentIndex === 2 && (
-            <CoursePreview
-              onNext={onNext}
-              onBack={onBack}
-              isDisabled={loading}
-            />
+            <>
+              <CoursePreview
+                onNext={onNext}
+                onBack={onBack}
+                isDisabled={loading}
+              />
+              <Modal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                background="modalbg">
+                <Modal.Content
+                  width="307px"
+                  marginX="auto"
+                  backgroundColor="transparent">
+                  <Box position="absolute" zIndex="1" right="20px" top="14px">
+                    <Pressable onPress={() => setShowModal(false)}>
+                      <CloseIcon color="white" />
+                    </Pressable>
+                  </Box>
+                  <Modal.Body background="primary.900" padding={space['1']}>
+                    <Box alignItems="center" marginY={space['1']}>
+                      <LFParty />
+                    </Box>
+                    <Box paddingY={space['1']}>
+                      <Heading
+                        maxWidth="330px"
+                        marginX="auto"
+                        textAlign="center"
+                        color="lightText"
+                        marginBottom={space['0.5']}>
+                        {t('course.modal.headline')}
+                      </Heading>
+                      <Text
+                        textAlign="center"
+                        color="lightText"
+                        maxWidth="330px"
+                        marginX="auto">
+                        {t('course.modal.content')}
+                      </Text>
+                    </Box>
+                    <Box paddingY={space['1']}>
+                      <Row marginBottom={space['0.5']}>
+                        <Button onPress={() => navigate('/')} width="100%">
+                          {t('course.modal.button')}
+                        </Button>
+                      </Row>
+                    </Box>
+                  </Modal.Body>
+                </Modal.Content>
+              </Modal>
+            </>
           )}
         </VStack>
       </CreateCourseContext.Provider>

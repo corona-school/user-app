@@ -9,7 +9,13 @@ import {
   Box,
   Switch,
   Button,
-  useTheme
+  useTheme,
+  Input,
+  Pressable,
+  Image,
+  Column,
+  Link,
+  View
 } from 'native-base'
 import { useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +24,7 @@ import ToggleButton from '../../components/ToggleButton'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
+import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 
 type Props = {
   onNext: () => any
@@ -29,7 +36,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
     query {
       me {
         student {
-          subjectsFormatted
+          subjectsFormatted {
+            name
+          }
         }
       }
     }
@@ -97,19 +106,19 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
 
   return (
     <VStack space={space['1']}>
-      <Heading>{t('course.CourseDate.headline')}</Heading>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseNameHeadline')}
         </FormControl.Label>
-        <TextArea
+        <Input
           placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setCourseName}
         />
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
         <Row>
@@ -123,36 +132,72 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         </Row>
       </FormControl>
 
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
-        <Box bg={'primary.100'} w="100" h="100"></Box>
+        <Box paddingY={space['1']}>
+          <Pressable
+            onPress={() => alert('Hallo')}
+            flexDirection="row"
+            alignItems="center">
+            <Column marginRight={space['1']}>
+              <Image
+                width="90px"
+                height="90px"
+                alt="Image Placeholder"
+                source={{
+                  uri: ImagePlaceHolder
+                }}
+              />
+            </Column>
+            <Column>
+              <Link>{t('course.uploadImage')}</Link>
+            </Column>
+          </Pressable>
+        </Box>
       </FormControl>
-      <FormControl>
-        <FormControl.Label>
-          {t('course.CourseDate.form.courseAddOntherLeadText')}
-        </FormControl.Label>
-        <Row>
-          <Box bg={'primary.900'} w="32px" h="32px"></Box>
-          <Text>{t('course.CourseDate.form.courseAddOntherLeadText')}</Text>
+      <FormControl marginBottom={space['0.5']}>
+        <Row space={space['0.5']}>
+          <Pressable
+            onPress={() => alert('Funktion')}
+            alignItems="center"
+            flexDirection="row">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bg={'primary.900'}
+              w="40px"
+              h="40px"
+              marginRight="15px"
+              borderRadius="10px">
+              <Text color="white" fontSize="32px">
+                +
+              </Text>
+            </Box>
+            <Text bold>
+              {t('course.CourseDate.form.courseAddOntherLeadText')}
+            </Text>
+          </Pressable>
         </Row>
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.shortDescriptionLabel')}
         </FormControl.Label>
         <TextArea
+          marginBottom={space['0.5']}
           placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setOutline}
         />
-        <Text fontSize={'sm'}>
+        <Text fontSize="xs">
           {t('course.CourseDate.form.shortDescriptionLimitNotice')}
         </Text>
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.descriptionLabel')}
         </FormControl.Label>
         <TextArea
@@ -161,20 +206,22 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
           onChangeText={setDescription}
         />
       </FormControl>
-      <FormControl>
-        <FormControl.Label>
+      <FormControl marginBottom={space['0.5']}>
+        <FormControl.Label _text={{ color: 'primary.900' }} marginBottom="5px">
           {t('course.CourseDate.form.tagsLabel')}
         </FormControl.Label>
-        <TextArea
-          placeholder={t('course.CourseDate.form.tagsLabel')}
+        <Input
+          height="45px"
+          marginBottom={space['0.5']}
+          placeholder={t('course.CourseDate.form.tagsPlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setTags}
         />
-        <Text fontSize={'sm'}>{t('course.CourseDate.form.tagsInfo')}</Text>
+        <Text fontSize="xs">{t('course.CourseDate.form.tagsInfo')}</Text>
       </FormControl>
       <Heading>{t('course.CourseDate.form.detailsHeadline')}</Heading>
       <FormControl>
-        <FormControl.Label>
+        <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
           {t('course.CourseDate.form.detailsContent')}
         </FormControl.Label>
         {splitGrades.map((grade: SplitGrade, i) => (
@@ -197,29 +244,31 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
           />
         ))}
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginBottom={space['2']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.maxMembersLabel')}
         </FormControl.Label>
-        <TextInput onChangeText={setMaxParticipantCount} />
-        <Text fontSize={'sm'}>
-          {t('course.CourseDate.form.maxMembersInfo')}
-        </Text>
+        <Input
+          onChangeText={setMaxParticipantCount}
+          marginBottom={space['0.5']}
+        />
+        <Text fontSize="xs">{t('course.CourseDate.form.maxMembersInfo')}</Text>
       </FormControl>
-
-      <Heading>{t('course.CourseDate.form.otherHeadline')}</Heading>
+      <Heading fontSize="md">
+        {t('course.CourseDate.form.otherHeadline')}
+      </Heading>
       <Row>
         <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
         <Switch onValueChange={setJoinAfterStart} />
       </Row>
-      <Row>
+      <Row marginBottom={space['2']}>
         <Text flex="1">{t('course.CourseDate.form.otherOptionContact')}</Text>
         <Switch onValueChange={setAllowContact} />
       </Row>
       <Button isDisabled={!isValidInput} onPress={onNext}>
         {t('course.CourseDate.form.button.continue')}
       </Button>
-      <Button variant={'outline'} onPress={onCancel}>
+      <Button variant={'outline'} onPress={onCancel} marginBottom={space['2']}>
         {t('course.CourseDate.form.button.cancel')}
       </Button>
     </VStack>

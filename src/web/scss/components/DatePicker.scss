@@ -1,0 +1,15 @@
+.lf__datepicker {
+    display: flex;
+
+    input {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        background-color: var(--color-primary_light);
+        border-radius: 5px;
+
+        &:focus {
+            outline: 2px solid var(--color-primary) !important;
+        }
+    }
+}

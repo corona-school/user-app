@@ -204,6 +204,26 @@ const Theme = extendTheme({
           color: VAR_COLOR_PRIMARY_DARK
         }
       }
+    },
+    FormControlLabel: {
+      baseStyle: {
+        _text: {
+          fontWeight: 700,
+          color: VAR_COLOR_PRIMARY_DARK
+        }
+      }
+    },
+    Switch: {
+      defaultProps: {
+        onThumbColor: VAR_COLOR_RED,
+        offThumbColor: '#8C9FA2',
+        offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        _hover: {
+          offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+          onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        },
+      }
     }
   },
   config: {

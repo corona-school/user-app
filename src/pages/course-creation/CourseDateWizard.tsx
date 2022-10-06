@@ -5,7 +5,8 @@ import {
   Switch,
   Heading,
   VStack,
-  Select
+  Select,
+  useTheme
 } from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,17 +21,17 @@ type Props = {
 const CourseDateWizard: React.FC<Props> = ({ index }) => {
   const { lectures, setLectures } = useContext(CreateCourseContext)
   const { t } = useTranslation()
-
+  const { space } = useTheme()
   return (
     <VStack w="100%">
       {(!!index || (lectures && lectures?.length > 1)) && (
-        <Heading>
+        <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}
-          {`${index + 1}`.padStart(2, '0')}
+          {`${index + 1}`.padStart(2, ' 0')}
         </Heading>
       )}
       <FormControl>
-        <FormControl.Label isRequired>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>
 
@@ -43,10 +44,12 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
             setLectures && setLectures(arr)
           }}
         />
-        <Text fontSize="xs">{t('course.CourseDate.Wizard.dateInfo')}</Text>
+        <Text paddingTop={space['1']} fontSize="xs">
+          {t('course.CourseDate.Wizard.dateInfo')}
+        </Text>
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginY={space['1']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.time')}
         </FormControl.Label>
         <DatePicker
@@ -60,11 +63,12 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           }}
         />
       </FormControl>
-      <FormControl>
-        <FormControl.Label isRequired>
+      <FormControl marginY={space['1']}>
+        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.duration')}
         </FormControl.Label>
         <Select
+          placeholder={t('course.selectPlaceHolderDuration')}
           onValueChange={e => {
             if (!lectures || !lectures[index]) return
             const arr = [...lectures]
@@ -91,7 +95,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           }} 
         />*/}
       </FormControl>
-      <Row>
+      <Row marginY={space['1.5']}>
         <Text flex="1">{t('course.CourseDate.Wizard.repeatAppoint')}</Text>
         <Switch />
       </Row>
