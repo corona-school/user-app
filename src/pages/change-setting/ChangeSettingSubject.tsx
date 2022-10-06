@@ -11,13 +11,13 @@ import {
   FormControl,
   Stack
 } from 'native-base'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
-import { subjects } from '../../types/lernfair/Subject'
+import { LFSubject, subjects } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -40,10 +40,10 @@ const queryStudent = `query {
     }
   }
 }`
-const mutPupil = `mutation updateSubjects($subjects: [String!]) {
+const mutPupil = `mutation updateSubjects($subjects: [SubjectInput!]) {
   meUpdate(update: { pupil: { subjects: $subjects } })
 }`
-const mutStudent = `mutation updateSubjects($subjects: [String!]) {
+const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
   meUpdate(update: { student: { subjects: $subjects } })
 }`
 
@@ -55,7 +55,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const location = useLocation()
   const { state } = location as { state: { userType: string } }
 
-  const [selections, setSelections] = useState<string[]>([])
+  const [selections, setSelections] = useState<LFSubject[]>([])
 
   const { data, error, loading } = useQuery(gql`
     ${state?.userType === ' student' ? queryStudent : queryPupil}
@@ -65,14 +65,28 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     ${state?.userType === ' student' ? mutStudent : mutPupil}
   `)
 
+  /**
+   * remove unused / unwanted data
+   * like TS __typename
+   */
+  const cleanupSubjects: (data: LFSubject[]) => LFSubject[] = useCallback(
+    (data: LFSubject[]) => {
+      const arr: LFSubject[] = []
+      for (const sub of data) {
+        delete sub['__typename']
+        arr.push(sub)
+      }
+      return arr
+    },
+    []
+  )
+
   useEffect(() => {
     if (data?.me?.pupil?.subjectsFormatted) {
-      const s = data?.me?.pupil?.subjectsFormatted.map(
-        (s: { name: string }) => s.name
-      )
+      const s = cleanupSubjects(data?.me?.pupil?.subjectsFormatted)
       setSelections(s)
     }
-  }, [data?.me?.pupil?.subjectsFormatted])
+  }, [cleanupSubjects, data?.me?.pupil?.subjectsFormatted])
 
   if (loading) return <></>
 
@@ -99,8 +113,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   }>
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
-                      iconPath={`subjects/icon_${subject.toLowerCase()}.svg`}
-                      text={t(`lernfair.subjects.${subject.toLowerCase()}`)}
+                      iconPath={`subjects/icon_${subject?.name?.toLowerCase()}.svg`}
+                      text={t(
+                        `lernfair.subjects.${subject?.name?.toLowerCase()}`
+                      )}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -122,7 +138,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {subjects.map(
                   (subject, index) =>
-                    !selections.find(sel => sel === subject.key) && (
+                    !selections.find(sel => sel.name === subject.label) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
@@ -131,14 +147,17 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                           iconPath={`subjects/icon_${subject.key}.svg`}
                           text={t(`lernfair.subjects.${subject.key}`)}
                           onPress={() =>
-                            setSelections(prev => [...prev, subject.key])
+                            setSelections(prev => [
+                              ...prev,
+                              { name: subject.label }
+                            ])
                           }
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel === 'andere') && (
+              {selections.find(sel => sel.name === 'andere') && (
                 <Row>
                   <FormControl>
                     <Stack>
@@ -167,9 +186,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
         <Button
           onPress={() => {
+            console.log(selections)
             updateSubjects({
               variables: {
-                selections
+                subjects: selections
               }
             })
           }}>
