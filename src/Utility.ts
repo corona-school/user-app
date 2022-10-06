@@ -64,5 +64,24 @@ export const intToClassRange: (num: number) => ClassRange = (num: number) => {
   return { min: minClass, max: maxClass } as ClassRange
 }
 
-const Utility = { createToken, toTimerString, TIME_THRESHOLD, intToClassRange }
+export const findMinMaxClassRange: (nums: number[]) => ClassRange = (
+  nums: number[]
+) => {
+  let minClass = 13
+  let maxClass = 0
+  for (const n of nums) {
+    const range = intToClassRange(n)
+    if (range.min < minClass) minClass = range.min
+    if (range.max > maxClass) maxClass = range.max
+  }
+  return { min: minClass, max: maxClass } as ClassRange
+}
+
+const Utility = {
+  createToken,
+  toTimerString,
+  TIME_THRESHOLD,
+  intToClassRange,
+  findMinMaxClassRange
+}
 export default Utility
