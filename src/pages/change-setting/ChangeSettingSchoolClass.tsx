@@ -52,11 +52,11 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const { state } = location as { state: { userType: string } }
 
   const { data, error, loading } = useQuery(gql`
-    ${state?.userType === ' student' ? queryStudent : queryPupil}
+    ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
-    ${state?.userType === ' student' ? mutStudent : mutPupil}
+    ${state?.userType === 'student' ? mutStudent : mutPupil}
   `)
 
   const schoolGrades = useMemo(() => {
