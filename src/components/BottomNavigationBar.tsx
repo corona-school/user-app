@@ -62,7 +62,15 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         />
                       </CSSWrapper>
                     </Box>
-                    <Text fontSize="xs">{label}</Text>
+                    <Text
+                      fontSize="xs"
+                      color={
+                        disabled
+                          ? colors['gray']['300']
+                          : colors['primary']['900']
+                      }>
+                      {label}
+                    </Text>
                   </Center>
                 </CSSWrapper>
               </Link>
