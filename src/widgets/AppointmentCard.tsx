@@ -16,9 +16,10 @@ import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
 import { toTimerString, TIME_THRESHOLD } from '../Utility'
 import useInterval from '../hooks/useInterval'
+import { LFTag } from '../types/lernfair/Course'
 
 type Props = {
-  tags: string[]
+  tags?: LFTag[]
   date: Date
   title: string
   description: string
@@ -98,8 +99,8 @@ const AppointmentCard: React.FC<Props> = ({
                   }}
                 />
                 <Row space={space['0.5']} flexWrap="wrap">
-                  {tags.map((t, i) => (
-                    <Tag key={`tag-${i}`} text={t} />
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
                   ))}
                 </Row>
               </Box>
@@ -166,8 +167,8 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
             <Box paddingX={space['0.5']} paddingY={space['1.5']}>
               <Row space={space['0.5']}>
-                {tags.map((t, i) => (
-                  <Tag key={`tag-${i}`} text={t} />
+                {tags?.map((tag, i) => (
+                  <Tag key={`tag-${i}`} text={tag.name} />
                 ))}
               </Row>
               <Row space={1} marginY={space['0.5']}>

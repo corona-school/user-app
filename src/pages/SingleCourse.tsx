@@ -18,7 +18,8 @@ import WithNavigation from '../components/WithNavigation'
 import { LFSubCourse } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 import ProfilAvatar from '../widgets/ProfilAvatar'
-import { DateTime } from 'luxon'
+
+import Utility from '../Utility'
 
 type Props = {}
 
@@ -52,19 +53,16 @@ const SingleCourse: React.FC<Props> = () => {
         </Box>
         <Box paddingBottom={space['0.5']}>
           <Row>
-            <Column marginRight={space['0.5']}>
-              <Tag text="Mathe" />
-            </Column>
-            <Column>
-              <Tag text="Gruppenkurs" />
-            </Column>
+            {course?.course?.tags?.map(tag => (
+              <Column marginRight={space['0.5']}>
+                <Tag text={tag.name} />
+              </Column>
+            ))}
           </Row>
         </Box>
         <Text paddingBottom={space['0.5']}>
           {t('single.global.clockFrom')}{' '}
-          {DateTime.fromISO(
-            course?.lectures[0]?.start.toString()
-          ).toLocaleString(DateTime.DATETIME_MED, { locale: 'de' })}
+          {Utility.formatDate(course?.lectures[0])}
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
@@ -169,11 +167,7 @@ const SingleCourse: React.FC<Props> = () => {
                         {`${i + 1}`.padStart(2, '0')}
                       </Heading>
                       <Text paddingBottom={space['0.5']}>
-                        {DateTime.fromISO(lec?.start.toString()).toLocaleString(
-                          DateTime.DATETIME_MED,
-                          { locale: 'de' }
-                        )}{' '}
-                        {t('single.global.clock')}
+                        {Utility.formatDate(lec)} {t('single.global.clock')}
                       </Text>
                       <Text>
                         <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden

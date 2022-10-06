@@ -1,4 +1,6 @@
+import { LFLecture } from './types/lernfair/Course'
 import { ClassRange } from './types/lernfair/SchoolClass'
+import { DateTime } from 'luxon'
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000
 export const TOKEN_LENGTH = 32
@@ -77,11 +79,22 @@ export const findMinMaxClassRange: (nums: number[]) => ClassRange = (
   return { min: minClass, max: maxClass } as ClassRange
 }
 
+export const formatDate: (
+  lec: LFLecture,
+  format?: Intl.DateTimeFormatOptions,
+  locale?: string
+) => string = (
+  lec: LFLecture,
+  format = DateTime.DATETIME_MED,
+  locale: string = 'de'
+) => DateTime.fromISO(lec?.start.toString()).toLocaleString(format, { locale })
+
 const Utility = {
   createToken,
   toTimerString,
   TIME_THRESHOLD,
   intToClassRange,
-  findMinMaxClassRange
+  findMinMaxClassRange,
+  formatDate
 }
 export default Utility
