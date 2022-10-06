@@ -38,6 +38,10 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         student {
           subjectsFormatted {
             name
+            grade {
+              min
+              max
+            }
           }
         }
       }
@@ -68,6 +72,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
 
   const splitGrades: SplitGrade[] = useMemo(() => {
     const arr: SplitGrade[] = []
+    console.log(subject)
 
     if (subject?.grade?.max && subject.grade?.min) {
       if (subject.grade?.min < 13 && subject?.grade?.max >= 11) {

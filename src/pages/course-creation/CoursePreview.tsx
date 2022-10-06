@@ -58,7 +58,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           <Heading fontSize="md">
             {t('course.CourseDate.Preview.tagHeadline')}
           </Heading>
-          <Row>
+          <Row space={space['1']}>
             {tags.split(',').map(t => (
               <IconTagList text={t} isDisabled />
             ))}

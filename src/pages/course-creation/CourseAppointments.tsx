@@ -65,7 +65,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
       <VStack>
         <Pressable
           marginBottom={space['2']}
-          // isDisabled={!isValidInput}
+          isDisabled={!isValidInput}
           onPress={() => {
             setLectures &&
               setLectures(prev => [
@@ -79,7 +79,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            bg={'primary.900'}
+            bg={!isValidInput ? 'primary.grey' : 'primary.800'}
             w="40px"
             h="40px"
             marginRight="15px"
@@ -88,7 +88,9 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
               +
             </Text>
           </Box>
-          <Text bold>{t('course.appointments.addOtherAppointment')}</Text>
+          <Text bold color={!isValidInput ? 'primary.grey' : 'primary.800'}>
+            {t('course.appointments.addOtherAppointment')}
+          </Text>
         </Pressable>
 
         {!isValidInput && (

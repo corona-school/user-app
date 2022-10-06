@@ -16,6 +16,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useState
 } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -195,8 +196,6 @@ const CreateCourse: React.FC<Props> = () => {
     } else {
       setCurrentIndex(prev => prev + 1)
     }
-    // TODO: Nach der Erstellung anzeigen
-    // setShowModal(true)
   }, [currentIndex, onFinish])
 
   const onBack = useCallback(() => {
@@ -206,6 +205,12 @@ const CreateCourse: React.FC<Props> = () => {
   const onCancel = useCallback(() => {
     navigate(-1)
   }, [navigate])
+
+  useEffect(() => {
+    if (courseData && !courseError) {
+      setShowModal(true)
+    }
+  }, [courseData, courseError])
 
   return (
     <WithNavigation
