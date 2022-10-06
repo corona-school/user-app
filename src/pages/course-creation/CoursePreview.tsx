@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { VStack, Button, useTheme, Heading, Text, Row, Box } from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import Tag from '../../components/Tag'
 import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
@@ -60,9 +61,9 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           <Heading fontSize="md">
             {t('course.CourseDate.Preview.tagHeadline')}
           </Heading>
-          <Row space={space['1']}>
+          <Row space={space['0.5']}>
             {tags.split(',').map(t => (
-              <IconTagList text={t} isDisabled />
+              <Tag text={t} />
             ))}
           </Row>
         </>
@@ -71,8 +72,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.classHeadline')}
       </Heading>
-      {courseClasses &&
-        courseClasses.map(c => <IconTagList isDisabled text={`${c}`} />)}
+      {courseClasses && courseClasses.map(c => <Tag text={`${c}`} />)}
 
       <Row>
         <Text fontSize="md" bold>
