@@ -33,28 +33,34 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
       <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
-      <Row>
-        <Text bold>
-          {t('course.CourseDate.Preview.infoHeadline')}
-          <Text>{courseName}</Text>
+      <Row alignItems="end" space={space['0.5']}>
+        <Text bold fontSize="md">
+          {t('course.CourseDate.Preview.courseName')}
         </Text>
+        <Text fontSize="md">{courseName}</Text>
       </Row>
 
-      <Heading>{t('course.CourseDate.Preview.courseSubject')}</Heading>
+      <Heading fontSize="md">
+        {t('course.CourseDate.Preview.courseSubject')}
+      </Heading>
       {subject && <IconTagList isDisabled text={subject.name || ''} />}
 
       <Box bg="gray.500" h="180"></Box>
 
-      <Heading>{t('course.CourseDate.Preview.shortDesc')}</Heading>
+      <Heading fontSize="md">
+        {t('course.CourseDate.Preview.shortDesc')}
+      </Heading>
       <Text>{outline}</Text>
 
-      <Heading>{t('course.CourseDate.Preview.desc')}</Heading>
+      <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
       <Text>{description}</Text>
 
       {tags && (
         <>
-          <Heading>{t('course.CourseDate.Preview.tagHeadline')}</Heading>
-          <Row>
+          <Heading fontSize="md">
+            {t('course.CourseDate.Preview.tagHeadline')}
+          </Heading>
+          <Row space={space['1']}>
             {tags.split(',').map(t => (
               <IconTagList text={t} isDisabled />
             ))}
@@ -62,21 +68,23 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
         </>
       )}
 
-      <Heading>{t('course.CourseDate.Preview.classHeadline')}</Heading>
+      <Heading fontSize="md">
+        {t('course.CourseDate.Preview.classHeadline')}
+      </Heading>
       {courseClasses &&
         courseClasses.map(c => <IconTagList isDisabled text={`${c}`} />)}
 
       <Row>
-        <Text bold>
-          {t('course.CourseDate.Preview.membersCountLabel')}
+        <Text fontSize="md" bold>
+          {t('course.CourseDate.Preview.membersCountLabel') + ' '}
           <Text>
             {t('course.CourseDate.Preview.membersCountMaxLabel')} {courseName}
           </Text>
         </Text>
       </Row>
       <Row>
-        <Text bold>
-          {t('course.CourseDate.Preview.startDateLabel')}
+        <Text fontSize="md" bold>
+          {t('course.CourseDate.Preview.startDateLabel') + ' '}
           <Text>
             {joinAfterStart
               ? t('course.CourseDate.Preview.yes')
@@ -84,9 +92,9 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           </Text>
         </Text>
       </Row>
-      <Row>
-        <Text bold>
-          {t('course.CourseDate.Preview.allowContactLabel')}
+      <Row marginBottom={space['1']}>
+        <Text fontSize="md" bold>
+          {t('course.CourseDate.Preview.allowContactLabel') + '  '}
           <Text>
             {allowContact
               ? t('course.CourseDate.Preview.yes')
@@ -95,10 +103,12 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
         </Text>
       </Row>
 
-      <Heading>{t('course.CourseDate.Preview.appointmentHeadline')}</Heading>
+      <Heading fontSize="lg" marginBottom={space['1']}>
+        {t('course.CourseDate.Preview.appointmentHeadline')}
+      </Heading>
       {lectures &&
         lectures.map((lec, i) => (
-          <VStack>
+          <VStack marginBottom={space['1']}>
             <Heading>
               {t('course.CourseDate.Preview.appointmentLabel')}
               {`${i + 1}`.padStart(2, '0')}

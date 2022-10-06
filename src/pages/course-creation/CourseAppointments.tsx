@@ -7,7 +7,11 @@ import {
   Text,
   Row,
   Box,
-  Pressable
+  Pressable,
+  Alert,
+  HStack,
+  IconButton,
+  CloseIcon
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -45,8 +49,12 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
 
   return (
     <VStack space={space['1']}>
-      <Heading>{t('course.appointments.headline')}</Heading>
-      <Text bold>{t('course.appointments.content')}</Text>
+      <Heading marginBottom={space['1.5']}>
+        {t('course.appointments.headline')}
+      </Heading>
+      <Text fontSize="md" bold>
+        {t('course.appointments.content')}
+      </Text>
 
       {lectures?.map((lec, i) => (
         <Row>
@@ -56,6 +64,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
 
       <VStack>
         <Pressable
+          marginBottom={space['2']}
           isDisabled={!isValidInput}
           onPress={() => {
             setLectures &&
@@ -63,21 +72,31 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
                 ...prev,
                 { time: '', date: '', duration: '' }
               ])
-          }}>
-          <Row>
-            <Box
-              bg={isValidInput ? 'primary.900' : 'gray.500'}
-              w="32px"
-              h="32px"></Box>
-            <Text color={isValidInput ? 'darkText' : 'gray.500'}>
-              {t('course.appointments.addOtherAppointment')}
+          }}
+          alignItems="center"
+          flexDirection="row">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg={!isValidInput ? 'primary.grey' : 'primary.800'}
+            w="40px"
+            h="40px"
+            marginRight="15px"
+            borderRadius="10px">
+            <Text color="white" fontSize="32px">
+              +
             </Text>
-          </Row>
-        </Pressable>
-        {!isValidInput && (
-          <Text color={'gray.500'} fontSize={'sm'}>
-            Bitte fülle alle vorigen Termine korrekt aus.
+          </Box>
+          <Text bold color={!isValidInput ? 'primary.grey' : 'primary.800'}>
+            {t('course.appointments.addOtherAppointment')}
           </Text>
+        </Pressable>
+
+        {!isValidInput && (
+          <Alert status="error" backgroundColor="#fecaca">
+            <Text>{t('course.noticeDate')}</Text>
+          </Alert>
         )}
       </VStack>
 

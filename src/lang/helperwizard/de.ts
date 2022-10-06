@@ -4,7 +4,7 @@ const helperwizard = {
   label: 'Kennenlernen',
   title: 'Wir möchten dich kennenlernen',
   content: 'Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.',
-  button: 'Termin vereinbare'
+  button: 'Termin vereinbaren'
  },
  zeugnis: {
   label: 'Führungszeugnis',

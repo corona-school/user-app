@@ -1,4 +1,8 @@
 const course = {
+  header: 'Kurs erstellen',
+  uploadImage: 'Foto hochladen',
+  noticeDate: 'Bitte fülle alle Felder korrekt aus',
+  selectPlaceHolderDuration: 'Dauer auswählen',
   blocker: {
     header: 'Kurs erstellen',
     title: 'Die Gruppenkurse',
@@ -23,19 +27,25 @@ const course = {
     prevPage: ' Zur vorherigen Seite'
   },
   CourseDate: {
+    tabs: {
+      course: 'Kurs',
+      appointments: 'Termine',
+      checker: 'Angaben prüfen'
+    },
     headline: 'Allgemeine Informationen zu deinem Kurs',
     form: {
       courseNameHeadline: 'Kursname',
-      courseNamePlaceholder: 'Kursname*',
+      courseNamePlaceholder: 'Kursname eingeben',
       courseSubjectLabel: 'Fach',
       coursePhotoLabel: 'Foto',
       courseAddOntherLeadText: 'Weitere Kursleiter hinzufügen',
       shortDescriptionLabel: 'Kurzbeschreibung', 
-      shortDescriptionPlaceholder: 'Kurzbeschreibung*', 
+      shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …', 
       shortDescriptionLimitNotice: 'Max. Zeichenanzahl: 140*', 
       descriptionLabel: 'Beschreibung', 
-      descriptionPlaceholder: 'Beschreibung*', 
+      descriptionPlaceholder: 'Präziserer Angaben um was es in deinem Kurs geht …', 
       tagsLabel: 'Tags',
+      tagsPlaceholder: 'Damit dein Kurs besser gefunden wird',
       tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
       detailsHeadline: 'Details',
       detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
@@ -81,6 +91,11 @@ const course = {
       appointmentDuration: 'Dauer:',
       publishCourse: 'Kurs veröffentlichen',
       editCourse: 'Daten bearbeiten'
+    },
+    modal: {
+      headline: 'Fertig!',
+      content: '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
+      button: 'weiter'
     }
   }
 }

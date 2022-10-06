@@ -16,6 +16,7 @@ const VAR_COLOR_WARNING = VAR_COLOR_RED
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff'
 const VAR_COLOR_MODAL_BG = '#edf4f3f2'
+const VAR_COLOR_LIGHT_GREY = '#8C9FA2'
 
 const Theme = extendTheme({
   colors: {
@@ -203,6 +204,26 @@ const Theme = extendTheme({
         _icon: {
           color: VAR_COLOR_PRIMARY_DARK
         }
+      }
+    },
+    FormControlLabel: {
+      baseStyle: {
+        _text: {
+          fontWeight: 700,
+          color: VAR_COLOR_PRIMARY_DARK
+        }
+      }
+    },
+    Switch: {
+      defaultProps: {
+        onThumbColor: VAR_COLOR_RED,
+        offThumbColor: VAR_COLOR_LIGHT_GREY,
+        offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        _hover: {
+          offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+          onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+        },
       }
     }
   },

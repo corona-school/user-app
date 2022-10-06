@@ -26,6 +26,39 @@ const InstructionProgress: React.FC<Props> = ({
         {instructions?.map((instruction, index) => {
           const isLast = index >= instructions.length - 1
           const isActive = index === currentIndex
+
+          const circlebgColor = (isActive = false, isDark = false) => {
+            if (isDark) {
+              if (isActive) {
+                return 'primary.400'
+              } else {
+                return 'primary.800'
+              }
+            } else {
+              if (isActive) {
+                return 'primary.400'
+              } else {
+                return 'transparent'
+              }
+            }
+          }
+
+          const circleLabelColor = (isActive = false, isDark = false) => {
+            if (isDark) {
+              if (isActive) {
+                return 'primary.400'
+              } else {
+                return 'primary.900'
+              }
+            } else {
+              if (isActive) {
+                return 'primary.900'
+              } else {
+                return 'primary.400'
+              }
+            }
+          }
+
           return (
             <Row
               key={`instruction-label-${index}`}
@@ -34,7 +67,7 @@ const InstructionProgress: React.FC<Props> = ({
               flexBasis={sizes['6'] + 'px'}
               mr={!isLast ? space['0.5'] : 0}>
               <Circle
-                bg={isActive ? 'primary.400' : 'primary.800'}
+                bg={circlebgColor(isActive, isDark)}
                 borderColor="primary.grey"
                 borderWidth={isActive ? 0 : 1}
                 size={sizes['1.5']}>
@@ -44,7 +77,7 @@ const InstructionProgress: React.FC<Props> = ({
               </Circle>
               {isActive && (
                 <Text
-                  color={isDark ? 'lightText' : 'primary.400'}
+                  color={circleLabelColor(isActive, isDark)}
                   bold
                   ml={space['0.5']}>
                   {instruction.label}
