@@ -1,19 +1,17 @@
+import { graphqlSync } from 'graphql'
 import {
   VStack,
   Button,
   useTheme,
   Heading,
-  FormControl,
   Text,
   Row,
-  Switch,
   Box,
   Pressable
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import DatePicker from '../../components/DatePicker'
-import TextInput from '../../components/TextInput'
+
 import { CreateCourseContext } from '../CreateCourse'
 import CourseDateWizard from './CourseDateWizard'
 
@@ -44,7 +42,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(lectures)
+
   return (
     <VStack space={space['1']}>
       <Heading>{t('course.appointments.headline')}</Heading>
@@ -56,17 +54,32 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
         </Row>
       ))}
 
-      <Pressable
-        isDisabled={!isValidInput}
-        onPress={() =>
-          setLectures &&
-          setLectures(prev => [...prev, { time: '', date: '', duration: '' }])
-        }>
-        <Row>
-          <Box bg={'primary.900'} w="32px" h="32px"></Box>
-          <Text>{t('course.appointments.addOtherAppointment')}</Text>
-        </Row>
-      </Pressable>
+      <VStack>
+        <Pressable
+          isDisabled={!isValidInput}
+          onPress={() => {
+            setLectures &&
+              setLectures(prev => [
+                ...prev,
+                { time: '', date: '', duration: '' }
+              ])
+          }}>
+          <Row>
+            <Box
+              bg={isValidInput ? 'primary.900' : 'gray.500'}
+              w="32px"
+              h="32px"></Box>
+            <Text color={isValidInput ? 'darkText' : 'gray.500'}>
+              {t('course.appointments.addOtherAppointment')}
+            </Text>
+          </Row>
+        </Pressable>
+        {!isValidInput && (
+          <Text color={'gray.500'} fontSize={'sm'}>
+            Bitte fülle alle vorigen Termine korrekt aus.
+          </Text>
+        )}
+      </VStack>
 
       <Button isDisabled={!isValidInput} onPress={onNext}>
         {t('course.appointments.check')}

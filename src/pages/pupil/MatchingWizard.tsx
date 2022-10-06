@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { Text, VStack, Heading, TextArea, Button } from 'native-base'
+import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -18,6 +18,7 @@ const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
+  const { space } = useTheme()
   const { data, error, loading } = useQuery(gql`
     query {
       me {
@@ -35,7 +36,7 @@ const MatchingWizard: React.FC<Props> = () => {
   const onRequestMatch = useCallback(() => {}, [])
 
   return (
-    <VStack>
+    <VStack space={space['1']} paddingX={space['1']}>
       <Heading>{t('matching.request.headline')}</Heading>
       <Text>{t('matching.request.content')}</Text>
       <Text bold>{t('matching.request.yourDetails')}</Text>

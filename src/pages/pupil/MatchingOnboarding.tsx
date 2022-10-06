@@ -1,4 +1,4 @@
-import { Text, VStack, Heading, Box, Button } from 'native-base'
+import { Text, VStack, Box, Button, useTheme } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
@@ -9,9 +9,9 @@ type Props = {
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   const { t } = useTranslation()
 
+  const { space } = useTheme()
   return (
-    <VStack>
-      <Heading>{t('matching.blocker.title')}</Heading>
+    <VStack space={space['1']} paddingX={space['1']}>
       <Box bgColor="gray.500" h="150px"></Box>
       <Text>{t('matching.blocker.firstContent')}</Text>
       <Text bold>{t('matching.blocker.headlineContent')}</Text>

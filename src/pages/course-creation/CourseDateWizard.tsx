@@ -1,4 +1,12 @@
-import { Text, FormControl, Row, Switch, Heading, VStack } from 'native-base'
+import {
+  Text,
+  FormControl,
+  Row,
+  Switch,
+  Heading,
+  VStack,
+  Select
+} from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
@@ -56,7 +64,23 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
         <FormControl.Label isRequired>
           {t('course.CourseDate.Wizard.duration')}
         </FormControl.Label>
-        <TextInput
+        <Select
+          onValueChange={e => {
+            if (!lectures || !lectures[index]) return
+            const arr = [...lectures]
+            arr[index].duration = e
+            setLectures && setLectures(arr)
+          }}>
+          <Select.Item value="15" label="15 Minuten" />
+          <Select.Item value="30" label="30 Minuten" />
+          <Select.Item value="45" label="45 Minuten" />
+          <Select.Item value="60" label="1 Stunde" />
+          <Select.Item value="90" label="90 Minuten" />
+          <Select.Item value="120" label="2 Stunden" />
+          <Select.Item value="180" label="3 Stunden" />
+          <Select.Item value="240" label="4 Stunden" />
+        </Select>
+        {/* <TextInput
           value={lectures && lectures[index].duration}
           placeholder={t('course.CourseDate.Wizard.durationPlaceholder')}
           onChangeText={e => {
@@ -64,8 +88,8 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
             const arr = [...lectures]
             arr[index].duration = e
             setLectures && setLectures(arr)
-          }}
-        />
+          }} 
+        />*/}
       </FormControl>
       <Row>
         <Text flex="1">{t('course.CourseDate.Wizard.repeatAppoint')}</Text>
