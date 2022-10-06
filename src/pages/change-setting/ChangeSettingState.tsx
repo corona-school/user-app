@@ -36,7 +36,7 @@ const queryStudent = `query {
   }
 }`
 
-const mutStudent = `mutation updateState($state: State!) {
+const mutStudent = `mutation updateState($state: StudentState!) {
   meUpdate(update: { student: { state: $state } })
 }`
 const mutPupil = `mutation updateState($state: State!) {
@@ -54,11 +54,11 @@ const ChangeSettingState: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   const { data, loading, error } = useQuery(gql`
-    ${locState?.userType === ' student' ? queryStudent : queryPupil}
+    ${locState?.userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateState, _updateState] = useMutation(gql`
-    ${locState?.userType === ' student' ? mutStudent : mutPupil}
+    ${locState?.userType === 'student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {

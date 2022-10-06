@@ -5,6 +5,7 @@ export type LFSubject = {
     max: number
   }
   mandatory?: boolean
+  __typename?: string
 }
 
 export const subjects: { key: string; label: string }[] = [

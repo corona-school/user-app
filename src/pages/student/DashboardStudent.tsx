@@ -36,6 +36,9 @@ const DashboardHelper: React.FC<Props> = () => {
           name
           description
           outline
+          tags {
+            name
+          }
         }
       }
     }
@@ -78,7 +81,7 @@ const DashboardHelper: React.FC<Props> = () => {
             </Heading>
             <AppointmentCard
               href={'/single-course'}
-              tags={[t('lernfair.subjects.mathe'), 'Gruppenkurs']}
+              tags={[]}
               date={new Date()}
               isTeaser={true}
               image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
@@ -91,7 +94,7 @@ const DashboardHelper: React.FC<Props> = () => {
               <AppointmentCard
                 key={`appointment-${i}`}
                 description="Lorem Ipsum"
-                tags={['Mathematik', 'Gruppenkurs']}
+                tags={el.tags}
                 date={futureDate}
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 title={el?.course?.name}
@@ -108,7 +111,7 @@ const DashboardHelper: React.FC<Props> = () => {
                 key={index}
                 variant="horizontal"
                 description="Lorem Ipsum"
-                tags={['Mathematik', 'Gruppenkurs']}
+                tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
                 date={new Date()}
                 countCourse={4}
                 onPressToCourse={() => alert('YES')}

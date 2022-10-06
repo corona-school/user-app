@@ -1,10 +1,13 @@
+import { DateTime } from 'luxon'
 import { Text, Box, Row, useTheme, Button, Image, Link } from 'native-base'
+import { useCallback, useMemo } from 'react'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
-import { LFSubCourse } from '../types/lernfair/Course'
+import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
+import Utility from '../Utility'
 
 type Props = {
-  // tags?: string[]
+  tags?: LFTag[]
   // date?: Date
   // numAppointments?: number
   // title?: string
@@ -17,7 +20,7 @@ type Props = {
 }
 
 const SignInCard: React.FC<Props> = ({
-  // tags,
+  tags,
   // date,
   // numAppointments,
   // title,
@@ -29,6 +32,7 @@ const SignInCard: React.FC<Props> = ({
   onPress
 }) => {
   const { space } = useTheme()
+
   return (
     <Link onPress={onPress} width={flexibleWidth ? '100%' : undefined}>
       <Card isFullHeight={false} width={'100%'}>
@@ -46,19 +50,17 @@ const SignInCard: React.FC<Props> = ({
             }}
           />
         </Box>
-        <Box padding={space['0.5']}>
+        <Box padding={space['0.5']} maxW="240px">
           <Row space={space['0.5']} paddingY={space['0.5']} flexWrap="wrap">
-            {['???', '???'].map((t, i) => (
-              <Tag key={`tag-${i}`} text={t} />
+            {tags?.map((tag, i) => (
+              <Tag key={`tag-${i}`} text={tag.name} />
             ))}
           </Row>
           <Row space={1.5}>
-            {data?.lectures && (
+            {data?.lectures && data?.lectures[0] && (
               <Text>
                 Ab{' '}
-                {
-                  // data.lectures[0] && data.lectures[0].start?.toDateString())
-                }
+                {Utility.formatDate(data.lectures[0].start, DateTime.DATE_MED)}
               </Text>
             )}
             <Text>•</Text>

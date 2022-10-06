@@ -26,7 +26,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import UserProgress from '../../widgets/UserProgress'
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
 import { useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Tabs from '../../components/Tabs'
@@ -36,7 +36,7 @@ import HelperWizard from '../../widgets/HelperWizard'
 
 type Props = {}
 
-const ProfileHelper: React.FC<Props> = () => {
+const ProfileStudent: React.FC<Props> = () => {
   const { colors, space } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -57,11 +57,10 @@ const ProfileHelper: React.FC<Props> = () => {
         lastname
         student {
           state
-          schooltype
+
           subjectsFormatted {
             name
           }
-          gradeAsInt
         }
       }
     }
@@ -85,6 +84,27 @@ const ProfileHelper: React.FC<Props> = () => {
       setLastName(data?.me?.lastname)
     }
   }, [data?.me])
+
+  const profileCompleteness = useMemo(() => {
+    const max = 4.0
+    let complete = 0.0
+
+    data?.me?.firstname && data?.me?.lastname && (complete += 1)
+    data?.me?.aboutMe && (complete += 1)
+    // data?.me?.student?.languages?.length && (complete += 1)
+    data?.me?.student?.state && (complete += 1)
+    // data?.me?.student?.schooltype && (complete += 1)
+    // data?.me?.student?.gradeAsInt && (complete += 1)
+    data?.me?.student?.subjectsFormatted?.length && (complete += 1)
+
+    return Math.floor((complete / max) * 100)
+  }, [
+    data?.me?.aboutMe,
+    data?.me?.firstname,
+    data?.me?.lastname,
+    data?.me?.student?.state,
+    data?.me?.student?.subjectsFormatted?.length
+  ])
 
   if (loading) return <></>
 
@@ -205,7 +225,7 @@ const ProfileHelper: React.FC<Props> = () => {
         <VStack space={space['1']}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={25} />
+              <UserProgress percent={profileCompleteness} />
             </ProfileSettingRow>
           </VStack>
           <VStack paddingX={space['1.5']} space={space['1']}>
@@ -230,14 +250,18 @@ const ProfileHelper: React.FC<Props> = () => {
 
               <ProfileSettingItem
                 title={t('profile.State.label')}
-                href={() => navigate('/change-setting/state')}>
+                href={() =>
+                  navigate('/change-setting/state', {
+                    state: { userType: 'student' }
+                  })
+                }>
                 <Row>
-                  {data?.me?.pupil.state && (
+                  {data?.me?.student.state && (
                     <Column marginRight={3}>
                       <IconTagList
                         isDisabled
-                        iconPath={`states/icon_${data?.me?.pupil.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.pupil.state}`)}
+                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.student.state}`)}
                       />
                     </Column>
                   )}
@@ -245,29 +269,16 @@ const ProfileHelper: React.FC<Props> = () => {
               </ProfileSettingItem>
 
               <ProfileSettingItem
-                title={t('profile.SchoolType.label')}
-                href={() => navigate('/change-setting/school-type')}>
-                <Row>
-                  {data?.me?.pupil?.schooltype && (
-                    <Column marginRight={3}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`schooltypes/icon_${data.me.pupil.schooltype}.svg`}
-                        text={t(
-                          `lernfair.schooltypes.${data?.me?.pupil.schooltype}`
-                        )}
-                      />
-                    </Column>
-                  )}
-                </Row>
-              </ProfileSettingItem>
-              <ProfileSettingItem
                 border={false}
                 title={t('profile.NeedHelpIn.label')}
-                href={() => navigate('/change-setting/subjects')}>
+                href={() =>
+                  navigate('/change-setting/subjects', {
+                    state: { userType: 'student' }
+                  })
+                }>
                 <Row>
-                  {data?.me?.pupil?.subjectsFormatted?.map(
-                    (sub: { name: string; __typename: string }) => (
+                  {data?.me?.student?.subjectsFormatted?.map(
+                    (sub: { name: string }) => (
                       <Column marginRight={3}>
                         <IconTagList
                           isDisabled
@@ -439,4 +450,4 @@ const ProfileHelper: React.FC<Props> = () => {
     </>
   )
 }
-export default ProfileHelper
+export default ProfileStudent

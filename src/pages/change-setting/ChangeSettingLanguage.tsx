@@ -55,11 +55,11 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string[]>([])
 
   const { data, error, loading } = useQuery(gql`
-    ${state?.userType === ' student' ? queryStudent : queryPupil}
+    ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateLanguage, _updateLanguage] = useMutation(gql`
-    ${state?.userType === ' student' ? mutStudent : mutPupil}
+    ${state?.userType === 'student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {

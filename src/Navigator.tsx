@@ -57,6 +57,7 @@ import DashboardHelper from './pages/student/DashboardStudent'
 import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
+import ProfileStudent from './pages/student/ProfileStudent'
 
 export default function Navigator() {
   return (
@@ -114,7 +115,10 @@ export default function Navigator() {
           path="/profile"
           element={
             <RequireAuth>
-              <Profile />
+              <SwitchUserType
+                pupilComponent={<Profile />}
+                studentComponent={<ProfileStudent />}
+              />
             </RequireAuth>
           }
         />
