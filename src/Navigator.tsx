@@ -58,6 +58,7 @@ import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
+import Group from './pages/Group'
 
 export default function Navigator() {
   return (
@@ -288,6 +289,16 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <CreateCourse />
+            </RequireAuth>
+          }
+        />
+
+        {/* Group */}
+        <Route
+          path="/Group"
+          element={
+            <RequireAuth>
+              <Group />
             </RequireAuth>
           }
         />

@@ -64,7 +64,26 @@ const matching = {
       request: 'Match anfordern',
       cancel: 'Abbrechen'
     }
-
+  },
+  group: {
+    header: 'Gruppen-Lernunterstützung',
+    title: 'Angebote',
+    content: ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+    searchplaceholder: 'Suche',
+    tabs: {
+      tab1: {
+        title: 'Meine Kurse',
+        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+      },
+      tab2: {
+        title: 'Empfehlungen',
+        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+      },
+      tab3: {
+        title: 'Alle Angebote',
+        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+      },
+    }
   }
 }
 
