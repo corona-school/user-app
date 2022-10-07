@@ -66,23 +66,66 @@ const matching = {
     }
   },
   group: {
-    header: 'Gruppen-Lernunterstützung',
-    title: 'Angebote',
-    content: ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
-    searchplaceholder: 'Suche',
-    tabs: {
-      tab1: {
+    pupil: {
+      header: 'Gruppen-Lernunterstützung',
+      title: 'Angebote',
+      content: ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+      searchplaceholder: 'Suche',
+      tabs: {
+        tab1: {
+          title: 'Meine Kurse',
+          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        },
+        tab2: {
+          title: 'Empfehlungen',
+          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        },
+        tab3: {
+          title: 'Alle Angebote',
+          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        },
+      }, 
+    },
+    helper: {
+      header: 'Gruppenkurse',
+      title: 'Gruppenkurse',
+      content: 'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen.',
+      contentHeadline: 'Wichtig',
+      contentHeadlineContent: 'Gruppenkurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
+      button: 'Kurs anlegen',
+      appointment: 'Termine',
+      course: {
         title: 'Meine Kurse',
-        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        tabs: {
+          tab1: {
+            title: 'Kurse'
+          },
+          tab2: {
+            title: 'In Prüfung'
+          },
+          tab3: {
+            title: 'Entwürfe'
+          },
+          tab4: {
+            title: 'Vergangene Kurse'
+          },
+        }
       },
-      tab2: {
-        title: 'Empfehlungen',
-        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+      offers: {
+        title: 'Alle Angebote'
       },
-      tab3: {
-        title: 'Alle Angebote',
-        content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
-      },
+      support: {
+        header: 'Gruppen-Lernunterstützung',
+        title: 'Angebote',
+        contentFirstPart: 'Auf dieser Seite findet du alle Gruppenkurse. Du hast die Möglichkeite bei den Kursen deiner Kollege:innen zu hospitieren. Erkunde auch gerne',
+        contentLinkText: 'hier',
+        contendLastPart: 'unsere Hilfestellungen zur Inspiration für deine Kursgestaltung',
+        search: 'Suche',
+        offers: {
+          title: 'Alle Angebote',
+          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        } 
+      }
     }
   }
 }

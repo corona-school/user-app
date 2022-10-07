@@ -126,7 +126,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
-        <Row>
+        <Row space={space['1']}>
           {data?.me?.student?.subjectsFormatted.map((sub: LFSubject) => (
             <IconTagList
               initial={subject?.name === sub.name}
