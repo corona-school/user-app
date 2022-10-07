@@ -1,6 +1,8 @@
 import { gql, useQuery } from '@apollo/client'
 import { VStack, Modal, Button } from 'native-base'
 import { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import BackButton from '../../components/BackButton'
 import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
 
@@ -54,10 +56,12 @@ const RequestMatch: React.FC<Props> = () => {
   `)
 
   const requestMatch = useCallback(() => {}, [])
-
+  const { t } = useTranslation()
   return (
     <>
-      <WithNavigation>
+      <WithNavigation
+        headerLeft={<BackButton />}
+        headerTitle={t('matching.request.check.header')}>
         {currentIndex === 0 && (
           <RequestMatchWizard
             data={data}

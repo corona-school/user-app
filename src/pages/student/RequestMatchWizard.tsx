@@ -4,9 +4,12 @@ import {
   Heading,
   FormControl,
   TextArea,
-  Button
+  Button,
+  useTheme,
+  Link
 } from 'native-base'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
@@ -50,34 +53,34 @@ const RequestMatchWizard: React.FC<Props> = ({
     return true
   }, [description, selectedSubjects, selectedClasses])
 
+  const { space } = useTheme()
+  const { t } = useTranslation()
+
   return (
-    <VStack>
-      <Heading>Match anfordern</Heading>
-      <Text>
-        Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die
-        individuelle Hilfe benötigen.
+    <VStack paddingX={space['1']}>
+      <Heading paddingBottom={space['0.5']}>
+        {t('matching.request.check.title')}
+      </Heading>
+      <Text paddingBottom={space['0.5']}>
+        {t('matching.request.check.content')}
       </Text>
-
       <Text mt="1" bold>
-        Wichtig
+        {t('matching.request.check.contentHeadline')}
       </Text>
-      <Text>
-        Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden
-        haben.
+      <Text paddingBottom={space['1']}>
+        {t('matching.request.check.contenHeadlineContent')}
       </Text>
-
-      <Heading>Persönliche Daten</Heading>
-
-      <Text bold>Für welches Fach möchtest du deine Hilfe anbieten?</Text>
-      <Text>
-        Solltest du meherere Fächer anbieten wollen, ist eine Mehrfachauswahl
-        möglich.
+      <Heading fontSize="md" paddingBottom={space['1']}>
+        {t('matching.request.check.personalDataHeadline')}
+      </Heading>
+      <Text bold paddingBottom={space['0.5']}>
+        {t('matching.request.check.personalDataQuestion')}
       </Text>
-
+      <Text>{t('matching.request.check.personalDataAnswer')}</Text>
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => (
           <IconTagList
-            variant="center"
+            variant="selection"
             text={sub.name}
             initial={selectedSubjects[sub.name]}
             onPress={() => {
@@ -90,21 +93,35 @@ const RequestMatchWizard: React.FC<Props> = ({
           />
         ))}
       </TwoColGrid>
-
-      <FormControl>
-        <FormControl.Label>Beschreibung</FormControl.Label>
+      <FormControl marginBottom={space['1']}>
+        <FormControl.Label _text={{ color: 'primary.700' }}>
+          {t('matching.request.check.descLabel')}
+        </FormControl.Label>
         <TextArea
+          placeholder={t('matching.request.check.descPlaceholder')}
           autoCompleteType={{}}
           onChangeText={setDescription}
           value={description}
         />
       </FormControl>
 
-      <Button isDisabled={isValidInput} onPress={() => setCurrentIndex(1)}>
-        Angaben prüfen
+      <VStack marginBottom={space['1']}>
+        <Link onPress={() => alert('hallo')} _text={{ fontWeight: 700 }}>
+          {t('matching.request.check.editDataLabel')}
+        </Link>
+      </VStack>
+
+      <Button
+        isDisabled={isValidInput}
+        onPress={() => setCurrentIndex(1)}
+        marginBottom={space['1']}>
+        {t('matching.request.check.buttons.button1')}
       </Button>
-      <Button variant="outline" onPress={() => navigate(-1)}>
-        Abbrechen
+      <Button
+        variant="outline"
+        onPress={() => navigate(-1)}
+        marginBottom={space['1']}>
+        {t('matching.request.check.buttons.button2')}
       </Button>
     </VStack>
   )
