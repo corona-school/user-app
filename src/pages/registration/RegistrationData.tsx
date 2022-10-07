@@ -36,7 +36,7 @@ const mutPupil = `mutation register(
   $state: State!
   $password: String!
   $gradeAsInt: Int!
-  $subjects: [String!]
+  $subjects: [SubjectInput!]
 ) {
   meRegisterPupil(
     data: {
