@@ -13,7 +13,9 @@ import {
   CheckCircleIcon,
   VStack,
   Stagger,
-  InfoIcon
+  InfoIcon,
+  Alert,
+  HStack
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
@@ -46,6 +48,9 @@ const HelpCenter: React.FC<Props> = () => {
   const [mentorCategory, setMentorCategory] = useState<MentorCategory>()
   const [subject, setSubject] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+
+  const [messageSent, setMessageSent] = useState<boolean>()
+  const [showError, setShowError] = useState<boolean>()
 
   const { setShow, setContent, setVariant } = useModal()
   const navigate = useNavigate()
@@ -303,6 +308,17 @@ const HelpCenter: React.FC<Props> = () => {
                     </Row> */}
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
+                        {t('helpcenter.contact.subject.label')}
+                      </FormControl.Label>
+                      <TextInput
+                        onChangeText={setSubject}
+                        placeholder={t(
+                          'helpcenter.contact.subject.placeholder'
+                        )}
+                      />
+                    </Row>
+                    <Row flexDirection="column" paddingY={space['0.5']}>
+                      <FormControl.Label>
                         {t('helpcenter.contact.message.label')}
                       </FormControl.Label>
                       <TextArea
@@ -320,9 +336,55 @@ const HelpCenter: React.FC<Props> = () => {
                       </Checkbox>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
+                      {messageSent && (
+                        <Alert
+                          marginY={3}
+                          colorScheme="success"
+                          status="success">
+                          <VStack space={2} flexShrink={1} w="100%">
+                            <HStack
+                              flexShrink={1}
+                              space={2}
+                              alignItems="center"
+                              justifyContent="space-between">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon />
+                                <Text>{t('helpcenter.contact.success')}</Text>
+                              </HStack>
+                            </HStack>
+                          </VStack>
+                        </Alert>
+                      )}
+                      {showError && (
+                        <Alert marginY={3} bgColor="danger.500">
+                          <VStack space={2} flexShrink={1} w="100%">
+                            <HStack
+                              flexShrink={1}
+                              space={2}
+                              alignItems="center"
+                              justifyContent="space-between">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color={'lightText'} />
+                                <Text color="lightText">
+                                  {t('helpcenter.contact.error')}
+                                </Text>
+                              </HStack>
+                            </HStack>
+                          </VStack>
+                        </Alert>
+                      )}
                       <Button
                         isDisabled={
-                          !dsgvo || message?.length < 5 || subject?.length < 5
+                          !dsgvo ||
+                          message?.length < 5 ||
+                          subject?.length < 5 ||
+                          !mentorCategory
                         }
                         onPress={sendContactMessage}>
                         {t('helpcenter.btn.formsubmit')}
