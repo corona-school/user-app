@@ -9,7 +9,9 @@ import {
   Column,
   Input,
   FormControl,
-  Stack
+  Stack,
+  Alert,
+  HStack
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -54,6 +56,9 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
 
   const [selections, setSelections] = useState<string[]>([])
 
+  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
+  const [showError, setShowError] = useState<boolean>()
+
   const { data, error, loading } = useQuery(gql`
     ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
@@ -68,7 +73,20 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     }
   }, [data?.me?.pupil?.languages])
 
+  useEffect(() => {
+    if (_updateLanguage.data && !_updateLanguage.error) {
+      setUserSettingChanged(true)
+    }
+  }, [_updateLanguage.data, _updateLanguage.error])
+
+  useEffect(() => {
+    if (_updateLanguage.error) {
+      setShowError(true)
+    }
+  }, [_updateLanguage.error])
+
   if (loading) return <></>
+
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
@@ -162,6 +180,38 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+        {userSettingChanged && (
+          <Alert marginY={3} colorScheme="success" status="success">
+            <VStack space={2} flexShrink={1} w="100%">
+              <HStack
+                flexShrink={1}
+                space={2}
+                alignItems="center"
+                justifyContent="space-between">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon />
+                  <Text>{t('profile.successmessage')}</Text>
+                </HStack>
+              </HStack>
+            </VStack>
+          </Alert>
+        )}
+        {showError && (
+          <Alert marginY={3} bgColor="danger.500">
+            <VStack space={2} flexShrink={1} w="100%">
+              <HStack
+                flexShrink={1}
+                space={2}
+                alignItems="center"
+                justifyContent="space-between">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon color={'lightText'} />
+                  <Text color="lightText">{t('profile.errormessage')}</Text>
+                </HStack>
+              </HStack>
+            </VStack>
+          </Alert>
+        )}
         <Button
           onPress={() => {
             updateLanguage({ variables: { languages: selections } })

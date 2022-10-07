@@ -245,7 +245,9 @@ const ProfileStudent: React.FC<Props> = () => {
                 href={() => {
                   setAboutMeModalVisible(!aboutMeModalVisible)
                 }}>
-                <Text>{aboutMe}</Text>
+                {(data?.me?.student?.aboutMe && <Text>{aboutMe}</Text>) || (
+                  <Text>{t('profile.AboutMe.empty')}</Text>
+                )}
               </ProfileSettingItem>
 
               <ProfileSettingItem
@@ -256,21 +258,22 @@ const ProfileStudent: React.FC<Props> = () => {
                   })
                 }>
                 <Row>
-                  {data?.me?.student.state && (
-                    <Column marginRight={3}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.student.state}`)}
-                      />
-                    </Column>
-                  )}
+                  {(data?.me?.student.state &&
+                    data?.me?.student.state !== 'other' && (
+                      <Column marginRight={3}>
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.student.state}`)}
+                        />
+                      </Column>
+                    )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
               <ProfileSettingItem
                 border={false}
-                title={t('profile.NeedHelpIn.label')}
+                title={t('profile.subjects.label')}
                 href={() =>
                   navigate('/change-setting/subjects', {
                     state: { userType: 'student' }
@@ -287,7 +290,7 @@ const ProfileStudent: React.FC<Props> = () => {
                         />
                       </Column>
                     )
-                  )}
+                  ) || <Text>{t('profile.subjects.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>

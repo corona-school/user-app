@@ -1,10 +1,11 @@
 const profile = {
   title: 'Mein Profil',
   successmessage: 'Änderungen wurden erfolgreich gespeichert.',
+  errormessage: 'Deine Änderungen konnten nicht gespeichert werden.',
   editprofile: 'Profilbild ändern',
   birthday: 'Geburtsdatum ändern',
   type: 'Art der Unterstützung:',
-  availability: "Verfügbarkeit verwalten",
+  availability: 'Verfügbarkeit verwalten',
   ProfileCompletion: {
     name: 'Profilvollständigkeit'
   },
@@ -24,6 +25,7 @@ const profile = {
   },
   AboutMe: {
     label: 'Über mich',
+    empty: 'Keine Angabe',
     popup: {
       header: 'Über mich Text ändern',
       label: 'Dein Text',
@@ -33,6 +35,7 @@ const profile = {
   },
   FluentLanguagenalData: {
     label: 'Fließende Sprache',
+    empty: 'Keine Angabe',
     single: {
       header: 'Sprache ändern',
       title: 'Meine Sprachen',
@@ -45,6 +48,7 @@ const profile = {
     }
   },
   State: {
+    empty: 'Keine Angabe',
     label: 'Bundesland',
     single: {
       header: 'Bundesland ändern',
@@ -55,6 +59,7 @@ const profile = {
   },
   SchoolType: {
     label: 'Schulform',
+    empty: 'Keine Angabe',
     single: {
       header: 'Schulform ändern',
       title: 'Meine Schulform',
@@ -68,6 +73,7 @@ const profile = {
   },
   SchoolClass: {
     label: 'Klasse',
+    empty: 'Keine Angabe',
     single: {
       header: 'Schulklasse ändern',
       title: 'Gewählte Schulklasse',
@@ -79,8 +85,16 @@ const profile = {
       }
     }
   },
+  subjects: {
+    label: 'Meine Fächer',
+    empty: 'Keine Fächer angegeben',
+    single: {
+      title: 'Meine Fächer'
+    }
+  },
   NeedHelpIn: {
     label: 'Fächer, in denen ich mir Hilfe wünsche',
+    empty: 'Es wurden keine Fächer angegeben',
     single: {
       header: 'Fächer ändern',
       title: 'Fächer, in denen ich mir Hilfe wünsche',
@@ -99,13 +113,13 @@ const profile = {
       tabausstehend: 'Ausstehend',
       button: 'Bescheinigung anfordern'
     }
-  }, 
+  },
   Notice: {
     noLanguage: 'Es wurden keine Sprachen angegeben',
     noState: 'Es wurde kein Bundesland angegeben',
     noSchoolType: 'Es wurde keine Schulform angegeben',
     noSchoolGrade: 'Es wurde keine Klasse angegeben',
-    noSchoolSubject: 'Es wurde keine Fächer angegeben',
+    noSchoolSubject: 'Es wurde keine Fächer angegeben'
   }
 }
 
