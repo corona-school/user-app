@@ -4,9 +4,11 @@ import {
   Heading,
   FormControl,
   TextArea,
-  Button
+  Button,
+  useTheme
 } from 'native-base'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
@@ -34,7 +36,9 @@ const RequestMatchWizard: React.FC<Props> = ({
   setCurrentIndex,
   data
 }) => {
+  const { space } = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const isValidInput = useMemo(() => {
     if (description.length < 5) return false
@@ -52,32 +56,26 @@ const RequestMatchWizard: React.FC<Props> = ({
 
   return (
     <VStack>
-      <Heading>Match anfordern</Heading>
-      <Text>
-        Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die
-        individuelle Hilfe benötigen.
-      </Text>
+      <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
+      <Text>{t('matching.student.text')}</Text>
 
-      <Text mt="1" bold>
-        Wichtig
+      <Text my={space['0.5']} bold>
+        {t('important')}
       </Text>
-      <Text>
-        Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden
-        haben.
-      </Text>
+      <Text mb={space['1.5']}>{t('matching.student.hint')}</Text>
 
-      <Heading>Persönliche Daten</Heading>
+      <Heading fontSize={'lg'} mb={space['0.5']}>
+        {t('matching.student.personalData.title')}
+      </Heading>
 
-      <Text bold>Für welches Fach möchtest du deine Hilfe anbieten?</Text>
-      <Text>
-        Solltest du meherere Fächer anbieten wollen, ist eine Mehrfachauswahl
-        möglich.
-      </Text>
+      <Text bold>{t('matching.student.personalData.subtitle')}</Text>
+      <Text>{t('matching.student.personalData.hint')}</Text>
 
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => (
           <IconTagList
-            variant="center"
+            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+            variant="selection"
             text={sub.name}
             initial={selectedSubjects[sub.name]}
             onPress={() => {
@@ -91,21 +89,22 @@ const RequestMatchWizard: React.FC<Props> = ({
         ))}
       </TwoColGrid>
 
-      <FormControl>
-        <FormControl.Label>Beschreibung</FormControl.Label>
-        <TextArea
-          autoCompleteType={{}}
-          onChangeText={setDescription}
-          value={description}
-        />
-      </FormControl>
-
-      <Button isDisabled={isValidInput} onPress={() => setCurrentIndex(1)}>
-        Angaben prüfen
-      </Button>
-      <Button variant="outline" onPress={() => navigate(-1)}>
-        Abbrechen
-      </Button>
+      <VStack space={space['1']}>
+        <FormControl>
+          <FormControl.Label>Beschreibung</FormControl.Label>
+          <TextArea
+            autoCompleteType={{}}
+            onChangeText={setDescription}
+            value={description}
+          />
+        </FormControl>
+        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
+          Angaben prüfen
+        </Button>
+        <Button variant="outline" onPress={() => navigate(-1)}>
+          Abbrechen
+        </Button>
+      </VStack>
     </VStack>
   )
 }

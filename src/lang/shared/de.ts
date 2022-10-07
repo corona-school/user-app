@@ -10,6 +10,7 @@ const onboarding = {
   all: 'Alle',
   firstname: 'Vorname',
   lastname: 'Nachname',
-  skip: 'Überspringen'
+  skip: 'Überspringen',
+  important: 'Wichtig'
 }
 export default onboarding

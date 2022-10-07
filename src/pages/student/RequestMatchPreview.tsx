@@ -1,4 +1,4 @@
-import { Text, VStack, Heading, Button } from 'native-base'
+import { Text, VStack, Heading, Button, useTheme } from 'native-base'
 import IconTagList from '../../widgets/IconTagList'
 
 type Props = {
@@ -18,8 +18,9 @@ const RequestMatchPreview: React.FC<Props> = ({
   onRequestMatch,
   onBack
 }) => {
+  const { space } = useTheme()
   return (
-    <VStack>
+    <VStack space={space['1']}>
       <Heading>Angaben prüfen</Heading>
       <Text>
         Bitte überprüfe deine Angaben noch einmal, bevor du dein Match
@@ -39,8 +40,10 @@ const RequestMatchPreview: React.FC<Props> = ({
       <Text bold>Beschreibung</Text>
       <Text>{description}</Text>
 
-      <Button>Match anfordern</Button>
-      <Button variant={'outline'}>Daten bearbeiten</Button>
+      <Button onPress={onRequestMatch}>Match anfordern</Button>
+      <Button variant={'outline'} onPress={onBack}>
+        Daten bearbeiten
+      </Button>
     </VStack>
   )
 }

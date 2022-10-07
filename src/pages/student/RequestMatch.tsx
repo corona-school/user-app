@@ -1,6 +1,9 @@
 import { gql, useQuery } from '@apollo/client'
-import { VStack, Modal, Button } from 'native-base'
-import { useCallback, useState } from 'react'
+import { t } from 'i18next'
+import { VStack, Modal, Button, useTheme } from 'native-base'
+import { useCallback, useState, useTransition } from 'react'
+import { useTranslation } from 'react-i18next'
+import NotificationAlert from '../../components/NotificationAlert'
 import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
 
@@ -10,6 +13,8 @@ import RequestMatchWizard from './RequestMatchWizard'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
+  const { space } = useTheme()
+  const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [selectedSubjects, setSelectedSubjects] = useState<{
     [key: string]: boolean
@@ -18,7 +23,7 @@ const RequestMatch: React.FC<Props> = () => {
     [key: string]: { [key: string]: boolean }
   }>({})
 
-  const [focusedSubject, setFocusedSubject] = useState<any>({ name: 'Test' })
+  const [focusedSubject, setFocusedSubject] = useState<any>({ name: '' })
   const [showModal, setShowModal] = useState<boolean>(false)
   const [description, setDescription] = useState<string>('')
 
@@ -54,35 +59,37 @@ const RequestMatch: React.FC<Props> = () => {
   `)
 
   const requestMatch = useCallback(() => {}, [])
-
+  console.log(selectedClasses, focusedSubject)
   return (
     <>
-      <WithNavigation>
-        {currentIndex === 0 && (
-          <RequestMatchWizard
-            data={data}
-            description={description}
-            setDescription={setDescription}
-            selectedClasses={selectedClasses}
-            // setSelectedClasses={setSelectedClasses}
-            selectedSubjects={selectedClasses}
-            setSelectedSubjects={setSelectedSubjects}
-            setCurrentIndex={setCurrentIndex}
-            setFocusedSubject={setFocusedSubject}
-            setShowModal={setShowModal}
-          />
-        )}
-        {currentIndex === 1 && (
-          <RequestMatchPreview
-            description={description}
-            subjects={Object.entries(selectedSubjects)
-              .filter(s => s[1])
-              .map(([key, val]) => key)}
-            classes={selectedClasses}
-            onRequestMatch={requestMatch}
-            onBack={() => setCurrentIndex(0)}
-          />
-        )}
+      <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>
+        <VStack paddingX={space['1']}>
+          {currentIndex === 0 && (
+            <RequestMatchWizard
+              data={data}
+              description={description}
+              setDescription={setDescription}
+              selectedClasses={selectedClasses}
+              // setSelectedClasses={setSelectedClasses}
+              selectedSubjects={selectedClasses}
+              setSelectedSubjects={setSelectedSubjects}
+              setCurrentIndex={setCurrentIndex}
+              setFocusedSubject={setFocusedSubject}
+              setShowModal={setShowModal}
+            />
+          )}
+          {currentIndex === 1 && (
+            <RequestMatchPreview
+              description={description}
+              subjects={Object.entries(selectedSubjects)
+                .filter(s => s[1])
+                .map(([key, val]) => key)}
+              classes={selectedClasses}
+              onRequestMatch={requestMatch}
+              onBack={() => setCurrentIndex(0)}
+            />
+          )}
+        </VStack>
       </WithNavigation>
       <Modal isOpen={showModal}>
         <Modal.Content>
