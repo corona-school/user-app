@@ -50,13 +50,7 @@ const Dashboard: React.FC<Props> = () => {
         joinAfterStart
         maxParticipants
         participantsCount
-        isOnWaitingList
 
-        canJoin {
-          allowed
-          reason
-          limit
-        }
         course {
           name
           description
