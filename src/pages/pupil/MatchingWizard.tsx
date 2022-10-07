@@ -39,23 +39,27 @@ const MatchingWizard: React.FC<Props> = () => {
     <VStack space={space['1']} paddingX={space['1']}>
       <Heading>{t('matching.request.headline')}</Heading>
       <Text>{t('matching.request.content')}</Text>
-      <Text bold>{t('matching.request.yourDetails')}</Text>
+      <Heading fontSize="lg">{t('matching.request.yourDetails')}</Heading>
 
-      <Text>
-        <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-        {data?.me?.pupil?.schooltype}
-      </Text>
-      <Text>
-        <Text bold>{t('matching.request.grade')}</Text>{' '}
-        {data?.me?.pupil?.gradeAsInt}
-      </Text>
-      <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
-      <Text>{t('matching.request.needHelpInContent')}</Text>
-      <TwoColGrid>
-        {subs.map((sub: any) => (
-          <IconTagList text={sub.name} variant="selection" />
-        ))}
-      </TwoColGrid>
+      <VStack space={space['0.5']}>
+        <Text>
+          <Text bold>{t('matching.request.schoolType')}</Text>{' '}
+          {data?.me?.pupil?.schooltype}
+        </Text>
+        <Text>
+          <Text bold>{t('matching.request.grade')}</Text>{' '}
+          {data?.me?.pupil?.gradeAsInt}
+        </Text>
+      </VStack>
+      <VStack space={space['0.5']}>
+        <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
+        <Text>{t('matching.request.needHelpInContent')}</Text>
+        <TwoColGrid>
+          {subs.map((sub: any) => (
+            <IconTagList text={sub.name} variant="selection" />
+          ))}
+        </TwoColGrid>
+      </VStack>
       <Text bold>{t('matching.request.describ')}</Text>
       <TextArea autoCompleteType={{}} />
       <Button onPress={onRequestMatch}>
