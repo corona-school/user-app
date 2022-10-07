@@ -39,7 +39,7 @@ const StudentGroup: React.FC<Props> = () => {
           </VStack>
           <HSection
             title={t('dashboard.helpers.headlines.course')}
-            showAll={true}>
+            showAll={false}>
             {new Array(5).fill(0).map(({}, index) => (
               <AppointmentCard
                 key={index}
@@ -154,6 +154,7 @@ const StudentGroup: React.FC<Props> = () => {
           </VStack>
           <VStack>
             <HSection
+              onShowAll={() => navigate('/group/offer')}
               title={t('matching.group.helper.offers.title')}
               showAll={true}>
               {new Array(5).fill(0).map(({}, index) => (

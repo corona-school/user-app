@@ -58,10 +58,9 @@ import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
-import Group from './pages/pupil/Group'
-import StudentGroupSupport from './pages/student/StudentGroupSupport'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
+import StudentGroupSupport from './pages/student/StudentGroupSupport'
 
 export default function Navigator() {
   return (
@@ -306,8 +305,18 @@ export default function Navigator() {
                 studentComponent={<StudentGroup />}
               />
             </RequireAuth>
-          }
-        />
+          }></Route>
+
+        <Route
+          path="/group/offer"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<PupilGroup />}
+                studentComponent={<StudentGroupSupport />}
+              />
+            </RequireAuth>
+          }></Route>
 
         <Route
           path="/matching"

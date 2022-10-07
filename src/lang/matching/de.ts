@@ -10,7 +10,19 @@ const matching = {
     button: 'Unterstützung anfragen',
     ctaCardHeader: 'Gruppen-Lernunterstützung',
     ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
-    ctaCardButton: 'Zu den Gruppenkursen'
+    ctaCardButton: 'Zu den Gruppenkursen',
+    modal: {
+      title: 'Unterstützung anfragen',
+      content: ' Mit unserem Angebot möchten wir vor allem Schüler:innen erreichen, die herkömmliche Nachhilfe aufgrund persönlicher, sozialer, kultureller oder finanzieller Ressourcen nicht oder nur sehr schwer wahrnehmen können. Bitte fordere nur dann eine:n neue:n Lernpartner:in an, wenn du keine andere Möglichkeit hast Hilfe zu erhalten.',
+      contentHeadline: 'Wichtig',
+      contentPreContent: 'Da es bei der 1:1 Lernunterstützung zu langen',
+      contentBold: 'Wartezeiten von 3 - 6 Monaten',
+      contentEndContent: 'bieten wir zusätzlich Gruppen-Lernunterstützung an.',
+      buttons: {
+        button1: 'weiter',
+        button2: 'Zu den Gruppenkursen'
+      }
+    }
   },
   modal: {
     header: 'Unterstützung anfragen',
