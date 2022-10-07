@@ -11,6 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Questionnaire, {
   Answer,
+  ObjectAnswer,
   Question,
   QuestionnaireContext,
   SelectionQuestion
@@ -24,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import Utility from '../../Utility'
+import { LFSubject } from '../../types/lernfair/Subject'
 
 type Props = {}
 
@@ -127,12 +129,14 @@ const RegistrationData: React.FC<Props> = () => {
 
   // at the end register the pupil with all data
   const registerPupil = useCallback(
-    async (answers: { [key: string]: Answer }) => {
+    async (answers: { [key: string]: ObjectAnswer }) => {
       const state = Object.keys(answers.state)[0]
       const schooltype = Object.keys(answers.schooltype)[0]
 
       const gradeAsInt = parseInt(Object.keys(answers.schoolclass)[0])
-      const subjects = Object.keys(answers.subjects)
+      // const subjects = Object.keys(answers.subjects)
+      const subjects = answers.subjects
+      console.log({ subjects })
 
       await register({
         variables: {
@@ -182,6 +186,7 @@ const RegistrationData: React.FC<Props> = () => {
   // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
+      console.log(answers)
       if (userType === 'pupil') {
         await registerPupil(answers)
       } else {
@@ -322,7 +327,7 @@ const RegistrationData: React.FC<Props> = () => {
   }, [questions, currentIndex, modifyQuestionBeforeRender])
 
   // modify question before moving on to the next
-  const modifyQuestionBeforeNext = () => {
+  const modifyQuestionBeforeNext = useCallback(() => {
     const currentQuestion = questions[currentIndex]
     // is question about language?
     if (currentQuestion.id === 'language') {
@@ -357,7 +362,29 @@ const RegistrationData: React.FC<Props> = () => {
         setQuestions && setQuestions(qs)
       }
     }
-  }
+  }, [answers, currentIndex, questions, t])
+
+  // modify the answer object before moving on to the next question
+  const modifyAnswerBeforeNext = useCallback(
+    (answer: ObjectAnswer, question: Question) => {
+      if (userType === 'pupil') {
+        if (question.id === 'subjects') {
+          const newAnswer: LFSubject[] = []
+          Object.entries(answer).forEach(
+            ([key, val]: [key: string, val: Answer]) => {
+              !!val && newAnswer.push({ name: val.label })
+            }
+          )
+
+          setAnswers(prev => ({
+            ...prev,
+            [question.id]: newAnswer
+          }))
+        }
+      }
+    },
+    [userType]
+  )
 
   return (
     <QuestionnaireContext.Provider
@@ -374,6 +401,7 @@ const RegistrationData: React.FC<Props> = () => {
         <Questionnaire
           disableNavigation={loading}
           onQuestionnaireFinished={onQuestionnaireFinished}
+          modifyAnswerBeforeNext={modifyAnswerBeforeNext}
           onPressItem={(item: ISelectionItem) => {
             if (userType === 'student') {
               if (currentModifiedQuestion?.id === 'subjects') {

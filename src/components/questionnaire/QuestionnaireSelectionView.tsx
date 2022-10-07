@@ -7,6 +7,7 @@ import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 import {
   Answer,
+  ObjectAnswer,
   QuestionnaireContext,
   SelectionQuestion
 } from '../Questionnaire'
@@ -41,7 +42,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
 
   useEffect(() => {
     if (!setAnswers) return
-    const sel: Answer = { ...selections }
+    const sel: ObjectAnswer = { ...selections }
     for (const k in sel) {
       if (!sel[k]) delete sel[k]
     }
@@ -72,7 +73,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
               <Pressable
                 mt={space['1']}
                 onPress={() => {
-                  setSelections(prev => ({
+                  setSelections((prev: Answer) => ({
                     ...prev,
                     [opt.key]: !selections[opt.key]
                   }))
@@ -103,9 +104,9 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
                   undefined
                 }
                 onPress={() => {
-                  setSelections(prev => ({
+                  setSelections((prev: Answer) => ({
                     ...prev,
-                    [opt.key]: !selections[opt.key]
+                    [opt.key]: !selections[opt.key] ? opt : false
                   }))
                   onPressSelection && onPressSelection(opt)
                 }}
