@@ -59,7 +59,7 @@ const RequestMatch: React.FC<Props> = () => {
   `)
 
   const requestMatch = useCallback(() => {}, [])
-  console.log(selectedClasses, focusedSubject)
+
   return (
     <>
       <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>

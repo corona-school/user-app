@@ -77,7 +77,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
-  const [maxParticipantCount, setMaxParticipantCount] = useState<string>('0')
+  const [maxParticipantCount, setMaxParticipantCount] = useState<string>('')
   const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false)
   const [allowContact, setAllowContact] = useState<boolean>(false)
   const [lectures, setLectures] = useState<Lecture[]>([])
@@ -123,7 +123,9 @@ const CreateCourse: React.FC<Props> = () => {
         studentId: $studentId
         courseId: id
         subcourse: $subcourse
-      )
+      ) {
+        id
+      }
     }
   `)
 
@@ -172,7 +174,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     createCourse({
       variables: {
-        studentId: data?.me?.student?.id,
+        studentId: parseFloat(data?.me?.student?.id) * 1.0,
         course,
         subcourse
       }

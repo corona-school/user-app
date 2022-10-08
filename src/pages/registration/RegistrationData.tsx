@@ -136,7 +136,6 @@ const RegistrationData: React.FC<Props> = () => {
       const gradeAsInt = parseInt(Object.keys(answers.schoolclass)[0])
       // const subjects = Object.keys(answers.subjects)
       const subjects = answers.subjects
-      console.log({ subjects })
 
       await register({
         variables: {
@@ -186,7 +185,6 @@ const RegistrationData: React.FC<Props> = () => {
   // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      console.log(answers)
       if (userType === 'pupil') {
         await registerPupil(answers)
       } else {

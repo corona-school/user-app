@@ -17,7 +17,7 @@ import {
   Link,
   View
 } from 'native-base'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
@@ -72,7 +72,6 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
 
   const splitGrades: SplitGrade[] = useMemo(() => {
     const arr: SplitGrade[] = []
-    console.log(subject)
 
     if (subject?.grade?.max && subject.grade?.min) {
       if (subject.grade?.min < 13 && subject?.grade?.max >= 11) {
@@ -108,6 +107,10 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
     outline,
     subject
   ])
+
+  useEffect(() => {
+    // TODO prefill
+  }, [])
 
   return (
     <VStack space={space['1']}>
