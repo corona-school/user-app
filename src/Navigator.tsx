@@ -53,7 +53,7 @@ import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
 import CourseBlocker from './pages/student/CourseBlocker'
-import DashboardHelper from './pages/student/DashboardStudent'
+import DashboardStudent from './pages/student/DashboardStudent'
 import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
@@ -89,7 +89,18 @@ export default function Navigator() {
             <RequireAuth>
               <SwitchUserType
                 pupilComponent={<Dashboard />}
-                studentComponent={<DashboardHelper />}
+                studentComponent={<DashboardStudent />}
+              />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardStudent />}
               />
             </RequireAuth>
           }
@@ -359,14 +370,16 @@ const SwitchUserType = ({
     }
   `)
   const me = data?.me
-
+  console.log(me)
   if (loading) return <></>
   if (!me || error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
   if (!!me.student) {
+    console.log('is student')
     return studentComponent
   } else {
+    console.log('is pupil')
     return pupilComponent
   }
 }
