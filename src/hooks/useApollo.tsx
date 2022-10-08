@@ -8,7 +8,7 @@ import {
 } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { setContext } from '@apollo/client/link/context'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useMemo, useState, createContext, useContext } from 'react'
 import Utility from '../Utility'
 
 export type LFApollo = {
@@ -18,15 +18,21 @@ export type LFApollo = {
   token: string
 }
 
+// Unlike the standard ApolloProvider, this context carries additional properties
+//  for managing the session
+const ExtendedApolloContext = createContext<LFApollo | null>(null);
+
 export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
-  const { client } = useApollo()
+  const apolloContext = useApolloInternal()
 
-  return <ApolloProvider client={client}>{children}</ApolloProvider>
+  return <ExtendedApolloContext.Provider value={apolloContext}>
+    <ApolloProvider client={apolloContext.client}>{children}</ApolloProvider>
+  </ExtendedApolloContext.Provider>;
 }
 
-const useApollo = () => {
+const useApolloInternal = () => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem('lernfair:token')
   )
@@ -88,4 +94,7 @@ const useApollo = () => {
 
   return { client, createToken, clearToken, token } as LFApollo
 }
+
+const useApollo = () => useContext(ExtendedApolloContext);
+
 export default useApollo
