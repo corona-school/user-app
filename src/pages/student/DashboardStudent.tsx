@@ -16,19 +16,11 @@ import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
 
-const DashboardHelper: React.FC<Props> = () => {
+const DashboardStudent: React.FC<Props> = () => {
   const { data, error, loading } = useQuery(gql`
     query {
       me {
         firstname
-        student {
-          openMatchRequestCount
-          canRequestMatch {
-            allowed
-            reason
-            limit
-          }
-        }
       }
 
       subcoursesPublic(take: 10, skip: 2) {
@@ -90,7 +82,7 @@ const DashboardHelper: React.FC<Props> = () => {
             />
           </VStack>
           <HSection title={t('dashboard.myappointments.header')} showAll={true}>
-            {data?.me?.pupil?.subcoursesJoined.map((el: any, i: number) => (
+            {data?.me?.pupil?.subcoursesJoined?.map((el: any, i: number) => (
               <AppointmentCard
                 key={`appointment-${i}`}
                 description="Lorem Ipsum"
@@ -99,26 +91,36 @@ const DashboardHelper: React.FC<Props> = () => {
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 title={el?.course?.name}
               />
-            ))}
+            )) || <Text>Du hast momentan keine Termine</Text>}
           </HSection>
           <HSection
             title={t('dashboard.helpers.headlines.course')}
             showAll={true}
             scrollable={false}
             wrap={true}>
-            {new Array(2).fill(0).map(({}, index) => (
-              <AppointmentCard
-                key={index}
-                variant="horizontal"
-                description="Lorem Ipsum"
-                tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
-                date={new Date()}
-                countCourse={4}
-                onPressToCourse={() => alert('YES')}
-                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-              />
-            ))}
+            {(new Array(0).length &&
+              new Array(0)
+                .fill(0)
+                .map(({}, index) => (
+                  <AppointmentCard
+                    key={index}
+                    variant="horizontal"
+                    description="Lorem Ipsum"
+                    tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
+                    date={new Date()}
+                    countCourse={4}
+                    onPressToCourse={() => alert('YES')}
+                    image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    title="Diskussionen in Mathe!? – Die Kurvendiskussion"
+                  />
+                ))) || (
+              <VStack space={space['0.5']}>
+                <Text>Es wurden keine Kurse gefunden.</Text>
+                <Button onPress={() => navigate('/matching')}>
+                  Kurs anbieten
+                </Button>
+              </VStack>
+            )}
             {(data?.student?.canRequestMatch?.allowed && (
               <Button marginY={space['1']}>
                 {t('dashboard.helpers.buttons.course')}
@@ -146,22 +148,25 @@ const DashboardHelper: React.FC<Props> = () => {
               {t('dashboard.helpers.headlines.myLearningPartner')}
             </Heading>
 
-            {new Array(2).fill(0).map(({}, index) => (
-              <LearningPartner
-                key={index}
-                isDark={true}
-                name="Nele"
-                subjects={['Englisch']}
-                schooltype="Grundschule"
-                schoolclass={4}
-                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                button={
-                  <Button variant="outlinelight">
-                    {t('dashboard.helpers.buttons.solveMatch')}
-                  </Button>
-                }
-              />
-            ))}
+            {(new Array(0).length &&
+              new Array(0)
+                .fill(0)
+                .map(({}, index) => (
+                  <LearningPartner
+                    key={index}
+                    isDark={true}
+                    name="Nele"
+                    subjects={['Englisch']}
+                    schooltype="Grundschule"
+                    schoolclass={4}
+                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    button={
+                      <Button variant="outlinelight">
+                        {t('dashboard.helpers.buttons.solveMatch')}
+                      </Button>
+                    }
+                  />
+                ))) || <Text>{t('dashboard.offers.noMatching')}</Text>}
             <Button marginY={space['1']}>
               {t('dashboard.helpers.buttons.requestMatch')}
             </Button>
@@ -189,4 +194,4 @@ const DashboardHelper: React.FC<Props> = () => {
     </WithNavigation>
   )
 }
-export default DashboardHelper
+export default DashboardStudent

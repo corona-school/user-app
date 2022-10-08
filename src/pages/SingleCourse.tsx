@@ -160,21 +160,25 @@ const SingleCourse: React.FC<Props> = () => {
               title: t('single.tabs.lessons'),
               content: (
                 <>
-                  {course?.lectures?.map((lec, i) => (
-                    <Row flexDirection="column" marginBottom={space['1.5']}>
-                      <Heading paddingBottom={space['0.5']} fontSize="md">
-                        {t('single.global.lesson')}{' '}
-                        {`${i + 1}`.padStart(2, '0')}
-                      </Heading>
-                      <Text paddingBottom={space['0.5']}>
-                        {Utility.formatDate(lec.start)}{' '}
-                        {t('single.global.clock')}
-                      </Text>
-                      <Text>
-                        <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden
-                      </Text>
-                    </Row>
-                  ))}
+                  {course?.lectures?.map(
+                    (lec, i) =>
+                      (
+                        <Row flexDirection="column" marginBottom={space['1.5']}>
+                          <Heading paddingBottom={space['0.5']} fontSize="md">
+                            {t('single.global.lesson')}{' '}
+                            {`${i + 1}`.padStart(2, '0')}
+                          </Heading>
+                          <Text paddingBottom={space['0.5']}>
+                            {Utility.formatDate(lec.start)}{' '}
+                            {t('single.global.clock')}
+                          </Text>
+                          <Text>
+                            <Text bold>Dauer: </Text> {lec?.duration / 60}{' '}
+                            Stunden
+                          </Text>
+                        </Row>
+                      ) || <Text>Es wurden keine Lektionen eingetragen.</Text>
+                  )}
 
                   <Box marginBottom={space['0.5']}>
                     <Button marginBottom={space['0.5']}>
@@ -209,22 +213,25 @@ const SingleCourse: React.FC<Props> = () => {
                       </Text>
                     </Column>
                   </Row>
-                  {course?.participants?.map(p => (
-                    <Row marginBottom={space['1.5']} alignItems="center">
-                      <Column marginRight={space['1']}>
-                        <ProfilAvatar
-                          size="md"
-                          image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                        />
-                      </Column>
-                      <Column>
-                        <Heading fontSize="md">{p.firstname}</Heading>
-                        <Text>
-                          {t('single.global.from')} {p.state?.label}
-                        </Text>
-                      </Column>
-                    </Row>
-                  ))}
+                  {course?.participants?.map(
+                    p =>
+                      (
+                        <Row marginBottom={space['1.5']} alignItems="center">
+                          <Column marginRight={space['1']}>
+                            <ProfilAvatar
+                              size="md"
+                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                            />
+                          </Column>
+                          <Column>
+                            <Heading fontSize="md">{p.firstname}</Heading>
+                            <Text>
+                              {t('single.global.from')} {p.state?.label}
+                            </Text>
+                          </Column>
+                        </Row>
+                      ) || <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
+                  )}
                   <Box marginBottom={space['0.5']}>
                     <Button marginBottom={space['0.5']}>
                       {t('single.button.login')}

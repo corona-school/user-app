@@ -62,9 +62,14 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
             {t('course.CourseDate.Preview.tagHeadline')}
           </Heading>
           <Row space={space['0.5']}>
-            {tags.split(',').map(t => (
-              <Tag text={t} />
-            ))}
+            {tags
+              .split(',')
+              .map(
+                t =>
+                  <Tag text={t} /> || (
+                    <Text>Es wurden keine Tags angegeben.</Text>
+                  )
+              )}
           </Row>
         </>
       )}

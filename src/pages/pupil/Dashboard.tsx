@@ -114,20 +114,26 @@ const Dashboard: React.FC<Props> = () => {
             />
           </VStack>
           <HSection title={t('dashboard.myappointments.header')} showAll>
-            {data?.me?.pupil?.subcoursesJoined.map(
-              (el: LFSubCourse, i: number) => (
-                <AppointmentCard
-                  onPressToCourse={() =>
-                    navigate('/single-course', { state: { course: el } })
-                  }
-                  key={`appointment-${i}`}
-                  description="Lorem Ipsum"
-                  tags={el.tags}
-                  date={futureDate}
-                  image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                  title={el?.name}
-                />
-              )
+            {(data?.me?.pupil?.subcoursesJoined?.length &&
+              data?.me?.pupil?.subcoursesJoined?.map(
+                (el: LFSubCourse, i: number) => (
+                  <AppointmentCard
+                    onPressToCourse={() =>
+                      navigate('/single-course', { state: { course: el } })
+                    }
+                    key={`appointment-${i}`}
+                    description="Lorem Ipsum"
+                    tags={el.tags}
+                    date={futureDate}
+                    image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    title={el?.name}
+                  />
+                )
+              )) || (
+              <VStack space={space['0.5']}>
+                <Text>Du bist für keine Kurse eingetragen.</Text>
+                <Button>Zur Kursübersicht</Button>
+              </VStack>
             )}
           </HSection>
           {/* <VStack space={space['0.5']}>
@@ -158,7 +164,7 @@ const Dashboard: React.FC<Props> = () => {
                   }
                 />
               )) || (
-              <VStack>
+              <VStack space={space['0.5']}>
                 <Text>{t('dashboard.offers.noMatching')}</Text>
                 <Button onPress={() => navigate('/matching')}>
                   {t('dashboard.offers.requestMatching')}
@@ -183,16 +189,17 @@ const Dashboard: React.FC<Props> = () => {
             />
           </VStack> */}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
-            {data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
-              <SignInCard
-                tags={sc.course.tags}
-                data={sc}
-                onClickSignIn={() => null}
-                onPress={() =>
-                  navigate('/single-course', { state: { course: sc } })
-                }
-              />
-            ))}
+            {(data?.subcoursesPublic?.length &&
+              data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
+                <SignInCard
+                  tags={sc.course.tags}
+                  data={sc}
+                  onClickSignIn={() => null}
+                  onPress={() =>
+                    navigate('/single-course', { state: { course: sc } })
+                  }
+                />
+              ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}
           </HSection>
           {/* <TwoColGrid title={t('dashboard.offers.header')}>
             {Array(2)
