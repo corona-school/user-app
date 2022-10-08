@@ -59,6 +59,7 @@ import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
 import Group from './pages/Group'
+import MatchingStudent from './pages/student/MatchingStudent'
 
 export default function Navigator() {
   return (
@@ -320,8 +321,16 @@ export default function Navigator() {
             <RequireAuth>
               <SwitchUserType
                 pupilComponent={<Matching />}
-                studentComponent={<RequestMatch />}
+                studentComponent={<MatchingStudent />}
               />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/request-match"
+          element={
+            <RequireAuth>
+              <SwitchUserType studentComponent={<RequestMatch />} />
             </RequireAuth>
           }
         />
@@ -352,8 +361,8 @@ const SwitchUserType = ({
   pupilComponent,
   studentComponent
 }: {
-  pupilComponent: JSX.Element
-  studentComponent: JSX.Element
+  pupilComponent?: JSX.Element
+  studentComponent?: JSX.Element
 }) => {
   const location = useLocation()
 
@@ -370,16 +379,18 @@ const SwitchUserType = ({
     }
   `)
   const me = data?.me
-  console.log(me)
+
   if (loading) return <></>
   if (!me || error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
   if (!!me.student) {
     console.log('is student')
-    return studentComponent
+    if (studentComponent) return studentComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
   } else {
     console.log('is pupil')
-    return pupilComponent
+    if (pupilComponent) return pupilComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
   }
 }
