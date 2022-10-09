@@ -15,7 +15,7 @@ const Settings: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { clearToken } = useApollo()
+  const { logout } = useApollo()
   const tabspace = 3
   // const { user } = useLernfair()
 
@@ -92,7 +92,7 @@ const Settings: React.FC<Props> = () => {
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
-                clearToken()
+                logout()
                 navigate(0)
               }}
             />

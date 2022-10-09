@@ -26,33 +26,35 @@ export default function Login() {
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
 
+  const { createDeviceToken } = useApollo();
+
   const [login, { data, error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
   `)
 
-  const { clearToken, createToken } = useApollo()
+
   const navigate = useNavigate()
 
   const attemptLogin = useCallback(async () => {
-    createToken()
     await login({
       variables: {
         email: email,
         password: password
       }
     })
-  }, [createToken, email, login, password])
+  }, [email, login, password])
 
   useEffect(() => {
     if (loading) return
     if (data && data.loginPassword) {
+      createDeviceToken(); // fire and forget
       navigate('/')
     } else {
-      clearToken()
+      
     }
-  }, [clearToken, data, loading, navigate])
+  }, [data, loading, navigate, createDeviceToken])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>

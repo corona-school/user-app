@@ -35,14 +35,8 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
   const { setRegistrationData, email, password, userType } = useRegistration()
-  const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
-
-  useEffect(() => {
-    createToken()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
