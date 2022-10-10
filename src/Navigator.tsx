@@ -60,6 +60,7 @@ import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
 import Group from './pages/Group'
 import MatchingStudent from './pages/student/MatchingStudent'
+import RequestCertificate from './pages/RequestCertificate'
 
 export default function Navigator() {
   return (
@@ -233,6 +234,15 @@ export default function Navigator() {
             <RequireAuth>
               <CourseBlocker />
             </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/request-certificate"
+          element={
+            // <RequireAuth>
+            <RequestCertificate />
+            // </RequireAuth>
           }
         />
 
