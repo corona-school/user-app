@@ -36,6 +36,9 @@ import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
 import { Pressable } from 'react-native'
 import LFParty from '../assets/icons/lernfair/lf-party.svg'
+import useModal from '../hooks/useModal'
+import Unsplash from './pupil/Unsplash'
+import CourseBlocker from './student/CourseBlocker'
 
 type Props = {}
 
@@ -66,6 +69,7 @@ type ICreateCourseContext = {
   setAllowContact?: Dispatch<SetStateAction<boolean>>
   lectures?: Lecture[]
   setLectures?: Dispatch<SetStateAction<Lecture[]>>
+  pickedPhoto?: string
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({})
@@ -81,6 +85,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false)
   const [allowContact, setAllowContact] = useState<boolean>(false)
   const [lectures, setLectures] = useState<Lecture[]>([])
+  const [pickedPhoto, setPickedPhoto] = useState<string>('')
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
@@ -88,6 +93,10 @@ const CreateCourse: React.FC<Props> = () => {
     query {
       me {
         student {
+          canCreateCourse {
+            allowed
+            reason
+          }
           id
         }
       }
@@ -133,9 +142,10 @@ const CreateCourse: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
+  const { setShow, setContent } = useModal()
 
   const onFinish = useCallback(() => {
-    // TODO unsplash
+    // TODO unsplash BACKEND FIELD MISSING?
 
     const course = {
       outline,
@@ -174,7 +184,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     createCourse({
       variables: {
-        studentId: parseFloat(data?.me?.student?.id) * 1.0,
+        studentId: parseFloat(data?.me?.student?.id),
         course,
         subcourse
       }
@@ -214,6 +224,21 @@ const CreateCourse: React.FC<Props> = () => {
     }
   }, [courseData, courseError])
 
+  const pickPhoto = useCallback(
+    (photo: string) => {
+      setPickedPhoto(photo)
+      setShow(false)
+    },
+    [setShow]
+  )
+
+  const showUnsplash = useCallback(() => {
+    setContent(<Unsplash onPhotoSelected={pickPhoto} />)
+    setShow(true)
+  }, [pickPhoto, setContent, setShow])
+
+  if (loading) return <></>
+
   return (
     <WithNavigation
       headerTitle={t('course.header')}
@@ -239,84 +264,91 @@ const CreateCourse: React.FC<Props> = () => {
           allowContact,
           setAllowContact,
           lectures,
-          setLectures
+          setLectures,
+          pickedPhoto
         }}>
-        <VStack space={space['1']} padding={space['1']}>
-          <InstructionProgress
-            isDark={false}
-            currentIndex={currentIndex}
-            instructions={[
-              {
-                label: t('course.CourseDate.tabs.course')
-              },
-              {
-                label: t('course.CourseDate.tabs.appointments')
-              },
-              {
-                label: t('course.CourseDate.tabs.checker')
-              }
-            ]}
-          />
-          {currentIndex === 0 && (
-            <CourseData onNext={onNext} onCancel={onCancel} />
-          )}
-          {currentIndex === 1 && (
-            <CourseAppointments onNext={onNext} onBack={onBack} />
-          )}
-          {currentIndex === 2 && (
-            <>
-              <CoursePreview
+        {(data?.me?.student?.canCreateCourse?.allowed && (
+          <VStack space={space['1']} padding={space['1']}>
+            <InstructionProgress
+              isDark={false}
+              currentIndex={currentIndex}
+              instructions={[
+                {
+                  label: t('course.CourseDate.tabs.course')
+                },
+                {
+                  label: t('course.CourseDate.tabs.appointments')
+                },
+                {
+                  label: t('course.CourseDate.tabs.checker')
+                }
+              ]}
+            />
+            {currentIndex === 0 && (
+              <CourseData
                 onNext={onNext}
-                onBack={onBack}
-                isDisabled={loading}
+                onCancel={onCancel}
+                onShowUnsplash={showUnsplash}
               />
-              <Modal
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                background="modalbg">
-                <Modal.Content
-                  width="307px"
-                  marginX="auto"
-                  backgroundColor="transparent">
-                  <Box position="absolute" zIndex="1" right="20px" top="14px">
-                    <Pressable onPress={() => setShowModal(false)}>
-                      <CloseIcon color="white" />
-                    </Pressable>
-                  </Box>
-                  <Modal.Body background="primary.900" padding={space['1']}>
-                    <Box alignItems="center" marginY={space['1']}>
-                      <LFParty />
+            )}
+            {currentIndex === 1 && (
+              <CourseAppointments onNext={onNext} onBack={onBack} />
+            )}
+            {currentIndex === 2 && (
+              <>
+                <CoursePreview
+                  onNext={onNext}
+                  onBack={onBack}
+                  isDisabled={loading}
+                />
+                <Modal
+                  isOpen={showModal}
+                  onClose={() => setShowModal(false)}
+                  background="modalbg">
+                  <Modal.Content
+                    width="307px"
+                    marginX="auto"
+                    backgroundColor="transparent">
+                    <Box position="absolute" zIndex="1" right="20px" top="14px">
+                      <Pressable onPress={() => setShowModal(false)}>
+                        <CloseIcon color="white" />
+                      </Pressable>
                     </Box>
-                    <Box paddingY={space['1']}>
-                      <Heading
-                        maxWidth="330px"
-                        marginX="auto"
-                        textAlign="center"
-                        color="lightText"
-                        marginBottom={space['0.5']}>
-                        {t('course.modal.headline')}
-                      </Heading>
-                      <Text
-                        textAlign="center"
-                        color="lightText"
-                        maxWidth="330px"
-                        marginX="auto">
-                        {t('course.modal.content')}
-                      </Text>
-                    </Box>
-                    <Box paddingY={space['1']}>
-                      <Row marginBottom={space['0.5']}>
-                        <Button onPress={() => navigate('/')} width="100%">
-                          {t('course.modal.button')}
-                        </Button>
-                      </Row>
-                    </Box>
-                  </Modal.Body>
-                </Modal.Content>
-              </Modal>
-            </>
-          )}
-        </VStack>
+                    <Modal.Body background="primary.900" padding={space['1']}>
+                      <Box alignItems="center" marginY={space['1']}>
+                        <LFParty />
+                      </Box>
+                      <Box paddingY={space['1']}>
+                        <Heading
+                          maxWidth="330px"
+                          marginX="auto"
+                          textAlign="center"
+                          color="lightText"
+                          marginBottom={space['0.5']}>
+                          {t('course.modal.headline')}
+                        </Heading>
+                        <Text
+                          textAlign="center"
+                          color="lightText"
+                          maxWidth="330px"
+                          marginX="auto">
+                          {t('course.modal.content')}
+                        </Text>
+                      </Box>
+                      <Box paddingY={space['1']}>
+                        <Row marginBottom={space['0.5']}>
+                          <Button onPress={() => navigate('/')} width="100%">
+                            {t('course.modal.button')}
+                          </Button>
+                        </Row>
+                      </Box>
+                    </Modal.Body>
+                  </Modal.Content>
+                </Modal>
+              </>
+            )}
+          </VStack>
+        )) || <CourseBlocker />}
       </CreateCourseContext.Provider>
     </WithNavigation>
   )

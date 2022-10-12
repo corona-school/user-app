@@ -1,5 +1,14 @@
 import { DateTime } from 'luxon'
-import { VStack, Button, useTheme, Heading, Text, Row, Box } from 'native-base'
+import {
+  VStack,
+  Button,
+  useTheme,
+  Heading,
+  Text,
+  Row,
+  Box,
+  Image
+} from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
@@ -27,7 +36,8 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     courseClasses,
     joinAfterStart,
     allowContact,
-    lectures
+    lectures,
+    pickedPhoto
   } = useContext(CreateCourseContext)
 
   return (
@@ -48,7 +58,9 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       </Heading>
       {subject && <IconTagList isDisabled text={subject.name || ''} />}
 
-      <Box bg="gray.500" h="180"></Box>
+      <Box bg="gray.500" h="180">
+        <Image src={pickedPhoto} h="100%" />
+      </Box>
 
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.shortDesc')}

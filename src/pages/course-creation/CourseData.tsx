@@ -29,9 +29,10 @@ import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 type Props = {
   onNext: () => any
   onCancel: () => any
+  onShowUnsplash: () => any
 }
 
-const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
+const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
   const { data, error, loading } = useQuery(gql`
     query {
       me {
@@ -65,7 +66,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
     maxParticipantCount,
     setMaxParticipantCount,
     setJoinAfterStart,
-    setAllowContact
+    setAllowContact,
+    pickedPhoto
   } = useContext(CreateCourseContext)
 
   type SplitGrade = { minGrade: number; maxGrade: number; id: number }
@@ -146,7 +148,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         </FormControl.Label>
         <Box paddingY={space['1']}>
           <Pressable
-            onPress={() => alert('Hallo')}
+            onPress={onShowUnsplash}
             flexDirection="row"
             alignItems="center">
             <Column marginRight={space['1']}>
@@ -155,7 +157,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
                 height="90px"
                 alt="Image Placeholder"
                 source={{
-                  uri: ImagePlaceHolder
+                  uri: pickedPhoto || ImagePlaceHolder
                 }}
               />
             </Column>
