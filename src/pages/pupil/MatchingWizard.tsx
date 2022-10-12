@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +23,12 @@ const MatchingWizard: React.FC<Props> = () => {
     query {
       me {
         pupil {
+          id
+          canRequestMatch {
+            allowed
+            reason
+            limit
+          }
           schooltype
           gradeAsInt
           subjectsFormatted {
@@ -33,7 +39,24 @@ const MatchingWizard: React.FC<Props> = () => {
     }
   `)
 
-  const onRequestMatch = useCallback(() => {}, [])
+  const [
+    createMatchRequest,
+    { data: requestData, error: requestError, loading: requestLoading }
+  ] = useMutation(gql`
+    mutation createMatchRequest($pupilId: Float!) {
+      pupilCreateMatchRequest(pupilId: $pupilId)
+    }
+  `)
+
+  const onRequestMatch = useCallback(() => {
+    createMatchRequest({
+      variables: {
+        pupilId: data?.me?.pupil?.id
+      }
+    })
+  }, [createMatchRequest, data?.me?.pupil?.id])
+
+  if (loading) return <></>
 
   return (
     <VStack space={space['1']} paddingX={space['1']}>
@@ -62,9 +85,15 @@ const MatchingWizard: React.FC<Props> = () => {
       </VStack>
       <Text bold>{t('matching.request.describ')}</Text>
       <TextArea autoCompleteType={{}} />
-      <Button onPress={onRequestMatch}>
+      <Button
+        onPress={onRequestMatch}
+        isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed}>
         {t('matching.request.buttons.request')}
       </Button>
+
+      {!data?.me?.pupil?.canRequestMatch?.allowed && (
+        <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
+      )}
       <Button variant={'outline'} onPress={() => navigate(-1)}>
         {t('matching.request.buttons.cancel')}
       </Button>

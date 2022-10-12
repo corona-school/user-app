@@ -21,9 +21,7 @@ const MatchingBlocker: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   return (
-    <WithNavigation
-      headerTitle={t('matching.blocker.header')}
-      headerLeft={<BackButton />}>
+    <>
       <Container
         maxWidth="100%"
         paddingX={space['1.5']}
@@ -70,7 +68,7 @@ const MatchingBlocker: React.FC<Props> = () => {
           button={<Button>{t('matching.blocker.ctaCardButton')}</Button>}
         />
       </Container>
-    </WithNavigation>
+    </>
   )
 }
 export default MatchingBlocker
