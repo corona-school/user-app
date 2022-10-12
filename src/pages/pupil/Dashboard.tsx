@@ -119,7 +119,7 @@ const Dashboard: React.FC<Props> = () => {
                 (el: LFSubCourse, i: number) => (
                   <AppointmentCard
                     onPressToCourse={() =>
-                      navigate('/single-course', { state: { course: el } })
+                      navigate('/single-course', { state: { course: el.id } })
                     }
                     key={`appointment-${i}`}
                     description="Lorem Ipsum"
@@ -196,7 +196,7 @@ const Dashboard: React.FC<Props> = () => {
                   data={sc}
                   onClickSignIn={() => null}
                   onPress={() =>
-                    navigate('/single-course', { state: { course: sc } })
+                    navigate('/single-course', { state: { course: sc.id } })
                   }
                 />
               ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}

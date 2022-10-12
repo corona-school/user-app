@@ -116,7 +116,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 ))) || (
               <VStack space={space['0.5']}>
                 <Text>Es wurden keine Kurse gefunden.</Text>
-                <Button onPress={() => navigate('/matching')}>
+                <Button onPress={() => navigate('/create-course')}>
                   Kurs anbieten
                 </Button>
               </VStack>
@@ -167,7 +167,9 @@ const DashboardStudent: React.FC<Props> = () => {
                     }
                   />
                 ))) || <Text>{t('dashboard.offers.noMatching')}</Text>}
-            <Button marginY={space['1']}>
+            <Button
+              marginY={space['1']}
+              onPress={() => navigate('/request-match')}>
               {t('dashboard.helpers.buttons.requestMatch')}
             </Button>
           </VStack>
