@@ -58,6 +58,7 @@ const Profile: React.FC<Props> = () => {
         pupil {
           state
           schooltype
+          languages
           subjectsFormatted {
             name
           }
@@ -212,13 +213,13 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.FluentLanguagenalData.label')}
                 href={() => navigate('/change-setting/language')}>
                 {(data?.me?.pupil?.languages?.length && (
-                  <Row>
+                  <Row flexWrap="wrap" w="100%">
                     {data?.me?.pupil?.languages.map((lang: string) => (
-                      <Column marginRight={3}>
+                      <Column marginRight={3} mb={space['0.5']}>
                         <IconTagList
                           isDisabled
-                          iconPath={`subjects/icon_${lang.toLowerCase()}.svg`}
-                          text={lang}
+                          iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                          text={t(`lernfair.languages.${lang.toLowerCase()}`)}
                         />
                       </Column>
                     ))}
@@ -229,9 +230,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.State.label')}
                 href={() => navigate('/change-setting/state')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
@@ -245,9 +246,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.SchoolType.label')}
                 href={() => navigate('/change-setting/school-type')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.schooltype && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
@@ -263,9 +264,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.SchoolClass.label')}
                 href={() => navigate('/change-setting/class')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.gradeAsInt && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         textIcon={data?.me?.pupil?.gradeAsInt}
@@ -282,11 +283,11 @@ const Profile: React.FC<Props> = () => {
                 border={false}
                 title={t('profile.NeedHelpIn.label')}
                 href={() => navigate('/change-setting/subjects')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.subjectsFormatted?.length &&
                     data?.me?.pupil?.subjectsFormatted?.map(
                       (sub: { name: string; __typename: string }) => (
-                        <Column marginRight={3}>
+                        <Column marginRight={3} mb={space['0.5']}>
                           <IconTagList
                             isDisabled
                             iconPath={'subjects/icon_mathe.svg'}
