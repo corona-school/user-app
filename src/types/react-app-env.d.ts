@@ -7,6 +7,7 @@ declare namespace NodeJS {
     readonly REACT_APP_VERSION: string
     readonly REACT_APP_APOLLO_CLIENT_URI: string
     readonly REACT_APP_MATOMO_URL: string
+    readonly REACT_APP_UNSPLASH: string
   }
   interface ProcessEnv extends LernFairEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test'
