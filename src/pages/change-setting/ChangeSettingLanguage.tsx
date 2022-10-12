@@ -38,10 +38,10 @@ const queryPupil = `query {
     }
   }
 }`
-const mutStudent = `mutation updateLanguage($languages: [String!]) {
+const mutStudent = `mutation updateLanguage($languages: [Language!]) {
   meUpdate(update: { student: { languages: $languages } })
 }`
-const mutPupil = `mutation updateLanguage($languages: [String!]) {
+const mutPupil = `mutation updateLanguage($languages: [Language!]) {
   meUpdate(update: { pupil: { languages: $languages } })
 }`
 
@@ -111,8 +111,8 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                   <Row alignItems="center" justifyContent="center">
                     <IconTagList
                       isDisabled
-                      iconPath={`languages/icon_${language}.svg`}
-                      text={t(`lernfair.languages.${language}`)}
+                      iconPath={`languages/icon_${language.toLowerCase()}.svg`}
+                      text={t(`lernfair.languages.${language.toLowerCase()}`)}
                     />
                     <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                       x
@@ -141,7 +141,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
-                          iconPath={`languages/icon_${subject.key}.svg`}
+                          iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
                           text={subject.label}
                           onPress={() =>
                             setSelections(prev => [...prev, subject.key])
