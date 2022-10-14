@@ -87,9 +87,10 @@ const CreateCourse: React.FC<Props> = () => {
   const [lectures, setLectures] = useState<Lecture[]>([])
   const [pickedPhoto, setPickedPhoto] = useState<string>('')
 
+  const [fileId, setFileId] = useState<string>('')
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
-  const { data, error, loading } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     query {
       me {
         student {
@@ -103,38 +104,29 @@ const CreateCourse: React.FC<Props> = () => {
     }
   `)
 
-  // TODO just put in to satisfy graphql errors
-  // mutation createCourse(
-  //   $user: Float!
-  //   $course: PublicCourseCreateInput!
-  //   $sub: PublicSubcourseCreateInput!
-  //   $lec: [PublicLectureInput!]
-  // ) {
-  //   courseCreate(studentId: $user, course: $course) {
-  //     id
-  //   }
-  //   subcourseCreate(courseId: id, subcourse: $sub}){id}
-  //   lectureCreate(subcourseId: id, lecture: $lec)
-  // }
-  const [
-    createCourse,
-    { data: courseData, error: courseError, loading: courseLoading }
-  ] = useMutation(gql`
-    mutation createCourse(
-      $studentId: Float!
-      $course: PublicCourseCreateInput!
-      $subcourse: PublicSubcourseCreateInput!
-    ) {
-      courseCreate(studentId: $studentId, course: $course) {
-        id
+  const [createCourse, { data: courseData, error: courseError }] =
+    useMutation(gql`
+      mutation createCourse($course: PublicCourseCreateInput!) {
+        courseCreate(course: $course) {
+          id
+        }
       }
-      subcourseCreate(
-        studentId: $studentId
-        courseId: id
-        subcourse: $subcourse
+    `)
+  const [createSubcourse, { data: subcourseData, error: subcourseError }] =
+    useMutation(gql`
+      mutation createSubcourse(
+        $courseId: Float!
+        $subcourse: PublicSubcourseCreateInput!
       ) {
-        id
+        subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
+          id
+        }
       }
+    `)
+
+  const [setCourseImage, mutImage] = useMutation(gql`
+    mutation setCourseImage($courseId: Float!, $fileId: String!) {
+      courseSetImage(courseId: $courseId, fileId: $fileId)
     }
   `)
 
@@ -144,9 +136,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [showModal, setShowModal] = useState(false)
   const { setShow, setContent } = useModal()
 
-  const onFinish = useCallback(() => {
-    // TODO unsplash BACKEND FIELD MISSING?
-
+  const onFinish = useCallback(async () => {
     const course = {
       outline,
       description,
@@ -157,49 +147,64 @@ const CreateCourse: React.FC<Props> = () => {
       allowContact
     }
 
-    const subcourse: {
-      minGrade: number
-      maxGrade: number
-      maxParticipants: number
-      joinAfterStart: boolean
-      lecture: LFLecture[]
-    } = {
-      minGrade: 0,
-      maxGrade: 0,
-      maxParticipants: parseInt(maxParticipantCount),
-      joinAfterStart,
-      lecture: []
-    }
-
-    for (const lec of lectures) {
-      const l: LFLecture = {
-        start: new Date(),
-        duration: parseInt(lec.duration)
-      }
-      const dt = DateTime.fromISO(lec.date)
-      const t = DateTime.fromISO(lec.time)
-      dt.set({ hour: t.hour, minute: t.minute, second: t.second })
-      subcourse.lecture.push(l)
-    }
-
-    createCourse({
+    await createCourse({
       variables: {
-        studentId: parseFloat(data?.me?.student?.id),
-        course,
-        subcourse
+        course
       }
     })
+    console.log('created course')
   }, [
     outline,
     description,
     subject.name,
     courseName,
     allowContact,
-    maxParticipantCount,
-    joinAfterStart,
-    createCourse,
+    createCourse
+  ])
+
+  useEffect(() => {
+    if (courseData && !courseError) {
+      const subcourse: {
+        minGrade: number
+        maxGrade: number
+        maxParticipants: number
+        joinAfterStart: boolean
+        lecture: LFLecture[]
+      } = {
+        minGrade: 11,
+        maxGrade: 13,
+        maxParticipants: parseInt(maxParticipantCount),
+        joinAfterStart,
+        lecture: []
+      }
+
+      for (const lec of lectures) {
+        const l: LFLecture = {
+          start: new Date(),
+          duration: parseInt(lec.duration)
+        }
+        const dt = DateTime.fromISO(lec.date)
+        const t = DateTime.fromISO(lec.time)
+        dt.set({ hour: t.hour, minute: t.minute, second: t.second })
+        subcourse.lecture.push(l)
+      }
+
+      createSubcourse({
+        variables: {
+          courseId: courseData.courseCreate.id,
+          subcourse
+        }
+      })
+      console.log('created subcourse')
+    }
+  }, [
+    courseData,
+    courseError,
+    createSubcourse,
     data?.me?.student?.id,
-    lectures
+    joinAfterStart,
+    lectures,
+    maxParticipantCount
   ])
 
   const onNext = useCallback(() => {
@@ -219,10 +224,19 @@ const CreateCourse: React.FC<Props> = () => {
   }, [navigate])
 
   useEffect(() => {
-    if (courseData && !courseError) {
+    if (mutImage.data && !mutImage.error) {
       setShowModal(true)
+    } else {
+      console.log('error loading up image')
     }
-  }, [courseData, courseError])
+  }, [
+    courseData,
+    courseError,
+    mutImage.data,
+    mutImage.error,
+    subcourseData,
+    subcourseError
+  ])
 
   const pickPhoto = useCallback(
     (photo: string) => {
@@ -236,6 +250,50 @@ const CreateCourse: React.FC<Props> = () => {
     setContent(<Unsplash onPhotoSelected={pickPhoto} />)
     setShow(true)
   }, [pickPhoto, setContent, setShow])
+
+  const uploadPhoto = useCallback(async () => {
+    if (!courseData?.id) return
+
+    const formData: FormData = new FormData()
+
+    const base64 = await fetch(pickedPhoto)
+    const data = await base64.blob()
+    formData.append('file', data, 'img_course.jpeg')
+
+    try {
+      const raw = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+        method: 'POST',
+        body: formData
+      })
+      const res = await raw.json()
+      if (res && res.fileId) {
+        setCourseImage({
+          variables: {
+            courseId: courseData.id,
+            fileId: res.fileId
+          }
+        })
+        console.log('set photo')
+      } else {
+        console.log({ res })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [courseData?.id, pickedPhoto, setCourseImage])
+
+  useEffect(() => {
+    if (courseData && subcourseData && !courseError && !subcourseError) {
+      uploadPhoto()
+    }
+  }, [
+    courseData,
+    courseError,
+    fileId,
+    subcourseData,
+    subcourseError,
+    uploadPhoto
+  ])
 
   if (loading) return <></>
 

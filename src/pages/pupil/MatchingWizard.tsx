@@ -43,18 +43,14 @@ const MatchingWizard: React.FC<Props> = () => {
     createMatchRequest,
     { data: requestData, error: requestError, loading: requestLoading }
   ] = useMutation(gql`
-    mutation createMatchRequest($pupilId: Float!) {
-      pupilCreateMatchRequest(pupilId: $pupilId)
+    mutation createMatchRequest() {
+      pupilCreateMatchRequest()
     }
   `)
 
   const onRequestMatch = useCallback(() => {
-    createMatchRequest({
-      variables: {
-        pupilId: data?.me?.pupil?.id
-      }
-    })
-  }, [createMatchRequest, data?.me?.pupil?.id])
+    createMatchRequest()
+  }, [createMatchRequest])
 
   if (loading) return <></>
 

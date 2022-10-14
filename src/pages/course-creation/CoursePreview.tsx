@@ -144,10 +144,11 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
                 <Text bold minW="100px" fontSize="md">
                   {t('course.CourseDate.Preview.appointmentDate')}
                 </Text>
+                {console.log(lec.date)}
                 <Text fontSize="md">
                   {Utility.handleDateString(
                     lec.date,
-                    'yyyy-mm-dd',
+                    'yyyy-MM-dd',
                     undefined,
                     DateTime.DATE_MED
                   )}
