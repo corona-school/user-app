@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { VStack, Modal, Button, useTheme } from 'native-base'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
 import ToggleButton from '../../components/ToggleButton'
@@ -41,12 +41,6 @@ const RequestMatch: React.FC<Props> = () => {
           }
           matches {
             id
-            pupil {
-              firstname
-              subjects
-              schooltype
-              gradeAsInt
-            }
           }
           canRequestMatch {
             allowed
@@ -59,20 +53,28 @@ const RequestMatch: React.FC<Props> = () => {
     }
   `)
 
+  const [createMatchRequest, matchRequest] = useMutation(gql`
+    mutation {
+      studentCreateMatchRequest
+    }
+  `)
+
   const requestMatch = useCallback(() => {
-    console.log('request match', {
-      selectedSubjects,
-      selectedClasses,
-      focusedSubject,
-      description
-    })
-  }, [description, focusedSubject, selectedClasses, selectedSubjects])
-  console.log('request match', {
-    selectedSubjects,
-    selectedClasses,
-    focusedSubject,
-    description
-  })
+    // console.log('request match', {
+    //   selectedSubjects,
+    //   selectedClasses,
+    //   focusedSubject,
+    //   description
+    // })
+    createMatchRequest()
+  }, [createMatchRequest])
+
+  useEffect(() => {
+    if (matchRequest?.data?.studentCreateMatchRequest) {
+      // TODO show success
+    }
+  }, [matchRequest])
+
   return (
     <>
       <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>
