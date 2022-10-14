@@ -1,5 +1,5 @@
 import { Text, Button, Heading, HStack, useTheme, VStack } from 'native-base'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import CTACard from '../../widgets/CTACard'
@@ -8,11 +8,12 @@ import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg'
 import PartyIcon from '../../assets/icons/lernfair/lf-pary-small.svg'
 import HelperWizard from '../../widgets/HelperWizard'
 import LearningPartner from '../../widgets/LearningPartner'
+import { LFMatch } from '../../types/lernfair/Match'
 
 type Props = {}
 
@@ -21,6 +22,22 @@ const DashboardStudent: React.FC<Props> = () => {
     query {
       me {
         firstname
+        student {
+          canRequestMatch {
+            allowed
+            reason
+          }
+          canCreateCourse {
+            allowed
+            reason
+          }
+          matches {
+            id
+            pupil {
+              firstname
+            }
+          }
+        }
       }
 
       subcoursesPublic(take: 10, skip: 2) {
@@ -41,6 +58,21 @@ const DashboardStudent: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
+
+  const [createMatchRequest, matchRequest] = useMutation(gql`
+    mutation {
+      studentCreateMatchRequest
+    }
+  `)
+
+  const requestMatch = useCallback(async () => {
+    setIsMatchRequested(true)
+    const res = (await createMatchRequest()) as { createMatchRequest: boolean }
+    if (!res.createMatchRequest) {
+      setIsMatchRequested(false)
+    }
+  }, [createMatchRequest])
 
   if (loading) return <></>
 
@@ -82,16 +114,21 @@ const DashboardStudent: React.FC<Props> = () => {
             />
           </VStack>
           <HSection title={t('dashboard.myappointments.header')} showAll={true}>
-            {data?.me?.pupil?.subcoursesJoined?.map((el: any, i: number) => (
-              <AppointmentCard
-                key={`appointment-${i}`}
-                description="Lorem Ipsum"
-                tags={el.tags}
-                date={futureDate}
-                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                title={el?.course?.name}
-              />
-            )) || <Text>Du hast momentan keine Termine</Text>}
+            {data?.me?.student?.subcoursesJoined?.map(
+              (
+                el: any,
+                i: number // TODO courses joined to courses instructing
+              ) => (
+                <AppointmentCard
+                  key={`appointment-${i}`}
+                  description="Lorem Ipsum"
+                  tags={el.tags}
+                  date={futureDate}
+                  image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  title={el?.course?.name}
+                />
+              )
+            ) || <Text>{t('empty.appointments')}</Text>}
           </HSection>
           <HSection
             title={t('dashboard.helpers.headlines.course')}
@@ -115,17 +152,22 @@ const DashboardStudent: React.FC<Props> = () => {
                   />
                 ))) || (
               <VStack space={space['0.5']}>
-                <Text>Es wurden keine Kurse gefunden.</Text>
-                <Button onPress={() => navigate('/create-course')}>
-                  Kurs anbieten
-                </Button>
+                <Text>{t('empty.courses')}</Text>
               </VStack>
             )}
-            {(data?.student?.canRequestMatch?.allowed && (
-              <Button marginY={space['1']}>
+            {(data?.me?.student?.canCreateCourse?.allowed && (
+              <Button
+                marginY={space['1']}
+                onPress={() => navigate('/create-course')}>
                 {t('dashboard.helpers.buttons.course')}
               </Button>
-            )) || <Text>{data?.student?.canRequestMatch?.reason}</Text>}
+            )) || (
+              <Text mt={space['0.5']} fontSize="xs" opacity=".8">
+                {t(
+                  `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                )}
+              </Text>
+            )}
           </HSection>
           {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
@@ -148,30 +190,36 @@ const DashboardStudent: React.FC<Props> = () => {
               {t('dashboard.helpers.headlines.myLearningPartner')}
             </Heading>
 
-            {(new Array(0).length &&
-              new Array(0)
-                .fill(0)
-                .map(({}, index) => (
-                  <LearningPartner
-                    key={index}
-                    isDark={true}
-                    name="Nele"
-                    subjects={['Englisch']}
-                    schooltype="Grundschule"
-                    schoolclass={4}
-                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                    button={
-                      <Button variant="outlinelight">
-                        {t('dashboard.helpers.buttons.solveMatch')}
-                      </Button>
-                    }
-                  />
-                ))) || <Text>{t('dashboard.offers.noMatching')}</Text>}
-            <Button
-              marginY={space['1']}
-              onPress={() => navigate('/request-match')}>
-              {t('dashboard.helpers.buttons.requestMatch')}
-            </Button>
+            {data?.me?.student?.matches.map((match: LFMatch, index: number) => (
+              <LearningPartner
+                key={index}
+                isDark={true}
+                name={match?.pupil?.firstname}
+                subjects={['Englisch']}
+                schooltype="Grundschule"
+                schoolclass={4}
+                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                button={
+                  <Button variant="outlinelight">
+                    {t('dashboard.helpers.buttons.solveMatch')}
+                  </Button>
+                }
+              />
+            )) || <Text>{t('empty.matchings')}</Text>}
+            {(data?.me?.student?.canRequestMatch?.allowed && (
+              <Button
+                isDisabled={isMatchRequested}
+                marginY={space['1']}
+                onPress={requestMatch}>
+                {t('dashboard.helpers.buttons.requestMatch')}
+              </Button>
+            )) || (
+              <Text mt={space['0.5']} fontSize="xs" opacity=".8">
+                {t(
+                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                )}
+              </Text>
+            )}
           </VStack>
           <VStack space={space['0.5']} marginBottom={space['1.5']}>
             <Heading marginY={space['1']}>

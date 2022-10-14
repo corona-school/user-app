@@ -75,7 +75,14 @@ const lernfair = {
     gymnasium: 'Gymnasium',
     other: 'Andere'
   },
-  schoolclass: '{{class}}. Klasse'
+  schoolclass: '{{class}}. Klasse',
+
+  reason: {
+    'max-requests': {
+      course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
+      matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
+    }
+  }
 }
 
 export default lernfair

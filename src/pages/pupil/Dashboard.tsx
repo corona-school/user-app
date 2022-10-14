@@ -7,7 +7,7 @@ import {
   VStack,
   CheckCircleIcon
 } from 'native-base'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
@@ -31,6 +31,16 @@ const Dashboard: React.FC<Props> = () => {
       me {
         firstname
         pupil {
+          canRequestMatch {
+            allowed
+            reason
+            limit
+          }
+          canJoinSubcourses {
+            allowed
+            reason
+            limit
+          }
           subcoursesJoined {
             lectures {
               start
@@ -73,6 +83,7 @@ const Dashboard: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
 
   if (loading) return <></>
 
@@ -149,26 +160,26 @@ const Dashboard: React.FC<Props> = () => {
             />
           </VStack> */}
           <HSection showAll title={t('dashboard.learningpartner.header')}>
-            {data?.me?.pupil?.matches
-              ?.slice(0, 1)
-              .map((match: LFMatch) => (
-                <TeacherCard
-                  name={`${match.student.firstname} ${match.student.lastname}`}
-                  variant="dark"
-                  tags={match.subjectsFormatted.map(s => s.name)}
-                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                  button={
-                    <Button variant="outlinelight">
-                      {t('dashboard.offers.match')}
-                    </Button>
-                  }
-                />
-              )) || (
+            {data?.me?.pupil?.matches?.map((match: LFMatch) => (
+              <TeacherCard
+                name={`${match.student?.firstname} ${match.student?.lastname}`}
+                variant="dark"
+                tags={match.subjectsFormatted?.map(s => s.name)}
+                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                button={
+                  <Button variant="outlinelight">
+                    {t('dashboard.offers.match')}
+                  </Button>
+                }
+              />
+            )) || (
               <VStack space={space['0.5']}>
                 <Text>{t('dashboard.offers.noMatching')}</Text>
-                <Button onPress={() => navigate('/matching')}>
-                  {t('dashboard.offers.requestMatching')}
-                </Button>
+                {data?.me?.pupil?.canRequestMatch?.allowed && (
+                  <Button onPress={() => navigate('/matching')}>
+                    {t('dashboard.offers.requestMatching')}
+                  </Button>
+                )}
               </VStack>
             )}
           </HSection>
