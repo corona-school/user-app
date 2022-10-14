@@ -381,15 +381,14 @@ const SwitchUserType = ({
   const me = data?.me
 
   if (loading) return <></>
-  if (!me || error)
+
+  if (!me && error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
   if (!!me.student) {
-    console.log('is student')
     if (studentComponent) return studentComponent
     else return <Navigate to="/dashboard" state={{ from: location }} replace />
   } else {
-    console.log('is pupil')
     if (pupilComponent) return pupilComponent
     else return <Navigate to="/dashboard" state={{ from: location }} replace />
   }
