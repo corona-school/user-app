@@ -57,7 +57,7 @@ const ProfileStudent: React.FC<Props> = () => {
         lastname
         student {
           state
-
+          aboutMe
           subjectsFormatted {
             name
           }
@@ -71,17 +71,23 @@ const ProfileStudent: React.FC<Props> = () => {
       meUpdate(update: { firstname: $firstname, lastname: $lastname })
     }
   `)
+  const [changeAboutMe, _changeAboutMe] = useMutation(gql`
+    mutation changeAboutMe($aboutMe: String!) {
+      meUpdate(update: { student: { aboutMe: $aboutMe } })
+    }
+  `)
 
   useEffect(() => {
-    if (_changeName.data) {
+    if (_changeName.data || _changeAboutMe.data) {
       setUserSettings(true)
     }
-  }, [_changeName.data])
+  }, [_changeAboutMe.data, _changeName.data])
 
   useEffect(() => {
     if (data?.me) {
       setFirstName(data?.me?.firstname)
       setLastName(data?.me?.lastname)
+      setAboutMe(data?.me?.student?.aboutMe)
     }
   }, [data?.me])
 
@@ -423,9 +429,7 @@ const ProfileStudent: React.FC<Props> = () => {
               <TextArea
                 autoCompleteType={{}}
                 value={aboutMe}
-                onChangeText={text => {
-                  setAboutMe(text)
-                }}
+                onChangeText={setAboutMe}
               />
             </FormControl>
           </Modal.Body>
@@ -441,8 +445,8 @@ const ProfileStudent: React.FC<Props> = () => {
               </Button>
               <Button
                 onPress={() => {
+                  changeAboutMe({ variables: { aboutMe } })
                   setAboutMeModalVisible(false)
-                  setUserSettings(true)
                 }}>
                 {t('profile.AboutMe.popup.save')}
               </Button>
