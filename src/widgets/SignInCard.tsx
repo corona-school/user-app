@@ -60,7 +60,9 @@ const SignInCard: React.FC<Props> = ({
             {data?.lectures && data?.lectures[0] && (
               <Text>
                 Ab{' '}
-                {Utility.formatDate(data.lectures[0].start, DateTime.DATE_MED)}
+                {DateTime.fromISO(data.lectures[0].start).toFormat(
+                  'dd.MM.yyyy'
+                )}
               </Text>
             )}
             <Text>•</Text>
