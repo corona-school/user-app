@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +23,12 @@ const MatchingWizard: React.FC<Props> = () => {
     query {
       me {
         pupil {
+          id
+          canRequestMatch {
+            allowed
+            reason
+            limit
+          }
           schooltype
           gradeAsInt
           subjectsFormatted {
@@ -33,34 +39,57 @@ const MatchingWizard: React.FC<Props> = () => {
     }
   `)
 
-  const onRequestMatch = useCallback(() => {}, [])
+  const [
+    createMatchRequest,
+    { data: requestData, error: requestError, loading: requestLoading }
+  ] = useMutation(gql`
+    mutation createMatchRequest() {
+      pupilCreateMatchRequest()
+    }
+  `)
+
+  const onRequestMatch = useCallback(() => {
+    createMatchRequest()
+  }, [createMatchRequest])
+
+  if (loading) return <></>
 
   return (
     <VStack space={space['1']} paddingX={space['1']}>
       <Heading>{t('matching.request.headline')}</Heading>
       <Text>{t('matching.request.content')}</Text>
-      <Text bold>{t('matching.request.yourDetails')}</Text>
+      <Heading fontSize="lg">{t('matching.request.yourDetails')}</Heading>
 
-      <Text>
-        <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-        {data?.me?.pupil?.schooltype}
-      </Text>
-      <Text>
-        <Text bold>{t('matching.request.grade')}</Text>{' '}
-        {data?.me?.pupil?.gradeAsInt}
-      </Text>
-      <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
-      <Text>{t('matching.request.needHelpInContent')}</Text>
-      <TwoColGrid>
-        {subs.map((sub: any) => (
-          <IconTagList text={sub.name} variant="selection" />
-        ))}
-      </TwoColGrid>
+      <VStack space={space['0.5']}>
+        <Text>
+          <Text bold>{t('matching.request.schoolType')}</Text>{' '}
+          {data?.me?.pupil?.schooltype}
+        </Text>
+        <Text>
+          <Text bold>{t('matching.request.grade')}</Text>{' '}
+          {data?.me?.pupil?.gradeAsInt}
+        </Text>
+      </VStack>
+      <VStack space={space['0.5']}>
+        <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
+        <Text>{t('matching.request.needHelpInContent')}</Text>
+        <TwoColGrid>
+          {subs.map((sub: any) => (
+            <IconTagList text={sub.name} variant="selection" />
+          ))}
+        </TwoColGrid>
+      </VStack>
       <Text bold>{t('matching.request.describ')}</Text>
       <TextArea autoCompleteType={{}} />
-      <Button onPress={onRequestMatch}>
+      <Button
+        onPress={onRequestMatch}
+        isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed}>
         {t('matching.request.buttons.request')}
       </Button>
+
+      {!data?.me?.pupil?.canRequestMatch?.allowed && (
+        <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
+      )}
       <Button variant={'outline'} onPress={() => navigate(-1)}>
         {t('matching.request.buttons.cancel')}
       </Button>

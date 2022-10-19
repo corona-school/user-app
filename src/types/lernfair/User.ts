@@ -37,7 +37,7 @@ export interface User {
   isCodu?: boolean
 }
 
-export type UserType = string | 'pupil' | 'student'
+export type LFUserType = string | 'pupil' | 'student'
 
 export type Pupil = {
   firstname?: string

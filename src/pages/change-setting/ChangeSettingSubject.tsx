@@ -10,7 +10,9 @@ import {
   Input,
   FormControl,
   Stack,
-  Modal
+  Modal,
+  Alert,
+  HStack
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -69,6 +71,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const [focusedSelection, setFocusedSelection] = useState<LFSubject>()
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>()
   const [selections, setSelections] = useState<LFSubject[]>([])
+  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
+  const [showError, setShowError] = useState<boolean>()
 
   const { data, error, loading } = useQuery(gql`
     ${state?.userType === 'student' ? queryStudent : queryPupil}
@@ -118,6 +122,18 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     }
   }, [cleanupSubjects, data?.me?.student?.subjectsFormatted])
 
+  useEffect(() => {
+    if (_updateSubjects.data && !_updateSubjects.error) {
+      setUserSettingChanged(true)
+    }
+  }, [_updateSubjects.data, _updateSubjects.error])
+
+  useEffect(() => {
+    if (_updateSubjects.error) {
+      setShowError(true)
+    }
+  }, [_updateSubjects.error])
+
   if (loading) return <></>
 
   return (
@@ -126,7 +142,11 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         headerTitle={t('profile.NeedHelpIn.single.header')}
         headerLeft={<BackButton />}>
         <VStack paddingX={space['1.5']} space={space['1']}>
-          <Heading>{t('profile.NeedHelpIn.single.title')}</Heading>
+          <Heading>
+            {state?.userType === 'student'
+              ? t('profile.subjects.single.title')
+              : t('profile.NeedHelpIn.single.title')}
+          </Heading>
           <ProfileSettingItem
             border={false}
             isIcon={false}
@@ -223,6 +243,38 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           </ProfileSettingRow>
         </VStack>
         <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+          {userSettingChanged && (
+            <Alert marginY={3} colorScheme="success" status="success">
+              <VStack space={2} flexShrink={1} w="100%">
+                <HStack
+                  flexShrink={1}
+                  space={2}
+                  alignItems="center"
+                  justifyContent="space-between">
+                  <HStack space={2} flexShrink={1} alignItems="center">
+                    <Alert.Icon />
+                    <Text>{t('profile.successmessage')}</Text>
+                  </HStack>
+                </HStack>
+              </VStack>
+            </Alert>
+          )}
+          {showError && (
+            <Alert marginY={3} bgColor="danger.500">
+              <VStack space={2} flexShrink={1} w="100%">
+                <HStack
+                  flexShrink={1}
+                  space={2}
+                  alignItems="center"
+                  justifyContent="space-between">
+                  <HStack space={2} flexShrink={1} alignItems="center">
+                    <Alert.Icon color={'lightText'} />
+                    <Text color="lightText">{t('profile.errormessage')}</Text>
+                  </HStack>
+                </HStack>
+              </VStack>
+            </Alert>
+          )}
           <Button
             onPress={() => {
               updateSubjects({

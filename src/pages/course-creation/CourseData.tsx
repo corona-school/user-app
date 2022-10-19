@@ -17,9 +17,8 @@ import {
   Link,
   View
 } from 'native-base'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
@@ -29,10 +28,11 @@ import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 type Props = {
   onNext: () => any
   onCancel: () => any
+  onShowUnsplash: () => any
 }
 
-const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
-  const { data, error, loading } = useQuery(gql`
+const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
+  const { data } = useQuery(gql`
     query {
       me {
         student {
@@ -65,14 +65,14 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
     maxParticipantCount,
     setMaxParticipantCount,
     setJoinAfterStart,
-    setAllowContact
+    setAllowContact,
+    pickedPhoto
   } = useContext(CreateCourseContext)
 
   type SplitGrade = { minGrade: number; maxGrade: number; id: number }
 
   const splitGrades: SplitGrade[] = useMemo(() => {
     const arr: SplitGrade[] = []
-    console.log(subject)
 
     if (subject?.grade?.max && subject.grade?.min) {
       if (subject.grade?.min < 13 && subject?.grade?.max >= 11) {
@@ -109,6 +109,10 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
     subject
   ])
 
+  useEffect(() => {
+    // TODO prefill
+  }, [])
+
   return (
     <VStack space={space['1']}>
       <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
@@ -126,12 +130,13 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
-        <Row>
+        <Row space={space['1']}>
           {data?.me?.student?.subjectsFormatted.map((sub: LFSubject) => (
             <IconTagList
               initial={subject?.name === sub.name}
               text={sub.name}
               onPress={() => setSubject && setSubject({ ...sub })}
+              iconPath={`languages/icon_${sub.name.toLowerCase()}.svg`}
             />
           ))}
         </Row>
@@ -143,7 +148,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
         </FormControl.Label>
         <Box paddingY={space['1']}>
           <Pressable
-            onPress={() => alert('Hallo')}
+            onPress={onShowUnsplash}
             flexDirection="row"
             alignItems="center">
             <Column marginRight={space['1']}>
@@ -152,7 +157,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel }) => {
                 height="90px"
                 alt="Image Placeholder"
                 source={{
-                  uri: ImagePlaceHolder
+                  uri: pickedPhoto || ImagePlaceHolder
                 }}
               />
             </Column>

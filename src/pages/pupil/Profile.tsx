@@ -45,9 +45,7 @@ const Profile: React.FC<Props> = () => {
   const [nameModalVisible, setNameModalVisible] = useState<boolean>(false)
   const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false)
 
-  const [aboutMe, setAboutMe] = useState<string>(
-    'Willkommen im Profil. Hier kannst du deinen Text anpassen.'
-  )
+  const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
   const { data, error, loading } = useQuery(gql`
@@ -58,6 +56,7 @@ const Profile: React.FC<Props> = () => {
         pupil {
           state
           schooltype
+          languages
           subjectsFormatted {
             name
           }
@@ -72,17 +71,23 @@ const Profile: React.FC<Props> = () => {
       meUpdate(update: { firstname: $firstname, lastname: $lastname })
     }
   `)
+  const [changeAboutMe, _changeAboutMe] = useMutation(gql`
+    mutation changeAboutMe($aboutMe: String!) {
+      meUpdate(update: { pupil: { aboutMe: $aboutMe } })
+    }
+  `)
 
   useEffect(() => {
-    if (_changeName.data) {
+    if (_changeName.data || _changeAboutMe.data) {
       setUserSettings(true)
     }
-  }, [_changeName.data])
+  }, [_changeAboutMe.data, _changeName.data])
 
   useEffect(() => {
     if (data?.me) {
       setFirstName(data?.me?.firstname)
       setLastName(data?.me?.lastname)
+      setAboutMe(data?.me?.pupil?.aboutMe)
     }
   }, [data?.me])
 
@@ -91,7 +96,7 @@ const Profile: React.FC<Props> = () => {
     let complete = 0.0
 
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
-    data?.me?.aboutMe && (complete += 1)
+    data?.me?.pupil?.aboutMe && (complete += 1)
     data?.me?.pupil?.languages?.length && (complete += 1)
     data?.me?.pupil?.state && (complete += 1)
     data?.me?.pupil?.schooltype && (complete += 1)
@@ -100,9 +105,9 @@ const Profile: React.FC<Props> = () => {
 
     return Math.floor((complete / max) * 100)
   }, [
-    data?.me?.aboutMe,
     data?.me?.firstname,
     data?.me?.lastname,
+    data?.me?.pupil?.aboutMe,
     data?.me?.pupil?.gradeAsInt,
     data?.me?.pupil?.languages?.length,
     data?.me?.pupil?.schooltype,
@@ -212,13 +217,13 @@ const Profile: React.FC<Props> = () => {
                 title={t('profile.FluentLanguagenalData.label')}
                 href={() => navigate('/change-setting/language')}>
                 {(data?.me?.pupil?.languages?.length && (
-                  <Row>
+                  <Row flexWrap="wrap" w="100%">
                     {data?.me?.pupil?.languages.map((lang: string) => (
-                      <Column marginRight={3}>
+                      <Column marginRight={3} mb={space['0.5']}>
                         <IconTagList
                           isDisabled
-                          iconPath={`subjects/icon_${lang.toLowerCase()}.svg`}
-                          text={lang}
+                          iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                          text={t(`lernfair.languages.${lang.toLowerCase()}`)}
                         />
                       </Column>
                     ))}
@@ -229,9 +234,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.State.label')}
                 href={() => navigate('/change-setting/state')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
@@ -245,9 +250,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.SchoolType.label')}
                 href={() => navigate('/change-setting/school-type')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.schooltype && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
@@ -263,9 +268,9 @@ const Profile: React.FC<Props> = () => {
               <ProfileSettingItem
                 title={t('profile.SchoolClass.label')}
                 href={() => navigate('/change-setting/class')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.gradeAsInt && (
-                    <Column marginRight={3}>
+                    <Column marginRight={3} mb={space['0.5']}>
                       <IconTagList
                         isDisabled
                         textIcon={data?.me?.pupil?.gradeAsInt}
@@ -282,11 +287,11 @@ const Profile: React.FC<Props> = () => {
                 border={false}
                 title={t('profile.NeedHelpIn.label')}
                 href={() => navigate('/change-setting/subjects')}>
-                <Row>
+                <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.subjectsFormatted?.length &&
                     data?.me?.pupil?.subjectsFormatted?.map(
                       (sub: { name: string; __typename: string }) => (
-                        <Column marginRight={3}>
+                        <Column marginRight={3} mb={space['0.5']}>
                           <IconTagList
                             isDisabled
                             iconPath={'subjects/icon_mathe.svg'}
@@ -313,23 +318,13 @@ const Profile: React.FC<Props> = () => {
               <FormControl.Label>
                 {t('profile.UserName.label.firstname')}
               </FormControl.Label>
-              <Input
-                value={firstName}
-                onChangeText={text => {
-                  setFirstName(text)
-                }}
-              />
+              <Input value={firstName} onChangeText={setFirstName} />
             </FormControl>
             <FormControl>
               <FormControl.Label>
                 {t('profile.UserName.label.lastname')}
               </FormControl.Label>
-              <Input
-                value={lastName}
-                onChangeText={text => {
-                  setLastName(text)
-                }}
-              />
+              <Input value={lastName} onChangeText={setLastName} />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
@@ -370,9 +365,7 @@ const Profile: React.FC<Props> = () => {
               <TextArea
                 autoCompleteType={{}}
                 value={aboutMe}
-                onChangeText={text => {
-                  setAboutMe(text)
-                }}
+                onChangeText={setAboutMe}
               />
             </FormControl>
           </Modal.Body>
@@ -388,8 +381,8 @@ const Profile: React.FC<Props> = () => {
               </Button>
               <Button
                 onPress={() => {
+                  changeAboutMe({ variables: { aboutMe } })
                   setAboutMeModalVisible(false)
-                  setUserSettings(true)
                 }}>
                 {t('profile.AboutMe.popup.save')}
               </Button>

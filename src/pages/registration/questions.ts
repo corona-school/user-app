@@ -54,8 +54,7 @@ export const studentQuestions: SelectionQuestion[] = [
     id: 'subjects',
     imgRootPath: 'subjects',
     type: 'selection',
-    options: subjects,
-    maxSelections: 3
+    options: subjects
   }
 ]
 

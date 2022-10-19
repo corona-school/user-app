@@ -40,7 +40,7 @@ const Explore: React.FC<Props> = () => {
             // title={name}
             onClickSignIn={() => null}
           />
-        ))}
+        )) || <Text>Es wurden keine Kurse gefunden.</Text>}
       </VStack>
     </WithNavigation>
   )

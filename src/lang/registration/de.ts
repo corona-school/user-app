@@ -105,7 +105,7 @@ const registration = {
       subjects: {
         label: 'Fächer',
         question: 'In welchen Fächern kannst du unterstützen?',
-        text: 'Du kannst bis zu Fächer auswählen'
+        text: ''
       }
     }
   },

@@ -33,6 +33,7 @@ import Tabs from '../../components/Tabs'
 import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -57,9 +58,15 @@ const ProfileStudent: React.FC<Props> = () => {
         lastname
         student {
           state
-
+          aboutMe
           subjectsFormatted {
             name
+          }
+          participationCertificates {
+            subjectsFormatted
+            state
+            startDate
+            pupilId
           }
         }
       }
@@ -71,17 +78,23 @@ const ProfileStudent: React.FC<Props> = () => {
       meUpdate(update: { firstname: $firstname, lastname: $lastname })
     }
   `)
+  const [changeAboutMe, _changeAboutMe] = useMutation(gql`
+    mutation changeAboutMe($aboutMe: String!) {
+      meUpdate(update: { student: { aboutMe: $aboutMe } })
+    }
+  `)
 
   useEffect(() => {
-    if (_changeName.data) {
+    if (_changeName.data || _changeAboutMe.data) {
       setUserSettings(true)
     }
-  }, [_changeName.data])
+  }, [_changeAboutMe.data, _changeName.data])
 
   useEffect(() => {
     if (data?.me) {
       setFirstName(data?.me?.firstname)
       setLastName(data?.me?.lastname)
+      setAboutMe(data?.me?.student?.aboutMe)
     }
   }, [data?.me])
 
@@ -245,7 +258,9 @@ const ProfileStudent: React.FC<Props> = () => {
                 href={() => {
                   setAboutMeModalVisible(!aboutMeModalVisible)
                 }}>
-                <Text>{aboutMe}</Text>
+                {(data?.me?.student?.aboutMe && <Text>{aboutMe}</Text>) || (
+                  <Text>{t('profile.AboutMe.empty')}</Text>
+                )}
               </ProfileSettingItem>
 
               <ProfileSettingItem
@@ -256,21 +271,22 @@ const ProfileStudent: React.FC<Props> = () => {
                   })
                 }>
                 <Row>
-                  {data?.me?.student.state && (
-                    <Column marginRight={3}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.student.state}`)}
-                      />
-                    </Column>
-                  )}
+                  {(data?.me?.student.state &&
+                    data?.me?.student.state !== 'other' && (
+                      <Column marginRight={3}>
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.student.state}`)}
+                        />
+                      </Column>
+                    )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
               <ProfileSettingItem
                 border={false}
-                title={t('profile.NeedHelpIn.label')}
+                title={t('profile.subjects.label')}
                 href={() =>
                   navigate('/change-setting/subjects', {
                     state: { userType: 'student' }
@@ -287,7 +303,7 @@ const ProfileStudent: React.FC<Props> = () => {
                         />
                       </Column>
                     )
-                  )}
+                  ) || <Text>{t('profile.subjects.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
@@ -305,17 +321,25 @@ const ProfileStudent: React.FC<Props> = () => {
                       content: (
                         <>
                           <HSection isNoSpace={true}>
-                            {Array(2)
-                              .fill(0)
-                              .map((el, i) => (
-                                <HelperCardCertificates
-                                  name="Nele Mustermann"
-                                  subject="Mathe"
-                                  status="Manuell bestätigt"
-                                  createDate="01.09.22"
-                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                  download={() => alert('Hallo')}
-                                />
+                            {data?.me?.student?.participationCertificates
+                              ?.filter(
+                                (el: any) =>
+                                  el.state === 'manual' ||
+                                  el.state === 'automatic'
+                              )
+                              .map((el: any) => (
+                                <Column>
+                                  <HelperCardCertificates
+                                    name={el.pupilId}
+                                    subject={el.subjectsFormatted}
+                                    status={el.state}
+                                    createDate={DateTime.fromISO(
+                                      el.startDate
+                                    ).toFormat('dd.MM.yyyy')}
+                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                    download={() => alert('Hallo')}
+                                  />
+                                </Column>
                               ))}
                           </HSection>
                         </>
@@ -326,17 +350,23 @@ const ProfileStudent: React.FC<Props> = () => {
                       content: (
                         <>
                           <HSection>
-                            {Array(2)
-                              .fill(0)
-                              .map((el, i) => (
-                                <HelperCardCertificates
-                                  name="Nele Mustermann"
-                                  subject="Mathe"
-                                  status="ausstehend"
-                                  createDate="01.09.22"
-                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                  download={() => alert('Hallo')}
-                                />
+                            {data?.me?.student?.participationCertificates
+                              ?.filter(
+                                (el: any) => el.state === 'awaiting-approval'
+                              )
+                              .map((el: any) => (
+                                <Column>
+                                  <HelperCardCertificates
+                                    name={el.pupilId}
+                                    subject={el.subjectsFormatted}
+                                    status={el.state}
+                                    createDate={DateTime.fromISO(
+                                      el.startDate
+                                    ).toFormat('dd.MM.yyyy')}
+                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                    download={() => alert('Hallo')}
+                                  />
+                                </Column>
                               ))}
                           </HSection>
                         </>
@@ -420,9 +450,7 @@ const ProfileStudent: React.FC<Props> = () => {
               <TextArea
                 autoCompleteType={{}}
                 value={aboutMe}
-                onChangeText={text => {
-                  setAboutMe(text)
-                }}
+                onChangeText={setAboutMe}
               />
             </FormControl>
           </Modal.Body>
@@ -438,8 +466,8 @@ const ProfileStudent: React.FC<Props> = () => {
               </Button>
               <Button
                 onPress={() => {
+                  changeAboutMe({ variables: { aboutMe } })
                   setAboutMeModalVisible(false)
-                  setUserSettings(true)
                 }}>
                 {t('profile.AboutMe.popup.save')}
               </Button>

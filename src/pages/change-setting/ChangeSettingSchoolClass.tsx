@@ -6,7 +6,9 @@ import {
   useTheme,
   VStack,
   Row,
-  Column
+  Column,
+  Alert,
+  HStack
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -51,6 +53,9 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const location = useLocation()
   const { state } = location as { state: { userType: string } }
 
+  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
+  const [showError, setShowError] = useState<boolean>()
+
   const { data, error, loading } = useQuery(gql`
     ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
@@ -80,6 +85,18 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       setSelectedGrade(data?.me?.pupil?.gradeAsInt)
     }
   }, [data?.me?.pupil?.gradeAsInt])
+
+  useEffect(() => {
+    if (_updateSchoolGrade.data && !_updateSchoolGrade.error) {
+      setUserSettingChanged(true)
+    }
+  }, [_updateSchoolGrade.data, _updateSchoolGrade.error])
+
+  useEffect(() => {
+    if (_updateSchoolGrade.error) {
+      setShowError(true)
+    }
+  }, [_updateSchoolGrade.error])
 
   if (loading) return <></>
 
@@ -159,6 +176,38 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         </ProfileSettingRow>
       </VStack>
       <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+        {userSettingChanged && (
+          <Alert marginY={3} colorScheme="success" status="success">
+            <VStack space={2} flexShrink={1} w="100%">
+              <HStack
+                flexShrink={1}
+                space={2}
+                alignItems="center"
+                justifyContent="space-between">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon />
+                  <Text>{t('profile.successmessage')}</Text>
+                </HStack>
+              </HStack>
+            </VStack>
+          </Alert>
+        )}
+        {showError && (
+          <Alert marginY={3} bgColor="danger.500">
+            <VStack space={2} flexShrink={1} w="100%">
+              <HStack
+                flexShrink={1}
+                space={2}
+                alignItems="center"
+                justifyContent="space-between">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon color={'lightText'} />
+                  <Text color="lightText">{t('profile.errormessage')}</Text>
+                </HStack>
+              </HStack>
+            </VStack>
+          </Alert>
+        )}
         <Button
           onPress={() =>
             updateSchoolGrade({ variables: { grade: selectedGrade } })
