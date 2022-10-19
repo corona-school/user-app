@@ -42,22 +42,9 @@ const FullPageModal: React.FC<Props> = () => {
   return (
     <CSSWrapper className={`fullpagemodal ${show ? 'show' : ''}`}>
       <Box bgColor={bgColor} w="100%" h="100%" testID="fullpagemodal">
-        <PresenceTransition
-          visible={show}
-          initial={{
-            translateY: 60,
-            opacity: 0
-          }}
-          animate={{
-            translateY: 0,
-            opacity: 1,
-            transition: {
-              duration: 500,
-              delay: 0.4
-            }
-          }}>
-          <Box testID="fullpagemodal__content">{content}</Box>
-        </PresenceTransition>
+        <Box testID="fullpagemodal__content" h="100%">
+          {content}
+        </Box>
       </Box>
     </CSSWrapper>
   )
