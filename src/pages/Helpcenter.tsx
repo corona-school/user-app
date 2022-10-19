@@ -69,9 +69,9 @@ const HelpCenter: React.FC<Props> = () => {
   const sendContactMessage = useCallback(() => {
     contactMentor({
       variables: {
-        category: mentorCategory,
-        subject,
-        message
+        cat: mentorCategory,
+        sub: subject,
+        msg: message
       }
     })
   }, [contactMentor, mentorCategory, message, subject])
