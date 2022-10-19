@@ -110,6 +110,7 @@ const RequestMatch: React.FC<Props> = () => {
           </VStack>
         )) || <MatchingBlocker />}
       </WithNavigation>
+      {console.log(selectedClasses, focusedSubject)}
       <Modal isOpen={showModal}>
         <Modal.Content>
           <Modal.Header>
