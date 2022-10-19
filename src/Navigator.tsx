@@ -60,6 +60,7 @@ import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
 import Group from './pages/Group'
 import MatchingStudent from './pages/student/MatchingStudent'
+import useLernfair from './hooks/useLernfair'
 
 export default function Navigator() {
   return (
@@ -334,6 +335,7 @@ export default function Navigator() {
             </RequireAuth>
           }
         />
+
         {/* Fallback */}
         <Route
           path="*"
@@ -365,27 +367,32 @@ const SwitchUserType = ({
   studentComponent?: JSX.Element
 }) => {
   const location = useLocation()
+  const { userType, setUserType } = useLernfair()
 
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          id
-        }
-        student {
-          id
+  const { data, error, loading } = useQuery(
+    gql`
+      query {
+        me {
+          pupil {
+            id
+          }
+          student {
+            id
+          }
         }
       }
-    }
-  `)
+    `,
+    { skip: !!userType }
+  )
   const me = data?.me
 
   if (loading) return <></>
 
-  if (!me && error)
+  if (!userType && !me && error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
-  if (!!me.student) {
+  !userType && setUserType && setUserType(!!me?.student ? 'student' : 'pupil')
+  if (userType === 'student' || !!me?.student) {
     if (studentComponent) return studentComponent
     else return <Navigate to="/dashboard" state={{ from: location }} replace />
   } else {
