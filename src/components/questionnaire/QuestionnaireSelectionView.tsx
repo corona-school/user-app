@@ -1,7 +1,7 @@
 import { Column, Heading, Pressable, Text, useTheme, VStack } from 'native-base'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UserType } from '../../types/lernfair/User'
+import { LFUserType } from '../../types/lernfair/User'
 import CTACard from '../../widgets/CTACard'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
@@ -18,7 +18,7 @@ type Props = {
   currentQuestion: SelectionQuestion
   prefill?: Answer
   onPressSelection: undefined | ((selection: ISelectionItem) => any)
-  userType: UserType
+  userType: LFUserType
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
