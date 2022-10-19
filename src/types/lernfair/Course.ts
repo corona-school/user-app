@@ -6,6 +6,7 @@ export type LFCourse = {
   description: string
   outline: string
   tags?: LFTag[]
+  image?: string
 }
 export interface LFSubCourse extends LFCourse {
   id?: number
@@ -22,7 +23,7 @@ export interface LFSubCourse extends LFCourse {
 
 export type LFLecture = {
   id?: number
-  start: Date
+  start: string
   duration: number
 }
 
