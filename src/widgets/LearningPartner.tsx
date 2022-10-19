@@ -1,6 +1,7 @@
 import { View, Text, Row, Box, Avatar, useTheme } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
+import { LFSubject } from '../types/lernfair/Subject'
 import ProfilAvatar from './ProfilAvatar'
 
 type Props = {
@@ -34,7 +35,7 @@ const LearningPartner: React.FC<Props> = ({
           <Box marginRight={space['1.5']}>
             <ProfilAvatar image={avatar} size="lg" />
           </Box>
-          <Box>
+          <Box flex="1">
             {name && (
               <Text
                 bold
@@ -45,9 +46,14 @@ const LearningPartner: React.FC<Props> = ({
             )}
 
             {subjects && (
-              <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Fach: {subjects.join(', ')}
-              </Text>
+              <Row flexWrap={'wrap'} space="5px">
+                <Text color="lightText">Fächer:</Text>
+                {subjects.map((sub: string) => (
+                  <Text color={isDark ? 'lightText' : 'primary.900'}>
+                    {sub}
+                  </Text>
+                ))}
+              </Row>
             )}
 
             {schooltype && (

@@ -21,6 +21,8 @@ import ProfilAvatar from '../widgets/ProfilAvatar'
 
 import Utility from '../Utility'
 import { gql, useQuery } from '@apollo/client'
+import { DateTime } from 'luxon'
+import useLernfair from '../hooks/useLernfair'
 
 type Props = {}
 
@@ -30,16 +32,33 @@ const SingleCourse: React.FC<Props> = () => {
 
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
+  const { userType } = useLernfair()
+
+  const userQuery =
+    userType === ' student'
+      ? `participants{
+    firstname
+    grade
+  }`
+      : `otherParticipants{
+    firstname
+    grade
+  }`
 
   const {
     data: courseData,
     loading,
     error
   } = useQuery(gql`query{
+    me {
+      pupil{id}
+      student{id}
+    }
     subcourse(subcourseId: ${courseId}){
       id
       participantsCount
       maxParticipants
+      ${userQuery}
       canJoin{
         allowed
         reason
@@ -68,6 +87,15 @@ const SingleCourse: React.FC<Props> = () => {
       }
     }
   }`)
+
+  // const { data: participantData } = useQuery(gql`query{
+  //   subcourse(subcourseId: ${courseId}){
+  //     participants{
+  //       firstname
+  //       grade
+  //     }
+  //   }
+  // }`)
 
   const course = courseData?.subcourse
   if (loading) return <></>
@@ -202,7 +230,9 @@ const SingleCourse: React.FC<Props> = () => {
                             {`${i + 1}`.padStart(2, '0')}
                           </Heading>
                           <Text paddingBottom={space['0.5']}>
-                            {Utility.formatDate(lec.start)}{' '}
+                            {DateTime.fromISO(lec.start).toFormat(
+                              'dd.MM.yyyy HH:mm'
+                            )}{' '}
                             {t('single.global.clock')}
                           </Text>
                           <Text>
@@ -214,49 +244,34 @@ const SingleCourse: React.FC<Props> = () => {
                   )}
                 </>
               )
+            },
+            {
+              title: t('single.tabs.participant'),
+              content: (
+                <>
+                  {(userType === 'student'
+                    ? course?.participants
+                    : course?.otherParticipants
+                  )?.map(
+                    (p: any) =>
+                      (
+                        <Row marginBottom={space['1.5']} alignItems="center">
+                          <Column marginRight={space['1']}>
+                            <ProfilAvatar
+                              size="md"
+                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                            />
+                          </Column>
+                          <Column>
+                            <Heading fontSize="md">{p.firstname}</Heading>
+                            <Text>{p.grade}</Text>
+                          </Column>
+                        </Row>
+                      ) || <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
+                  )}
+                </>
+              )
             }
-            // {
-            //   title: t('single.tabs.participant'),
-            //   content: (
-            //     <>
-            //       <Row marginBottom={space['1.5']} alignItems="center">
-            //         <Column marginRight={space['1']}>
-            //           <ProfilAvatar
-            //             size="md"
-            //             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            //           />
-            //         </Column>
-            //         <Column>
-            //           <Heading fontSize="md">Linda</Heading>
-            //           <Text>
-            //             13 {t('single.global.years') + ' '}
-            //             {t('single.global.from') + ' '}
-            //             Köln
-            //           </Text>
-            //         </Column>
-            //       </Row>
-            //       {course?.participants?.map(
-            //         (p: any) =>
-            //           (
-            //             <Row marginBottom={space['1.5']} alignItems="center">
-            //               <Column marginRight={space['1']}>
-            //                 <ProfilAvatar
-            //                   size="md"
-            //                   image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            //                 />
-            //               </Column>
-            //               <Column>
-            //                 <Heading fontSize="md">{p.firstname}</Heading>
-            //                 <Text>
-            //                   {t('single.global.from')} {p.state?.label}
-            //                 </Text>
-            //               </Column>
-            //             </Row>
-            //           ) || <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
-            //       )}
-            //     </>
-            //   )
-            // }
           ]}
         />
 

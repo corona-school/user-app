@@ -57,7 +57,7 @@ const useApollo = () => {
           "Access denied! You don't have permission for this action!"
         ) {
           // if message is basically a 401 Unauthorized then redirect to login
-          window.location.pathname = '/login'
+          // window.location.pathname = '/login'
         }
       })
 

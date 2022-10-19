@@ -33,6 +33,7 @@ import Tabs from '../../components/Tabs'
 import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -60,6 +61,12 @@ const ProfileStudent: React.FC<Props> = () => {
           aboutMe
           subjectsFormatted {
             name
+          }
+          participationCertificates {
+            subjectsFormatted
+            state
+            startDate
+            pupilId
           }
         }
       }
@@ -314,17 +321,25 @@ const ProfileStudent: React.FC<Props> = () => {
                       content: (
                         <>
                           <HSection isNoSpace={true}>
-                            {Array(2)
-                              .fill(0)
-                              .map((el, i) => (
-                                <HelperCardCertificates
-                                  name="Nele Mustermann"
-                                  subject="Mathe"
-                                  status="Manuell bestätigt"
-                                  createDate="01.09.22"
-                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                  download={() => alert('Hallo')}
-                                />
+                            {data?.me?.student?.participationCertificates
+                              ?.filter(
+                                (el: any) =>
+                                  el.state === 'manual' ||
+                                  el.state === 'automatic'
+                              )
+                              .map((el: any) => (
+                                <Column>
+                                  <HelperCardCertificates
+                                    name={el.pupilId}
+                                    subject={el.subjectsFormatted}
+                                    status={el.state}
+                                    createDate={DateTime.fromISO(
+                                      el.startDate
+                                    ).toFormat('dd.MM.yyyy')}
+                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                    download={() => alert('Hallo')}
+                                  />
+                                </Column>
                               ))}
                           </HSection>
                         </>
@@ -335,17 +350,23 @@ const ProfileStudent: React.FC<Props> = () => {
                       content: (
                         <>
                           <HSection>
-                            {Array(2)
-                              .fill(0)
-                              .map((el, i) => (
-                                <HelperCardCertificates
-                                  name="Nele Mustermann"
-                                  subject="Mathe"
-                                  status="ausstehend"
-                                  createDate="01.09.22"
-                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                  download={() => alert('Hallo')}
-                                />
+                            {data?.me?.student?.participationCertificates
+                              ?.filter(
+                                (el: any) => el.state === 'awaiting-approval'
+                              )
+                              .map((el: any) => (
+                                <Column>
+                                  <HelperCardCertificates
+                                    name={el.pupilId}
+                                    subject={el.subjectsFormatted}
+                                    status={el.state}
+                                    createDate={DateTime.fromISO(
+                                      el.startDate
+                                    ).toFormat('dd.MM.yyyy')}
+                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                    download={() => alert('Hallo')}
+                                  />
+                                </Column>
                               ))}
                           </HSection>
                         </>

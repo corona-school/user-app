@@ -180,7 +180,7 @@ const CreateCourse: React.FC<Props> = () => {
 
       for (const lec of lectures) {
         const l: LFLecture = {
-          start: new Date(),
+          start: new Date().toLocaleString(),
           duration: parseInt(lec.duration)
         }
         const dt = DateTime.fromISO(lec.date)
@@ -242,8 +242,9 @@ const CreateCourse: React.FC<Props> = () => {
     (photo: string) => {
       setPickedPhoto(photo)
       setShow(false)
+      setContent(<></>)
     },
-    [setShow]
+    [setContent, setShow]
   )
 
   const showUnsplash = useCallback(() => {

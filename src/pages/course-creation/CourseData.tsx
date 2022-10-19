@@ -19,7 +19,6 @@ import {
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import TextInput from '../../components/TextInput'
 import ToggleButton from '../../components/ToggleButton'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
@@ -33,7 +32,7 @@ type Props = {
 }
 
 const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
-  const { data, error, loading } = useQuery(gql`
+  const { data } = useQuery(gql`
     query {
       me {
         student {
@@ -131,12 +130,13 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
-        <Row>
+        <Row space={space['1']}>
           {data?.me?.student?.subjectsFormatted.map((sub: LFSubject) => (
             <IconTagList
               initial={subject?.name === sub.name}
               text={sub.name}
               onPress={() => setSubject && setSubject({ ...sub })}
+              iconPath={`languages/icon_${sub.name.toLowerCase()}.svg`}
             />
           ))}
         </Row>
