@@ -50,17 +50,18 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected }) => {
 
   const pickPhoto = useCallback(() => {
     onPhotoSelected && onPhotoSelected(selectedPhoto)
+    setSelectedPhoto('')
   }, [onPhotoSelected, selectedPhoto])
 
   if (isLoading)
     return (
-      <Flex flex="1" justifyContent="center" alignItems="center">
+      <Flex flex="1" justifyContent="center" alignItems="center" h="100%">
         <Spinner />
       </Flex>
     )
 
   return (
-    <VStack flex="1">
+    <VStack flex="1" overflowY="scroll" h="100%">
       <Row paddingX={space['1']} paddingY={space['0.5']}>
         <Input
           flex="1"
