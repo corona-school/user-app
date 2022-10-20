@@ -66,7 +66,10 @@ const matching = {
     needHelpInHeadline: 'In welchem Fach benötigst du Hilfe?',
     needHelpInContent: 'Solltest du in mehreren Fächern gleich drigend Hilfe benötigen, ist eine Mehrfachauswahl möglich.',
     describ: 'Beschreibung',
-
+    modal: {
+      header: 'Für welche Klassen bietest du deine Unterstützung an?',
+      save: 'speichern'
+    },
     buttons: {
       request: 'Match anfordern',
       cancel: 'Abbrechen'
@@ -95,7 +98,13 @@ const matching = {
         tab1: 'Matches'
       },
       noMatches: 'Du hast keine Matches',
-      resoloveMatch: 'Das Match wurde aufgelöst'
+      resoloveMatch: 'Das Match wurde aufgelöst',
+      preview: {
+        title: 'Angaben prüfen',
+        content: 'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
+        subject: 'Fach',
+        subjectForClass: 'Klassen für Fach'
+      }
     }
   },
   group: {

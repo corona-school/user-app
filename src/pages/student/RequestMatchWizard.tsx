@@ -5,7 +5,9 @@ import {
   FormControl,
   TextArea,
   Button,
-  useTheme
+  useTheme,
+  useBreakpointValue,
+  Row
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +38,7 @@ const RequestMatchWizard: React.FC<Props> = ({
   setCurrentIndex,
   data
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -54,8 +56,23 @@ const RequestMatchWizard: React.FC<Props> = ({
     return true
   }, [description, selectedSubjects, selectedClasses])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
-    <VStack>
+    <VStack width={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
       <Text>{t('matching.student.text')}</Text>
 
@@ -64,12 +81,16 @@ const RequestMatchWizard: React.FC<Props> = ({
       </Text>
       <Text mb={space['1.5']}>{t('matching.student.hint')}</Text>
 
-      <Heading fontSize={'lg'} mb={space['0.5']}>
+      <Heading fontSize={'lg'} mb={space['1']}>
         {t('matching.student.personalData.title')}
       </Heading>
 
-      <Text bold>{t('matching.student.personalData.subtitle')}</Text>
-      <Text>{t('matching.student.personalData.hint')}</Text>
+      <Text bold paddingBottom="2px">
+        {t('matching.student.personalData.subtitle')}
+      </Text>
+      <Text paddingBottom={space['1']}>
+        {t('matching.student.personalData.hint')}
+      </Text>
 
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => (
@@ -91,19 +112,35 @@ const RequestMatchWizard: React.FC<Props> = ({
 
       <VStack space={space['1']}>
         <FormControl>
-          <FormControl.Label>Beschreibung</FormControl.Label>
+          <FormControl.Label>
+            {t('matching.request.check.descLabel')}
+          </FormControl.Label>
           <TextArea
             autoCompleteType={{}}
             onChangeText={setDescription}
             value={description}
           />
         </FormControl>
-        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
-          Angaben prüfen
-        </Button>
-        <Button variant="outline" onPress={() => navigate(-1)}>
-          Abbrechen
-        </Button>
+
+        <Row
+          space={space['1']}
+          alignItems="center"
+          flexDirection={ButtonContainerDirection}>
+          <Button
+            marginBottom={space['1']}
+            width={ButtonContainer}
+            isDisabled={!isValidInput}
+            onPress={() => setCurrentIndex(1)}>
+            {t('matching.request.check.buttons.button1')}
+          </Button>
+          <Button
+            marginBottom={space['1']}
+            width={ButtonContainer}
+            variant="outline"
+            onPress={() => navigate(-1)}>
+            {t('matching.request.check.buttons.button2')}
+          </Button>
+        </Row>
       </VStack>
     </VStack>
   )

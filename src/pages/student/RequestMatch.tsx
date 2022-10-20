@@ -1,5 +1,11 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { VStack, Modal, Button, useTheme } from 'native-base'
+import {
+  VStack,
+  Modal,
+  Button,
+  useTheme,
+  useBreakpointValue
+} from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
@@ -14,7 +20,7 @@ import RequestMatchWizard from './RequestMatchWizard'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [selectedSubjects, setSelectedSubjects] = useState<{
@@ -113,9 +119,7 @@ const RequestMatch: React.FC<Props> = () => {
       {console.log(selectedClasses, focusedSubject)}
       <Modal isOpen={showModal}>
         <Modal.Content>
-          <Modal.Header>
-            Für welche Klassen bietest du deine Unterstützung an?
-          </Modal.Header>
+          <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
             <VStack>
               {focusedSubject?.grade?.min < 5 &&
@@ -208,7 +212,9 @@ const RequestMatch: React.FC<Props> = () => {
             </VStack>
           </Modal.Body>
           <Modal.Footer>
-            <Button onPress={() => setShowModal(false)}>Speichern</Button>
+            <Button onPress={() => setShowModal(false)}>
+              {t('matching.request.modal.save')}
+            </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
