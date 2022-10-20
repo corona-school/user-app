@@ -3,7 +3,7 @@ const matching = {
     header: '1:1-Lernunterstützung',
     title: 'Unterstützung anfragen',
     firstContent:
-      ' Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+      'Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
     headlineContent: 'Wichtig',
     contentBox1: 'Da es bei der 1:1-Lernunterstützung zu',
     contentBox2: 'langen Wartezeiten von 3-6 Monaten',
@@ -103,7 +103,10 @@ const matching = {
         title: 'Angaben prüfen',
         content: 'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
         subject: 'Fach',
-        subjectForClass: 'Klassen für Fach'
+        subjectForClass: 'Klassen für Fach',
+        desc: 'Beschreibung',
+        requestMatch: 'Match anfordern',
+        editData: 'Daten bearbeiten'
       }
     }
   },

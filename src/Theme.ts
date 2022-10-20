@@ -94,7 +94,7 @@ const Theme = extendTheme({
     headerPaddingYPx: 8,
     contentContainerWidth: '670px',
     containerWidth: '940px',
-    desktopbuttonWidth: '172px'
+    desktopbuttonWidth: 'max-content'
   },
   components: {
     Text: {

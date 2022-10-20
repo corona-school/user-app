@@ -90,11 +90,10 @@ const InfoScreen: React.FC<Props> = ({
             </Box>
           )}
           {outlineButtonText && isOutlineButtonLink === false && (
-            <Box marginBottom={3} width={buttonWidth}>
+            <Box alignItems="center" marginBottom={3} width={buttonWidth}>
               <Button
                 variant={variant === 'dark' ? 'outlinelight' : 'outline'}
-                marginX="auto"
-                // width={buttonWidth}
+                width={buttonWidth}
                 onPress={outlinebuttonLink}>
                 {t(outlineButtonText)}
               </Button>
@@ -102,20 +101,18 @@ const InfoScreen: React.FC<Props> = ({
           )}
 
           {isdefaultButtonFirst && defaultButtonText && (
-            <Box width={buttonWidth}>
+            <Box alignItems="center" width={buttonWidth}>
               <Button
                 marginX="auto"
-                // width={buttonWidth}
+                width={buttonWidth}
                 onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>
           )}
           {defaultButtonText && !isdefaultButtonFirst && (
-            <Box width={buttonWidth}>
-              <Button
-                // width={buttonWidth}
-                onPress={defaultbuttonLink}>
+            <Box alignItems="center" width={buttonWidth}>
+              <Button width={buttonWidth} onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>

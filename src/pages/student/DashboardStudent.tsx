@@ -7,7 +7,8 @@ import {
   VStack,
   Modal,
   Row,
-  useToast
+  useToast,
+  useBreakpointValue
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -83,7 +84,7 @@ const DashboardStudent: React.FC<Props> = () => {
     }
   `)
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   // const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
@@ -128,6 +129,11 @@ const DashboardStudent: React.FC<Props> = () => {
     }
   }, [_dissolve?.data?.matchDissolve, toast])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -149,7 +155,7 @@ const DashboardStudent: React.FC<Props> = () => {
           </HStack>
         }
         headerLeft={<NotificationAlert />}>
-        <VStack paddingX={space['1']}>
+        <VStack paddingX={space['1']} width={ContainerWidth}>
           <VStack space={space['1']} marginTop={space['1']}>
             <VStack paddingY={space['1']}>
               <HelperWizard index={0} />
