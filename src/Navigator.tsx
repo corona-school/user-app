@@ -58,10 +58,12 @@ import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
-import Group from './pages/Group'
 import MatchingStudent from './pages/student/MatchingStudent'
 import useLernfair from './hooks/useLernfair'
 import RequestCertificate from './pages/RequestCertificate'
+import PupilGroup from './pages/pupil/Group'
+import StudentGroup from './pages/student/StudentGroup'
+import StudentGroupSupport from './pages/student/StudentGroupSupport'
 
 export default function Navigator() {
   return (
