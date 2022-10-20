@@ -116,6 +116,37 @@ const matching = {
         content:
           'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
       }
+    },
+    helper: {
+      header: 'Gruppenkurse',
+      title: 'Gruppenkurse',
+      content:
+        'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen.',
+      contentHeadline: 'Wichtig',
+      contentHeadlineContent:
+        'Gruppenkurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
+      button: 'Kurs anlegen',
+      appointment: 'Termine',
+      course: {
+        title: 'Meine Kurse',
+        tabs: {
+          tab1: {
+            title: 'Kurse'
+          },
+          tab2: {
+            title: 'In Prüfung'
+          },
+          tab3: {
+            title: 'Entwürfe'
+          },
+          tab4: {
+            title: 'Vergangene Kurse'
+          }
+        }
+      },
+      offers: {
+        title: 'Alle Angebote'
+      }
     }
   },
   student: {
