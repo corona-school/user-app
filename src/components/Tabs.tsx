@@ -9,9 +9,15 @@ type Props = {
   tabs: Tab[]
   removeSpace?: boolean
   onPressTab?: (tab: Tab) => any
+  tabInset?: number | string
 }
 
-const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab }) => {
+const Tabs: React.FC<Props> = ({
+  tabs,
+  removeSpace = false,
+  onPressTab,
+  tabInset
+}) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { space } = useTheme()
 
@@ -46,7 +52,7 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab }) => {
 
   return (
     <VStack>
-      <Row overflowX={'scroll'} flexWrap="nowrap">
+      <Row overflowX={'scroll'} flexWrap="nowrap" paddingX={tabInset}>
         {tabs.map(
           (tab, i) => (
             <Tab

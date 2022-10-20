@@ -7,7 +7,10 @@ const TextInput: React.FC<Props> = props => {
   const { space } = useTheme()
 
   return (
-    <VStack style={{ position: 'relative' }} width={props.width}>
+    <VStack
+      style={{ position: 'relative' }}
+      width={props.width}
+      flex={props.flex}>
       {props.placeholder && (
         <View position={'relative'} zIndex={10}>
           <Text

@@ -5,87 +5,87 @@ export type Language = {
 
 export const languages: Language[] = [
   {
-    key: 'albanisch',
+    key: 'Albanisch',
     label: 'Albanisch'
   },
   {
-    key: 'arabisch',
+    key: 'Arabisch',
     label: 'Arabisch'
   },
   {
-    key: 'armenisch',
+    key: 'Armenisch',
     label: 'Armenisch'
   },
   {
-    key: 'aserbaidschanisch',
+    key: 'Aserbaidschanisch',
     label: 'Aserbaidschanisch'
   },
   {
-    key: 'bosnisch',
+    key: 'Bosnisch',
     label: 'Bosnisch'
   },
   {
-    key: 'bulgarisch',
+    key: 'Bulgarisch',
     label: 'Bulgarisch'
   },
   {
-    key: 'chinesisch',
+    key: 'Chinesisch',
     label: 'Chinesisch'
   },
   {
-    key: 'deutsch',
+    key: 'Deutsch',
     label: 'Deutsch'
   },
   {
-    key: 'englisch',
+    key: 'Englisch',
     label: 'Englisch'
   },
   {
-    key: 'franzoesisch',
+    key: 'Franz_sisch',
     label: 'Französisch'
   },
   {
-    key: 'italienisch',
+    key: 'Italienisch',
     label: 'Italienisch'
   },
   {
-    key: 'kasachisch',
+    key: 'Kasachisch',
     label: 'Kasachisch'
   },
   {
-    key: 'kurdisch',
+    key: 'Kurdisch',
     label: 'Kurdisch'
   },
   {
-    key: 'polnisch',
+    key: 'Polnisch',
     label: 'Polnisch'
   },
   {
-    key: 'portugiesisch',
+    key: 'Portugiesisch',
     label: 'Portugiesisch'
   },
   {
-    key: 'russisch',
+    key: 'Russisch',
     label: 'Russisch'
   },
   {
-    key: 'spanisch',
+    key: 'Spanisch',
     label: 'Spanisch'
   },
   {
-    key: 'tuerkisch',
+    key: 'T_rkisch',
     label: 'Türkisch'
   },
   {
-    key: 'ukrainisch',
+    key: 'Ukrainisch',
     label: 'Ukrainisch'
   },
   {
-    key: 'vietnamesisch',
+    key: 'Vietnamesisch',
     label: 'Vietnamesisch'
   },
   {
-    key: 'andere',
+    key: 'Andere',
     label: 'Andere'
   }
 ]

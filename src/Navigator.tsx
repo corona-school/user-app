@@ -53,11 +53,14 @@ import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
 import CourseBlocker from './pages/student/CourseBlocker'
-import DashboardHelper from './pages/student/DashboardStudent'
+import DashboardStudent from './pages/student/DashboardStudent'
 import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
+import MatchingStudent from './pages/student/MatchingStudent'
+import useLernfair from './hooks/useLernfair'
+import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
@@ -91,7 +94,18 @@ export default function Navigator() {
             <RequireAuth>
               <SwitchUserType
                 pupilComponent={<Dashboard />}
-                studentComponent={<DashboardHelper />}
+                studentComponent={<DashboardStudent />}
+              />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardStudent />}
               />
             </RequireAuth>
           }
@@ -226,6 +240,15 @@ export default function Navigator() {
           }
         />
 
+        <Route
+          path="/request-certificate"
+          element={
+            // <RequireAuth>
+            <RequestCertificate />
+            // </RequireAuth>
+          }
+        />
+
         {/* Onboarding Subpages */}
         <Route
           path="/onboarding"
@@ -324,11 +347,20 @@ export default function Navigator() {
             <RequireAuth>
               <SwitchUserType
                 pupilComponent={<Matching />}
-                studentComponent={<RequestMatch />}
+                studentComponent={<MatchingStudent />}
               />
             </RequireAuth>
           }
         />
+        <Route
+          path="/request-match"
+          element={
+            <RequireAuth>
+              <SwitchUserType studentComponent={<RequestMatch />} />
+            </RequireAuth>
+          }
+        />
+
         {/* Fallback */}
         <Route
           path="*"
@@ -356,32 +388,40 @@ const SwitchUserType = ({
   pupilComponent,
   studentComponent
 }: {
-  pupilComponent: JSX.Element
-  studentComponent: JSX.Element
+  pupilComponent?: JSX.Element
+  studentComponent?: JSX.Element
 }) => {
   const location = useLocation()
+  const { userType, setUserType } = useLernfair()
 
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          id
-        }
-        student {
-          id
+  const { data, error, loading } = useQuery(
+    gql`
+      query {
+        me {
+          pupil {
+            id
+          }
+          student {
+            id
+          }
         }
       }
-    }
-  `)
+    `,
+    { skip: !!userType }
+  )
   const me = data?.me
 
   if (loading) return <></>
-  if (!me || error)
+
+  if (!userType && !me && error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
-  if (!!me.student) {
-    return studentComponent
+  !userType && setUserType && setUserType(!!me?.student ? 'student' : 'pupil')
+  if (userType === 'student' || !!me?.student) {
+    if (studentComponent) return studentComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
   } else {
-    return pupilComponent
+    if (pupilComponent) return pupilComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
   }
 }

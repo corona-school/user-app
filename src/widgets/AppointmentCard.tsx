@@ -17,10 +17,11 @@ import CommunityUser from './CommunityUser'
 import { toTimerString, TIME_THRESHOLD } from '../Utility'
 import useInterval from '../hooks/useInterval'
 import { LFTag } from '../types/lernfair/Course'
+import { DateTime } from 'luxon'
 
 type Props = {
   tags?: LFTag[]
-  date: Date
+  date: string
   title: string
   description: string
   child?: string
@@ -30,7 +31,7 @@ type Props = {
   buttonlink?: string
   variant?: 'card' | 'horizontal'
   isTeaser?: boolean
-  image: string
+  image?: string
   onPressToCourse?: () => any
   href?: string
   countCourse?: number
@@ -38,7 +39,7 @@ type Props = {
 
 const AppointmentCard: React.FC<Props> = ({
   tags,
-  date,
+  date: _date,
   title,
   countCourse,
   description,
@@ -56,25 +57,36 @@ const AppointmentCard: React.FC<Props> = ({
   const { space } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
 
+  const date = DateTime.fromISO(_date)
+
   useEffect(() => {
-    setRemainingTime(toTimerString(date.getTime(), Date.now()))
+    setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, [date])
 
   useInterval(() => {
-    setRemainingTime(toTimerString(date.getTime(), Date.now()))
+    setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, 1000)
 
   const isStartingSoon = useMemo(
-    () => date.getTime() - Date.now() < TIME_THRESHOLD,
+    () => date.toMillis() - Date.now() < TIME_THRESHOLD,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [date, remainingTime]
+    [_date, remainingTime]
   )
+
+  // isStartingSoon &&
+  //   console.log(
+  //     title,
+  //     date.toMillis() - Date.now(),
+  //     date.toMillis(),
+  //     Date.now(),
+  //     TIME_THRESHOLD
+  //   )
 
   const textColor = useMemo(
     () => (isStartingSoon ? 'lightText' : 'darkText'),
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [date, remainingTime]
+    [_date, remainingTime]
   )
 
   return (
@@ -92,6 +104,7 @@ const AppointmentCard: React.FC<Props> = ({
                   right={0}
                   top={0}
                   width="100%"
+                  bgColor="gray.300"
                   height="100%"
                   alt={title}
                   source={{
@@ -108,11 +121,9 @@ const AppointmentCard: React.FC<Props> = ({
               <Box padding={space['1']}>
                 {!isStartingSoon && (
                   <Row paddingTop={space['1']} space={1}>
-                    <Text color={textColor}>{date.toLocaleDateString()}</Text>
+                    <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
                     <Text color={textColor}>•</Text>
-                    <Text color={textColor}>
-                      {date.toLocaleTimeString().slice(0, -3)}
-                    </Text>
+                    <Text color={textColor}>{date.toFormat('HH:mm')}</Text>
                   </Row>
                 )}
                 {isStartingSoon && (
@@ -123,13 +134,17 @@ const AppointmentCard: React.FC<Props> = ({
                     </Text>
                   </Row>
                 )}
+
                 <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
                   {title}
                 </Text>
+
                 {isStartingSoon && (
                   <>
                     <Text paddingBottom={space['1']} color={textColor}>
-                      {description}
+                      {description?.length > 56
+                        ? description.substring(0, 56) + '...'
+                        : description}
                     </Text>
                     <Button onPress={onPressToCourse}>Zum Kurs</Button>
                   </>
@@ -173,7 +188,7 @@ const AppointmentCard: React.FC<Props> = ({
               </Row>
               <Row space={1} marginY={space['0.5']}>
                 <Text>
-                  {'Ab'} {date.toLocaleDateString()}
+                  {'Ab'} {date.toFormat('dd.MM.yyyy')}
                 </Text>
                 {countCourse && (
                   <>

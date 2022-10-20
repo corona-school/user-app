@@ -1,12 +1,13 @@
 import { Column, Heading, Pressable, Text, useTheme, VStack } from 'native-base'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UserType } from '../../types/lernfair/User'
+import { LFUserType } from '../../types/lernfair/User'
 import CTACard from '../../widgets/CTACard'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 import {
   Answer,
+  ObjectAnswer,
   QuestionnaireContext,
   SelectionQuestion
 } from '../Questionnaire'
@@ -17,7 +18,7 @@ type Props = {
   currentQuestion: SelectionQuestion
   prefill?: Answer
   onPressSelection: undefined | ((selection: ISelectionItem) => any)
-  userType: UserType
+  userType: LFUserType
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
@@ -41,7 +42,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
 
   useEffect(() => {
     if (!setAnswers) return
-    const sel: Answer = { ...selections }
+    const sel: ObjectAnswer = { ...selections }
     for (const k in sel) {
       if (!sel[k]) delete sel[k]
     }
@@ -72,7 +73,7 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
               <Pressable
                 mt={space['1']}
                 onPress={() => {
-                  setSelections(prev => ({
+                  setSelections((prev: Answer) => ({
                     ...prev,
                     [opt.key]: !selections[opt.key]
                   }))
@@ -103,9 +104,9 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
                   undefined
                 }
                 onPress={() => {
-                  setSelections(prev => ({
+                  setSelections((prev: Answer) => ({
                     ...prev,
-                    [opt.key]: !selections[opt.key]
+                    [opt.key]: !selections[opt.key] ? opt : false
                   }))
                   onPressSelection && onPressSelection(opt)
                 }}

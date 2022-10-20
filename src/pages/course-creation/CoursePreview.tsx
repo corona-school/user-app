@@ -1,8 +1,18 @@
 import { DateTime } from 'luxon'
-import { VStack, Button, useTheme, Heading, Text, Row, Box } from 'native-base'
+import {
+  VStack,
+  Button,
+  useTheme,
+  Heading,
+  Text,
+  Row,
+  Box,
+  Image
+} from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
+import ToggleButton from '../../components/ToggleButton'
 import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
@@ -21,11 +31,13 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     subject,
     outline,
     description,
+    maxParticipantCount,
     tags,
     courseClasses,
     joinAfterStart,
     allowContact,
-    lectures
+    lectures,
+    pickedPhoto
   } = useContext(CreateCourseContext)
 
   return (
@@ -46,7 +58,9 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       </Heading>
       {subject && <IconTagList isDisabled text={subject.name || ''} />}
 
-      <Box bg="gray.500" h="180"></Box>
+      <Box bg="gray.500" h="180">
+        <Image src={pickedPhoto} h="100%" />
+      </Box>
 
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.shortDesc')}
@@ -56,80 +70,113 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
       <Text>{description}</Text>
 
-      {tags && (
-        <>
-          <Heading fontSize="md">
-            {t('course.CourseDate.Preview.tagHeadline')}
-          </Heading>
-          <Row space={space['0.5']}>
-            {tags.split(',').map(t => (
-              <Tag text={t} />
-            ))}
-          </Row>
-        </>
-      )}
+      <Heading fontSize="md">
+        {t('course.CourseDate.Preview.tagHeadline')}
+      </Heading>
+      <Row space={space['0.5']}>
+        {(tags &&
+          tags.split(',').length &&
+          tags.split(',').map(t => <Tag text={t} />)) || (
+          <Text>Es wurden keine Tags angegeben.</Text>
+        )}
+      </Row>
 
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.classHeadline')}
       </Heading>
-      {courseClasses && courseClasses.map(c => <Tag text={`${c}`} />)}
+      {courseClasses &&
+        courseClasses.map(c => {
+          const range = Utility.intToClassRange(c)
+          return (
+            <ToggleButton
+              label={`${range.min}. - ${range.max}. Klasse`}
+              dataKey={c.toString()}
+              isActive={false}
+            />
+          )
+        })}
 
-      <Row>
-        <Text fontSize="md" bold>
-          {t('course.CourseDate.Preview.membersCountLabel') + ' '}
-          <Text>
-            {t('course.CourseDate.Preview.membersCountMaxLabel')} {courseName}
+      <VStack>
+        <Row>
+          <Text fontSize="md" bold>
+            {t('course.CourseDate.Preview.membersCountLabel') + ' '}
           </Text>
-        </Text>
-      </Row>
-      <Row>
-        <Text fontSize="md" bold>
-          {t('course.CourseDate.Preview.startDateLabel') + ' '}
-          <Text>
+          <Text fontSize="md">
+            {t('course.CourseDate.Preview.membersCountMaxLabel')}
+            {'. '}
+            {maxParticipantCount}
+          </Text>
+        </Row>
+
+        <Row>
+          <Text fontSize="md" bold>
+            {t('course.CourseDate.Preview.startDateLabel') + ' '}
+          </Text>
+          <Text fontSize="md">
             {joinAfterStart
               ? t('course.CourseDate.Preview.yes')
               : t('course.CourseDate.Preview.no')}
           </Text>
-        </Text>
-      </Row>
-      <Row marginBottom={space['1']}>
-        <Text fontSize="md" bold>
-          {t('course.CourseDate.Preview.allowContactLabel') + '  '}
-          <Text>
+        </Row>
+        <Row marginBottom={space['1']}>
+          <Text fontSize="md" bold>
+            {t('course.CourseDate.Preview.allowContactLabel') + '  '}
+          </Text>
+          <Text fontSize="md">
             {allowContact
               ? t('course.CourseDate.Preview.yes')
               : t('course.CourseDate.Preview.no')}
           </Text>
-        </Text>
-      </Row>
-
+        </Row>
+      </VStack>
       <Heading fontSize="lg" marginBottom={space['1']}>
         {t('course.CourseDate.Preview.appointmentHeadline')}
       </Heading>
       {lectures &&
         lectures.map((lec, i) => (
           <VStack marginBottom={space['1']}>
-            <Heading>
-              {t('course.CourseDate.Preview.appointmentLabel')}
+            <Heading mb={space['0.5']}>
+              {t('course.CourseDate.Preview.appointmentLabel')}{' '}
               {`${i + 1}`.padStart(2, '0')}
             </Heading>
-            <Text bold>
-              {t('course.CourseDate.Preview.appointmentDate')}
-              <Text>{Utility.formatDate(new Date(lec.date))}</Text>
-            </Text>
-            <Text bold>
-              {t('course.CourseDate.Preview.appointmentTime')}
-              <Text>
-                {Utility.formatDate(
-                  new Date(lec.time),
-                  DateTime.TIME_24_SIMPLE
-                )}
-              </Text>
-            </Text>
-            <Text bold>
-              {t('course.CourseDate.Preview.appointmentDuration')}
-              <Text>{lec.duration}</Text>
-            </Text>
+            <VStack>
+              <Row>
+                <Text bold minW="100px" fontSize="md">
+                  {t('course.CourseDate.Preview.appointmentDate')}
+                </Text>
+                {console.log(lec.date)}
+                <Text fontSize="md">
+                  {Utility.handleDateString(
+                    lec.date,
+                    'yyyy-MM-dd',
+                    undefined,
+                    DateTime.DATE_MED
+                  )}
+                </Text>
+              </Row>
+              <Row>
+                <Text bold minW="100px" fontSize="md">
+                  {t('course.CourseDate.Preview.appointmentTime')}
+                </Text>
+                <Text fontSize="md">
+                  {Utility.handleDateString(
+                    lec.time,
+                    'hh:mm',
+                    undefined,
+                    DateTime.TIME_24_SIMPLE
+                  )}
+                  {' Uhr'}
+                </Text>
+              </Row>
+              <Row>
+                <Text bold minW="100px" fontSize="md">
+                  {t('course.CourseDate.Preview.appointmentDuration')}
+                </Text>
+                <Text fontSize="md">{`${
+                  parseInt(lec.duration) / 60
+                } Stunden`}</Text>
+              </Row>
+            </VStack>
           </VStack>
         ))}
 

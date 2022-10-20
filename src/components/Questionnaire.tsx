@@ -38,7 +38,9 @@ export interface SelectionQuestion extends Question {
   viewType?: QuestionnaireViewType
 }
 
-export type Answer<T = boolean | number> = {
+export type Answer = any
+
+export interface ObjectAnswer<T = boolean | number> extends Answer {
   [key: string]: T
 }
 
@@ -71,11 +73,12 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
 })
 
 export type IQuestionnaire = {
-  onQuestionnaireFinished: (answers: { [key: string]: Answer }) => any
+  onQuestionnaireFinished: (answers: { [key: string]: ObjectAnswer }) => any
   onPressItem?: (data?: any) => any
   onQuestionChanged?: (question: Question) => any
   modifySelectionQuestionBeforeRender?: () => any
   modifyQuestionBeforeNext?: () => any
+  modifyAnswerBeforeNext?: (answer: ObjectAnswer, question: Question) => any
   disableNavigation?: boolean
 }
 
@@ -83,6 +86,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   onQuestionnaireFinished,
   onPressItem,
   modifyQuestionBeforeNext,
+  modifyAnswerBeforeNext,
   disableNavigation
 }) => {
   const { t } = useTranslation()
@@ -100,6 +104,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
+    modifyAnswerBeforeNext &&
+      modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
+
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -109,6 +116,8 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   }, [
     answers,
     currentIndex,
+    currentQuestion,
+    modifyAnswerBeforeNext,
     modifyQuestionBeforeNext,
     onQuestionnaireFinished,
     questions.length,
@@ -116,8 +125,8 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   ])
 
   // check if answer is valid when question type is selection
-  const isValidSelectionAnswer: (answer: Answer) => boolean = useCallback(
-    (answer: Answer) => {
+  const isValidSelectionAnswer: (answer: ObjectAnswer) => boolean = useCallback(
+    (answer: ObjectAnswer) => {
       const question = currentQuestion as SelectionQuestion
       const answercount = Object.values(answer || {}).filter(a => !!a).length
 

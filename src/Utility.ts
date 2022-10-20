@@ -87,12 +87,29 @@ export const formatDate: (
   return DateTime.fromISO(date.toString()).toLocaleString(format, { locale })
 }
 
+export const handleDateString: (
+  datetime: string,
+  format: string,
+  locale?: string,
+  outputFormat?: Intl.DateTimeFormatOptions
+) => string = (
+  datetime,
+  format,
+  locale = 'de',
+  outputFormat = DateTime.DATETIME_MED
+) => {
+  return DateTime.fromFormat(datetime, format).toLocaleString(outputFormat, {
+    locale
+  })
+}
+
 const Utility = {
   createToken,
   toTimerString,
   TIME_THRESHOLD,
   intToClassRange,
   findMinMaxClassRange,
-  formatDate
+  formatDate,
+  handleDateString
 }
 export default Utility

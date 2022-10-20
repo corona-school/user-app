@@ -13,7 +13,9 @@ import {
   CheckCircleIcon,
   VStack,
   Stagger,
-  InfoIcon
+  InfoIcon,
+  Alert,
+  HStack
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
@@ -27,6 +29,7 @@ import { useTranslation } from 'react-i18next'
 import TextInput from '../components/TextInput'
 import { gql, useMutation } from '@apollo/client'
 import useModal from '../hooks/useModal'
+import IFrame from '../components/IFrame'
 
 type Props = {}
 
@@ -46,6 +49,9 @@ const HelpCenter: React.FC<Props> = () => {
   const [subject, setSubject] = useState<string>('')
   const [message, setMessage] = useState<string>('')
 
+  const [messageSent, setMessageSent] = useState<boolean>()
+  const [showError, setShowError] = useState<boolean>()
+
   const { setShow, setContent, setVariant } = useModal()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -63,9 +69,9 @@ const HelpCenter: React.FC<Props> = () => {
   const sendContactMessage = useCallback(() => {
     contactMentor({
       variables: {
-        category: mentorCategory,
-        subject,
-        message
+        cat: mentorCategory,
+        sub: subject,
+        msg: message
       }
     })
   }, [contactMentor, mentorCategory, message, subject])
@@ -103,94 +109,107 @@ const HelpCenter: React.FC<Props> = () => {
           {t('helpcenter.onboarding.button')}
         </Button>
       </Box>
-      <Box width="100%" paddingX={space['1.5']}>
+      <Box width="100%">
         <Tabs
+          tabInset={space['1.5']}
           tabs={[
             {
               title: t('helpcenter.faq.tabName'),
               content: (
-                <>
-                  <Heading paddingBottom={space['2']}>
-                    {t('helpcenter.faq.tabName')}
-                  </Heading>
+                <IFrame
+                  src="https://www.lern-fair.de/iframe/faq"
+                  title="faq"
+                  width="100%"
+                  height="596px"
+                />
+                // <>
+                //   <Heading paddingBottom={space['2']}>
+                //     {t('helpcenter.faq.tabName')}
+                //   </Heading>
 
-                  {new Array(10).fill(0).map(index => (
-                    <Accordion
-                      title={t(`helpcenter.faq.accordion${index}.title`)}
-                      key={`accordion-${index}`}>
-                      <Text>
-                        {t(`helpcenter.faq.accordion${index}.content`)}
-                      </Text>
-                    </Accordion>
-                  ))}
+                //   {new Array(10).fill(0).map(index => (
+                //     <Accordion
+                //       title={t(`helpcenter.faq.accordion${index}.title`)}
+                //       key={`accordion-${index}`}>
+                //       <Text>
+                //         {t(`helpcenter.faq.accordion${index}.content`)}
+                //       </Text>
+                //     </Accordion>
+                //   ))}
 
-                  <Box paddingY={space['1.5']}>
-                    <Button onPress={() => navigate('/alle-faqs')}>
-                      {t('helpcenter.btn.allfaq')}
-                    </Button>
-                  </Box>
-                </>
+                //   <Box paddingY={space['1.5']}>
+                //     <Button onPress={() => navigate('/alle-faqs')}>
+                //       {t('helpcenter.btn.allfaq')}
+                //     </Button>
+                //   </Box>
+                // </>
               )
             },
             {
               title: t('helpcenter.assistance.title'),
               content: (
-                <>
-                  <Heading paddingBottom={1.5}>
-                    {t('helpcenter.assistance.title')}
-                  </Heading>
-                  <Text paddingBottom={space['1']}>
-                    {t('helpcenter.assistance.content')}
-                  </Text>
-                  <VStack paddingX={0} paddingBottom={space['2']}>
-                    <Stagger
-                      initial={{ opacity: 0, translateY: 20 }}
-                      animate={{
-                        opacity: 1,
-                        translateY: 0,
-                        transition: { stagger: { offset: 60 }, duration: 500 }
-                      }}
-                      visible>
-                      {new Array(6).fill(0).map((_, index) => (
-                        <Box
-                          key={'helpcard-' + index}
-                          marginBottom={space['1.5']}>
-                          <Link
-                            display="block"
-                            href={t(`helpcenter.assistance.card${index}.url`)}>
-                            <CTACard
-                              title={t(
-                                `helpcenter.assistance.card${index}.title`
-                              )}
-                              closeable={false}
-                              content={
-                                <Text>
-                                  {t(
-                                    `helpcenter.assistance.card${index}.content`
-                                  )}
-                                </Text>
-                              }
-                              button={
-                                <Box flexDirection="row">
-                                  <Text bold marginRight={space['0.5']}>
-                                    {t('helpcenter.assistance.contenslabel')}
-                                  </Text>
-                                  <Text>
-                                    {' '}
-                                    {t(
-                                      `helpcenter.assistance.card${index}.contentsContent`
-                                    )}
-                                  </Text>
-                                </Box>
-                              }
-                              icon={<CheckCircleIcon size="10" />}
-                            />
-                          </Link>
-                        </Box>
-                      ))}
-                    </Stagger>
-                  </VStack>
-                </>
+                <IFrame
+                  src="https://www.lern-fair.de/iframe/hilfestellungen"
+                  title="hilfestellungen"
+                  width="100%"
+                  height="596px"
+                />
+                // <>
+                //   <Heading paddingBottom={1.5}>
+                //     {t('helpcenter.assistance.title')}
+                //   </Heading>
+                //   <Text paddingBottom={space['1']}>
+                //     {t('helpcenter.assistance.content')}
+                //   </Text>
+                //   <VStack paddingX={0} paddingBottom={space['2']}>
+                //     <Stagger
+                //       initial={{ opacity: 0, translateY: 20 }}
+                //       animate={{
+                //         opacity: 1,
+                //         translateY: 0,
+                //         transition: { stagger: { offset: 60 }, duration: 500 }
+                //       }}
+                //       visible>
+                //       {new Array(6).fill(0).map((_, index) => (
+                //         <Box
+                //           key={'helpcard-' + index}
+                //           marginBottom={space['1.5']}>
+                //           <Link
+                //             display="block"
+                //             href={t(`helpcenter.assistance.card${index}.url`)}>
+                //             <CTACard
+                //               title={t(
+                //                 `helpcenter.assistance.card${index}.title`
+                //               )}
+                //               closeable={false}
+                //               content={
+                //                 <Text>
+                //                   {t(
+                //                     `helpcenter.assistance.card${index}.content`
+                //                   )}
+                //                 </Text>
+                //               }
+                //               button={
+                //                 <Box flexDirection="row">
+                //                   <Text bold marginRight={space['0.5']}>
+                //                     {t('helpcenter.assistance.contenslabel')}
+                //                   </Text>
+                //                   <Text>
+                //                     {' '}
+                //                     {t(
+                //                       `helpcenter.assistance.card${index}.contentsContent`
+                //                     )}
+                //                   </Text>
+                //                 </Box>
+                //               }
+                //               icon={<CheckCircleIcon size="10" />}
+                //             />
+                //           </Link>
+                //         </Box>
+                //       ))}
+                //     </Stagger>
+                //   </VStack>
+                // </>
               )
             },
             {
@@ -289,6 +308,17 @@ const HelpCenter: React.FC<Props> = () => {
                     </Row> */}
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
+                        {t('helpcenter.contact.subject.label')}
+                      </FormControl.Label>
+                      <TextInput
+                        onChangeText={setSubject}
+                        placeholder={t(
+                          'helpcenter.contact.subject.placeholder'
+                        )}
+                      />
+                    </Row>
+                    <Row flexDirection="column" paddingY={space['0.5']}>
+                      <FormControl.Label>
                         {t('helpcenter.contact.message.label')}
                       </FormControl.Label>
                       <TextArea
@@ -306,9 +336,55 @@ const HelpCenter: React.FC<Props> = () => {
                       </Checkbox>
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
+                      {messageSent && (
+                        <Alert
+                          marginY={3}
+                          colorScheme="success"
+                          status="success">
+                          <VStack space={2} flexShrink={1} w="100%">
+                            <HStack
+                              flexShrink={1}
+                              space={2}
+                              alignItems="center"
+                              justifyContent="space-between">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon />
+                                <Text>{t('helpcenter.contact.success')}</Text>
+                              </HStack>
+                            </HStack>
+                          </VStack>
+                        </Alert>
+                      )}
+                      {showError && (
+                        <Alert marginY={3} bgColor="danger.500">
+                          <VStack space={2} flexShrink={1} w="100%">
+                            <HStack
+                              flexShrink={1}
+                              space={2}
+                              alignItems="center"
+                              justifyContent="space-between">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color={'lightText'} />
+                                <Text color="lightText">
+                                  {t('helpcenter.contact.error')}
+                                </Text>
+                              </HStack>
+                            </HStack>
+                          </VStack>
+                        </Alert>
+                      )}
                       <Button
                         isDisabled={
-                          !dsgvo || message?.length < 5 || subject?.length < 5
+                          !dsgvo ||
+                          message?.length < 5 ||
+                          subject?.length < 5 ||
+                          !mentorCategory
                         }
                         onPress={sendContactMessage}>
                         {t('helpcenter.btn.formsubmit')}

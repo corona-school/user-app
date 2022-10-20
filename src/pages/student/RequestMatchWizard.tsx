@@ -5,8 +5,7 @@ import {
   FormControl,
   TextArea,
   Button,
-  useTheme,
-  Link
+  useTheme
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -37,7 +36,9 @@ const RequestMatchWizard: React.FC<Props> = ({
   setCurrentIndex,
   data
 }) => {
+  const { space } = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const isValidInput = useMemo(() => {
     if (description.length < 5) return false
@@ -53,33 +54,27 @@ const RequestMatchWizard: React.FC<Props> = ({
     return true
   }, [description, selectedSubjects, selectedClasses])
 
-  const { space } = useTheme()
-  const { t } = useTranslation()
-
   return (
-    <VStack paddingX={space['1']}>
-      <Heading paddingBottom={space['0.5']}>
-        {t('matching.request.check.title')}
+    <VStack>
+      <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
+      <Text>{t('matching.student.text')}</Text>
+
+      <Text my={space['0.5']} bold>
+        {t('important')}
+      </Text>
+      <Text mb={space['1.5']}>{t('matching.student.hint')}</Text>
+
+      <Heading fontSize={'lg'} mb={space['0.5']}>
+        {t('matching.student.personalData.title')}
       </Heading>
-      <Text paddingBottom={space['0.5']}>
-        {t('matching.request.check.content')}
-      </Text>
-      <Text mt="1" bold>
-        {t('matching.request.check.contentHeadline')}
-      </Text>
-      <Text paddingBottom={space['1']}>
-        {t('matching.request.check.contenHeadlineContent')}
-      </Text>
-      <Heading fontSize="md" paddingBottom={space['1']}>
-        {t('matching.request.check.personalDataHeadline')}
-      </Heading>
-      <Text bold paddingBottom={space['0.5']}>
-        {t('matching.request.check.personalDataQuestion')}
-      </Text>
-      <Text>{t('matching.request.check.personalDataAnswer')}</Text>
+
+      <Text bold>{t('matching.student.personalData.subtitle')}</Text>
+      <Text>{t('matching.student.personalData.hint')}</Text>
+
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => (
           <IconTagList
+            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
             variant="selection"
             text={sub.name}
             initial={selectedSubjects[sub.name]}
@@ -93,36 +88,23 @@ const RequestMatchWizard: React.FC<Props> = ({
           />
         ))}
       </TwoColGrid>
-      <FormControl marginBottom={space['1']}>
-        <FormControl.Label _text={{ color: 'primary.700' }}>
-          {t('matching.request.check.descLabel')}
-        </FormControl.Label>
-        <TextArea
-          placeholder={t('matching.request.check.descPlaceholder')}
-          autoCompleteType={{}}
-          onChangeText={setDescription}
-          value={description}
-        />
-      </FormControl>
 
-      <VStack marginBottom={space['1']}>
-        <Link onPress={() => alert('hallo')} _text={{ fontWeight: 700 }}>
-          {t('matching.request.check.editDataLabel')}
-        </Link>
+      <VStack space={space['1']}>
+        <FormControl>
+          <FormControl.Label>Beschreibung</FormControl.Label>
+          <TextArea
+            autoCompleteType={{}}
+            onChangeText={setDescription}
+            value={description}
+          />
+        </FormControl>
+        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
+          Angaben prüfen
+        </Button>
+        <Button variant="outline" onPress={() => navigate(-1)}>
+          Abbrechen
+        </Button>
       </VStack>
-
-      <Button
-        isDisabled={isValidInput}
-        onPress={() => setCurrentIndex(1)}
-        marginBottom={space['1']}>
-        {t('matching.request.check.buttons.button1')}
-      </Button>
-      <Button
-        variant="outline"
-        onPress={() => navigate(-1)}
-        marginBottom={space['1']}>
-        {t('matching.request.check.buttons.button2')}
-      </Button>
     </VStack>
   )
 }

@@ -1,4 +1,13 @@
-import { Text, VStack, Box, Button, Heading, Modal } from 'native-base'
+import {
+  Text,
+  VStack,
+  Box,
+  Button,
+  Heading,
+  Modal,
+  useTheme,
+  Row
+} from 'native-base'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
@@ -9,6 +18,7 @@ import MatchingWizard from './MatchingWizard'
 type Props = {}
 
 const Matching: React.FC<Props> = () => {
+  const { space } = useTheme()
   const [showModal, setShowModal] = useState<boolean>(false)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { t } = useTranslation()
@@ -23,12 +33,11 @@ const Matching: React.FC<Props> = () => {
       </WithNavigation>
       <Modal isOpen={showModal}>
         <Modal.Content>
-          <Modal.Header>
-            {t('matching.modal.header')} <Modal.CloseButton />
-          </Modal.Header>
+          <Modal.CloseButton />
+          <Modal.Header>{t('matching.modal.header')}</Modal.Header>
 
           <Modal.Body>
-            <VStack>
+            <VStack space={space['1']}>
               <Text>{t('matching.modal.content')}</Text>
               <Text bold>{t('matching.modal.important')}</Text>
               <Text>

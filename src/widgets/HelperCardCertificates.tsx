@@ -1,23 +1,11 @@
-import {
-  Text,
-  Box,
-  Row,
-  InfoIcon,
-  CloseIcon,
-  Pressable,
-  useTheme,
-  Container,
-  Tooltip,
-  Column,
-  Button
-} from 'native-base'
+import { Text, Row, useTheme, Container, Column, Button } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import ProfilAvatar from './ProfilAvatar'
 
 type Props = {
   name: string
-  subject?: string
+  subject?: string[]
   status?: string
   createDate?: string
   avatar?: string
@@ -35,7 +23,7 @@ const HelperCardCertificates: React.FC<Props> = ({
   const { space } = useTheme()
 
   return (
-    <Card flexibleWidth>
+    <Card>
       <Container
         padding={space['1']}
         width="100%"
@@ -60,12 +48,14 @@ const HelperCardCertificates: React.FC<Props> = ({
           space={space['0.5']}
           marginBottom={space['1']}>
           {subject && (
-            <Column flexDirection="row">
+            <Row>
               <Text bold marginRight="5px">
                 Fach:
               </Text>
-              <Text>{subject}</Text>
-            </Column>
+              {subject.map((sub: string) => (
+                <Text>{sub}</Text>
+              ))}
+            </Row>
           )}
 
           {status && (

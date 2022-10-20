@@ -23,9 +23,7 @@ const CourseBlocker: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   return (
-    <WithNavigation
-      headerTitle={t('course.blocker.header')}
-      headerLeft={<BackButton />}>
+    <>
       <Container
         maxWidth="100%"
         paddingX={space['1.5']}
@@ -77,7 +75,7 @@ const CourseBlocker: React.FC<Props> = () => {
         alignItems="stretch">
         <HelperWizard />
       </Container>
-    </WithNavigation>
+    </>
   )
 }
 export default CourseBlocker

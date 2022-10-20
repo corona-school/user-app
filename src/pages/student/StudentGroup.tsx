@@ -44,7 +44,7 @@ const StudentGroup: React.FC<Props> = () => {
               <AppointmentCard
                 key={index}
                 description="Lorem Ipsum"
-                date={futureDate}
+                date={futureDate.toString()}
                 tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 title="Diskussionen in Mathe!? – Die Kurvendiskussion"
@@ -70,7 +70,7 @@ const StudentGroup: React.FC<Props> = () => {
                             { name: 'Mathematik' },
                             { name: 'Gruppenkurs' }
                           ]}
-                          date={new Date()}
+                          date={new Date().toString()}
                           countCourse={4}
                           onPressToCourse={() => alert('YES')}
                           image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -93,7 +93,7 @@ const StudentGroup: React.FC<Props> = () => {
                             { name: 'Mathematik' },
                             { name: 'Gruppenkurs' }
                           ]}
-                          date={new Date()}
+                          date={new Date().toString()}
                           countCourse={4}
                           onPressToCourse={() => alert('YES')}
                           image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -116,7 +116,7 @@ const StudentGroup: React.FC<Props> = () => {
                             { name: 'Mathematik' },
                             { name: 'Gruppenkurs' }
                           ]}
-                          date={new Date()}
+                          date={new Date().toString()}
                           countCourse={4}
                           onPressToCourse={() => alert('YES')}
                           image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -139,7 +139,7 @@ const StudentGroup: React.FC<Props> = () => {
                             { name: 'Mathematik' },
                             { name: 'Gruppenkurs' }
                           ]}
-                          date={new Date()}
+                          date={new Date().toString()}
                           countCourse={4}
                           onPressToCourse={() => alert('YES')}
                           image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -161,7 +161,7 @@ const StudentGroup: React.FC<Props> = () => {
                 <AppointmentCard
                   key={index}
                   description="Lorem Ipsum"
-                  date={futureDate}
+                  date={futureDate.toString()}
                   tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
                   image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                   title="Diskussionen in Mathe!? – Die Kurvendiskussion"

@@ -131,9 +131,15 @@ const helpcenter = {
       placeholder: 'Deine Nachricht an uns',
       label: 'Deine Nachricht'
     },
+    subject: {
+      placeholder: 'Dein Betreff',
+      label: 'Betreff'
+    },
     datapolicy: {
       label: 'Hiermit stimme ich der Datenschutzerklärung zu.'
-    }
+    },
+    success: 'Deine Nachricht wurde erfolgreich versendet',
+    error: 'Deine Nachricht konnte leider nicht versendet werden'
   },
   btn: {
     allfaq: 'Alle FAQs',
