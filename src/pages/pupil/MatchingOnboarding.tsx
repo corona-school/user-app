@@ -1,4 +1,11 @@
-import { Text, VStack, Box, Button, useTheme } from 'native-base'
+import {
+  Text,
+  VStack,
+  Box,
+  Button,
+  useTheme,
+  useBreakpointValue
+} from 'native-base'
 import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
@@ -8,8 +15,18 @@ type Props = {
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   const { t } = useTranslation()
+  const { space, sizes } = useTheme()
 
-  const { space } = useTheme()
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <VStack space={space['1']} paddingX={space['1']}>
       <Box bgColor="gray.500" h="150px"></Box>

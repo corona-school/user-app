@@ -1,4 +1,11 @@
-import { Text, Heading, useTheme, VStack, Input } from 'native-base'
+import {
+  Text,
+  Heading,
+  useTheme,
+  VStack,
+  Input,
+  useBreakpointValue
+} from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
@@ -9,19 +16,31 @@ import Tabs from '../../components/Tabs'
 type Props = {}
 
 const PupilGroup: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
 
   return (
     <WithNavigation
       headerTitle={t('matching.group.pupil.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('matching.group.pupil.title')}</Heading>
-            <Text>{t('matching.group.pupil.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('matching.group.pupil.content')}
+            </Text>
           </VStack>
           <Input
             size="lg"

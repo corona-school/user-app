@@ -5,7 +5,8 @@ import {
   useTheme,
   VStack,
   CheckCircleIcon,
-  Stagger
+  Stagger,
+  useBreakpointValue
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -22,21 +23,36 @@ import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-cale
 type Props = {}
 
 const OnboardingTourList: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
 
   return (
     <WithNavigation
       headerTitle={t('onboardingList.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingBottom={7} paddingX={space['1.5']}>
+      <VStack width={ContainerWidth} paddingBottom={7} paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
           {t('onboardingList.title')}
         </Heading>
-        <Text maxWidth={330}>{t('onboardingList.content')}</Text>
+        <Text maxWidth={ContentContainerWidth}>
+          {t('onboardingList.content')}
+        </Text>
       </VStack>
-      <VStack paddingX={space['1.5']} paddingBottom={space['2']}>
+      <VStack
+        paddingX={space['1.5']}
+        paddingBottom={space['2']}
+        maxWidth={ContainerWidth}>
         <Stagger
           initial={{ opacity: 0, translateY: 20 }}
           animate={{

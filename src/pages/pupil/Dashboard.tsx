@@ -136,7 +136,7 @@ const Dashboard: React.FC<Props> = () => {
                   if (!lectures) return <></>
 
                   // TODO sort lectures
-                  lectures.sort((a, b) => 1)
+                  // lectures.sort((a, b) => 1)
 
                   return lectures.map((lec: LFLecture) => {
                     return (

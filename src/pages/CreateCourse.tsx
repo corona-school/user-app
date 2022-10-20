@@ -7,6 +7,7 @@ import {
   Modal,
   Row,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack,
   WarningIcon
@@ -130,7 +131,7 @@ const CreateCourse: React.FC<Props> = () => {
     }
   `)
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
@@ -295,6 +296,16 @@ const CreateCourse: React.FC<Props> = () => {
     subcourseError,
     uploadPhoto
   ])
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   if (loading) return <></>
 

@@ -6,7 +6,9 @@ import {
   Pressable,
   Link,
   ArrowForwardIcon,
-  Modal
+  Modal,
+  useBreakpointValue,
+  useTheme
 } from 'native-base'
 import {
   createContext,
@@ -57,6 +59,13 @@ const ViewPager: React.FC<Props> = ({
   const [cancelModal, setCancelModal] = useState<boolean>(false)
   const { t } = useTranslation()
 
+  const { sizes } = useTheme()
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <ViewPagerContext.Provider
       value={{
@@ -74,7 +83,8 @@ const ViewPager: React.FC<Props> = ({
         <Row backgroundColor="primary.900" width="100%" bottom="0">
           <Box
             flexDirection="row"
-            width="100%"
+            width={ContentContainerWidth}
+            marginX="auto"
             padding="14px"
             alignItems="center"
             justifyContent={'space-between'}>

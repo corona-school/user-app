@@ -6,7 +6,8 @@ import {
   Heading,
   VStack,
   Select,
-  useTheme
+  useTheme,
+  useBreakpointValue
 } from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,16 +22,22 @@ type Props = {
 const CourseDateWizard: React.FC<Props> = ({ index }) => {
   const { lectures, setLectures } = useContext(CreateCourseContext)
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
   return (
-    <VStack w="100%">
+    <VStack w={ContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
         <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}
           {`${index + 1}`.padStart(2, ' 0')}
         </Heading>
       )}
-      <FormControl>
+      <FormControl w={ContainerWidth}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>

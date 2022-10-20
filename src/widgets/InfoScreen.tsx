@@ -6,7 +6,8 @@ import {
   Heading,
   Button,
   Box,
-  Link
+  Link,
+  useBreakpointValue
 } from 'native-base'
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,8 +39,18 @@ const InfoScreen: React.FC<Props> = ({
   defaultButtonText,
   defaultbuttonLink
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '80%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   return (
     <View
@@ -48,6 +59,8 @@ const InfoScreen: React.FC<Props> = ({
       backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
       <VStack>
         <Row
+          width={ContentContainerWidth}
+          marginX="auto"
           flexDirection="column"
           paddingY={space['4']}
           justifyContent="center"
@@ -77,10 +90,11 @@ const InfoScreen: React.FC<Props> = ({
             </Box>
           )}
           {outlineButtonText && isOutlineButtonLink === false && (
-            <Box marginX="90px" marginBottom={3} display="block" width="80%">
+            <Box marginBottom={3} width={buttonWidth}>
               <Button
                 variant={variant === 'dark' ? 'outlinelight' : 'outline'}
-                width="100%"
+                marginX="auto"
+                // width={buttonWidth}
                 onPress={outlinebuttonLink}>
                 {t(outlineButtonText)}
               </Button>
@@ -88,15 +102,20 @@ const InfoScreen: React.FC<Props> = ({
           )}
 
           {isdefaultButtonFirst && defaultButtonText && (
-            <Box marginX="90px" display="block" width="80%">
-              <Button width="100%" onPress={defaultbuttonLink}>
+            <Box width={buttonWidth}>
+              <Button
+                marginX="auto"
+                // width={buttonWidth}
+                onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>
           )}
           {defaultButtonText && !isdefaultButtonFirst && (
-            <Box marginX="90px" display="block" width="80%">
-              <Button width="100%" onPress={defaultbuttonLink}>
+            <Box width={buttonWidth}>
+              <Button
+                // width={buttonWidth}
+                onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>

@@ -11,7 +11,8 @@ import {
   Alert,
   HStack,
   IconButton,
-  CloseIcon
+  CloseIcon,
+  useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -25,7 +26,7 @@ type Props = {
 }
 
 const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { lectures, setLectures } = useContext(CreateCourseContext)
 
@@ -47,6 +48,21 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
     <VStack space={space['1']}>
       <Heading marginBottom={space['1.5']}>
@@ -57,7 +73,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
       </Text>
 
       {lectures?.map((lec, i) => (
-        <Row>
+        <Row width={ContainerWidth}>
           <CourseDateWizard index={i} />
         </Row>
       ))}
@@ -100,13 +116,31 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
         )}
       </VStack>
 
-      <Button isDisabled={!isValidInput} onPress={onNext}>
-        {t('course.appointments.check')}
-      </Button>
-      <Button variant={'outline'}>{t('course.appointments.saveDraft')}</Button>
-      <Button variant={'outline'} onPress={onBack}>
-        {t('course.appointments.prevPage')}
-      </Button>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          isDisabled={!isValidInput}
+          onPress={onNext}>
+          {t('course.appointments.check')}
+        </Button>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          variant={'outline'}>
+          {t('course.appointments.saveDraft')}
+        </Button>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          variant={'outline'}
+          onPress={onBack}>
+          {t('course.appointments.prevPage')}
+        </Button>
+      </Row>
     </VStack>
   )
 }
