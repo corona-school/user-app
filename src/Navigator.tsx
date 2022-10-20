@@ -318,13 +318,26 @@ export default function Navigator() {
 
         {/* Group */}
         <Route
-          path="/Group"
+          path="/group"
           element={
             <RequireAuth>
-              <Group />
+              <SwitchUserType
+                pupilComponent={<PupilGroup />}
+                studentComponent={<StudentGroup />}
+              />
             </RequireAuth>
-          }
-        />
+          }></Route>
+
+        <Route
+          path="/group/offer"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<PupilGroup />}
+                studentComponent={<StudentGroupSupport />}
+              />
+            </RequireAuth>
+          }></Route>
 
         <Route
           path="/matching"

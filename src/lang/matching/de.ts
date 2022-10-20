@@ -71,6 +71,27 @@ const matching = {
     buttons: {
       request: 'Match anfordern',
       cancel: 'Abbrechen'
+    },
+    check: {
+      header: '1:1 Lernunterstützung',
+      title: 'Match anfordern',
+      content:
+        'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',
+      contentHeadline: 'Wichtig',
+      contenHeadlineContent:
+        'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
+      personalDataHeadline: 'Persönliche Daten',
+      personalDataQuestion:
+        'Für welches Fach möchtest du deine Hilfe anbieten?',
+      personalDataAnswer:
+        'Solltest du meherere Fächer anbieten wollen, ist eine Mehrfachauswahl möglich.',
+      descLabel: 'Beschreibung',
+      descPlaceholder: 'Kurzbeschreibung über dich und dein Angebot ',
+      editDataLabel: 'Daten bearbeiten',
+      buttons: {
+        button1: 'Angaben prüfen',
+        button2: 'Abbrechen'
+      }
     }
   },
   group: {

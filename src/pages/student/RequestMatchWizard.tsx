@@ -54,6 +54,9 @@ const RequestMatchWizard: React.FC<Props> = ({
     return true
   }, [description, selectedSubjects, selectedClasses])
 
+  const { space } = useTheme()
+  const { t } = useTranslation()
+
   return (
     <VStack>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>

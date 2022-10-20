@@ -5,20 +5,30 @@ import {
   Heading,
   Text,
   useTheme,
-  Image
+  Image,
+  Modal,
+  Row,
+  CloseIcon,
+  WarningIcon
 } from 'native-base'
 import WithNavigation from '../../components/WithNavigation'
 import BackButton from '../../components/BackButton'
 import CTACard from '../../widgets/CTACard'
 import LFIconBook from '../../assets/icons/lernfair/lf-books.svg'
 import LFImageLearing from '../../assets/images/matching/1-1-matching.jpg'
+import LFParty from '../../assets/icons/lernfair/lf-party.svg'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { Pressable } from 'react-native'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const MatchingBlocker: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const [cancelModal, setCancelModal] = useState<boolean>(false)
 
   return (
     <>
