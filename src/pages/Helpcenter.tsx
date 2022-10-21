@@ -410,6 +410,7 @@ const HelpCenter: React.FC<Props> = () => {
                         </Alert>
                       )}
                       <Button
+                        marginX="auto"
                         width={buttonWidth}
                         isDisabled={
                           !dsgvo ||

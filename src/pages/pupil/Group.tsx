@@ -4,7 +4,11 @@ import {
   useTheme,
   VStack,
   Input,
-  useBreakpointValue
+  useBreakpointValue,
+  Row,
+  Column,
+  HStack,
+  Flex
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -28,6 +32,11 @@ const PupilGroup: React.FC<Props> = () => {
   const ContentContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['contentContainerWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48%'
   })
 
   return (
@@ -55,26 +64,29 @@ const PupilGroup: React.FC<Props> = () => {
                     <Text marginBottom={space['1.5']}>
                       {t('matching.group.pupil.tabs.tab1.content')}
                     </Text>
-                    {new Array(5)
-                      .fill(0)
-                      .map(
+
+                    <Flex direction="row" flexWrap="wrap">
+                      {new Array(5).fill(0).map(
                         ({}, index) =>
                           (
-                            <AppointmentCard
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toDateString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
+                            <Column width={CardGrid} marginRight="15px">
+                              <AppointmentCard
+                                variant="horizontal"
+                                description="Lorem Ipsum"
+                                tags={[
+                                  { name: 'Mathematik' },
+                                  { name: 'Gruppenkurs' }
+                                ]}
+                                date={new Date().toDateString()}
+                                countCourse={4}
+                                onPressToCourse={() => alert('YES')}
+                                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                title="Diskussionen in Mathe!? – Die Kurvendiskussion"
+                              />
+                            </Column>
                           ) || <Text>Es wurden keine Kurse gefunden.</Text>
                       )}
+                    </Flex>
                   </>
                 )
               },
@@ -85,26 +97,29 @@ const PupilGroup: React.FC<Props> = () => {
                     <Text marginBottom={space['1.5']}>
                       {t('matching.group.pupil.tabs.tab2.content')}
                     </Text>
-                    {new Array(1)
-                      .fill(0)
-                      .map(
+
+                    <Flex direction="row" flexWrap="wrap">
+                      {new Array(1).fill(0).map(
                         ({}, index) =>
                           (
-                            <AppointmentCard
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toDateString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
+                            <Column width={CardGrid} marginRight="15px">
+                              <AppointmentCard
+                                variant="horizontal"
+                                description="Lorem Ipsum"
+                                tags={[
+                                  { name: 'Mathematik' },
+                                  { name: 'Gruppenkurs' }
+                                ]}
+                                date={new Date().toDateString()}
+                                countCourse={4}
+                                onPressToCourse={() => alert('YES')}
+                                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                title="Diskussionen in Mathe!? – Die Kurvendiskussion"
+                              />
+                            </Column>
                           ) || <Text>Es wurden keine Kurse gefunden.</Text>
                       )}
+                    </Flex>
                   </>
                 )
               },
@@ -115,27 +130,29 @@ const PupilGroup: React.FC<Props> = () => {
                     <Text marginBottom={space['1.5']}>
                       {t('matching.group.pupil.tabs.tab3.content')}
                     </Text>
-                    {new Array(9)
-                      .fill(0)
-                      .map(
+                    <Flex direction="row" flexWrap="wrap">
+                      {new Array(9).fill(0).map(
                         ({}, index) =>
                           (
-                            <AppointmentCard
-                              key={index}
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toDateString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
+                            <Column width={CardGrid} marginRight="15px">
+                              <AppointmentCard
+                                key={index}
+                                variant="horizontal"
+                                description="Lorem Ipsum"
+                                tags={[
+                                  { name: 'Mathematik' },
+                                  { name: 'Gruppenkurs' }
+                                ]}
+                                date={new Date().toDateString()}
+                                countCourse={4}
+                                onPressToCourse={() => alert('YES')}
+                                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                title="Diskussionen in Mathe!? – Die Kurvendiskussion"
+                              />
+                            </Column>
                           ) || <Text>Es wurden keine Angebote gefunden.</Text>
                       )}
+                    </Flex>
                   </>
                 )
               }

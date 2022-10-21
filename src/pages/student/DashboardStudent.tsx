@@ -85,7 +85,7 @@ const DashboardStudent: React.FC<Props> = () => {
   `)
 
   const { space, sizes } = useTheme()
-  // const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -167,7 +167,7 @@ const DashboardStudent: React.FC<Props> = () => {
               <AppointmentCard
                 href={'/single-course'}
                 tags={[]}
-                date={new Date().toLocaleDateString()}
+                date={futureDate.toLocaleDateString()}
                 isTeaser={true}
                 image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
                 title="Mathe Grundlagen Klasse 6"

@@ -6,7 +6,9 @@ import {
   VStack,
   CheckCircleIcon,
   Stagger,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex,
+  Column
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -37,6 +39,11 @@ const OnboardingTourList: React.FC<Props> = () => {
     lg: sizes['contentContainerWidth']
   })
 
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48%'
+  })
+
   return (
     <WithNavigation
       headerTitle={t('onboardingList.header')}
@@ -61,41 +68,47 @@ const OnboardingTourList: React.FC<Props> = () => {
             transition: { stagger: { offset: 60 }, duration: 500 }
           }}
           visible>
-          {new Array(5).fill(0).map(({}, index) => (
-            <CTACard
-              key={`card-${index}`}
-              marginBottom={space['1']}
-              variant="dark"
-              title={t(`onboardingList.cards.card${index}.title`)}
-              closeable={false}
-              content={
-                <Text>{t(`onboardingList.cards.card${index}.content`)}</Text>
-              }
-              button={
-                <Button
-                  onPress={() =>
-                    navigate(t(`onboardingList.cards.card${index}.url`))
-                  }>
-                  {t(`onboardingList.buttontext`)}
-                </Button>
-              }
-              icon={
-                index === 0 ? (
-                  <IconApp />
-                ) : index === 1 ? (
-                  <IconContact />
-                ) : index === 2 ? (
-                  <IconGroup />
-                ) : index === 3 ? (
-                  <IconHelp />
-                ) : index === 4 ? (
-                  <IconCalender />
-                ) : (
-                  ''
-                )
-              }
-            />
-          ))}
+          <Flex direction="row" flexWrap="wrap">
+            {new Array(5).fill(0).map(({}, index) => (
+              <Column width={CardGrid} marginRight="15px">
+                <CTACard
+                  key={`card-${index}`}
+                  marginBottom={space['1']}
+                  variant="dark"
+                  title={t(`onboardingList.cards.card${index}.title`)}
+                  closeable={false}
+                  content={
+                    <Text>
+                      {t(`onboardingList.cards.card${index}.content`)}
+                    </Text>
+                  }
+                  button={
+                    <Button
+                      onPress={() =>
+                        navigate(t(`onboardingList.cards.card${index}.url`))
+                      }>
+                      {t(`onboardingList.buttontext`)}
+                    </Button>
+                  }
+                  icon={
+                    index === 0 ? (
+                      <IconApp />
+                    ) : index === 1 ? (
+                      <IconContact />
+                    ) : index === 2 ? (
+                      <IconGroup />
+                    ) : index === 3 ? (
+                      <IconHelp />
+                    ) : index === 4 ? (
+                      <IconCalender />
+                    ) : (
+                      ''
+                    )
+                  }
+                />
+              </Column>
+            ))}
+          </Flex>
         </Stagger>
       </VStack>
     </WithNavigation>

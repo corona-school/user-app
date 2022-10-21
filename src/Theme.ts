@@ -94,7 +94,10 @@ const Theme = extendTheme({
     headerPaddingYPx: 8,
     contentContainerWidth: '670px',
     containerWidth: '940px',
-    desktopbuttonWidth: 'max-content'
+    desktopbuttonWidth: 'max-content',
+    ModalContent: '590px',
+    formsWidth: '768px',
+    smallWidth: '400px'
   },
   components: {
     Text: {

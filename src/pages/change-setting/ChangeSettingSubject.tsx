@@ -12,7 +12,8 @@ import {
   Stack,
   Modal,
   Alert,
-  HStack
+  HStack,
+  useBreakpointValue
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -59,7 +60,7 @@ const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
 type Props = {}
 
 const ChangeSettingSubject: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const location = useLocation()
   const { state } = location as { state: { userType: 'pupil' | 'student' } }
@@ -134,6 +135,16 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     }
   }, [_updateSubjects.error])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -141,7 +152,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
       <WithNavigation
         headerTitle={t('profile.NeedHelpIn.single.header')}
         headerLeft={<BackButton />}>
-        <VStack paddingX={space['1.5']} space={space['1']}>
+        <VStack
+          paddingX={space['1.5']}
+          space={space['1']}
+          width={ContainerWidth}>
           <Heading>
             {state?.userType === 'student'
               ? t('profile.subjects.single.title')
@@ -189,7 +203,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             </Row>
           </ProfileSettingItem>
         </VStack>
-        <VStack paddingX={space['1.5']} space={space['1']}>
+        <VStack
+          paddingX={space['1.5']}
+          space={space['1']}
+          width={ContainerWidth}>
           <ProfileSettingRow title={t('profile.NeedHelpIn.single.others')}>
             <ProfileSettingItem
               border={false}
@@ -242,7 +259,10 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             </ProfileSettingItem>
           </ProfileSettingRow>
         </VStack>
-        <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+        <VStack
+          paddingX={space['1.5']}
+          paddingBottom={space['1.5']}
+          width={ContainerWidth}>
           {userSettingChanged && (
             <Alert marginY={3} colorScheme="success" status="success">
               <VStack space={2} flexShrink={1} w="100%">
@@ -276,6 +296,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             </Alert>
           )}
           <Button
+            width={ButtonContainer}
             onPress={() => {
               updateSubjects({
                 variables: {

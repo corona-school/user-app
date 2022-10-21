@@ -13,7 +13,8 @@ import {
   Button,
   Alert,
   HStack,
-  TextArea
+  TextArea,
+  useBreakpointValue
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -35,7 +36,7 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 type Props = {}
 
 const Profile: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
+  const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -115,6 +116,11 @@ const Profile: React.FC<Props> = () => {
     data?.me?.pupil?.subjectsFormatted?.length
   ])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -123,6 +129,7 @@ const Profile: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Box
+            maxWidth={ContainerWidth}
             bg={'primary.700'}
             alignItems="center"
             paddingY={space['2']}
@@ -169,6 +176,7 @@ const Profile: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {userSettingChanged && (
           <Alert
+            width={ContainerWidth}
             marginY={10}
             marginX={space['1.5']}
             colorScheme="success"
@@ -187,7 +195,7 @@ const Profile: React.FC<Props> = () => {
             </VStack>
           </Alert>
         )}
-        <VStack space={space['1']}>
+        <VStack space={space['1']} width={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />

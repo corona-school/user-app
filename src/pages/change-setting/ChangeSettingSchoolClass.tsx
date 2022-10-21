@@ -8,7 +8,8 @@ import {
   Row,
   Column,
   Alert,
-  HStack
+  HStack,
+  useBreakpointValue
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,7 +47,7 @@ const mutPupil = `mutation updateSchoolGrade($grade: Int!) {
 type Props = {}
 
 const ChangeSettingSchoolClass: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
 
   const { t } = useTranslation()
 
@@ -98,13 +99,23 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     }
   }, [_updateSchoolGrade.error])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolClass.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -123,7 +134,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -175,7 +186,10 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
-      <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+      <VStack
+        paddingX={space['1.5']}
+        paddingBottom={space['1.5']}
+        width={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -193,7 +207,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </Alert>
         )}
         {showError && (
-          <Alert marginY={3} bgColor="danger.500">
+          <Alert marginY={3} bgColor="danger.500" width={ContainerWidth}>
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
                 flexShrink={1}
@@ -209,6 +223,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </Alert>
         )}
         <Button
+          width={ButtonContainer}
           onPress={() =>
             updateSchoolGrade({ variables: { grade: selectedGrade } })
           }>

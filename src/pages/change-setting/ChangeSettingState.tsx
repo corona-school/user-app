@@ -11,7 +11,8 @@ import {
   FormControl,
   Stack,
   Alert,
-  HStack
+  HStack,
+  useBreakpointValue
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +49,7 @@ const mutPupil = `mutation updateState($state: State!) {
 type Props = {}
 
 const ChangeSettingState: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const location = useLocation()
   const { state: locState } = location as { state: { userType: string } }
 
@@ -93,13 +94,23 @@ const ChangeSettingState: React.FC<Props> = () => {
     }
   }, [_updateState.error])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.State.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <Heading>{t('profile.State.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -115,7 +126,7 @@ const ChangeSettingState: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <ProfileSettingRow title={t('profile.State.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -165,7 +176,10 @@ const ChangeSettingState: React.FC<Props> = () => {
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
-      <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+      <VStack
+        paddingX={space['1.5']}
+        paddingBottom={space['1.5']}
+        width={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -199,6 +213,7 @@ const ChangeSettingState: React.FC<Props> = () => {
           </Alert>
         )}
         <Button
+          width={ButtonContainer}
           onPress={() => {
             updateState({ variables: { state: state.key } })
           }}>

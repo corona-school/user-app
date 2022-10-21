@@ -7,7 +7,8 @@ import {
   Button,
   Box,
   Link,
-  useBreakpointValue
+  useBreakpointValue,
+  Text
 } from 'native-base'
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -44,18 +45,20 @@ const InfoScreen: React.FC<Props> = ({
 
   const ContentContainerWidth = useBreakpointValue({
     base: '100%',
-    lg: sizes['contentContainerWidth']
+    lg: sizes['smallWidth']
   })
 
   const buttonWidth = useBreakpointValue({
     base: '80%',
-    lg: sizes['desktopbuttonWidth']
+    lg: sizes['smallWidth']
   })
 
   return (
     <View
       width="100vw"
       height="100vh"
+      alignContent="center"
+      justifyContent="center"
       backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
       <VStack>
         <Row
@@ -81,19 +84,20 @@ const InfoScreen: React.FC<Props> = ({
             </Heading>
           )}
           {content && (
-            <Box
+            <Text
               maxWidth="300"
               paddingBottom={space['2']}
               color={variant === 'dark' ? 'lightText' : 'primary.700'}
               textAlign="center">
               {content}
-            </Box>
+            </Text>
           )}
           {outlineButtonText && isOutlineButtonLink === false && (
             <Box alignItems="center" marginBottom={3} width={buttonWidth}>
               <Button
                 variant={variant === 'dark' ? 'outlinelight' : 'outline'}
                 width={buttonWidth}
+                minWidth="190px"
                 onPress={outlinebuttonLink}>
                 {t(outlineButtonText)}
               </Button>
@@ -104,6 +108,7 @@ const InfoScreen: React.FC<Props> = ({
             <Box alignItems="center" width={buttonWidth}>
               <Button
                 marginX="auto"
+                minWidth="190px"
                 width={buttonWidth}
                 onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
@@ -112,7 +117,10 @@ const InfoScreen: React.FC<Props> = ({
           )}
           {defaultButtonText && !isdefaultButtonFirst && (
             <Box alignItems="center" width={buttonWidth}>
-              <Button width={buttonWidth} onPress={defaultbuttonLink}>
+              <Button
+                width={buttonWidth}
+                minWidth="190px"
+                onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>

@@ -67,11 +67,12 @@ const AppointmentCard: React.FC<Props> = ({
     setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, 1000)
 
-  const isStartingSoon = useMemo(
-    () => date.toMillis() - Date.now() < TIME_THRESHOLD,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_date, remainingTime]
-  )
+  const isStartingSoon = true
+  // useMemo(
+  //   () => date.toMillis() - Date.now() < TIME_THRESHOLD,
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [_date, remainingTime]
+  // )
 
   // isStartingSoon &&
   //   console.log(

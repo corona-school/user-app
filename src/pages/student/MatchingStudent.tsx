@@ -6,7 +6,9 @@ import {
   Heading,
   Button,
   useTheme,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex,
+  Column
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,6 +35,11 @@ const MatchingStudent: React.FC<Props> = () => {
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48%'
   })
 
   const { data, loading, error } = useQuery(gql`
@@ -97,35 +104,41 @@ const MatchingStudent: React.FC<Props> = () => {
               title: t('matching.request.check.tabs.tab1'),
               content: (
                 <VStack>
-                  {(data?.me?.student?.matches.length &&
-                    data?.me?.student?.matches?.map(
-                      (match: LFMatch, index: number) => (
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted.map(
-                            (sub: LFSubject) => sub.name
-                          )}
-                          schooltype="Grundschule"
-                          schoolclass={4}
-                          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('dashboard.helpers.buttons.solveMatch')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                {t('matching.request.check.resoloveMatch')}
-                              </Text>
-                            )
-                          }
-                        />
-                      )
-                    )) || <Text>{t('matching.request.check.noMatches')}</Text>}
+                  <Flex direction="row" flexWrap="wrap">
+                    {(data?.me?.student?.matches.length &&
+                      data?.me?.student?.matches?.map(
+                        (match: LFMatch, index: number) => (
+                          <Column width={CardGrid} marginRight="15px">
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={match?.pupil?.firstname}
+                              subjects={match?.pupil?.subjectsFormatted.map(
+                                (sub: LFSubject) => sub.name
+                              )}
+                              schooltype="Grundschule"
+                              schoolclass={4}
+                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() => dissolveMatch(match)}>
+                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.request.check.resoloveMatch')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Column>
+                        )
+                      )) || (
+                      <Text>{t('matching.request.check.noMatches')}</Text>
+                    )}
+                  </Flex>
                 </VStack>
               )
             }

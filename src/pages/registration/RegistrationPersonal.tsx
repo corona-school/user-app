@@ -6,7 +6,10 @@ import {
   TextArea,
   Flex,
   Box,
-  Image
+  Image,
+  Text,
+  useBreakpointValue,
+  Row
 } from 'native-base'
 import { useEffect } from 'react'
 
@@ -21,13 +24,23 @@ type Props = {}
 
 const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { setRegistrationData, email, password, userType } = useRegistration()
 
   useEffect(() => {
     if (!email && !password) navigate('/registration/1')
   }, [email, navigate, password])
+
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -50,7 +63,12 @@ const RegistrationPersonal: React.FC<Props> = () => {
         <Logo />
         <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
-      <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
+      <VStack
+        space={space['1']}
+        paddingX={space['1']}
+        mt={space['4']}
+        marginX="auto"
+        width={ContainerWidth}>
         <TextInput
           placeholder={t('firstname')}
           onChangeText={t => setRegistrationData({ firstname: t })}
@@ -69,9 +87,14 @@ const RegistrationPersonal: React.FC<Props> = () => {
             />
           </>
         )}
-        <Button onPress={() => navigate('/registration/3')}>
-          {t('registration.register')}
-        </Button>
+
+        <Row justifyContent="center">
+          <Button
+            width={buttonWidth}
+            onPress={() => navigate('/registration/3')}>
+            {t('registration.register')}
+          </Button>
+        </Row>
       </VStack>
     </Flex>
   )

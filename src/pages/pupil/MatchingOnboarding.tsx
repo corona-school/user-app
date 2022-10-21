@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
 import Icon from '../../assets/icons/lernfair/lf-books.svg'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 type Props = {
   onRequestMatch: () => any
@@ -20,6 +21,7 @@ type Props = {
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
+  const navigate = useNavigate()
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -34,6 +36,11 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48%'
   })
 
   return (
@@ -68,14 +75,20 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
         marginBottom={space['1.5']}>
         {t('matching.blocker.button')}
       </Button>
-      <CTACard
-        width={ContentContainerWidth}
-        variant="dark"
-        icon={<Icon />}
-        title={t('matching.blocker.ctaCardHeader')}
-        content={<Text>{t('matching.blocker.ctaCardContent')}</Text>}
-        button={<Button>{t('matching.blocker.ctaCardButton')}</Button>}
-      />
+      <Box width={CardGrid}>
+        <CTACard
+          width={ContentContainerWidth}
+          variant="dark"
+          icon={<Icon />}
+          title={t('matching.blocker.ctaCardHeader')}
+          content={<Text>{t('matching.blocker.ctaCardContent')}</Text>}
+          button={
+            <Button onPress={() => navigate('/group')}>
+              {t('matching.blocker.ctaCardButton')}
+            </Button>
+          }
+        />
+      </Box>
     </VStack>
   )
 }

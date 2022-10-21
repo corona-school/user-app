@@ -8,7 +8,8 @@ import {
   Row,
   Box,
   Flex,
-  Image
+  Image,
+  useBreakpointValue
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -31,7 +32,7 @@ const RegistrationAccount: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [legalChecked, setLegalChecked] = useState<boolean>()
   const navigate = useNavigate()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
   const { setRegistrationData, email, password, userType } = useRegistration()
@@ -56,18 +57,27 @@ const RegistrationAccount: React.FC<Props> = () => {
   const showModal = useCallback(() => {
     setVariant('dark')
     setContent(() => (
-      <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+      <VStack
+        space={space['1']}
+        p={space['1']}
+        flex="1"
+        alignItems="center"
+        justifyContent="center"
+        marginX="auto"
+        width={ModalContainerWidth}>
         <WarningIcon />
         <Heading color={'lightText'}>{t('registration.barrier.title')}</Heading>
-        <Text color={'lightText'}>{t(`registration.barrier.text`)}</Text>
-        <VStack>
+        <Text fontSize={'md'} color={'lightText'}>
+          {t(`registration.barrier.text`)}
+        </Text>
+        <VStack paddingBottom={space['2']}>
           {new Array(3).fill(0).map((_, i) => (
             <Text fontSize={'md'} color={'lightText'}>
               {t(`registration.barrier.point_${i}`)}
             </Text>
           ))}
         </VStack>
-        <Row w="100%" space={space['1']}>
+        <Row width={ModalContainerWidth} space={space['1']}>
           <Button onPress={() => onBarrierSolved(true)} flex="1">
             {t('registration.barrier.btn.yes')}
           </Button>
@@ -79,6 +89,21 @@ const RegistrationAccount: React.FC<Props> = () => {
     ))
     setShow(true)
   }, [onBarrierSolved, setContent, setShow, setVariant, space, t])
+
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '768px'
+  })
+
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -103,7 +128,12 @@ const RegistrationAccount: React.FC<Props> = () => {
         <Logo />
         <Heading mt={space['1']}>{t('registration.new')}</Heading>
       </Box>
-      <VStack flex="1" paddingX={space['1']} mt={space['1']}>
+      <VStack
+        flex="1"
+        paddingX={space['1']}
+        mt={space['4']}
+        width={ContainerWidth}
+        marginX="auto">
         <VStack space={space['0.5']}>
           <TextInput
             keyboardType="email-address"
@@ -152,19 +182,22 @@ const RegistrationAccount: React.FC<Props> = () => {
           <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
             {t('registration.check_legal')}
           </Checkbox>
-          <Button
-            onPress={() =>
-              userType === 'pupil' ? showModal() : navigate('/registration/2')
-            }
-            isDisabled={
-              !legalChecked ||
-              !userType ||
-              password.length < 6 ||
-              password !== passwordConfirm ||
-              email.length < 6
-            }>
-            {t('registration.btn.next')}
-          </Button>
+          <Row justifyContent="center">
+            <Button
+              width={buttonWidth}
+              onPress={() =>
+                userType === 'pupil' ? showModal() : navigate('/registration/2')
+              }
+              isDisabled={
+                !legalChecked ||
+                !userType ||
+                password.length < 6 ||
+                password !== passwordConfirm ||
+                email.length < 6
+              }>
+              {t('registration.btn.next')}
+            </Button>
+          </Row>
           {!userType && (
             <Text color="danger.500">
               {t('registration.hint.userType.missing')}
