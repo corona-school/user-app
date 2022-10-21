@@ -4,7 +4,8 @@ import {
   Heading,
   Button,
   useTheme,
-  useBreakpointValue
+  useBreakpointValue,
+  Row
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -106,14 +107,24 @@ const RequestMatchWizard: React.FC<Props> = ({
         ))}
       </TwoColGrid>
 
-      <VStack space={space['1']}>
-        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          mb={space['0.5']}
+          isDisabled={!isValidInput}
+          onPress={() => setCurrentIndex(1)}
+          width={ButtonContainer}>
           Angaben prüfen
         </Button>
-        <Button variant="outline" onPress={() => navigate(-1)}>
+        <Button
+          variant="outline"
+          onPress={() => navigate(-1)}
+          width={ButtonContainer}>
           Abbrechen
         </Button>
-      </VStack>
+      </Row>
     </VStack>
   )
 }
