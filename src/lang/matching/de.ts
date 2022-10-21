@@ -182,6 +182,18 @@ const matching = {
       },
       offers: {
         title: 'Alle Angebote'
+      },
+      support: {
+        header: 'Gruppen-Lernunterstützung',
+        title: 'Angebote',
+        contentFirstPart: 'Auf dieser Seite findet du alle Gruppenkurse. Du hast die Möglichkeite bei den Kursen deiner Kollege:innen zu hospitieren. Erkunde auch gerne',
+        contentLinkText: 'hier',
+        contendLastPart: 'unsere Hilfestellungen zur Inspiration für deine Kursgestaltung',
+        search: 'Suche',
+        offers: {
+          title: 'Alle Angebote',
+          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        } 
       }
     }
   },

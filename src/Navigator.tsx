@@ -64,6 +64,8 @@ import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
+import AppointmentsArchive from './pages/AppointmentsArchive'
+import CourseArchive from './pages/CourseArchive'
 
 export default function Navigator() {
   return (
@@ -357,6 +359,24 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <SwitchUserType studentComponent={<RequestMatch />} />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/appointments-archive"
+          element={
+            <RequireAuth>
+              <AppointmentsArchive />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/course-archive"
+          element={
+            <RequireAuth>
+              <CourseArchive />
             </RequireAuth>
           }
         />

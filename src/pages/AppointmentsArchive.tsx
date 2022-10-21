@@ -11,13 +11,13 @@ import {
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import WithNavigation from '../../components/WithNavigation'
-import NotificationAlert from '../../components/NotificationAlert'
-import AppointmentCard from '../../widgets/AppointmentCard'
+import WithNavigation from '../components/WithNavigation'
+import NotificationAlert from '../components/NotificationAlert'
+import AppointmentCard from '../widgets/AppointmentCard'
 
 type Props = {}
 
-const StudentGroupSupport: React.FC<Props> = () => {
+const AppointmentsArchive: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -34,17 +34,13 @@ const StudentGroupSupport: React.FC<Props> = () => {
 
   return (
     <WithNavigation
-      headerTitle={t('matching.group.helper.support.header')}
+      headerTitle={t('archive.appointments.header')}
       headerLeft={<NotificationAlert />}>
       <VStack paddingX={space['1']} width={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
-            <Heading>{t('matching.group.helper.support.title')}</Heading>
-            <Text>
-              {t('matching.group.helper.support.contentFirstPart') + ' '}
-              <Link>{t('matching.group.helper.support.contentLinkText')}</Link>
-              {' ' + t('matching.group.helper.support.contendLastPart')}
-            </Text>
+            <Heading>{t('archive.appointments.title')}</Heading>
+            <Text>{t('archive.appointments.content')}</Text>
           </VStack>
           <VStack paddingY={space['1']}>
             <Input
@@ -53,8 +49,8 @@ const StudentGroupSupport: React.FC<Props> = () => {
             />
           </VStack>
           <VStack space={space['1']}>
-            <Heading>{t('matching.group.helper.support.offers.title')}</Heading>
-            <Text>{t('matching.group.helper.support.offers.content')}</Text>
+            <Heading>{t('archive.appointments.sectionHeadline')}</Heading>
+            <Text>{t('archive.appointments.sectionContent')}</Text>
           </VStack>
           <VStack>
             <Flex direction="row" flexWrap="wrap">
@@ -80,4 +76,4 @@ const StudentGroupSupport: React.FC<Props> = () => {
     </WithNavigation>
   )
 }
-export default StudentGroupSupport
+export default AppointmentsArchive

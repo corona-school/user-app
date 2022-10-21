@@ -9,7 +9,8 @@ import {
   Button,
   Link,
   Image,
-  Column
+  Column,
+  useBreakpointValue
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
@@ -54,7 +55,7 @@ const AppointmentCard: React.FC<Props> = ({
   onPressToCourse,
   href
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
 
   const date = DateTime.fromISO(_date)
@@ -67,12 +68,11 @@ const AppointmentCard: React.FC<Props> = ({
     setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, 1000)
 
-  const isStartingSoon = true
-  // useMemo(
-  //   () => date.toMillis() - Date.now() < TIME_THRESHOLD,
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   [_date, remainingTime]
-  // )
+  const isStartingSoon = useMemo(
+    () => date.toMillis() - Date.now() < TIME_THRESHOLD,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [_date, remainingTime]
+  )
 
   // isStartingSoon &&
   //   console.log(
@@ -90,6 +90,26 @@ const AppointmentCard: React.FC<Props> = ({
     [_date, remainingTime]
   )
 
+  const CardMobileDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const CardMobileImage = useBreakpointValue({
+    base: '100%',
+    lg: '300px'
+  })
+
+  const CardMobilePadding = useBreakpointValue({
+    base: space['1'],
+    lg: '30px'
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   return (
     <View>
       {variant === 'card' ? (
@@ -97,8 +117,13 @@ const AppointmentCard: React.FC<Props> = ({
           flexibleWidth={isTeaser ? true : false}
           variant={isStartingSoon ? 'dark' : 'normal'}>
           <Link href={href}>
-            <Column w="100%">
-              <Box h={isTeaser ? '170' : '120'} padding={space['1']}>
+            <Column
+              w="100%"
+              flexDirection={isTeaser ? CardMobileDirection : 'column'}>
+              <Box
+                w={isTeaser ? CardMobileImage : 'auto'}
+                h={isTeaser ? '200' : '120'}
+                padding={space['1']}>
                 <Image
                   position="absolute"
                   left={0}
@@ -119,7 +144,7 @@ const AppointmentCard: React.FC<Props> = ({
                 </Row>
               </Box>
 
-              <Box padding={space['1']}>
+              <Box padding={isTeaser ? CardMobilePadding : space['1']}>
                 {!isStartingSoon && (
                   <Row paddingTop={space['1']} space={1}>
                     <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
@@ -155,6 +180,7 @@ const AppointmentCard: React.FC<Props> = ({
                 {button && (
                   <Link href={buttonlink}>
                     <Button
+                      width={ButtonContainer}
                       paddingTop={space['1.5']}
                       paddingBottom={space['1.5']}>
                       {button}
@@ -167,7 +193,6 @@ const AppointmentCard: React.FC<Props> = ({
         </Card>
       ) : (
         <Flex
-          direction="row"
           borderRadius="15px"
           backgroundColor="primary.100"
           marginBottom={space['1']}>

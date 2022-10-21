@@ -14,7 +14,8 @@ import {
   Alert,
   HStack,
   TextArea,
-  Container
+  Container,
+  useBreakpointValue
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -38,7 +39,7 @@ import { DateTime } from 'luxon'
 type Props = {}
 
 const ProfileStudent: React.FC<Props> = () => {
-  const { colors, space } = useTheme()
+  const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -119,6 +120,16 @@ const ProfileStudent: React.FC<Props> = () => {
     data?.me?.student?.subjectsFormatted?.length
   ])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -127,6 +138,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Box
+            width={ContainerWidth}
             bg={'primary.700'}
             alignItems="center"
             paddingY={space['2']}
@@ -212,6 +224,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {userSettingChanged && (
           <Alert
+            width={ContainerWidth}
             marginY={10}
             marginX={space['1.5']}
             colorScheme="success"
@@ -231,11 +244,14 @@ const ProfileStudent: React.FC<Props> = () => {
           </Alert>
         )}
 
-        <VStack paddingX={space['1']} paddingY={space['1']}>
+        <VStack
+          width={ContainerWidth}
+          paddingX={space['1']}
+          paddingY={space['1']}>
           <HelperWizard index={0} />
         </VStack>
 
-        <VStack space={space['1']}>
+        <VStack space={space['1']} width={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />
@@ -376,7 +392,9 @@ const ProfileStudent: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button>{t('profile.Helper.certificate.button')}</Button>
+                <Button width={ButtonWidth}>
+                  {t('profile.Helper.certificate.button')}
+                </Button>
               </Container>
             </ProfileSettingRow>
           </VStack>

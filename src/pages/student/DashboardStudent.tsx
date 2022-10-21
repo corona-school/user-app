@@ -8,7 +8,9 @@ import {
   Modal,
   Row,
   useToast,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex,
+  Column
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -134,6 +136,16 @@ const DashboardStudent: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48.3%'
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -240,6 +252,7 @@ const DashboardStudent: React.FC<Props> = () => {
               )}
               {(data?.me?.student?.canCreateCourse?.allowed && (
                 <Button
+                  width={ButtonContainer}
                   marginY={space['1']}
                   onPress={() => navigate('/create-course')}>
                   {t('dashboard.helpers.buttons.course')}
@@ -272,31 +285,36 @@ const DashboardStudent: React.FC<Props> = () => {
               <Heading marginY={space['1']}>
                 {t('dashboard.helpers.headlines.myLearningPartner')}
               </Heading>
-
-              {data?.me?.student?.matches.map(
-                (match: LFMatch, index: number) => (
-                  <LearningPartner
-                    key={index}
-                    isDark={true}
-                    name={match?.pupil?.firstname}
-                    subjects={['Englisch']}
-                    schooltype="Grundschule"
-                    schoolclass={4}
-                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                    button={
-                      (!match.dissolved && (
-                        <Button
-                          variant="outlinelight"
-                          onPress={() => dissolveMatch(match)}>
-                          {t('dashboard.helpers.buttons.solveMatch')}
-                        </Button>
-                      )) || (
-                        <Text color="lightText">Das Match wurde aufgelöst</Text>
-                      )
-                    }
-                  />
-                )
-              ) || <Text>{t('empty.matchings')}</Text>}
+              <Flex direction="row" flexWrap="wrap">
+                {data?.me?.student?.matches.map(
+                  (match: LFMatch, index: number) => (
+                    <Column width={CardGrid} marginRight="15px">
+                      <LearningPartner
+                        key={index}
+                        isDark={true}
+                        name={match?.pupil?.firstname}
+                        subjects={['Englisch']}
+                        schooltype="Grundschule"
+                        schoolclass={4}
+                        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                        button={
+                          (!match.dissolved && (
+                            <Button
+                              variant="outlinelight"
+                              onPress={() => dissolveMatch(match)}>
+                              {t('dashboard.helpers.buttons.solveMatch')}
+                            </Button>
+                          )) || (
+                            <Text color="lightText">
+                              Das Match wurde aufgelöst
+                            </Text>
+                          )
+                        }
+                      />
+                    </Column>
+                  )
+                ) || <Text>{t('empty.matchings')}</Text>}
+              </Flex>
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
                   <Button

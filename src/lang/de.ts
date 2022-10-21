@@ -15,6 +15,7 @@ import dashboard from './dashboard/de'
 import helperwizard from './helperwizard/de'
 import matching from './matching/de'
 import course from './course/de'
+import archive from './archive/de'
 
 const de = {
   ...shared,
@@ -33,6 +34,7 @@ const de = {
   dashboard,
   helperwizard,
   matching,
-  course
+  course,
+  archive
 }
 export default de

@@ -9,7 +9,8 @@ import {
   Modal,
   Row,
   CloseIcon,
-  WarningIcon
+  WarningIcon,
+  useBreakpointValue
 } from 'native-base'
 import WithNavigation from '../../components/WithNavigation'
 import BackButton from '../../components/BackButton'
@@ -25,24 +26,44 @@ import { useNavigate } from 'react-router-dom'
 type Props = {}
 
 const MatchingBlocker: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
+  const ButtonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '55%'
+  })
+
   return (
     <>
       <Container
-        maxWidth="100%"
+        maxWidth={ContainerWidth}
         paddingX={space['1.5']}
         alignItems="stretch"
         marginBottom={space['0.5']}>
-        <Heading paddingTop="64px" marginBottom={space['1']}>
+        <Heading marginBottom={space['1']}>
           {t('matching.blocker.title')}
         </Heading>
         <Image
           width="100%"
-          height="200px"
+          height="350px"
           borderRadius="15px"
           marginBottom={space['1']}
           source={{
@@ -60,17 +81,19 @@ const MatchingBlocker: React.FC<Props> = () => {
           <Text bold> {t('matching.blocker.contentBox2')} </Text>
           {t('matching.blocker.contentBox3')}
         </Text>
-        <Button marginBottom={space['1.5']} variant="outline">
+        <Button
+          width={ButtonWidth}
+          marginBottom={space['1.5']}
+          variant="outline">
           {t('matching.blocker.button')}
         </Button>
       </Container>
       <Container
-        maxWidth="100%"
+        maxWidth={CardGrid}
         paddingX={space['1.5']}
         marginBottom={space['1.5']}
         alignItems="stretch">
         <CTACard
-          width="100%"
           variant="dark"
           title="Gruppen-Lernunterstützung"
           content="Kurzfristige Unterstützung bei spezifischen Problemen und Fragen"

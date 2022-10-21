@@ -7,7 +7,8 @@ import {
   Pressable,
   useTheme,
   Container,
-  Tooltip
+  Tooltip,
+  useBreakpointValue
 } from 'native-base'
 import Card from '../components/Card'
 
@@ -38,13 +39,31 @@ const CTACard: React.FC<Props> = ({
   onClose,
   marginBottom = 0
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
 
   const Wrapper = variant === 'normal' ? Card : Fragment
+
+  const CardMobileDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const CardMobileJContent = useBreakpointValue({
+    base: 'stretch',
+    lg: 'space-between'
+  })
+
+  const CardMobileAlignItems = useBreakpointValue({
+    base: 'stretch',
+    lg: 'center'
+  })
 
   return (
     <Wrapper flexibleWidth width={width}>
       <Box
+        flexDirection={CardMobileDirection}
+        justifyContent={CardMobileJContent}
+        alignItems={CardMobileAlignItems}
         mb={marginBottom}
         backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
         padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}

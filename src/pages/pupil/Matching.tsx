@@ -33,7 +33,7 @@ const Matching: React.FC<Props> = () => {
         )}
         {currentIndex === 1 && <MatchingWizard />}
       </WithNavigation>
-      <Modal isOpen={showModal}>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>{t('matching.modal.header')}</Modal.Header>
