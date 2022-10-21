@@ -88,15 +88,6 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`)
 
-  // const { data: participantData } = useQuery(gql`query{
-  //   subcourse(subcourseId: ${courseId}){
-  //     participants{
-  //       firstname
-  //       grade
-  //     }
-  //   }
-  // }`)
-
   const course = courseData?.subcourse
   if (loading) return <></>
 
