@@ -13,7 +13,6 @@ import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
-import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -164,19 +163,6 @@ const Dashboard: React.FC<Props> = () => {
             )}
           </HSection>
 
-          {/* <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.homework.header')}
-            </Heading>
-            <CTACard
-              title={t('dashboard.homework.title')}
-              closeable={false}
-              content={<Text>{t('dashboard.homework.content')}</Text>}
-              button={<Button variant="outline">{t('openchat')}</Button>}
-              icon={<BooksIcon />}
-            />
-          </VStack> */}
-
           {/* Matches */}
           <HSection showAll title={t('dashboard.learningpartner.header')}>
             {data?.me?.pupil?.matches?.map((match: LFMatch) => (
@@ -215,23 +201,6 @@ const Dashboard: React.FC<Props> = () => {
             )}
           </HSection>
 
-          {/* <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.learningpartner.header')}
-            </Heading>
-            <TeacherCard
-              name="Max Mustermann"
-              variant="dark"
-              tags={['Mathematik', 'Gruppenkurs']}
-              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-              button={
-                <Button variant="outlinelight">
-                  {t('dashboard.offers.match')}
-                </Button>
-              }
-            />
-          </VStack> */}
-
           {/* Suggestions */}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
@@ -246,17 +215,6 @@ const Dashboard: React.FC<Props> = () => {
                 />
               ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}
           </HSection>
-          {/* <TwoColGrid title={t('dashboard.offers.header')}>
-            {Array(2)
-              .fill(0)
-              .map((el, i) => (
-                <ServiceOfferCard
-                  key={`service-offer-${i}`}
-                  title="Gruppen-Lernunterstützung"
-                  image="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                />
-              ))}
-          </TwoColGrid> */}
         </VStack>
       </VStack>
     </WithNavigation>
