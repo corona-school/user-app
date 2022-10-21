@@ -5,6 +5,7 @@ import {
   Heading,
   Progress,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack
 } from 'native-base'
@@ -90,7 +91,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   disableNavigation
 }) => {
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
 
   const { userType } = useRegistration()
 
@@ -162,6 +163,16 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     setCurrentIndex && setCurrentIndex(prev => prev - 1)
   }, [setCurrentIndex])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (questions.length === 0) return <></>
   return (
     <Flex flex="1" pb={space['1']}>
@@ -175,7 +186,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t(`registration.questions.${userType}.${currentQuestion.id}.label`)}
         </Heading>
       </Box>
-      <Box paddingX={space['1']} mt={space['1']}>
+      <Box
+        paddingX={space['1']}
+        mt={space['4']}
+        width={ContainerWidth}
+        marginX="auto">
         <Progress
           value={((currentIndex + 1) / questions.length) * 100}
           h="3.5"
@@ -185,7 +200,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.step')} {currentIndex + 1} / {questions.length}
         </Text>
       </Box>
-      <Flex flex="1" overflowY={'scroll'}>
+      <Flex flex="1" overflowY={'scroll'} width={ContainerWidth} marginX="auto">
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
             currentQuestion={currentQuestion as SelectionQuestion}
@@ -195,7 +210,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           />
         )}
       </Flex>
-      <VStack paddingX={space['1']} space={space['0.5']}>
+      <VStack
+        paddingX={space['2']}
+        space={space['0.5']}
+        width={ContainerWidth}
+        marginX="auto">
         <Button isDisabled={disableNavigation || !isValidAnswer} onPress={next}>
           {t('questionnaire.btn.next')}
         </Button>

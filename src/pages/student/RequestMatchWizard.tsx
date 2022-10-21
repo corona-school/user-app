@@ -2,10 +2,10 @@ import {
   Text,
   VStack,
   Heading,
-  FormControl,
-  TextArea,
   Button,
-  useTheme
+  useTheme,
+  useBreakpointValue,
+  Row
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,11 +32,10 @@ const RequestMatchWizard: React.FC<Props> = ({
   setSelectedSubjects,
   setFocusedSubject,
   setShowModal,
-  setDescription,
   setCurrentIndex,
   data
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -54,8 +53,23 @@ const RequestMatchWizard: React.FC<Props> = ({
     return true
   }, [description, selectedSubjects, selectedClasses])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
-    <VStack>
+    <VStack width={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
       <Text>{t('matching.student.text')}</Text>
 
@@ -64,12 +78,16 @@ const RequestMatchWizard: React.FC<Props> = ({
       </Text>
       <Text mb={space['1.5']}>{t('matching.student.hint')}</Text>
 
-      <Heading fontSize={'lg'} mb={space['0.5']}>
+      <Heading fontSize={'lg'} mb={space['1']}>
         {t('matching.student.personalData.title')}
       </Heading>
 
-      <Text bold>{t('matching.student.personalData.subtitle')}</Text>
-      <Text>{t('matching.student.personalData.hint')}</Text>
+      <Text bold paddingBottom="2px">
+        {t('matching.student.personalData.subtitle')}
+      </Text>
+      <Text paddingBottom={space['1']}>
+        {t('matching.student.personalData.hint')}
+      </Text>
 
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => (
@@ -89,14 +107,24 @@ const RequestMatchWizard: React.FC<Props> = ({
         ))}
       </TwoColGrid>
 
-      <VStack space={space['1']}>
-        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          mb={space['0.5']}
+          isDisabled={!isValidInput}
+          onPress={() => setCurrentIndex(1)}
+          width={ButtonContainer}>
           Angaben prüfen
         </Button>
-        <Button variant="outline" onPress={() => navigate(-1)}>
+        <Button
+          variant="outline"
+          onPress={() => navigate(-1)}
+          width={ButtonContainer}>
           Abbrechen
         </Button>
-      </VStack>
+      </Row>
     </VStack>
   )
 }

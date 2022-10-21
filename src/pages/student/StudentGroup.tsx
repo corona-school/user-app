@@ -1,4 +1,11 @@
-import { Text, Heading, useTheme, VStack, Button } from 'native-base'
+import {
+  Text,
+  Heading,
+  useTheme,
+  VStack,
+  Button,
+  useBreakpointValue
+} from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
@@ -12,15 +19,25 @@ type Props = {}
 
 const StudentGroup: React.FC<Props> = () => {
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   return (
     <WithNavigation
       headerTitle={t('matching.group.helper.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']}>
+      <VStack paddingX={space['1']} width={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('matching.group.helper.title')}</Heading>
@@ -33,7 +50,9 @@ const StudentGroup: React.FC<Props> = () => {
             <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
           </VStack>
           <VStack paddingY={space['1']}>
-            <Button onPress={() => navigate('/create-course')}>
+            <Button
+              width={ButtonContainer}
+              onPress={() => navigate('/create-course')}>
               {t('matching.group.helper.button')}
             </Button>
           </VStack>

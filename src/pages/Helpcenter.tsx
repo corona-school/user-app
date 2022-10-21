@@ -15,7 +15,8 @@ import {
   Stagger,
   InfoIcon,
   Alert,
-  HStack
+  HStack,
+  useBreakpointValue
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
@@ -42,7 +43,7 @@ type MentorCategory =
   | 'OTHER'
 
 const HelpCenter: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mentorCategory, setMentorCategory] = useState<MentorCategory>()
@@ -92,20 +93,49 @@ const HelpCenter: React.FC<Props> = () => {
     }
   }, [data, setContent, setShow, setVariant, t])
 
+  // Breakpoints
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const formControlWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
   return (
     <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
-      <Box paddingBottom={space['1.5']} paddingX={space['1.5']}>
+      <Box
+        width={ContainerWidth}
+        paddingBottom={space['1.5']}
+        paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
         <Text>{t('helpcenter.subtitle')}</Text>
       </Box>
-      <Box paddingBottom={space['2.5']} paddingX={space['1.5']}>
+      <Box
+        width={ContainerWidth}
+        paddingBottom={space['2.5']}
+        paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
           {t('helpcenter.onboarding.title')}
         </Heading>
-        <Text paddingBottom={space['1.5']}>
+        <Text width={ContentContainerWidth} paddingBottom={space['1.5']}>
           {t('helpcenter.onboarding.content')}
         </Text>
-        <Button onPress={() => navigate('/onboarding-list')}>
+        <Button
+          width={buttonWidth}
+          onPress={() => navigate('/onboarding-list')}>
           {t('helpcenter.onboarding.button')}
         </Button>
       </Box>
@@ -223,7 +253,7 @@ const HelpCenter: React.FC<Props> = () => {
                     {t('helpcenter.contact.content')}
                   </Text>
 
-                  <FormControl>
+                  <FormControl width={formControlWidth}>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
                         {t('helpcenter.contact.topic.label')}
@@ -380,6 +410,8 @@ const HelpCenter: React.FC<Props> = () => {
                         </Alert>
                       )}
                       <Button
+                        marginX="auto"
+                        width={buttonWidth}
                         isDisabled={
                           !dsgvo ||
                           message?.length < 5 ||

@@ -7,6 +7,7 @@ import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
 import useModal from '../../hooks/useModal'
 import Utility from '../../Utility'
+
 import MatchingBlocker from './MatchingBlocker'
 
 import RequestMatchPreview from './RequestMatchPreview'
@@ -15,7 +16,7 @@ import RequestMatchWizard from './RequestMatchWizard'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { setShow, setContent } = useModal()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
@@ -120,9 +121,7 @@ const RequestMatch: React.FC<Props> = () => {
 
       <Modal isOpen={showModal}>
         <Modal.Content>
-          <Modal.Header>
-            Für welche Klassen bietest du deine Unterstützung an?
-          </Modal.Header>
+          <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
             <VStack>
               {[
@@ -172,7 +171,7 @@ const RequestMatch: React.FC<Props> = () => {
 
                 setShowModal(false)
               }}>
-              Speichern
+              {t('matching.request.modal.save')}
             </Button>
           </Modal.Footer>
         </Modal.Content>

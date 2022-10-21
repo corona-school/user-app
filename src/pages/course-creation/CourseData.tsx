@@ -15,7 +15,8 @@ import {
   Image,
   Column,
   Link,
-  View
+  View,
+  useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +49,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     }
   `)
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const {
     courseName,
@@ -113,8 +114,23 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     // TODO prefill
   }, [])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
-    <VStack space={space['1']}>
+    <VStack space={space['1']} width={ContainerWidth}>
       <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
@@ -275,12 +291,25 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <Text flex="1">{t('course.CourseDate.form.otherOptionContact')}</Text>
         <Switch onValueChange={setAllowContact} />
       </Row>
-      <Button isDisabled={!isValidInput} onPress={onNext}>
-        {t('course.CourseDate.form.button.continue')}
-      </Button>
-      <Button variant={'outline'} onPress={onCancel} marginBottom={space['2']}>
-        {t('course.CourseDate.form.button.cancel')}
-      </Button>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          width={ButtonContainer}
+          isDisabled={!isValidInput}
+          marginBottom={space['1']}
+          onPress={onNext}>
+          {t('course.CourseDate.form.button.continue')}
+        </Button>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          variant={'outline'}
+          onPress={onCancel}>
+          {t('course.CourseDate.form.button.cancel')}
+        </Button>
+      </Row>
     </VStack>
   )
 }

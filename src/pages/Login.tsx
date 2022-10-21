@@ -11,6 +11,7 @@ import {
   Link,
   Row,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack
 } from 'native-base'
@@ -22,7 +23,7 @@ import TextInput from '../components/TextInput'
 
 export default function Login() {
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
 
@@ -62,6 +63,11 @@ export default function Login() {
     }
   }
 
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['smallWidth']
+  })
+
   return (
     <VStack overflowY={'auto'} height="100vh">
       <Row flexDirection="column" justifyContent="center" alignItems="center">
@@ -70,7 +76,7 @@ export default function Login() {
           width="100%"
           justifyContent="center"
           paddingY={6}
-          marginBottom={6}>
+          marginBottom={space['5']}>
           <Image
             alt="Lernfair"
             position="absolute"
@@ -95,7 +101,7 @@ export default function Login() {
           </Heading>
         </Box>
 
-        <Box marginX="90px" width="80%">
+        <Box marginX="90px" width={ContainerWidth}>
           <Row marginBottom={3}>
             <TextInput
               width="100%"
@@ -105,10 +111,10 @@ export default function Login() {
               onKeyPress={handleKeyPress}
             />
           </Row>
-          <Row marginBottom={3} width="100%">
+          <Row marginBottom={3}>
             <TextInput
-              type="password"
               width="100%"
+              type="password"
               isRequired={true}
               placeholder={t('password')}
               onChangeText={setPassword}
@@ -130,17 +136,21 @@ export default function Login() {
           </Text>
         )}
 
-        <Box paddingY={4}>
+        <Box paddingY={4} width={ContainerWidth}>
           <Link>{t('login.btn.password')}</Link>
         </Box>
-        <Box paddingTop={4} marginX="90px" display="block" width="80%">
+        <Box
+          paddingTop={4}
+          marginX="90px"
+          display="block"
+          width={ContainerWidth}>
           <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
             {t('login.btn.login')}
           </Button>
         </Box>
 
-        <Box paddingTop={10} paddingBottom={1}>
-          <Text>{t('login.noaccount')}</Text>
+        <Box paddingTop={10} paddingBottom={1} width={ContainerWidth}>
+          <Text textAlign="center">{t('login.noaccount')}</Text>
           <Link href="/registration/1" justifyContent="center">
             {t('login.btn.register')}
           </Link>

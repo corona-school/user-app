@@ -11,7 +11,8 @@ import {
   FormControl,
   Stack,
   Alert,
-  HStack
+  HStack,
+  useBreakpointValue
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +49,7 @@ const mutPupil = `mutation updateLanguage($languages: [Language!]) {
 type Props = {}
 
 const ChangeSettingLanguage: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
 
   const location = useLocation()
@@ -85,13 +86,23 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     }
   }, [_updateLanguage.error])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -124,7 +135,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
         <ProfileSettingRow
           title={t('profile.FluentLanguagenalData.single.others')}>
           <ProfileSettingItem
@@ -179,7 +190,10 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </ProfileSettingItem>
         </ProfileSettingRow>
       </VStack>
-      <VStack paddingX={space['1.5']} paddingBottom={space['1.5']}>
+      <VStack
+        paddingX={space['1.5']}
+        paddingBottom={space['1.5']}
+        width={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -197,7 +211,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </Alert>
         )}
         {showError && (
-          <Alert marginY={3} bgColor="danger.500">
+          <Alert marginY={3} bgColor="danger.500" width={ContainerWidth}>
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
                 flexShrink={1}
@@ -213,6 +227,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </Alert>
         )}
         <Button
+          width={ButtonContainer}
           onPress={() => {
             updateLanguage({ variables: { languages: selections } })
           }}>

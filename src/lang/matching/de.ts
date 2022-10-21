@@ -3,7 +3,7 @@ const matching = {
     header: '1:1-Lernunterstützung',
     title: 'Unterstützung anfragen',
     firstContent:
-      ' Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+      'Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
     headlineContent: 'Wichtig',
     contentBox1: 'Da es bei der 1:1-Lernunterstützung zu',
     contentBox2: 'langen Wartezeiten von 3-6 Monaten',
@@ -69,6 +69,10 @@ const matching = {
     needHelpInContent:
       'Auf dieser Seite kannst du eine Priorität vergeben. Wir werden eine:n Lernpartner:in für dich suchen, der:die dir in diesem Fach auf jeden Fall helfen kann. Wir geben aber natürlich unser bestes, eine perfekte Zuordnung für dich zu finden!',
     describ: 'Beschreibung',
+    modal: {
+      header: 'Für welche Klassen bietest du deine Unterstützung an?',
+      save: 'speichern'
+    },
     buttons: {
       request: 'Match anfordern',
       cancel: 'Abbrechen'
@@ -89,9 +93,25 @@ const matching = {
       descLabel: 'Beschreibung',
       descPlaceholder: 'Kurzbeschreibung über dich und dein Angebot ',
       editDataLabel: 'Daten bearbeiten',
+      requestmatchButton: 'Match anfordern',
       buttons: {
         button1: 'Angaben prüfen',
         button2: 'Abbrechen'
+      },
+      tabs: {
+        tab1: 'Matches'
+      },
+      noMatches: 'Du hast keine Matches',
+      resoloveMatch: 'Das Match wurde aufgelöst',
+      preview: {
+        title: 'Angaben prüfen',
+        content:
+          'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
+        subject: 'Fach',
+        subjectForClass: 'Klassen für Fach',
+        desc: 'Beschreibung',
+        requestMatch: 'Match anfordern',
+        editData: 'Daten bearbeiten'
       }
     }
   },
@@ -116,6 +136,30 @@ const matching = {
         title: 'Alle Angebote',
         content:
           'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+      }
+    },
+    pupil: {
+      header: 'Gruppen-Lernunterstützung',
+      title: 'Angebote',
+      content:
+        ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+      searchplaceholder: 'Suche',
+      tabs: {
+        tab1: {
+          title: 'Meine Kurse',
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        },
+        tab2: {
+          title: 'Empfehlungen',
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        },
+        tab3: {
+          title: 'Alle Angebote',
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        }
       }
     },
     helper: {

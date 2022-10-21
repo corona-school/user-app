@@ -6,7 +6,8 @@ import {
   Image,
   Column,
   Row,
-  Button
+  Button,
+  useBreakpointValue
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -27,7 +28,7 @@ import useLernfair from '../hooks/useLernfair'
 type Props = {}
 
 const SingleCourse: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
 
   const location = useLocation()
@@ -89,6 +90,17 @@ const SingleCourse: React.FC<Props> = () => {
   }`)
 
   const course = courseData?.subcourse
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -99,7 +111,7 @@ const SingleCourse: React.FC<Props> = () => {
           : course?.course?.name
       }
       headerLeft={<BackButton />}>
-      <Box paddingX={space['1.5']}>
+      <Box paddingX={space['1.5']} width={ContainerWidth}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
             alt={course?.course?.name}
@@ -269,6 +281,7 @@ const SingleCourse: React.FC<Props> = () => {
         <Box marginBottom={space['0.5']}>
           {!course?.canJoin?.allowed && <Text>{course?.canJoin?.reason}</Text>}
           <Button
+            width={ButtonContainer}
             marginBottom={space['0.5']}
             isDisabled={!course?.canJoin?.allowed}>
             {t('single.button.login')}
@@ -276,7 +289,9 @@ const SingleCourse: React.FC<Props> = () => {
         </Box>
         {course?.allowContact && (
           <Box marginBottom={space['1.5']}>
-            <Button variant="outline">{t('single.button.contact')}</Button>
+            <Button width={ButtonContainer} variant="outline">
+              {t('single.button.contact')}
+            </Button>
           </Box>
         )}
       </Box>

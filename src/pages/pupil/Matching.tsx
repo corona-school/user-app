@@ -10,6 +10,7 @@ import {
 } from 'native-base'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../../components/WithNavigation'
 import CTACard from '../../widgets/CTACard'
 import MatchingOnboarding from './MatchingOnboarding'
@@ -22,6 +23,7 @@ const Matching: React.FC<Props> = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -53,7 +55,7 @@ const Matching: React.FC<Props> = () => {
                 }}>
                 {t('matching.modal.buttons.continue')}
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" onPress={() => navigate('/group')}>
                 {t('matching.modal.buttons.showGroupCourse')}
               </Button>
             </VStack>
