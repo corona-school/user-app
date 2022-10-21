@@ -2,12 +2,9 @@ import {
   Text,
   VStack,
   Heading,
-  FormControl,
-  TextArea,
   Button,
   useTheme,
-  useBreakpointValue,
-  Row
+  useBreakpointValue
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,7 +31,6 @@ const RequestMatchWizard: React.FC<Props> = ({
   setSelectedSubjects,
   setFocusedSubject,
   setShowModal,
-  setDescription,
   setCurrentIndex,
   data
 }) => {
@@ -111,36 +107,12 @@ const RequestMatchWizard: React.FC<Props> = ({
       </TwoColGrid>
 
       <VStack space={space['1']}>
-        <FormControl>
-          <FormControl.Label>
-            {t('matching.request.check.descLabel')}
-          </FormControl.Label>
-          <TextArea
-            autoCompleteType={{}}
-            onChangeText={setDescription}
-            value={description}
-          />
-        </FormControl>
-
-        <Row
-          space={space['1']}
-          alignItems="center"
-          flexDirection={ButtonContainerDirection}>
-          <Button
-            marginBottom={space['1']}
-            width={ButtonContainer}
-            isDisabled={!isValidInput}
-            onPress={() => setCurrentIndex(1)}>
-            {t('matching.request.check.buttons.button1')}
-          </Button>
-          <Button
-            marginBottom={space['1']}
-            width={ButtonContainer}
-            variant="outline"
-            onPress={() => navigate(-1)}>
-            {t('matching.request.check.buttons.button2')}
-          </Button>
-        </Row>
+        <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
+          Angaben prüfen
+        </Button>
+        <Button variant="outline" onPress={() => navigate(-1)}>
+          Abbrechen
+        </Button>
       </VStack>
     </VStack>
   )
