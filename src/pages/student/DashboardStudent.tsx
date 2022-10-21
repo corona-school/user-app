@@ -89,6 +89,7 @@ const DashboardStudent: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const [toastShown, setToastShown] = useState<boolean>()
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
@@ -121,13 +122,13 @@ const DashboardStudent: React.FC<Props> = () => {
   }, [])
 
   useEffect(() => {
-    if (_dissolve?.data?.matchDissolve) {
-      // TODO fix this being called like 20 times a second
-      // toast.show({
-      //   description: 'Das Match wurde aufgelöst'
-      // })
+    if (_dissolve?.data?.matchDissolve && !toastShown) {
+      setToastShown(true)
+      toast.show({
+        description: 'Das Match wurde aufgelöst'
+      })
     }
-  }, [_dissolve?.data?.matchDissolve, toast])
+  }, [_dissolve?.data?.matchDissolve, toast, toastShown])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
