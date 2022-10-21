@@ -1,4 +1,14 @@
-import { Text, VStack, Heading, Button, useTheme } from 'native-base'
+import { t } from 'i18next'
+import {
+  Text,
+  VStack,
+  Heading,
+  Button,
+  useTheme,
+  useBreakpointValue,
+  Row
+} from 'native-base'
+import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
 import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
@@ -24,20 +34,38 @@ const RequestMatchPreview: React.FC<Props> = ({
   disableButton,
   disableReason
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
+  const { t } = useTranslation()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
-    <VStack space={space['1']}>
-      <Heading>Angaben prüfen</Heading>
-      <Text>
-        Bitte überprüfe deine Angaben noch einmal, bevor du dein Match
-        anforderst.
-      </Text>
+    <VStack space={space['1']} width={ContainerWidth}>
+      <Heading>{t('matching.request.check.preview.title')}</Heading>
+      <Text>{t('matching.request.check.preview.content')}</Text>
 
       {subjects.map((sub: any, index) => (
-        <VStack>
-          <Text bold>Fach {index + 1}</Text>
+        <VStack paddingBottom={space['1']}>
+          <Text bold>
+            {t('matching.request.check.preview.subject')} {index + 1}
+          </Text>
           <IconTagList variant="center" text={sub} isDisabled />
-          <Text bold>Klassen für Fach {index + 1}</Text>
+          <Text paddingTop={space['1']} bold>
+            {t('matching.request.check.preview.subjectForClass')} {index + 1}
+          </Text>
           {Object.entries(classes[sub] || {}).map(([key, val], index: any) => {
             const range = Utility.intToClassRange(parseInt(key))
 
@@ -51,16 +79,28 @@ const RequestMatchPreview: React.FC<Props> = ({
           })}
         </VStack>
       ))}
-      <Text bold>Beschreibung</Text>
+      <Text bold>{t('matching.request.check.preview.desc')}</Text>
       <Text>{description}</Text>
-
-      <Button onPress={onRequestMatch} isDisabled={disableButton}>
-        Match anfordern
-      </Button>
-      {disableButton && <Text>{disableReason}</Text>}
-      <Button variant={'outline'} onPress={onBack}>
-        Daten bearbeiten
-      </Button>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          onPress={onRequestMatch}
+          isDisabled={disableButton}>
+          {t('matching.request.check.preview.requestMatch')}
+        </Button>
+        {disableButton && <Text>{disableReason}</Text>}
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          variant={'outline'}
+          onPress={onBack}>
+          {t('matching.request.check.preview.editData')}
+        </Button>
+      </Row>
     </VStack>
   )
 }

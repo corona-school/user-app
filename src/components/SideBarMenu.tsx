@@ -35,7 +35,13 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
         <VStack
           paddingTop={paddingTop}
           position="fixed"
-          bgColor={'primary.100'}
+          bgColor={'lightText'}
+          style={{
+            shadowColor: '#000000',
+            shadowOpacity: 0.1,
+            shadowRadius: 30,
+            shadowOffset: { width: 2, height: 2 }
+          }}
           w="240"
           top="0"
           left="0"
@@ -43,7 +49,10 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
           {Object.entries(navItems).map(
             ([key, { label, icon: Icon, disabled }]) => (
               <Link href={disabled ? undefined : key} key={key}>
-                <Row alignItems={'center'} paddingX={space['0.5']}>
+                <Row
+                  alignItems={'center'}
+                  paddingX={space['1']}
+                  paddingY="15px">
                   <Center>
                     <CSSWrapper className="navigation__item">
                       <CircleIcon
@@ -70,6 +79,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                     </CSSWrapper>
                   </Center>
                   <Text
+                    fontSize="lg"
+                    fontWeight="500"
                     color={disabled ? colors['gray']['300'] : undefined}
                     marginLeft={space['0.5']}>
                     {label}

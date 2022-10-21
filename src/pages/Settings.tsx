@@ -1,5 +1,12 @@
 import { gql, useQuery } from '@apollo/client'
-import { Heading, useTheme, VStack, Column, HStack } from 'native-base'
+import {
+  Heading,
+  useTheme,
+  VStack,
+  Column,
+  HStack,
+  useBreakpointValue
+} from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
@@ -12,12 +19,17 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 type Props = {}
 
 const Settings: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { clearToken } = useApollo()
   const tabspace = 3
   // const { user } = useLernfair()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
 
   const { data, error, loading } = useQuery(gql`
     query {
@@ -42,7 +54,10 @@ const Settings: React.FC<Props> = () => {
           <Heading>{data?.me?.firstname}</Heading>
         </HStack>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
           <Column mb={tabspace}>
             <EditDataRow

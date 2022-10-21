@@ -1,5 +1,15 @@
 import { gql, useQuery } from '@apollo/client'
-import { View, Text, VStack, Heading, Button, useTheme } from 'native-base'
+import {
+  View,
+  Text,
+  VStack,
+  Heading,
+  Button,
+  useTheme,
+  useBreakpointValue,
+  Flex,
+  Column
+} from 'native-base'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -12,10 +22,25 @@ import LearningPartner from '../../widgets/LearningPartner'
 type Props = {}
 
 const MatchingStudent: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48%'
+  })
 
   const { data, loading, error } = useQuery(gql`
     query {
@@ -49,62 +74,71 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   return (
-    <WithNavigation>
-      <VStack paddingX={space['1']}>
-        <Heading>Match anfordern</Heading>
+    <WithNavigation headerTitle={t('matching.request.check.header')}>
+      <VStack paddingX={space['1']} width={ContainerWidth}>
+        <Heading paddingBottom={space['0.5']}>
+          {t('matching.request.check.title')}
+        </Heading>
         <VStack space={space['0.5']}>
-          <Text>
-            Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen
-            die individuelle Hilfe benötigen.
+          <Text paddingBottom={space['0.5']}>
+            {t('matching.request.check.content')}
           </Text>
 
           <Text mt="1" bold>
-            Wichtig
+            {t('matching.request.check.contentHeadline')}
           </Text>
-          <Text>
-            Es kann bis zu einer Woche dauern, ehe wir ein Match für dich
-            gefunden haben.
+          <Text paddingBottom={space['1.5']}>
+            {t('matching.request.check.contenHeadlineContent')}
           </Text>
-          <Button onPress={() => navigate('/request-match')}>
-            Match anfordern
+          <Button
+            width={ButtonContainer}
+            marginBottom={space['1.5']}
+            onPress={() => navigate('/request-match')}>
+            {t('matching.request.check.requestmatchButton')}
           </Button>
         </VStack>
 
         <Tabs
           tabs={[
             {
-              title: 'Matches',
+              title: t('matching.request.check.tabs.tab1'),
               content: (
                 <VStack>
-                  {(data?.me?.student?.matches.length &&
-                    data?.me?.student?.matches?.map(
-                      (match: LFMatch, index: number) => (
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted.map(
-                            (sub: LFSubject) => sub.name
-                          )}
-                          schooltype="Grundschule"
-                          schoolclass={4}
-                          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('dashboard.helpers.buttons.solveMatch')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                Das Match wurde aufgelöst
-                              </Text>
-                            )
-                          }
-                        />
-                      )
-                    )) || <Text>Du hast keine Matches</Text>}
+                  <Flex direction="row" flexWrap="wrap">
+                    {(data?.me?.student?.matches.length &&
+                      data?.me?.student?.matches?.map(
+                        (match: LFMatch, index: number) => (
+                          <Column width={CardGrid} marginRight="15px">
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={match?.pupil?.firstname}
+                              subjects={match?.pupil?.subjectsFormatted.map(
+                                (sub: LFSubject) => sub.name
+                              )}
+                              schooltype="Grundschule"
+                              schoolclass={4}
+                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() => dissolveMatch(match)}>
+                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.request.check.resoloveMatch')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Column>
+                        )
+                      )) || (
+                      <Text>{t('matching.request.check.noMatches')}</Text>
+                    )}
+                  </Flex>
                 </VStack>
               )
             }

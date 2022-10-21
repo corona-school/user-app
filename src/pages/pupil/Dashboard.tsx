@@ -1,4 +1,12 @@
-import { Text, Button, Heading, HStack, useTheme, VStack } from 'native-base'
+import {
+  Text,
+  Button,
+  Heading,
+  HStack,
+  useTheme,
+  VStack,
+  useBreakpointValue
+} from 'native-base'
 import { useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
@@ -77,12 +85,17 @@ const Dashboard: React.FC<Props> = () => {
     }
   `)
 
-  const { space } = useTheme()
-  // const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+  const { space, sizes } = useTheme()
+  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
 
   if (loading) return <></>
 
@@ -90,6 +103,7 @@ const Dashboard: React.FC<Props> = () => {
     <WithNavigation
       headerContent={
         <HStack
+          width={ContainerWidth}
           space={space['1']}
           alignItems="center"
           bgColor={'primary.900'}
@@ -104,7 +118,7 @@ const Dashboard: React.FC<Props> = () => {
         </HStack>
       }
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']}>
+      <VStack paddingX={space['1']} width={ContainerWidth}>
         <VStack space={space['1']} marginTop={space['1']}>
           <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
@@ -116,7 +130,7 @@ const Dashboard: React.FC<Props> = () => {
               //   navigate('/single-course', { state: { course: null } })
               // }
               tags={[]}
-              date={new Date().toDateString()}
+              date={futureDate.toDateString()}
               isTeaser={true}
               image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
               title="Mathe Grundlagen Klasse 6"
@@ -136,7 +150,7 @@ const Dashboard: React.FC<Props> = () => {
                   if (!lectures) return <></>
 
                   // TODO sort lectures
-                  lectures.sort((a, b) => 1)
+                  // lectures.sort((a, b) => 1)
 
                   return lectures.map((lec: LFLecture) => {
                     return (

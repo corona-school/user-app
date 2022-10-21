@@ -1,9 +1,11 @@
 import {
+  Box,
   Button,
   Flex,
   Heading,
   Modal,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack
 } from 'native-base'
@@ -88,7 +90,7 @@ const mutStudent = `mutation register(
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -194,21 +196,45 @@ const RegistrationData: React.FC<Props> = () => {
     [registerPupil, registerStudent, userType]
   )
 
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '500px'
+  })
+
   // registration went through without error
   useEffect(() => {
     if (data && !error) {
       setVariant('dark')
       setContent(
-        <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
-          <EventIcon />
-          <Heading color="lightText">
+        <VStack
+          space={space['1']}
+          p={space['1']}
+          flex="1"
+          width={ModalContainerWidth}
+          marginX="auto"
+          alignItems="center"
+          justifyContent="center">
+          <Box justifyContent="center" marginLeft="40px">
+            <EventIcon />
+          </Box>
+          <Heading
+            textAlign="center"
+            marginX="auto"
+            width={ModalContainerWidth}
+            color="lightText">
             {t('registration.result.success.title')}
           </Heading>
-          <Text color="lightText" fontSize={'lg'}>
+          <Text
+            textAlign="center"
+            marginX="auto"
+            width={ModalContainerWidth}
+            color="lightText"
+            fontSize={'lg'}>
             {t('registration.result.success.text')}
           </Text>
           <Button
-            w="100%"
+            marginX="auto"
+            width={ModalContainerWidth}
             onPress={() => {
               setShow(false)
               navigate('/login')

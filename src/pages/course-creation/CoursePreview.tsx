@@ -7,7 +7,8 @@ import {
   Text,
   Row,
   Box,
-  Image
+  Image,
+  useBreakpointValue
 } from 'native-base'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +25,7 @@ type Props = {
 }
 
 const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const {
     courseName,
@@ -40,8 +41,23 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     pickedPhoto
   } = useContext(CreateCourseContext)
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonContainerDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   return (
-    <VStack space={space['1']}>
+    <VStack space={space['1']} width={ContainerWidth}>
       <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
@@ -180,12 +196,26 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           </VStack>
         ))}
 
-      <Button onPress={onNext} isDisabled={isDisabled}>
-        {t('course.CourseDate.Preview.publishCourse')}
-      </Button>
-      <Button variant={'outline'} onPress={onBack} isDisabled={isDisabled}>
-        {t('course.CourseDate.Preview.editCourse')}
-      </Button>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          onPress={onNext}
+          isDisabled={isDisabled}>
+          {t('course.CourseDate.Preview.publishCourse')}
+        </Button>
+        <Button
+          marginBottom={space['1']}
+          width={ButtonContainer}
+          variant={'outline'}
+          onPress={onBack}
+          isDisabled={isDisabled}>
+          {t('course.CourseDate.Preview.editCourse')}
+        </Button>
+      </Row>
     </VStack>
   )
 }

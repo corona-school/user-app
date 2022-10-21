@@ -77,7 +77,7 @@ const OnboardingView: React.FC<Props> = ({
           <Box justifyContent="center">
             <Image
               width="100%"
-              height={isBigger ? '400px' : '350px'}
+              height={isBigger ? '380px' : '350px'}
               alt="Matching"
               resizeMode="contain"
               source={{ uri: image }}

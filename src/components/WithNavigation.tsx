@@ -37,12 +37,19 @@ const WithNavigation: React.FC<Props> = ({
   headerTitle,
   isSidebarMenu = true
 }) => {
+  const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
     base: true,
     lg: false
   })
+
+  const innerPaddingContent = useBreakpointValue({
+    base: 0,
+    lg: space['1']
+  })
+
   const [view, setView] = useState(null)
-  const { sizes } = useTheme()
+
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
     <View flex="1">
@@ -70,7 +77,7 @@ const WithNavigation: React.FC<Props> = ({
                 paddingTop={'72px'}
               />
             </Column>
-            <Column flex="1">
+            <Column flex="1" padding={innerPaddingContent}>
               {(view && (
                 <>
                   <View h={`${headerHeight}px`}></View>

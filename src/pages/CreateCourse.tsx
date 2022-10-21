@@ -7,6 +7,7 @@ import {
   Modal,
   Row,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack,
   WarningIcon
@@ -130,7 +131,7 @@ const CreateCourse: React.FC<Props> = () => {
     }
   `)
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
@@ -296,6 +297,11 @@ const CreateCourse: React.FC<Props> = () => {
     uploadPhoto
   ])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
   if (loading) return <></>
 
   return (
@@ -327,7 +333,10 @@ const CreateCourse: React.FC<Props> = () => {
           pickedPhoto
         }}>
         {(data?.me?.student?.canCreateCourse?.allowed && (
-          <VStack space={space['1']} padding={space['1']}>
+          <VStack
+            space={space['1']}
+            padding={space['1']}
+            width={ContainerWidth}>
             <InstructionProgress
               isDark={false}
               currentIndex={currentIndex}
