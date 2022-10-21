@@ -64,9 +64,10 @@ const matching = {
     yourDetails: 'Persönliche Daten',
     schoolType: 'Schulform:',
     grade: 'Klasse:',
-    needHelpInHeadline: 'In welchem Fach benötigst du Hilfe?',
+    needHelpInHeadline:
+      'In welchem Fach benötigst du am dringensten Unterstützung?',
     needHelpInContent:
-      'Solltest du in mehreren Fächern gleich drigend Hilfe benötigen, ist eine Mehrfachauswahl möglich.',
+      'Auf dieser Seite kannst du eine Priorität vergeben. Wir werden eine:n Lernpartner:in für dich suchen, der:die dir in diesem Fach auf jeden Fall helfen kann. Wir geben aber natürlich unser bestes, eine perfekte Zuordnung für dich zu finden!',
     describ: 'Beschreibung',
     buttons: {
       request: 'Match anfordern',
