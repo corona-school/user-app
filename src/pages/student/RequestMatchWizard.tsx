@@ -90,14 +90,6 @@ const RequestMatchWizard: React.FC<Props> = ({
       </TwoColGrid>
 
       <VStack space={space['1']}>
-        <FormControl>
-          <FormControl.Label>Beschreibung</FormControl.Label>
-          <TextArea
-            autoCompleteType={{}}
-            onChangeText={setDescription}
-            value={description}
-          />
-        </FormControl>
         <Button isDisabled={!isValidInput} onPress={() => setCurrentIndex(1)}>
           Angaben prüfen
         </Button>
