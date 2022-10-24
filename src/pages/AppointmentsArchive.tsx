@@ -105,17 +105,8 @@ const AppointmentsArchive: React.FC<Props> = () => {
 
   const sortedSearchResults: { course: LFSubCourse; lecture: LFLecture }[] =
     useMemo(() => {
-      let obj = null! as LFSubCourse[]
-      if (userType === 'student') {
-        obj = data?.me?.student?.subcoursesInstructing
-      } else {
-        obj = data?.me?.pupil?.subcoursesJoined
-      }
-
-      if (!obj) return []
-
       const lectures: { course: LFSubCourse; lecture: LFLecture }[] = []
-      for (const sub of obj) {
+      for (const sub of searchResults) {
         for (const lecture of sub.lectures) {
           lectures.push({ course: sub, lecture })
         }
@@ -125,11 +116,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
         const _a = DateTime.fromISO(a.lecture.start).toMillis()
         const _b = DateTime.fromISO(b.lecture.start).toMillis()
 
-        if (_a > _b) return -1
-        else if (_a < _b) return 1
+        if (_a > _b) return 1
+        else if (_a < _b) return -1
         else return 0
       })
-    }, [data?.me?.pupil?.subcoursesJoined, data?.me?.student, userType])
+    }, [searchResults])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
