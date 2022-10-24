@@ -266,7 +266,7 @@ const DashboardStudent: React.FC<Props> = () => {
               onShowAll={() => navigate('/appointments-archive')}>
               {(publishedSubcourses?.length &&
                 publishedSubcourses
-                  ?.slice(0, 5)
+                  ?.slice(0, 4)
                   .map((el: LFSubCourse, i: number) => {
                     const course = el.course
                     if (!course) return <></>
@@ -302,7 +302,7 @@ const DashboardStudent: React.FC<Props> = () => {
               scrollable={false}>
               {(publishedSubcourses.length > 0 &&
                 publishedSubcourses
-                  .slice(0, 5)
+                  .slice(0, 4)
                   .map((sub: LFSubCourse, index: number) => {
                     const firstLecture = getFirstLectureFromSubcourse(
                       sub.lectures
