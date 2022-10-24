@@ -16,10 +16,52 @@ import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
 import HSection from '../../widgets/HSection'
 import { useMemo } from 'react'
+import { gql, useQuery } from '@apollo/client'
+import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
+import Utility from '../../Utility'
 
 type Props = {}
 
+const query = gql`
+  query {
+    me {
+      student {
+        canCreateCourse {
+          allowed
+          reason
+        }
+        coursesInstructing {
+          id
+          name
+          description
+          outline
+          tags {
+            name
+          }
+        }
+        subcoursesInstructing {
+          id
+          published
+          lectures {
+            start
+            duration
+          }
+          course {
+            name
+            description
+            outline
+            tags {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 const StudentGroup: React.FC<Props> = () => {
+  const { data, loading } = useQuery(query)
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
@@ -39,6 +81,31 @@ const StudentGroup: React.FC<Props> = () => {
     base: '100%',
     lg: '47%'
   })
+
+  const publishedSubcourses: LFSubCourse[] = useMemo(
+    () =>
+      data?.me?.student?.subcoursesInstructing.filter(
+        (sub: LFSubCourse) => sub.published
+      ),
+    [data?.me?.student?.subcoursesInstructing]
+  )
+
+  const submittedSubcourses: LFSubCourse[] = useMemo(
+    () =>
+      data?.me?.student?.subcoursesInstructing.filter(
+        (sub: LFSubCourse) => !sub.published
+      ),
+    [data?.me?.student?.subcoursesInstructing]
+  )
+
+  const draftedCourses: LFCourse[] = useMemo(
+    () => data?.me?.student?.coursesInstructing,
+    [data?.me?.student?.coursesInstructing]
+  )
+
+  if (loading) return <></>
+
+  console.log(draftedCourses, publishedSubcourses, submittedSubcourses)
 
   return (
     <WithNavigation
@@ -63,7 +130,7 @@ const StudentGroup: React.FC<Props> = () => {
               {t('matching.group.helper.button')}
             </Button>
           </VStack>
-          <HSection
+          {/* <HSection
             title={t('dashboard.helpers.headlines.course')}
             showAll={false}>
             {new Array(5).fill(0).map(({}, index) => (
@@ -76,7 +143,7 @@ const StudentGroup: React.FC<Props> = () => {
                 title="Diskussionen in Mathe!? – Die Kurvendiskussion"
               />
             ))}
-          </HSection>
+          </HSection> */}
           <VStack>
             <Heading marginBottom={space['1.5']}>
               {t('matching.group.helper.course.title')}
@@ -88,24 +155,32 @@ const StudentGroup: React.FC<Props> = () => {
                   content: (
                     <>
                       <Flex direction="row" flexWrap="wrap">
-                        {new Array(6).fill(0).map(({}, index) => (
-                          <Column width={CardGrid} marginRight="15px">
-                            <AppointmentCard
-                              key={index}
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
-                          </Column>
-                        ))}
+                        {publishedSubcourses?.map(
+                          (sub: LFSubCourse, index: number) => {
+                            const firstLecture =
+                              Utility.getFirstLectureFromSubcourse(sub.lectures)
+
+                            return (
+                              <Column width={CardGrid} marginRight="15px">
+                                <AppointmentCard
+                                  key={index}
+                                  variant="horizontal"
+                                  description={sub.outline}
+                                  tags={sub.course.tags}
+                                  date={firstLecture?.start || ''}
+                                  countCourse={sub.lectures.length}
+                                  onPressToCourse={() =>
+                                    navigate('/single-course', {
+                                      state: { course: sub.id }
+                                    })
+                                  }
+                                  image={sub.course.image}
+                                  title={sub.course.name}
+                                />
+                              </Column>
+                            )
+                          }
+                        )}
                       </Flex>
                     </>
                   )
@@ -115,24 +190,32 @@ const StudentGroup: React.FC<Props> = () => {
                   content: (
                     <>
                       <Flex direction="row" flexWrap="wrap">
-                        {new Array(2).fill(0).map(({}, index) => (
-                          <Column width={CardGrid} marginRight="15px">
-                            <AppointmentCard
-                              key={index}
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
-                          </Column>
-                        ))}
+                        {submittedSubcourses?.map(
+                          (sub: LFSubCourse, index: number) => {
+                            const firstLecture =
+                              Utility.getFirstLectureFromSubcourse(sub.lectures)
+
+                            return (
+                              <Column width={CardGrid} marginRight="15px">
+                                <AppointmentCard
+                                  key={index}
+                                  variant="horizontal"
+                                  description={sub.outline}
+                                  tags={sub.course.tags}
+                                  date={firstLecture?.start || ''}
+                                  countCourse={sub.lectures.length}
+                                  onPressToCourse={() =>
+                                    navigate('/single-course', {
+                                      state: { course: sub.id }
+                                    })
+                                  }
+                                  image={sub.course.image}
+                                  title={sub.course.name}
+                                />
+                              </Column>
+                            )
+                          }
+                        )}
                       </Flex>
                     </>
                   )
@@ -142,24 +225,27 @@ const StudentGroup: React.FC<Props> = () => {
                   content: (
                     <>
                       <Flex direction="row" flexWrap="wrap">
-                        {new Array(3).fill(0).map(({}, index) => (
-                          <Column width={CardGrid} marginRight="15px">
-                            <AppointmentCard
-                              key={index}
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
-                          </Column>
-                        ))}
+                        {draftedCourses?.map(
+                          (course: LFCourse, index: number) => {
+                            return (
+                              <Column width={CardGrid} marginRight="15px">
+                                <AppointmentCard
+                                  key={index}
+                                  variant="horizontal"
+                                  description={course.outline}
+                                  tags={course.tags}
+                                  image={course.image}
+                                  title={course.name}
+                                  onPressToCourse={() =>
+                                    navigate('/single-course', {
+                                      state: { course: course.id }
+                                    })
+                                  }
+                                />
+                              </Column>
+                            )
+                          }
+                        )}
                       </Flex>
                     </>
                   )

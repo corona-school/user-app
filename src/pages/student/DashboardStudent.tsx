@@ -60,6 +60,7 @@ const query = gql`
         }
         subcoursesInstructing {
           id
+          published
           lectures {
             start
             duration
@@ -201,6 +202,14 @@ const DashboardStudent: React.FC<Props> = () => {
     return [firstLecture || {}, firstCourse || {}]
   }, [data?.me?.student])
 
+  const publishedSubcourses = useMemo(
+    () =>
+      data?.me?.student?.subcoursesInstructing.filter(
+        (sub: LFSubCourse) => sub.published
+      ),
+    [data?.me?.student?.subcoursesInstructing]
+  )
+
   if (loading) return <></>
 
   return (
@@ -255,8 +264,8 @@ const DashboardStudent: React.FC<Props> = () => {
               title={t('dashboard.myappointments.header')}
               showAll={data?.me?.student?.subcoursesInstructing?.length > 0}
               onShowAll={() => navigate('/appointments-archive')}>
-              {(data?.me?.student?.subcoursesInstructing?.length &&
-                data?.me?.student?.subcoursesInstructing
+              {(publishedSubcourses?.length &&
+                publishedSubcourses
                   ?.slice(0, 5)
                   .map((el: LFSubCourse, i: number) => {
                     const course = el.course
@@ -291,8 +300,8 @@ const DashboardStudent: React.FC<Props> = () => {
               onShowAll={() => navigate('/course-archive')}
               wrap
               scrollable={false}>
-              {(data?.me?.student?.subcoursesInstructing.length > 0 &&
-                data?.me?.student?.subcoursesInstructing
+              {(publishedSubcourses.length > 0 &&
+                publishedSubcourses
                   .slice(0, 5)
                   .map((sub: LFSubCourse, index: number) => {
                     const firstLecture = getFirstLectureFromSubcourse(
