@@ -59,12 +59,15 @@ const matching = {
   },
   request: {
     headline: 'Überprüfen deine Daten',
-    content: 'Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.',
+    content:
+      'Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.',
     yourDetails: 'Persönliche Daten',
     schoolType: 'Schulform:',
     grade: 'Klasse:',
-    needHelpInHeadline: 'In welchem Fach benötigst du Hilfe?',
-    needHelpInContent: 'Solltest du in mehreren Fächern gleich drigend Hilfe benötigen, ist eine Mehrfachauswahl möglich.',
+    needHelpInHeadline:
+      'In welchem Fach benötigst du am dringensten Unterstützung?',
+    needHelpInContent:
+      'Auf dieser Seite kannst du eine Priorität vergeben. Wir werden eine:n Lernpartner:in für dich suchen, der:die dir in diesem Fach auf jeden Fall helfen kann. Wir geben aber natürlich unser bestes, eine perfekte Zuordnung für dich zu finden!',
     describ: 'Beschreibung',
     modal: {
       header: 'Für welche Klassen bietest du deine Unterstützung an?',
@@ -77,7 +80,8 @@ const matching = {
     check: {
       header: '1:1 Lernunterstützung',
       title: 'Match anfordern',
-      content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',
+      content:
+        'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',
       contentHeadline: 'Wichtig',
       contenHeadlineContent:
         'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
@@ -101,7 +105,8 @@ const matching = {
       resoloveMatch: 'Das Match wurde aufgelöst',
       preview: {
         title: 'Angaben prüfen',
-        content: 'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
+        content:
+          'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
         subject: 'Fach',
         subjectForClass: 'Klassen für Fach',
         desc: 'Beschreibung',
@@ -136,22 +141,26 @@ const matching = {
     pupil: {
       header: 'Gruppen-Lernunterstützung',
       title: 'Angebote',
-      content: ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+      content:
+        ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
       searchplaceholder: 'Suche',
       tabs: {
         tab1: {
           title: 'Meine Kurse',
-          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
         },
         tab2: {
           title: 'Empfehlungen',
-          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
         },
         tab3: {
           title: 'Alle Angebote',
-          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
-        },
-      }, 
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        }
+      }
     },
     helper: {
       header: 'Gruppenkurse',
