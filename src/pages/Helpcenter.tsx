@@ -31,6 +31,7 @@ import TextInput from '../components/TextInput'
 import { gql, useMutation } from '@apollo/client'
 import useModal from '../hooks/useModal'
 import IFrame from '../components/IFrame'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -114,6 +115,20 @@ const HelpCenter: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const { trackEvent } = useMatomo()
+
+  const onboardingCheck = () => {
+    navigate('/onboarding-list')
+
+    trackEvent({
+      category: 'sample-page',
+      action: 'click-event',
+      name: '',
+      documentTitle: 'Onboarding',
+      href: '/onboarding-list'
+    })
+  }
+
   return (
     <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
       <Box
@@ -133,9 +148,7 @@ const HelpCenter: React.FC<Props> = () => {
         <Text width={ContentContainerWidth} paddingBottom={space['1.5']}>
           {t('helpcenter.onboarding.content')}
         </Text>
-        <Button
-          width={buttonWidth}
-          onPress={() => navigate('/onboarding-list')}>
+        <Button width={buttonWidth} onPress={() => onboardingCheck()}>
           {t('helpcenter.onboarding.button')}
         </Button>
       </Box>
