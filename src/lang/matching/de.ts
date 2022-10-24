@@ -213,6 +213,7 @@ const matching = {
       }
     }
   },
+  status: { dissolved: 'Das Match wurde aufgelöst.' },
   student: {
     title: 'Match anfordern',
     text: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',

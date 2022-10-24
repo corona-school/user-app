@@ -27,9 +27,9 @@ import PartyIcon from '../../assets/icons/lernfair/lf-pary-small.svg'
 import HelperWizard from '../../widgets/HelperWizard'
 import LearningPartner from '../../widgets/LearningPartner'
 import { LFMatch } from '../../types/lernfair/Match'
-import { LFSubCourse } from '../../types/lernfair/Course'
+import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
-import { TIME_THRESHOLD } from '../../Utility'
+import { getFirstLectureFromSubcourse, TIME_THRESHOLD } from '../../Utility'
 
 type Props = {}
 
@@ -59,6 +59,7 @@ const query = gql`
           }
         }
         subcoursesInstructing {
+          id
           lectures {
             start
             duration
@@ -93,7 +94,7 @@ const DashboardStudent: React.FC<Props> = () => {
   const { data, loading } = useQuery(query)
 
   const { space, sizes } = useTheme()
-  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -102,6 +103,7 @@ const DashboardStudent: React.FC<Props> = () => {
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createMatchRequest, matchRequest] = useMutation(
     gql`
       mutation {
@@ -113,11 +115,16 @@ const DashboardStudent: React.FC<Props> = () => {
     }
   )
 
-  const [dissolve, _dissolve] = useMutation(gql`
-    mutation dissolve($matchId: Float!) {
-      matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+  const [dissolve, _dissolve] = useMutation(
+    gql`
+      mutation dissolve($matchId: Float!) {
+        matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+      }
+    `,
+    {
+      refetchQueries: [query]
     }
-  `)
+  )
 
   const requestMatch = useCallback(async () => {
     setIsMatchRequested(true)
@@ -158,6 +165,42 @@ const DashboardStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  // TODO: Optimizable?
+  const nextAppointment: [
+    appointment: Partial<LFLecture>,
+    course: Partial<LFSubCourse>
+  ] = useMemo(() => {
+    if (!data?.me?.student) return [{}, {}]
+
+    let firstCourse: LFSubCourse = null!
+    let firstDate: DateTime = DateTime.now()
+    let firstLecture: LFLecture = null!
+
+    for (const sub of data?.me?.student?.subcoursesInstructing) {
+      let _firstDate: DateTime = DateTime.now()
+      let _firstLecture: LFLecture = null!
+
+      for (const lecture of sub.lectures) {
+        const date = DateTime.fromISO(lecture.start)
+
+        if (date.toMillis() < _firstDate.toMillis()) {
+          _firstDate = date
+          _firstLecture = lecture
+        }
+      }
+
+      if (firstCourse !== sub) {
+        if (_firstDate.toMillis() < firstDate.toMillis()) {
+          firstDate = _firstDate
+          firstLecture = _firstLecture
+          firstCourse = sub
+        }
+      }
+    }
+
+    return [firstLecture || {}, firstCourse || {}]
+  }, [data?.me?.student])
+
   if (loading) return <></>
 
   return (
@@ -186,86 +229,90 @@ const DashboardStudent: React.FC<Props> = () => {
             </VStack>
 
             {/* Next Appointment */}
-            {data?.me?.student?.subcoursesInstructing?.length > 0 && (
-              // TODO ADD condition if no next appointment found
-              <VStack space={space['0.5']}>
-                <Heading marginY={space['1']}>
-                  {t('dashboard.appointmentcard.header')}
-                </Heading>
-                <AppointmentCard
-                  href={'/single-course'}
-                  tags={[]}
-                  date={futureDate.toLocaleDateString()}
-                  isTeaser={true}
-                  image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
-                  title="Mathe Grundlagen Klasse 6"
-                  description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
-                />
-              </VStack>
-            )}
+            {data?.me?.student?.subcoursesInstructing?.length > 0 &&
+              nextAppointment && (
+                <VStack space={space['0.5']}>
+                  <Heading marginY={space['1']}>
+                    {t('dashboard.appointmentcard.header')}
+                  </Heading>
+
+                  <AppointmentCard
+                    onPressToCourse={() =>
+                      navigate('/single-course', {
+                        state: { course: nextAppointment[1].id }
+                      })
+                    }
+                    tags={nextAppointment[1].course?.tags}
+                    date={nextAppointment[0].start || ''}
+                    isTeaser={true}
+                    image={nextAppointment[1].course?.image}
+                    title={nextAppointment[1].course?.name || ''}
+                    description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+                  />
+                </VStack>
+              )}
             <HSection
               title={t('dashboard.myappointments.header')}
               showAll={data?.me?.student?.subcoursesInstructing?.length > 0}
               onShowAll={() => navigate('/appointments-archive')}>
               {(data?.me?.student?.subcoursesInstructing?.length &&
-                data?.me?.student?.subcoursesInstructing?.map(
-                  (el: LFSubCourse, i: number) => {
+                data?.me?.student?.subcoursesInstructing
+                  ?.slice(0, 5)
+                  .map((el: LFSubCourse, i: number) => {
                     const course = el.course
                     if (!course) return <></>
 
                     const lectures = el.lectures
                     if (!lectures) return <></>
 
-                    // // TODO sort lectures
-                    // lectures.sort((a, b) => 1)
+                    const firstLecture = getFirstLectureFromSubcourse(lectures)
+                    if (!firstLecture) return <></>
 
-                    return lectures.map(lec => {
-                      if (
-                        DateTime.fromISO(lec.start).toMillis() - Date.now() >=
-                        TIME_THRESHOLD
-                      )
-                        return (
-                          <AppointmentCard
-                            onPressToCourse={() =>
-                              navigate('/single-course', {
-                                state: { course: el.id }
-                              })
-                            }
-                            key={`appointment-${el.id}`}
-                            description={course.outline}
-                            tags={course.tags}
-                            date={lec.start}
-                            image={course.image}
-                            title={course.name}
-                          />
-                        )
-                      else return <></>
-                    })
-                  }
-                )) || <Text>{t('empty.appointments')}</Text>}
+                    return (
+                      <AppointmentCard
+                        onPressToCourse={() =>
+                          navigate('/single-course', {
+                            state: { course: el.id }
+                          })
+                        }
+                        key={`appointment-${el.id}`}
+                        description={course.outline}
+                        tags={course.tags}
+                        date={firstLecture.start}
+                        image={course.image}
+                        title={course.name}
+                      />
+                    )
+                  })) || <Text>{t('empty.appointments')}</Text>}
             </HSection>
             <HSection
               title={t('dashboard.helpers.headlines.course')}
               showAll={data?.me?.student?.canCreateCourse?.allowed}
-              scrollable={false}
-              wrap={true}
-              onShowAll={() => navigate('/course-archive')}>
-              {(new Array(0).length &&
-                new Array(0)
-                  .fill(0)
-                  .map(({}, index) => (
-                    <AppointmentCard
-                      key={index}
-                      variant="horizontal"
-                      description="Lorem Ipsum"
-                      tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
-                      date={new Date().toLocaleDateString()}
-                      countCourse={4}
-                      onPressToCourse={() => alert('YES')}
-                      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                      title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                    />
-                  ))) || (
+              onShowAll={() => navigate('/course-archive')}
+              wrap
+              scrollable={false}>
+              {(data?.me?.student?.subcoursesInstructing.length > 0 &&
+                data?.me?.student?.subcoursesInstructing
+                  .slice(0, 5)
+                  .map((sub: LFSubCourse, index: number) => {
+                    const firstLecture = getFirstLectureFromSubcourse(
+                      sub.lectures
+                    )
+                    if (!firstLecture) return <></>
+                    return (
+                      <AppointmentCard
+                        variant="horizontal"
+                        key={index}
+                        description={sub.outline}
+                        tags={sub.course.tags}
+                        date={firstLecture.start}
+                        countCourse={sub.lectures.length}
+                        onPressToCourse={() => alert('YES')}
+                        image={sub.course.image}
+                        title={sub.course.name}
+                      />
+                    )
+                  })) || (
                 <VStack space={space['0.5']}>
                   <Text>{t('empty.courses')}</Text>
                 </VStack>
@@ -285,6 +332,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 </Text>
               )}
             </HSection>
+
             {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.helpers.headlines.importantNews')}

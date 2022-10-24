@@ -84,6 +84,8 @@ export const formatDate: (
   format?: Intl.DateTimeFormatOptions,
   locale?: string
 ) => string = (date, format = DateTime.DATETIME_MED, locale = 'de') => {
+  if (!date) return ''
+
   return DateTime.fromISO(date.toString()).toLocaleString(format, { locale })
 }
 
@@ -103,6 +105,29 @@ export const handleDateString: (
   })
 }
 
+export const getFirstLectureFromSubcourse: (
+  lectures: LFLecture[]
+) => LFLecture = lectures => {
+  let firstDate: DateTime = null!
+  let firstLecture: LFLecture = null!
+
+  for (const lecture of lectures) {
+    const date = DateTime.fromISO(lecture.start)
+    if (!firstLecture) {
+      firstLecture = lecture
+      firstDate = date
+      continue
+    }
+
+    if (date.toMillis() < firstDate.toMillis()) {
+      firstLecture = lecture
+      firstDate = date
+    }
+  }
+
+  return firstLecture
+}
+
 const Utility = {
   createToken,
   toTimerString,
@@ -110,6 +135,7 @@ const Utility = {
   intToClassRange,
   findMinMaxClassRange,
   formatDate,
-  handleDateString
+  handleDateString,
+  getFirstLectureFromSubcourse
 }
 export default Utility
