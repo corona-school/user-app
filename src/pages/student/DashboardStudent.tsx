@@ -247,7 +247,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     isTeaser={true}
                     image={nextAppointment[1].course?.image}
                     title={nextAppointment[1].course?.name || ''}
-                    description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+                    description={nextAppointment[1].course?.outline || ''}
                   />
                 </VStack>
               )}
