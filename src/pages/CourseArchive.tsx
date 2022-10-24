@@ -84,10 +84,10 @@ const CourseArchive: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
-  const ButtonContainer = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
+  // const ButtonContainer = useBreakpointValue({
+  //   base: '100%',
+  //   lg: sizes['desktopbuttonWidth']
+  // })
 
   const CardGrid = useBreakpointValue({
     base: '100%',
@@ -110,7 +110,7 @@ const CourseArchive: React.FC<Props> = () => {
 
     return (
       obj?.filter((sub: LFSubCourse) =>
-        sub.course.name.includes(searchString)
+        sub.course.name.toLowerCase().includes(searchString.toLowerCase())
       ) || []
     )
   }, [
@@ -137,9 +137,6 @@ const CourseArchive: React.FC<Props> = () => {
               placeholder={t('matching.group.helper.support.search')}
               onChangeText={setSearchString}
             />
-            <Button padding={space['1']}>
-              <SearchIcon />
-            </Button>
           </Row>
           <VStack space={space['1']}>
             <Heading>{t('archive.course.sectionHeadline')}</Heading>
