@@ -33,58 +33,64 @@ import { TIME_THRESHOLD } from '../../Utility'
 
 type Props = {}
 
-const DashboardStudent: React.FC<Props> = () => {
-  const toast = useToast()
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        student {
-          openMatchRequestCount
-          canRequestMatch {
-            allowed
-            reason
-          }
-          canCreateCourse {
-            allowed
-            reason
-          }
-          matches {
-            id
-            dissolved
-            pupil {
-              firstname
-            }
-          }
-          subcoursesInstructing {
-            lectures {
-              start
-              duration
-            }
-            course {
+const query = gql`
+  query {
+    me {
+      firstname
+      student {
+        openMatchRequestCount
+        canRequestMatch {
+          allowed
+          reason
+        }
+        canCreateCourse {
+          allowed
+          reason
+        }
+        matches {
+          id
+          dissolved
+          pupil {
+            firstname
+            grade
+            subjectsFormatted {
               name
-              description
-              outline
-              tags {
-                name
-              }
             }
           }
         }
-      }
-
-      subcoursesPublic(take: 10, skip: 2) {
-        course {
-          name
-          description
-          outline
-          tags {
+        subcoursesInstructing {
+          lectures {
+            start
+            duration
+          }
+          course {
             name
+            description
+            outline
+            tags {
+              name
+            }
           }
         }
       }
     }
-  `)
+
+    subcoursesPublic(take: 10, skip: 2) {
+      course {
+        name
+        description
+        outline
+        tags {
+          name
+        }
+      }
+    }
+  }
+`
+
+const DashboardStudent: React.FC<Props> = () => {
+  const toast = useToast()
+  const { data, loading } = useQuery(query)
 
   const { space, sizes } = useTheme()
   const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
@@ -96,11 +102,16 @@ const DashboardStudent: React.FC<Props> = () => {
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
 
-  const [createMatchRequest, matchRequest] = useMutation(gql`
-    mutation {
-      studentCreateMatchRequest
+  const [createMatchRequest, matchRequest] = useMutation(
+    gql`
+      mutation {
+        studentCreateMatchRequest
+      }
+    `,
+    {
+      refetchQueries: [query]
     }
-  `)
+  )
 
   const [dissolve, _dissolve] = useMutation(gql`
     mutation dissolve($matchId: Float!) {
@@ -111,11 +122,11 @@ const DashboardStudent: React.FC<Props> = () => {
   const requestMatch = useCallback(async () => {
     setIsMatchRequested(true)
     const res = (await createMatchRequest()) as {
-      studentCreateMatchRequest: boolean
+      data: {
+        studentCreateMatchRequest: boolean
+      }
     }
-    if (!res.studentCreateMatchRequest) {
-      setIsMatchRequested(false)
-    }
+    setIsMatchRequested(res?.data?.studentCreateMatchRequest)
   }, [createMatchRequest])
 
   const dissolveMatch = useCallback((match: LFMatch) => {
@@ -157,12 +168,12 @@ const DashboardStudent: React.FC<Props> = () => {
             space={space['1']}
             alignItems="center"
             bgColor={'primary.900'}
-            padding={space['0.5']}>
-            <ProfilAvatar
+            paddingX={space['1']}>
+            {/* <ProfilAvatar
               size="md"
               image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            />
-            <Heading color={'#fff'}>
+            /> */}
+            <Heading color={'#fff'} paddingY={space['1.5']}>
               {t('hallo')} {data?.me?.firstname}!
             </Heading>
           </HStack>
@@ -173,64 +184,72 @@ const DashboardStudent: React.FC<Props> = () => {
             <VStack paddingY={space['1']}>
               <HelperWizard index={0} />
             </VStack>
-            <VStack space={space['0.5']}>
-              <Heading marginY={space['1']}>
-                {t('dashboard.appointmentcard.header')}
-              </Heading>
-              <AppointmentCard
-                href={'/single-course'}
-                tags={[]}
-                date={futureDate.toLocaleDateString()}
-                isTeaser={true}
-                image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
-                title="Mathe Grundlagen Klasse 6"
-                description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
-              />
-            </VStack>
+
+            {/* Next Appointment */}
+            {data?.me?.student?.subcoursesInstructing?.length > 0 && (
+              // TODO ADD condition if no next appointment found
+              <VStack space={space['0.5']}>
+                <Heading marginY={space['1']}>
+                  {t('dashboard.appointmentcard.header')}
+                </Heading>
+                <AppointmentCard
+                  href={'/single-course'}
+                  tags={[]}
+                  date={futureDate.toLocaleDateString()}
+                  isTeaser={true}
+                  image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
+                  title="Mathe Grundlagen Klasse 6"
+                  description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
+                />
+              </VStack>
+            )}
             <HSection
               title={t('dashboard.myappointments.header')}
-              showAll={true}>
-              {data?.me?.student?.subcoursesInstructing?.map(
-                (el: LFSubCourse, i: number) => {
-                  const course = el.course
-                  if (!course) return <></>
+              showAll={data?.me?.student?.subcoursesInstructing?.length > 0}
+              onShowAll={() => navigate('/appointments-archive')}>
+              {(data?.me?.student?.subcoursesInstructing?.length &&
+                data?.me?.student?.subcoursesInstructing?.map(
+                  (el: LFSubCourse, i: number) => {
+                    const course = el.course
+                    if (!course) return <></>
 
-                  const lectures = el.lectures
-                  if (!lectures) return <></>
+                    const lectures = el.lectures
+                    if (!lectures) return <></>
 
-                  // // TODO sort lectures
-                  // lectures.sort((a, b) => 1)
+                    // // TODO sort lectures
+                    // lectures.sort((a, b) => 1)
 
-                  return lectures.map(lec => {
-                    if (
-                      DateTime.fromISO(lec.start).toMillis() - Date.now() >=
-                      TIME_THRESHOLD
-                    )
-                      return (
-                        <AppointmentCard
-                          onPressToCourse={() =>
-                            navigate('/single-course', {
-                              state: { course: el.id }
-                            })
-                          }
-                          key={`appointment-${el.id}`}
-                          description={course.outline}
-                          tags={course.tags}
-                          date={lec.start}
-                          image={course.image}
-                          title={course.name}
-                        />
+                    return lectures.map(lec => {
+                      if (
+                        DateTime.fromISO(lec.start).toMillis() - Date.now() >=
+                        TIME_THRESHOLD
                       )
-                    else return <></>
-                  })
-                }
-              ) || <Text>{t('empty.appointments')}</Text>}
+                        return (
+                          <AppointmentCard
+                            onPressToCourse={() =>
+                              navigate('/single-course', {
+                                state: { course: el.id }
+                              })
+                            }
+                            key={`appointment-${el.id}`}
+                            description={course.outline}
+                            tags={course.tags}
+                            date={lec.start}
+                            image={course.image}
+                            title={course.name}
+                          />
+                        )
+                      else return <></>
+                    })
+                  }
+                )) || <Text>{t('empty.appointments')}</Text>}
             </HSection>
             <HSection
               title={t('dashboard.helpers.headlines.course')}
-              showAll={true}
+              showAll={data?.me?.student?.canCreateCourse?.allowed}
               scrollable={false}
-              wrap={true}>
+              wrap={true}
+              onShowAll={() => navigate('/course-archive')}>
               {(new Array(0).length &&
                 new Array(0)
                   .fill(0)
@@ -287,34 +306,34 @@ const DashboardStudent: React.FC<Props> = () => {
                 {t('dashboard.helpers.headlines.myLearningPartner')}
               </Heading>
               <Flex direction="row" flexWrap="wrap">
-                {data?.me?.student?.matches.map(
-                  (match: LFMatch, index: number) => (
-                    <Column width={CardGrid} marginRight="15px">
-                      <LearningPartner
-                        key={index}
-                        isDark={true}
-                        name={match?.pupil?.firstname}
-                        subjects={['Englisch']}
-                        schooltype="Grundschule"
-                        schoolclass={4}
-                        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                        button={
-                          (!match.dissolved && (
-                            <Button
-                              variant="outlinelight"
-                              onPress={() => dissolveMatch(match)}>
-                              {t('dashboard.helpers.buttons.solveMatch')}
-                            </Button>
-                          )) || (
-                            <Text color="lightText">
-                              Das Match wurde aufgelöst
-                            </Text>
-                          )
-                        }
-                      />
-                    </Column>
-                  )
-                ) || <Text>{t('empty.matchings')}</Text>}
+                {(data?.me?.student?.matches?.length &&
+                  data?.me?.student?.matches.map(
+                    (match: LFMatch, index: number) => (
+                      <Column width={CardGrid} marginRight="15px">
+                        <LearningPartner
+                          key={index}
+                          isDark={true}
+                          name={match?.pupil?.firstname}
+                          subjects={match?.pupil?.subjectsFormatted}
+                          schooltype={match?.pupil?.schooltype || ''}
+                          schoolclass={match?.pupil?.grade}
+                          button={
+                            (!match.dissolved && (
+                              <Button
+                                variant="outlinelight"
+                                onPress={() => dissolveMatch(match)}>
+                                {t('matching.request.buttons.dissolve')}
+                              </Button>
+                            )) || (
+                              <Text color="lightText">
+                                {t('matching.status.dissolved')}
+                              </Text>
+                            )
+                          }
+                        />
+                      </Column>
+                    )
+                  )) || <Text>{t('empty.matchings')}</Text>}
               </Flex>
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
@@ -324,16 +343,16 @@ const DashboardStudent: React.FC<Props> = () => {
                     onPress={requestMatch}>
                     {t('dashboard.helpers.buttons.requestMatch')}
                   </Button>
-                  {data?.me?.pupil?.openMatchRequestCount ||
-                    (isMatchRequested && (
-                      <Text fontSize="xs">
-                        Offene Anfragen:{' '}
-                        {`${
-                          data?.me?.pupil?.openMatchRequestCount ||
-                          (isMatchRequested ? 1 : 0)
-                        }`}
-                      </Text>
-                    ))}
+                  {(data?.me?.pupil?.openMatchRequestCount ||
+                    isMatchRequested) && (
+                    <Text fontSize="xs">
+                      Offene Anfragen:{' '}
+                      {`${
+                        data?.me?.pupil?.openMatchRequestCount ||
+                        (isMatchRequested ? 1 : 0)
+                      }`}
+                    </Text>
+                  )}
                 </>
               )) || (
                 <Text mt={space['0.5']} fontSize="xs" opacity=".8">

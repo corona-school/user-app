@@ -73,9 +73,13 @@ const matching = {
       header: 'Für welche Klassen bietest du deine Unterstützung an?',
       save: 'speichern'
     },
+    status: {
+      dissolved: 'Das Match wurde aufgelöst'
+    },
     buttons: {
       request: 'Match anfordern',
-      cancel: 'Abbrechen'
+      cancel: 'Abbrechen',
+      dissolve: 'Match auflösen'
     },
     check: {
       header: '1:1 Lernunterstützung',
@@ -195,14 +199,17 @@ const matching = {
       support: {
         header: 'Gruppen-Lernunterstützung',
         title: 'Angebote',
-        contentFirstPart: 'Auf dieser Seite findet du alle Gruppenkurse. Du hast die Möglichkeite bei den Kursen deiner Kollege:innen zu hospitieren. Erkunde auch gerne',
+        contentFirstPart:
+          'Auf dieser Seite findet du alle Gruppenkurse. Du hast die Möglichkeite bei den Kursen deiner Kollege:innen zu hospitieren. Erkunde auch gerne',
         contentLinkText: 'hier',
-        contendLastPart: 'unsere Hilfestellungen zur Inspiration für deine Kursgestaltung',
+        contendLastPart:
+          'unsere Hilfestellungen zur Inspiration für deine Kursgestaltung',
         search: 'Suche',
         offers: {
           title: 'Alle Angebote',
-          content: 'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
-        } 
+          content:
+            'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
+        }
       }
     }
   },
