@@ -67,6 +67,7 @@ import StudentGroupSupport from './pages/student/StudentGroupSupport'
 import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
 import { useEffect } from 'react'
+import LearningPartnerArchive from './pages/LearningPartnerArchive'
 
 export default function Navigator() {
   return (
@@ -378,6 +379,15 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <CourseArchive />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/learningpartner-archive"
+          element={
+            <RequireAuth>
+              <LearningPartnerArchive />
             </RequireAuth>
           }
         />
