@@ -66,6 +66,8 @@ import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
 import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
+import { useEffect } from 'react'
+import LearningPartnerArchive from './pages/LearningPartnerArchive'
 
 export default function Navigator() {
   return (
@@ -381,6 +383,15 @@ export default function Navigator() {
           }
         />
 
+        <Route
+          path="/learningpartner-archive"
+          element={
+            <RequireAuth>
+              <LearningPartnerArchive />
+            </RequireAuth>
+          }
+        />
+
         {/* Fallback */}
         <Route
           path="*"
@@ -431,12 +442,18 @@ const SwitchUserType = ({
   )
   const me = data?.me
 
+  useEffect(() => {
+    !loading &&
+      !userType &&
+      setUserType &&
+      setUserType(!!me?.student ? 'student' : 'pupil')
+  }, [me?.student, setUserType, userType, loading])
+
   if (loading) return <></>
 
   if (!userType && !me && error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
-  !userType && setUserType && setUserType(!!me?.student ? 'student' : 'pupil')
   if (userType === 'student' || !!me?.student) {
     if (studentComponent) return studentComponent
     else return <Navigate to="/dashboard" state={{ from: location }} replace />

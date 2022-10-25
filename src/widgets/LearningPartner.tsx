@@ -7,7 +7,7 @@ import ProfilAvatar from './ProfilAvatar'
 type Props = {
   avatar?: string
   name: string
-  subjects: string[]
+  subjects: LFSubject[]
   schooltype: string
   schoolclass: number
   isDark?: boolean
@@ -32,9 +32,11 @@ const LearningPartner: React.FC<Props> = ({
         variant={isDark ? 'dark' : 'normal'}
         padding={space['0.5']}>
         <Row padding={space['1']}>
-          <Box marginRight={space['1.5']}>
-            <ProfilAvatar image={avatar} size="lg" />
-          </Box>
+          {avatar && (
+            <Box marginRight={space['1.5']}>
+              <ProfilAvatar image={avatar} size="lg" />
+            </Box>
+          )}
           <Box flex="1">
             {name && (
               <Text
@@ -48,9 +50,9 @@ const LearningPartner: React.FC<Props> = ({
             {subjects && (
               <Row flexWrap={'wrap'} space="5px">
                 <Text color="lightText">Fächer:</Text>
-                {subjects.map((sub: string) => (
+                {subjects.map((sub: LFSubject) => (
                   <Text color={isDark ? 'lightText' : 'primary.900'}>
-                    {sub}
+                    {sub.name}
                   </Text>
                 ))}
               </Row>

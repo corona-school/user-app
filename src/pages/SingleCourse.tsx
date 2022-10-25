@@ -24,8 +24,7 @@ import Utility from '../Utility'
 import { gql, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 
 type Props = {}
 
@@ -36,9 +35,9 @@ const SingleCourse: React.FC<Props> = () => {
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const { userType } = useLernfair()
-
+  console.log(userType)
   const userQuery =
-    userType === ' student'
+    userType === 'student'
       ? `participants{
     firstname
     grade
@@ -46,6 +45,11 @@ const SingleCourse: React.FC<Props> = () => {
       : `otherParticipants{
     firstname
     grade
+  }
+  canJoin{
+    allowed
+    reason
+    limit
   }`
 
   const {
@@ -62,11 +66,7 @@ const SingleCourse: React.FC<Props> = () => {
       participantsCount
       maxParticipants
       ${userQuery}
-      canJoin{
-        allowed
-        reason
-        limit
-      }
+
       course {
         image
         outline
@@ -91,16 +91,13 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`)
 
-  // const { data: participantData } = useQuery(gql`query{
-  //   subcourse(subcourseId: ${courseId}){
-  //     participants{
-  //       firstname
-  //       grade
-  //     }
-  //   }
-  // }`)
-
   const course = courseData?.subcourse
+
+  const participants = useMemo(
+    () =>
+      userType === 'student' ? course?.participants : course?.otherParticipants,
+    [course?.otherParticipants, course?.participants, userType]
+  )
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -244,27 +241,24 @@ const SingleCourse: React.FC<Props> = () => {
               title: t('single.tabs.lessons'),
               content: (
                 <>
-                  {course?.lectures?.map(
-                    (lec: LFLecture, i: number) =>
-                      (
-                        <Row flexDirection="column" marginBottom={space['1.5']}>
-                          <Heading paddingBottom={space['0.5']} fontSize="md">
-                            {t('single.global.lesson')}{' '}
-                            {`${i + 1}`.padStart(2, '0')}
-                          </Heading>
-                          <Text paddingBottom={space['0.5']}>
-                            {DateTime.fromISO(lec.start).toFormat(
-                              'dd.MM.yyyy HH:mm'
-                            )}{' '}
-                            {t('single.global.clock')}
-                          </Text>
-                          <Text>
-                            <Text bold>Dauer: </Text> {lec?.duration / 60}{' '}
-                            Stunden
-                          </Text>
-                        </Row>
-                      ) || <Text>Es wurden keine Lektionen eingetragen.</Text>
-                  )}
+                  {(course.lectures.length > 0 &&
+                    course?.lectures?.map((lec: LFLecture, i: number) => (
+                      <Row flexDirection="column" marginBottom={space['1.5']}>
+                        <Heading paddingBottom={space['0.5']} fontSize="md">
+                          {t('single.global.lesson')}{' '}
+                          {`${i + 1}`.padStart(2, '0')}
+                        </Heading>
+                        <Text paddingBottom={space['0.5']}>
+                          {DateTime.fromISO(lec.start).toFormat(
+                            'dd.MM.yyyy HH:mm'
+                          )}{' '}
+                          {t('single.global.clock')}
+                        </Text>
+                        <Text>
+                          <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden
+                        </Text>
+                      </Row>
+                    ))) || <Text>Es wurden keine Lektionen eingetragen.</Text>}
                 </>
               )
             },
@@ -272,25 +266,22 @@ const SingleCourse: React.FC<Props> = () => {
               title: t('single.tabs.participant'),
               content: (
                 <>
-                  {(userType === 'student'
-                    ? course?.participants
-                    : course?.otherParticipants
-                  )?.map(
-                    (p: any) =>
-                      (
-                        <Row marginBottom={space['1.5']} alignItems="center">
-                          <Column marginRight={space['1']}>
-                            <ProfilAvatar
-                              size="md"
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                            />
-                          </Column>
-                          <Column>
-                            <Heading fontSize="md">{p.firstname}</Heading>
-                            <Text>{p.grade}</Text>
-                          </Column>
-                        </Row>
-                      ) || <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
+                  {(participants.length > 0 &&
+                    participants.map((p: any) => (
+                      <Row marginBottom={space['1.5']} alignItems="center">
+                        <Column marginRight={space['1']}>
+                          <ProfilAvatar
+                            size="md"
+                            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                          />
+                        </Column>
+                        <Column>
+                          <Heading fontSize="md">{p.firstname}</Heading>
+                          <Text>{p.grade}</Text>
+                        </Column>
+                      </Row>
+                    ))) || (
+                    <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
                   )}
                 </>
               )
@@ -298,15 +289,19 @@ const SingleCourse: React.FC<Props> = () => {
           ]}
         />
 
-        <Box marginBottom={space['0.5']}>
-          {!course?.canJoin?.allowed && <Text>{course?.canJoin?.reason}</Text>}
-          <Button
-            width={ButtonContainer}
-            marginBottom={space['0.5']}
-            isDisabled={!course?.canJoin?.allowed}>
-            {t('single.button.login')}
-          </Button>
-        </Box>
+        {userType === 'pupil' && (
+          <Box marginBottom={space['0.5']}>
+            {!course?.canJoin?.allowed && (
+              <Text>{course?.canJoin?.reason}</Text>
+            )}
+            <Button
+              width={ButtonContainer}
+              marginBottom={space['0.5']}
+              isDisabled={!course?.canJoin?.allowed}>
+              {t('single.button.login')}
+            </Button>
+          </Box>
+        )}
         {course?.allowContact && (
           <Box marginBottom={space['1.5']}>
             <Button width={ButtonContainer} variant="outline">

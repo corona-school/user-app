@@ -2,8 +2,6 @@ import {
   Text,
   VStack,
   Heading,
-  FormControl,
-  TextArea,
   Button,
   useTheme,
   useBreakpointValue,
@@ -16,25 +14,21 @@ import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
 type Props = {
-  description: string
   selectedSubjects: any
   selectedClasses: any
   setSelectedSubjects: any
   setFocusedSubject: any
   setShowModal: any
-  setDescription: any
   setCurrentIndex: any
   data: any
 }
 
 const RequestMatchWizard: React.FC<Props> = ({
-  description,
   selectedSubjects,
   selectedClasses,
   setSelectedSubjects,
   setFocusedSubject,
   setShowModal,
-  setDescription,
   setCurrentIndex,
   data
 }) => {
@@ -43,18 +37,25 @@ const RequestMatchWizard: React.FC<Props> = ({
   const { t } = useTranslation()
 
   const isValidInput = useMemo(() => {
-    if (description.length < 5) return false
+    const entries = Object.entries(selectedSubjects)
+    if (!entries.length) {
+      return false
+    }
 
-    Object.entries(selectedSubjects)
+    entries
       .filter(s => s[1] && s)
       .forEach(([sub, _]) => {
-        if (!selectedClasses[sub].min || !selectedClasses[sub].max) {
+        if (
+          !selectedClasses[sub] ||
+          !selectedClasses[sub].min ||
+          !selectedClasses[sub].max
+        ) {
           return false
         }
       })
 
     return true
-  }, [description, selectedSubjects, selectedClasses])
+  }, [selectedSubjects, selectedClasses])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -100,6 +101,14 @@ const RequestMatchWizard: React.FC<Props> = ({
             text={sub.name}
             initial={selectedSubjects[sub.name]}
             onPress={() => {
+              if (selectedSubjects[sub.name]) {
+                setSelectedSubjects((prev: any) => ({
+                  ...prev,
+                  [sub.name]: false
+                }))
+                return
+              }
+
               setSelectedSubjects((prev: any) => ({
                 [sub.name]: !prev[sub.name]
               }))
@@ -110,38 +119,24 @@ const RequestMatchWizard: React.FC<Props> = ({
         ))}
       </TwoColGrid>
 
-      <VStack space={space['1']}>
-        <FormControl>
-          <FormControl.Label>
-            {t('matching.request.check.descLabel')}
-          </FormControl.Label>
-          <TextArea
-            autoCompleteType={{}}
-            onChangeText={setDescription}
-            value={description}
-          />
-        </FormControl>
-
-        <Row
-          space={space['1']}
-          alignItems="center"
-          flexDirection={ButtonContainerDirection}>
-          <Button
-            marginBottom={space['1']}
-            width={ButtonContainer}
-            isDisabled={!isValidInput}
-            onPress={() => setCurrentIndex(1)}>
-            {t('matching.request.check.buttons.button1')}
-          </Button>
-          <Button
-            marginBottom={space['1']}
-            width={ButtonContainer}
-            variant="outline"
-            onPress={() => navigate(-1)}>
-            {t('matching.request.check.buttons.button2')}
-          </Button>
-        </Row>
-      </VStack>
+      <Row
+        space={space['1']}
+        alignItems="center"
+        flexDirection={ButtonContainerDirection}>
+        <Button
+          mb={space['0.5']}
+          isDisabled={!isValidInput}
+          onPress={() => setCurrentIndex(1)}
+          width={ButtonContainer}>
+          Angaben prüfen
+        </Button>
+        <Button
+          variant="outline"
+          onPress={() => navigate(-1)}
+          width={ButtonContainer}>
+          Abbrechen
+        </Button>
+      </Row>
     </VStack>
   )
 }
