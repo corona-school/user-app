@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../hooks/useModal'
+import de from '../../lang/de'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
@@ -43,7 +44,7 @@ const MatchingWizard: React.FC<Props> = () => {
     createMatchRequest,
     { data: requestData, error: requestError, loading: requestLoading }
   ] = useMutation(gql`
-    mutation createMatchRequest($subjects: SubjectInput!) {
+    mutation createMatchRequest($subjects: [SubjectInput!]) {
       pupilUpdate(data: { subjects: $subjects })
       pupilCreateMatchRequest
     }
@@ -55,8 +56,14 @@ const MatchingWizard: React.FC<Props> = () => {
     if (find) {
       find.mandatory = true
     }
+    const subs = []
 
-    createMatchRequest({ variables: { subjects } })
+    for (const sub of subjects) {
+      delete sub.__typename
+      subs.push(sub)
+    }
+
+    createMatchRequest({ variables: { subjects: subs } })
   }, [createMatchRequest, data?.me?.pupil?.subjectsFormatted, selection])
 
   useEffect(() => {
