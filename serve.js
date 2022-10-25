@@ -18,7 +18,7 @@ app.use(Express.static(__dirname + '/build', {
 }));
 
 // Entrypoint of the PWA - Do not cache to be able to invalidate logic changes fast
-app.get((req, res) => res.sendFile(__dirname + '/build/index.html'));
+app.use((req, res) => res.sendFile(__dirname + '/build/index.html'));
 
 // Serve on the PORT Heroku wishes
-app.listen(process.env.PORT ?? 5000);
+app.listen(process.env.PORT ?? 5000, () => console.info(`Express started and listening`));
