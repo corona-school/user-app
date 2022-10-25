@@ -62,7 +62,6 @@ const query = gql`
 
 const StudentGroup: React.FC<Props> = () => {
   const { data, loading } = useQuery(query)
-  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -104,8 +103,6 @@ const StudentGroup: React.FC<Props> = () => {
   )
 
   if (loading) return <></>
-
-  console.log(draftedCourses, publishedSubcourses, submittedSubcourses)
 
   return (
     <WithNavigation
@@ -255,24 +252,26 @@ const StudentGroup: React.FC<Props> = () => {
                   content: (
                     <>
                       <Flex direction="row" flexWrap="wrap">
-                        {new Array(3).fill(0).map(({}, index) => (
-                          <Column width={CardGrid} marginRight="15px">
-                            <AppointmentCard
-                              key={index}
-                              variant="horizontal"
-                              description="Lorem Ipsum"
-                              tags={[
-                                { name: 'Mathematik' },
-                                { name: 'Gruppenkurs' }
-                              ]}
-                              date={new Date().toString()}
-                              countCourse={4}
-                              onPressToCourse={() => alert('YES')}
-                              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                            />
-                          </Column>
-                        ))}
+                        {new Array(3).fill(0).map(
+                          (course: LFCourse, index) =>
+                            !!course && (
+                              <Column width={CardGrid} marginRight="15px">
+                                <AppointmentCard
+                                  key={index}
+                                  variant="horizontal"
+                                  description={course.outline}
+                                  tags={course.tags}
+                                  image={course.image}
+                                  title={course.name}
+                                  onPressToCourse={() =>
+                                    navigate('/single-course', {
+                                      state: { course: course.id }
+                                    })
+                                  }
+                                />
+                              </Column>
+                            )
+                        )}
                       </Flex>
                     </>
                   )
@@ -285,16 +284,24 @@ const StudentGroup: React.FC<Props> = () => {
               onShowAll={() => navigate('/group/offer')}
               title={t('matching.group.helper.offers.title')}
               showAll={true}>
-              {new Array(5).fill(0).map(({}, index) => (
-                <AppointmentCard
-                  key={index}
-                  description="Lorem Ipsum"
-                  date={futureDate.toString()}
-                  tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
-                  image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                  title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-                />
-              ))}
+              {new Array(5).fill(0).map(
+                (course: LFCourse, index) =>
+                  !!course && (
+                    <AppointmentCard
+                      key={index}
+                      variant="horizontal"
+                      description={course.outline}
+                      tags={course.tags}
+                      image={course.image}
+                      title={course.name}
+                      onPressToCourse={() =>
+                        navigate('/single-course', {
+                          state: { course: course.id }
+                        })
+                      }
+                    />
+                  )
+              )}
             </HSection>
           </VStack>
         </VStack>

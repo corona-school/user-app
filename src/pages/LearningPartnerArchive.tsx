@@ -64,9 +64,14 @@ const LearningPartnerArchive: React.FC<Props> = () => {
 
   const { loading, data } = useQuery(pupilQuery)
 
+  const activeMatches = useMemo(
+    () => data?.me?.pupil?.matches.map((match: LFMatch) => !match.dissolved),
+    [data?.me?.pupil?.matches]
+  )
+
   const searchResults = useMemo(() => {
     return (
-      data?.me?.pupil?.matches?.filter((match: LFMatch) =>
+      activeMatches?.filter((match: LFMatch) =>
         match.student.firstname
           .toLowerCase()
           .includes(
@@ -77,7 +82,7 @@ const LearningPartnerArchive: React.FC<Props> = () => {
           )
       ) || []
     )
-  }, [data?.me?.pupil?.matches, searchString])
+  }, [activeMatches, searchString])
 
   return (
     <WithNavigation

@@ -15,7 +15,6 @@ import {
   Image,
   Column,
   Link,
-  View,
   useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'

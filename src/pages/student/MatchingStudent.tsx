@@ -12,7 +12,7 @@ import {
   Modal,
   useToast
 } from 'native-base'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Tabs from '../../components/Tabs'
@@ -104,6 +104,14 @@ const MatchingStudent: React.FC<Props> = () => {
     }
   }, [dissolveData?.matchDissolve, toast, toastShown])
 
+  const activeMatches = useMemo(
+    () =>
+      data?.me?.student?.matches?.filter(
+        (match: LFMatch) => !match.dissolved
+      ) || [],
+    [data?.me?.student?.matches]
+  )
+
   return (
     <>
       <WithNavigation headerTitle={t('matching.request.check.header')}>
@@ -136,43 +144,37 @@ const MatchingStudent: React.FC<Props> = () => {
                 content: (
                   <VStack>
                     <Flex direction="row" flexWrap="wrap">
-                      {(data?.me?.student?.matches.length &&
-                        data?.me?.student?.matches?.map(
-                          (match: LFMatch, index: number) => (
-                            <Column width={CardGrid} marginRight="15px">
-                              <LearningPartner
-                                key={index}
-                                isDark={true}
-                                name={match?.pupil?.firstname}
-                                subjects={match?.pupil?.subjectsFormatted.map(
-                                  (sub: LFSubject) => sub.name
-                                )}
-                                schooltype="Grundschule"
-                                schoolclass={4}
-                                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                button={
-                                  (!match.dissolved && (
-                                    <Button
-                                      variant="outlinelight"
-                                      onPress={() =>
-                                        showDissolveMatchModal(match)
-                                      }>
-                                      {t(
-                                        'dashboard.helpers.buttons.solveMatch'
-                                      )}
-                                    </Button>
-                                  )) || (
-                                    <Text color="lightText">
-                                      {t(
-                                        'matching.request.check.resoloveMatch'
-                                      )}
-                                    </Text>
-                                  )
-                                }
-                              />
-                            </Column>
-                          )
-                        )) || (
+                      {(activeMatches.length &&
+                        activeMatches?.map((match: LFMatch, index: number) => (
+                          <Column width={CardGrid} marginRight="15px">
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={match?.pupil?.firstname}
+                              subjects={match?.pupil?.subjectsFormatted.map(
+                                (sub: LFSubject) => sub.name
+                              )}
+                              schooltype="Grundschule"
+                              schoolclass={4}
+                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() =>
+                                      showDissolveMatchModal(match)
+                                    }>
+                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.request.check.resoloveMatch')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Column>
+                        ))) || (
                         <Text>{t('matching.request.check.noMatches')}</Text>
                       )}
                     </Flex>

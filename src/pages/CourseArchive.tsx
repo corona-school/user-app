@@ -8,8 +8,6 @@ import {
   Flex,
   Column,
   Row,
-  Button,
-  SearchIcon,
   Spinner,
   Box
 } from 'native-base'

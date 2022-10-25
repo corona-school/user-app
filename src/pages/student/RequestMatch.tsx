@@ -16,7 +16,7 @@ import RequestMatchWizard from './RequestMatchWizard'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+  const { space } = useTheme()
   const { t } = useTranslation()
   const { setShow, setContent } = useModal()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
@@ -29,7 +29,6 @@ const RequestMatch: React.FC<Props> = () => {
 
   const [focusedSubject, setFocusedSubject] = useState<any>({ name: '' })
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [description, setDescription] = useState<string>('')
 
   const { data } = useQuery(gql`
     query {
@@ -91,8 +90,6 @@ const RequestMatch: React.FC<Props> = () => {
             {currentIndex === 0 && (
               <RequestMatchWizard
                 data={data}
-                description={description}
-                setDescription={setDescription}
                 selectedClasses={selectedClasses}
                 // setSelectedClasses={setSelectedClasses}
                 selectedSubjects={selectedSubjects}
@@ -104,10 +101,11 @@ const RequestMatch: React.FC<Props> = () => {
             )}
             {currentIndex === 1 && (
               <RequestMatchPreview
-                description={description}
                 subjects={Object.entries(selectedSubjects)
                   .filter(s => s[1])
-                  .map(([key, val]) => key)}
+                  .map(([key, val]) => ({
+                    name: key
+                  }))}
                 classes={selectedClasses}
                 onRequestMatch={requestMatch}
                 onBack={() => setCurrentIndex(0)}
@@ -123,7 +121,7 @@ const RequestMatch: React.FC<Props> = () => {
         <Modal.Content>
           <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
-            <VStack>
+            <VStack space={space['1']}>
               {[
                 `1. - 4. Klasse`,
                 `5. - 8. Klasse`,

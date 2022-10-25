@@ -16,20 +16,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import CTACard from '../../widgets/CTACard'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg'
-import PartyIcon from '../../assets/icons/lernfair/lf-pary-small.svg'
 import HelperWizard from '../../widgets/HelperWizard'
 import LearningPartner from '../../widgets/LearningPartner'
 import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
-import { getFirstLectureFromSubcourse, TIME_THRESHOLD } from '../../Utility'
+import { getFirstLectureFromSubcourse } from '../../Utility'
 
 type Props = {}
 
@@ -199,7 +197,7 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
-    return [firstLecture || {}, firstCourse || {}]
+    return [firstLecture || null, firstCourse || null]
   }, [data?.me?.student])
 
   const publishedSubcourses = useMemo(
@@ -208,6 +206,12 @@ const DashboardStudent: React.FC<Props> = () => {
         (sub: LFSubCourse) => sub.published
       ),
     [data?.me?.student?.subcoursesInstructing]
+  )
+
+  const activeMatches = useMemo(
+    () =>
+      data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved),
+    [data?.me?.student?.matches]
   )
 
   if (loading) return <></>
@@ -239,7 +243,8 @@ const DashboardStudent: React.FC<Props> = () => {
 
             {/* Next Appointment */}
             {data?.me?.student?.subcoursesInstructing?.length > 0 &&
-              nextAppointment && (
+              nextAppointment[0] &&
+              nextAppointment[1] && (
                 <VStack space={space['0.5']}>
                   <Heading marginY={space['1']}>
                     {t('dashboard.appointmentcard.header')}
@@ -363,34 +368,32 @@ const DashboardStudent: React.FC<Props> = () => {
                 {t('dashboard.helpers.headlines.myLearningPartner')}
               </Heading>
               <Flex direction="row" flexWrap="wrap">
-                {(data?.me?.student?.matches?.length &&
-                  data?.me?.student?.matches.map(
-                    (match: LFMatch, index: number) => (
-                      <Column width={CardGrid} marginRight="15px">
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted}
-                          schooltype={match?.pupil?.schooltype || ''}
-                          schoolclass={match?.pupil?.grade}
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('matching.request.buttons.dissolve')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                {t('matching.status.dissolved')}
-                              </Text>
-                            )
-                          }
-                        />
-                      </Column>
-                    )
-                  )) || <Text>{t('empty.matchings')}</Text>}
+                {(activeMatches?.length &&
+                  activeMatches.map((match: LFMatch, index: number) => (
+                    <Column width={CardGrid} marginRight="15px">
+                      <LearningPartner
+                        key={index}
+                        isDark={true}
+                        name={match?.pupil?.firstname}
+                        subjects={match?.pupil?.subjectsFormatted}
+                        schooltype={match?.pupil?.schooltype || ''}
+                        schoolclass={match?.pupil?.grade}
+                        button={
+                          (!match.dissolved && (
+                            <Button
+                              variant="outlinelight"
+                              onPress={() => dissolveMatch(match)}>
+                              {t('matching.request.buttons.dissolve')}
+                            </Button>
+                          )) || (
+                            <Text color="lightText">
+                              {t('matching.status.dissolved')}
+                            </Text>
+                          )
+                        }
+                      />
+                    </Column>
+                  ))) || <Text>{t('empty.matchings')}</Text>}
               </Flex>
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
@@ -400,16 +403,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     onPress={requestMatch}>
                     {t('dashboard.helpers.buttons.requestMatch')}
                   </Button>
-                  {(data?.me?.pupil?.openMatchRequestCount ||
-                    isMatchRequested) && (
-                    <Text fontSize="xs">
-                      Offene Anfragen:{' '}
-                      {`${
-                        data?.me?.pupil?.openMatchRequestCount ||
-                        (isMatchRequested ? 1 : 0)
-                      }`}
-                    </Text>
-                  )}
                 </>
               )) || (
                 <Text mt={space['0.5']} fontSize="xs" opacity=".8">
@@ -418,6 +411,10 @@ const DashboardStudent: React.FC<Props> = () => {
                   )}
                 </Text>
               )}
+
+              <Text fontSize="xs">
+                Offene Anfragen: {`${data?.me?.student?.openMatchRequestCount}`}
+              </Text>
             </VStack>
             <VStack space={space['0.5']} marginBottom={space['1.5']}>
               <Heading marginY={space['1']}>
