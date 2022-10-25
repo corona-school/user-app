@@ -1,10 +1,10 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Text, VStack, Heading, Button, useTheme } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../hooks/useModal'
-import de from '../../lang/de'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
@@ -19,6 +19,15 @@ const MatchingWizard: React.FC<Props> = () => {
   const [selection, setSelection] = useState<LFSubject>()
 
   const { space } = useTheme()
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching – anfordern'
+    })
+  }, [])
+
   const { data, error, loading } = useQuery(gql`
     query {
       me {

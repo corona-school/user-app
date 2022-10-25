@@ -22,6 +22,8 @@ import { LFSubCourse } from '../types/lernfair/Course'
 import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -76,6 +78,14 @@ const CourseArchive: React.FC<Props> = () => {
   const { userType } = useLernfair()
 
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs Archive',
+      href: '/course-archive'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

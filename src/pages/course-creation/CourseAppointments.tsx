@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { graphqlSync } from 'graphql'
 import {
   VStack,
@@ -62,6 +63,14 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     base: 'column',
     lg: 'row'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Termine'
+    })
+  }, [])
 
   return (
     <VStack space={space['1']}>

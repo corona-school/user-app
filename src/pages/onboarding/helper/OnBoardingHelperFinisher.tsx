@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   useTheme,
   Text,
@@ -9,7 +10,7 @@ import {
   Image,
   Button
 } from 'native-base'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo-big.svg'
@@ -20,6 +21,13 @@ const OnBoardingHelperFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Onboarding Finish'
+    })
+  }, [])
 
   return (
     <Fragment>

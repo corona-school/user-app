@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -103,6 +104,14 @@ const ChangeSettingState: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Bundesland'
+    })
+  }, [])
 
   if (loading) <></>
 

@@ -7,7 +7,7 @@ import {
   VStack,
   useBreakpointValue
 } from 'native-base'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
@@ -22,6 +22,7 @@ import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -123,6 +124,14 @@ const Dashboard: React.FC<Props> = () => {
         else return 0
       })
     }, [data?.me?.pupil?.subcoursesJoined])
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Dashboard',
+      href: '/register'
+    })
+  }, [])
 
   if (loading) return <></>
 

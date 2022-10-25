@@ -23,6 +23,8 @@ import { useMemo, useState } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -121,6 +123,14 @@ const AppointmentsArchive: React.FC<Props> = () => {
         else return 0
       })
     }, [searchResults])
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Termine Archive',
+      href: '/appointment-archive'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

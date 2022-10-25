@@ -115,19 +115,26 @@ const HelpCenter: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
-  const { trackEvent } = useMatomo()
+  const { trackEvent, trackPageView } = useMatomo()
 
   const onboardingCheck = () => {
     navigate('/onboarding-list')
 
     trackEvent({
-      category: 'sample-page',
+      category: 'hilebereich',
       action: 'click-event',
-      name: '',
-      documentTitle: 'Onboarding',
+      name: 'Hilebereich',
+      documentTitle: 'Hilebereich',
       href: '/onboarding-list'
     })
   }
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Hilebereich',
+      href: '/welcome'
+    })
+  }, [])
 
   return (
     <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>

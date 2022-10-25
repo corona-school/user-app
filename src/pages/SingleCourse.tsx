@@ -10,9 +10,8 @@ import {
   useBreakpointValue
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
@@ -24,7 +23,8 @@ import Utility from '../Utility'
 import { gql, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -108,6 +108,15 @@ const SingleCourse: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: course?.course?.name,
+      href: '/single-course'
+    })
+  }, [])
 
   if (loading) return <></>
 
