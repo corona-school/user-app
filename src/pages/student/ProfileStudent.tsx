@@ -35,6 +35,7 @@ import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -129,6 +130,14 @@ const ProfileStudent: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
 
   if (loading) return <></>
 
