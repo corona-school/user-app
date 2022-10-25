@@ -87,6 +87,9 @@ const lernfair = {
     },
     'not-screened': {
       matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.'
+    },
+    'not-tutee': {
+      matching: 'Du bist nicht für das Matching zugelassen'
     }
   }
 }
