@@ -6,12 +6,13 @@ import { ReactNode, useState } from 'react'
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
-import LFMatchingIcon from '../assets/icons/lernfair/lf-matching.svg'
-import LFGroupIcon from '../assets/icons/lernfair/lf-users.svg'
+import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg'
+import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
 
+// TODO translations
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
   appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
