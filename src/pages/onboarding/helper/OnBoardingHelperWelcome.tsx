@@ -14,7 +14,7 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -47,7 +47,15 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
           </>
         }
         outlineButtonText={t('onboardingList.Wizard.helper.welcome.skipTour')}
-        outlinebuttonLink={() => setCancelModal(true)}
+        outlinebuttonLink={() => {
+          trackEvent({
+            category: 'onboarding',
+            action: 'click-event',
+            name: 'Onboarding Helfer – überspringen',
+            documentTitle: 'Onboarding Helfer – Welcomepage'
+          })
+          setCancelModal(true)
+        }}
         defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
         defaultbuttonLink={() => navigate('/onboarding/helper/wizard/')}
         icon={<Logo />}

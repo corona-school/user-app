@@ -21,7 +21,7 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -51,7 +51,16 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
                 marginBottom={space['1']}>
                 {t('onboardingList.Wizard.students.finisher.content')}
               </Text>
-              <Button onPress={() => navigate('/')}>
+              <Button
+                onPress={() => {
+                  trackEvent({
+                    category: 'onboarding',
+                    action: 'click-event',
+                    name: 'Onboarding Schüler – Abgeschlossen',
+                    documentTitle: 'Onboarding Schüler –Abgeschlossen'
+                  })
+                  navigate('/')
+                }}>
                 {t('onboardingList.Wizard.students.finisher.button')}
               </Button>
             </Column>

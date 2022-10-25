@@ -131,7 +131,7 @@ const ProfileStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -401,7 +401,16 @@ const ProfileStudent: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button width={ButtonWidth}>
+                <Button
+                  width={ButtonWidth}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'profil',
+                      action: 'click-event',
+                      name: 'Helfer Profil – Bescheinigung anfordern Button Klick',
+                      documentTitle: 'Helfer Profil – Bescheinigung anfordern'
+                    })
+                  }}>
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>

@@ -12,7 +12,7 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -80,7 +80,15 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
           defaultButtonText={t(
             'onboardingList.Wizard.helperMatching.finisher.buttonText'
           )}
-          defaultbuttonLink={() => navigate('/dashboard')}
+          defaultbuttonLink={() => {
+            trackEvent({
+              category: 'onboarding',
+              action: 'click-event',
+              name: 'Onboarding Helfer Matching – Abgeschlossen',
+              documentTitle: 'Onboarding Helfer Matching – Abgeschlossen'
+            })
+            navigate('/dashboard')
+          }}
           icon={<MatchingCheck />}
         />
       </View>

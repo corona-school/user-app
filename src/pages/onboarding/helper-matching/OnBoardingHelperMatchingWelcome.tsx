@@ -14,7 +14,7 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -49,7 +49,16 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
         outlineButtonText={t(
           'onboardingList.Wizard.helperMatching.welcome.skipTour'
         )}
-        outlinebuttonLink={() => setCancelModal(true)}
+        outlinebuttonLink={() => {
+          trackEvent({
+            category: 'onboarding',
+            action: 'click-event',
+            name: 'Onboarding Helfer Matching – überspringen',
+            documentTitle:
+              'Onboarding Helfer Matching – überspringen auf der Welcome Page'
+          })
+          setCancelModal(true)
+        }}
         defaultButtonText={t(
           'onboardingList.Wizard.helperMatching.welcome.startTour'
         )}

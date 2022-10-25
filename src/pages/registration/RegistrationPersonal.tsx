@@ -43,7 +43,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({

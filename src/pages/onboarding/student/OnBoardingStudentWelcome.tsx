@@ -15,7 +15,7 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -50,6 +50,12 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         outlineButtonText={t('onboardingList.Wizard.students.welcome.skipTour')}
         outlinebuttonLink={() => {
           setCancelModal(true)
+          trackEvent({
+            category: 'onboarding',
+            action: 'click-event',
+            name: 'Onboarding Schüler – Tour überspringen',
+            documentTitle: 'Onboarding Schüler – Welcome Page'
+          })
         }}
         defaultButtonText={t(
           'onboardingList.Wizard.students.welcome.startTour'
@@ -64,7 +70,15 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         <OnBoardingSkipModal
           onPressClose={() => setCancelModal(false)}
           onPressDefaultButton={() => setCancelModal(false)}
-          onPressOutlineButton={() => navigate('/')}
+          onPressOutlineButton={() => {
+            trackEvent({
+              category: 'onboarding',
+              action: 'click-event',
+              name: 'Onboarding Schüler – Tour überspringen im Fenster',
+              documentTitle: 'Onboarding Schüler – Welcome Page'
+            })
+            navigate('/')
+          }}
         />
       </Modal>
     </View>
