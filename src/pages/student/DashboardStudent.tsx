@@ -262,7 +262,7 @@ const DashboardStudent: React.FC<Props> = () => {
               )}
             <HSection
               title={t('dashboard.myappointments.header')}
-              showAll={data?.me?.student?.subcoursesInstructing?.length > 0}
+              showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
               onShowAll={() => navigate('/appointments-archive')}>
               {(publishedSubcourses?.length &&
                 publishedSubcourses
