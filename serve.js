@@ -13,7 +13,8 @@ app.use((req, res, next) => {
 //  and logos, manifest et. al. also won't change often
 app.use(Express.static(__dirname + '/build', {
     immutable: true,
-    maxAge: '7 days'
+    maxAge: '7 days',
+    fallthrough: true
 }));
 
 // Entrypoint of the PWA - Do not cache to be able to invalidate logic changes fast
