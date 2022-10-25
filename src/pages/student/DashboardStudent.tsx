@@ -208,6 +208,28 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.subcoursesInstructing]
   )
 
+  const sortedPublishedSubcourses = useMemo(() => {
+    if (!publishedSubcourses) return []
+
+    const courses = [...publishedSubcourses]
+    courses.sort((a: LFSubCourse, b: LFSubCourse) => {
+      const aLecture = getFirstLectureFromSubcourse(a.lectures)
+      const bLecture = getFirstLectureFromSubcourse(b.lectures)
+
+      if (bLecture === null) return -1
+      if (aLecture === null) return 1
+
+      const aDate = DateTime.fromISO(aLecture.start).toMillis()
+      const bDate = DateTime.fromISO(bLecture.start).toMillis()
+
+      if (aDate === bDate) return 0
+
+      return aDate > bDate ? 1 : -1
+    })
+
+    return courses
+  }, [publishedSubcourses])
+
   const activeMatches = useMemo(
     () =>
       data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved),
@@ -269,8 +291,8 @@ const DashboardStudent: React.FC<Props> = () => {
               title={t('dashboard.myappointments.header')}
               showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
               onShowAll={() => navigate('/appointments-archive')}>
-              {(publishedSubcourses?.length &&
-                publishedSubcourses
+              {(sortedPublishedSubcourses?.length &&
+                sortedPublishedSubcourses
                   ?.slice(0, 4)
                   .map((el: LFSubCourse, i: number) => {
                     const course = el.course
@@ -305,8 +327,8 @@ const DashboardStudent: React.FC<Props> = () => {
               onShowAll={() => navigate('/course-archive')}
               wrap
               scrollable={false}>
-              {(publishedSubcourses.length > 0 &&
-                publishedSubcourses
+              {(sortedPublishedSubcourses.length > 0 &&
+                sortedPublishedSubcourses
                   .slice(0, 4)
                   .map((sub: LFSubCourse, index: number) => {
                     const firstLecture = getFirstLectureFromSubcourse(
