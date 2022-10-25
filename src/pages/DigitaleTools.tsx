@@ -16,8 +16,7 @@ const DigitaleTools: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Digitale Tools',
-      href: '/digitale-tools'
+      documentTitle: 'Digitale Tools'
     })
   }, [])
 

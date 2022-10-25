@@ -31,8 +31,7 @@ const Settings: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Einstellungen ',
-      href: '/settings'
+      documentTitle: 'Einstellungen'
     })
   }, [])
 

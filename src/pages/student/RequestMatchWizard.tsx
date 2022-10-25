@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Text,
   VStack,
@@ -7,7 +8,7 @@ import {
   useBreakpointValue,
   Row
 } from 'native-base'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
@@ -71,6 +72,14 @@ const RequestMatchWizard: React.FC<Props> = ({
     base: 'column',
     lg: 'row'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Anfrage – Helfer Matching Formular '
+    })
+  }, [])
 
   return (
     <VStack width={ContainerWidth}>

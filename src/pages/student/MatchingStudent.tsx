@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   View,
   Text,
@@ -111,6 +112,14 @@ const MatchingStudent: React.FC<Props> = () => {
       ) || [],
     [data?.me?.student?.matches]
   )
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
 
   return (
     <>

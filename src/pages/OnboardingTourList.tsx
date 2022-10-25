@@ -34,8 +34,7 @@ const OnboardingTourList: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Onboarding ',
-      href: '/onboaring-list'
+      documentTitle: 'Onboarding Tour List'
     })
   }, [])
 

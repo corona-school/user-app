@@ -28,8 +28,7 @@ const Explore: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Erkunden',
-      href: '/explore'
+      documentTitle: 'Erkunden'
     })
   }, [])
 

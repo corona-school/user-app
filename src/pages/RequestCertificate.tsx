@@ -51,8 +51,7 @@ const RequestCertificate: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Zertifikate anfordern',
-      href: '/request-certifcates'
+      documentTitle: 'Zertifikate anfordern'
     })
   }, [])
 

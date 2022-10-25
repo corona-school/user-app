@@ -15,10 +15,11 @@ import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
 import HSection from '../../widgets/HSection'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
 import Utility from '../../Utility'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -101,6 +102,14 @@ const StudentGroup: React.FC<Props> = () => {
     () => data?.me?.student?.coursesInstructing,
     [data?.me?.student?.coursesInstructing]
   )
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Gruppe'
+    })
+  }, [])
 
   if (loading) return <></>
 

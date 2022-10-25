@@ -17,11 +17,12 @@ import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import AppointmentCard from '../widgets/AppointmentCard'
 import { gql, useQuery } from '@apollo/client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { LFSubCourse } from '../types/lernfair/Course'
 import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -80,8 +81,7 @@ const CourseArchive: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Kurs Archive',
-      href: '/course-archive'
+      documentTitle: 'Kurs Archive'
     })
   }, [])
 

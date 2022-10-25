@@ -28,6 +28,7 @@ import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { getFirstLectureFromSubcourse } from '../../Utility'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -101,6 +102,13 @@ const DashboardStudent: React.FC<Props> = () => {
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Dashboard'
+    })
+  }, [])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createMatchRequest, matchRequest] = useMutation(

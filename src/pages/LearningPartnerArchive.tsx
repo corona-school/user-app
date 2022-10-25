@@ -16,10 +16,11 @@ import { useTranslation } from 'react-i18next'
 import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import { gql, useQuery } from '@apollo/client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LFMatch } from '../types/lernfair/Match'
 import TeacherCard from '../widgets/TeacherCard'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -83,6 +84,14 @@ const LearningPartnerArchive: React.FC<Props> = () => {
       ) || []
     )
   }, [activeMatches, searchString])
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Lernpartner Archive'
+    })
+  }, [])
 
   return (
     <WithNavigation

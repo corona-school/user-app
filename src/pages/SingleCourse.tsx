@@ -24,7 +24,8 @@ import Utility from '../Utility'
 import { gql, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -113,8 +114,7 @@ const SingleCourse: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: course?.course?.name,
-      href: '/single-course'
+      documentTitle: course?.course?.name
     })
   }, [])
 

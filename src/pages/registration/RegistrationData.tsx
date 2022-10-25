@@ -28,6 +28,7 @@ import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import Utility from '../../Utility'
 import { LFSubject } from '../../types/lernfair/Subject'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -200,6 +201,14 @@ const RegistrationData: React.FC<Props> = () => {
     base: '90%',
     lg: '500px'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Auswahl-Kacheln'
+    })
+  }, [])
 
   // registration went through without error
   useEffect(() => {

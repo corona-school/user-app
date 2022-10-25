@@ -40,8 +40,7 @@ export default function Login() {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Login',
-      href: '/login'
+      documentTitle: 'Login'
     })
   }, [])
 

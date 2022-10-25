@@ -97,6 +97,13 @@ const Dashboard: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler – Dashboard'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

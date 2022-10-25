@@ -58,8 +58,7 @@ const AllFaq: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Alle FAG',
-      href: '/all-faqs'
+      documentTitle: 'Alle FAQs'
     })
   }, [])
 

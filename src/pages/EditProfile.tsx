@@ -13,8 +13,7 @@ const EditProfile: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Profil bearbeiten',
-      href: '/edit-profile'
+      documentTitle: 'Profil bearbeiten'
     })
   }, [])
 

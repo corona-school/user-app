@@ -19,9 +19,10 @@ import LFIconBook from '../../assets/icons/lernfair/lf-books.svg'
 import LFImageLearing from '../../assets/images/matching/1-1-matching.jpg'
 import LFParty from '../../assets/icons/lernfair/lf-party.svg'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
 import { useNavigate } from 'react-router-dom'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -50,6 +51,14 @@ const MatchingBlocker: React.FC<Props> = () => {
     base: '100%',
     lg: '55%'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Blocker'
+    })
+  }, [])
 
   return (
     <>

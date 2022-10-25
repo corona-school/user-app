@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   VStack,
   Heading,
@@ -41,6 +42,14 @@ const RegistrationPersonal: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Eingabemaske Persönliche Daten'
+    })
+  }, [])
 
   return (
     <Flex overflowY={'auto'} height="100vh">

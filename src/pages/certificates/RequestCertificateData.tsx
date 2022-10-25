@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Text,
   VStack,
@@ -13,7 +14,7 @@ import {
   Spinner,
   Flex
 } from 'native-base'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Accordion from '../../components/Accordion'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
@@ -32,6 +33,13 @@ const RequestCertificateData: React.FC<Props> = ({ onNext, onBack }) => {
   const { state, setState } = useContext(RequestCertificateContext)
   const [others, setOthers] = useState<string[]>([])
   const [addOther, setAddOther] = useState<string>('')
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Zertifikate anfordern – Formular'
+    })
+  }, [])
 
   const { data, loading } = useQuery(gql`
     query {

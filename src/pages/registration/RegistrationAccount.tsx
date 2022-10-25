@@ -50,8 +50,7 @@ const RegistrationAccount: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Registrierung',
-      href: '/register'
+      documentTitle: 'Registrierung'
     })
   }, [])
 
