@@ -76,6 +76,14 @@ const CourseArchive: React.FC<Props> = () => {
   const { userType } = useLernfair()
 
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs Archive',
+      href: '/course-archive'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

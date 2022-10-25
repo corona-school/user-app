@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +20,15 @@ const MatchingWizard: React.FC<Props> = () => {
   const [selection, setSelection] = useState<LFSubject>()
 
   const { space } = useTheme()
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching – anfordern'
+    })
+  }, [])
+
   const { data, error, loading } = useQuery(gql`
     query {
       me {

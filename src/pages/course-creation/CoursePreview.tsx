@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { DateTime } from 'luxon'
 import {
   VStack,
@@ -10,7 +11,7 @@ import {
   Image,
   useBreakpointValue
 } from 'native-base'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
 import ToggleButton from '../../components/ToggleButton'
@@ -55,6 +56,14 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     base: 'column',
     lg: 'row'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Vorschau'
+    })
+  }, [])
 
   return (
     <VStack space={space['1']} width={ContainerWidth}>

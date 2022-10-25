@@ -1,4 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Box, Heading, useTheme, Text } from 'native-base'
+import { useEffect } from 'react'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -52,6 +54,14 @@ const faq = [
 
 const AllFaq: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Alle FAG',
+      href: '/all-faqs'
+    })
+  }, [])
 
   return (
     <WithNavigation headerTitle="Alle FAQ" headerLeft={<BackButton />}>

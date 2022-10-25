@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -120,6 +121,14 @@ const Profile: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['containerWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Profil'
+    })
+  }, [])
 
   if (loading) return <></>
 

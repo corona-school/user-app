@@ -2,9 +2,10 @@ import { Heading, useTheme, Text, View, Modal } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import MatchingCard from '../../../assets/icons/lernfair/lf-matching-card.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfoScreen from '../../../widgets/InfoScreen'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -13,6 +14,13 @@ const OnBoardingHelperMatchingWelcome: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Onboarding Welcome'
+    })
+  }, [])
 
   return (
     <View>

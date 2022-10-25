@@ -1,5 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useTheme, View, Container } from 'native-base'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ViewPager from '../../../components/ViewPager'
@@ -19,6 +20,13 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
   const imgAppointments = require('../../../assets/images/onboarding/student/All_Schueler_Termine.png')
 
   const onFinish = useCallback(() => {}, [])
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Onboarding Slider'
+    })
+  }, [])
 
   return (
     <Container

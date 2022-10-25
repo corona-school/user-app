@@ -109,6 +109,15 @@ const SingleCourse: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: course?.course?.name,
+      href: '/single-course'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
