@@ -21,6 +21,8 @@ import IconContact from '../assets/icons/lernfair/onboarding/lf-onboarding-conta
 import IconGroup from '../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
 import IconHelp from '../assets/icons/lernfair/onboarding/lf-onboarding-help.svg'
 import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-calender.svg'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -28,6 +30,14 @@ const OnboardingTourList: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Onboarding ',
+      href: '/onboaring-list'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

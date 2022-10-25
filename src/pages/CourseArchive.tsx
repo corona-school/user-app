@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next'
 import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import AppointmentCard from '../widgets/AppointmentCard'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -21,6 +23,14 @@ const CourseArchive: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs Archive',
+      href: '/course-archive'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

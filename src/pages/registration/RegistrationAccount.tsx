@@ -25,6 +25,7 @@ import useRegistration from '../../hooks/useRegistration'
 import useModal from '../../hooks/useModal'
 import useApollo from '../../hooks/useApollo'
 import TextInput from '../../components/TextInput'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -43,6 +44,15 @@ const RegistrationAccount: React.FC<Props> = () => {
   useEffect(() => {
     createToken()
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung',
+      href: '/register'
+    })
   }, [])
 
   const onBarrierSolved = useCallback(

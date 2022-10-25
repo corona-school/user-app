@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Heading,
   useTheme,
@@ -7,6 +8,7 @@ import {
   HStack,
   useBreakpointValue
 } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
@@ -25,6 +27,14 @@ const Settings: React.FC<Props> = () => {
   const { clearToken } = useApollo()
   const tabspace = 3
   // const { user } = useLernfair()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Einstellungen ',
+      href: '/settings'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

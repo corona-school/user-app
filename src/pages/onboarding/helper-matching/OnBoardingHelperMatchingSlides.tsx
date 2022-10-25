@@ -1,5 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useTheme, View, Container } from 'native-base'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ViewPager from '../../../components/ViewPager'
@@ -21,6 +22,13 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
   const imgSolveMatching = require('../../../assets/images/onboarding/1-1-helper/1_1_Helfer_Match_aufloesen.png')
 
   const onFinish = useCallback(() => {}, [])
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Onboarding Slides'
+    })
+  }, [])
 
   return (
     <Container

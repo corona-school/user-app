@@ -13,6 +13,8 @@ import CTACard from '../../widgets/CTACard'
 
 import Icon from '../../assets/icons/lernfair/lf-books.svg'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {
   onRequestMatch: () => any
@@ -42,6 +44,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
     base: '100%',
     lg: '48%'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching'
+    })
+  }, [])
 
   return (
     <VStack space={space['0.5']} paddingX={space['1']} width={ContainerWidth}>

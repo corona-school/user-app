@@ -25,6 +25,7 @@ import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {
   onNext: () => any
@@ -128,6 +129,14 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     base: 'column',
     lg: 'row'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Page'
+    })
+  }, [])
 
   return (
     <VStack space={space['1']} width={ContainerWidth}>

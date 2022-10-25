@@ -40,6 +40,7 @@ import LFParty from '../assets/icons/lernfair/lf-party.svg'
 import useModal from '../hooks/useModal'
 import Unsplash from './pupil/Unsplash'
 import CourseBlocker from './student/CourseBlocker'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -136,6 +137,14 @@ const CreateCourse: React.FC<Props> = () => {
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
   const { setShow, setContent } = useModal()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen',
+      href: '/create-course'
+    })
+  }, [])
 
   const onFinish = useCallback(async () => {
     const course = {

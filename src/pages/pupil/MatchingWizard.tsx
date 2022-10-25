@@ -1,6 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { LFSubject } from '../../types/lernfair/Subject'
@@ -17,8 +18,16 @@ const subs: LFSubject[] = [
 const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
-
   const { space } = useTheme()
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching – anfordern'
+    })
+  }, [])
+
   const { data, error, loading } = useQuery(gql`
     query {
       me {

@@ -1,4 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Avatar, useTheme } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import EditDataRow from '../widgets/EditDataRow'
 
@@ -7,6 +9,14 @@ type Props = {}
 const EditProfile: React.FC<Props> = () => {
   const { colors, space } = useTheme()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil bearbeiten',
+      href: '/edit-profile'
+    })
+  }, [])
 
   return (
     <VStack space={space['2']}>

@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Text,
   VStack,
@@ -8,7 +9,7 @@ import {
   useTheme,
   Row
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../../components/WithNavigation'
@@ -24,6 +25,14 @@ const Matching: React.FC<Props> = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching'
+    })
+  }, [])
 
   return (
     <>

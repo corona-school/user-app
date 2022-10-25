@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../components/TextInput'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -35,6 +36,14 @@ export default function Login() {
 
   const { clearToken, createToken } = useApollo()
   const navigate = useNavigate()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Login',
+      href: '/login'
+    })
+  }, [])
 
   const attemptLogin = useCallback(async () => {
     createToken()
