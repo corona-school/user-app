@@ -92,6 +92,12 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   const dissolve = useCallback(() => {
+    trackEvent({
+      category: 'matching',
+      action: 'click-event',
+      name: 'Helfer Matching lösen',
+      documentTitle: 'Helfer Matching lösen'
+    })
     setShowDissolveModal(false)
     dissolveMatch({
       variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
@@ -113,7 +119,7 @@ const MatchingStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({

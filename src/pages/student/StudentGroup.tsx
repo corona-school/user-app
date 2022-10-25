@@ -103,7 +103,7 @@ const StudentGroup: React.FC<Props> = () => {
     [data?.me?.student?.coursesInstructing]
   )
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -132,7 +132,16 @@ const StudentGroup: React.FC<Props> = () => {
           <VStack paddingY={space['1']}>
             <Button
               width={ButtonContainer}
-              onPress={() => navigate('/create-course')}>
+              onPress={() => {
+                trackEvent({
+                  category: 'matching',
+                  action: 'click-event',
+                  name: 'Helfer Matching Gruppen – Kurs erstellen',
+                  documentTitle:
+                    'Matching Gruppen Lernunterstützung Kurs erstellen'
+                })
+                navigate('/create-course')
+              }}>
               {t('matching.group.helper.button')}
             </Button>
           </VStack>

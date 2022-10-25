@@ -27,7 +27,7 @@ const Settings: React.FC<Props> = () => {
   const { clearToken } = useApollo()
   const tabspace = 3
   // const { user } = useLernfair()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -116,6 +116,12 @@ const Settings: React.FC<Props> = () => {
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
+                trackEvent({
+                  category: 'profil',
+                  action: 'click-event',
+                  name: 'Abmelden im Account',
+                  documentTitle: 'Logout'
+                })
                 clearToken()
                 navigate(0)
               }}

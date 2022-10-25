@@ -52,7 +52,7 @@ const MatchingBlocker: React.FC<Props> = () => {
     lg: '55%'
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -107,7 +107,19 @@ const MatchingBlocker: React.FC<Props> = () => {
           title="Gruppen-Lernunterstützung"
           content="Kurzfristige Unterstützung bei spezifischen Problemen und Fragen"
           icon={<LFIconBook />}
-          button={<Button>{t('matching.blocker.ctaCardButton')}</Button>}
+          button={
+            <Button
+              onPress={() => {
+                trackEvent({
+                  category: 'matching',
+                  action: 'click-event',
+                  name: 'Helfer Matching Gruppen Lernunterstützung anfordern – Teaser',
+                  documentTitle: 'Matching Gruppen Lernunterstützung anfordern'
+                })
+              }}>
+              {t('matching.blocker.ctaCardButton')}
+            </Button>
+          }
         />
       </Container>
     </>

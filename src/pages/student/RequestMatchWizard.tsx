@@ -73,7 +73,7 @@ const RequestMatchWizard: React.FC<Props> = ({
     lg: 'row'
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -141,7 +141,15 @@ const RequestMatchWizard: React.FC<Props> = ({
         </Button>
         <Button
           variant="outline"
-          onPress={() => navigate(-1)}
+          onPress={() => {
+            trackEvent({
+              category: 'matching',
+              action: 'click-event',
+              name: 'Helfer Matching Gruppen – Kurs erstellen',
+              documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen'
+            })
+            navigate(-1)
+          }}
           width={ButtonContainer}>
           Abbrechen
         </Button>

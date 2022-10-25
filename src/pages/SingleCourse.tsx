@@ -110,7 +110,7 @@ const SingleCourse: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -295,6 +295,14 @@ const SingleCourse: React.FC<Props> = () => {
               <Text>{course?.canJoin?.reason}</Text>
             )}
             <Button
+              onPress={() => {
+                trackEvent({
+                  category: 'kurs',
+                  action: 'click-event',
+                  name: 'Kurs anmelden | ' + course?.course?.name,
+                  documentTitle: 'Kurs anmelden  | ' + course?.course?.name
+                })
+              }}
               width={ButtonContainer}
               marginBottom={space['0.5']}
               isDisabled={!course?.canJoin?.allowed}>
@@ -304,7 +312,17 @@ const SingleCourse: React.FC<Props> = () => {
         )}
         {course?.allowContact && (
           <Box marginBottom={space['1.5']}>
-            <Button width={ButtonContainer} variant="outline">
+            <Button
+              onPress={() => {
+                trackEvent({
+                  category: 'kurs',
+                  action: 'click-event',
+                  name: 'Kurs Kontakt | ' + course?.course?.name,
+                  documentTitle: 'Kurs Kontakt  | ' + course?.course?.name
+                })
+              }}
+              width={ButtonContainer}
+              variant="outline">
               {t('single.button.contact')}
             </Button>
           </Box>

@@ -21,7 +21,7 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const { space } = useTheme()
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -84,6 +84,12 @@ const MatchingWizard: React.FC<Props> = () => {
           <Button
             onPress={() => {
               setShow(false)
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abgeschlossen',
+                documentTitle: 'Schüler Matching Anfrage'
+              })
             }}>
             Weiter
           </Button>
@@ -136,7 +142,17 @@ const MatchingWizard: React.FC<Props> = () => {
       {!data?.me?.pupil?.canRequestMatch?.allowed && (
         <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
       )}
-      <Button variant={'outline'} onPress={() => navigate(-1)}>
+      <Button
+        variant={'outline'}
+        onPress={() => {
+          trackEvent({
+            category: 'matching',
+            action: 'click-event',
+            name: 'Schüler Matching anfragen – Abbrechen',
+            documentTitle: 'Schüler Matching Anfragen'
+          })
+          navigate(-1)
+        }}>
         {t('matching.request.buttons.cancel')}
       </Button>
     </VStack>

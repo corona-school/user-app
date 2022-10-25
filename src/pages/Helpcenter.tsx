@@ -121,10 +121,10 @@ const HelpCenter: React.FC<Props> = () => {
     navigate('/onboarding-list')
 
     trackEvent({
-      category: 'hilebereich',
+      category: 'hilfebereich',
       action: 'click-event',
       name: 'Hilebereich',
-      documentTitle: 'Hilebereich',
+      documentTitle: 'Hilfebereich',
       href: '/onboarding-list'
     })
   }

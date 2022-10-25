@@ -85,7 +85,7 @@ const LearningPartnerArchive: React.FC<Props> = () => {
     )
   }, [activeMatches, searchString])
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -133,7 +133,17 @@ const LearningPartnerArchive: React.FC<Props> = () => {
                             variant="dark"
                             tags={match.subjectsFormatted?.map(s => s.name)}
                             button={
-                              <Button variant="outlinelight">
+                              <Button
+                                onPress={() => {
+                                  trackEvent({
+                                    category: 'matching',
+                                    action: 'click-event',
+                                    name: 'Lernpartner Matching anfordern',
+                                    documentTitle:
+                                      'Lernpartner Matching Archive'
+                                  })
+                                }}
+                                variant="outlinelight">
                                 {t('dashboard.offers.match')}
                               </Button>
                             }

@@ -77,7 +77,7 @@ const CourseArchive: React.FC<Props> = () => {
   const { userType } = useLernfair()
 
   const { t } = useTranslation()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -183,11 +183,18 @@ const CourseArchive: React.FC<Props> = () => {
                             tags={sub.course.tags}
                             date={firstDate?.toString()}
                             countCourse={sub.lectures.length}
-                            onPressToCourse={() =>
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name:
+                                  'Kurs Archive – Kachel: ' + sub.course.name,
+                                documentTitle: 'Kurse Archive'
+                              })
                               navigate('/single-course', {
                                 state: { course: sub.id }
                               })
-                            }
+                            }}
                             image={sub.course.image}
                             title={sub.course.name}
                           />
