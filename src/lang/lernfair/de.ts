@@ -82,6 +82,10 @@ const lernfair = {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
       matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
     },
+    'max-matches': {
+      course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
+      matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
+    },
     'not-instructor': {
       course: 'Du bist leider nicht als Tutor verifiziert.'
     },
