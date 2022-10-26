@@ -1,19 +1,9 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import {
-  Text,
-  VStack,
-  Box,
-  Button,
-  Heading,
-  Modal,
-  useTheme,
-  Row
-} from 'native-base'
+import { Text, VStack, Button, Modal, useTheme } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../../components/WithNavigation'
-import CTACard from '../../widgets/CTACard'
 import MatchingOnboarding from './MatchingOnboarding'
 import MatchingWizard from './MatchingWizard'
 
@@ -70,6 +60,7 @@ const Matching: React.FC<Props> = () => {
                 }}>
                 {t('matching.modal.buttons.continue')}
               </Button>
+
               <Button variant="outline" onPress={() => navigate('/group')}>
                 {t('matching.modal.buttons.showGroupCourse')}
               </Button>

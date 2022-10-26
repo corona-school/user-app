@@ -96,6 +96,7 @@ const MatchingWizard: React.FC<Props> = () => {
       )
       setShow(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestData, requestError, setContent, setShow])
 
   if (loading) return <></>
@@ -139,7 +140,11 @@ const MatchingWizard: React.FC<Props> = () => {
       </Button>
 
       {!data?.me?.pupil?.canRequestMatch?.allowed && (
-        <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
+        <Text>
+          {t(
+            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+          )}
+        </Text>
       )}
       <Button
         variant={'outline'}

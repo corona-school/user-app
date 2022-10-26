@@ -12,15 +12,37 @@ import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
 import Icon from '../../assets/icons/lernfair/lf-books.svg'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
+import { gql, useQuery } from '@apollo/client'
 
 type Props = {
   onRequestMatch: () => any
 }
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
+  const { data, error, loading } = useQuery(gql`
+    query {
+      me {
+        pupil {
+          id
+          canRequestMatch {
+            allowed
+            reason
+            limit
+          }
+          schooltype
+          gradeAsInt
+          subjectsFormatted {
+            name
+            mandatory
+          }
+        }
+      }
+    }
+  `)
+
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
@@ -78,13 +100,23 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
         <Text bold> {t('matching.blocker.contentBox2') + ' '}</Text>
         {t('matching.blocker.contentBox3')}
       </Text>
-      <Button
-        width={ButtonContainer}
-        variant="outline"
-        onPress={onRequestMatch}
-        marginBottom={space['1.5']}>
-        {t('matching.blocker.button')}
-      </Button>
+
+      <VStack marginBottom={space['1.5']}>
+        <Button
+          isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed}
+          width={ButtonContainer}
+          variant="outline"
+          onPress={onRequestMatch}>
+          {t('matching.blocker.button')}
+        </Button>
+        {!data?.me?.pupil?.canRequestMatch?.allowed && (
+          <Text>
+            {t(
+              `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+            )}
+          </Text>
+        )}
+      </VStack>
       <Box width={CardGrid}>
         <CTACard
           width={ContentContainerWidth}

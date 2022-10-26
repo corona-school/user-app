@@ -31,6 +31,12 @@ const query = gql`
     me {
       firstname
       pupil {
+        matches {
+          student {
+            firstname
+            lastname
+          }
+        }
         openMatchRequestCount
         canRequestMatch {
           allowed
@@ -59,7 +65,7 @@ const query = gql`
       }
     }
 
-    subcoursesPublic(take: 10, skip: 2) {
+    subcoursesPublic(take: 20, skip: 2, excludeKnown: true) {
       id
       minGrade
       maxGrade
@@ -155,33 +161,35 @@ const Dashboard: React.FC<Props> = () => {
       headerLeft={<NotificationAlert />}>
       <VStack paddingX={space['1']} width={ContainerWidth}>
         <VStack space={space['1']} marginTop={space['1']}>
-          <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.appointmentcard.header')}
-            </Heading>
+          {sortedAppointments[0] && (
+            <VStack space={space['0.5']}>
+              <Heading marginY={space['1']}>
+                {t('dashboard.appointmentcard.header')}
+              </Heading>
 
-            <AppointmentCard
-              isTeaser
-              onPressToCourse={() => {
-                trackEvent({
-                  category: 'dashboard',
-                  action: 'click-event',
-                  name:
-                    'Schüler Dashboard – Termin Teaser | Klick auf' +
-                    sortedAppointments[0]?.course.course?.name,
-                  documentTitle: 'Schüler Dashboard'
-                })
-                navigate('/single-course', {
-                  state: { course: sortedAppointments[0]?.course.id }
-                })
-              }}
-              tags={sortedAppointments[0]?.course?.course?.tags}
-              date={sortedAppointments[0]?.lecture.start}
-              image={sortedAppointments[0]?.course.course?.image}
-              title={sortedAppointments[0]?.course.course?.name}
-              description={sortedAppointments[0]?.course.course?.outline}
-            />
-          </VStack>
+              <AppointmentCard
+                isTeaser
+                onPressToCourse={() => {
+                  trackEvent({
+                    category: 'dashboard',
+                    action: 'click-event',
+                    name:
+                      'Schüler Dashboard – Termin Teaser | Klick auf' +
+                      sortedAppointments[0]?.course.course?.name,
+                    documentTitle: 'Schüler Dashboard'
+                  })
+                  navigate('/single-course', {
+                    state: { course: sortedAppointments[0]?.course.id }
+                  })
+                }}
+                tags={sortedAppointments[0]?.course?.course?.tags}
+                date={sortedAppointments[0]?.lecture.start}
+                image={sortedAppointments[0]?.course.course?.image}
+                title={sortedAppointments[0]?.course.course?.name}
+                description={sortedAppointments[0]?.course.course?.outline}
+              />
+            </VStack>
+          )}
 
           {/* Appointments */}
           <HSection
@@ -229,67 +237,86 @@ const Dashboard: React.FC<Props> = () => {
                 )) || (
               <VStack space={space['0.5']}>
                 <Text>Du bist für keine Kurse eingetragen.</Text>
-                <Button>Zur Kursübersicht</Button>
+                <Button onPress={() => navigate('/course-archive')}>
+                  Zur Kursübersicht
+                </Button>
               </VStack>
             )}
           </HSection>
-
+          {console.log(data?.me?.pupil?.matches)}
           {/* Matches */}
           <HSection
             title={t('dashboard.learningpartner.header')}
-            showAll={data?.me?.pupil?.matches?.length > 2}>
+            showAll={data?.me?.pupil?.matches?.length > 2}
+            wrap>
             {data?.me?.pupil?.matches
               ?.slice(0, 2)
-              .map((match: LFMatch) => (
-                <TeacherCard
-                  name={`${match.student?.firstname} ${match.student?.lastname}`}
-                  variant="dark"
-                  tags={match.subjectsFormatted?.map(s => s.name)}
-                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                  button={
-                    <Button variant="outlinelight">
-                      {t('dashboard.offers.match')}
-                    </Button>
-                  }
-                />
+              .map(
+                (match: LFMatch) =>
+                  (
+                    <TeacherCard
+                      name={`${match.student?.firstname} ${match.student?.lastname}`}
+                      variant="dark"
+                      tags={
+                        match.subjectsFormatted?.map(s => s.name) || [
+                          'Fehler',
+                          'Backend',
+                          'Permission'
+                        ]
+                      }
+                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                      button={
+                        <Button variant="outlinelight">
+                          {t('dashboard.offers.match')}
+                        </Button>
+                      }
+                    />
+                  ) || <Text>{t('dashboard.offers.noMatching')}</Text>
+              )}
+            <VStack space={space['0.5']} mt="3">
+              {(data?.me?.pupil?.canRequestMatch?.allowed && (
+                <Button
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching anfragen',
+                      documentTitle: 'Schüler Dashboard'
+                    })
+                    navigate('/matching')
+                  }}>
+                  {t('dashboard.offers.requestMatching')}
+                </Button>
               )) || (
-              <VStack space={space['0.5']}>
-                <Text>{t('dashboard.offers.noMatching')}</Text>
-                {(data?.me?.pupil?.canRequestMatch?.allowed && (
-                  <Button
-                    onPress={() => {
-                      trackEvent({
-                        category: 'dashboard',
-                        action: 'click-event',
-                        name: 'Schüler Dashboard – Matching anfragen',
-                        documentTitle: 'Schüler Dashboard'
-                      })
-                      navigate('/matching')
-                    }}>
-                    {t('dashboard.offers.requestMatching')}
-                  </Button>
-                )) || (
-                  <Text>
-                    {t(
-                      `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                    )}
-                  </Text>
-                )}
-                <Text fontSize="xs">
-                  Offene Anfragen: {`${data?.me?.pupil?.openMatchRequestCount}`}
+                <Text>
+                  {t(
+                    `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+                  )}
                 </Text>
-              </VStack>
-            )}
+              )}
+              <Text fontSize="xs">
+                Offene Anfragen: {`${data?.me?.pupil?.openMatchRequestCount}`}
+              </Text>
+            </VStack>
           </HSection>
 
           {/* Suggestions */}
+          {console.log(data?.subcoursesPublic?.length)}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
               data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
                 <SignInCard
                   tags={sc.course.tags}
                   data={sc}
-                  onClickSignIn={() => null}
+                  onClickSignIn={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching Vorschlag',
+                      documentTitle: 'Schüler Dashboard'
+                    })
+                    navigate('/single-course', { state: { course: sc.id } })
+                  }}
                   onPress={() => {
                     trackEvent({
                       category: 'dashboard',
