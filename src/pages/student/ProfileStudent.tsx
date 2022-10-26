@@ -296,16 +296,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   })
                 }>
                 <Row>
-                  {(data?.me?.student.state &&
-                    data?.me?.student.state !== 'other' && (
-                      <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.student.state}`)}
-                        />
-                      </Column>
-                    )) || <Text>{t('profile.State.empty')}</Text>}
+                  {(data?.me?.student.state && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.student.state}`)}
+                      />
+                    </Column>
+                  )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
