@@ -69,8 +69,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string>('')
 
   useEffect(() => {
-    setSelections(data?.me?.pupil?.schooltype)
-  }, [data?.me?.pupil?.schooltype])
+    setSelections(data?.me[state?.userType].schooltype)
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateSchooltype.data && !_updateSchooltype.error) {

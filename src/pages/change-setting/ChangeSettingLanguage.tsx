@@ -70,10 +70,10 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   `)
 
   useEffect(() => {
-    if (data?.me?.pupil?.languages) {
-      setSelections(data?.me?.pupil?.languages)
+    if (data?.me[state?.userType].languages) {
+      setSelections(data?.me[state?.userType].languages)
     }
-  }, [data?.me?.pupil?.languages])
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateLanguage.data && !_updateLanguage.error) {

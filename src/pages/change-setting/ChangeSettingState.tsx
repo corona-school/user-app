@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
+import useLernfair from '../../hooks/useLernfair'
 import { states } from '../../types/lernfair/State'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
@@ -51,8 +52,6 @@ type Props = {}
 
 const ChangeSettingState: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
-  const location = useLocation()
-  const { state: locState } = location as { state: { userType: string } }
 
   const [userState, setUserState] = useState<string>('')
   const { t } = useTranslation()
@@ -60,19 +59,20 @@ const ChangeSettingState: React.FC<Props> = () => {
   const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
 
+  const { userType } = useLernfair()
   const { data, loading, error } = useQuery(gql`
-    ${locState?.userType === 'student' ? queryStudent : queryPupil}
+    ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateState, _updateState] = useMutation(gql`
-    ${locState?.userType === 'student' ? mutStudent : mutPupil}
+    ${userType === 'student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {
-    if (data?.me?.pupil?.state) {
-      setUserState(data?.me?.pupil?.state)
+    if (userType && data?.me[userType].state) {
+      setUserState(data?.me[userType].state)
     }
-  }, [data?.me?.pupil?.state])
+  }, [data?.me, userType])
 
   const state = useMemo(
     () =>
@@ -112,7 +112,7 @@ const ChangeSettingState: React.FC<Props> = () => {
       documentTitle: 'Profil Einstellungen – Bundesland'
     })
   }, [])
-
+  console.log({ userState })
   if (loading) <></>
 
   return (
