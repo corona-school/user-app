@@ -131,7 +131,7 @@ const HelpCenter: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Hilebereich'
+      documentTitle: 'Hilfebereich'
     })
   }, [])
 

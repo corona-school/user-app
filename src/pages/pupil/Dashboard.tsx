@@ -132,13 +132,6 @@ const Dashboard: React.FC<Props> = () => {
       })
     }, [data?.me?.pupil?.subcoursesJoined])
 
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Schüler Dashboard',
-      href: '/register'
-    })
-  }, [])
-
   if (loading) return <></>
 
   return (

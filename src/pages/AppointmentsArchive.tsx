@@ -77,7 +77,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { userType } = useLernfair()
-
+  const { trackPageView } = useMatomo()
   const [searchString, setSearchString] = useState<string>('')
 
   const { loading, data } = useQuery(
@@ -139,14 +139,6 @@ const AppointmentsArchive: React.FC<Props> = () => {
     base: '100%',
     lg: '47%'
   })
-
-  const { trackPageView } = useMatomo()
-
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Termin Archive'
-    })
-  }, [])
 
   return (
     <WithNavigation
