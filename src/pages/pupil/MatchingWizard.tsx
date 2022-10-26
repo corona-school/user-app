@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Heading, Button, useTheme } from 'native-base'
+import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +20,7 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const { space } = useTheme()
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -83,6 +83,12 @@ const MatchingWizard: React.FC<Props> = () => {
           <Button
             onPress={() => {
               setShow(false)
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abgeschlossen',
+                documentTitle: 'Schüler Matching Anfrage'
+              })
             }}>
             Weiter
           </Button>
@@ -135,7 +141,17 @@ const MatchingWizard: React.FC<Props> = () => {
       {!data?.me?.pupil?.canRequestMatch?.allowed && (
         <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
       )}
-      <Button variant={'outline'} onPress={() => navigate(-1)}>
+      <Button
+        variant={'outline'}
+        onPress={() => {
+          trackEvent({
+            category: 'matching',
+            action: 'click-event',
+            name: 'Schüler Matching anfragen – Abbrechen',
+            documentTitle: 'Schüler Matching Anfragen'
+          })
+          navigate(-1)
+        }}>
         {t('matching.request.buttons.cancel')}
       </Button>
     </VStack>

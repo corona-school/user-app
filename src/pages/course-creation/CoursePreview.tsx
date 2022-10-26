@@ -57,7 +57,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     lg: 'row'
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -212,7 +212,15 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}
-          onPress={onNext}
+          onPress={() => {
+            trackEvent({
+              category: 'kurse',
+              action: 'click-event',
+              name: 'Helfer Kurs erstellen – veröffentlichen Button',
+              documentTitle: 'Helfer Kurs erstellen – publish button'
+            })
+            onNext()
+          }}
           isDisabled={isDisabled}>
           {t('course.CourseDate.Preview.publishCourse')}
         </Button>

@@ -26,7 +26,7 @@ const Matching: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -61,6 +61,12 @@ const Matching: React.FC<Props> = () => {
                 onPress={() => {
                   setCurrentIndex(1)
                   setShowModal(false)
+                  trackEvent({
+                    category: 'matching',
+                    action: 'click-event',
+                    name: 'Schüler Matching – Klick auf weiter im Fenster',
+                    documentTitle: 'Schüler Matching'
+                  })
                 }}>
                 {t('matching.modal.buttons.continue')}
               </Button>

@@ -129,7 +129,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     lg: 'row'
   })
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -314,7 +314,15 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['1']}
           width={ButtonContainer}
           variant={'outline'}
-          onPress={onCancel}>
+          onPress={() => {
+            trackEvent({
+              category: 'kurse',
+              action: 'click-event',
+              name: 'Helfer Kurs erstellen – Abbrechen',
+              documentTitle: 'Helfer Kurs erstellen – Abbrechen'
+            })
+            onCancel()
+          }}>
           {t('course.CourseDate.form.button.cancel')}
         </Button>
       </Row>

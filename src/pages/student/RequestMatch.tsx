@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { VStack, Modal, Button, useTheme, Heading } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -81,6 +82,14 @@ const RequestMatch: React.FC<Props> = () => {
       setShow(true)
     }
   }, [matchRequest?.data?.studentCreateMatchRequest, setContent, setShow])
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Match anfragen'
+    })
+  }, [])
 
   return (
     <>

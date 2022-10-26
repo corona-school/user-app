@@ -97,6 +97,13 @@ const Dashboard: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler – Dashboard'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -124,7 +131,6 @@ const Dashboard: React.FC<Props> = () => {
         else return 0
       })
     }, [data?.me?.pupil?.subcoursesJoined])
-  const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -163,11 +169,19 @@ const Dashboard: React.FC<Props> = () => {
 
             <AppointmentCard
               isTeaser
-              onPressToCourse={() =>
+              onPressToCourse={() => {
+                trackEvent({
+                  category: 'dashboard',
+                  action: 'click-event',
+                  name:
+                    'Schüler Dashboard – Termin Teaser | Klick auf' +
+                    sortedAppointments[0]?.course.course?.name,
+                  documentTitle: 'Schüler Dashboard'
+                })
                 navigate('/single-course', {
                   state: { course: sortedAppointments[0]?.course.id }
                 })
-              }
+              }}
               tags={sortedAppointments[0]?.course?.course?.tags}
               date={sortedAppointments[0]?.lecture.start}
               image={sortedAppointments[0]?.course.course?.image}
@@ -196,11 +210,20 @@ const Dashboard: React.FC<Props> = () => {
 
                     return (
                       <AppointmentCard
-                        onPressToCourse={() =>
+                        onPressToCourse={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name:
+                              'Schüler Dashboard – Meine Termin | Klick auf' +
+                              course.course.name,
+                            documentTitle: 'Schüler Dashboard'
+                          })
+
                           navigate('/single-course', {
                             state: { course: course.id }
                           })
-                        }
+                        }}
                         key={`appointment-${course.id}`}
                         description={course.course.outline}
                         tags={course.course.tags}
@@ -240,7 +263,16 @@ const Dashboard: React.FC<Props> = () => {
               <VStack space={space['0.5']}>
                 <Text>{t('dashboard.offers.noMatching')}</Text>
                 {(data?.me?.pupil?.canRequestMatch?.allowed && (
-                  <Button onPress={() => navigate('/matching')}>
+                  <Button
+                    onPress={() => {
+                      trackEvent({
+                        category: 'dashboard',
+                        action: 'click-event',
+                        name: 'Schüler Dashboard – Matching anfragen',
+                        documentTitle: 'Schüler Dashboard'
+                      })
+                      navigate('/matching')
+                    }}>
                     {t('dashboard.offers.requestMatching')}
                   </Button>
                 )) || (
@@ -265,9 +297,15 @@ const Dashboard: React.FC<Props> = () => {
                   tags={sc.course.tags}
                   data={sc}
                   onClickSignIn={() => null}
-                  onPress={() =>
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching Vorschlag',
+                      documentTitle: 'Schüler Dashboard'
+                    })
                     navigate('/single-course', { state: { course: sc.id } })
-                  }
+                  }}
                 />
               ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}
           </HSection>

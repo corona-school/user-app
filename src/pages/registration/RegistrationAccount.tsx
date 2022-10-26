@@ -46,12 +46,11 @@ const RegistrationAccount: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Registrierung',
-      href: '/register'
+      documentTitle: 'Registrierung'
     })
   }, [])
 
@@ -195,9 +194,16 @@ const RegistrationAccount: React.FC<Props> = () => {
           <Row justifyContent="center">
             <Button
               width={buttonWidth}
-              onPress={() =>
+              onPress={() => {
+                trackEvent({
+                  category: 'kurse',
+                  action: 'click-event',
+                  name: 'Registrierung – Account Informationen – Bestätigung',
+                  documentTitle: 'Registrierung – Seite 1'
+                })
+
                 userType === 'pupil' ? showModal() : navigate('/registration/2')
-              }
+              }}
               isDisabled={
                 !legalChecked ||
                 !userType ||

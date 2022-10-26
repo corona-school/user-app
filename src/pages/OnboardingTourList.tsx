@@ -30,12 +30,11 @@ const OnboardingTourList: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Onboarding ',
-      href: '/onboaring-list'
+      documentTitle: 'Onboarding Tour List'
     })
   }, [])
 
@@ -94,9 +93,19 @@ const OnboardingTourList: React.FC<Props> = () => {
                   }
                   button={
                     <Button
-                      onPress={() =>
+                      onPress={() => {
+                        trackEvent({
+                          category: 'onboarding',
+                          action: 'click-event',
+                          name:
+                            'Button-Klick Onboarding' +
+                            t(`onboardingList.cards.card${index}.title`),
+                          documentTitle: t(
+                            `onboardingList.cards.card${index}.title`
+                          )
+                        })
                         navigate(t(`onboardingList.cards.card${index}.url`))
-                      }>
+                      }}>
                       {t(`onboardingList.buttontext`)}
                     </Button>
                   }

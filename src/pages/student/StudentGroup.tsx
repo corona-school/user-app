@@ -15,10 +15,11 @@ import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
 import HSection from '../../widgets/HSection'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
 import Utility from '../../Utility'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -102,6 +103,14 @@ const StudentGroup: React.FC<Props> = () => {
     [data?.me?.student?.coursesInstructing]
   )
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Gruppe'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
@@ -123,7 +132,16 @@ const StudentGroup: React.FC<Props> = () => {
           <VStack paddingY={space['1']}>
             <Button
               width={ButtonContainer}
-              onPress={() => navigate('/create-course')}>
+              onPress={() => {
+                trackEvent({
+                  category: 'matching',
+                  action: 'click-event',
+                  name: 'Helfer Matching Gruppen – Kurs erstellen',
+                  documentTitle:
+                    'Matching Gruppen Lernunterstützung Kurs erstellen'
+                })
+                navigate('/create-course')
+              }}>
               {t('matching.group.helper.button')}
             </Button>
           </VStack>

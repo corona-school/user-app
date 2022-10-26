@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -31,6 +33,14 @@ const StudentGroupSupport: React.FC<Props> = () => {
     base: '100%',
     lg: '47%'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Gruppe Unterstützung'
+    })
+  }, [])
 
   return (
     <WithNavigation

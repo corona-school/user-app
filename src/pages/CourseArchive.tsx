@@ -17,13 +17,12 @@ import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import AppointmentCard from '../widgets/AppointmentCard'
 import { gql, useQuery } from '@apollo/client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { LFSubCourse } from '../types/lernfair/Course'
 import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useEffect } from 'react'
 
 type Props = {}
 
@@ -78,12 +77,11 @@ const CourseArchive: React.FC<Props> = () => {
   const { userType } = useLernfair()
 
   const { t } = useTranslation()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Kurs Archive',
-      href: '/course-archive'
+      documentTitle: 'Kurs Archive'
     })
   }, [])
 
@@ -185,11 +183,18 @@ const CourseArchive: React.FC<Props> = () => {
                             tags={sub.course.tags}
                             date={firstDate?.toString()}
                             countCourse={sub.lectures.length}
-                            onPressToCourse={() =>
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name:
+                                  'Kurs Archive – Kachel: ' + sub.course.name,
+                                documentTitle: 'Kurse Archive'
+                              })
                               navigate('/single-course', {
                                 state: { course: sub.id }
                               })
-                            }
+                            }}
                             image={sub.course.image}
                             title={sub.course.name}
                           />

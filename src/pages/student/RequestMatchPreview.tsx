@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { t } from 'i18next'
 import {
   Text,
@@ -8,6 +9,7 @@ import {
   useBreakpointValue,
   Row
 } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
 import { LFSubject } from '../../types/lernfair/Subject'
@@ -50,6 +52,14 @@ const RequestMatchPreview: React.FC<Props> = ({
     base: 'column',
     lg: 'row'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Anfrage – Helfer Matching Vorschau '
+    })
+  }, [])
 
   return (
     <VStack space={space['1']} width={ContainerWidth}>

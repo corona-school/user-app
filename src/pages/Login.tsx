@@ -9,6 +9,7 @@ import {
   Image,
   Input,
   Link,
+  Pressable,
   Row,
   Text,
   useBreakpointValue,
@@ -36,17 +37,35 @@ export default function Login() {
 
   const { clearToken, createToken } = useApollo()
   const navigate = useNavigate()
-  const { trackPageView } = useMatomo()
+  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Login',
-      href: '/login'
+      documentTitle: 'Login'
     })
   }, [])
 
+  const loginButton = () => {
+    trackEvent({
+      category: 'login',
+      action: 'click-event',
+      name: 'Login Button auf Login Page',
+      documentTitle: 'Login Page'
+    })
+  }
+
+  const loginRegisterLink = () => {
+    trackEvent({
+      category: 'login',
+      action: 'click-event',
+      name: 'Registrierung auf Login Page',
+      documentTitle: 'Login Page – Registrierung Link'
+    })
+  }
+
   const attemptLogin = useCallback(async () => {
     createToken()
+    loginButton()
     await login({
       variables: {
         email: email,
@@ -160,9 +179,12 @@ export default function Login() {
 
         <Box paddingTop={10} paddingBottom={1} width={ContainerWidth}>
           <Text textAlign="center">{t('login.noaccount')}</Text>
-          <Link href="/registration/1" justifyContent="center">
-            {t('login.btn.register')}
-          </Link>
+          <Pressable
+            onPress={() => loginRegisterLink}
+            justifyContent="center"
+            alignItems="center">
+            <Link href="/registration/1">{t('login.btn.register')}</Link>
+          </Pressable>
         </Box>
       </Row>
     </VStack>

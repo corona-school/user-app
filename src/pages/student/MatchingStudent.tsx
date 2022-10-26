@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   View,
   Text,
@@ -91,6 +92,12 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   const dissolve = useCallback(() => {
+    trackEvent({
+      category: 'matching',
+      action: 'click-event',
+      name: 'Helfer Matching lösen',
+      documentTitle: 'Helfer Matching lösen'
+    })
     setShowDissolveModal(false)
     dissolveMatch({
       variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
@@ -111,6 +118,14 @@ const MatchingStudent: React.FC<Props> = () => {
       ) || [],
     [data?.me?.student?.matches]
   )
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
 
   return (
     <>

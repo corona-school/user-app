@@ -149,8 +149,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Kurs erstellen',
-      href: '/create-course'
+      documentTitle: 'Kurs erstellen'
     })
   }, [])
 

@@ -16,10 +16,11 @@ import { useTranslation } from 'react-i18next'
 import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import { gql, useQuery } from '@apollo/client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LFMatch } from '../types/lernfair/Match'
 import TeacherCard from '../widgets/TeacherCard'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -84,6 +85,14 @@ const LearningPartnerArchive: React.FC<Props> = () => {
     )
   }, [activeMatches, searchString])
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Lernpartner Archive'
+    })
+  }, [])
+
   return (
     <WithNavigation
       headerTitle={t('archive.learningpartner.header')}
@@ -124,7 +133,17 @@ const LearningPartnerArchive: React.FC<Props> = () => {
                             variant="dark"
                             tags={match.subjectsFormatted?.map(s => s.name)}
                             button={
-                              <Button variant="outlinelight">
+                              <Button
+                                onPress={() => {
+                                  trackEvent({
+                                    category: 'matching',
+                                    action: 'click-event',
+                                    name: 'Lernpartner Matching anfordern',
+                                    documentTitle:
+                                      'Lernpartner Matching Archive'
+                                  })
+                                }}
+                                variant="outlinelight">
                                 {t('dashboard.offers.match')}
                               </Button>
                             }

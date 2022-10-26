@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Text,
   VStack,
@@ -7,7 +8,7 @@ import {
   useBreakpointValue,
   Row
 } from 'native-base'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
@@ -72,6 +73,14 @@ const RequestMatchWizard: React.FC<Props> = ({
     lg: 'row'
   })
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Anfrage – Helfer Matching Formular '
+    })
+  }, [])
+
   return (
     <VStack width={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
@@ -132,7 +141,15 @@ const RequestMatchWizard: React.FC<Props> = ({
         </Button>
         <Button
           variant="outline"
-          onPress={() => navigate(-1)}
+          onPress={() => {
+            trackEvent({
+              category: 'matching',
+              action: 'click-event',
+              name: 'Helfer Matching Gruppen – Kurs erstellen',
+              documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen'
+            })
+            navigate(-1)
+          }}
           width={ButtonContainer}>
           Abbrechen
         </Button>

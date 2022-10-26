@@ -35,6 +35,7 @@ import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -129,6 +130,14 @@ const ProfileStudent: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
 
   if (loading) return <></>
 
@@ -392,7 +401,16 @@ const ProfileStudent: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button width={ButtonWidth}>
+                <Button
+                  width={ButtonWidth}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'profil',
+                      action: 'click-event',
+                      name: 'Helfer Profil – Bescheinigung anfordern Button Klick',
+                      documentTitle: 'Helfer Profil – Bescheinigung anfordern'
+                    })
+                  }}>
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>

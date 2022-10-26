@@ -28,6 +28,7 @@ import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { getFirstLectureFromSubcourse } from '../../Utility'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -101,6 +102,13 @@ const DashboardStudent: React.FC<Props> = () => {
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Dashboard'
+    })
+  }, [])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createMatchRequest, matchRequest] = useMutation(
@@ -273,11 +281,21 @@ const DashboardStudent: React.FC<Props> = () => {
                   </Heading>
 
                   <AppointmentCard
-                    onPressToCourse={() =>
+                    onPressToCourse={() => {
+                      trackEvent({
+                        category: 'dashboard',
+                        action: 'click-event',
+                        name:
+                          'Helfer Dashboard Kachelklick   ' +
+                          nextAppointment[1].course?.name,
+                        documentTitle:
+                          'Helfer Dashboard – Nächster Termin   ' +
+                          nextAppointment[1].course?.name
+                      })
                       navigate('/single-course', {
                         state: { course: nextAppointment[1].id }
                       })
-                    }
+                    }}
                     tags={nextAppointment[1].course?.tags}
                     date={nextAppointment[0].start || ''}
                     isTeaser={true}
@@ -306,11 +324,20 @@ const DashboardStudent: React.FC<Props> = () => {
 
                     return (
                       <AppointmentCard
-                        onPressToCourse={() =>
+                        onPressToCourse={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name:
+                              'Helfer Dashboard Kachelklick  ' + course.name,
+                            documentTitle:
+                              'Helfer Dashboard – Meine Termin  ' + course.name
+                          })
+
                           navigate('/single-course', {
                             state: { course: el.id }
                           })
-                        }
+                        }}
                         key={`appointment-${el.id}`}
                         description={course.outline}
                         tags={course.tags}
@@ -343,7 +370,18 @@ const DashboardStudent: React.FC<Props> = () => {
                         tags={sub.course.tags}
                         date={firstLecture.start}
                         countCourse={sub.lectures.length}
-                        onPressToCourse={() => alert('YES')}
+                        onPressToCourse={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name:
+                              'Helfer Dashboard Kachelklick  ' +
+                              sub.course.name,
+                            documentTitle:
+                              'Helfer Dashboard – Meine Kurse  ' +
+                              sub.course.name
+                          })
+                        }}
                         image={sub.course.image}
                         title={sub.course.name}
                       />
@@ -357,7 +395,15 @@ const DashboardStudent: React.FC<Props> = () => {
                 <Button
                   width={ButtonContainer}
                   marginY={space['1']}
-                  onPress={() => navigate('/create-course')}>
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Helfer Dashboard Kurse-Erstellen Button',
+                      documentTitle: 'Helfer Dashboard – Kurs Button klick'
+                    })
+                    navigate('/create-course')
+                  }}>
                   {t('dashboard.helpers.buttons.course')}
                 </Button>
               )) || (

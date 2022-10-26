@@ -19,12 +19,11 @@ import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import AppointmentCard from '../widgets/AppointmentCard'
 import useLernfair from '../hooks/useLernfair'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useEffect } from 'react'
 
 type Props = {}
 
@@ -123,7 +122,6 @@ const AppointmentsArchive: React.FC<Props> = () => {
         else return 0
       })
     }, [searchResults])
-  const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -141,6 +139,14 @@ const AppointmentsArchive: React.FC<Props> = () => {
     base: '100%',
     lg: '47%'
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Termin Archive'
+    })
+  }, [])
 
   return (
     <WithNavigation
