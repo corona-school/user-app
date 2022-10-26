@@ -12,6 +12,7 @@ export type LFCourse = {
 export interface LFSubCourse extends LFCourse {
   lectures: LFLecture[]
   image?: string
+  isParticipant?: boolean
   participants?: Pupil[]
   participantsAsPupil?: Pupil[]
   maxParticipants?: number
