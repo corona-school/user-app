@@ -95,7 +95,6 @@ const RequestMatchPreview: React.FC<Props> = ({
           )}
         </VStack>
       ))}
-      <Text bold>{t('matching.request.check.preview.desc')}</Text>
 
       <Row
         space={space['1']}

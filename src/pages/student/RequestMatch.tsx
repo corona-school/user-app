@@ -94,7 +94,7 @@ const RequestMatch: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>
-        {(!data?.me?.student?.canRequestMatch?.allowed && (
+        {(data?.me?.student?.canRequestMatch?.allowed && (
           <VStack paddingX={space['1']}>
             {currentIndex === 0 && (
               <RequestMatchWizard

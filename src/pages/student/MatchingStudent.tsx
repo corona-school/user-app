@@ -145,11 +145,19 @@ const MatchingStudent: React.FC<Props> = () => {
             <Text paddingBottom={space['1.5']}>
               {t('matching.request.check.contenHeadlineContent')}
             </Text>
-            <Button
-              width={ButtonContainer}
-              onPress={() => navigate('/request-match')}>
-              {t('matching.request.check.requestmatchButton')}
-            </Button>
+            {(data?.me?.student?.canRequestMatch.allowed && (
+              <Button
+                width={ButtonContainer}
+                onPress={() => navigate('/request-match')}>
+                {t('matching.request.check.requestmatchButton')}
+              </Button>
+            )) || (
+              <Text>
+                {t(
+                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                )}
+              </Text>
+            )}
           </VStack>
 
           <Tabs
