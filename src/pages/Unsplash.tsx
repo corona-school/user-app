@@ -16,9 +16,9 @@ import {
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { Pressable } from 'react-native'
-import BackButton from '../../components/BackButton'
-import Pagination from '../../components/Pagination'
-import TwoColGrid from '../../widgets/TwoColGrid'
+import BackButton from '../components/BackButton'
+import Pagination from '../components/Pagination'
+import TwoColGrid from '../widgets/TwoColGrid'
 
 type Props = {
   onPhotoSelected: (photo: string) => any

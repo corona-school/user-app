@@ -38,7 +38,7 @@ import BackButton from '../components/BackButton'
 import { Pressable } from 'react-native'
 import LFParty from '../assets/icons/lernfair/lf-party.svg'
 import useModal from '../hooks/useModal'
-import Unsplash from './pupil/Unsplash'
+import Unsplash from './Unsplash'
 import CourseBlocker from './student/CourseBlocker'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
@@ -278,7 +278,15 @@ const CreateCourse: React.FC<Props> = () => {
   )
 
   const showUnsplash = useCallback(() => {
-    setContent(<Unsplash onPhotoSelected={pickPhoto} />)
+    setContent(
+      <Unsplash
+        onPhotoSelected={pickPhoto}
+        onClose={() => {
+          setShow(false)
+          setContent(<></>)
+        }}
+      />
+    )
     setShow(true)
   }, [pickPhoto, setContent, setShow])
 
