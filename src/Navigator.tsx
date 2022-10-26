@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
 import Dashboard from './pages/pupil/Dashboard'
-import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
 import Profile from './pages/pupil/Profile'
 
@@ -149,15 +148,6 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <ProfileHelper />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/edit-profile"
-          element={
-            <RequireAuth>
-              <EditProfile />
             </RequireAuth>
           }
         />
