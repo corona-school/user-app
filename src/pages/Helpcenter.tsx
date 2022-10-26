@@ -136,7 +136,7 @@ const HelpCenter: React.FC<Props> = () => {
   }, [])
 
   return (
-    <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
+    <WithNavigation headerTitle="Hilfebereich">
       <Box
         width={ContainerWidth}
         paddingBottom={space['1.5']}
