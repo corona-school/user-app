@@ -66,7 +66,8 @@ const lernfair = {
     sn: 'Sachsen',
     st: 'Sachsen-Anhalt',
     sh: 'Schleswig-Holstein',
-    th: 'Thüringen'
+    th: 'Thüringen',
+    other: 'Andere'
   },
   schooltypes: {
     grundschule: 'Grundschule',
