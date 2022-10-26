@@ -11,18 +11,21 @@ import {
   SearchIcon,
   Input,
   Spinner,
-  Heading
+  Heading,
+  ArrowBackIcon
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { Pressable } from 'react-native'
+import BackButton from '../../components/BackButton'
 import Pagination from '../../components/Pagination'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
 type Props = {
   onPhotoSelected: (photo: string) => any
+  onClose: () => any
 }
 
-const Unsplash: React.FC<Props> = ({ onPhotoSelected }) => {
+const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
   const { space } = useTheme()
   const [searchString, setSearchString] = useState<string>()
 
@@ -63,6 +66,9 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected }) => {
   return (
     <VStack flex="1" overflowY="scroll" h="100%">
       <Row paddingX={space['1']} paddingY={space['0.5']}>
+        <Button padding={space['1']} onPress={onClose}>
+          <ArrowBackIcon />
+        </Button>
         <Input
           flex="1"
           onChangeText={setSearchString}
