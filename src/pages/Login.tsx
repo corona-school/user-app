@@ -43,25 +43,29 @@ export default function Login() {
     trackPageView({
       documentTitle: 'Login'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loginButton = () => {
+  const loginButton = useCallback(() => {
     trackEvent({
       category: 'login',
       action: 'click-event',
       name: 'Login Button auf Login Page',
       documentTitle: 'Login Page'
     })
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const loginRegisterLink = () => {
+  const loginRegisterLink = useCallback(() => {
     trackEvent({
       category: 'login',
       action: 'click-event',
       name: 'Registrierung auf Login Page',
       documentTitle: 'Login Page – Registrierung Link'
     })
-  }
+    navigate('/registration/1')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate])
 
   const attemptLogin = useCallback(async () => {
     createToken()
@@ -72,7 +76,7 @@ export default function Login() {
         password: password
       }
     })
-  }, [createToken, email, login, password])
+  }, [createToken, email, login, loginButton, password])
 
   useEffect(() => {
     if (loading) return
@@ -180,10 +184,12 @@ export default function Login() {
         <Box paddingTop={10} paddingBottom={1} width={ContainerWidth}>
           <Text textAlign="center">{t('login.noaccount')}</Text>
           <Pressable
-            onPress={() => loginRegisterLink}
+            onPress={loginRegisterLink}
             justifyContent="center"
             alignItems="center">
-            <Link href="/registration/1">{t('login.btn.register')}</Link>
+            <Box>
+              <Text>{t('login.btn.register')}</Text>
+            </Box>
           </Pressable>
         </Box>
       </Row>
