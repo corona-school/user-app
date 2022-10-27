@@ -22,6 +22,7 @@ const Matching: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Schüler Matching'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
