@@ -102,8 +102,8 @@ const Theme = extendTheme({
   components: {
     Text: {
       defaultProps: {
-        color: VAR_COLOR_PRIMARY_DARK
-      }
+        color: VAR_COLOR_PRIMARY_DARK,
+      },
     },
     Heading: {
       defaultProps: {
