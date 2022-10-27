@@ -5,9 +5,10 @@ import {
   HStack,
   useTheme,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Pressable
 } from 'native-base'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
@@ -33,6 +34,7 @@ const query = gql`
       pupil {
         matches {
           student {
+            id
             firstname
             lastname
           }
@@ -65,7 +67,7 @@ const query = gql`
       }
     }
 
-    subcoursesPublic(take: 20, skip: 2, excludeKnown: true) {
+    subcoursesPublic(take: 10, skip: 0, excludeKnown: true) {
       id
       minGrade
       maxGrade
@@ -109,6 +111,7 @@ const Dashboard: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Schüler – Dashboard'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const ContainerWidth = useBreakpointValue({
@@ -243,17 +246,21 @@ const Dashboard: React.FC<Props> = () => {
               </VStack>
             )}
           </HSection>
-          {console.log(data?.me?.pupil?.matches)}
+
           {/* Matches */}
           <HSection
             title={t('dashboard.learningpartner.header')}
             showAll={data?.me?.pupil?.matches?.length > 2}
             wrap>
-            {data?.me?.pupil?.matches
-              ?.slice(0, 2)
-              .map(
-                (match: LFMatch) =>
-                  (
+            {data?.me?.pupil?.matches?.slice(0, 2).map(
+              (match: LFMatch) =>
+                (
+                  <Pressable
+                    onPress={() =>
+                      navigate('/profile', {
+                        state: { userType: 'student', id: match.student.id }
+                      })
+                    }>
                     <TeacherCard
                       name={`${match.student?.firstname} ${match.student?.lastname}`}
                       variant="dark"
@@ -271,8 +278,9 @@ const Dashboard: React.FC<Props> = () => {
                         </Button>
                       }
                     />
-                  ) || <Text>{t('dashboard.offers.noMatching')}</Text>
-              )}
+                  </Pressable>
+                ) || <Text>{t('dashboard.offers.noMatching')}</Text>
+            )}
             <VStack space={space['0.5']} mt="3">
               {(data?.me?.pupil?.canRequestMatch?.allowed && (
                 <Button
@@ -301,7 +309,7 @@ const Dashboard: React.FC<Props> = () => {
           </HSection>
 
           {/* Suggestions */}
-          {console.log(data?.subcoursesPublic?.length)}
+
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
               data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
