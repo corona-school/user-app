@@ -147,7 +147,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Box
-            width={ContainerWidth}
+            maxWidth={ContainerWidth}
             bg={'primary.700'}
             alignItems="center"
             paddingY={space['2']}
@@ -233,7 +233,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {userSettingChanged && (
           <Alert
-            width={ContainerWidth}
+            maxWidth={ContainerWidth}
             marginY={10}
             marginX={space['1.5']}
             colorScheme="success"
@@ -254,13 +254,13 @@ const ProfileStudent: React.FC<Props> = () => {
         )}
 
         <VStack
-          width={ContainerWidth}
+          maxWidth={ContainerWidth}
           paddingX={space['1']}
           paddingY={space['1']}>
           <HelperWizard index={0} />
         </VStack>
 
-        <VStack space={space['1']} width={ContainerWidth}>
+        <VStack space={space['1']} maxWidth={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />

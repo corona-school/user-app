@@ -192,7 +192,7 @@ const Profile: React.FC<Props> = () => {
         }>
         {userSettingChanged && (
           <Alert
-            width={ContainerWidth}
+            maxWidth={ContainerWidth}
             marginY={10}
             marginX={space['1.5']}
             colorScheme="success"

@@ -138,14 +138,14 @@ const HelpCenter: React.FC<Props> = () => {
   return (
     <WithNavigation headerTitle="Hilfebereich">
       <Box
-        width={ContainerWidth}
+        maxWidth={ContainerWidth}
         paddingBottom={space['1.5']}
         paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
         <Text>{t('helpcenter.subtitle')}</Text>
       </Box>
       <Box
-        width={ContainerWidth}
+        maxWidth={ContainerWidth}
         paddingBottom={space['2.5']}
         paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>

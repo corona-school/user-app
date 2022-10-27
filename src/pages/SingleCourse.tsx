@@ -174,7 +174,7 @@ const SingleCourse: React.FC<Props> = () => {
           : course?.course?.name
       }
       headerLeft={<BackButton />}>
-      <Box paddingX={space['1.5']} width={ContainerWidth}>
+      <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
             alt={course?.course?.name}

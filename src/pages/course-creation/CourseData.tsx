@@ -138,7 +138,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
   }, [])
 
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>

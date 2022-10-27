@@ -129,7 +129,7 @@ export default function Login() {
           </Heading>
         </Box>
 
-        <Box marginX="90px" width={ContainerWidth}>
+        <Box marginX="90px" maxWidth={ContainerWidth}>
           <Row marginBottom={3}>
             <TextInput
               width="100%"
@@ -164,20 +164,20 @@ export default function Login() {
           </Text>
         )}
 
-        <Box paddingY={4} width={ContainerWidth}>
+        <Box paddingY={4} maxWidth={ContainerWidth}>
           <Link>{t('login.btn.password')}</Link>
         </Box>
         <Box
           paddingTop={4}
           marginX="90px"
           display="block"
-          width={ContainerWidth}>
+          maxWidth={ContainerWidth}>
           <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
             {t('login.btn.login')}
           </Button>
         </Box>
 
-        <Box paddingTop={10} paddingBottom={1} width={ContainerWidth}>
+        <Box paddingTop={10} paddingBottom={1} maxWidth={ContainerWidth}>
           <Text textAlign="center">{t('login.noaccount')}</Text>
           <Pressable
             onPress={() => loginRegisterLink}

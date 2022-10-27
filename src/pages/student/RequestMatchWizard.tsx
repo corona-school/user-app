@@ -82,7 +82,7 @@ const RequestMatchWizard: React.FC<Props> = ({
   }, [])
 
   return (
-    <VStack width={ContainerWidth}>
+    <VStack maxWidth={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
       <Text>{t('matching.student.text')}</Text>
 

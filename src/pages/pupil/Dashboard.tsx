@@ -144,7 +144,7 @@ const Dashboard: React.FC<Props> = () => {
     <WithNavigation
       headerContent={
         <HStack
-          width={ContainerWidth}
+          maxWidth={ContainerWidth}
           space={space['1']}
           alignItems="center"
           bgColor={'primary.900'}
@@ -159,7 +159,7 @@ const Dashboard: React.FC<Props> = () => {
         </HStack>
       }
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']} marginTop={space['1']}>
           {sortedAppointments[0] && (
             <VStack space={space['0.5']}>
