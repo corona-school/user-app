@@ -470,6 +470,7 @@ const DashboardStudent: React.FC<Props> = () => {
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
                   <Button
+                    width={ButtonContainer}
                     isDisabled={isMatchRequested}
                     marginY={space['1']}
                     onPress={requestMatch}>

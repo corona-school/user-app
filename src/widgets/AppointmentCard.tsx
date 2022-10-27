@@ -155,7 +155,9 @@ const AppointmentCard: React.FC<Props> = ({
                         ? description.substring(0, 56) + '...'
                         : description}
                     </Text>
-                    <Button onPress={onPressToCourse}>Zum Kurs</Button>
+                    <Button width={ButtonContainer} onPress={onPressToCourse}>
+                      Zum Kurs
+                    </Button>
                   </>
                 )}
                 {child && <CommunityUser name={child} />}

@@ -5,7 +5,9 @@ import {
   HStack,
   useTheme,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex,
+  Column
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -114,6 +116,11 @@ const Dashboard: React.FC<Props> = () => {
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
+  })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48.3%'
   })
 
   const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] =
@@ -243,36 +250,37 @@ const Dashboard: React.FC<Props> = () => {
               </VStack>
             )}
           </HSection>
-          {console.log(data?.me?.pupil?.matches)}
           {/* Matches */}
           <HSection
             title={t('dashboard.learningpartner.header')}
             showAll={data?.me?.pupil?.matches?.length > 2}
             wrap>
-            {data?.me?.pupil?.matches
-              ?.slice(0, 2)
-              .map(
+            <Flex direction="row" flexWrap="wrap">
+              {data?.me?.pupil?.matches?.slice(0, 2).map(
                 (match: LFMatch) =>
                   (
-                    <TeacherCard
-                      name={`${match.student?.firstname} ${match.student?.lastname}`}
-                      variant="dark"
-                      tags={
-                        match.subjectsFormatted?.map(s => s.name) || [
-                          'Fehler',
-                          'Backend',
-                          'Permission'
-                        ]
-                      }
-                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                      button={
-                        <Button variant="outlinelight">
-                          {t('dashboard.offers.match')}
-                        </Button>
-                      }
-                    />
+                    <Column width={CardGrid} marginRight="15px">
+                      <TeacherCard
+                        name={`${match.student?.firstname} ${match.student?.lastname}`}
+                        variant="dark"
+                        tags={
+                          match.subjectsFormatted?.map(s => s.name) || [
+                            'Fehler',
+                            'Backend',
+                            'Permission'
+                          ]
+                        }
+                        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                        button={
+                          <Button variant="outlinelight">
+                            {t('dashboard.offers.match')}
+                          </Button>
+                        }
+                      />
+                    </Column>
                   ) || <Text>{t('dashboard.offers.noMatching')}</Text>
               )}
+            </Flex>
             <VStack space={space['0.5']} mt="3">
               {(data?.me?.pupil?.canRequestMatch?.allowed && (
                 <Button
@@ -301,7 +309,6 @@ const Dashboard: React.FC<Props> = () => {
           </HSection>
 
           {/* Suggestions */}
-          {console.log(data?.subcoursesPublic?.length)}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
               data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
