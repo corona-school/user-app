@@ -24,8 +24,9 @@ import Utility from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Participant as LFParticipant } from '../types/lernfair/User'
 
 type Props = {}
 
@@ -34,6 +35,7 @@ const SingleCourse: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
 
+  const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const { userType } = useLernfair()
@@ -44,10 +46,7 @@ const SingleCourse: React.FC<Props> = () => {
     firstname
     grade
   }`
-      : `otherParticipants{
-    firstname
-    grade
-  }
+      : `
   isOnWaitingList
   isParticipant 
   canJoin{
@@ -65,9 +64,11 @@ const SingleCourse: React.FC<Props> = () => {
       id
       participantsCount
       maxParticipants
-      
+      instructors{
+        firstname
+        lastname
+      }
       ${userQuery}
-
       course {
         image
         outline
@@ -92,7 +93,21 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`
 
+  const participantQuery = gql`
+  query{
+    subcourse(subcourseId: ${courseId}){
+      otherParticipants{
+        firstname
+        grade
+      }
+    }
+  }`
+
   const { data: courseData, loading, error } = useQuery(query)
+
+  const { data: participantData } = useQuery(participantQuery, {
+    skip: !loadParticipants
+  })
 
   const [joinSubcourse, _joinSubcourse] = useMutation(
     gql`
@@ -101,7 +116,7 @@ const SingleCourse: React.FC<Props> = () => {
       }
     `,
     {
-      refetchQueries: [query]
+      refetchQueries: [query, participantQuery]
     }
   )
   const [leaveSubcourse, _leaveSubcourse] = useMutation(
@@ -111,7 +126,7 @@ const SingleCourse: React.FC<Props> = () => {
       }
     `,
     {
-      refetchQueries: [query]
+      refetchQueries: [query, participantQuery]
     }
   )
   const [joinWaitingList, _joinWaitingList] = useMutation(
@@ -121,7 +136,7 @@ const SingleCourse: React.FC<Props> = () => {
       }
     `,
     {
-      refetchQueries: [query]
+      refetchQueries: [query, participantQuery]
     }
   )
   const [leaveWaitingList, _leaveWaitingList] = useMutation(
@@ -131,17 +146,26 @@ const SingleCourse: React.FC<Props> = () => {
       }
     `,
     {
-      refetchQueries: [query]
+      refetchQueries: [query, participantQuery]
     }
   )
 
-  const course = courseData?.subcourse
+  const course = useMemo(() => courseData?.subcourse, [courseData])
 
-  const participants = useMemo(
-    () =>
-      userType === 'student' ? course?.participants : course?.otherParticipants,
-    [course?.otherParticipants, course?.participants, userType]
-  )
+  const participants = useMemo(() => {
+    if (userType === 'student') {
+      return course?.participants
+    } else {
+      if (course?.isParticipant) {
+        return participantData?.subcourse?.otherParticipants
+      }
+    }
+  }, [
+    userType,
+    course?.participants,
+    course?.isParticipant,
+    participantData?.subcourse?.otherParticipants
+  ])
 
   const isFull = useMemo(
     () => course?.participantsCount >= course?.maxParticipants,
@@ -162,7 +186,14 @@ const SingleCourse: React.FC<Props> = () => {
     trackPageView({
       documentTitle: course?.course?.name
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!loading && course) {
+      course?.isParticipant && setLoadParticipants(true)
+    }
+  }, [course, loading])
 
   if (loading) return <></>
 
@@ -184,7 +215,7 @@ const SingleCourse: React.FC<Props> = () => {
             height="100%"
             bgColor="gray.300"
             source={{
-              uri: course?.course?.image || ''
+              uri: course?.course?.image
             }}
           />
         </Box>
@@ -209,7 +240,12 @@ const SingleCourse: React.FC<Props> = () => {
             marginRight={space['0.5']} 
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
           /> */}
-          <Heading fontSize="md">Kursleiter Name</Heading>
+          {course?.instructors && course?.instructors[0] && (
+            <Heading fontSize="md">
+              {course?.instructors[0].firstname}{' '}
+              {course?.instructors[0].lastname}
+            </Heading>
+          )}
         </Row>
         <Text paddingBottom={space['1']}>{course?.course?.outline}</Text>
 
@@ -266,12 +302,41 @@ const SingleCourse: React.FC<Props> = () => {
                         `${course?.lectures[0]?.duration / 60} Stunde(n)`}
                     </Text>
                   </Row>
-                  <Row flexDirection="row" paddingBottom={space['1.5']}>
-                    <Text bold marginRight={space['0.5']}>
-                      {t('single.global.tutor')}:
-                    </Text>
-                    <Text>Max Mustermann</Text>
-                  </Row>
+                  {course?.instructors && (
+                    <VStack>
+                      {course?.instructors[0] && (
+                        <Row flexDirection="row" paddingBottom={space['1.5']}>
+                          <Text bold marginRight={space['0.5']}>
+                            {t('single.global.tutor')}:
+                          </Text>
+
+                          <Text>
+                            {course?.instructors[0].firstname}{' '}
+                            {course?.instructors[0].lastname}
+                          </Text>
+                        </Row>
+                      )}
+                      {course?.instructors.length > 1 && (
+                        <VStack>
+                          <Text bold marginRight={space['0.5']}>
+                            {t('single.global.more_tutors')}:
+                          </Text>
+                          {course?.instructors
+                            .slice(1)
+                            .map(
+                              (instructor: {
+                                firstname: string
+                                lastname: string
+                              }) => (
+                                <Text>
+                                  {instructor.firstname} {instructor.lastname}
+                                </Text>
+                              )
+                            )}
+                        </VStack>
+                      )}
+                    </VStack>
+                  )}
                 </>
               )
             },
@@ -300,24 +365,13 @@ const SingleCourse: React.FC<Props> = () => {
                 </>
               )
             },
-            {
+            course?.isParticipant && {
               title: t('single.tabs.participant'),
               content: (
                 <>
                   {(participants?.length > 0 &&
-                    participants.map((p: any) => (
-                      <Row marginBottom={space['1.5']} alignItems="center">
-                        <Column marginRight={space['1']}>
-                          {/* <ProfilAvatar
-                            size="md"
-                            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                          /> */}
-                        </Column>
-                        <Column>
-                          <Heading fontSize="md">{p.firstname}</Heading>
-                          <Text>{p.grade}</Text>
-                        </Column>
-                      </Row>
+                    participants.map((p: LFParticipant) => (
+                      <Participant pupil={p} />
                     ))) || (
                     <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
                   )}
@@ -332,27 +386,31 @@ const SingleCourse: React.FC<Props> = () => {
             {!course?.canJoin?.allowed && !course?.isParticipant && (
               <Text>{course?.canJoin?.reason}</Text>
             )}
-            {!course?.isParticipant &&
-              !course?.isOnWaitingList(
-                <Button
-                  onPress={() => {
-                    joinSubcourse({ variables: { courseId: courseId } })
-                  }}
-                  width={ButtonContainer}
-                  marginBottom={space['0.5']}
-                  isDisabled={!course?.canJoin?.allowed || loading}>
-                  {t('single.button.login')}
-                </Button>
-              )}
-            {!course?.isParticipant && isFull && (
+            {!course?.isParticipant && !course?.isOnWaitingList && (
               <Button
                 onPress={() => {
-                  //subcourseJoinWaitinglist
-                  // joinSubcourse({ variables: { courseId: courseId } })
+                  joinSubcourse({ variables: { courseId: courseId } })
                 }}
                 width={ButtonContainer}
                 marginBottom={space['0.5']}
-                isDisabled={!course?.canJoin?.allowed || loading}>
+                isDisabled={
+                  !course?.canJoin?.allowed || _joinSubcourse.loading
+                }>
+                {t('single.button.login')}
+              </Button>
+            )}
+            {!course?.isParticipant && isFull && (
+              <Button
+                onPress={() => {
+                  joinWaitingList({
+                    variables: { courseId: courseId }
+                  })
+                }}
+                width={ButtonContainer}
+                marginBottom={space['0.5']}
+                isDisabled={
+                  !course?.canJoin?.allowed || _joinWaitingList.loading
+                }>
                 Auf die Warteliste
               </Button>
             )}
@@ -361,12 +419,11 @@ const SingleCourse: React.FC<Props> = () => {
                 <Text>Du bist bereits auf der Warteliste dieses Kurses</Text>
                 <Button
                   onPress={() => {
-                    // subcourseLeaveWaitinglist(subcourseId: 11)
-                    // leaveSubcourse({ variables: { courseId: courseId } })
+                    leaveWaitingList({ variables: { courseId: courseId } })
                   }}
                   width={ButtonContainer}
                   marginBottom={space['0.5']}
-                  isDisabled={loading}>
+                  isDisabled={_leaveWaitingList.loading}>
                   Warteliste verlassen
                 </Button>
               </VStack>
@@ -380,7 +437,7 @@ const SingleCourse: React.FC<Props> = () => {
                   }}
                   width={ButtonContainer}
                   marginBottom={space['0.5']}
-                  isDisabled={loading}>
+                  isDisabled={_leaveSubcourse.loading}>
                   Kurs verlassen
                 </Button>
               </VStack>
@@ -409,3 +466,24 @@ const SingleCourse: React.FC<Props> = () => {
   )
 }
 export default SingleCourse
+
+type ParticipantProps = {
+  pupil: LFParticipant
+}
+const Participant: React.FC<ParticipantProps> = ({ pupil }) => {
+  const { space } = useTheme()
+  return (
+    <Row marginBottom={space['1.5']} alignItems="center">
+      <Column marginRight={space['1']}>
+        {/* <ProfilAvatar
+      size="md"
+      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    /> */}
+      </Column>
+      <Column>
+        <Heading fontSize="md">{pupil.firstname}</Heading>
+        <Text>{pupil.grade}</Text>
+      </Column>
+    </Row>
+  )
+}
