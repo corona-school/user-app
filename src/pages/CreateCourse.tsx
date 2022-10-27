@@ -9,8 +9,7 @@ import {
   Text,
   useBreakpointValue,
   useTheme,
-  VStack,
-  WarningIcon
+  VStack
 } from 'native-base'
 import {
   createContext,
@@ -185,13 +184,13 @@ const CreateCourse: React.FC<Props> = () => {
         maxGrade: number
         maxParticipants: number
         joinAfterStart: boolean
-        lecture: LFLecture[]
+        lectures: LFLecture[]
       } = {
         minGrade: 11,
         maxGrade: 13,
         maxParticipants: parseInt(maxParticipantCount),
         joinAfterStart,
-        lecture: []
+        lectures: []
       }
 
       for (const lec of lectures) {
@@ -204,7 +203,7 @@ const CreateCourse: React.FC<Props> = () => {
 
         dt.set({ hour: t.hour, minute: t.minute, second: t.second })
         l.start = dt.toISO()
-        subcourse.lecture.push(l)
+        subcourse.lectures.push(l)
       }
 
       createSubcourse({
@@ -291,8 +290,9 @@ const CreateCourse: React.FC<Props> = () => {
   }, [pickPhoto, setContent, setShow])
 
   const uploadPhoto = useCallback(async () => {
-    !courseData?.id && console.log("no course id, can't upload photo")
-    if (!courseData?.id) return
+    !courseData?.courseCreate?.id &&
+      console.log("no course id, can't upload photo")
+    if (!courseData?.courseCreate?.id) return
 
     const formData: FormData = new FormData()
 
@@ -301,26 +301,24 @@ const CreateCourse: React.FC<Props> = () => {
     formData.append('file', data, 'img_course.jpeg')
 
     try {
-      const raw = await fetch(process.env.REACT_APP_UPLOAD_URL, {
-        method: 'POST',
-        body: formData
-      })
-      const res = await raw.json()
-      if (res && res.fileId) {
+      // const raw = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+      //   method: 'POST',
+      //   body: formData
+      // })
+
+      if (true) {
         setCourseImage({
           variables: {
-            courseId: courseData.id,
-            fileId: res.fileId
+            courseId: courseData.courseCreate.id,
+            fileId: '1071e47c-8257-4017-bc1e-37dd8219ffae'
           }
         })
         console.log('set photo')
-      } else {
-        console.log({ res })
       }
     } catch (e) {
       console.error(e)
     }
-  }, [courseData?.id, pickedPhoto, setCourseImage])
+  }, [courseData?.courseCreate?.id, pickedPhoto, setCourseImage])
 
   useEffect(() => {
     if (courseData && !courseError) {
