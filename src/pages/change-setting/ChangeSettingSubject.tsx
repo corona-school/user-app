@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -18,10 +19,10 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
+import useLernfair from '../../hooks/useLernfair'
 import { LFSubject, subjects } from '../../types/lernfair/Subject'
 import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
@@ -62,8 +63,8 @@ type Props = {}
 const ChangeSettingSubject: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
-  const location = useLocation()
-  const { state } = location as { state: { userType: 'pupil' | 'student' } }
+  const { userType = '' } = useLernfair()
+  const { trackPageView } = useMatomo()
 
   const [focusedSelectionClasses, setFocusedSelectionClasses] = useState<
     number[]
@@ -76,11 +77,11 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const [showError, setShowError] = useState<boolean>()
 
   const { data, error, loading } = useQuery(gql`
-    ${state?.userType === 'student' ? queryStudent : queryPupil}
+    ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateSubjects, _updateSubjects] = useMutation(gql`
-    ${state?.userType === 'student' ? mutStudent : mutPupil}
+    ${userType === 'student' ? mutStudent : mutPupil}
   `)
 
   /**
@@ -92,6 +93,11 @@ const ChangeSettingSubject: React.FC<Props> = () => {
       const arr: LFSubject[] = []
       for (const sub of data) {
         delete sub['__typename']
+
+        if (sub.grade) {
+          delete sub.grade['__typename']
+        }
+
         arr.push(sub)
       }
       return arr
@@ -117,11 +123,11 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   )
 
   useEffect(() => {
-    if (data?.me?.student?.subjectsFormatted) {
-      const s = cleanupSubjects(data?.me?.student?.subjectsFormatted)
+    if (userType && data.me && data?.me[userType].subjectsFormatted) {
+      const s = cleanupSubjects(data?.me[userType].subjectsFormatted)
       setSelections(s)
     }
-  }, [cleanupSubjects, data?.me?.student?.subjectsFormatted])
+  }, [cleanupSubjects, data?.me, userType])
 
   useEffect(() => {
     if (_updateSubjects.data && !_updateSubjects.error) {
@@ -145,6 +151,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Fächer'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
@@ -157,7 +169,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           space={space['1']}
           width={ContainerWidth}>
           <Heading>
-            {state?.userType === 'student'
+            {userType === 'student'
               ? t('profile.subjects.single.title')
               : t('profile.NeedHelpIn.single.title')}
           </Heading>
@@ -187,7 +199,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                             `lernfair.subjects.${subject?.name?.toLowerCase()}`
                           ) +
                           ` ${
-                            (state?.userType === 'student' &&
+                            (userType === 'student' &&
                               `${subject?.grade?.min}. - ${subject?.grade?.max}. Klasse`) ||
                             ''
                           }`
@@ -225,8 +237,15 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                             iconPath={`subjects/icon_${subject.key}.svg`}
                             text={t(`lernfair.subjects.${subject.key}`)}
                             onPress={() => {
-                              setFocusedSelection({ name: subject.label })
-                              setShowFocusSelection(true)
+                              if (userType === 'student') {
+                                setFocusedSelection({ name: subject.label })
+                                setShowFocusSelection(true)
+                              } else {
+                                setSelections(prev => [
+                                  ...prev,
+                                  { name: subject.label }
+                                ])
+                              }
                             }}
                           />
                         </Column>

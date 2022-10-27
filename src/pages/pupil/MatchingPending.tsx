@@ -1,5 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, Button, Modal, Radio } from 'native-base'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
 
@@ -13,6 +14,14 @@ const MatchingPending: React.FC<Props> = () => {
   const cancelMatchRequest = useCallback((sendFeedback: boolean) => {
     setShowModal(false)
     // TODO cancel
+  }, [])
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Pending'
+    })
   }, [])
 
   return (

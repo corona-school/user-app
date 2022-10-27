@@ -38,8 +38,9 @@ import BackButton from '../components/BackButton'
 import { Pressable } from 'react-native'
 import LFParty from '../assets/icons/lernfair/lf-party.svg'
 import useModal from '../hooks/useModal'
-import Unsplash from './pupil/Unsplash'
+import Unsplash from './Unsplash'
 import CourseBlocker from './student/CourseBlocker'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -105,25 +106,33 @@ const CreateCourse: React.FC<Props> = () => {
     }
   `)
 
-  const [createCourse, { data: courseData, error: courseError }] =
-    useMutation(gql`
-      mutation createCourse($course: PublicCourseCreateInput!) {
-        courseCreate(course: $course) {
-          id
+  const [
+    createCourse,
+    { data: courseData, error: courseError, reset: resetCourse }
+  ] = useMutation(gql`
+    mutation createCourse($course: PublicCourseCreateInput!) {
+      courseCreate(course: $course) {
+        id
+      }
+    }
+  `)
+  const [
+    createSubcourse,
+    { data: subcourseData, error: subcourseError, reset: resetSubcourse }
+  ] = useMutation(gql`
+    mutation createSubcourse(
+      $courseId: Float!
+      $subcourse: PublicSubcourseCreateInput!
+    ) {
+      subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
+        id
+        canPublish {
+          allowed
+          reason
         }
       }
-    `)
-  const [createSubcourse, { data: subcourseData, error: subcourseError }] =
-    useMutation(gql`
-      mutation createSubcourse(
-        $courseId: Float!
-        $subcourse: PublicSubcourseCreateInput!
-      ) {
-        subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
-          id
-        }
-      }
-    `)
+    }
+  `)
 
   const [setCourseImage, mutImage] = useMutation(gql`
     mutation setCourseImage($courseId: Float!, $fileId: String!) {
@@ -136,6 +145,13 @@ const CreateCourse: React.FC<Props> = () => {
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
   const { setShow, setContent } = useModal()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen'
+    })
+  }, [])
 
   const onFinish = useCallback(async () => {
     const course = {
@@ -144,7 +160,7 @@ const CreateCourse: React.FC<Props> = () => {
       subject: subject.name,
       schooltype: 'gymnasium', // TODO
       name: courseName,
-      category: 'club', // TODO
+      category: 'revision',
       allowContact
     }
 
@@ -153,7 +169,6 @@ const CreateCourse: React.FC<Props> = () => {
         course
       }
     })
-    console.log('created course')
   }, [
     outline,
     description,
@@ -186,7 +201,9 @@ const CreateCourse: React.FC<Props> = () => {
         }
         const dt = DateTime.fromISO(lec.date)
         const t = DateTime.fromISO(lec.time)
+
         dt.set({ hour: t.hour, minute: t.minute, second: t.second })
+        l.start = dt.toISO()
         subcourse.lecture.push(l)
       }
 
@@ -196,7 +213,6 @@ const CreateCourse: React.FC<Props> = () => {
           subcourse
         }
       })
-      console.log('created subcourse')
     }
   }, [
     courseData,
@@ -239,6 +255,19 @@ const CreateCourse: React.FC<Props> = () => {
     subcourseError
   ])
 
+  useEffect(() => {
+    if (courseError) {
+      resetCourse()
+    }
+  }, [courseError, resetCourse])
+
+  useEffect(() => {
+    if (subcourseError) {
+      resetCourse()
+      resetSubcourse()
+    }
+  }, [subcourseError, resetCourse, resetSubcourse])
+
   const pickPhoto = useCallback(
     (photo: string) => {
       setPickedPhoto(photo)
@@ -249,11 +278,20 @@ const CreateCourse: React.FC<Props> = () => {
   )
 
   const showUnsplash = useCallback(() => {
-    setContent(<Unsplash onPhotoSelected={pickPhoto} />)
+    setContent(
+      <Unsplash
+        onPhotoSelected={pickPhoto}
+        onClose={() => {
+          setShow(false)
+          setContent(<></>)
+        }}
+      />
+    )
     setShow(true)
   }, [pickPhoto, setContent, setShow])
 
   const uploadPhoto = useCallback(async () => {
+    !courseData?.id && console.log("no course id, can't upload photo")
     if (!courseData?.id) return
 
     const formData: FormData = new FormData()
@@ -285,7 +323,7 @@ const CreateCourse: React.FC<Props> = () => {
   }, [courseData?.id, pickedPhoto, setCourseImage])
 
   useEffect(() => {
-    if (courseData && subcourseData && !courseError && !subcourseError) {
+    if (courseData && !courseError) {
       uploadPhoto()
     }
   }, [

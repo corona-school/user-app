@@ -2,9 +2,10 @@ import { useTheme, Text, View, Modal } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfoScreen from '../../../widgets/InfoScreen'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -13,6 +14,13 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Onboarding Welcome'
+    })
+  }, [])
 
   return (
     <View>
@@ -39,7 +47,15 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
           </>
         }
         outlineButtonText={t('onboardingList.Wizard.helper.welcome.skipTour')}
-        outlinebuttonLink={() => setCancelModal(true)}
+        outlinebuttonLink={() => {
+          trackEvent({
+            category: 'onboarding',
+            action: 'click-event',
+            name: 'Onboarding Helfer – überspringen',
+            documentTitle: 'Onboarding Helfer – Welcomepage'
+          })
+          setCancelModal(true)
+        }}
         defaultButtonText={t('onboardingList.Wizard.helper.welcome.startTour')}
         defaultbuttonLink={() => navigate('/onboarding/helper/wizard/')}
         icon={<Logo />}

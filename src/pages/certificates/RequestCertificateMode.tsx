@@ -1,4 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, useTheme, Button } from 'native-base'
+import { useEffect } from 'react'
 
 type Props = {
   onAutomatic: () => any
@@ -12,6 +14,13 @@ const RequestCertificateMode: React.FC<Props> = ({
   onBack
 }) => {
   const { space } = useTheme()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Zertifikate anfordern – Modus'
+    })
+  }, [])
 
   return (
     <VStack space={space['1.5']}>

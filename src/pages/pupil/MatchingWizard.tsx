@@ -1,24 +1,33 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import useModal from '../../hooks/useModal'
 import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
 type Props = {}
 
-const subs: LFSubject[] = [
-  { name: 'Englisch', grade: { min: 1, max: 11 }, mandatory: false },
-  { name: 'Informatik', grade: { min: 1, max: 11 }, mandatory: false }
-]
-
 const MatchingWizard: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { setShow, setContent } = useModal()
+
+  const [selection, setSelection] = useState<LFSubject>()
 
   const { space } = useTheme()
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching – anfordern'
+    })
+  }, [])
+
   const { data, error, loading } = useQuery(gql`
     query {
       me {
@@ -33,6 +42,7 @@ const MatchingWizard: React.FC<Props> = () => {
           gradeAsInt
           subjectsFormatted {
             name
+            mandatory
           }
         }
       }
@@ -43,14 +53,51 @@ const MatchingWizard: React.FC<Props> = () => {
     createMatchRequest,
     { data: requestData, error: requestError, loading: requestLoading }
   ] = useMutation(gql`
-    mutation createMatchRequest() {
-      pupilCreateMatchRequest()
+    mutation createMatchRequest($subjects: [SubjectInput!]) {
+      pupilUpdate(data: { subjects: $subjects })
+      pupilCreateMatchRequest
     }
   `)
 
   const onRequestMatch = useCallback(() => {
-    createMatchRequest()
-  }, [createMatchRequest])
+    const subjects = [...data?.me?.pupil?.subjectsFormatted]
+    const find = selection && subjects.find(sub => sub.name === selection.name)
+    if (find) {
+      find.mandatory = true
+    }
+    const subs = []
+
+    for (const sub of subjects) {
+      delete sub.__typename
+      subs.push(sub)
+    }
+
+    createMatchRequest({ variables: { subjects: subs } })
+  }, [createMatchRequest, data?.me?.pupil?.subjectsFormatted, selection])
+
+  useEffect(() => {
+    if (requestData && !requestError) {
+      setContent(
+        <>
+          <Heading>Deine Anfrage wurde erstellt!</Heading>
+          <Button
+            onPress={() => {
+              setShow(false)
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abgeschlossen',
+                documentTitle: 'Schüler Matching Anfrage'
+              })
+            }}>
+            Weiter
+          </Button>
+        </>
+      )
+      setShow(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestData, requestError, setContent, setShow])
 
   if (loading) return <></>
 
@@ -74,23 +121,42 @@ const MatchingWizard: React.FC<Props> = () => {
         <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
         <Text>{t('matching.request.needHelpInContent')}</Text>
         <TwoColGrid>
-          {subs.map((sub: any) => (
-            <IconTagList text={sub.name} variant="selection" />
+          {data?.me?.pupil?.subjectsFormatted.map((sub: LFSubject) => (
+            <IconTagList
+              initial={selection?.name === sub.name}
+              text={sub.name}
+              variant="selection"
+              iconPath={`languages/icon_${sub.name.toLowerCase()}.svg`}
+              onPress={() => setSelection(sub)}
+            />
           ))}
         </TwoColGrid>
       </VStack>
-      <Text bold>{t('matching.request.describ')}</Text>
-      <TextArea autoCompleteType={{}} />
+
       <Button
         onPress={onRequestMatch}
-        isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed}>
+        isDisabled={requestData || !data?.me?.pupil?.canRequestMatch?.allowed}>
         {t('matching.request.buttons.request')}
       </Button>
 
       {!data?.me?.pupil?.canRequestMatch?.allowed && (
-        <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
+        <Text>
+          {t(
+            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+          )}
+        </Text>
       )}
-      <Button variant={'outline'} onPress={() => navigate(-1)}>
+      <Button
+        variant={'outline'}
+        onPress={() => {
+          trackEvent({
+            category: 'matching',
+            action: 'click-event',
+            name: 'Schüler Matching anfragen – Abbrechen',
+            documentTitle: 'Schüler Matching Anfragen'
+          })
+          navigate(-1)
+        }}>
         {t('matching.request.buttons.cancel')}
       </Button>
     </VStack>

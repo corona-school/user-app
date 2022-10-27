@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -69,10 +70,10 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   `)
 
   useEffect(() => {
-    if (data?.me?.pupil?.languages) {
-      setSelections(data?.me?.pupil?.languages)
+    if (data?.me[state?.userType].languages) {
+      setSelections(data?.me[state?.userType].languages)
     }
-  }, [data?.me?.pupil?.languages])
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateLanguage.data && !_updateLanguage.error) {
@@ -95,6 +96,14 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Sprache'
+    })
+  }, [])
 
   if (loading) return <></>
 

@@ -3,6 +3,7 @@ export type LFSubject = {
   grade?: {
     min: number
     max: number
+    __typename?: string
   }
   mandatory?: boolean
   __typename?: string

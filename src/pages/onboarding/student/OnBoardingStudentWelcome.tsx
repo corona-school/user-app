@@ -2,9 +2,10 @@ import { useTheme, Text, View, Modal } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfoScreen from '../../../widgets/InfoScreen'
 import OnBoardingSkipModal from '../../../widgets/OnBoardingSkipModal'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -13,6 +14,14 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [cancelModal, setCancelModal] = useState<boolean>(false)
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Onboarding'
+    })
+  }, [])
 
   return (
     <View>
@@ -41,6 +50,12 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         outlineButtonText={t('onboardingList.Wizard.students.welcome.skipTour')}
         outlinebuttonLink={() => {
           setCancelModal(true)
+          trackEvent({
+            category: 'onboarding',
+            action: 'click-event',
+            name: 'Onboarding Schüler – Tour überspringen',
+            documentTitle: 'Onboarding Schüler – Welcome Page'
+          })
         }}
         defaultButtonText={t(
           'onboardingList.Wizard.students.welcome.startTour'
@@ -55,7 +70,15 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
         <OnBoardingSkipModal
           onPressClose={() => setCancelModal(false)}
           onPressDefaultButton={() => setCancelModal(false)}
-          onPressOutlineButton={() => navigate('/')}
+          onPressOutlineButton={() => {
+            trackEvent({
+              category: 'onboarding',
+              action: 'click-event',
+              name: 'Onboarding Schüler – Tour überspringen im Fenster',
+              documentTitle: 'Onboarding Schüler – Welcome Page'
+            })
+            navigate('/')
+          }}
         />
       </Modal>
     </View>

@@ -28,6 +28,7 @@ import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import Utility from '../../Utility'
 import { LFSubject } from '../../types/lernfair/Subject'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -201,6 +202,14 @@ const RegistrationData: React.FC<Props> = () => {
     lg: '500px'
   })
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Auswahl-Kacheln'
+    })
+  }, [])
+
   // registration went through without error
   useEffect(() => {
     if (data && !error) {
@@ -238,6 +247,12 @@ const RegistrationData: React.FC<Props> = () => {
             onPress={() => {
               setShow(false)
               navigate('/login')
+              trackEvent({
+                category: 'registrierung',
+                action: 'click-event',
+                name: 'Registrierung erfolgreich',
+                documentTitle: 'Registrierung war erfolgreich'
+              })
             }}>
             {t('registration.result.success.btn')}
           </Button>
@@ -246,6 +261,16 @@ const RegistrationData: React.FC<Props> = () => {
       setShow(true)
     }
   }, [navigate, data, error, setContent, setShow, setVariant, space, t])
+
+  const registerError = () => {
+    setShow(false)
+    trackEvent({
+      category: 'registrierung',
+      action: 'click-event',
+      name: 'Registrierung Fehler',
+      documentTitle: 'Fehler bei der Registrierung'
+    })
+  }
 
   // registration has an error
   useEffect(() => {
@@ -258,7 +283,7 @@ const RegistrationData: React.FC<Props> = () => {
               defaultValue: error.message
             })}
           </Text>
-          <Button onPress={() => setShow(false)}>
+          <Button onPress={() => registerError()}>
             {t('registration.result.error.btn')}
           </Button>
         </VStack>

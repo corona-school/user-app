@@ -32,6 +32,8 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import BackButton from '../../components/BackButton'
 
 type Props = {}
 
@@ -55,6 +57,7 @@ const Profile: React.FC<Props> = () => {
         firstname
         lastname
         pupil {
+          aboutMe
           state
           schooltype
           languages
@@ -121,6 +124,14 @@ const Profile: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Profil'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
@@ -135,18 +146,18 @@ const Profile: React.FC<Props> = () => {
             paddingY={space['2']}
             borderBottomRadius={16}>
             <Box position="relative">
-              <ProfilAvatar
+              {/* <ProfilAvatar
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
-              />
-              <Box position="absolute" right="-14px" bottom="8px">
+              /> */}
+              {/* <Box position="absolute" right="-14px" bottom="8px">
                 <Link href="#">
                   <EditIcon
                     fill={colors['lightText']}
                     stroke={colors['lightText']}
                   />
                 </Link>
-              </Box>
+              </Box> */}
             </Box>
             <Heading
               paddingTop={3}
@@ -173,7 +184,12 @@ const Profile: React.FC<Props> = () => {
             </Row> */}
           </Box>
         }
-        headerLeft={<NotificationAlert />}>
+        headerLeft={
+          <Row space={space['1']}>
+            <BackButton />
+            <NotificationAlert />
+          </Row>
+        }>
         {userSettingChanged && (
           <Alert
             width={ContainerWidth}

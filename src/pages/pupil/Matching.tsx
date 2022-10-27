@@ -1,18 +1,9 @@
-import {
-  Text,
-  VStack,
-  Box,
-  Button,
-  Heading,
-  Modal,
-  useTheme,
-  Row
-} from 'native-base'
-import { useState } from 'react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Text, VStack, Button, Modal, useTheme } from 'native-base'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../../components/WithNavigation'
-import CTACard from '../../widgets/CTACard'
 import MatchingOnboarding from './MatchingOnboarding'
 import MatchingWizard from './MatchingWizard'
 
@@ -24,6 +15,14 @@ const Matching: React.FC<Props> = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching'
+    })
+  }, [])
 
   return (
     <>
@@ -52,9 +51,16 @@ const Matching: React.FC<Props> = () => {
                 onPress={() => {
                   setCurrentIndex(1)
                   setShowModal(false)
+                  trackEvent({
+                    category: 'matching',
+                    action: 'click-event',
+                    name: 'Schüler Matching – Klick auf weiter im Fenster',
+                    documentTitle: 'Schüler Matching'
+                  })
                 }}>
                 {t('matching.modal.buttons.continue')}
               </Button>
+
               <Button variant="outline" onPress={() => navigate('/group')}>
                 {t('matching.modal.buttons.showGroupCourse')}
               </Button>

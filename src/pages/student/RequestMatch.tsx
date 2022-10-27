@@ -1,17 +1,14 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import {
-  VStack,
-  Modal,
-  Button,
-  useTheme,
-  useBreakpointValue
-} from 'native-base'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { VStack, Modal, Button, useTheme, Heading } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
 import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
+import useModal from '../../hooks/useModal'
 import Utility from '../../Utility'
+
 import MatchingBlocker from './MatchingBlocker'
 
 import RequestMatchPreview from './RequestMatchPreview'
@@ -20,8 +17,9 @@ import RequestMatchWizard from './RequestMatchWizard'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+  const { space } = useTheme()
   const { t } = useTranslation()
+  const { setShow, setContent } = useModal()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [selectedSubjects, setSelectedSubjects] = useState<{
     [key: string]: boolean
@@ -32,9 +30,8 @@ const RequestMatch: React.FC<Props> = () => {
 
   const [focusedSubject, setFocusedSubject] = useState<any>({ name: '' })
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [description, setDescription] = useState<string>('')
 
-  const { data, loading, error } = useQuery(gql`
+  const { data } = useQuery(gql`
     query {
       me {
         student {
@@ -66,20 +63,33 @@ const RequestMatch: React.FC<Props> = () => {
   `)
 
   const requestMatch = useCallback(() => {
-    // console.log('request match', {
-    //   selectedSubjects,
-    //   selectedClasses,
-    //   focusedSubject,
-    //   description
-    // })
     createMatchRequest()
   }, [createMatchRequest])
 
   useEffect(() => {
     if (matchRequest?.data?.studentCreateMatchRequest) {
-      // TODO show success
+      setContent(
+        <>
+          <Heading>Deine Anfrage wurde erstellt!</Heading>
+          <Button
+            onPress={() => {
+              setShow(false)
+            }}>
+            Weiter
+          </Button>
+        </>
+      )
+      setShow(true)
     }
-  }, [matchRequest])
+  }, [matchRequest?.data?.studentCreateMatchRequest, setContent, setShow])
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Match anfragen'
+    })
+  }, [])
 
   return (
     <>
@@ -89,11 +99,9 @@ const RequestMatch: React.FC<Props> = () => {
             {currentIndex === 0 && (
               <RequestMatchWizard
                 data={data}
-                description={description}
-                setDescription={setDescription}
                 selectedClasses={selectedClasses}
                 // setSelectedClasses={setSelectedClasses}
-                selectedSubjects={selectedClasses}
+                selectedSubjects={selectedSubjects}
                 setSelectedSubjects={setSelectedSubjects}
                 setCurrentIndex={setCurrentIndex}
                 setFocusedSubject={setFocusedSubject}
@@ -102,10 +110,11 @@ const RequestMatch: React.FC<Props> = () => {
             )}
             {currentIndex === 1 && (
               <RequestMatchPreview
-                description={description}
                 subjects={Object.entries(selectedSubjects)
                   .filter(s => s[1])
-                  .map(([key, val]) => key)}
+                  .map(([key, val]) => ({
+                    name: key
+                  }))}
                 classes={selectedClasses}
                 onRequestMatch={requestMatch}
                 onBack={() => setCurrentIndex(0)}
@@ -116,103 +125,59 @@ const RequestMatch: React.FC<Props> = () => {
           </VStack>
         )) || <MatchingBlocker />}
       </WithNavigation>
-      {console.log(selectedClasses, focusedSubject)}
+
       <Modal isOpen={showModal}>
         <Modal.Content>
           <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
-            <VStack>
-              {focusedSubject?.grade?.min < 5 &&
-                focusedSubject?.grade?.max >= 4 && (
+            <VStack space={space['1']}>
+              {[
+                `1. - 4. Klasse`,
+                `5. - 8. Klasse`,
+                `9. - 10. Klasse`,
+                `11. - 13. Klasse`
+              ].map((c, index) => {
+                const i = index + 1
+                const isSelected =
+                  focusedSubject &&
+                  !!selectedClasses[focusedSubject.name] &&
+                  !!selectedClasses[focusedSubject.name][i]
+
+                return (
                   <ToggleButton
-                    label={`1. - 4. Klasse`}
-                    dataKey={'1'}
-                    isActive={
-                      focusedSubject &&
-                      selectedClasses[focusedSubject.name] &&
-                      selectedClasses[focusedSubject.name][1]
-                    }
-                    onPress={() =>
+                    label={c}
+                    dataKey={`${i}`}
+                    isActive={isSelected}
+                    onPress={key => {
                       setSelectedClasses(prev => ({
                         ...prev,
                         [focusedSubject.name]: {
-                          1:
-                            prev[focusedSubject.name] &&
-                            (!prev[focusedSubject.name][1] || false)
+                          ...selectedClasses[focusedSubject.name],
+                          [key]: !isSelected
                         }
                       }))
-                    }
+                    }}
                   />
-                )}
-              {focusedSubject?.grade?.min <= 5 &&
-                focusedSubject?.grade?.max >= 8 && (
-                  <ToggleButton
-                    label={`5. - 8. Klasse`}
-                    dataKey={'2'}
-                    isActive={
-                      focusedSubject &&
-                      selectedClasses[focusedSubject.name] &&
-                      selectedClasses[focusedSubject.name][2]
-                    }
-                    onPress={() =>
-                      setSelectedClasses(prev => ({
-                        ...prev,
-                        [focusedSubject.name]: {
-                          2:
-                            prev[focusedSubject.name] &&
-                            (!prev[focusedSubject.name][2] || false)
-                        }
-                      }))
-                    }
-                  />
-                )}
-              {focusedSubject?.grade?.min <= 9 &&
-                focusedSubject?.grade?.max >= 10 && (
-                  <ToggleButton
-                    label={`9. - 10. Klasse`}
-                    dataKey={'3'}
-                    isActive={
-                      focusedSubject &&
-                      selectedClasses[focusedSubject.name] &&
-                      selectedClasses[focusedSubject.name][3]
-                    }
-                    onPress={() =>
-                      setSelectedClasses(prev => ({
-                        ...prev,
-                        [focusedSubject.name]: {
-                          3:
-                            prev[focusedSubject.name] &&
-                            (!prev[focusedSubject.name][3] || false)
-                        }
-                      }))
-                    }
-                  />
-                )}
-              {focusedSubject?.grade?.min <= 11 && (
-                <ToggleButton
-                  label={`11. - 13. Klasse`}
-                  dataKey={'4'}
-                  isActive={
-                    focusedSubject &&
-                    selectedClasses[focusedSubject.name] &&
-                    selectedClasses[focusedSubject.name][4]
-                  }
-                  onPress={() =>
-                    setSelectedClasses(prev => ({
-                      ...prev,
-                      [focusedSubject.name]: {
-                        4:
-                          prev[focusedSubject.name] &&
-                          (!prev[focusedSubject.name][4] || false)
-                      }
-                    }))
-                  }
-                />
-              )}
+                )
+              })}
             </VStack>
           </Modal.Body>
           <Modal.Footer>
-            <Button onPress={() => setShowModal(false)}>
+            <Button
+              onPress={() => {
+                const selectionCount = Object.values(
+                  selectedClasses[focusedSubject.name] || {}
+                ).filter(c => c).length
+                if (selectionCount === 0) {
+                  setSelectedSubjects(prev => {
+                    const p = { ...prev }
+                    p[focusedSubject.name] = false
+                    return p
+                  })
+                }
+
+                setShowModal(false)
+              }}>
               {t('matching.request.modal.save')}
             </Button>
           </Modal.Footer>

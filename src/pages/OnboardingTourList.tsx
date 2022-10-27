@@ -21,6 +21,8 @@ import IconContact from '../assets/icons/lernfair/onboarding/lf-onboarding-conta
 import IconGroup from '../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
 import IconHelp from '../assets/icons/lernfair/onboarding/lf-onboarding-help.svg'
 import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-calender.svg'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -28,6 +30,13 @@ const OnboardingTourList: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Onboarding Tour List'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -84,9 +93,19 @@ const OnboardingTourList: React.FC<Props> = () => {
                   }
                   button={
                     <Button
-                      onPress={() =>
+                      onPress={() => {
+                        trackEvent({
+                          category: 'onboarding',
+                          action: 'click-event',
+                          name:
+                            'Button-Klick Onboarding' +
+                            t(`onboardingList.cards.card${index}.title`),
+                          documentTitle: t(
+                            `onboardingList.cards.card${index}.title`
+                          )
+                        })
                         navigate(t(`onboardingList.cards.card${index}.url`))
-                      }>
+                      }}>
                       {t(`onboardingList.buttontext`)}
                     </Button>
                   }

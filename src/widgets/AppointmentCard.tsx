@@ -22,7 +22,7 @@ import { DateTime } from 'luxon'
 
 type Props = {
   tags?: LFTag[]
-  date: string
+  date?: string
   title: string
   description: string
   child?: string
@@ -58,36 +58,19 @@ const AppointmentCard: React.FC<Props> = ({
   const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
 
-  const date = DateTime.fromISO(_date)
+  const date = _date && DateTime.fromISO(_date)
 
   useEffect(() => {
-    setRemainingTime(toTimerString(date.toMillis(), Date.now()))
+    date && setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, [date])
 
   useInterval(() => {
-    setRemainingTime(toTimerString(date.toMillis(), Date.now()))
+    date && setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, 1000)
 
-  const isStartingSoon = useMemo(
-    () => date.toMillis() - Date.now() < TIME_THRESHOLD,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_date, remainingTime]
-  )
-
-  // isStartingSoon &&
-  //   console.log(
-  //     title,
-  //     date.toMillis() - Date.now(),
-  //     date.toMillis(),
-  //     Date.now(),
-  //     TIME_THRESHOLD
-  //   )
-
   const textColor = useMemo(
-    () => (isStartingSoon ? 'lightText' : 'darkText'),
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_date, remainingTime]
+    () => (isTeaser ? 'lightText' : 'darkText'),
+    [isTeaser]
   )
 
   const CardMobileDirection = useBreakpointValue({
@@ -115,7 +98,7 @@ const AppointmentCard: React.FC<Props> = ({
       {variant === 'card' ? (
         <Card
           flexibleWidth={isTeaser ? true : false}
-          variant={isStartingSoon ? 'dark' : 'normal'}>
+          variant={isTeaser ? 'dark' : 'normal'}>
           <Link href={href}>
             <Column
               w="100%"
@@ -145,14 +128,14 @@ const AppointmentCard: React.FC<Props> = ({
               </Box>
 
               <Box padding={isTeaser ? CardMobilePadding : space['1']}>
-                {!isStartingSoon && (
+                {!isTeaser && date && (
                   <Row paddingTop={space['1']} space={1}>
                     <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
                     <Text color={textColor}>•</Text>
                     <Text color={textColor}>{date.toFormat('HH:mm')}</Text>
                   </Row>
                 )}
-                {isStartingSoon && (
+                {date && isTeaser && (
                   <Row paddingBottom={space['0.5']}>
                     <Text color={textColor}>Startet in: </Text>
                     <Text bold color="primary.400">
@@ -165,7 +148,7 @@ const AppointmentCard: React.FC<Props> = ({
                   {title}
                 </Text>
 
-                {isStartingSoon && (
+                {isTeaser && (
                   <>
                     <Text paddingBottom={space['1']} color={textColor}>
                       {description?.length > 56
@@ -203,9 +186,11 @@ const AppointmentCard: React.FC<Props> = ({
                 borderTopLeftRadius="15px"
                 borderBottomLeftRadius="15px"
                 height="100%"
+                bgColor="gray.300"
                 source={{ uri: image }}
               />
             </Box>
+
             <Box paddingX={space['0.5']} paddingY={space['1.5']}>
               <Row space={space['0.5']}>
                 {tags?.map((tag, i) => (
@@ -213,9 +198,11 @@ const AppointmentCard: React.FC<Props> = ({
                 ))}
               </Row>
               <Row space={1} marginY={space['0.5']}>
-                <Text>
-                  {'Ab'} {date.toFormat('dd.MM.yyyy')}
-                </Text>
+                {date && (
+                  <Text>
+                    {'Ab'} {date.toFormat('dd.MM.yyyy')}
+                  </Text>
+                )}
                 {countCourse && (
                   <>
                     <Text>•</Text>

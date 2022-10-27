@@ -35,6 +35,7 @@ import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -129,6 +130,14 @@ const ProfileStudent: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
 
   if (loading) return <></>
 
@@ -287,16 +296,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   })
                 }>
                 <Row>
-                  {(data?.me?.student.state &&
-                    data?.me?.student.state !== 'other' && (
-                      <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.student.state}`)}
-                        />
-                      </Column>
-                    )) || <Text>{t('profile.State.empty')}</Text>}
+                  {(data?.me?.student.state && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.student.state}`)}
+                      />
+                    </Column>
+                  )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -392,7 +400,16 @@ const ProfileStudent: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button width={ButtonWidth}>
+                <Button
+                  width={ButtonWidth}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'profil',
+                      action: 'click-event',
+                      name: 'Helfer Profil – Bescheinigung anfordern Button Klick',
+                      documentTitle: 'Helfer Profil – Bescheinigung anfordern'
+                    })
+                  }}>
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>

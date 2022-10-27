@@ -25,9 +25,7 @@ const TeacherCard: React.FC<Props> = ({
 
   return (
     <LeftImageCard avatar={avatar} button={button} variant={variant}>
-      <Box alignSelf="flex-start">
-        <RatingTag rating="4,1" />
-      </Box>
+      <Box alignSelf="flex-start">{/* <RatingTag rating="4,1" /> */}</Box>
       <Link href={href}>
         <Text fontSize="md" bold color={variant === 'dark' ? 'lightText' : ''}>
           {name}

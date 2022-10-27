@@ -1,5 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { View, Text, VStack, useTheme, Heading } from 'native-base'
+import { useEffect } from 'react'
 import NotificationAlert from '../components/NotificationAlert'
 import SettingsButton from '../components/SettingsButton'
 import WithNavigation from '../components/WithNavigation'
@@ -22,6 +24,13 @@ const Explore: React.FC<Props> = () => {
   `)
 
   const { space } = useTheme()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Erkunden'
+    })
+  }, [])
 
   if (loading) return <></>
   return (

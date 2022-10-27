@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -68,8 +69,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string>('')
 
   useEffect(() => {
-    setSelections(data?.me?.pupil?.schooltype)
-  }, [data?.me?.pupil?.schooltype])
+    setSelections(data?.me[state?.userType].schooltype)
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateSchooltype.data && !_updateSchooltype.error) {
@@ -92,6 +93,14 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Bundesland'
+    })
+  }, [])
 
   if (loading) return <></>
 
