@@ -67,6 +67,7 @@ import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
 import { useEffect } from 'react'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
+import UserProfile from './pages/UserProfile'
 
 export default function Navigator() {
   return (
@@ -378,6 +379,15 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <LearningPartnerArchive />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/user-profile"
+          element={
+            <RequireAuth>
+              <UserProfile />
             </RequireAuth>
           }
         />
