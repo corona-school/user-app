@@ -1,6 +1,6 @@
 const single = {
   global: {
-    clockFrom: 'Ab', 
+    clockFrom: 'Ab',
     from: 'aus',
     clock: 'Uhr',
     category: 'Kategorie',
@@ -10,6 +10,7 @@ const single = {
     lessons: 'Lektionen',
     duration: 'Dauer',
     tutor: 'Tutor:innen',
+    more_tutors: 'Weitere Tutor:innen',
     years: 'Jahre',
     status: {
       free: 'Freie Plätze',
@@ -18,13 +19,13 @@ const single = {
     }
   },
   button: {
-    login: 'Anmelden', 
+    login: 'Anmelden',
     contact: 'Kontakt aufnehmen'
   },
-  tabs:{
+  tabs: {
     description: 'Beschreibung',
     help: 'Details',
-    lessons: 'Lektionen', 
+    lessons: 'Lektionen',
     participant: 'Teilnehmer'
   }
 }
