@@ -62,7 +62,7 @@ const RequestMatchPreview: React.FC<Props> = ({
   }, [])
 
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('matching.request.check.preview.title')}</Heading>
       <Text>{t('matching.request.check.preview.content')}</Text>
 

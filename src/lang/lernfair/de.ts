@@ -30,7 +30,7 @@ const lernfair = {
     'deutsch-2': 'Deutsch als Zweitsprache',
     englisch: 'Englisch',
     erdkunde: 'Erdkunde',
-    franzoesisch: 'Französisch',
+    französisch: 'Französisch',
     geschichte: 'Geschichte',
     informatik: 'Informatik',
     italienisch: 'Italienisch',

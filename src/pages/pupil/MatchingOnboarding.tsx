@@ -76,7 +76,10 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   }, [])
 
   return (
-    <VStack space={space['0.5']} paddingX={space['1']} width={ContainerWidth}>
+    <VStack
+      space={space['0.5']}
+      paddingX={space['1']}
+      maxWidth={ContainerWidth}>
       <Heading paddingBottom={space['0.5']}>
         {t('matching.blocker.title')}
       </Heading>

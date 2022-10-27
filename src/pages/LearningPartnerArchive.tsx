@@ -97,7 +97,7 @@ const LearningPartnerArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.learningpartner.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.learningpartner.title')}</Heading>

@@ -265,7 +265,7 @@ const DashboardStudent: React.FC<Props> = () => {
           </HStack>
         }
         headerLeft={<NotificationAlert />}>
-        <VStack paddingX={space['1']} width={ContainerWidth}>
+        <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
           <VStack space={space['1']} marginTop={space['1']}>
             <VStack paddingY={space['1']}>
               <HelperWizard index={0} />
@@ -354,43 +354,47 @@ const DashboardStudent: React.FC<Props> = () => {
               onShowAll={() => navigate('/course-archive')}
               wrap
               scrollable={false}>
-              {(sortedPublishedSubcourses.length > 0 &&
-                sortedPublishedSubcourses
-                  .slice(0, 4)
-                  .map((sub: LFSubCourse, index: number) => {
-                    const firstLecture = getFirstLectureFromSubcourse(
-                      sub.lectures
-                    )
-                    if (!firstLecture) return <></>
-                    return (
-                      <AppointmentCard
-                        variant="horizontal"
-                        key={index}
-                        description={sub.outline}
-                        tags={sub.course.tags}
-                        date={firstLecture.start}
-                        countCourse={sub.lectures.length}
-                        onPressToCourse={() => {
-                          trackEvent({
-                            category: 'dashboard',
-                            action: 'click-event',
-                            name:
-                              'Helfer Dashboard Kachelklick  ' +
-                              sub.course.name,
-                            documentTitle:
-                              'Helfer Dashboard – Meine Kurse  ' +
-                              sub.course.name
-                          })
-                        }}
-                        image={sub.course.image}
-                        title={sub.course.name}
-                      />
-                    )
-                  })) || (
-                <VStack space={space['0.5']}>
-                  <Text>{t('empty.courses')}</Text>
-                </VStack>
-              )}
+              <Flex direction="row" flexWrap="wrap">
+                {(sortedPublishedSubcourses.length > 0 &&
+                  sortedPublishedSubcourses
+                    .slice(0, 4)
+                    .map((sub: LFSubCourse, index: number) => {
+                      const firstLecture = getFirstLectureFromSubcourse(
+                        sub.lectures
+                      )
+                      if (!firstLecture) return <></>
+                      return (
+                        <Column width={CardGrid} marginRight="15px">
+                          <AppointmentCard
+                            variant="horizontal"
+                            key={index}
+                            description={sub.outline}
+                            tags={sub.course.tags}
+                            date={firstLecture.start}
+                            countCourse={sub.lectures.length}
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'dashboard',
+                                action: 'click-event',
+                                name:
+                                  'Helfer Dashboard Kachelklick  ' +
+                                  sub.course.name,
+                                documentTitle:
+                                  'Helfer Dashboard – Meine Kurse  ' +
+                                  sub.course.name
+                              })
+                            }}
+                            image={sub.course.image}
+                            title={sub.course.name}
+                          />
+                        </Column>
+                      )
+                    })) || (
+                  <VStack space={space['0.5']}>
+                    <Text>{t('empty.courses')}</Text>
+                  </VStack>
+                )}
+              </Flex>
               {(data?.me?.student?.canCreateCourse?.allowed && (
                 <Button
                   width={ButtonContainer}
@@ -466,6 +470,7 @@ const DashboardStudent: React.FC<Props> = () => {
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
                   <Button
+                    width={ButtonContainer}
                     isDisabled={isMatchRequested}
                     marginY={space['1']}
                     onPress={requestMatch}>

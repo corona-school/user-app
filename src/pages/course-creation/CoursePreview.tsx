@@ -66,7 +66,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
   }, [])
 
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 

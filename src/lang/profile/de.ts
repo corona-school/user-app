@@ -111,7 +111,13 @@ const profile = {
       title: 'Meine Bescheinigungen',
       tabbestaetigt: 'Bestätigt',
       tabausstehend: 'Ausstehend',
-      button: 'Bescheinigung anfordern'
+      button: 'Bescheinigung anfordern',
+      status: {
+        awaiting: 'ausstehend',
+        manual: 'manuell bestätigt',
+        approved: 'genehmigt',
+        unknown: 'unbekannt'
+      }
     }
   },
   Notice: {

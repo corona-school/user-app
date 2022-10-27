@@ -124,7 +124,10 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('profile.SchoolClass.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -143,7 +146,10 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -198,7 +204,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
-        width={ContainerWidth}>
+        maxWidth={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -216,7 +222,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
           </Alert>
         )}
         {showError && (
-          <Alert marginY={3} bgColor="danger.500" width={ContainerWidth}>
+          <Alert marginY={3} bgColor="danger.500" maxWidth={ContainerWidth}>
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
                 flexShrink={1}

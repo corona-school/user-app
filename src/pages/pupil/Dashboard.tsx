@@ -6,7 +6,9 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
-  Pressable
+  Pressable,
+  Flex,
+  Column
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -119,6 +121,11 @@ const Dashboard: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48.3%'
+  })
+
   const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] =
     useMemo(() => {
       const lectures: { course: LFSubCourse; lecture: LFLecture }[] = []
@@ -147,7 +154,7 @@ const Dashboard: React.FC<Props> = () => {
     <WithNavigation
       headerContent={
         <HStack
-          width={ContainerWidth}
+          maxWidth={ContainerWidth}
           space={space['1']}
           alignItems="center"
           bgColor={'primary.900'}
@@ -162,7 +169,7 @@ const Dashboard: React.FC<Props> = () => {
         </HStack>
       }
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']} marginTop={space['1']}>
           {sortedAppointments[0] && (
             <VStack space={space['0.5']}>
@@ -252,35 +259,39 @@ const Dashboard: React.FC<Props> = () => {
             title={t('dashboard.learningpartner.header')}
             showAll={data?.me?.pupil?.matches?.length > 2}
             wrap>
-            {data?.me?.pupil?.matches?.slice(0, 2).map(
-              (match: LFMatch) =>
-                (
-                  <Pressable
-                    onPress={() =>
-                      navigate('/profile', {
-                        state: { userType: 'student', id: match.student.id }
-                      })
-                    }>
-                    <TeacherCard
-                      name={`${match.student?.firstname} ${match.student?.lastname}`}
-                      variant="dark"
-                      tags={
-                        match.subjectsFormatted?.map(s => s.name) || [
-                          'Fehler',
-                          'Backend',
-                          'Permission'
-                        ]
-                      }
-                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                      button={
-                        <Button variant="outlinelight">
-                          {t('dashboard.offers.match')}
-                        </Button>
-                      }
-                    />
-                  </Pressable>
-                ) || <Text>{t('dashboard.offers.noMatching')}</Text>
-            )}
+            <Flex direction="row" flexWrap="wrap">
+              {data?.me?.pupil?.matches?.slice(0, 2).map(
+                (match: LFMatch) =>
+                  (
+                    <Pressable
+                      onPress={() =>
+                        navigate('/profile', {
+                          state: { userType: 'student', id: match.student.id }
+                        })
+                      }>
+                      <Column width={CardGrid} marginRight="15px">
+                        <TeacherCard
+                          name={`${match.student?.firstname} ${match.student?.lastname}`}
+                          variant="dark"
+                          tags={
+                            match.subjectsFormatted?.map(s => s.name) || [
+                              'Fehler',
+                              'Backend',
+                              'Permission'
+                            ]
+                          }
+                          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                          button={
+                            <Button variant="outlinelight">
+                              {t('dashboard.offers.match')}
+                            </Button>
+                          }
+                        />
+                      </Column>
+                    </Pressable>
+                  ) || <Text>{t('dashboard.offers.noMatching')}</Text>
+              )}
+            </Flex>
             <VStack space={space['0.5']} mt="3">
               {(data?.me?.pupil?.canRequestMatch?.allowed && (
                 <Button
@@ -309,7 +320,7 @@ const Dashboard: React.FC<Props> = () => {
           </HSection>
 
           {/* Suggestions */}
-
+          {console.log(data?.subcoursesPublic?.length)}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
               data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (

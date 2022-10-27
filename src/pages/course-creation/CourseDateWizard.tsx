@@ -39,14 +39,14 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
   }, [])
 
   return (
-    <VStack w={ContainerWidth}>
+    <VStack maxWidth={ContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
         <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}
           {`${index + 1}`.padStart(2, ' 0')}
         </Heading>
       )}
-      <FormControl w={ContainerWidth}>
+      <FormControl maxWidth={ContainerWidth}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>

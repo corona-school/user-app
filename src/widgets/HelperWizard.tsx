@@ -1,4 +1,13 @@
-import { View, Text, Heading, Row, useTheme, Button, Box } from 'native-base'
+import {
+  View,
+  Text,
+  Heading,
+  Row,
+  useTheme,
+  Button,
+  Box,
+  useBreakpointValue
+} from 'native-base'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
@@ -8,8 +17,13 @@ type Props = {
 }
 
 const HelperWizard: React.FC<Props> = ({ index }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   return (
     <View>
@@ -32,10 +46,10 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                     text: (
                       <>
                         <Box>
-                          <Text marginBottom={space['1']}>
+                          <Text maxWidth="500px" marginBottom={space['1']}>
                             {t('helperwizard.kennenlernen.content')}
                           </Text>
-                          <Button>
+                          <Button width={ButtonContainer}>
                             {t('helperwizard.kennenlernen.button')}
                           </Button>
                         </Box>
@@ -61,10 +75,12 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           </Text>
                         </Box>
                         <Box>
-                          <Text marginBottom={space['1']}>
+                          <Text maxWidth="500px" marginBottom={space['1']}>
                             {t('helperwizard.zeugnis.content')}
                           </Text>
-                          <Button>{t('helperwizard.zeugnis.button')}</Button>
+                          <Button width={ButtonContainer}>
+                            {t('helperwizard.zeugnis.button')}
+                          </Button>
                         </Box>
                       </>
                     )
@@ -80,10 +96,12 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                     text: (
                       <>
                         <Box>
-                          <Text marginBottom={space['1']}>
+                          <Text maxWidth="500px" marginBottom={space['1']}>
                             {t('helperwizard.angebot.content')}
                           </Text>
-                          <Button>{t('helperwizard.angebot.button')}</Button>
+                          <Button width={ButtonContainer}>
+                            {t('helperwizard.angebot.button')}
+                          </Button>
                         </Box>
                       </>
                     )
@@ -102,7 +120,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           <Text marginBottom={space['1']}>
                             {t('helperwizard.zeugnisHochladen.content')}
                           </Text>
-                          <Button>
+                          <Button width={ButtonContainer}>
                             {t('helperwizard.zeugnisHochladen.button')}
                           </Button>
                         </Box>

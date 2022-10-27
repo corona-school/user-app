@@ -167,7 +167,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
-          width={ContainerWidth}>
+          maxWidth={ContainerWidth}>
           <Heading>
             {userType === 'student'
               ? t('profile.subjects.single.title')
@@ -218,7 +218,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
-          width={ContainerWidth}>
+          maxWidth={ContainerWidth}>
           <ProfileSettingRow title={t('profile.NeedHelpIn.single.others')}>
             <ProfileSettingItem
               border={false}
@@ -281,7 +281,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           paddingBottom={space['1.5']}
-          width={ContainerWidth}>
+          maxWidth={ContainerWidth}>
           {userSettingChanged && (
             <Alert marginY={3} colorScheme="success" status="success">
               <VStack space={2} flexShrink={1} w="100%">
