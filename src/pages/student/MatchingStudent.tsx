@@ -1,7 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
-  View,
   Text,
   VStack,
   Heading,
@@ -11,7 +10,8 @@ import {
   Flex,
   Column,
   Modal,
-  useToast
+  useToast,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -27,6 +27,7 @@ const query = gql`
   query {
     me {
       student {
+        id
         matches {
           id
           dissolved
@@ -57,9 +58,10 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [focusedMatch, setFocusedMatch] = useState<LFMatch>()
+  const [showCancelModal, setShowCancelModal] = useState<boolean>()
   const [toastShown, setToastShown] = useState<boolean>()
 
-  const { data, loading, error } = useQuery(query)
+  const { data } = useQuery(query)
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -76,15 +78,23 @@ const MatchingStudent: React.FC<Props> = () => {
     lg: '48%'
   })
 
-  const [dissolveMatch, { data: dissolveData, error: dissolveError }] =
-    useMutation(
-      gql`
-        mutation ($matchId: Float!, $dissolveReason: Float!) {
-          matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
-        }
-      `,
-      { refetchQueries: [{ query }] }
-    )
+  const [dissolveMatch, { data: dissolveData }] = useMutation(
+    gql`
+      mutation ($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+      }
+    `,
+    { refetchQueries: [{ query }] }
+  )
+
+  const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
+    gql`
+      mutation ($id: Float!) {
+        studentDeleteMatchRequest(studentId: $id)
+      }
+    `,
+    { refetchQueries: [{ query }] }
+  )
 
   const showDissolveMatchModal = useCallback((match: LFMatch) => {
     setFocusedMatch(match)
@@ -96,13 +106,36 @@ const MatchingStudent: React.FC<Props> = () => {
       category: 'matching',
       action: 'click-event',
       name: 'Helfer Matching lösen',
-      documentTitle: 'Helfer Matching lösen'
+      documentTitle: 'Helfer Matching'
     })
     setShowDissolveModal(false)
     dissolveMatch({
       variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dissolveMatch, focusedMatch?.id])
+
+  const showCancelMatchRequestModal = useCallback(() => {
+    setShowCancelModal(true)
+  }, [])
+
+  const cancelRequest = useCallback(async () => {
+    setShowCancelModal(false)
+    trackEvent({
+      category: 'matching',
+      action: 'click-event',
+      name: 'Helfer Matching Anfrage löschen',
+      documentTitle: 'Helfer Matching'
+    })
+    const res = (await cancelMatchRequest({
+      variables: { id: data?.me?.student?.id }
+    })) as { studentDeleteMatchRequest: boolean }
+
+    if (res.studentDeleteMatchRequest) {
+      toast.show({ description: 'Die Anfrage wurde gelöscht' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (dissolveData?.matchDissolve && !toastShown) {
@@ -125,6 +158,7 @@ const MatchingStudent: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Helfer Matching'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -203,6 +237,40 @@ const MatchingStudent: React.FC<Props> = () => {
                     </Flex>
                   </VStack>
                 )
+              },
+              {
+                title: 'Anfragen',
+                content: (
+                  <VStack space={space['1']}>
+                    <Heading>
+                      Offene Anfragen:{' '}
+                      {data?.me?.student?.openMatchRequestCount}
+                    </Heading>
+                    <VStack space={space['0.5']}>
+                      {(data?.me?.student?.openMatchRequestCount &&
+                        new Array(data?.me?.student?.openMatchRequestCount)
+                          .fill('')
+                          .map((_, i) => (
+                            <Box
+                              bgColor="primary.100"
+                              padding={space['1']}
+                              borderRadius={8}>
+                              <Heading>
+                                Anfrage {`${i + 1}`.padStart(2, '0')}
+                              </Heading>
+
+                              <Button
+                                isDisabled={cancelLoading}
+                                variant="outline"
+                                mt="3"
+                                onPress={showCancelMatchRequestModal}>
+                                Anfrage zurücknehmen
+                              </Button>
+                            </Box>
+                          ))) || <Text>Keine Anfragen</Text>}
+                    </VStack>
+                  </VStack>
+                )
               }
             ]}
           />
@@ -214,8 +282,23 @@ const MatchingStudent: React.FC<Props> = () => {
           <Modal.CloseButton onPress={() => setShowDissolveModal(false)} />
           <Modal.Body>Möchtest du das Match wirklich auflösen?</Modal.Body>
           <Modal.Footer>
-            <Button variant="ghost">Abbrechen</Button>
+            <Button variant="ghost" onPress={() => setShowDissolveModal(false)}>
+              Abbrechen
+            </Button>
             <Button onPress={dissolve}>Match auflösen</Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal isOpen={showCancelModal}>
+        <Modal.Content>
+          <Modal.Header>Anfrage löschen</Modal.Header>
+          <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
+          <Modal.Body>Möchtest du die Anfrage wirklich löschen?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
+              Abbrechen
+            </Button>
+            <Button onPress={cancelRequest}>Anfrage löschen</Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
