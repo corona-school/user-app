@@ -199,7 +199,7 @@ const SingleCourse: React.FC<Props> = () => {
         </Box>
         <Text paddingBottom={space['0.5']}>
           {t('single.global.clockFrom')}{' '}
-          {Utility.formatDate(course?.lectures[0].start)}
+          {Utility.formatDate(course?.lectures[0].start)}{' '}
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
@@ -293,10 +293,11 @@ const SingleCourse: React.FC<Props> = () => {
                           {t('single.global.clock')}
                         </Text>
                         <Text>
-                          <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden
+                          <Text bold>{t('single.global.duration')}: </Text>{' '}
+                          {lec?.duration / 60} {t('single.global.hours')}
                         </Text>
                       </Row>
-                    ))) || <Text>Es wurden keine Lektionen eingetragen.</Text>}
+                    ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
               )
             },
@@ -318,9 +319,7 @@ const SingleCourse: React.FC<Props> = () => {
                           <Text>{p.grade}</Text>
                         </Column>
                       </Row>
-                    ))) || (
-                    <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
-                  )}
+                    ))) || <Text>{t('single.global.noMembers')}</Text>}
                 </>
               )
             }
@@ -328,7 +327,7 @@ const SingleCourse: React.FC<Props> = () => {
         />
 
         {userType === 'pupil' && (
-          <Box marginBottom={space['0.5']}>
+          <Box marginBottom={space['0.5']} paddingLeft={space['1']}>
             {!course?.canJoin?.allowed && !course?.isParticipant && (
               <Text>{course?.canJoin?.reason}</Text>
             )}
@@ -353,12 +352,12 @@ const SingleCourse: React.FC<Props> = () => {
                 width={ButtonContainer}
                 marginBottom={space['0.5']}
                 isDisabled={!course?.canJoin?.allowed || loading}>
-                Auf die Warteliste
+                {t('single.button.AddToWaitingList')}
               </Button>
             )}
             {course?.isOnWaitingList && (
               <VStack space={space['0.5']}>
-                <Text>Du bist bereits auf der Warteliste dieses Kurses</Text>
+                <Text>{t('single.buttoninfo.waitingListMember')}</Text>
                 <Button
                   onPress={() => {
                     // subcourseLeaveWaitinglist(subcourseId: 11)
@@ -367,13 +366,13 @@ const SingleCourse: React.FC<Props> = () => {
                   width={ButtonContainer}
                   marginBottom={space['0.5']}
                   isDisabled={loading}>
-                  Warteliste verlassen
+                  {t('single.button.leaveWaitingList')}
                 </Button>
               </VStack>
             )}
             {course?.isParticipant && (
               <VStack space={space['0.5']}>
-                <Text>Du bist bereits Teilnehmer dieses Kurses</Text>
+                <Text>{t('single.buttoninfo.successMember')}</Text>
                 <Button
                   onPress={() => {
                     leaveSubcourse({ variables: { courseId: courseId } })
@@ -381,14 +380,14 @@ const SingleCourse: React.FC<Props> = () => {
                   width={ButtonContainer}
                   marginBottom={space['0.5']}
                   isDisabled={loading}>
-                  Kurs verlassen
+                  {t('single.button.leaveCourse')}
                 </Button>
               </VStack>
             )}
           </Box>
         )}
         {course?.allowContact && (
-          <Box marginBottom={space['1.5']}>
+          <Box marginBottom={space['1.5']} paddingLeft={space['1']}>
             <Button
               onPress={() => {
                 trackEvent({
