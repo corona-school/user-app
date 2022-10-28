@@ -322,7 +322,7 @@ const ProfileStudent: React.FC<Props> = () => {
                       <Column marginRight={3}>
                         <IconTagList
                           isDisabled
-                          iconPath={'subjects/icon_mathe.svg'}
+                          iconPath={'subjects/icon_mathematik.svg'}
                           text={sub.name}
                         />
                       </Column>

@@ -23,7 +23,7 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'italienisch', label: 'Italienisch' },
   { key: 'kunst', label: 'Kunst' },
   { key: 'latein', label: 'Latein' },
-  { key: 'mathe', label: 'Mathe' },
+  { key: 'mathematik', label: 'Mathematik' },
   { key: 'musik', label: 'Musik' },
   { key: 'paedagogik', label: 'Pädagogik' },
   { key: 'philosophie', label: 'Philosophie' },

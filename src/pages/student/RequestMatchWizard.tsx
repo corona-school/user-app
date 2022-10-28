@@ -102,31 +102,32 @@ const RequestMatchWizard: React.FC<Props> = ({
       <Text paddingBottom={space['1']}>
         {t('matching.student.personalData.hint')}
       </Text>
-
       <TwoColGrid>
-        {data?.me?.student?.subjectsFormatted.map((sub: any) => (
-          <IconTagList
-            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
-            variant="selection"
-            text={sub.name}
-            initial={selectedSubjects[sub.name]}
-            onPress={() => {
-              if (selectedSubjects[sub.name]) {
-                setSelectedSubjects((prev: any) => ({
-                  ...prev,
-                  [sub.name]: false
-                }))
-                return
-              }
+        {data?.me?.student?.subjectsFormatted.map((sub: any) => {
+          return (
+            <IconTagList
+              iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+              variant="selection"
+              text={sub.name}
+              initial={selectedSubjects[sub.name]}
+              onPress={() => {
+                if (selectedSubjects[sub.name]) {
+                  setSelectedSubjects((prev: any) => ({
+                    ...prev,
+                    [sub.name]: false
+                  }))
+                  return
+                }
 
-              setSelectedSubjects((prev: any) => ({
-                [sub.name]: !prev[sub.name]
-              }))
-              setFocusedSubject(sub)
-              setShowModal(true)
-            }}
-          />
-        ))}
+                setSelectedSubjects((prev: any) => ({
+                  [sub.name]: !prev[sub.name]
+                }))
+                setFocusedSubject(sub)
+                setShowModal(true)
+              }}
+            />
+          )
+        })}
       </TwoColGrid>
 
       <Row

@@ -144,7 +144,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.appointments.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.appointments.title')}</Heading>
