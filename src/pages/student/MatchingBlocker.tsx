@@ -19,9 +19,10 @@ import LFIconBook from '../../assets/icons/lernfair/lf-books.svg'
 import LFImageLearing from '../../assets/images/matching/1-1-matching.jpg'
 import LFParty from '../../assets/icons/lernfair/lf-party.svg'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
 import { useNavigate } from 'react-router-dom'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -50,6 +51,14 @@ const MatchingBlocker: React.FC<Props> = () => {
     base: '100%',
     lg: '55%'
   })
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Blocker'
+    })
+  }, [])
 
   return (
     <>
@@ -98,7 +107,19 @@ const MatchingBlocker: React.FC<Props> = () => {
           title="Gruppen-Lernunterstützung"
           content="Kurzfristige Unterstützung bei spezifischen Problemen und Fragen"
           icon={<LFIconBook />}
-          button={<Button>{t('matching.blocker.ctaCardButton')}</Button>}
+          button={
+            <Button
+              onPress={() => {
+                trackEvent({
+                  category: 'matching',
+                  action: 'click-event',
+                  name: 'Helfer Matching Gruppen Lernunterstützung anfordern – Teaser',
+                  documentTitle: 'Matching Gruppen Lernunterstützung anfordern'
+                })
+              }}>
+              {t('matching.blocker.ctaCardButton')}
+            </Button>
+          }
         />
       </Container>
     </>

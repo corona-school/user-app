@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -19,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
+import useLernfair from '../../hooks/useLernfair'
 import { states } from '../../types/lernfair/State'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
@@ -50,8 +52,6 @@ type Props = {}
 
 const ChangeSettingState: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
-  const location = useLocation()
-  const { state: locState } = location as { state: { userType: string } }
 
   const [userState, setUserState] = useState<string>('')
   const { t } = useTranslation()
@@ -59,19 +59,20 @@ const ChangeSettingState: React.FC<Props> = () => {
   const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
 
+  const { userType } = useLernfair()
   const { data, loading, error } = useQuery(gql`
-    ${locState?.userType === 'student' ? queryStudent : queryPupil}
+    ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateState, _updateState] = useMutation(gql`
-    ${locState?.userType === 'student' ? mutStudent : mutPupil}
+    ${userType === 'student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {
-    if (data?.me?.pupil?.state) {
-      setUserState(data?.me?.pupil?.state)
+    if (userType && data?.me[userType].state) {
+      setUserState(data?.me[userType].state)
     }
-  }, [data?.me?.pupil?.state])
+  }, [data?.me, userType])
 
   const state = useMemo(
     () =>
@@ -104,13 +105,24 @@ const ChangeSettingState: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Bundesland'
+    })
+  }, [])
+  console.log({ userState })
   if (loading) <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.State.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <Heading>{t('profile.State.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -126,7 +138,10 @@ const ChangeSettingState: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.State.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -179,7 +194,7 @@ const ChangeSettingState: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
-        width={ContainerWidth}>
+        maxWidth={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">

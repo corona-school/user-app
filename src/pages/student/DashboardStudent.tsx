@@ -16,20 +16,19 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import CTACard from '../../widgets/CTACard'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg'
-import PartyIcon from '../../assets/icons/lernfair/lf-pary-small.svg'
 import HelperWizard from '../../widgets/HelperWizard'
 import LearningPartner from '../../widgets/LearningPartner'
 import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
-import { getFirstLectureFromSubcourse, TIME_THRESHOLD } from '../../Utility'
+import { getFirstLectureFromSubcourse } from '../../Utility'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -103,6 +102,13 @@ const DashboardStudent: React.FC<Props> = () => {
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Dashboard'
+    })
+  }, [])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createMatchRequest, matchRequest] = useMutation(
@@ -199,7 +205,7 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
-    return [firstLecture || {}, firstCourse || {}]
+    return [firstLecture || null, firstCourse || null]
   }, [data?.me?.student])
 
   const publishedSubcourses = useMemo(
@@ -208,6 +214,34 @@ const DashboardStudent: React.FC<Props> = () => {
         (sub: LFSubCourse) => sub.published
       ),
     [data?.me?.student?.subcoursesInstructing]
+  )
+
+  const sortedPublishedSubcourses = useMemo(() => {
+    if (!publishedSubcourses) return []
+
+    const courses = [...publishedSubcourses]
+    courses.sort((a: LFSubCourse, b: LFSubCourse) => {
+      const aLecture = getFirstLectureFromSubcourse(a.lectures)
+      const bLecture = getFirstLectureFromSubcourse(b.lectures)
+
+      if (bLecture === null) return -1
+      if (aLecture === null) return 1
+
+      const aDate = DateTime.fromISO(aLecture.start).toMillis()
+      const bDate = DateTime.fromISO(bLecture.start).toMillis()
+
+      if (aDate === bDate) return 0
+
+      return aDate > bDate ? 1 : -1
+    })
+
+    return courses
+  }, [publishedSubcourses])
+
+  const activeMatches = useMemo(
+    () =>
+      data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved),
+    [data?.me?.student?.matches]
   )
 
   if (loading) return <></>
@@ -231,7 +265,7 @@ const DashboardStudent: React.FC<Props> = () => {
           </HStack>
         }
         headerLeft={<NotificationAlert />}>
-        <VStack paddingX={space['1']} width={ContainerWidth}>
+        <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
           <VStack space={space['1']} marginTop={space['1']}>
             <VStack paddingY={space['1']}>
               <HelperWizard index={0} />
@@ -239,18 +273,29 @@ const DashboardStudent: React.FC<Props> = () => {
 
             {/* Next Appointment */}
             {data?.me?.student?.subcoursesInstructing?.length > 0 &&
-              nextAppointment && (
+              nextAppointment[0] &&
+              nextAppointment[1] && (
                 <VStack space={space['0.5']}>
                   <Heading marginY={space['1']}>
                     {t('dashboard.appointmentcard.header')}
                   </Heading>
 
                   <AppointmentCard
-                    onPressToCourse={() =>
+                    onPressToCourse={() => {
+                      trackEvent({
+                        category: 'dashboard',
+                        action: 'click-event',
+                        name:
+                          'Helfer Dashboard Kachelklick   ' +
+                          nextAppointment[1].course?.name,
+                        documentTitle:
+                          'Helfer Dashboard – Nächster Termin   ' +
+                          nextAppointment[1].course?.name
+                      })
                       navigate('/single-course', {
                         state: { course: nextAppointment[1].id }
                       })
-                    }
+                    }}
                     tags={nextAppointment[1].course?.tags}
                     date={nextAppointment[0].start || ''}
                     isTeaser={true}
@@ -262,11 +307,11 @@ const DashboardStudent: React.FC<Props> = () => {
               )}
             <HSection
               title={t('dashboard.myappointments.header')}
-              showAll={data?.me?.student?.subcoursesInstructing?.length > 0}
+              showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
               onShowAll={() => navigate('/appointments-archive')}>
-              {(publishedSubcourses?.length &&
-                publishedSubcourses
-                  ?.slice(0, 5)
+              {(sortedPublishedSubcourses?.length &&
+                sortedPublishedSubcourses
+                  ?.slice(0, 4)
                   .map((el: LFSubCourse, i: number) => {
                     const course = el.course
                     if (!course) return <></>
@@ -279,11 +324,20 @@ const DashboardStudent: React.FC<Props> = () => {
 
                     return (
                       <AppointmentCard
-                        onPressToCourse={() =>
+                        onPressToCourse={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name:
+                              'Helfer Dashboard Kachelklick  ' + course.name,
+                            documentTitle:
+                              'Helfer Dashboard – Meine Termin  ' + course.name
+                          })
+
                           navigate('/single-course', {
                             state: { course: el.id }
                           })
-                        }
+                        }}
                         key={`appointment-${el.id}`}
                         description={course.outline}
                         tags={course.tags}
@@ -300,37 +354,60 @@ const DashboardStudent: React.FC<Props> = () => {
               onShowAll={() => navigate('/course-archive')}
               wrap
               scrollable={false}>
-              {(publishedSubcourses.length > 0 &&
-                publishedSubcourses
-                  .slice(0, 5)
-                  .map((sub: LFSubCourse, index: number) => {
-                    const firstLecture = getFirstLectureFromSubcourse(
-                      sub.lectures
-                    )
-                    if (!firstLecture) return <></>
-                    return (
-                      <AppointmentCard
-                        variant="horizontal"
-                        key={index}
-                        description={sub.outline}
-                        tags={sub.course.tags}
-                        date={firstLecture.start}
-                        countCourse={sub.lectures.length}
-                        onPressToCourse={() => alert('YES')}
-                        image={sub.course.image}
-                        title={sub.course.name}
-                      />
-                    )
-                  })) || (
-                <VStack space={space['0.5']}>
-                  <Text>{t('empty.courses')}</Text>
-                </VStack>
-              )}
+              <Flex direction="row" flexWrap="wrap">
+                {(sortedPublishedSubcourses.length > 0 &&
+                  sortedPublishedSubcourses
+                    .slice(0, 4)
+                    .map((sub: LFSubCourse, index: number) => {
+                      const firstLecture = getFirstLectureFromSubcourse(
+                        sub.lectures
+                      )
+                      if (!firstLecture) return <></>
+                      return (
+                        <Column width={CardGrid} marginRight="15px">
+                          <AppointmentCard
+                            variant="horizontal"
+                            key={index}
+                            description={sub.outline}
+                            tags={sub.course.tags}
+                            date={firstLecture.start}
+                            countCourse={sub.lectures.length}
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'dashboard',
+                                action: 'click-event',
+                                name:
+                                  'Helfer Dashboard Kachelklick  ' +
+                                  sub.course.name,
+                                documentTitle:
+                                  'Helfer Dashboard – Meine Kurse  ' +
+                                  sub.course.name
+                              })
+                            }}
+                            image={sub.course.image}
+                            title={sub.course.name}
+                          />
+                        </Column>
+                      )
+                    })) || (
+                  <VStack space={space['0.5']}>
+                    <Text>{t('empty.courses')}</Text>
+                  </VStack>
+                )}
+              </Flex>
               {(data?.me?.student?.canCreateCourse?.allowed && (
                 <Button
                   width={ButtonContainer}
                   marginY={space['1']}
-                  onPress={() => navigate('/create-course')}>
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Helfer Dashboard Kurse-Erstellen Button',
+                      documentTitle: 'Helfer Dashboard – Kurs Button klick'
+                    })
+                    navigate('/create-course')
+                  }}>
                   {t('dashboard.helpers.buttons.course')}
                 </Button>
               )) || (
@@ -363,53 +440,42 @@ const DashboardStudent: React.FC<Props> = () => {
                 {t('dashboard.helpers.headlines.myLearningPartner')}
               </Heading>
               <Flex direction="row" flexWrap="wrap">
-                {(data?.me?.student?.matches?.length &&
-                  data?.me?.student?.matches.map(
-                    (match: LFMatch, index: number) => (
-                      <Column width={CardGrid} marginRight="15px">
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted}
-                          schooltype={match?.pupil?.schooltype || ''}
-                          schoolclass={match?.pupil?.grade}
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('matching.request.buttons.dissolve')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                {t('matching.status.dissolved')}
-                              </Text>
-                            )
-                          }
-                        />
-                      </Column>
-                    )
-                  )) || <Text>{t('empty.matchings')}</Text>}
+                {(activeMatches?.length &&
+                  activeMatches.map((match: LFMatch, index: number) => (
+                    <Column width={CardGrid} marginRight="15px">
+                      <LearningPartner
+                        key={index}
+                        isDark={true}
+                        name={match?.pupil?.firstname}
+                        subjects={match?.pupil?.subjectsFormatted}
+                        schooltype={match?.pupil?.schooltype || ''}
+                        schoolclass={match?.pupil?.grade}
+                        button={
+                          (!match.dissolved && (
+                            <Button
+                              variant="outlinelight"
+                              onPress={() => dissolveMatch(match)}>
+                              {t('matching.request.buttons.dissolve')}
+                            </Button>
+                          )) || (
+                            <Text color="lightText">
+                              {t('matching.status.dissolved')}
+                            </Text>
+                          )
+                        }
+                      />
+                    </Column>
+                  ))) || <Text>{t('empty.matchings')}</Text>}
               </Flex>
               {(data?.me?.student?.canRequestMatch?.allowed && (
                 <>
                   <Button
+                    width={ButtonContainer}
                     isDisabled={isMatchRequested}
                     marginY={space['1']}
                     onPress={requestMatch}>
                     {t('dashboard.helpers.buttons.requestMatch')}
                   </Button>
-                  {(data?.me?.pupil?.openMatchRequestCount ||
-                    isMatchRequested) && (
-                    <Text fontSize="xs">
-                      Offene Anfragen:{' '}
-                      {`${
-                        data?.me?.pupil?.openMatchRequestCount ||
-                        (isMatchRequested ? 1 : 0)
-                      }`}
-                    </Text>
-                  )}
                 </>
               )) || (
                 <Text mt={space['0.5']} fontSize="xs" opacity=".8">
@@ -418,6 +484,10 @@ const DashboardStudent: React.FC<Props> = () => {
                   )}
                 </Text>
               )}
+
+              <Text fontSize="xs">
+                Offene Anfragen: {`${data?.me?.student?.openMatchRequestCount}`}
+              </Text>
             </VStack>
             <VStack space={space['0.5']} marginBottom={space['1.5']}>
               <Heading marginY={space['1']}>

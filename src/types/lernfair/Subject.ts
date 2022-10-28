@@ -3,6 +3,7 @@ export type LFSubject = {
   grade?: {
     min: number
     max: number
+    __typename?: string
   }
   mandatory?: boolean
   __typename?: string
@@ -16,7 +17,7 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'deutsch-2', label: 'Deutsch als Zweitsprache' },
   { key: 'englisch', label: 'Englisch' },
   { key: 'erdkunde', label: 'Erdkunde' },
-  { key: 'franzoesisch', label: 'Französisch' },
+  { key: 'französisch', label: 'Französisch' },
   { key: 'geschichte', label: 'Geschichte' },
   { key: 'informatik', label: 'Informatik' },
   { key: 'italienisch', label: 'Italienisch' },
@@ -33,7 +34,6 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'sonstige', label: 'Sonstige' },
   { key: 'spanisch', label: 'Spanisch' },
   { key: 'tuerkisch', label: 'Türkisch' },
-  { key: 'wirtschaft', label: 'Wirtschaft' }
-
-  // { key: 'andere', label: 'Andere' }
+  { key: 'wirtschaft', label: 'Wirtschaft' },
+  { key: 'other', label: 'Andere' }
 ]

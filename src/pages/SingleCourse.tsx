@@ -7,12 +7,12 @@ import {
   Column,
   Row,
   Button,
-  useBreakpointValue
+  useBreakpointValue,
+  VStack
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
@@ -21,42 +21,41 @@ import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 
 import Utility from '../Utility'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Participant as LFParticipant } from '../types/lernfair/User'
 
 type Props = {}
 
 const SingleCourse: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
+  const { trackPageView, trackEvent } = useMatomo()
 
+  const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const { userType } = useLernfair()
-  console.log(userType)
+
   const userQuery =
     userType === 'student'
       ? `participants{
     firstname
     grade
   }`
-      : `otherParticipants{
-    firstname
-    grade
-  }
+      : `
+  isOnWaitingList
+  isParticipant 
   canJoin{
     allowed
     reason
     limit
   }`
 
-  const {
-    data: courseData,
-    loading,
-    error
-  } = useQuery(gql`query{
+  const query = gql`query{
     me {
       pupil{id}
       student{id}
@@ -65,8 +64,11 @@ const SingleCourse: React.FC<Props> = () => {
       id
       participantsCount
       maxParticipants
+      instructors{
+        firstname
+        lastname
+      }
       ${userQuery}
-
       course {
         image
         outline
@@ -89,14 +91,85 @@ const SingleCourse: React.FC<Props> = () => {
         name
       }
     }
-  }`)
+  }`
 
-  const course = courseData?.subcourse
+  const participantQuery = gql`
+  query{
+    subcourse(subcourseId: ${courseId}){
+      otherParticipants{
+        firstname
+        grade
+      }
+    }
+  }`
 
-  const participants = useMemo(
-    () =>
-      userType === 'student' ? course?.participants : course?.otherParticipants,
-    [course?.otherParticipants, course?.participants, userType]
+  const { data: courseData, loading, error } = useQuery(query)
+
+  const { data: participantData } = useQuery(participantQuery, {
+    skip: !loadParticipants
+  })
+
+  const [joinSubcourse, _joinSubcourse] = useMutation(
+    gql`
+      mutation ($courseId: Float!) {
+        subcourseJoin(subcourseId: $courseId)
+      }
+    `,
+    {
+      refetchQueries: [query, participantQuery]
+    }
+  )
+  const [leaveSubcourse, _leaveSubcourse] = useMutation(
+    gql`
+      mutation ($courseId: Float!) {
+        subcourseLeave(subcourseId: $courseId)
+      }
+    `,
+    {
+      refetchQueries: [query, participantQuery]
+    }
+  )
+  const [joinWaitingList, _joinWaitingList] = useMutation(
+    gql`
+      mutation ($courseId: Float!) {
+        subcourseJoinWaitinglist(subcourseId: $courseId)
+      }
+    `,
+    {
+      refetchQueries: [query, participantQuery]
+    }
+  )
+  const [leaveWaitingList, _leaveWaitingList] = useMutation(
+    gql`
+      mutation ($courseId: Float!) {
+        subcourseLeaveWaitinglist(subcourseId: $courseId)
+      }
+    `,
+    {
+      refetchQueries: [query, participantQuery]
+    }
+  )
+
+  const course = useMemo(() => courseData?.subcourse, [courseData])
+
+  const participants = useMemo(() => {
+    if (userType === 'student') {
+      return course?.participants
+    } else {
+      if (course?.isParticipant) {
+        return participantData?.subcourse?.otherParticipants
+      }
+    }
+  }, [
+    userType,
+    course?.participants,
+    course?.isParticipant,
+    participantData?.subcourse?.otherParticipants
+  ])
+
+  const isFull = useMemo(
+    () => course?.participantsCount >= course?.maxParticipants,
+    [course?.maxParticipants, course?.participantsCount]
   )
 
   const ContainerWidth = useBreakpointValue({
@@ -109,6 +182,19 @@ const SingleCourse: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  useEffect(() => {
+    trackPageView({
+      documentTitle: course?.course?.name
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!loading && course) {
+      course?.isParticipant && setLoadParticipants(true)
+    }
+  }, [course, loading])
+
   if (loading) return <></>
 
   return (
@@ -119,7 +205,7 @@ const SingleCourse: React.FC<Props> = () => {
           : course?.course?.name
       }
       headerLeft={<BackButton />}>
-      <Box paddingX={space['1.5']} width={ContainerWidth}>
+      <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
         <Box height="178px" marginBottom={space['1.5']}>
           <Image
             alt={course?.course?.name}
@@ -127,10 +213,9 @@ const SingleCourse: React.FC<Props> = () => {
             position="absolute"
             w="100%"
             height="100%"
+            bgColor="gray.300"
             source={{
-              uri:
-                course?.course?.image ||
-                'https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80'
+              uri: course?.course?.image
             }}
           />
         </Box>
@@ -145,18 +230,22 @@ const SingleCourse: React.FC<Props> = () => {
         </Box>
         <Text paddingBottom={space['0.5']}>
           {t('single.global.clockFrom')}{' '}
-          {Utility.formatDate(course?.lectures[0].start)}
+          {Utility.formatDate(course?.lectures[0].start)}{' '}
           {t('single.global.clock')}
         </Text>
         <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
         <Row alignItems="center" paddingBottom={space['1']}>
-          <ProfilAvatar
+          {/* <ProfilAvatar
             size="sm"
+            marginRight={space['0.5']} 
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          />
-          <Heading marginLeft={space['0.5']} fontSize="md">
-            Max Mustermann
-          </Heading>
+          /> */}
+          {course?.instructors && course?.instructors[0] && (
+            <Heading fontSize="md">
+              {course?.instructors[0].firstname}{' '}
+              {course?.instructors[0].lastname}
+            </Heading>
+          )}
         </Row>
         <Text paddingBottom={space['1']}>{course?.course?.outline}</Text>
 
@@ -190,12 +279,6 @@ const SingleCourse: React.FC<Props> = () => {
                 <>
                   <Row flexDirection="row" paddingBottom={space['0.5']}>
                     <Text bold marginRight={space['0.5']}>
-                      {t('single.global.category')}:
-                    </Text>
-                    <Text>{course?.course?.category}</Text>
-                  </Row>
-                  <Row flexDirection="row" paddingBottom={space['0.5']}>
-                    <Text bold marginRight={space['0.5']}>
                       {t('single.global.participating')}:
                     </Text>
                     <Text>
@@ -219,12 +302,41 @@ const SingleCourse: React.FC<Props> = () => {
                         `${course?.lectures[0]?.duration / 60} Stunde(n)`}
                     </Text>
                   </Row>
-                  <Row flexDirection="row" paddingBottom={space['1.5']}>
-                    <Text bold marginRight={space['0.5']}>
-                      {t('single.global.tutor')}:
-                    </Text>
-                    <Text>Max Mustermann</Text>
-                  </Row>
+                  {course?.instructors && (
+                    <VStack>
+                      {course?.instructors[0] && (
+                        <Row flexDirection="row" paddingBottom={space['1.5']}>
+                          <Text bold marginRight={space['0.5']}>
+                            {t('single.global.tutor')}:
+                          </Text>
+
+                          <Text>
+                            {course?.instructors[0].firstname}{' '}
+                            {course?.instructors[0].lastname}
+                          </Text>
+                        </Row>
+                      )}
+                      {course?.instructors.length > 1 && (
+                        <VStack>
+                          <Text bold marginRight={space['0.5']}>
+                            {t('single.global.more_tutors')}:
+                          </Text>
+                          {course?.instructors
+                            .slice(1)
+                            .map(
+                              (instructor: {
+                                firstname: string
+                                lastname: string
+                              }) => (
+                                <Text>
+                                  {instructor.firstname} {instructor.lastname}
+                                </Text>
+                              )
+                            )}
+                        </VStack>
+                      )}
+                    </VStack>
+                  )}
                 </>
               )
             },
@@ -232,8 +344,8 @@ const SingleCourse: React.FC<Props> = () => {
               title: t('single.tabs.lessons'),
               content: (
                 <>
-                  {(course.lectures.length > 0 &&
-                    course?.lectures?.map((lec: LFLecture, i: number) => (
+                  {(course?.lectures?.length > 0 &&
+                    course.lectures.map((lec: LFLecture, i: number) => (
                       <Row flexDirection="column" marginBottom={space['1.5']}>
                         <Heading paddingBottom={space['0.5']} fontSize="md">
                           {t('single.global.lesson')}{' '}
@@ -241,39 +353,27 @@ const SingleCourse: React.FC<Props> = () => {
                         </Heading>
                         <Text paddingBottom={space['0.5']}>
                           {DateTime.fromISO(lec.start).toFormat(
-                            'dd.MM.yyyy HH:mm'
+                            'dd.MM.yyyy hh:mm'
                           )}{' '}
                           {t('single.global.clock')}
                         </Text>
                         <Text>
-                          <Text bold>Dauer: </Text> {lec?.duration / 60} Stunden
+                          <Text bold>{t('single.global.duration')}: </Text>{' '}
+                          {lec?.duration / 60} {t('single.global.hours')}
                         </Text>
                       </Row>
-                    ))) || <Text>Es wurden keine Lektionen eingetragen.</Text>}
+                    ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
               )
             },
-            {
+            course?.isParticipant && {
               title: t('single.tabs.participant'),
               content: (
                 <>
-                  {(participants.length > 0 &&
-                    participants.map((p: any) => (
-                      <Row marginBottom={space['1.5']} alignItems="center">
-                        <Column marginRight={space['1']}>
-                          <ProfilAvatar
-                            size="md"
-                            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                          />
-                        </Column>
-                        <Column>
-                          <Heading fontSize="md">{p.firstname}</Heading>
-                          <Text>{p.grade}</Text>
-                        </Column>
-                      </Row>
-                    ))) || (
-                    <Text>Es sind noch keine Teilnehmer vorhanden.</Text>
-                  )}
+                  {(participants?.length > 0 &&
+                    participants.map((p: LFParticipant) => (
+                      <Participant pupil={p} />
+                    ))) || <Text>{t('single.global.noMembers')}</Text>}
                 </>
               )
             }
@@ -281,21 +381,79 @@ const SingleCourse: React.FC<Props> = () => {
         />
 
         {userType === 'pupil' && (
-          <Box marginBottom={space['0.5']}>
-            {!course?.canJoin?.allowed && (
+          <Box marginBottom={space['0.5']} paddingLeft={space['1']}>
+            {!course?.canJoin?.allowed && !course?.isParticipant && (
               <Text>{course?.canJoin?.reason}</Text>
             )}
-            <Button
-              width={ButtonContainer}
-              marginBottom={space['0.5']}
-              isDisabled={!course?.canJoin?.allowed}>
-              {t('single.button.login')}
-            </Button>
+            {!course?.isParticipant && !course?.isOnWaitingList && (
+              <Button
+                onPress={() => {
+                  joinSubcourse({ variables: { courseId: courseId } })
+                }}
+                width={ButtonContainer}
+                marginBottom={space['0.5']}
+                isDisabled={
+                  !course?.canJoin?.allowed || _joinSubcourse.loading
+                }>
+                {t('single.button.login')}
+              </Button>
+            )}
+            {!course?.isParticipant && isFull && (
+              <Button
+                onPress={() => {
+                  joinWaitingList({
+                    variables: { courseId: courseId }
+                  })
+                }}
+                width={ButtonContainer}
+                marginBottom={space['0.5']}
+                isDisabled={!course?.canJoin?.allowed || loading}>
+                Auf die Warteliste
+              </Button>
+            )}
+            {course?.isOnWaitingList && (
+              <VStack space={space['0.5']}>
+                <Text>{t('single.buttoninfo.waitingListMember')}</Text>
+                <Button
+                  onPress={() => {
+                    leaveWaitingList({ variables: { courseId: courseId } })
+                  }}
+                  width={ButtonContainer}
+                  marginBottom={space['0.5']}
+                  isDisabled={loading}>
+                  Warteliste verlassen
+                </Button>
+              </VStack>
+            )}
+            {course?.isParticipant && (
+              <VStack space={space['0.5']}>
+                <Text>{t('single.buttoninfo.successMember')}</Text>
+                <Button
+                  onPress={() => {
+                    leaveSubcourse({ variables: { courseId: courseId } })
+                  }}
+                  width={ButtonContainer}
+                  marginBottom={space['0.5']}
+                  isDisabled={loading}>
+                  Kurs verlassen
+                </Button>
+              </VStack>
+            )}
           </Box>
         )}
         {course?.allowContact && (
-          <Box marginBottom={space['1.5']}>
-            <Button width={ButtonContainer} variant="outline">
+          <Box marginBottom={space['1.5']} paddingLeft={space['1']}>
+            <Button
+              onPress={() => {
+                trackEvent({
+                  category: 'kurs',
+                  action: 'click-event',
+                  name: 'Kurs Kontakt | ' + course?.course?.name,
+                  documentTitle: 'Kurs Kontakt  | ' + course?.course?.name
+                })
+              }}
+              width={ButtonContainer}
+              variant="outline">
               {t('single.button.contact')}
             </Button>
           </Box>
@@ -305,3 +463,24 @@ const SingleCourse: React.FC<Props> = () => {
   )
 }
 export default SingleCourse
+
+type ParticipantProps = {
+  pupil: LFParticipant
+}
+const Participant: React.FC<ParticipantProps> = ({ pupil }) => {
+  const { space } = useTheme()
+  return (
+    <Row marginBottom={space['1.5']} alignItems="center">
+      <Column marginRight={space['1']}>
+        {/* <ProfilAvatar
+      size="md"
+      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    /> */}
+      </Column>
+      <Column>
+        <Heading fontSize="md">{pupil.firstname}</Heading>
+        <Text>{pupil.grade}</Text>
+      </Column>
+    </Row>
+  )
+}

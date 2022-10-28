@@ -31,6 +31,7 @@ import TextInput from '../components/TextInput'
 import { gql, useMutation } from '@apollo/client'
 import useModal from '../hooks/useModal'
 import IFrame from '../components/IFrame'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -114,17 +115,37 @@ const HelpCenter: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const { trackEvent, trackPageView } = useMatomo()
+
+  const onboardingCheck = () => {
+    navigate('/onboarding-list')
+
+    trackEvent({
+      category: 'hilfebereich',
+      action: 'click-event',
+      name: 'Hilebereich',
+      documentTitle: 'Hilfebereich',
+      href: '/onboarding-list'
+    })
+  }
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Hilfebereich'
+    })
+  }, [])
+
   return (
-    <WithNavigation headerTitle="Hilfebereich" headerLeft={<BackButton />}>
+    <WithNavigation headerTitle="Hilfebereich">
       <Box
-        width={ContainerWidth}
+        maxWidth={ContainerWidth}
         paddingBottom={space['1.5']}
         paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
         <Text>{t('helpcenter.subtitle')}</Text>
       </Box>
       <Box
-        width={ContainerWidth}
+        maxWidth={ContainerWidth}
         paddingBottom={space['2.5']}
         paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
@@ -133,9 +154,7 @@ const HelpCenter: React.FC<Props> = () => {
         <Text width={ContentContainerWidth} paddingBottom={space['1.5']}>
           {t('helpcenter.onboarding.content')}
         </Text>
-        <Button
-          width={buttonWidth}
-          onPress={() => navigate('/onboarding-list')}>
+        <Button width={buttonWidth} onPress={() => onboardingCheck()}>
           {t('helpcenter.onboarding.button')}
         </Button>
       </Box>

@@ -2,7 +2,7 @@ import { createInstance } from '@jonkoops/matomo-tracker-react'
 
 export default createInstance({
   urlBase: process.env.REACT_APP_MATOMO_URL,
-  siteId: 1,
+  siteId: 3,
   disabled:
     true ||
     process.env.NODE_ENV === 'development' ||

@@ -1,9 +1,11 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useTheme, VStack } from 'native-base'
 import {
   createContext,
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useState
 } from 'react'
 import WithNavigation from '../components/WithNavigation'
@@ -45,6 +47,13 @@ const RequestCertificate: React.FC<Props> = () => {
   const onGeneric = useCallback(() => {}, [])
   const onAutomatic = useCallback(() => {}, [])
   const onManual = useCallback(() => {}, [])
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Zertifikate anfordern'
+    })
+  }, [])
 
   return (
     <RequestCertificateContext.Provider value={{ state, setState }}>

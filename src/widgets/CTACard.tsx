@@ -25,10 +25,12 @@ type Props = {
   variant?: 'normal' | 'outline' | 'dark'
   marginBottom?: number
   width?: number | string
+  height?: number | string
 }
 
 const CTACard: React.FC<Props> = ({
   width,
+  height,
   title,
   infotooltip,
   content,
@@ -39,7 +41,7 @@ const CTACard: React.FC<Props> = ({
   onClose,
   marginBottom = 0
 }) => {
-  const { space, sizes } = useTheme()
+  const { space } = useTheme()
 
   const Wrapper = variant === 'normal' ? Card : Fragment
 
@@ -59,25 +61,29 @@ const CTACard: React.FC<Props> = ({
   })
 
   return (
-    <Wrapper flexibleWidth width={width}>
+    <Wrapper flexibleWidth width={width} isFullHeight>
       <Box
+        height={height}
         flexDirection={CardMobileDirection}
         justifyContent={CardMobileJContent}
         alignItems={CardMobileAlignItems}
         mb={marginBottom}
         backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
         padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}
-        borderRadius={15}>
-        <Row justifyContent={closeable ? 'space-between' : ''}>
+        borderRadius={15}
+        flexWrap={'wrap'}>
+        <Row
+          flexWrap={'wrap'}
+          w="100%"
+          justifyContent={closeable ? 'space-between' : ''}>
           <Box>{icon}</Box>
-          <Container>
+          <Container marginLeft={icon ? space['1'] : ''}>
             <Text
               maxWidth={250}
               bold
               fontSize={'lg'}
               flex="1"
               marginBottom={space['0.5']}
-              marginLeft={icon ? space['1'] : ''}
               color={variant === 'dark' ? 'lightText' : 'primary.800'}
               display="flex">
               {title}
@@ -92,10 +98,10 @@ const CTACard: React.FC<Props> = ({
             </Text>
             <Text
               color={variant === 'dark' ? 'lightText' : 'primary.800'}
-              maxWidth={250}
-              marginLeft={icon ? space['1'] : ''}>
+              maxWidth={250}>
               {content}
             </Text>
+            <Row>{button && <Box marginTop={space['1']}>{button}</Box>}</Row>
           </Container>
           {closeable && (
             <Pressable onPress={onClose} testID="close">
@@ -103,7 +109,6 @@ const CTACard: React.FC<Props> = ({
             </Pressable>
           )}
         </Row>
-        {button && <Box marginTop={space['1']}>{button}</Box>}
       </Box>
     </Wrapper>
   )

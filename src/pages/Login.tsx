@@ -9,6 +9,7 @@ import {
   Image,
   Input,
   Link,
+  Pressable,
   Row,
   Text,
   useBreakpointValue,
@@ -20,6 +21,7 @@ import { useNavigate } from 'react-router-dom'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../components/TextInput'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -35,16 +37,46 @@ export default function Login() {
 
   const { clearToken, createToken } = useApollo()
   const navigate = useNavigate()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Login'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const loginButton = useCallback(() => {
+    trackEvent({
+      category: 'login',
+      action: 'click-event',
+      name: 'Login Button auf Login Page',
+      documentTitle: 'Login Page'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const loginRegisterLink = useCallback(() => {
+    trackEvent({
+      category: 'login',
+      action: 'click-event',
+      name: 'Registrierung auf Login Page',
+      documentTitle: 'Login Page – Registrierung Link'
+    })
+    navigate('/registration/1')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate])
 
   const attemptLogin = useCallback(async () => {
     createToken()
+    loginButton()
     await login({
       variables: {
         email: email,
         password: password
       }
     })
-  }, [createToken, email, login, password])
+  }, [createToken, email, login, loginButton, password])
 
   useEffect(() => {
     if (loading) return
@@ -101,7 +133,7 @@ export default function Login() {
           </Heading>
         </Box>
 
-        <Box marginX="90px" width={ContainerWidth}>
+        <Box marginX="90px" maxWidth={ContainerWidth} width="100%">
           <Row marginBottom={3}>
             <TextInput
               width="100%"
@@ -136,24 +168,25 @@ export default function Login() {
           </Text>
         )}
 
-        <Box paddingY={4} width={ContainerWidth}>
+        <Box paddingY={4}>
           <Link>{t('login.btn.password')}</Link>
         </Box>
-        <Box
-          paddingTop={4}
-          marginX="90px"
-          display="block"
-          width={ContainerWidth}>
+        <Box paddingTop={4} marginX="90px" display="block">
           <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
             {t('login.btn.login')}
           </Button>
         </Box>
 
-        <Box paddingTop={10} paddingBottom={1} width={ContainerWidth}>
+        <Box paddingTop={10} paddingBottom={1}>
           <Text textAlign="center">{t('login.noaccount')}</Text>
-          <Link href="/registration/1" justifyContent="center">
-            {t('login.btn.register')}
-          </Link>
+          <Pressable
+            onPress={loginRegisterLink}
+            justifyContent="center"
+            alignItems="center">
+            <Box>
+              <Text>{t('login.btn.register')}</Text>
+            </Box>
+          </Pressable>
         </Box>
       </Row>
     </VStack>

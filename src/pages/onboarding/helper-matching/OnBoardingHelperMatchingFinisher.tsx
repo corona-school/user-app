@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import InfoScreen from '../../../widgets/InfoScreen'
 import MatchingCheck from '../../../assets/icons/lernfair/lf-matching-check.svg'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -10,6 +12,13 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Onboarding Ende'
+    })
+  }, [])
 
   return (
     <>
@@ -71,7 +80,15 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
           defaultButtonText={t(
             'onboardingList.Wizard.helperMatching.finisher.buttonText'
           )}
-          defaultbuttonLink={() => navigate('/dashboard')}
+          defaultbuttonLink={() => {
+            trackEvent({
+              category: 'onboarding',
+              action: 'click-event',
+              name: 'Onboarding Helfer Matching – Abgeschlossen',
+              documentTitle: 'Onboarding Helfer Matching – Abgeschlossen'
+            })
+            navigate('/dashboard')
+          }}
           icon={<MatchingCheck />}
         />
       </View>

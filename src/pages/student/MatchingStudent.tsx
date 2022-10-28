@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
-  View,
   Text,
   VStack,
   Heading,
@@ -10,9 +10,10 @@ import {
   Flex,
   Column,
   Modal,
-  useToast
+  useToast,
+  Box
 } from 'native-base'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Tabs from '../../components/Tabs'
@@ -26,6 +27,7 @@ const query = gql`
   query {
     me {
       student {
+        id
         matches {
           id
           dissolved
@@ -56,9 +58,10 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [focusedMatch, setFocusedMatch] = useState<LFMatch>()
+  const [showCancelModal, setShowCancelModal] = useState<boolean>()
   const [toastShown, setToastShown] = useState<boolean>()
 
-  const { data, loading, error } = useQuery(query)
+  const { data } = useQuery(query)
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -75,15 +78,23 @@ const MatchingStudent: React.FC<Props> = () => {
     lg: '48%'
   })
 
-  const [dissolveMatch, { data: dissolveData, error: dissolveError }] =
-    useMutation(
-      gql`
-        mutation ($matchId: Float!, $dissolveReason: Float!) {
-          matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
-        }
-      `,
-      { refetchQueries: [{ query }] }
-    )
+  const [dissolveMatch, { data: dissolveData }] = useMutation(
+    gql`
+      mutation ($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+      }
+    `,
+    { refetchQueries: [{ query }] }
+  )
+
+  const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
+    gql`
+      mutation ($id: Float!) {
+        studentDeleteMatchRequest(studentId: $id)
+      }
+    `,
+    { refetchQueries: [{ query }] }
+  )
 
   const showDissolveMatchModal = useCallback((match: LFMatch) => {
     setFocusedMatch(match)
@@ -91,11 +102,40 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   const dissolve = useCallback(() => {
+    trackEvent({
+      category: 'matching',
+      action: 'click-event',
+      name: 'Helfer Matching lösen',
+      documentTitle: 'Helfer Matching'
+    })
     setShowDissolveModal(false)
     dissolveMatch({
       variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dissolveMatch, focusedMatch?.id])
+
+  const showCancelMatchRequestModal = useCallback(() => {
+    setShowCancelModal(true)
+  }, [])
+
+  const cancelRequest = useCallback(async () => {
+    setShowCancelModal(false)
+    trackEvent({
+      category: 'matching',
+      action: 'click-event',
+      name: 'Helfer Matching Anfrage löschen',
+      documentTitle: 'Helfer Matching'
+    })
+    const res = (await cancelMatchRequest({
+      variables: { id: data?.me?.student?.id }
+    })) as { studentDeleteMatchRequest: boolean }
+
+    if (res.studentDeleteMatchRequest) {
+      toast.show({ description: 'Die Anfrage wurde gelöscht' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (dissolveData?.matchDissolve && !toastShown) {
@@ -103,6 +143,23 @@ const MatchingStudent: React.FC<Props> = () => {
       toast.show({ description: 'Das Match wurde aufgelöst' })
     }
   }, [dissolveData?.matchDissolve, toast, toastShown])
+
+  const activeMatches = useMemo(
+    () =>
+      data?.me?.student?.matches?.filter(
+        (match: LFMatch) => !match.dissolved
+      ) || [],
+    [data?.me?.student?.matches]
+  )
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -122,11 +179,19 @@ const MatchingStudent: React.FC<Props> = () => {
             <Text paddingBottom={space['1.5']}>
               {t('matching.request.check.contenHeadlineContent')}
             </Text>
-            <Button
-              width={ButtonContainer}
-              onPress={() => navigate('/request-match')}>
-              {t('matching.request.check.requestmatchButton')}
-            </Button>
+            {(data?.me?.student?.canRequestMatch.allowed && (
+              <Button
+                width={ButtonContainer}
+                onPress={() => navigate('/request-match')}>
+                {t('matching.request.check.requestmatchButton')}
+              </Button>
+            )) || (
+              <Text>
+                {t(
+                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                )}
+              </Text>
+            )}
           </VStack>
 
           <Tabs
@@ -136,46 +201,74 @@ const MatchingStudent: React.FC<Props> = () => {
                 content: (
                   <VStack>
                     <Flex direction="row" flexWrap="wrap">
-                      {(data?.me?.student?.matches.length &&
-                        data?.me?.student?.matches?.map(
-                          (match: LFMatch, index: number) => (
-                            <Column width={CardGrid} marginRight="15px">
-                              <LearningPartner
-                                key={index}
-                                isDark={true}
-                                name={match?.pupil?.firstname}
-                                subjects={match?.pupil?.subjectsFormatted.map(
-                                  (sub: LFSubject) => sub.name
-                                )}
-                                schooltype="Grundschule"
-                                schoolclass={4}
-                                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                button={
-                                  (!match.dissolved && (
-                                    <Button
-                                      variant="outlinelight"
-                                      onPress={() =>
-                                        showDissolveMatchModal(match)
-                                      }>
-                                      {t(
-                                        'dashboard.helpers.buttons.solveMatch'
-                                      )}
-                                    </Button>
-                                  )) || (
-                                    <Text color="lightText">
-                                      {t(
-                                        'matching.request.check.resoloveMatch'
-                                      )}
-                                    </Text>
-                                  )
-                                }
-                              />
-                            </Column>
-                          )
-                        )) || (
+                      {(activeMatches.length &&
+                        activeMatches?.map((match: LFMatch, index: number) => (
+                          <Column width={CardGrid} marginRight="15px">
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={match?.pupil?.firstname}
+                              subjects={match?.pupil?.subjectsFormatted.map(
+                                (sub: LFSubject) => sub.name
+                              )}
+                              schooltype="Grundschule"
+                              schoolclass={4}
+                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() =>
+                                      showDissolveMatchModal(match)
+                                    }>
+                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.request.check.resoloveMatch')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Column>
+                        ))) || (
                         <Text>{t('matching.request.check.noMatches')}</Text>
                       )}
                     </Flex>
+                  </VStack>
+                )
+              },
+              {
+                title: 'Anfragen',
+                content: (
+                  <VStack space={space['1']}>
+                    <Heading>
+                      Offene Anfragen:{' '}
+                      {data?.me?.student?.openMatchRequestCount}
+                    </Heading>
+                    <VStack space={space['0.5']}>
+                      {(data?.me?.student?.openMatchRequestCount &&
+                        new Array(data?.me?.student?.openMatchRequestCount)
+                          .fill('')
+                          .map((_, i) => (
+                            <Box
+                              bgColor="primary.100"
+                              padding={space['1']}
+                              borderRadius={8}>
+                              <Heading>
+                                Anfrage {`${i + 1}`.padStart(2, '0')}
+                              </Heading>
+
+                              <Button
+                                isDisabled={cancelLoading}
+                                variant="outline"
+                                mt="3"
+                                onPress={showCancelMatchRequestModal}>
+                                Anfrage zurücknehmen
+                              </Button>
+                            </Box>
+                          ))) || <Text>Keine Anfragen</Text>}
+                    </VStack>
                   </VStack>
                 )
               }
@@ -189,8 +282,23 @@ const MatchingStudent: React.FC<Props> = () => {
           <Modal.CloseButton onPress={() => setShowDissolveModal(false)} />
           <Modal.Body>Möchtest du das Match wirklich auflösen?</Modal.Body>
           <Modal.Footer>
-            <Button variant="ghost">Abbrechen</Button>
+            <Button variant="ghost" onPress={() => setShowDissolveModal(false)}>
+              Abbrechen
+            </Button>
             <Button onPress={dissolve}>Match auflösen</Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal isOpen={showCancelModal}>
+        <Modal.Content>
+          <Modal.Header>Anfrage löschen</Modal.Header>
+          <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
+          <Modal.Body>Möchtest du die Anfrage wirklich löschen?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
+              Abbrechen
+            </Button>
+            <Button onPress={cancelRequest}>Anfrage löschen</Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>

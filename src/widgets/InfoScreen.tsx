@@ -62,7 +62,7 @@ const InfoScreen: React.FC<Props> = ({
       backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
       <VStack>
         <Row
-          width={ContentContainerWidth}
+          maxWidth={ContentContainerWidth}
           marginX="auto"
           flexDirection="column"
           paddingY={space['4']}

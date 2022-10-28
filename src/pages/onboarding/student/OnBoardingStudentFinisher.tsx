@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   useTheme,
   Text,
@@ -9,6 +10,7 @@ import {
   Image,
   Button
 } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/icons/lernfair/lf-logo-big.svg'
@@ -19,6 +21,13 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Onboarding Ende'
+    })
+  }, [])
 
   return (
     <>
@@ -42,7 +51,16 @@ const OnBoardingStudentFinisher: React.FC<Props> = () => {
                 marginBottom={space['1']}>
                 {t('onboardingList.Wizard.students.finisher.content')}
               </Text>
-              <Button onPress={() => navigate('/')}>
+              <Button
+                onPress={() => {
+                  trackEvent({
+                    category: 'onboarding',
+                    action: 'click-event',
+                    name: 'Onboarding Schüler – Abgeschlossen',
+                    documentTitle: 'Onboarding Schüler –Abgeschlossen'
+                  })
+                  navigate('/')
+                }}>
                 {t('onboardingList.Wizard.students.finisher.button')}
               </Button>
             </Column>

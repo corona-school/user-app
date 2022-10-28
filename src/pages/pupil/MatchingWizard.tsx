@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +19,15 @@ const MatchingWizard: React.FC<Props> = () => {
   const [selection, setSelection] = useState<LFSubject>()
 
   const { space } = useTheme()
+
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler Matching – anfordern'
+    })
+  }, [])
+
   const { data, error, loading } = useQuery(gql`
     query {
       me {
@@ -43,7 +53,7 @@ const MatchingWizard: React.FC<Props> = () => {
     createMatchRequest,
     { data: requestData, error: requestError, loading: requestLoading }
   ] = useMutation(gql`
-    mutation createMatchRequest($subjects: SubjectInput!) {
+    mutation createMatchRequest($subjects: [SubjectInput!]) {
       pupilUpdate(data: { subjects: $subjects })
       pupilCreateMatchRequest
     }
@@ -55,8 +65,14 @@ const MatchingWizard: React.FC<Props> = () => {
     if (find) {
       find.mandatory = true
     }
+    const subs = []
 
-    createMatchRequest({ variables: { subjects } })
+    for (const sub of subjects) {
+      delete sub.__typename
+      subs.push(sub)
+    }
+
+    createMatchRequest({ variables: { subjects: subs } })
   }, [createMatchRequest, data?.me?.pupil?.subjectsFormatted, selection])
 
   useEffect(() => {
@@ -67,6 +83,12 @@ const MatchingWizard: React.FC<Props> = () => {
           <Button
             onPress={() => {
               setShow(false)
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abgeschlossen',
+                documentTitle: 'Schüler Matching Anfrage'
+              })
             }}>
             Weiter
           </Button>
@@ -74,6 +96,7 @@ const MatchingWizard: React.FC<Props> = () => {
       )
       setShow(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestData, requestError, setContent, setShow])
 
   if (loading) return <></>
@@ -117,9 +140,23 @@ const MatchingWizard: React.FC<Props> = () => {
       </Button>
 
       {!data?.me?.pupil?.canRequestMatch?.allowed && (
-        <Text>{data?.me?.pupil?.canRequestMatch?.reason}</Text>
+        <Text>
+          {t(
+            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+          )}
+        </Text>
       )}
-      <Button variant={'outline'} onPress={() => navigate(-1)}>
+      <Button
+        variant={'outline'}
+        onPress={() => {
+          trackEvent({
+            category: 'matching',
+            action: 'click-event',
+            name: 'Schüler Matching anfragen – Abbrechen',
+            documentTitle: 'Schüler Matching Anfragen'
+          })
+          navigate(-1)
+        }}>
         {t('matching.request.buttons.cancel')}
       </Button>
     </VStack>

@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Text,
   FormControl,
@@ -9,7 +10,7 @@ import {
   useTheme,
   useBreakpointValue
 } from 'native-base'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
@@ -29,15 +30,23 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
     lg: sizes['containerWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Daten'
+    })
+  }, [])
+
   return (
-    <VStack w={ContainerWidth}>
+    <VStack maxWidth={ContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
         <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}
           {`${index + 1}`.padStart(2, ' 0')}
         </Heading>
       )}
-      <FormControl w={ContainerWidth}>
+      <FormControl maxWidth={ContainerWidth}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>

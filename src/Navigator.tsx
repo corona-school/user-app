@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
 import Dashboard from './pages/pupil/Dashboard'
-import EditProfile from './pages/EditProfile'
 import Login from './pages/Login'
 import Profile from './pages/pupil/Profile'
 
@@ -67,6 +66,8 @@ import StudentGroupSupport from './pages/student/StudentGroupSupport'
 import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
 import { useEffect } from 'react'
+import LearningPartnerArchive from './pages/LearningPartnerArchive'
+import UserProfile from './pages/UserProfile'
 
 export default function Navigator() {
   return (
@@ -148,15 +149,6 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <ProfileHelper />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/edit-profile"
-          element={
-            <RequireAuth>
-              <EditProfile />
             </RequireAuth>
           }
         />
@@ -378,6 +370,24 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <CourseArchive />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/learningpartner-archive"
+          element={
+            <RequireAuth>
+              <LearningPartnerArchive />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/user-profile"
+          element={
+            <RequireAuth>
+              <UserProfile />
             </RequireAuth>
           }
         />

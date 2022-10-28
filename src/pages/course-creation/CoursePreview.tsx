@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { DateTime } from 'luxon'
 import {
   VStack,
@@ -10,7 +11,7 @@ import {
   Image,
   useBreakpointValue
 } from 'native-base'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
 import ToggleButton from '../../components/ToggleButton'
@@ -56,8 +57,16 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     lg: 'row'
   })
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Vorschau'
+    })
+  }, [])
+
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
@@ -160,7 +169,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
                 <Text bold minW="100px" fontSize="md">
                   {t('course.CourseDate.Preview.appointmentDate')}
                 </Text>
-                {console.log(lec.date)}
+
                 <Text fontSize="md">
                   {Utility.handleDateString(
                     lec.date,
@@ -203,7 +212,15 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}
-          onPress={onNext}
+          onPress={() => {
+            trackEvent({
+              category: 'kurse',
+              action: 'click-event',
+              name: 'Helfer Kurs erstellen – veröffentlichen Button',
+              documentTitle: 'Helfer Kurs erstellen – publish button'
+            })
+            onNext()
+          }}
           isDisabled={isDisabled}>
           {t('course.CourseDate.Preview.publishCourse')}
         </Button>

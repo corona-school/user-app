@@ -35,6 +35,7 @@ import HSection from '../../widgets/HSection'
 import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -130,6 +131,14 @@ const ProfileStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
@@ -138,7 +147,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Box
-            width={ContainerWidth}
+            maxWidth={ContainerWidth}
             bg={'primary.700'}
             alignItems="center"
             paddingY={space['2']}
@@ -224,7 +233,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {userSettingChanged && (
           <Alert
-            width={ContainerWidth}
+            maxWidth={ContainerWidth}
             marginY={10}
             marginX={space['1.5']}
             colorScheme="success"
@@ -245,13 +254,13 @@ const ProfileStudent: React.FC<Props> = () => {
         )}
 
         <VStack
-          width={ContainerWidth}
+          maxWidth={ContainerWidth}
           paddingX={space['1']}
           paddingY={space['1']}>
           <HelperWizard index={0} />
         </VStack>
 
-        <VStack space={space['1']} width={ContainerWidth}>
+        <VStack space={space['1']} maxWidth={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />
@@ -287,16 +296,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   })
                 }>
                 <Row>
-                  {(data?.me?.student.state &&
-                    data?.me?.student.state !== 'other' && (
-                      <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.student.state}`)}
-                        />
-                      </Column>
-                    )) || <Text>{t('profile.State.empty')}</Text>}
+                  {(data?.me?.student.state && (
+                    <Column marginRight={3}>
+                      <IconTagList
+                        isDisabled
+                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                        text={t(`lernfair.states.${data?.me?.student.state}`)}
+                      />
+                    </Column>
+                  )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
 
@@ -343,20 +351,39 @@ const ProfileStudent: React.FC<Props> = () => {
                                   el.state === 'manual' ||
                                   el.state === 'automatic'
                               )
-                              .map((el: any) => (
-                                <Column>
-                                  <HelperCardCertificates
-                                    name={el.pupilId}
-                                    subject={el.subjectsFormatted}
-                                    status={el.state}
-                                    createDate={DateTime.fromISO(
-                                      el.startDate
-                                    ).toFormat('dd.MM.yyyy')}
-                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                    download={() => alert('Hallo')}
-                                  />
-                                </Column>
-                              ))}
+                              .map((el: any) => {
+                                const statusMessage =
+                                  el.state === 'awaiting-approval'
+                                    ? t(
+                                        'profile.Helper.certificate.status.awaiting'
+                                      )
+                                    : el.state === 'manual'
+                                    ? t(
+                                        'profile.Helper.certificate.status.manual'
+                                      )
+                                    : el.state === 'approved'
+                                    ? t(
+                                        'profile.Helper.certificate.status.approved'
+                                      )
+                                    : t(
+                                        'profile.Helper.certificate.status.unknown'
+                                      )
+
+                                return (
+                                  <Column>
+                                    <HelperCardCertificates
+                                      name={el.pupilId}
+                                      subject={el.subjectsFormatted}
+                                      status={statusMessage}
+                                      createDate={DateTime.fromISO(
+                                        el.startDate
+                                      ).toFormat('dd.MM.yyyy')}
+                                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                      download={() => alert('Hallo')}
+                                    />
+                                  </Column>
+                                )
+                              })}
                           </HSection>
                         </>
                       )
@@ -370,20 +397,40 @@ const ProfileStudent: React.FC<Props> = () => {
                               ?.filter(
                                 (el: any) => el.state === 'awaiting-approval'
                               )
-                              .map((el: any) => (
-                                <Column>
-                                  <HelperCardCertificates
-                                    name={el.pupilId}
-                                    subject={el.subjectsFormatted}
-                                    status={el.state}
-                                    createDate={DateTime.fromISO(
-                                      el.startDate
-                                    ).toFormat('dd.MM.yyyy')}
-                                    avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                    download={() => alert('Hallo')}
-                                  />
-                                </Column>
-                              ))}
+
+                              .map((el: any) => {
+                                const statusMessage =
+                                  el.state === 'awaiting-approval'
+                                    ? t(
+                                        'profile.Helper.certificate.status.awaiting'
+                                      )
+                                    : el.state === 'manual'
+                                    ? t(
+                                        'profile.Helper.certificate.status.manual'
+                                      )
+                                    : el.state === 'approved'
+                                    ? t(
+                                        'profile.Helper.certificate.status.approved'
+                                      )
+                                    : t(
+                                        'profile.Helper.certificate.status.unknown'
+                                      )
+
+                                return (
+                                  <Column>
+                                    <HelperCardCertificates
+                                      name={el.pupilId}
+                                      subject={el.subjectsFormatted}
+                                      status={statusMessage}
+                                      createDate={DateTime.fromISO(
+                                        el.startDate
+                                      ).toFormat('dd.MM.yyyy')}
+                                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                      download={() => alert('Hallo')}
+                                    />
+                                  </Column>
+                                )
+                              })}
                           </HSection>
                         </>
                       )
@@ -392,7 +439,16 @@ const ProfileStudent: React.FC<Props> = () => {
                 />
               </Container>
               <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button width={ButtonWidth}>
+                <Button
+                  width={ButtonWidth}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'profil',
+                      action: 'click-event',
+                      name: 'Helfer Profil – Bescheinigung anfordern Button Klick',
+                      documentTitle: 'Helfer Profil – Bescheinigung anfordern'
+                    })
+                  }}>
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>

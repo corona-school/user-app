@@ -19,10 +19,11 @@ import WithNavigation from '../components/WithNavigation'
 import NotificationAlert from '../components/NotificationAlert'
 import AppointmentCard from '../widgets/AppointmentCard'
 import useLernfair from '../hooks/useLernfair'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
@@ -76,7 +77,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { userType } = useLernfair()
-
+  const { trackPageView } = useMatomo()
   const [searchString, setSearchString] = useState<string>('')
 
   const { loading, data } = useQuery(
@@ -105,17 +106,8 @@ const AppointmentsArchive: React.FC<Props> = () => {
 
   const sortedSearchResults: { course: LFSubCourse; lecture: LFLecture }[] =
     useMemo(() => {
-      let obj = null! as LFSubCourse[]
-      if (userType === 'student') {
-        obj = data?.me?.student?.subcoursesInstructing
-      } else {
-        obj = data?.me?.pupil?.subcoursesJoined
-      }
-
-      if (!obj) return []
-
       const lectures: { course: LFSubCourse; lecture: LFLecture }[] = []
-      for (const sub of obj) {
+      for (const sub of searchResults) {
         for (const lecture of sub.lectures) {
           lectures.push({ course: sub, lecture })
         }
@@ -125,11 +117,18 @@ const AppointmentsArchive: React.FC<Props> = () => {
         const _a = DateTime.fromISO(a.lecture.start).toMillis()
         const _b = DateTime.fromISO(b.lecture.start).toMillis()
 
-        if (_a > _b) return -1
-        else if (_a < _b) return 1
+        if (_a > _b) return 1
+        else if (_a < _b) return -1
         else return 0
       })
-    }, [data?.me?.pupil?.subcoursesJoined, data?.me?.student, userType])
+    }, [searchResults])
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Termine Archive',
+      href: '/appointment-archive'
+    })
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',

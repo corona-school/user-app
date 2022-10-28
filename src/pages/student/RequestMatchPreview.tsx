@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { t } from 'i18next'
 import {
   Text,
@@ -8,17 +9,18 @@ import {
   useBreakpointValue,
   Row
 } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
+import { LFSubject } from '../../types/lernfair/Subject'
 import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 
 type Props = {
-  subjects: string[]
+  subjects: LFSubject[]
   classes: {
     [key: string]: { [key: string]: boolean }
   }
-  description: string
   onRequestMatch: () => any
   onBack: () => any
   disableButton: boolean
@@ -28,7 +30,6 @@ type Props = {
 const RequestMatchPreview: React.FC<Props> = ({
   subjects,
   classes,
-  description,
   onRequestMatch,
   onBack,
   disableButton,
@@ -52,35 +53,49 @@ const RequestMatchPreview: React.FC<Props> = ({
     lg: 'row'
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Anfrage – Helfer Matching Vorschau '
+    })
+  }, [])
+
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('matching.request.check.preview.title')}</Heading>
       <Text>{t('matching.request.check.preview.content')}</Text>
 
-      {subjects.map((sub: any, index) => (
+      {subjects.map((sub: LFSubject, index: number) => (
         <VStack paddingBottom={space['1']}>
           <Text bold>
             {t('matching.request.check.preview.subject')} {index + 1}
           </Text>
-          <IconTagList variant="center" text={sub} isDisabled />
+          <IconTagList
+            variant="center"
+            text={sub.name}
+            isDisabled
+            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+          />
           <Text paddingTop={space['1']} bold>
             {t('matching.request.check.preview.subjectForClass')} {index + 1}
           </Text>
-          {Object.entries(classes[sub] || {}).map(([key, val], index: any) => {
-            const range = Utility.intToClassRange(parseInt(key))
+          {Object.entries(classes[sub.name] || {}).map(
+            ([key, val], index: any) => {
+              const range = Utility.intToClassRange(parseInt(key))
 
-            return (
-              <ToggleButton
-                dataKey={index}
-                isActive={false}
-                label={`${range.min}. - ${range.max}. Klasse`}
-              />
-            )
-          })}
+              return (
+                <ToggleButton
+                  dataKey={index}
+                  isActive={false}
+                  label={`${range.min}. - ${range.max}. Klasse`}
+                />
+              )
+            }
+          )}
         </VStack>
       ))}
-      <Text bold>{t('matching.request.check.preview.desc')}</Text>
-      <Text>{description}</Text>
+
       <Row
         space={space['1']}
         alignItems="center"

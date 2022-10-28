@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -69,10 +70,10 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   `)
 
   useEffect(() => {
-    if (data?.me?.pupil?.languages) {
-      setSelections(data?.me?.pupil?.languages)
+    if (data?.me[state?.userType].languages) {
+      setSelections(data?.me[state?.userType].languages)
     }
-  }, [data?.me?.pupil?.languages])
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateLanguage.data && !_updateLanguage.error) {
@@ -96,13 +97,24 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Sprache'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -135,7 +147,10 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow
           title={t('profile.FluentLanguagenalData.single.others')}>
           <ProfileSettingItem
@@ -193,7 +208,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
-        width={ContainerWidth}>
+        maxWidth={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -211,7 +226,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
           </Alert>
         )}
         {showError && (
-          <Alert marginY={3} bgColor="danger.500" width={ContainerWidth}>
+          <Alert marginY={3} bgColor="danger.500" maxWidth={ContainerWidth}>
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
                 flexShrink={1}

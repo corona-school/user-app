@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
@@ -68,8 +69,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string>('')
 
   useEffect(() => {
-    setSelections(data?.me?.pupil?.schooltype)
-  }, [data?.me?.pupil?.schooltype])
+    setSelections(data?.me[state?.userType].schooltype)
+  }, [data?.me, state?.userType])
 
   useEffect(() => {
     if (_updateSchooltype.data && !_updateSchooltype.error) {
@@ -93,13 +94,24 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Profil Einstellungen – Bundesland'
+    })
+  }, [])
+
   if (loading) return <></>
 
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolType.single.header')}
       headerLeft={<BackButton />}>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <Heading>{t('profile.SchoolType.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
@@ -115,7 +127,10 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
           </Row>
         </ProfileSettingItem>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolType.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -172,7 +187,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
-        width={ContainerWidth}>
+        maxWidth={ContainerWidth}>
         {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">

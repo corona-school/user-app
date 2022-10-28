@@ -5,9 +5,12 @@ import {
   HStack,
   useTheme,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Pressable,
+  Flex,
+  Column
 } from 'native-base'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
@@ -21,80 +24,129 @@ import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
+import { DateTime } from 'luxon'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {}
 
-const Dashboard: React.FC<Props> = () => {
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        pupil {
-          openMatchRequestCount
-          canRequestMatch {
-            allowed
-            reason
-            limit
-          }
-          canJoinSubcourses {
-            allowed
-            reason
-            limit
-          }
-          subcoursesJoined {
+const query = gql`
+  query {
+    me {
+      firstname
+      pupil {
+        matches {
+          student {
             id
-            lectures {
-              start
-            }
-            course {
-              name
-              outline
-              image
-              tags {
-                name
-              }
-            }
+            firstname
+            lastname
           }
         }
-      }
-
-      subcoursesPublic(take: 10, skip: 2) {
-        id
-        minGrade
-        maxGrade
-        maxParticipants
-        joinAfterStart
-        maxParticipants
-        participantsCount
-
-        course {
-          name
-          description
-          outline
-          image
-          tags {
+        openMatchRequestCount
+        canRequestMatch {
+          allowed
+          reason
+          limit
+        }
+        canJoinSubcourses {
+          allowed
+          reason
+          limit
+        }
+        subcoursesJoined {
+          id
+          lectures {
+            start
+          }
+          course {
             name
+            outline
+            image
+            tags {
+              name
+            }
           }
-        }
-        lectures {
-          start
-          duration
         }
       }
     }
-  `)
+
+    subcoursesPublic(take: 10, skip: 0, excludeKnown: true) {
+      id
+      minGrade
+      maxGrade
+      maxParticipants
+      joinAfterStart
+      maxParticipants
+      participantsCount
+
+      course {
+        name
+        description
+        outline
+        image
+        tags {
+          name
+        }
+      }
+      lectures {
+        start
+        duration
+      }
+    }
+  }
+`
+
+const Dashboard: React.FC<Props> = () => {
+  // ,
+  //   {
+  //     refetchQueries: [query]
+  //   }
+  const { data, loading } = useQuery(query)
 
   const { space, sizes } = useTheme()
-  const futureDate = useMemo(() => new Date(Date.now() + 360000 * 24 * 7), [])
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Schüler – Dashboard'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
   })
+
+  const CardGrid = useBreakpointValue({
+    base: '100%',
+    lg: '48.3%'
+  })
+
+  const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] =
+    useMemo(() => {
+      const lectures: { course: LFSubCourse; lecture: LFLecture }[] = []
+
+      if (!data?.me?.pupil?.subcoursesJoined) return []
+
+      for (const sub of data?.me?.pupil?.subcoursesJoined) {
+        for (const lecture of sub.lectures) {
+          lectures.push({ lecture: lecture, course: sub })
+        }
+      }
+
+      return lectures.sort((a, b) => {
+        const _a = DateTime.fromISO(a.lecture.start).toMillis()
+        const _b = DateTime.fromISO(b.lecture.start).toMillis()
+
+        if (_a > _b) return 1
+        else if (_a < _b) return -1
+        else return 0
+      })
+    }, [data?.me?.pupil?.subcoursesJoined])
 
   if (loading) return <></>
 
@@ -102,7 +154,7 @@ const Dashboard: React.FC<Props> = () => {
     <WithNavigation
       headerContent={
         <HStack
-          width={ContainerWidth}
+          maxWidth={ContainerWidth}
           space={space['1']}
           alignItems="center"
           bgColor={'primary.900'}
@@ -117,115 +169,182 @@ const Dashboard: React.FC<Props> = () => {
         </HStack>
       }
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
         <VStack space={space['1']} marginTop={space['1']}>
-          <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.appointmentcard.header')}
-            </Heading>
-            <AppointmentCard
-              // TODO
-              // onPress={() =>
-              //   navigate('/single-course', { state: { course: null } })
-              // }
-              tags={[]}
-              date={futureDate.toDateString()}
-              isTeaser={true}
-              image="https://images.unsplash.com/photo-1632571401005-458e9d244591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
-              title="Mathe Grundlagen Klasse 6"
-              description="In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch."
-            />
-          </VStack>
+          {sortedAppointments[0] && (
+            <VStack space={space['0.5']}>
+              <Heading marginY={space['1']}>
+                {t('dashboard.appointmentcard.header')}
+              </Heading>
+
+              <AppointmentCard
+                isTeaser
+                onPressToCourse={() => {
+                  trackEvent({
+                    category: 'dashboard',
+                    action: 'click-event',
+                    name:
+                      'Schüler Dashboard – Termin Teaser | Klick auf' +
+                      sortedAppointments[0]?.course.course?.name,
+                    documentTitle: 'Schüler Dashboard'
+                  })
+                  navigate('/single-course', {
+                    state: { course: sortedAppointments[0]?.course.id }
+                  })
+                }}
+                tags={sortedAppointments[0]?.course?.course?.tags}
+                date={sortedAppointments[0]?.lecture.start}
+                image={sortedAppointments[0]?.course.course?.image}
+                title={sortedAppointments[0]?.course.course?.name}
+                description={sortedAppointments[0]?.course.course?.outline}
+              />
+            </VStack>
+          )}
 
           {/* Appointments */}
-          <HSection title={t('dashboard.myappointments.header')} showAll>
-            {(data?.me?.pupil?.subcoursesJoined?.length &&
-              data?.me?.pupil?.subcoursesJoined?.map(
-                (el: LFSubCourse, i: number) => {
-                  const course = el.course
-                  if (!course) return <></>
+          <HSection
+            title={t('dashboard.myappointments.header')}
+            showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
+            onShowAll={() => navigate('/appointments-archive')}>
+            {(sortedAppointments?.length &&
+              sortedAppointments
+                .slice(1, 5)
+                .map(
+                  ({
+                    course,
+                    lecture
+                  }: {
+                    course: LFSubCourse
+                    lecture: LFLecture
+                  }) => {
+                    if (!course) return <></>
 
-                  const lectures = el.lectures
-                  if (!lectures) return <></>
-
-                  // TODO sort lectures
-                  // lectures.sort((a, b) => 1)
-
-                  return lectures.map((lec: LFLecture) => {
                     return (
                       <AppointmentCard
-                        onPressToCourse={() =>
-                          navigate('/single-course', {
-                            state: { course: el.id }
+                        onPressToCourse={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name:
+                              'Schüler Dashboard – Meine Termin | Klick auf' +
+                              course.course.name,
+                            documentTitle: 'Schüler Dashboard'
                           })
-                        }
-                        key={`appointment-${el.id}`}
-                        description={course.outline}
-                        tags={course.tags}
-                        date={lec.start}
-                        image={course.image}
-                        title={course.name}
+
+                          navigate('/single-course', {
+                            state: { course: course.id }
+                          })
+                        }}
+                        key={`appointment-${course.id}`}
+                        description={course.course.outline}
+                        tags={course.course.tags}
+                        date={lecture.start}
+                        image={course.course.image}
+                        title={course.course.name}
                       />
                     )
-                  })
-                }
-              )) || (
+                  }
+                )) || (
               <VStack space={space['0.5']}>
                 <Text>Du bist für keine Kurse eingetragen.</Text>
-                <Button>Zur Kursübersicht</Button>
+                <Button onPress={() => navigate('/course-archive')}>
+                  Zur Kursübersicht
+                </Button>
               </VStack>
             )}
           </HSection>
 
           {/* Matches */}
-          <HSection showAll title={t('dashboard.learningpartner.header')}>
-            {data?.me?.pupil?.matches?.map((match: LFMatch) => (
-              <TeacherCard
-                name={`${match.student?.firstname} ${match.student?.lastname}`}
-                variant="dark"
-                tags={match.subjectsFormatted?.map(s => s.name)}
-                avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                button={
-                  <Button variant="outlinelight">
-                    {t('dashboard.offers.match')}
-                  </Button>
-                }
-              />
-            )) || (
-              <VStack space={space['0.5']}>
-                <Text>{t('dashboard.offers.noMatching')}</Text>
-                {data?.me?.pupil?.canRequestMatch?.allowed && (
-                  <>
-                    <Button onPress={() => navigate('/matching')}>
-                      {t('dashboard.offers.requestMatching')}
-                    </Button>
-                    {data?.me?.pupil?.openMatchRequestCount ||
-                      (isMatchRequested && (
-                        <Text fontSize="xs">
-                          Offene Anfragen:{' '}
-                          {`${
-                            data?.me?.pupil?.openMatchRequestCount ||
-                            (isMatchRequested ? 1 : 0)
-                          }`}
-                        </Text>
-                      ))}
-                  </>
-                )}
-              </VStack>
-            )}
+          <HSection
+            title={t('dashboard.learningpartner.header')}
+            showAll={data?.me?.pupil?.matches?.length > 2}
+            wrap>
+            <Flex direction="row" flexWrap="wrap">
+              {data?.me?.pupil?.matches?.slice(0, 2).map(
+                (match: LFMatch) =>
+                  (
+                    <Pressable
+                      onPress={() =>
+                        navigate('/profile', {
+                          state: { userType: 'student', id: match.student.id }
+                        })
+                      }>
+                      <Column width={CardGrid} marginRight="15px">
+                        <TeacherCard
+                          name={`${match.student?.firstname} ${match.student?.lastname}`}
+                          variant="dark"
+                          tags={
+                            match.subjectsFormatted?.map(s => s.name) || [
+                              'Fehler',
+                              'Backend',
+                              'Permission'
+                            ]
+                          }
+                          avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                          button={
+                            <Button variant="outlinelight">
+                              {t('dashboard.offers.match')}
+                            </Button>
+                          }
+                        />
+                      </Column>
+                    </Pressable>
+                  ) || <Text>{t('dashboard.offers.noMatching')}</Text>
+              )}
+            </Flex>
+            <VStack space={space['0.5']} mt="3">
+              {(data?.me?.pupil?.canRequestMatch?.allowed && (
+                <Button
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching anfragen',
+                      documentTitle: 'Schüler Dashboard'
+                    })
+                    navigate('/matching')
+                  }}>
+                  {t('dashboard.offers.requestMatching')}
+                </Button>
+              )) || (
+                <Text>
+                  {t(
+                    `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+                  )}
+                </Text>
+              )}
+              <Text fontSize="xs">
+                Offene Anfragen: {`${data?.me?.pupil?.openMatchRequestCount}`}
+              </Text>
+            </VStack>
           </HSection>
 
           {/* Suggestions */}
+          {console.log(data?.subcoursesPublic?.length)}
           <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
             {(data?.subcoursesPublic?.length &&
               data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
                 <SignInCard
                   tags={sc.course.tags}
                   data={sc}
-                  onClickSignIn={() => null}
-                  onPress={() =>
+                  onClickSignIn={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching Vorschlag',
+                      documentTitle: 'Schüler Dashboard'
+                    })
                     navigate('/single-course', { state: { course: sc.id } })
-                  }
+                  }}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'dashboard',
+                      action: 'click-event',
+                      name: 'Schüler Dashboard – Matching Vorschlag',
+                      documentTitle: 'Schüler Dashboard'
+                    })
+                    navigate('/single-course', { state: { course: sc.id } })
+                  }}
                 />
               ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}
           </HSection>

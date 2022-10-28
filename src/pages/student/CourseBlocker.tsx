@@ -1,3 +1,4 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Box,
   Button,
@@ -8,6 +9,7 @@ import {
   Image,
   Link
 } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import LFIconBook from '../../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
 import LFImageLearing from '../../assets/images/course/course-blocker.jpg'
@@ -21,6 +23,13 @@ type Props = {}
 const CourseBlocker: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Kurse Blocker'
+    })
+  }, [])
 
   return (
     <>

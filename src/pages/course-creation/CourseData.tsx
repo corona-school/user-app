@@ -15,7 +15,6 @@ import {
   Image,
   Column,
   Link,
-  View,
   useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
@@ -25,6 +24,7 @@ import { LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 type Props = {
   onNext: () => any
@@ -129,8 +129,17 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     lg: 'row'
   })
 
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Kurs erstellen – Page'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <VStack space={space['1']} width={ContainerWidth}>
+    <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
@@ -274,10 +283,17 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.maxMembersLabel')}
         </FormControl.Label>
+
         <Input
-          onChangeText={setMaxParticipantCount}
+          keyboardType="numeric"
+          value={maxParticipantCount}
+          onChangeText={text => {
+            const t = text.replace(/\D+/g, '')
+            setMaxParticipantCount && setMaxParticipantCount(t)
+          }}
           marginBottom={space['0.5']}
         />
+
         <Text fontSize="xs">{t('course.CourseDate.form.maxMembersInfo')}</Text>
       </FormControl>
       <Heading fontSize="md">
@@ -306,7 +322,15 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['1']}
           width={ButtonContainer}
           variant={'outline'}
-          onPress={onCancel}>
+          onPress={() => {
+            trackEvent({
+              category: 'kurse',
+              action: 'click-event',
+              name: 'Helfer Kurs erstellen – Abbrechen',
+              documentTitle: 'Helfer Kurs erstellen – Abbrechen'
+            })
+            onCancel()
+          }}>
           {t('course.CourseDate.form.button.cancel')}
         </Button>
       </Row>
