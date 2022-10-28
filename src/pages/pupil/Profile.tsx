@@ -314,15 +314,17 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.subjectsFormatted?.length &&
                     data?.me?.pupil?.subjectsFormatted?.map(
-                      (sub: { name: string; __typename: string }) => (
-                        <Column marginRight={3} mb={space['0.5']}>
-                          <IconTagList
-                            isDisabled
-                            iconPath={'subjects/icon_mathe.svg'}
-                            text={sub.name}
-                          />
-                        </Column>
-                      )
+                      (sub: { name: string; __typename: string }) => {
+                        return (
+                          <Column marginRight={3} mb={space['0.5']}>
+                            <IconTagList
+                              isDisabled
+                              iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
+                              text={sub.name}
+                            />
+                          </Column>
+                        )
+                      }
                     )) || <Text>{t('profile.Notice.noSchoolSubject')}</Text>}
                 </Row>
               </ProfileSettingItem>
