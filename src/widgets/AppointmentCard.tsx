@@ -193,7 +193,7 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
 
             <Box paddingX={space['0.5']} paddingY={space['1.5']}>
-              <Row space={space['0.5']}>
+              <Row space={space['0.5']} flexWrap="wrap">
                 {tags?.map((tag, i) => (
                   <Tag key={`tag-${i}`} text={tag.name} />
                 ))}
