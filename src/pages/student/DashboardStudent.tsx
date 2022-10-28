@@ -29,6 +29,7 @@ import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -91,7 +92,7 @@ const query = gql`
 
 const DashboardStudent: React.FC<Props> = () => {
   const toast = useToast()
-  const { data, loading } = useQuery(query)
+  const { data, loading, called } = useQuery(query)
 
   const { space, sizes } = useTheme()
 
@@ -244,182 +245,187 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
-  if (loading) return <></>
-
   return (
     <>
       <WithNavigation
         headerContent={
-          <HStack
-            space={space['1']}
-            alignItems="center"
-            bgColor={'primary.900'}
-            paddingX={space['1']}>
-            {/* <ProfilAvatar
+          called &&
+          !loading && (
+            <HStack
+              space={space['1']}
+              alignItems="center"
+              bgColor={'primary.900'}
+              paddingX={space['1']}>
+              {/* <ProfilAvatar
               size="md"
               image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             /> */}
-            <Heading color={'#fff'} paddingY={space['1.5']}>
-              {t('hallo')} {data?.me?.firstname}!
-            </Heading>
-          </HStack>
+              <Heading color={'#fff'} paddingY={space['1.5']}>
+                {t('hallo')} {data?.me?.firstname}!
+              </Heading>
+            </HStack>
+          )
         }
         headerLeft={<NotificationAlert />}>
-        <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
-          <VStack space={space['1']} marginTop={space['1']}>
-            <VStack paddingY={space['1']}>
-              <HelperWizard index={0} />
-            </VStack>
+        {!called || (loading && <CenterLoadingSpinner />)}
+        {called && !loading && (
+          <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+            <VStack space={space['1']} marginTop={space['1']}>
+              <VStack paddingY={space['1']}>
+                <HelperWizard index={0} />
+              </VStack>
 
-            {/* Next Appointment */}
-            {data?.me?.student?.subcoursesInstructing?.length > 0 &&
-              nextAppointment[0] &&
-              nextAppointment[1] && (
-                <VStack space={space['0.5']}>
-                  <Heading marginY={space['1']}>
-                    {t('dashboard.appointmentcard.header')}
-                  </Heading>
+              {/* Next Appointment */}
+              {data?.me?.student?.subcoursesInstructing?.length > 0 &&
+                nextAppointment[0] &&
+                nextAppointment[1] && (
+                  <VStack space={space['0.5']}>
+                    <Heading marginY={space['1']}>
+                      {t('dashboard.appointmentcard.header')}
+                    </Heading>
 
-                  <AppointmentCard
-                    onPressToCourse={() => {
+                    <AppointmentCard
+                      onPressToCourse={() => {
+                        trackEvent({
+                          category: 'dashboard',
+                          action: 'click-event',
+                          name:
+                            'Helfer Dashboard Kachelklick   ' +
+                            nextAppointment[1].course?.name,
+                          documentTitle:
+                            'Helfer Dashboard – Nächster Termin   ' +
+                            nextAppointment[1].course?.name
+                        })
+                        navigate('/single-course', {
+                          state: { course: nextAppointment[1].id }
+                        })
+                      }}
+                      tags={nextAppointment[1].course?.tags}
+                      date={nextAppointment[0].start || ''}
+                      isTeaser={true}
+                      image={nextAppointment[1].course?.image}
+                      title={nextAppointment[1].course?.name || ''}
+                      description={nextAppointment[1].course?.outline || ''}
+                    />
+                  </VStack>
+                )}
+              <HSection
+                title={t('dashboard.myappointments.header')}
+                showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
+                onShowAll={() => navigate('/appointments-archive')}>
+                {(sortedPublishedSubcourses?.length &&
+                  sortedPublishedSubcourses
+                    ?.slice(0, 4)
+                    .map((el: LFSubCourse, i: number) => {
+                      const course = el.course
+                      if (!course) return <></>
+
+                      const lectures = el.lectures
+                      if (!lectures) return <></>
+
+                      const firstLecture =
+                        getFirstLectureFromSubcourse(lectures)
+                      if (!firstLecture) return <></>
+
+                      return (
+                        <AppointmentCard
+                          onPressToCourse={() => {
+                            trackEvent({
+                              category: 'dashboard',
+                              action: 'click-event',
+                              name:
+                                'Helfer Dashboard Kachelklick  ' + course.name,
+                              documentTitle:
+                                'Helfer Dashboard – Meine Termin  ' +
+                                course.name
+                            })
+
+                            navigate('/single-course', {
+                              state: { course: el.id }
+                            })
+                          }}
+                          key={`appointment-${el.id}`}
+                          description={course.outline}
+                          tags={course.tags}
+                          date={firstLecture.start}
+                          image={course.image}
+                          title={course.name}
+                        />
+                      )
+                    })) || <Text>{t('empty.appointments')}</Text>}
+              </HSection>
+              <HSection
+                title={t('dashboard.helpers.headlines.course')}
+                showAll={data?.me?.student?.canCreateCourse?.allowed}
+                onShowAll={() => navigate('/course-archive')}
+                wrap
+                scrollable={false}>
+                <Flex direction="row" flexWrap="wrap">
+                  {(sortedPublishedSubcourses.length > 0 &&
+                    sortedPublishedSubcourses
+                      .slice(0, 4)
+                      .map((sub: LFSubCourse, index: number) => {
+                        const firstLecture = getFirstLectureFromSubcourse(
+                          sub.lectures
+                        )
+                        if (!firstLecture) return <></>
+                        return (
+                          <Column width={CardGrid} marginRight="15px">
+                            <AppointmentCard
+                              variant="horizontal"
+                              key={index}
+                              description={sub.outline}
+                              tags={sub.course.tags}
+                              date={firstLecture.start}
+                              countCourse={sub.lectures.length}
+                              onPressToCourse={() => {
+                                trackEvent({
+                                  category: 'dashboard',
+                                  action: 'click-event',
+                                  name:
+                                    'Helfer Dashboard Kachelklick  ' +
+                                    sub.course.name,
+                                  documentTitle:
+                                    'Helfer Dashboard – Meine Kurse  ' +
+                                    sub.course.name
+                                })
+                              }}
+                              image={sub.course.image}
+                              title={sub.course.name}
+                            />
+                          </Column>
+                        )
+                      })) || (
+                    <VStack space={space['0.5']}>
+                      <Text>{t('empty.courses')}</Text>
+                    </VStack>
+                  )}
+                </Flex>
+                {(data?.me?.student?.canCreateCourse?.allowed && (
+                  <Button
+                    width={ButtonContainer}
+                    marginY={space['1']}
+                    onPress={() => {
                       trackEvent({
                         category: 'dashboard',
                         action: 'click-event',
-                        name:
-                          'Helfer Dashboard Kachelklick   ' +
-                          nextAppointment[1].course?.name,
-                        documentTitle:
-                          'Helfer Dashboard – Nächster Termin   ' +
-                          nextAppointment[1].course?.name
+                        name: 'Helfer Dashboard Kurse-Erstellen Button',
+                        documentTitle: 'Helfer Dashboard – Kurs Button klick'
                       })
-                      navigate('/single-course', {
-                        state: { course: nextAppointment[1].id }
-                      })
-                    }}
-                    tags={nextAppointment[1].course?.tags}
-                    date={nextAppointment[0].start || ''}
-                    isTeaser={true}
-                    image={nextAppointment[1].course?.image}
-                    title={nextAppointment[1].course?.name || ''}
-                    description={nextAppointment[1].course?.outline || ''}
-                  />
-                </VStack>
-              )}
-            <HSection
-              title={t('dashboard.myappointments.header')}
-              showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
-              onShowAll={() => navigate('/appointments-archive')}>
-              {(sortedPublishedSubcourses?.length &&
-                sortedPublishedSubcourses
-                  ?.slice(0, 4)
-                  .map((el: LFSubCourse, i: number) => {
-                    const course = el.course
-                    if (!course) return <></>
-
-                    const lectures = el.lectures
-                    if (!lectures) return <></>
-
-                    const firstLecture = getFirstLectureFromSubcourse(lectures)
-                    if (!firstLecture) return <></>
-
-                    return (
-                      <AppointmentCard
-                        onPressToCourse={() => {
-                          trackEvent({
-                            category: 'dashboard',
-                            action: 'click-event',
-                            name:
-                              'Helfer Dashboard Kachelklick  ' + course.name,
-                            documentTitle:
-                              'Helfer Dashboard – Meine Termin  ' + course.name
-                          })
-
-                          navigate('/single-course', {
-                            state: { course: el.id }
-                          })
-                        }}
-                        key={`appointment-${el.id}`}
-                        description={course.outline}
-                        tags={course.tags}
-                        date={firstLecture.start}
-                        image={course.image}
-                        title={course.name}
-                      />
-                    )
-                  })) || <Text>{t('empty.appointments')}</Text>}
-            </HSection>
-            <HSection
-              title={t('dashboard.helpers.headlines.course')}
-              showAll={data?.me?.student?.canCreateCourse?.allowed}
-              onShowAll={() => navigate('/course-archive')}
-              wrap
-              scrollable={false}>
-              <Flex direction="row" flexWrap="wrap">
-                {(sortedPublishedSubcourses.length > 0 &&
-                  sortedPublishedSubcourses
-                    .slice(0, 4)
-                    .map((sub: LFSubCourse, index: number) => {
-                      const firstLecture = getFirstLectureFromSubcourse(
-                        sub.lectures
-                      )
-                      if (!firstLecture) return <></>
-                      return (
-                        <Column width={CardGrid} marginRight="15px">
-                          <AppointmentCard
-                            variant="horizontal"
-                            key={index}
-                            description={sub.outline}
-                            tags={sub.course.tags}
-                            date={firstLecture.start}
-                            countCourse={sub.lectures.length}
-                            onPressToCourse={() => {
-                              trackEvent({
-                                category: 'dashboard',
-                                action: 'click-event',
-                                name:
-                                  'Helfer Dashboard Kachelklick  ' +
-                                  sub.course.name,
-                                documentTitle:
-                                  'Helfer Dashboard – Meine Kurse  ' +
-                                  sub.course.name
-                              })
-                            }}
-                            image={sub.course.image}
-                            title={sub.course.name}
-                          />
-                        </Column>
-                      )
-                    })) || (
-                  <VStack space={space['0.5']}>
-                    <Text>{t('empty.courses')}</Text>
-                  </VStack>
+                      navigate('/create-course')
+                    }}>
+                    {t('dashboard.helpers.buttons.course')}
+                  </Button>
+                )) || (
+                  <Text mt={space['0.5']} fontSize="xs" opacity=".8">
+                    {t(
+                      `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                    )}
+                  </Text>
                 )}
-              </Flex>
-              {(data?.me?.student?.canCreateCourse?.allowed && (
-                <Button
-                  width={ButtonContainer}
-                  marginY={space['1']}
-                  onPress={() => {
-                    trackEvent({
-                      category: 'dashboard',
-                      action: 'click-event',
-                      name: 'Helfer Dashboard Kurse-Erstellen Button',
-                      documentTitle: 'Helfer Dashboard – Kurs Button klick'
-                    })
-                    navigate('/create-course')
-                  }}>
-                  {t('dashboard.helpers.buttons.course')}
-                </Button>
-              )) || (
-                <Text mt={space['0.5']} fontSize="xs" opacity=".8">
-                  {t(
-                    `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
-                  )}
-                </Text>
-              )}
-            </HSection>
+              </HSection>
 
-            {/* <VStack space={space['0.5']}>
+              {/* <VStack space={space['0.5']}>
             <Heading marginY={space['1']}>
               {t('dashboard.helpers.headlines.importantNews')}
             </Heading>
@@ -435,82 +441,84 @@ const DashboardStudent: React.FC<Props> = () => {
               icon={<PartyIcon />}
             />
           </VStack> */}
-            <VStack space={space['0.5']}>
-              <Heading marginY={space['1']}>
-                {t('dashboard.helpers.headlines.myLearningPartner')}
-              </Heading>
-              <Flex direction="row" flexWrap="wrap">
-                {(activeMatches?.length &&
-                  activeMatches.map((match: LFMatch, index: number) => (
-                    <Column width={CardGrid} marginRight="15px">
-                      <LearningPartner
-                        key={index}
-                        isDark={true}
-                        name={match?.pupil?.firstname}
-                        subjects={match?.pupil?.subjectsFormatted}
-                        schooltype={match?.pupil?.schooltype || ''}
-                        schoolclass={match?.pupil?.grade}
-                        button={
-                          (!match.dissolved && (
-                            <Button
-                              variant="outlinelight"
-                              onPress={() => dissolveMatch(match)}>
-                              {t('matching.request.buttons.dissolve')}
-                            </Button>
-                          )) || (
-                            <Text color="lightText">
-                              {t('matching.status.dissolved')}
-                            </Text>
-                          )
-                        }
-                      />
-                    </Column>
-                  ))) || <Text>{t('empty.matchings')}</Text>}
-              </Flex>
-              {(data?.me?.student?.canRequestMatch?.allowed && (
-                <>
-                  <Button
-                    width={ButtonContainer}
-                    isDisabled={isMatchRequested}
-                    marginY={space['1']}
-                    onPress={requestMatch}>
-                    {t('dashboard.helpers.buttons.requestMatch')}
-                  </Button>
-                </>
-              )) || (
-                <Text mt={space['0.5']} fontSize="xs" opacity=".8">
-                  {t(
-                    `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                  )}
-                </Text>
-              )}
-
-              <Text fontSize="xs">
-                Offene Anfragen: {`${data?.me?.student?.openMatchRequestCount}`}
-              </Text>
-            </VStack>
-            <VStack space={space['0.5']} marginBottom={space['1.5']}>
-              <Heading marginY={space['1']}>
-                {t('dashboard.helpers.headlines.recommend')}
-              </Heading>
-              <CTACard
-                title={t('dashboard.helpers.headlines.recommendFriends')}
-                closeable={false}
-                content={
-                  <Text>
-                    {t('dashboard.helpers.contents.recommendFriends')}
+              <VStack space={space['0.5']}>
+                <Heading marginY={space['1']}>
+                  {t('dashboard.helpers.headlines.myLearningPartner')}
+                </Heading>
+                <Flex direction="row" flexWrap="wrap">
+                  {(activeMatches?.length &&
+                    activeMatches.map((match: LFMatch, index: number) => (
+                      <Column width={CardGrid} marginRight="15px">
+                        <LearningPartner
+                          key={index}
+                          isDark={true}
+                          name={match?.pupil?.firstname}
+                          subjects={match?.pupil?.subjectsFormatted}
+                          schooltype={match?.pupil?.schooltype || ''}
+                          schoolclass={match?.pupil?.grade}
+                          button={
+                            (!match.dissolved && (
+                              <Button
+                                variant="outlinelight"
+                                onPress={() => dissolveMatch(match)}>
+                                {t('matching.request.buttons.dissolve')}
+                              </Button>
+                            )) || (
+                              <Text color="lightText">
+                                {t('matching.status.dissolved')}
+                              </Text>
+                            )
+                          }
+                        />
+                      </Column>
+                    ))) || <Text>{t('empty.matchings')}</Text>}
+                </Flex>
+                {(data?.me?.student?.canRequestMatch?.allowed && (
+                  <>
+                    <Button
+                      width={ButtonContainer}
+                      isDisabled={isMatchRequested}
+                      marginY={space['1']}
+                      onPress={requestMatch}>
+                      {t('dashboard.helpers.buttons.requestMatch')}
+                    </Button>
+                  </>
+                )) || (
+                  <Text mt={space['0.5']} fontSize="xs" opacity=".8">
+                    {t(
+                      `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                    )}
                   </Text>
-                }
-                button={
-                  <Button variant="outline">
-                    {t('dashboard.helpers.buttons.recommend')}
-                  </Button>
-                }
-                icon={<BooksIcon />}
-              />
+                )}
+
+                <Text fontSize="xs">
+                  Offene Anfragen:{' '}
+                  {`${data?.me?.student?.openMatchRequestCount}`}
+                </Text>
+              </VStack>
+              <VStack space={space['0.5']} marginBottom={space['1.5']}>
+                <Heading marginY={space['1']}>
+                  {t('dashboard.helpers.headlines.recommend')}
+                </Heading>
+                <CTACard
+                  title={t('dashboard.helpers.headlines.recommendFriends')}
+                  closeable={false}
+                  content={
+                    <Text>
+                      {t('dashboard.helpers.contents.recommendFriends')}
+                    </Text>
+                  }
+                  button={
+                    <Button variant="outline">
+                      {t('dashboard.helpers.buttons.recommend')}
+                    </Button>
+                  }
+                  icon={<BooksIcon />}
+                />
+              </VStack>
             </VStack>
           </VStack>
-        </VStack>
+        )}
       </WithNavigation>
       <Modal isOpen={showDissolveModal}>
         <Modal.Content>

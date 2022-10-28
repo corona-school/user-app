@@ -371,32 +371,38 @@ const Dashboard: React.FC<Props> = () => {
 
               <HSection
                 title={t('dashboard.relatedcontent.header')}
-                showAll={true}>
+                showAll={data?.subcoursesPublic?.length > 4}>
                 {(data?.subcoursesPublic?.length &&
-                  data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
-                    <SignInCard
-                      tags={sc.course.tags}
-                      data={sc}
-                      onClickSignIn={() => {
-                        trackEvent({
-                          category: 'dashboard',
-                          action: 'click-event',
-                          name: 'Schüler Dashboard – Matching Vorschlag',
-                          documentTitle: 'Schüler Dashboard'
-                        })
-                        navigate('/single-course', { state: { course: sc.id } })
-                      }}
-                      onPress={() => {
-                        trackEvent({
-                          category: 'dashboard',
-                          action: 'click-event',
-                          name: 'Schüler Dashboard – Matching Vorschlag',
-                          documentTitle: 'Schüler Dashboard'
-                        })
-                        navigate('/single-course', { state: { course: sc.id } })
-                      }}
-                    />
-                  ))) || (
+                  data?.subcoursesPublic
+                    ?.slice(0, 4)
+                    .map((sc: LFSubCourse, i: number) => (
+                      <SignInCard
+                        tags={sc.course.tags}
+                        data={sc}
+                        onClickSignIn={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name: 'Schüler Dashboard – Matching Vorschlag',
+                            documentTitle: 'Schüler Dashboard'
+                          })
+                          navigate('/single-course', {
+                            state: { course: sc.id }
+                          })
+                        }}
+                        onPress={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name: 'Schüler Dashboard – Matching Vorschlag',
+                            documentTitle: 'Schüler Dashboard'
+                          })
+                          navigate('/single-course', {
+                            state: { course: sc.id }
+                          })
+                        }}
+                      />
+                    ))) || (
                   <Text>Es wurden keine Vorschläge für dich gefunden.</Text>
                 )}
               </HSection>
@@ -404,7 +410,6 @@ const Dashboard: React.FC<Props> = () => {
           </VStack>
         )}
       </WithNavigation>
-      {console.log(dissolveData)}
       <Modal isOpen={showDissolveModal}>
         <Modal.Content>
           <Modal.CloseButton />
