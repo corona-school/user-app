@@ -123,25 +123,6 @@ const ChangeSettingState: React.FC<Props> = () => {
         paddingX={space['1.5']}
         space={space['1']}
         maxWidth={ContainerWidth}>
-        <Heading>{t('profile.State.single.title')}</Heading>
-        <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
-          <Row flexWrap="wrap" width="100%">
-            {userState && (
-              <Column marginRight={3} marginBottom={3}>
-                <IconTagList
-                  isDisabled
-                  iconPath={`states/icon_${state.key}.svg`}
-                  text={state?.label}
-                />
-              </Column>
-            )}
-          </Row>
-        </ProfileSettingItem>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.State.single.others')}>
           <ProfileSettingItem
             border={false}
@@ -149,44 +130,20 @@ const ChangeSettingState: React.FC<Props> = () => {
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {states.map(
-                  (s, index) =>
-                    state.key !== s.key && (
-                      <Column
-                        marginRight={3}
-                        marginBottom={3}
-                        key={`offers-${index}`}>
-                        <IconTagList
-                          iconPath={`states/icon_${s.key}.svg`}
-                          text={s.label}
-                          onPress={() => setUserState(s.key)}
-                        />
-                      </Column>
-                    )
-                )}
+                {states.map((s, index) => (
+                  <Column
+                    marginRight={3}
+                    marginBottom={3}
+                    key={`offers-${index}`}>
+                    <IconTagList
+                      initial={userState === s.key}
+                      iconPath={`states/icon_${s.key}.svg`}
+                      text={s.label}
+                      onPress={() => setUserState(s.key)}
+                    />
+                  </Column>
+                ))}
               </Row>
-              {userState === 'andere' && (
-                <Row>
-                  <FormControl>
-                    <Stack>
-                      <FormControl.Label>
-                        <Text bold>
-                          {t('profile.State.single.option.label')}
-                        </Text>
-                      </FormControl.Label>
-                      <Input
-                        type="text"
-                        multiline
-                        numberOfLines={3}
-                        h={70}
-                        placeholder={t(
-                          'profile.State.single.optional.placeholder'
-                        )}
-                      />
-                    </Stack>
-                  </FormControl>
-                </Row>
-              )}
             </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>

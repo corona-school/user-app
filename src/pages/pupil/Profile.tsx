@@ -261,11 +261,13 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
-                      />
+                      {(data?.me?.pupil?.state !== 'other' && (
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
+                        />
+                      )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>
