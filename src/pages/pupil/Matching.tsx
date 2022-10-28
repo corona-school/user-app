@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Button, Modal, useTheme } from 'native-base'
+import { Text, VStack, Button, Modal, useTheme, Heading } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'

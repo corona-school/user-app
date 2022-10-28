@@ -200,7 +200,12 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.step')} {currentIndex + 1} / {questions.length}
         </Text>
       </Box>
-      <Flex flex="1" overflowY={'scroll'} width={ContainerWidth} marginX="auto">
+      <Flex
+        flex="1"
+        overflowY={'scroll'}
+        width={ContainerWidth}
+        marginX="auto"
+        marginBottom={space['2']}>
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
             currentQuestion={currentQuestion as SelectionQuestion}

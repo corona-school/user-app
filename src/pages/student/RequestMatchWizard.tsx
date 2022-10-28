@@ -7,7 +7,8 @@ import {
   useTheme,
   useBreakpointValue,
   Row,
-  Link
+  Link,
+  Container
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -102,31 +103,32 @@ const RequestMatchWizard: React.FC<Props> = ({
       <Text paddingBottom={space['1']}>
         {t('matching.student.personalData.hint')}
       </Text>
-
       <TwoColGrid>
-        {data?.me?.student?.subjectsFormatted.map((sub: any) => (
-          <IconTagList
-            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
-            variant="selection"
-            text={sub.name}
-            initial={selectedSubjects[sub.name]}
-            onPress={() => {
-              if (selectedSubjects[sub.name]) {
-                setSelectedSubjects((prev: any) => ({
-                  ...prev,
-                  [sub.name]: false
-                }))
-                return
-              }
+        {data?.me?.student?.subjectsFormatted.map((sub: any) => {
+          return (
+            <IconTagList
+              iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+              variant="selection"
+              text={sub.name}
+              initial={selectedSubjects[sub.name]}
+              onPress={() => {
+                if (selectedSubjects[sub.name]) {
+                  setSelectedSubjects((prev: any) => ({
+                    ...prev,
+                    [sub.name]: false
+                  }))
+                  return
+                }
 
-              setSelectedSubjects((prev: any) => ({
-                [sub.name]: !prev[sub.name]
-              }))
-              setFocusedSubject(sub)
-              setShowModal(true)
-            }}
-          />
-        ))}
+                setSelectedSubjects((prev: any) => ({
+                  [sub.name]: !prev[sub.name]
+                }))
+                setFocusedSubject(sub)
+                setShowModal(true)
+              }}
+            />
+          )
+        })}
       </TwoColGrid>
 
       <Link my="3" href="/change-setting/subjects" textDecoration={'underline'}>
@@ -134,11 +136,11 @@ const RequestMatchWizard: React.FC<Props> = ({
       </Link>
 
       <Row
+        marginY={space['1.5']}
         space={space['1']}
         alignItems="center"
         flexDirection={ButtonContainerDirection}>
         <Button
-          mb={space['0.5']}
           isDisabled={!isValidInput}
           onPress={() => setCurrentIndex(1)}
           width={ButtonContainer}>
@@ -153,7 +155,7 @@ const RequestMatchWizard: React.FC<Props> = ({
               name: 'Helfer Matching Gruppen – Kurs erstellen',
               documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen'
             })
-            navigate(-1)
+            navigate('/matching')
           }}
           width={ButtonContainer}>
           Abbrechen

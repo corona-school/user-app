@@ -36,7 +36,7 @@ const lernfair = {
     italienisch: 'Italienisch',
     kunst: 'Kunst',
     latein: 'Latein',
-    mathe: 'Mathe',
+    mathematik: 'Mathematik',
     musik: 'Musik',
     paedagogik: 'Pädagogik',
     philosophie: 'Philosophie',

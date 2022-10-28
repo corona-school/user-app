@@ -1,4 +1,4 @@
-import { Box, useTheme, Heading, Row } from 'native-base'
+import { Box, useTheme, Heading, Row, useBreakpointValue } from 'native-base'
 import { ReactNode, useEffect } from 'react'
 
 type Props = {
@@ -17,6 +17,11 @@ const HeaderCard: React.FC<Props> = ({
   portal
 }) => {
   const { space, sizes } = useTheme()
+
+  const headerTitleSize = useBreakpointValue({
+    base: 14,
+    lg: 19
+  })
 
   useEffect(() => {
     portal && portal(children)
@@ -42,7 +47,11 @@ const HeaderCard: React.FC<Props> = ({
           <Box flex={1} flexGrow={0}>
             {leftContent}
           </Box>
-          <Heading color="lightText" flex="1" textAlign={'center'}>
+          <Heading
+            fontSize={headerTitleSize}
+            color="lightText"
+            flex="1"
+            textAlign={'center'}>
             {title}
           </Heading>
           <Box flex={1} alignItems="flex-end" flexGrow={0}>

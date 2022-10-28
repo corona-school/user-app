@@ -179,9 +179,11 @@ const MatchingStudent: React.FC<Props> = () => {
             <Text paddingBottom={space['1.5']}>
               {t('matching.request.check.contenHeadlineContent')}
             </Text>
+
             {(data?.me?.student?.canRequestMatch.allowed && (
               <Button
                 width={ButtonContainer}
+                marginBottom={space['1.5']}
                 onPress={() => navigate('/request-match')}>
                 {t('matching.request.check.requestmatchButton')}
               </Button>
