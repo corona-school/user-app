@@ -6,7 +6,8 @@ import {
   Button,
   useTheme,
   useBreakpointValue,
-  Row
+  Row,
+  Container
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -129,11 +130,11 @@ const RequestMatchWizard: React.FC<Props> = ({
       </TwoColGrid>
 
       <Row
+        marginY={space['1.5']}
         space={space['1']}
         alignItems="center"
         flexDirection={ButtonContainerDirection}>
         <Button
-          mb={space['0.5']}
           isDisabled={!isValidInput}
           onPress={() => setCurrentIndex(1)}
           width={ButtonContainer}>
@@ -148,7 +149,7 @@ const RequestMatchWizard: React.FC<Props> = ({
               name: 'Helfer Matching Gruppen – Kurs erstellen',
               documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen'
             })
-            navigate(-1)
+            navigate('/matching')
           }}
           width={ButtonContainer}>
           Abbrechen
