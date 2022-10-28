@@ -123,11 +123,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   )
 
   useEffect(() => {
+    if (!data) return
     if (userType && data.me && data?.me[userType].subjectsFormatted) {
       const s = cleanupSubjects(data?.me[userType].subjectsFormatted)
       setSelections(s)
     }
-  }, [cleanupSubjects, data?.me, userType])
+  }, [cleanupSubjects, data, userType])
 
   useEffect(() => {
     if (_updateSubjects.data && !_updateSubjects.error) {
