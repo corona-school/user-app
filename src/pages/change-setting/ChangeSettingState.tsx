@@ -3,21 +3,16 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
-  Heading,
   useTheme,
   VStack,
   Row,
   Column,
-  Input,
-  FormControl,
-  Stack,
   Alert,
   HStack,
   useBreakpointValue
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
