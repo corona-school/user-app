@@ -15,7 +15,9 @@ import {
   Image,
   Column,
   Link,
-  useBreakpointValue
+  useBreakpointValue,
+  Tooltip,
+  InfoIcon
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -161,7 +163,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
               initial={subject?.name === sub.name}
               text={sub.name}
               onPress={() => setSubject && setSubject({ ...sub })}
-              iconPath={`languages/icon_${sub.name.toLowerCase()}.svg`}
+              iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
             />
           ))}
         </Row>
@@ -304,7 +306,19 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <Switch onValueChange={setJoinAfterStart} />
       </Row>
       <Row marginBottom={space['2']}>
-        <Text flex="1">{t('course.CourseDate.form.otherOptionContact')}</Text>
+        <Text flex="1" justifyContent="center">
+          {t('course.CourseDate.form.otherOptionContact')}
+          <Tooltip
+            maxWidth={500}
+            label={t('course.CourseDate.form.otherOptionContactToolTip')}>
+            <InfoIcon
+              position="absolute"
+              top="1px"
+              paddingLeft="5px"
+              color="danger.100"
+            />
+          </Tooltip>
+        </Text>
         <Switch onValueChange={setAllowContact} />
       </Row>
       <Row

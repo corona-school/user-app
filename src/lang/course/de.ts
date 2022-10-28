@@ -54,6 +54,7 @@ const course = {
       otherHeadline: 'Sonstiges',
       otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
       otherOptionContact: 'Kontaktaufnahme erlauben',
+      otherOptionContactToolTip: 'Wenn du die Kontaktaufnahme erlaubst können dich die Schüler:innen die Interesse am Kurs haben oder bereits angemeldet sind Kontakt per E-Mail mit dir aufnehmen',
       button: {
         continue: 'Weiter',
         cancel: 'Abbrechen'
