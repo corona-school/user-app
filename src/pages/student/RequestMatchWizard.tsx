@@ -6,7 +6,8 @@ import {
   Button,
   useTheme,
   useBreakpointValue,
-  Row
+  Row,
+  Link
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -127,6 +128,10 @@ const RequestMatchWizard: React.FC<Props> = ({
           />
         ))}
       </TwoColGrid>
+
+      <Link my="3" href="/change-setting/subjects" textDecoration={'underline'}>
+        Du möchtest noch ein weiteres Fach anbieten?
+      </Link>
 
       <Row
         space={space['1']}
