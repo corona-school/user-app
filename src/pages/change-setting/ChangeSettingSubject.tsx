@@ -328,7 +328,9 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           </Button>
         </VStack>
       </WithNavigation>
-      <Modal isOpen={showFocusSelection}>
+      <Modal
+        isOpen={showFocusSelection}
+        onClose={() => setShowFocusSelection(false)}>
         <Modal.Content>
           <Modal.Header>
             <Heading>
