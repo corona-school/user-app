@@ -320,7 +320,7 @@ const Profile: React.FC<Props> = () => {
                         <Column marginRight={3} mb={space['0.5']}>
                           <IconTagList
                             isDisabled
-                            iconPath={'subjects/icon_mathe.svg'}
+                            iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
                             text={sub.name}
                           />
                         </Column>
