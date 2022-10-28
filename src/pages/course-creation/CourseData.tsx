@@ -135,6 +135,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Page'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -282,10 +283,17 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.maxMembersLabel')}
         </FormControl.Label>
+
         <Input
-          onChangeText={setMaxParticipantCount}
+          keyboardType="numeric"
+          value={maxParticipantCount}
+          onChangeText={text => {
+            const t = text.replace(/\D+/g, '')
+            setMaxParticipantCount && setMaxParticipantCount(t)
+          }}
           marginBottom={space['0.5']}
         />
+
         <Text fontSize="xs">{t('course.CourseDate.form.maxMembersInfo')}</Text>
       </FormControl>
       <Heading fontSize="md">

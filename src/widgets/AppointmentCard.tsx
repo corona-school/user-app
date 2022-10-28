@@ -10,7 +10,8 @@ import {
   Link,
   Image,
   Column,
-  useBreakpointValue
+  useBreakpointValue,
+  Pressable
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
@@ -34,7 +35,6 @@ type Props = {
   isTeaser?: boolean
   image?: string
   onPressToCourse?: () => any
-  href?: string
   countCourse?: number
 }
 
@@ -52,8 +52,7 @@ const AppointmentCard: React.FC<Props> = ({
   buttonlink,
   isTeaser = false,
   image,
-  onPressToCourse,
-  href
+  onPressToCourse
 }) => {
   const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
@@ -99,7 +98,7 @@ const AppointmentCard: React.FC<Props> = ({
         <Card
           flexibleWidth={isTeaser ? true : false}
           variant={isTeaser ? 'dark' : 'normal'}>
-          <Link href={href}>
+          <Pressable onPress={onPressToCourse}>
             <Column
               w="100%"
               flexDirection={isTeaser ? CardMobileDirection : 'column'}>
@@ -174,14 +173,14 @@ const AppointmentCard: React.FC<Props> = ({
                 )}
               </Box>
             </Column>
-          </Link>
+          </Pressable>
         </Card>
       ) : (
         <Flex
           borderRadius="15px"
           backgroundColor="primary.100"
           marginBottom={space['1']}>
-          <Link onPress={onPressToCourse} width="100%" height="100%">
+          <Pressable onPress={onPressToCourse} width="100%" height="100%">
             <Box marginRight={space['1']}>
               <Image
                 width="110px"
@@ -218,7 +217,7 @@ const AppointmentCard: React.FC<Props> = ({
                 {title}
               </Text>
             </Box>
-          </Link>
+          </Pressable>
         </Flex>
       )}
     </View>

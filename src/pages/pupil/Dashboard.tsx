@@ -6,10 +6,15 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
+  Pressable,
   Flex,
-  Column
+  Column,
+  Spinner,
+  Modal,
+  useToast,
+  Row
 } from 'native-base'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
@@ -19,12 +24,13 @@ import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -34,7 +40,10 @@ const query = gql`
       firstname
       pupil {
         matches {
+          id
+          dissolved
           student {
+            id
             firstname
             lastname
           }
@@ -67,7 +76,7 @@ const query = gql`
       }
     }
 
-    subcoursesPublic(take: 20, skip: 2, excludeKnown: true) {
+    subcoursesPublic(take: 10, skip: 0, excludeKnown: true) {
       id
       minGrade
       maxGrade
@@ -94,23 +103,24 @@ const query = gql`
 `
 
 const Dashboard: React.FC<Props> = () => {
-  // ,
-  //   {
-  //     refetchQueries: [query]
-  //   }
-  const { data, loading } = useQuery(query)
+  const { data, loading, called } = useQuery(query)
 
   const { space, sizes } = useTheme()
+  const toast = useToast()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
+  const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
+  const [dissolveData, setDissolveData] = useState<LFMatch>()
+  const [toastShown, setToastShown] = useState<boolean>()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler – Dashboard'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const ContainerWidth = useBreakpointValue({
@@ -145,200 +155,291 @@ const Dashboard: React.FC<Props> = () => {
       })
     }, [data?.me?.pupil?.subcoursesJoined])
 
-  if (loading) return <></>
+  const [dissolve, _dissolve] = useMutation(
+    gql`
+      mutation dissolve($matchId: Float!) {
+        matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+      }
+    `,
+    {
+      refetchQueries: [query]
+    }
+  )
+
+  const dissolveMatch = useCallback((match: LFMatch) => {
+    setDissolveData(match)
+    setShowDissolveModal(true)
+  }, [])
+
+  useEffect(() => {
+    if (_dissolve?.data?.matchDissolve && !toastShown) {
+      setToastShown(true)
+      toast.show({
+        description: 'Das Match wurde aufgelöst'
+      })
+    }
+  }, [_dissolve?.data?.matchDissolve, toast, toastShown])
 
   return (
-    <WithNavigation
-      headerContent={
-        <HStack
-          maxWidth={ContainerWidth}
-          space={space['1']}
-          alignItems="center"
-          bgColor={'primary.900'}
-          padding={space['0.5']}>
-          <ProfilAvatar
-            size="md"
-            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          />
-          <Heading color={'#fff'}>
-            {t('hallo')} {data?.me?.firstname}!
-          </Heading>
-        </HStack>
-      }
-      headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
-        <VStack space={space['1']} marginTop={space['1']}>
-          {sortedAppointments[0] && (
-            <VStack space={space['0.5']}>
-              <Heading marginY={space['1']}>
-                {t('dashboard.appointmentcard.header')}
-              </Heading>
-
-              <AppointmentCard
-                isTeaser
-                onPressToCourse={() => {
-                  trackEvent({
-                    category: 'dashboard',
-                    action: 'click-event',
-                    name:
-                      'Schüler Dashboard – Termin Teaser | Klick auf' +
-                      sortedAppointments[0]?.course.course?.name,
-                    documentTitle: 'Schüler Dashboard'
-                  })
-                  navigate('/single-course', {
-                    state: { course: sortedAppointments[0]?.course.id }
-                  })
-                }}
-                tags={sortedAppointments[0]?.course?.course?.tags}
-                date={sortedAppointments[0]?.lecture.start}
-                image={sortedAppointments[0]?.course.course?.image}
-                title={sortedAppointments[0]?.course.course?.name}
-                description={sortedAppointments[0]?.course.course?.outline}
+    <>
+      <WithNavigation
+        headerContent={
+          !loading && (
+            <HStack
+              maxWidth={ContainerWidth}
+              space={space['1']}
+              alignItems="center"
+              bgColor={'primary.900'}
+              padding={space['0.5']}>
+              <ProfilAvatar
+                size="md"
+                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
               />
-            </VStack>
-          )}
+              <Heading color={'#fff'}>
+                {t('hallo')} {data?.me?.firstname}!
+              </Heading>
+            </HStack>
+          )
+        }
+        headerLeft={<NotificationAlert />}>
+        {!called || (loading && <CenterLoadingSpinner />)}
+        {called && !loading && (
+          <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+            <VStack space={space['1']} marginTop={space['1']}>
+              {sortedAppointments[0] && (
+                <VStack space={space['0.5']}>
+                  <Heading marginY={space['1']}>
+                    {t('dashboard.appointmentcard.header')}
+                  </Heading>
 
-          {/* Appointments */}
-          <HSection
-            title={t('dashboard.myappointments.header')}
-            showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
-            onShowAll={() => navigate('/appointments-archive')}>
-            {(sortedAppointments?.length &&
-              sortedAppointments
-                .slice(1, 5)
-                .map(
-                  ({
-                    course,
-                    lecture
-                  }: {
-                    course: LFSubCourse
-                    lecture: LFLecture
-                  }) => {
-                    if (!course) return <></>
+                  <AppointmentCard
+                    isTeaser
+                    onPressToCourse={() => {
+                      trackEvent({
+                        category: 'dashboard',
+                        action: 'click-event',
+                        name:
+                          'Schüler Dashboard – Termin Teaser | Klick auf' +
+                          sortedAppointments[0]?.course.course?.name,
+                        documentTitle: 'Schüler Dashboard'
+                      })
+                      navigate('/single-course', {
+                        state: { course: sortedAppointments[0]?.course.id }
+                      })
+                    }}
+                    tags={sortedAppointments[0]?.course?.course?.tags}
+                    date={sortedAppointments[0]?.lecture.start}
+                    image={sortedAppointments[0]?.course.course?.image}
+                    title={sortedAppointments[0]?.course.course?.name}
+                    description={sortedAppointments[0]?.course.course?.outline}
+                  />
+                </VStack>
+              )}
 
-                    return (
-                      <AppointmentCard
-                        onPressToCourse={() => {
+              {/* Appointments */}
+              <HSection
+                title={t('dashboard.myappointments.header')}
+                showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
+                onShowAll={() => navigate('/appointments-archive')}>
+                {(sortedAppointments?.length &&
+                  sortedAppointments
+                    .slice(1, 5)
+                    .map(
+                      ({
+                        course,
+                        lecture
+                      }: {
+                        course: LFSubCourse
+                        lecture: LFLecture
+                      }) => {
+                        if (!course) return <></>
+
+                        return (
+                          <AppointmentCard
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'dashboard',
+                                action: 'click-event',
+                                name:
+                                  'Schüler Dashboard – Meine Termin | Klick auf' +
+                                  course.course.name,
+                                documentTitle: 'Schüler Dashboard'
+                              })
+
+                              navigate('/single-course', {
+                                state: { course: course.id }
+                              })
+                            }}
+                            key={`appointment-${course.id}`}
+                            description={course.course.outline}
+                            tags={course.course.tags}
+                            date={lecture.start}
+                            image={course.course.image}
+                            title={course.course.name}
+                          />
+                        )
+                      }
+                    )) || (
+                  <VStack space={space['0.5']}>
+                    <Text>Du bist für keine Kurse eingetragen.</Text>
+                    <Button onPress={() => navigate('/course-archive')}>
+                      Zur Kursübersicht
+                    </Button>
+                  </VStack>
+                )}
+              </HSection>
+
+              {/* Matches */}
+              <HSection
+                title={t('dashboard.learningpartner.header')}
+                showAll={data?.me?.pupil?.matches?.length > 2}
+                wrap>
+                <Flex direction="row" flexWrap="wrap">
+                  {data?.me?.pupil?.matches?.slice(0, 2).map(
+                    (match: LFMatch) =>
+                      (console.log(match),
+                      (
+                        <Pressable
+                          onPress={() =>
+                            navigate('/profile', {
+                              state: {
+                                userType: 'student',
+                                id: match.student.id
+                              }
+                            })
+                          }>
+                          <Column width={CardGrid} marginRight="15px">
+                            <TeacherCard
+                              name={`${match.student?.firstname} ${match.student?.lastname}`}
+                              variant="dark"
+                              tags={
+                                match.subjectsFormatted?.map(s => s.name) || [
+                                  'Fehler',
+                                  'Backend',
+                                  'Permission'
+                                ]
+                              }
+                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() => dissolveMatch(match)}>
+                                    {t('dashboard.offers.match')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.status.dissolved')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Column>
+                        </Pressable>
+                      )) || <Text>{t('dashboard.offers.noMatching')}</Text>
+                  )}
+                </Flex>
+                <VStack space={space['0.5']} mt="3">
+                  {(data?.me?.pupil?.canRequestMatch?.allowed && (
+                    <Button
+                      onPress={() => {
+                        trackEvent({
+                          category: 'dashboard',
+                          action: 'click-event',
+                          name: 'Schüler Dashboard – Matching anfragen',
+                          documentTitle: 'Schüler Dashboard'
+                        })
+                        navigate('/matching')
+                      }}>
+                      {t('dashboard.offers.requestMatching')}
+                    </Button>
+                  )) || (
+                    <Text>
+                      {t(
+                        `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+                      )}
+                    </Text>
+                  )}
+                  <Text fontSize="xs">
+                    Offene Anfragen:{' '}
+                    {`${data?.me?.pupil?.openMatchRequestCount}`}
+                  </Text>
+                </VStack>
+              </HSection>
+
+              {/* Suggestions */}
+
+              <HSection
+                title={t('dashboard.relatedcontent.header')}
+                showAll={data?.subcoursesPublic?.length > 4}>
+                {(data?.subcoursesPublic?.length &&
+                  data?.subcoursesPublic
+                    ?.slice(0, 4)
+                    .map((sc: LFSubCourse, i: number) => (
+                      <SignInCard
+                        tags={sc.course.tags}
+                        data={sc}
+                        onClickSignIn={() => {
                           trackEvent({
                             category: 'dashboard',
                             action: 'click-event',
-                            name:
-                              'Schüler Dashboard – Meine Termin | Klick auf' +
-                              course.course.name,
+                            name: 'Schüler Dashboard – Matching Vorschlag',
                             documentTitle: 'Schüler Dashboard'
                           })
-
                           navigate('/single-course', {
-                            state: { course: course.id }
+                            state: { course: sc.id }
                           })
                         }}
-                        key={`appointment-${course.id}`}
-                        description={course.course.outline}
-                        tags={course.course.tags}
-                        date={lecture.start}
-                        image={course.course.image}
-                        title={course.course.name}
+                        onPress={() => {
+                          trackEvent({
+                            category: 'dashboard',
+                            action: 'click-event',
+                            name: 'Schüler Dashboard – Matching Vorschlag',
+                            documentTitle: 'Schüler Dashboard'
+                          })
+                          navigate('/single-course', {
+                            state: { course: sc.id }
+                          })
+                        }}
                       />
-                    )
-                  }
-                )) || (
-              <VStack space={space['0.5']}>
-                <Text>Du bist für keine Kurse eingetragen.</Text>
-                <Button onPress={() => navigate('/course-archive')}>
-                  Zur Kursübersicht
-                </Button>
-              </VStack>
-            )}
-          </HSection>
-          {/* Matches */}
-          <HSection
-            title={t('dashboard.learningpartner.header')}
-            showAll={data?.me?.pupil?.matches?.length > 2}
-            wrap>
-            <Flex direction="row" flexWrap="wrap">
-              {data?.me?.pupil?.matches?.slice(0, 2).map(
-                (match: LFMatch) =>
-                  (
-                    <Column width={CardGrid} marginRight="15px">
-                      <TeacherCard
-                        name={`${match.student?.firstname} ${match.student?.lastname}`}
-                        variant="dark"
-                        tags={
-                          match.subjectsFormatted?.map(s => s.name) || [
-                            'Fehler',
-                            'Backend',
-                            'Permission'
-                          ]
-                        }
-                        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                        button={
-                          <Button variant="outlinelight">
-                            {t('dashboard.offers.match')}
-                          </Button>
-                        }
-                      />
-                    </Column>
-                  ) || <Text>{t('dashboard.offers.noMatching')}</Text>
-              )}
-            </Flex>
-            <VStack space={space['0.5']} mt="3">
-              {(data?.me?.pupil?.canRequestMatch?.allowed && (
-                <Button
-                  onPress={() => {
-                    trackEvent({
-                      category: 'dashboard',
-                      action: 'click-event',
-                      name: 'Schüler Dashboard – Matching anfragen',
-                      documentTitle: 'Schüler Dashboard'
-                    })
-                    navigate('/matching')
-                  }}>
-                  {t('dashboard.offers.requestMatching')}
-                </Button>
-              )) || (
-                <Text>
-                  {t(
-                    `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                  )}
-                </Text>
-              )}
-              <Text fontSize="xs">
-                Offene Anfragen: {`${data?.me?.pupil?.openMatchRequestCount}`}
+                    ))) || (
+                  <Text>Es wurden keine Vorschläge für dich gefunden.</Text>
+                )}
+              </HSection>
+            </VStack>
+          </VStack>
+        )}
+      </WithNavigation>
+      <Modal isOpen={showDissolveModal}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Match auflösen</Modal.Header>
+          <Modal.Body>
+            <VStack>
+              <Text>
+                Möchtest du das Match mit{' '}
+                <Text bold>{dissolveData?.student.firstname}</Text> wirklich
+                auflösen?
               </Text>
             </VStack>
-          </HSection>
-
-          {/* Suggestions */}
-          <HSection title={t('dashboard.relatedcontent.header')} showAll={true}>
-            {(data?.subcoursesPublic?.length &&
-              data?.subcoursesPublic?.map((sc: LFSubCourse, i: number) => (
-                <SignInCard
-                  tags={sc.course.tags}
-                  data={sc}
-                  onClickSignIn={() => {
-                    trackEvent({
-                      category: 'dashboard',
-                      action: 'click-event',
-                      name: 'Schüler Dashboard – Matching Vorschlag',
-                      documentTitle: 'Schüler Dashboard'
-                    })
-                    navigate('/single-course', { state: { course: sc.id } })
-                  }}
-                  onPress={() => {
-                    trackEvent({
-                      category: 'dashboard',
-                      action: 'click-event',
-                      name: 'Schüler Dashboard – Matching Vorschlag',
-                      documentTitle: 'Schüler Dashboard'
-                    })
-                    navigate('/single-course', { state: { course: sc.id } })
-                  }}
-                />
-              ))) || <Text>Es wurden keine Vorschläge für dich gefunden.</Text>}
-          </HSection>
-        </VStack>
-      </VStack>
-    </WithNavigation>
+          </Modal.Body>
+          <Modal.Footer>
+            <Row space={space['1']}>
+              <Button
+                onPress={() => {
+                  dissolve({ variables: { matchId: dissolveData?.id } })
+                  setShowDissolveModal(false)
+                }}>
+                Match auflösen
+              </Button>
+              <Button onPress={() => setShowDissolveModal(false)}>
+                Zurück
+              </Button>
+            </Row>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    </>
   )
 }
 export default Dashboard

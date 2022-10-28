@@ -44,7 +44,7 @@ const Tabs: React.FC<Props> = ({
           fontSize="md"
           bold={active ? true : false}
           color={active ? 'primary.900' : 'primary.grey'}>
-          {tab.title}
+          {tab?.title}
         </Text>
       </Box>
     </Pressable>
