@@ -4,7 +4,6 @@ import {
   useTheme,
   VStack,
   Row,
-  Link,
   Column,
   Text,
   Modal,
@@ -19,15 +18,10 @@ import {
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-import UserAchievements from '../../widgets/UserAchievements'
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import Star from '../../assets/icons/lernfair/lf-star.svg'
-import LFIcon from '../../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -130,6 +124,7 @@ const Profile: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Schüler Profil'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) return <></>
@@ -261,11 +256,13 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
-                      />
+                      {(data?.me?.pupil?.state !== 'other' && (
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
+                        />
+                      )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>
@@ -314,17 +311,15 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.subjectsFormatted?.length &&
                     data?.me?.pupil?.subjectsFormatted?.map(
-                      (sub: { name: string; __typename: string }) => {
-                        return (
-                          <Column marginRight={3} mb={space['0.5']}>
-                            <IconTagList
-                              isDisabled
-                              iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
-                              text={sub.name}
-                            />
-                          </Column>
-                        )
-                      }
+                      (sub: { name: string; __typename: string }) => (
+                        <Column marginRight={3} mb={space['0.5']}>
+                          <IconTagList
+                            isDisabled
+                            iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
+                            text={sub.name}
+                          />
+                        </Column>
+                      )
                     )) || <Text>{t('profile.Notice.noSchoolSubject')}</Text>}
                 </Row>
               </ProfileSettingItem>

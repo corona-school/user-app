@@ -53,7 +53,7 @@ const profile = {
     single: {
       header: 'Bundesland ändern',
       title: 'Mein Bundesland',
-      others: 'Weitere Bundesländer wählen',
+      others: 'Bundesland wählen',
       button: 'Auswahl speichern'
     }
   },

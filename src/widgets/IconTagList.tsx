@@ -72,7 +72,7 @@ const IconTagList: React.FC<IIconTagList> = ({
         height={variant === 'selection' ? '100%' : undefined}
         onPress={() => {
           if (isDisabled) return
-          setActive(prev => !prev)
+          initial === undefined && setActive(prev => !prev)
           onPress && onPress()
         }}
         display={variant === 'full' || variant === 'selection' ? 'block' : ''}
