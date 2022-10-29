@@ -449,7 +449,7 @@ const SwitchUserType = ({
       setUserType(!!me?.student ? 'student' : 'pupil')
   }, [me?.student, setUserType, userType, loading])
 
-  if (loading) return <></>
+  if (loading || !userType) return <></>
 
   if (!userType && !me && error)
     return <Navigate to="/welcome" state={{ from: location }} replace />
