@@ -24,12 +24,11 @@ import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
 import useRegistration from '../../hooks/useRegistration'
 import { useTranslation } from 'react-i18next'
-import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
-import Utility from '../../Utility'
 import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
+import { ClassRange } from '../../types/lernfair/SchoolClass'
 
 type Props = {}
 
@@ -92,7 +91,7 @@ const mutStudent = `mutation register(
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+  const { space } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -104,7 +103,7 @@ const RegistrationData: React.FC<Props> = () => {
   // answers reset to true instead of number
   // have to track classes seperately can't find the bug
   const [classes, setClasses] = useState<{
-    [key: string]: { min: number; max: number }
+    [key: string]: ClassRange
   }>({})
 
   // show global modal

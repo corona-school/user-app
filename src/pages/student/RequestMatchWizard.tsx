@@ -7,7 +7,7 @@ import {
   useTheme,
   useBreakpointValue,
   Row,
-  Link,
+  Link
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -80,6 +80,7 @@ const RequestMatchWizard: React.FC<Props> = ({
     trackPageView({
       documentTitle: 'Anfrage – Helfer Matching Formular '
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

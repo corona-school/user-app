@@ -20,14 +20,13 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
-import ToggleButton from '../../components/ToggleButton'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
 import { LFSubject, subjects } from '../../types/lernfair/Subject'
-import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+import { Slider } from '@miblanchard/react-native-slider'
 
 const queryPupil = `query {
   me {
@@ -66,17 +65,16 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const { userType = '' } = useLernfair()
   const { trackPageView } = useMatomo()
 
-  const [focusedSelectionClasses, setFocusedSelectionClasses] = useState<
-    number[]
-  >([])
-
   const [focusedSelection, setFocusedSelection] = useState<LFSubject>()
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>()
   const [selections, setSelections] = useState<LFSubject[]>([])
   const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
+  const [selectedClassRange, setSelectedClassRange] = useState<number[]>([
+    1, 13
+  ])
 
-  const { data, error, loading } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
@@ -103,23 +101,6 @@ const ChangeSettingSubject: React.FC<Props> = () => {
       return arr
     },
     []
-  )
-
-  const answerFocusSelection = useCallback(
-    (num: number) => {
-      const arr = [...focusedSelectionClasses]
-      if (arr.includes(num)) {
-        const i = arr.findIndex(el => el === num)
-        if (i >= 0) {
-          arr.splice(i, 1)
-        }
-      } else {
-        arr.push(num)
-      }
-
-      setFocusedSelectionClasses(arr)
-    },
-    [focusedSelectionClasses]
   )
 
   useEffect(() => {
@@ -156,6 +137,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Profil Einstellungen – Fächer'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) return <></>
@@ -339,7 +321,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             </Heading>
           </Modal.Header>
           <Modal.Body>
-            <ToggleButton
+            {/* <ToggleButton
               label={t('registration.student.classSelection.range1')}
               dataKey="1"
               isActive={focusedSelectionClasses.includes(1)}
@@ -362,6 +344,20 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               dataKey="4"
               isActive={focusedSelectionClasses.includes(4)}
               onPress={key => answerFocusSelection(4)}
+            /> */}
+            <Heading fontSize="md">
+              Klassen {selectedClassRange[0] || 1} -{' '}
+              {selectedClassRange[1] || 13}
+            </Heading>
+            <Slider
+              animateTransitions
+              minimumValue={1}
+              maximumValue={13}
+              value={selectedClassRange}
+              step={1}
+              onValueChange={(value: number | number[]) => {
+                Array.isArray(value) && setSelectedClassRange(value)
+              }}
             />
           </Modal.Body>
           <Modal.Footer>
@@ -370,13 +366,13 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                 const item = (focusedSelection && { ...focusedSelection }) || {
                   name: ''
                 }
-                const range = Utility.findMinMaxClassRange(
-                  focusedSelectionClasses
-                )
-                item.grade = range
+
+                item.grade = {
+                  min: selectedClassRange[0],
+                  max: selectedClassRange[1]
+                }
                 item.name && setSelections(prev => [...prev, item])
                 setFocusedSelection({ name: '' })
-                setFocusedSelectionClasses([])
                 setShowFocusSelection(false)
               }}>
               {t('registration.student.classSelection.btn')}

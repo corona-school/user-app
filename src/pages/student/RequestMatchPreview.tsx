@@ -12,14 +12,14 @@ import {
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
+import { ClassRange } from '../../types/lernfair/SchoolClass'
 import { LFSubject } from '../../types/lernfair/Subject'
-import Utility from '../../Utility'
 import IconTagList from '../../widgets/IconTagList'
 
 type Props = {
   subjects: LFSubject[]
   classes: {
-    [key: string]: { [key: string]: boolean }
+    [key: string]: ClassRange
   }
   onRequestMatch: () => any
   onBack: () => any
@@ -59,42 +59,40 @@ const RequestMatchPreview: React.FC<Props> = ({
     trackPageView({
       documentTitle: 'Anfrage – Helfer Matching Vorschau '
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  console.log(classes)
   return (
     <VStack space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('matching.request.check.preview.title')}</Heading>
       <Text>{t('matching.request.check.preview.content')}</Text>
 
-      {subjects.map((sub: LFSubject, index: number) => (
-        <VStack paddingBottom={space['1']}>
-          <Text bold>
-            {t('matching.request.check.preview.subject')} {index + 1}
-          </Text>
-          <IconTagList
-            variant="center"
-            text={sub.name}
-            isDisabled
-            iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
-          />
-          <Text paddingTop={space['1']} bold>
-            {t('matching.request.check.preview.subjectForClass')} {index + 1}
-          </Text>
-          {Object.entries(classes[sub.name] || {}).map(
-            ([key, val], index: any) => {
-              const range = Utility.intToClassRange(parseInt(key))
+      {subjects.map((sub: LFSubject, index: number) => {
+        return (
+          <VStack paddingBottom={space['1']}>
+            <Text bold>
+              {t('matching.request.check.preview.subject')} {index + 1}
+            </Text>
+            <IconTagList
+              variant="center"
+              text={sub.name}
+              isDisabled
+              iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+            />
+            <Text paddingTop={space['1']} bold>
+              {t('matching.request.check.preview.subjectForClass')} {index + 1}
+            </Text>
 
-              return (
-                <ToggleButton
-                  dataKey={index}
-                  isActive={false}
-                  label={`${range.min}. - ${range.max}. Klasse`}
-                />
-              )
-            }
-          )}
-        </VStack>
-      ))}
+            <ToggleButton
+              dataKey={`${index}`}
+              isActive={false}
+              label={`${classes[sub.name].min}. - ${
+                classes[sub.name].max
+              }. Klasse`}
+            />
+          </VStack>
+        )
+      })}
 
       <Row
         space={space['1']}
