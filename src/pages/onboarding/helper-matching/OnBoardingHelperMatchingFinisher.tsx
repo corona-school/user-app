@@ -40,9 +40,10 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
               </Text>
               <Heading
                 color="lightText"
-                fontSize="md"
+                fontSize="xs"
                 textAlign="center"
                 maxWidth="300px"
+                marginX="2px"
                 marginBottom={space['0.5']}>
                 {t(
                   'onboardingList.Wizard.helperMatching.finisher.headlineContent'
@@ -56,7 +57,7 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
                 marginBottom={space['1.5']}>
                 {t('onboardingList.Wizard.helperMatching.finisher.answer')}
               </Text>
-              <Box alignItems="center">
+              <Box alignItems="center" marginX="2px">
                 <Link
                   _text={{
                     color: 'primary.400',

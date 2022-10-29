@@ -176,19 +176,22 @@ const AppointmentCard: React.FC<Props> = ({
           </Pressable>
         </Card>
       ) : (
-        <Flex
-          borderRadius="15px"
-          backgroundColor="primary.100"
-          marginBottom={space['1']}>
-          <Pressable onPress={onPressToCourse} width="100%" height="100%">
-            <Box marginRight={space['1']}>
+        <Pressable onPress={onPressToCourse} width="100%" height="100%">
+          <Flex
+            flexDirection="row"
+            borderRadius="15px"
+            backgroundColor="primary.100"
+            marginBottom={space['1']}>
+            <Box display="block" marginRight={space['1']}>
               <Image
                 width="110px"
+                height="100%"
                 borderTopLeftRadius="15px"
                 borderBottomLeftRadius="15px"
-                height="100%"
                 bgColor="gray.300"
-                source={{ uri: image }}
+                source={{
+                  uri: image
+                }}
               />
             </Box>
 
@@ -217,8 +220,8 @@ const AppointmentCard: React.FC<Props> = ({
                 {title}
               </Text>
             </Box>
-          </Pressable>
-        </Flex>
+          </Flex>
+        </Pressable>
       )}
     </View>
   )

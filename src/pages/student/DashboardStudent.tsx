@@ -389,6 +389,10 @@ const DashboardStudent: React.FC<Props> = () => {
                                     'Helfer Dashboard – Meine Kurse  ' +
                                     sub.course.name
                                 })
+
+                                navigate('/single-course', {
+                                  state: { course: sub.id }
+                                })
                               }}
                               image={sub.course.image}
                               title={sub.course.name}
