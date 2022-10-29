@@ -29,6 +29,7 @@ import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import Utility from '../../Utility'
 import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Slider } from '@miblanchard/react-native-slider'
 
 type Props = {}
 
@@ -102,7 +103,9 @@ const RegistrationData: React.FC<Props> = () => {
   const [answers, setAnswers] = useState<{ [key: string]: Answer }>({})
   // answers reset to true instead of number
   // have to track classes seperately can't find the bug
-  const [classes, setClasses] = useState<{ [key: string]: number }>({})
+  const [classes, setClasses] = useState<{
+    [key: string]: { min: number; max: number }
+  }>({})
 
   // show global modal
   const { setShow, setContent, setVariant } = useModal()
@@ -160,7 +163,8 @@ const RegistrationData: React.FC<Props> = () => {
   const registerStudent = useCallback(async () => {
     const subjects = []
     for (let [sub, isSelected] of Object.entries(answers.subjects)) {
-      const grades = Utility.intToClassRange(classes[sub])
+      // const grades = Utility.intToClassRange(classes[sub])
+      const grades = classes[sub]
       if (isSelected && grades.min > 0 && grades.max > 0) {
         subjects.push({ name: sub, grade: grades })
       }
@@ -310,16 +314,16 @@ const RegistrationData: React.FC<Props> = () => {
     setQuestions(userType === 'pupil' ? pupilQuestions : studentQuestions)
   }, [userType])
 
-  // set state => class range for corresponding subject
-  const answerFocusSelection = useCallback(
-    (val: number) => {
-      setClasses(prev => ({
-        ...prev,
-        [focusedSelection.key]: val
-      }))
-    },
-    [focusedSelection.key]
-  )
+  // // set state => class range for corresponding subject
+  // const answerFocusSelection = useCallback(
+  //   (val: number) => {
+  //     setClasses(prev => ({
+  //       ...prev,
+  //       [focusedSelection.key]: val
+  //     }))
+  //   },
+  //   [focusedSelection.key]
+  // )
 
   // modify selection question based on answers etc
   const modifySelectionQuestionBeforeRender = useCallback(
@@ -471,7 +475,17 @@ const RegistrationData: React.FC<Props> = () => {
             <Heading>{t('registration.student.classSelection.title')}</Heading>
           </Modal.Header>
           <Modal.Body>
-            <ToggleButton
+            <Heading fontSize="md">
+              Klassen{' '}
+              {(classes[focusedSelection.key] &&
+                classes[focusedSelection.key].min) ||
+                1}{' '}
+              -{' '}
+              {(classes[focusedSelection.key] &&
+                classes[focusedSelection.key].max) ||
+                13}
+            </Heading>
+            {/* <ToggleButton
               label={t('registration.student.classSelection.range1')}
               dataKey="1"
               isActive={classes[focusedSelection.key] === 1}
@@ -494,6 +508,26 @@ const RegistrationData: React.FC<Props> = () => {
               dataKey="4"
               isActive={classes[focusedSelection.key] === 4}
               onPress={key => answerFocusSelection(4)}
+            /> */}
+
+            <Slider
+              animateTransitions
+              minimumValue={1}
+              maximumValue={13}
+              value={
+                (classes[focusedSelection.key] && [
+                  classes[focusedSelection.key]?.min,
+                  classes[focusedSelection.key]?.max
+                ]) || [1, 13]
+              }
+              step={1}
+              onValueChange={(value: number | number[]) => {
+                Array.isArray(value) &&
+                  setClasses(prev => ({
+                    ...prev,
+                    [focusedSelection.key]: { min: value[0], max: value[1] }
+                  }))
+              }}
             />
           </Modal.Body>
           <Modal.Footer>
