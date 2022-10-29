@@ -11,7 +11,9 @@ import {
   Column,
   Modal,
   useToast,
-  Box
+  Box,
+  Alert,
+  HStack
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -188,11 +190,20 @@ const MatchingStudent: React.FC<Props> = () => {
                 {t('matching.request.check.requestmatchButton')}
               </Button>
             )) || (
-              <Text>
-                {t(
-                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                )}
-              </Text>
+              <Alert
+                alignItems="start"
+                marginY={space['1']}
+                maxW="450"
+                colorScheme="info">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon />
+                  <Text>
+                    {t(
+                      `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                    )}
+                  </Text>
+                </HStack>
+              </Alert>
             )}
           </VStack>
 
@@ -226,15 +237,38 @@ const MatchingStudent: React.FC<Props> = () => {
                                     {t('dashboard.helpers.buttons.solveMatch')}
                                   </Button>
                                 )) || (
-                                  <Text color="lightText">
-                                    {t('matching.request.check.resoloveMatch')}
-                                  </Text>
+                                  <Alert
+                                    alignItems="start"
+                                    marginY={space['1']}
+                                    maxW="350"
+                                    colorScheme="info">
+                                    <HStack
+                                      space={2}
+                                      flexShrink={1}
+                                      alignItems="center">
+                                      <Alert.Icon />
+                                      <Text>
+                                        {t(
+                                          'matching.request.check.resoloveMatch'
+                                        )}
+                                      </Text>
+                                    </HStack>
+                                  </Alert>
                                 )
                               }
                             />
                           </Column>
                         ))) || (
-                        <Text>{t('matching.request.check.noMatches')}</Text>
+                        <Alert
+                          alignItems="start"
+                          marginY={space['1']}
+                          maxW="350"
+                          colorScheme="info">
+                          <HStack space={2} flexShrink={1} alignItems="center">
+                            <Alert.Icon />
+                            <Text>{t('matching.request.check.noMatches')}</Text>
+                          </HStack>
+                        </Alert>
                       )}
                     </Flex>
                   </VStack>
@@ -269,7 +303,18 @@ const MatchingStudent: React.FC<Props> = () => {
                                 Anfrage zurücknehmen
                               </Button>
                             </Box>
-                          ))) || <Text>Keine Anfragen</Text>}
+                          ))) || (
+                        <Alert
+                          alignItems="start"
+                          marginY={space['1']}
+                          maxW="350"
+                          colorScheme="info">
+                          <HStack space={2} flexShrink={1} alignItems="center">
+                            <Alert.Icon />
+                            <Text>{t('matching.request.check.noMatches')}</Text>
+                          </HStack>
+                        </Alert>
+                      )}
                     </VStack>
                   </VStack>
                 )

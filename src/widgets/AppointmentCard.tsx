@@ -119,7 +119,7 @@ const AppointmentCard: React.FC<Props> = ({
                     uri: image
                   }}
                 />
-                <Row space={space['0.5']} flexWrap="wrap">
+                <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
                   {tags?.map((tag, i) => (
                     <Tag key={`tag-${i}`} text={tag.name} />
                   ))}
@@ -195,8 +195,8 @@ const AppointmentCard: React.FC<Props> = ({
               />
             </Box>
 
-            <Box paddingX={space['1.5']} paddingY={space['1.5']}>
-              <Row space={space['0.5']} flexWrap="wrap">
+            <Box paddingX="10px" paddingY={space['1.5']}>
+              <Row space={space['0.5']} flexWrap="wrap" maxWidth="250px">
                 {tags?.map((tag, i) => (
                   <Tag key={`tag-${i}`} text={tag.name} />
                 ))}

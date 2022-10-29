@@ -10,7 +10,8 @@ import {
   useToast,
   useBreakpointValue,
   Flex,
-  Column
+  Column,
+  Alert
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -313,7 +314,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 title={t('dashboard.myappointments.header')}
                 showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
-                {(sortedPublishedSubcourses?.length &&
+                {(sortedPublishedSubcourses?.length > 1 &&
                   sortedPublishedSubcourses
                     ?.slice(0, 4)
                     .map((el: LFSubCourse, i: number) => {
@@ -352,7 +353,20 @@ const DashboardStudent: React.FC<Props> = () => {
                           title={course.name}
                         />
                       )
-                    })) || <Text>{t('empty.appointments')}</Text>}
+                    })) || (
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="350"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon />
+                      <Text>
+                        {t('dashboard.myappointments.noappointments')}
+                      </Text>
+                    </HStack>
+                  </Alert>
+                )}
               </HSection>
               <HSection
                 title={t('dashboard.helpers.headlines.course')}
@@ -399,11 +413,21 @@ const DashboardStudent: React.FC<Props> = () => {
                             />
                           </Column>
                         )
-                      })) || (
-                    <VStack space={space['0.5']}>
-                      <Text>{t('empty.courses')}</Text>
-                    </VStack>
-                  )}
+                      })) ||
+                    (data?.me?.student?.canCreateCourse?.allowed ? (
+                      <Alert
+                        alignItems="start"
+                        marginY={space['1']}
+                        maxW="400"
+                        colorScheme="info">
+                        <HStack space={2} flexShrink={1} alignItems="center">
+                          <Alert.Icon />
+                          <Text>{t('empty.courses')}</Text>
+                        </HStack>
+                      </Alert>
+                    ) : (
+                      ''
+                    ))}
                 </Flex>
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
@@ -421,11 +445,20 @@ const DashboardStudent: React.FC<Props> = () => {
                     {t('dashboard.helpers.buttons.course')}
                   </Button>
                 )) || (
-                  <Text mt={space['0.5']} fontSize="xs" opacity=".8">
-                    {t(
-                      `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
-                    )}
-                  </Text>
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="400"
+                    colorScheme="warning">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="danger.100" />
+                      <Text>
+                        {t(
+                          `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                        )}
+                      </Text>
+                    </HStack>
+                  </Alert>
                 )}
               </HSection>
 
@@ -475,7 +508,21 @@ const DashboardStudent: React.FC<Props> = () => {
                           }
                         />
                       </Column>
-                    ))) || <Text>{t('empty.matchings')}</Text>}
+                    ))) ||
+                    (data?.me?.student?.canRequestMatch?.allowed ? (
+                      <Alert
+                        alignItems="start"
+                        marginY={space['1']}
+                        maxW="350"
+                        colorScheme="info">
+                        <HStack space={2} flexShrink={1} alignItems="center">
+                          <Alert.Icon />
+                          <Text>{t('empty.matchings')}</Text>
+                        </HStack>
+                      </Alert>
+                    ) : (
+                      ''
+                    ))}
                 </Flex>
                 {(data?.me?.student?.canRequestMatch?.allowed && (
                   <>
@@ -488,11 +535,21 @@ const DashboardStudent: React.FC<Props> = () => {
                     </Button>
                   </>
                 )) || (
-                  <Text mt={space['0.5']} fontSize="xs" opacity=".8">
-                    {t(
-                      `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                    )}
-                  </Text>
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="450"
+                    colorScheme="warning">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="danger.100" />
+                      <Text>
+                        {' '}
+                        {t(
+                          `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                        )}
+                      </Text>
+                    </HStack>
+                  </Alert>
                 )}
 
                 <Text fontSize="xs">

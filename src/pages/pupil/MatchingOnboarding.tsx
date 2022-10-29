@@ -6,7 +6,9 @@ import {
   useTheme,
   useBreakpointValue,
   Heading,
-  Image
+  Image,
+  Alert,
+  HStack
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
@@ -113,11 +115,20 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
           {t('matching.blocker.button')}
         </Button>
         {!data?.me?.pupil?.canRequestMatch?.allowed && (
-          <Text>
-            {t(
-              `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-            )}
-          </Text>
+          <Alert
+            alignItems="start"
+            marginY={space['1']}
+            maxW="350"
+            colorScheme="info">
+            <HStack space={2} flexShrink={1} alignItems="center">
+              <Alert.Icon />
+              <Text>
+                {t(
+                  `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+                )}
+              </Text>
+            </HStack>
+          </Alert>
         )}
       </VStack>
       <Box width={CardGrid}>

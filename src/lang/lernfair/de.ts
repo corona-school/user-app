@@ -78,6 +78,7 @@ const lernfair = {
   schoolclass: '{{class}}. Klasse',
 
   reason: {
+    proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
       matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
@@ -90,11 +91,15 @@ const lernfair = {
       course: 'Du bist leider nicht als Tutor verifiziert.'
     },
     'not-screened': {
-      matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.'
+      matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
+      course: ''
     },
     'not-tutee': {
-      matching: 'Du bist nicht für das Matching zugelassen'
-    }
+      matching: 'Du bist nicht für das Matching zugelassen.'
+    },
+    'not-tutor': {
+      matching: 'Du bist nicht für das Matching zugelassen.'
+    },
   }
 }
 

@@ -15,7 +15,11 @@ const onboarding = {
   empty: {
     appointments: 'Du hast momentan keine Termine.',
     courses: 'Es wurden keine Kurse gefunden.',
-    matchings: 'Es wurden keine Matchings gefunden.'
+    offers: 'Es wurden keine Angebote gefunden.',
+    coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
+    coursesdraft: 'Es wurden keine Kursentwürfe gefunden.',
+    matchings: 'Es wurden keine Matchings gefunden.',
+    norequests: 'Es wurden keine Anfragen gefunden.',
   }
 }
 export default onboarding

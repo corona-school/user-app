@@ -8,7 +8,9 @@ import {
   Row,
   Button,
   useBreakpointValue,
-  VStack
+  VStack,
+  Alert,
+  HStack
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
@@ -383,7 +385,23 @@ const SingleCourse: React.FC<Props> = () => {
         {userType === 'pupil' && (
           <Box marginBottom={space['0.5']} paddingLeft={space['1']}>
             {!course?.canJoin?.allowed && !course?.isParticipant && (
-              <Text>{course?.canJoin?.reason}</Text>
+              <Alert
+                alignItems="start"
+                marginY={space['1']}
+                maxW="350"
+                colorScheme="info">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <Alert.Icon />
+                  {/* { 
+                    !course?.isParticipant ?  
+                      <Text>{course?.canJoin?.reason}</Text>
+                    : !course?.isOnWaitingList ? 
+
+                    :  ''
+                  } */}
+                  <Text>{course?.canJoin?.reason}</Text>
+                </HStack>
+              </Alert>
             )}
             {!course?.isParticipant && !course?.isOnWaitingList && (
               <Button
@@ -413,7 +431,16 @@ const SingleCourse: React.FC<Props> = () => {
             )}
             {course?.isOnWaitingList && (
               <VStack space={space['0.5']}>
-                <Text>{t('single.buttoninfo.waitingListMember')}</Text>
+                <Alert
+                  alignItems="start"
+                  marginY={space['1']}
+                  maxW="350"
+                  colorScheme="info">
+                  <HStack space={2} flexShrink={1} alignItems="center">
+                    <Alert.Icon />
+                    <Text>{t('single.buttoninfo.waitingListMember')}</Text>
+                  </HStack>
+                </Alert>
                 <Button
                   onPress={() => {
                     leaveWaitingList({ variables: { courseId: courseId } })
@@ -427,7 +454,17 @@ const SingleCourse: React.FC<Props> = () => {
             )}
             {course?.isParticipant && (
               <VStack space={space['0.5']}>
-                <Text>{t('single.buttoninfo.successMember')}</Text>
+                <Alert
+                  alignItems="start"
+                  marginY={space['1']}
+                  maxW="350"
+                  colorScheme="info">
+                  <HStack space={2} flexShrink={1} alignItems="center">
+                    <Alert.Icon />
+                    <Text>{t('single.buttoninfo.successMember')}</Text>
+                  </HStack>
+                </Alert>
+
                 <Button
                   onPress={() => {
                     leaveSubcourse({ variables: { courseId: courseId } })
