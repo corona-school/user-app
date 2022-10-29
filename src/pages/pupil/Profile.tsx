@@ -4,7 +4,6 @@ import {
   useTheme,
   VStack,
   Row,
-  Link,
   Column,
   Text,
   Modal,
@@ -19,15 +18,10 @@ import {
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-import UserAchievements from '../../widgets/UserAchievements'
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import Star from '../../assets/icons/lernfair/lf-star.svg'
-import LFIcon from '../../components/LFIcon'
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -130,6 +124,7 @@ const Profile: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Schüler Profil'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) return <></>

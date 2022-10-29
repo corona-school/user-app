@@ -208,6 +208,7 @@ const RegistrationData: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Registrierung – Auswahl-Kacheln'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // registration went through without error
@@ -260,9 +261,10 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, data, error, setContent, setShow, setVariant, space, t])
 
-  const registerError = () => {
+  const registerError = useCallback(() => {
     setShow(false)
     trackEvent({
       category: 'registrierung',
@@ -270,7 +272,8 @@ const RegistrationData: React.FC<Props> = () => {
       name: 'Registrierung Fehler',
       documentTitle: 'Fehler bei der Registrierung'
     })
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // registration has an error
   useEffect(() => {
@@ -290,7 +293,7 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     }
-  }, [answers, error, setContent, setShow, setVariant, space, t])
+  }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(

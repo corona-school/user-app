@@ -8,7 +8,6 @@ import {
   useBreakpointValue,
   Row,
   Link,
-  Container
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
