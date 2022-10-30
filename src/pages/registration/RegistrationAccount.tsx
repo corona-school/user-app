@@ -43,8 +43,6 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
-  const [isErrorMessagesShown, setErrorMessagesShown] = useState<boolean>(false)
-  const [getCurrentPasswordLength, setPasswordLength] = useState<number>(0)
 
   useEffect(() => {
     createToken()
@@ -148,97 +146,78 @@ const RegistrationAccount: React.FC<Props> = () => {
         mt={space['4']}
         width={ContainerWidth}
         marginX="auto">
-        {isErrorMessagesShown && (
-          <VStack marginBottom={space['2']}>
-            {email.length < 6 && (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                maxW="350"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
-                  <Text>{t('registration.hint.email.invalid')}</Text>
-                </HStack>
-              </Alert>
-            )}
-
-            {!userType && (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                maxW="350"
-                backgroundColor="#fff8f8"
-                colorScheme="warning">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
-                  <Text>{t('registration.hint.userType.missing')}</Text>
-                </HStack>
-              </Alert>
-            )}
-            {password !== passwordConfirm ? (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                maxW="350"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
-                  <Text>{t('registration.hint.password.nomatch')}</Text>
-                </HStack>
-              </Alert>
-            ) : (
-              ''
-            )}
-
-            {getCurrentPasswordLength < 6 ? (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                maxW="400"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
-                  <Text>{t('registration.hint.password.length')}</Text>
-                </HStack>
-              </Alert>
-            ) : (
-              ''
-            )}
-          </VStack>
-        )}
         <VStack space={space['0.5']}>
           <TextInput
             keyboardType="email-address"
             placeholder={t('email')}
-            onFocus={() => setErrorMessagesShown(true)}
             onChangeText={t => setRegistrationData({ email: t })}
           />
+          {email.length < 6 && (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="350"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.email.invalid')}</Text>
+              </HStack>
+            </Alert>
+          )}
+
           <TextInput
             placeholder={t('password')}
             type="password"
-            onFocus={() => {
-              setErrorMessagesShown(true)
-            }}
             onChangeText={t => {
-              setPasswordLength(t.length)
               setRegistrationData({ password: t })
             }}
           />
           <TextInput
             placeholder={t('registration.password_repeat')}
             type="password"
-            onFocus={() => setErrorMessagesShown(true)}
             onChangeText={setPasswordConfirm}
           />
+          {password !== passwordConfirm ? (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="350"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.password.nomatch')}</Text>
+              </HStack>
+            </Alert>
+          ) : (
+            ''
+          )}
+
+          {password.length < 6 ? (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="400"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.password.length')}</Text>
+              </HStack>
+            </Alert>
+          ) : (
+            ''
+          )}
+
           <Text fontSize="xs" opacity=".6">
             {t('registration.hint.password.length')}
           </Text>
         </VStack>
-        <VStack space={space['0.5']} marginTop={space['1']}>
+        <VStack
+          space={space['0.5']}
+          marginTop={space['1']}
+          marginBottom={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
           {/* <ToggleButton
             Icon={ParentIcon}
@@ -253,7 +232,6 @@ const RegistrationAccount: React.FC<Props> = () => {
             dataKey="pupil"
             isActive={userType === 'pupil'}
             onPress={() => {
-              setErrorMessagesShown(true)
               setRegistrationData({ userType: 'pupil' })
             }}
           />
@@ -263,11 +241,23 @@ const RegistrationAccount: React.FC<Props> = () => {
             dataKey="student"
             isActive={userType === 'student'}
             onPress={() => {
-              setErrorMessagesShown(true)
               setRegistrationData({ userType: 'student' })
             }}
           />
         </VStack>
+        {!userType && (
+          <Alert
+            alignItems="start"
+            marginBottom="10px"
+            maxW="350"
+            backgroundColor="#fff8f8"
+            colorScheme="warning">
+            <HStack space={2} flexShrink={1} alignItems="center">
+              <WarningTwoIcon color="danger.400" />
+              <Text>{t('registration.hint.userType.missing')}</Text>
+            </HStack>
+          </Alert>
+        )}
         <VStack space={space['1']} marginTop={space['1']}>
           <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
             {t('registration.check_legal')}

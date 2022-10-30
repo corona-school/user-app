@@ -26,11 +26,16 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
         <Row
           h={'54px'}
           bgColor="lightText"
-          borderTopWidth={1}
-          borderTopColor="primary.500"
           justifyContent={'space-between'}
           alignItems={'center'}
-          paddingX={space['1']}>
+          paddingX={space['1']}
+          paddingY={space['2']}
+          style={{
+            shadowColor: '#000000',
+            shadowOpacity: 0.12,
+            shadowRadius: 2,
+            shadowOffset: { width: -1, height: -3 }
+          }}>
           {Object.entries(navItems).map(
             ([key, { label, icon: Icon, disabled }]) => (
               <Link href={disabled ? undefined : key} key={key}>
