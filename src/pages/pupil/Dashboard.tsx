@@ -12,7 +12,8 @@ import {
   Spinner,
   Modal,
   useToast,
-  Row
+  Row,
+  Alert
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -130,7 +131,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const CardGrid = useBreakpointValue({
     base: '100%',
-    lg: '48.3%'
+    lg: '46%'
   })
 
   const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] =
@@ -241,7 +242,7 @@ const Dashboard: React.FC<Props> = () => {
                 title={t('dashboard.myappointments.header')}
                 showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
-                {(sortedAppointments?.length &&
+                {(sortedAppointments.length > 1 &&
                   sortedAppointments
                     .slice(1, 5)
                     .map(
@@ -280,12 +281,18 @@ const Dashboard: React.FC<Props> = () => {
                         )
                       }
                     )) || (
-                  <VStack space={space['0.5']}>
-                    <Text>Du bist für keine Kurse eingetragen.</Text>
-                    <Button onPress={() => navigate('/course-archive')}>
-                      Zur Kursübersicht
-                    </Button>
-                  </VStack>
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="350"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon />
+                      <Text>
+                        {t('dashboard.myappointments.noappointments')}
+                      </Text>
+                    </HStack>
+                  </Alert>
                 )}
               </HSection>
 
@@ -294,12 +301,14 @@ const Dashboard: React.FC<Props> = () => {
                 title={t('dashboard.learningpartner.header')}
                 showAll={data?.me?.pupil?.matches?.length > 2}
                 wrap>
-                <Flex direction="row" flexWrap="wrap">
+                <Flex direction="row" flexWrap="wrap" marginRight="-10px">
                   {data?.me?.pupil?.matches?.slice(0, 2).map(
                     (match: LFMatch) =>
-                      (console.log(match),
                       (
                         <Pressable
+                          width={CardGrid}
+                          marginRight="10px"
+                          marginBottom="10px"
                           onPress={() =>
                             navigate('/profile', {
                               state: {
@@ -308,35 +317,44 @@ const Dashboard: React.FC<Props> = () => {
                               }
                             })
                           }>
-                          <Column width={CardGrid} marginRight="15px">
-                            <TeacherCard
-                              name={`${match.student?.firstname} ${match.student?.lastname}`}
-                              variant="dark"
-                              tags={
-                                match.subjectsFormatted?.map(s => s.name) || [
-                                  'Fehler',
-                                  'Backend',
-                                  'Permission'
-                                ]
-                              }
-                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              button={
-                                (!match.dissolved && (
-                                  <Button
-                                    variant="outlinelight"
-                                    onPress={() => dissolveMatch(match)}>
-                                    {t('dashboard.offers.match')}
-                                  </Button>
-                                )) || (
-                                  <Text color="lightText">
-                                    {t('matching.status.dissolved')}
-                                  </Text>
-                                )
-                              }
-                            />
-                          </Column>
+                          <TeacherCard
+                            name={`${match.student?.firstname} ${match.student?.lastname}`}
+                            variant="dark"
+                            tags={
+                              match.subjectsFormatted?.map(s => s.name) || [
+                                'Fehler',
+                                'Backend',
+                                'Permission'
+                              ]
+                            }
+                            avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                            button={
+                              (!match.dissolved && (
+                                <Button
+                                  variant="outlinelight"
+                                  onPress={() => dissolveMatch(match)}>
+                                  {t('dashboard.offers.match')}
+                                </Button>
+                              )) || (
+                                <Text color="lightText">
+                                  {t('matching.status.dissolved')}
+                                </Text>
+                              )
+                            }
+                          />
                         </Pressable>
-                      )) || <Text>{t('dashboard.offers.noMatching')}</Text>
+                      ) || (
+                        <Alert
+                          alignItems="start"
+                          marginY={space['1']}
+                          maxW="350"
+                          colorScheme="info">
+                          <HStack space={2} flexShrink={1} alignItems="center">
+                            <Alert.Icon />
+                            <Text>{t('dashboard.offers.noMatching')}</Text>
+                          </HStack>
+                        </Alert>
+                      )
                   )}
                 </Flex>
                 <VStack space={space['0.5']} mt="3">
@@ -354,11 +372,20 @@ const Dashboard: React.FC<Props> = () => {
                       {t('dashboard.offers.requestMatching')}
                     </Button>
                   )) || (
-                    <Text>
-                      {t(
-                        `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                      )}
-                    </Text>
+                    <Alert
+                      alignItems="start"
+                      marginY={space['1']}
+                      maxW="450"
+                      colorScheme="info">
+                      <HStack space={2} flexShrink={1} alignItems="center">
+                        <Alert.Icon />
+                        <Text>
+                          {t(
+                            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+                          )}
+                        </Text>
+                      </HStack>
+                    </Alert>
                   )}
                   <Text fontSize="xs">
                     Offene Anfragen:{' '}
@@ -371,6 +398,7 @@ const Dashboard: React.FC<Props> = () => {
 
               <HSection
                 title={t('dashboard.relatedcontent.header')}
+                onShowAll={() => navigate('/group/offer')}
                 showAll={data?.subcoursesPublic?.length > 4}>
                 {(data?.subcoursesPublic?.length &&
                   data?.subcoursesPublic
@@ -403,7 +431,16 @@ const Dashboard: React.FC<Props> = () => {
                         }}
                       />
                     ))) || (
-                  <Text>Es wurden keine Vorschläge für dich gefunden.</Text>
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="350"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon />
+                      <Text>{t('lernfair.reason.proposals')}</Text>
+                    </HStack>
+                  </Alert>
                 )}
               </HSection>
             </VStack>

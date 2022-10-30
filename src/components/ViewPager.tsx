@@ -80,7 +80,11 @@ const ViewPager: React.FC<Props> = ({
               (c, index) => index === currentIndex && <Flex flex="1">{c}</Flex>
             )}
         </Flex>
-        <Row backgroundColor="primary.900" width="100%" bottom="0">
+        <Row
+          position="fixed"
+          backgroundColor="primary.900"
+          width="100%"
+          bottom="0">
           <Box
             flexDirection="row"
             width={ContentContainerWidth}
