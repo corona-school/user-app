@@ -9,10 +9,13 @@ import {
   Box,
   Flex,
   Image,
-  useBreakpointValue
+  useBreakpointValue,
+  Alert,
+  HStack,
+  WarningTwoIcon
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { composeInitialProps, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
@@ -40,6 +43,8 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
+  const [isErrorMessagesShown, setErrorMessagesShown] = useState<boolean>(false)
+  const [getCurrentPasswordLength, setPasswordLength] = useState<number>(0)
 
   useEffect(() => {
     createToken()
@@ -143,20 +148,90 @@ const RegistrationAccount: React.FC<Props> = () => {
         mt={space['4']}
         width={ContainerWidth}
         marginX="auto">
+        {isErrorMessagesShown && (
+          <VStack marginBottom={space['2']}>
+            {email.length < 6 && (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="350"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.email.invalid')}</Text>
+                </HStack>
+              </Alert>
+            )}
+
+            {!userType && (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="350"
+                backgroundColor="#fff8f8"
+                colorScheme="warning">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.userType.missing')}</Text>
+                </HStack>
+              </Alert>
+            )}
+            {password !== passwordConfirm ? (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="350"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.password.nomatch')}</Text>
+                </HStack>
+              </Alert>
+            ) : (
+              ''
+            )}
+
+            {getCurrentPasswordLength < 6 ? (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="400"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.password.length')}</Text>
+                </HStack>
+              </Alert>
+            ) : (
+              ''
+            )}
+          </VStack>
+        )}
         <VStack space={space['0.5']}>
           <TextInput
             keyboardType="email-address"
             placeholder={t('email')}
+            onFocus={() => setErrorMessagesShown(true)}
             onChangeText={t => setRegistrationData({ email: t })}
           />
           <TextInput
             placeholder={t('password')}
             type="password"
-            onChangeText={t => setRegistrationData({ password: t })}
+            onFocus={() => {
+              setErrorMessagesShown(true)
+            }}
+            onChangeText={t => {
+              setPasswordLength(t.length)
+              setRegistrationData({ password: t })
+            }}
           />
           <TextInput
             placeholder={t('registration.password_repeat')}
             type="password"
+            onFocus={() => setErrorMessagesShown(true)}
             onChangeText={setPasswordConfirm}
           />
           <Text fontSize="xs" opacity=".6">
@@ -177,21 +252,27 @@ const RegistrationAccount: React.FC<Props> = () => {
             label={t('registration.pupil.label')}
             dataKey="pupil"
             isActive={userType === 'pupil'}
-            onPress={() => setRegistrationData({ userType: 'pupil' })}
+            onPress={() => {
+              setErrorMessagesShown(true)
+              setRegistrationData({ userType: 'pupil' })
+            }}
           />
           <ToggleButton
             Icon={StudentIcon}
             label={t('registration.student.label')}
             dataKey="student"
             isActive={userType === 'student'}
-            onPress={() => setRegistrationData({ userType: 'student' })}
+            onPress={() => {
+              setErrorMessagesShown(true)
+              setRegistrationData({ userType: 'student' })
+            }}
           />
         </VStack>
         <VStack space={space['1']} marginTop={space['1']}>
           <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
             {t('registration.check_legal')}
           </Checkbox>
-          <Row justifyContent="center">
+          <Row justifyContent="center" marginBottom={space['3']}>
             <Button
               width={buttonWidth}
               onPress={() => {
@@ -214,21 +295,6 @@ const RegistrationAccount: React.FC<Props> = () => {
               {t('registration.btn.next')}
             </Button>
           </Row>
-          {!userType && (
-            <Text color="danger.500">
-              {t('registration.hint.userType.missing')}
-            </Text>
-          )}
-          {email.length < 6 && (
-            <Text color="danger.500">
-              {t('registration.hint.email.invalid')}
-            </Text>
-          )}
-          <Text
-            color="danger.500"
-            opacity={password !== passwordConfirm ? 1 : 0}>
-            {t('registration.hint.password.nomatch')}
-          </Text>
         </VStack>
       </VStack>
     </Flex>
