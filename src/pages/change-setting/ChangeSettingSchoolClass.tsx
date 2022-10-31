@@ -69,18 +69,20 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   `)
 
   const schoolGrades = useMemo(() => {
-    if (!data?.me?.pupil?.schooltype) {
-      return new Array(8).fill(0).map((_, i) => i + 5)
-    }
+    return new Array(13).fill(0).map((_, i) => i + 1)
 
-    if (data?.me?.pupil?.schooltype === 'grundschule') {
-      return new Array(4).fill(0).map((_, i) => i + 1)
-    } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
-      return new Array(8).fill(0).map((_, i) => i + 5)
-    } else {
-      return new Array(6).fill(0).map((_, i) => i + 5)
-    }
-  }, [data?.me?.pupil?.schooltype])
+    // if (!data?.me?.pupil?.schooltype) {
+    //   return new Array(8).fill(0).map((_, i) => i + 5)
+    // }
+
+    // if (data?.me?.pupil?.schooltype === 'grundschule') {
+    //   return new Array(4).fill(0).map((_, i) => i + 1)
+    // } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
+    //   return new Array(8).fill(0).map((_, i) => i + 5)
+    // } else {
+    //   return new Array(6).fill(0).map((_, i) => i + 5)
+    // }
+  }, [])
 
   const [selectedGrade, setSelectedGrade] = useState<number>(1)
 

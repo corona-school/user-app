@@ -414,38 +414,49 @@ const RegistrationData: React.FC<Props> = () => {
   // )
 
   // modify selection question based on answers etc
-  const modifySelectionQuestionBeforeRender = useCallback(
+  const modifySelectionQuestionBeforeRender: (
+    question: SelectionQuestion
+  ) => SelectionQuestion = useCallback(
     (question: SelectionQuestion) => {
+      // question.options = new Array(13).fill(0).map((_, i) => ({
+      //   key: `${i + 1}`,
+      //   label: t('lernfair.schoolclass', { class: i + 1 })
+      // }))
+
       // is question about schoolclass?
       if (question.id === 'schoolclass') {
+        question.options = new Array(13).fill(0).map((_, i) => ({
+          key: `${i + 1}`,
+          label: t('lernfair.schoolclass', { class: i + 1 })
+        }))
+        return question
+
         // change displayed classes based on selected schoolform
-        const answer = answers.schooltype
+        // if (!answer) {
+        //   question.options = new Array(8).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        //   return question
+        // }
 
-        if (!answer) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-          return question
-        }
-
-        if (answer['grundschule']) {
-          question.options = new Array(4).fill(0).map((_, i) => ({
-            key: `${i + 1}`,
-            label: t('lernfair.schoolclass', { class: i + 1 })
-          }))
-        } else {
-          question.options = new Array(6).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
-        if (answer['gymnasium']) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
+        // if (answer['grundschule']) {
+        //   question.options = new Array(4).fill(0).map((_, i) => ({
+        //     key: `${i + 1}`,
+        //     label: t('lernfair.schoolclass', { class: i + 1 })
+        //   }))
+        // } else {
+        //   question.options = new Array(6).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        // }
+        // if (answer['gymnasium']) {
+        //   question.options = new Array(8).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        // }
       }
       return question
     },
