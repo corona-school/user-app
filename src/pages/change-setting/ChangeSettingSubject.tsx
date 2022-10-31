@@ -29,6 +29,7 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import { Slider } from '@miblanchard/react-native-slider'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { useNavigate } from 'react-router-dom'
 
 const queryPupil = `query {
   me {
@@ -66,11 +67,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { userType = '' } = useLernfair()
   const { trackPageView } = useMatomo()
+  const navigate = useNavigate()
 
   const [focusedSelection, setFocusedSelection] = useState<LFSubject>()
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>()
   const [selections, setSelections] = useState<LFSubject[]>([])
-  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
+
   const [showError, setShowError] = useState<boolean>()
   const [selectedClassRange, setSelectedClassRange] = useState<number[]>([
     1, 13
@@ -116,9 +118,9 @@ const ChangeSettingSubject: React.FC<Props> = () => {
 
   useEffect(() => {
     if (_updateSubjects.data && !_updateSubjects.error) {
-      setUserSettingChanged(true)
+      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
     }
-  }, [_updateSubjects.data, _updateSubjects.error])
+  }, [_updateSubjects.data, _updateSubjects.error, navigate])
 
   useEffect(() => {
     if (_updateSubjects.error) {
@@ -288,7 +290,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           paddingX={space['1.5']}
           paddingBottom={space['1.5']}
           maxWidth={ContainerWidth}>
-          {userSettingChanged && (
+          {/* {userSettingChanged && (
             <Alert marginY={3} colorScheme="success" status="success">
               <VStack space={2} flexShrink={1} w="100%">
                 <HStack
@@ -303,7 +305,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                 </HStack>
               </VStack>
             </Alert>
-          )}
+          )} */}
           {showError && (
             <Alert marginY={3} bgColor="danger.500">
               <VStack space={2} flexShrink={1} w="100%">
@@ -398,7 +400,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                 const find = selections.findIndex(
                   sel => sel.name === focusedSelection?.name
                 )
-                console.log({ find })
+
                 if (find > -1) {
                   const sel = [...selections]
                   sel[find] = item

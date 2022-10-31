@@ -22,12 +22,13 @@ import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserProgress from '../../widgets/UserProgress'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import BackButton from '../../components/BackButton'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -45,7 +46,12 @@ const Profile: React.FC<Props> = () => {
   const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
-  const { data, error, loading } = useQuery(gql`
+  const location = useLocation()
+  const { showSuccessfulChangeAlert = false } = (location.state || {}) as {
+    showSuccessfulChangeAlert: boolean
+  }
+
+  const { data, loading } = useQuery(gql`
     query {
       me {
         firstname
@@ -127,7 +133,13 @@ const Profile: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  useEffect(() => {
+    if (showSuccessfulChangeAlert || userSettingChanged) {
+      window.scrollTo({ top: 0 })
+    }
+  }, [showSuccessfulChangeAlert, userSettingChanged])
+
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
@@ -185,7 +197,7 @@ const Profile: React.FC<Props> = () => {
             <NotificationAlert />
           </Row>
         }>
-        {userSettingChanged && (
+        {(showSuccessfulChangeAlert || userSettingChanged) && (
           <Alert
             maxWidth={ContainerWidth}
             marginY={10}

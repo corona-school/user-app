@@ -14,8 +14,9 @@ import {
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
@@ -55,10 +56,11 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const location = useLocation()
   const { state } = location as { state: { userType: string } }
 
-  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
 
-  const { data, error, loading } = useQuery(gql`
+  const navigate = useNavigate()
+
+  const { data, loading } = useQuery(gql`
     ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
 
@@ -90,9 +92,10 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
 
   useEffect(() => {
     if (_updateSchoolGrade.data && !_updateSchoolGrade.error) {
-      setUserSettingChanged(true)
+      // setUserSettingChanged(true)
+      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
     }
-  }, [_updateSchoolGrade.data, _updateSchoolGrade.error])
+  }, [_updateSchoolGrade.data, _updateSchoolGrade.error, navigate])
 
   useEffect(() => {
     if (_updateSchoolGrade.error) {
@@ -116,9 +119,10 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Profil Einstellungen – Klasse'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <WithNavigation
@@ -205,7 +209,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
         maxWidth={ContainerWidth}>
-        {userSettingChanged && (
+        {/* {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
@@ -220,7 +224,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
               </HStack>
             </VStack>
           </Alert>
-        )}
+        )} */}
         {showError && (
           <Alert marginY={3} bgColor="danger.500" maxWidth={ContainerWidth}>
             <VStack space={2} flexShrink={1} w="100%">

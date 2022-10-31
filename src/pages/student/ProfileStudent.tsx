@@ -26,7 +26,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserProgress from '../../widgets/UserProgress'
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -36,6 +36,7 @@ import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -53,7 +54,12 @@ const ProfileStudent: React.FC<Props> = () => {
   const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
-  const { data, error, loading } = useQuery(gql`
+  const location = useLocation()
+  const { showSuccessfulChangeAlert = false } = (location.state || {}) as {
+    showSuccessfulChangeAlert: boolean
+  }
+
+  const { data, loading } = useQuery(gql`
     query {
       me {
         firstname
@@ -137,9 +143,16 @@ const ProfileStudent: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Helfer Matching'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  useEffect(() => {
+    if (showSuccessfulChangeAlert || userSettingChanged) {
+      window.scrollTo({ top: 0 })
+    }
+  }, [showSuccessfulChangeAlert, userSettingChanged])
+
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
@@ -152,7 +165,7 @@ const ProfileStudent: React.FC<Props> = () => {
             alignItems="center"
             paddingY={space['2']}
             borderBottomRadius={16}>
-            <Box position="relative">
+            {/* <Box position="relative">
               <ProfilAvatar
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
@@ -165,7 +178,7 @@ const ProfileStudent: React.FC<Props> = () => {
                   />
                 </Link>
               </Box>
-            </Box>
+            </Box> */}
             <Heading
               paddingTop={3}
               paddingBottom={9}
@@ -231,7 +244,7 @@ const ProfileStudent: React.FC<Props> = () => {
           </Box>
         }
         headerLeft={<NotificationAlert />}>
-        {userSettingChanged && (
+        {(showSuccessfulChangeAlert || userSettingChanged) && (
           <Alert
             maxWidth={ContainerWidth}
             marginY={10}
