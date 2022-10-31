@@ -54,10 +54,10 @@ const Settings: React.FC<Props> = () => {
     <WithNavigation headerTitle={t('settings.header')} showBack>
       <VStack paddingBottom={7} paddingX={space['1.5']}>
         <HStack space={space['1']} alignItems="center">
-          <ProfilAvatar
+          {/* <ProfilAvatar
             size="md"
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          />
+          /> */}
           <Heading>{data?.me?.firstname}</Heading>
         </HStack>
       </VStack>
