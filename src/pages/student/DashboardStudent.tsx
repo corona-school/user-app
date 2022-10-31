@@ -273,8 +273,8 @@ const DashboardStudent: React.FC<Props> = () => {
         {!called || (loading && <CenterLoadingSpinner />)}
         {called && !loading && (
           <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
-            <VStack space={space['1']} marginTop={space['1']}>
-              <VStack paddingY={space['1']}>
+            <VStack space={space['1']}>
+              <VStack>
                 <HelperWizard index={0} />
               </VStack>
 
