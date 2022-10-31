@@ -159,6 +159,8 @@ const DashboardStudent: React.FC<Props> = () => {
     }
   }, [_dissolve?.data?.matchDissolve, toast, toastShown])
 
+  const isMobile = useBreakpointValue({ base: true, lg: false })
+
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
@@ -255,7 +257,7 @@ const DashboardStudent: React.FC<Props> = () => {
             <HStack
               space={space['1']}
               alignItems="center"
-              bgColor={'primary.900'}
+              bgColor={isMobile ? 'primary.900' : 'transparent'}
               paddingX={space['1']}>
               {/* <ProfilAvatar
               size="md"

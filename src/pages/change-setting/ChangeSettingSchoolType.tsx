@@ -111,7 +111,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolType.single.header')}
-      headerLeft={<BackButton />}>
+      showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}

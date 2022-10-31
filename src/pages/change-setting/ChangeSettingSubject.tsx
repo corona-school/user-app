@@ -151,7 +151,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     <>
       <WithNavigation
         headerTitle={t('profile.NeedHelpIn.single.header')}
-        headerLeft={<BackButton />}>
+        showBack>
         <VStack
           paddingX={space['1.5']}
           space={space['1']}

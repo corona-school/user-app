@@ -343,7 +343,7 @@ const CreateCourse: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('course.header')}
-      headerLeft={<BackButton />}>
+      showBack>
       <CreateCourseContext.Provider
         value={{
           courseName,

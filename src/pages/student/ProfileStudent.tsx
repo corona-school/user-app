@@ -15,7 +15,8 @@ import {
   HStack,
   TextArea,
   Container,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -137,6 +138,19 @@ const ProfileStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const HeaderStyle = useBreakpointValue({
+    base: {
+      isMobile: true,
+      bgColor: 'primary.700',
+      paddingY: space['2']
+    },
+    lg: {
+      isMobile: false,
+      bgColor: 'transparent',
+      paddingY: 0
+    }
+  })
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -159,11 +173,12 @@ const ProfileStudent: React.FC<Props> = () => {
       <WithNavigation
         headerTitle={t('profile.title')}
         headerContent={
-          <Box
+          <Flex
             maxWidth={ContainerWidth}
-            bg={'primary.700'}
-            alignItems="center"
-            paddingY={space['2']}
+            bg={HeaderStyle.bgColor}
+            alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
+            justifyContent="center"
+            paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
             {/* <Box position="relative">
               <ProfilAvatar
@@ -180,8 +195,8 @@ const ProfileStudent: React.FC<Props> = () => {
               </Box>
             </Box> */}
             <Heading
-              paddingTop={3}
-              paddingBottom={9}
+              // paddingTop={3}
+              // paddingBottom={9}
               color={colors.white}
               bold
               fontSize="xl">
@@ -241,7 +256,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Text>
               </Column>
             </Row> */}
-          </Box>
+          </Flex>
         }
         headerLeft={<NotificationAlert />}>
         {(showSuccessfulChangeAlert || userSettingChanged) && (

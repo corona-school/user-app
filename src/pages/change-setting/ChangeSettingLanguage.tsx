@@ -114,7 +114,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
-      headerLeft={<BackButton />}>
+      showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}

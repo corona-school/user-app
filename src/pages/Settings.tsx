@@ -51,9 +51,7 @@ const Settings: React.FC<Props> = () => {
   if (loading) return <></>
 
   return (
-    <WithNavigation
-      headerTitle={t('settings.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('settings.header')} showBack>
       <VStack paddingBottom={7} paddingX={space['1.5']}>
         <HStack space={space['1']} alignItems="center">
           <ProfilAvatar

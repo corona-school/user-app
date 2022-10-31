@@ -127,7 +127,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolClass.single.header')}
-      headerLeft={<BackButton />}>
+      showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}

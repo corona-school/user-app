@@ -13,7 +13,8 @@ import {
   Alert,
   HStack,
   TextArea,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -124,6 +125,19 @@ const Profile: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const HeaderStyle = useBreakpointValue({
+    base: {
+      isMobile: true,
+      bgColor: 'primary.700',
+      paddingY: space['2']
+    },
+    lg: {
+      isMobile: false,
+      bgColor: 'transparent',
+      paddingY: 0
+    }
+  })
+
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
@@ -144,20 +158,28 @@ const Profile: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation
+        showBack
         headerTitle={t('profile.title')}
         headerContent={
-          <Box
+          <Flex
             maxWidth={ContainerWidth}
-            bg={'primary.700'}
-            alignItems="center"
-            paddingY={space['2']}
+            bg={HeaderStyle.bgColor}
+            alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
+            justifyContent="center"
+            paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
-            <Box position="relative">
-              {/* <ProfilAvatar
+            <Box
+              maxWidth={ContainerWidth}
+              bg={HeaderStyle.bgColor}
+              alignItems="center"
+              paddingY={space['2']}
+              borderBottomRadius={16}>
+              <Box position="relative">
+                {/* <ProfilAvatar
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
               /> */}
-              {/* <Box position="absolute" right="-14px" bottom="8px">
+                {/* <Box position="absolute" right="-14px" bottom="8px">
                 <Link href="#">
                   <EditIcon
                     fill={colors['lightText']}
@@ -165,17 +187,17 @@ const Profile: React.FC<Props> = () => {
                   />
                 </Link>
               </Box> */}
-            </Box>
-            <Heading
-              paddingTop={3}
-              paddingBottom={9}
-              color={colors.white}
-              bold
-              fontSize="xl">
-              {data?.me?.firstname}
-            </Heading>
+              </Box>
+              <Heading
+                // paddingTop={3}
+                // paddingBottom={9}
+                color={colors.white}
+                bold
+                fontSize="xl">
+                {data?.me?.firstname}
+              </Heading>
 
-            {/* <Row width="80%" justifyContent="space-around">
+              {/* <Row width="80%" justifyContent="space-around">
               <Column
                 textAlign="center"
                 justifyContent="center"
@@ -189,11 +211,11 @@ const Profile: React.FC<Props> = () => {
                 <UserAchievements points={90} icon={<LFIcon Icon={Star} />} />
               </Column>
             </Row> */}
-          </Box>
+            </Box>
+          </Flex>
         }
         headerLeft={
           <Row space={space['1']}>
-            <BackButton />
             <NotificationAlert />
           </Row>
         }>
