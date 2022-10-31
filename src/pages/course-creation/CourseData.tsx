@@ -22,7 +22,7 @@ import {
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import ToggleButton from '../../components/ToggleButton'
-import { LFSubject } from '../../types/lernfair/Subject'
+import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
@@ -163,7 +163,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
               initial={subject?.name === sub.name}
               text={sub.name}
               onPress={() => setSubject && setSubject({ ...sub })}
-              iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
+              iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
             />
           ))}
         </Row>

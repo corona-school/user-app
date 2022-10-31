@@ -36,6 +36,7 @@ import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import {getSubjectKey} from "../../types/lernfair/Subject";
 
 type Props = {}
 
@@ -324,7 +325,7 @@ const ProfileStudent: React.FC<Props> = () => {
                       <Column marginRight={3}>
                         <IconTagList
                           isDisabled
-                          iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
+                          iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
                           text={sub.name}
                         />
                       </Column>

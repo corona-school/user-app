@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
+import {getSubjectKey} from "../../types/lernfair/Subject";
 
 type Props = {
   selectedSubjects: any
@@ -107,7 +108,7 @@ const RequestMatchWizard: React.FC<Props> = ({
         {data?.me?.student?.subjectsFormatted.map((sub: any) => {
           return (
             <IconTagList
-              iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
+              iconPath={`subjects/icon_${getSubjectKey(sub?.name)}.svg`}
               variant="selection"
               text={sub.name}
               initial={selectedSubjects[sub.name]}
