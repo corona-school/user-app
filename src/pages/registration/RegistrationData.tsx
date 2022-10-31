@@ -92,6 +92,7 @@ const mutStudent = `mutation register(
 
 const RegistrationData: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -125,6 +126,11 @@ const RegistrationData: React.FC<Props> = () => {
       ${userType === 'pupil' ? mutPupil : mutStudent}
     `
   )
+
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '500px'
+  })
 
   useEffect(() => {
     // go to next slide if data is provided
@@ -188,85 +194,6 @@ const RegistrationData: React.FC<Props> = () => {
     register
   ])
 
-  // when all questions are answered, register
-  const onQuestionnaireFinished = useCallback(
-    async (answers: { [key: string]: Answer }) => {
-      if (userType === 'pupil') {
-        await registerPupil(answers)
-      } else {
-        await registerStudent()
-      }
-    },
-    [registerPupil, registerStudent, userType]
-  )
-
-  const ModalContainerWidth = useBreakpointValue({
-    base: '90%',
-    lg: '500px'
-  })
-
-  const { trackPageView, trackEvent } = useMatomo()
-
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Registrierung – Auswahl-Kacheln'
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // registration went through without error
-  useEffect(() => {
-    if (data && !error) {
-      setVariant('dark')
-      setContent(
-        <VStack
-          space={space['1']}
-          p={space['1']}
-          flex="1"
-          width={ModalContainerWidth}
-          marginX="auto"
-          alignItems="center"
-          justifyContent="center">
-          <Box justifyContent="center" marginLeft="40px">
-            <EventIcon />
-          </Box>
-          <Heading
-            textAlign="center"
-            marginX="auto"
-            width={ModalContainerWidth}
-            color="lightText">
-            {t('registration.result.success.title')}
-          </Heading>
-          <Text
-            textAlign="center"
-            marginX="auto"
-            width={ModalContainerWidth}
-            color="lightText"
-            fontSize={'lg'}>
-            {t('registration.result.success.text')}
-          </Text>
-          <Button
-            marginX="auto"
-            width={ModalContainerWidth}
-            onPress={() => {
-              setShow(false)
-              navigate('/login')
-              trackEvent({
-                category: 'registrierung',
-                action: 'click-event',
-                name: 'Registrierung erfolgreich',
-                documentTitle: 'Registrierung war erfolgreich'
-              })
-            }}>
-            {t('registration.result.success.btn')}
-          </Button>
-        </VStack>
-      )
-      setShow(true)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, data, error, setContent, setShow, setVariant, space, t])
-
   const registerError = useCallback(() => {
     setShow(false)
     trackEvent({
@@ -278,15 +205,15 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // registration has an error
-  useEffect(() => {
-    if (error) {
+  const showErrorModal = useCallback(
+    (error: string) => {
+      console.log('show error')
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <Text color="lightText">
-            {t(`registration.error.message.${error.message}`, {
-              defaultValue: error.message
+            {t(`registration.error.message.${error}`, {
+              defaultValue: error
             })}
           </Text>
           <Button onPress={() => registerError()}>
@@ -295,8 +222,170 @@ const RegistrationData: React.FC<Props> = () => {
         </VStack>
       )
       setShow(true)
-    }
-  }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
+    },
+    [registerError, setContent, setShow, setVariant, space, t]
+  )
+
+  const showSuccessModal = useCallback(() => {
+    setVariant('dark')
+    setContent(
+      <VStack
+        space={space['1']}
+        p={space['1']}
+        flex="1"
+        width={ModalContainerWidth}
+        marginX="auto"
+        alignItems="center"
+        justifyContent="center">
+        <Box justifyContent="center" marginLeft="40px">
+          <EventIcon />
+        </Box>
+        <Heading
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText">
+          {t('registration.result.success.title')}
+        </Heading>
+        <Text
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText"
+          fontSize={'lg'}>
+          {t('registration.result.success.text')}
+        </Text>
+        <Button
+          marginX="auto"
+          width={ModalContainerWidth}
+          onPress={() => {
+            setShow(false)
+            navigate('/login')
+            trackEvent({
+              category: 'registrierung',
+              action: 'click-event',
+              name: 'Registrierung erfolgreich',
+              documentTitle: 'Registrierung war erfolgreich'
+            })
+          }}>
+          {t('registration.result.success.btn')}
+        </Button>
+      </VStack>
+    )
+    setShow(true)
+  }, [
+    ModalContainerWidth,
+    navigate,
+    setContent,
+    setShow,
+    setVariant,
+    space,
+    t,
+    trackEvent
+  ])
+
+  // when all questions are answered, register
+  const onQuestionnaireFinished = useCallback(
+    async (answers: { [key: string]: Answer }) => {
+      let res: any
+
+      try {
+        if (userType === 'pupil') {
+          res = await registerPupil(answers)
+        } else {
+          res = await registerStudent()
+        }
+      } catch (e: any) {
+        console.log(e)
+        showErrorModal(e.message)
+      }
+
+      if (res) {
+        showSuccessModal()
+      }
+    },
+    [registerPupil, registerStudent, showErrorModal, showSuccessModal, userType]
+  )
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Auswahl-Kacheln'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // // registration went through without error
+  // useEffect(() => {
+  //   if (data && !error) {
+  //     setVariant('dark')
+  //     setContent(
+  //       <VStack
+  //         space={space['1']}
+  //         p={space['1']}
+  //         flex="1"
+  //         width={ModalContainerWidth}
+  //         marginX="auto"
+  //         alignItems="center"
+  //         justifyContent="center">
+  //         <Box justifyContent="center" marginLeft="40px">
+  //           <EventIcon />
+  //         </Box>
+  //         <Heading
+  //           textAlign="center"
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           color="lightText">
+  //           {t('registration.result.success.title')}
+  //         </Heading>
+  //         <Text
+  //           textAlign="center"
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           color="lightText"
+  //           fontSize={'lg'}>
+  //           {t('registration.result.success.text')}
+  //         </Text>
+  //         <Button
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           onPress={() => {
+  //             setShow(false)
+  //             navigate('/login')
+  //             trackEvent({
+  //               category: 'registrierung',
+  //               action: 'click-event',
+  //               name: 'Registrierung erfolgreich',
+  //               documentTitle: 'Registrierung war erfolgreich'
+  //             })
+  //           }}>
+  //           {t('registration.result.success.btn')}
+  //         </Button>
+  //       </VStack>
+  //     )
+  //     setShow(true)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigate, data, error, setContent, setShow, setVariant, space, t])
+
+  // // registration has an error
+  // useEffect(() => {
+  //   if (error) {
+  //     setVariant('dark')
+  //     setContent(
+  //       <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+  //         <Text color="lightText">
+  //           {t(`registration.error.message.${error.message}`, {
+  //             defaultValue: error.message
+  //           })}
+  //         </Text>
+  //         <Button onPress={() => registerError()}>
+  //           {t('registration.result.error.btn')}
+  //         </Button>
+  //       </VStack>
+  //     )
+  //     setShow(true)
+  //   }
+  // }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
@@ -385,9 +474,9 @@ const RegistrationData: React.FC<Props> = () => {
   const modifyQuestionBeforeNext = useCallback(() => {
     const currentQuestion = questions[currentIndex]
     // is question about language?
-    if (currentQuestion.id === 'language') {
-      if (!answers['language']) return
-      const answer = Object.keys(answers['language'])
+    if (currentQuestion.id === 'languages') {
+      if (!answers['languages']) return
+      const answer = Object.keys(answers['languages'])
 
       if (!answer) return
 
@@ -408,12 +497,18 @@ const RegistrationData: React.FC<Props> = () => {
         setQuestions && setQuestions(qs)
       }
     }
+
     // if question is followup question to "Sprache"/language
     // react to answer and add new question to questionnaire
     if (currentQuestion.id === 'deutsch') {
       if (Object.keys(answers['deutsch']).includes('<1')) {
         const qs = [...questions]
-        qs.splice(currentIndex + 1, 1)
+        qs.splice(currentIndex + 1, 1, {
+          id: 'subjects',
+          imgRootPath: 'subjects',
+          type: 'selection',
+          options: [{ key: 'deutsch-2', label: 'Deutsch als Zweitsprache' }]
+        } as SelectionQuestion)
         setQuestions && setQuestions(qs)
       }
     }
