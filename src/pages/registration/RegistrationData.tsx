@@ -141,23 +141,33 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the pupil with all data
   const registerPupil = useCallback(
     async (answers: { [key: string]: ObjectAnswer }) => {
-      const state = Object.keys(answers.state)[0]
-      const schooltype = Object.keys(answers.schooltype)[0]
+      const state = answers.state && Object.keys(answers.state)[0]
+      const schooltype =
+        answers.schooltype && Object.keys(answers.schooltype)[0]
 
-      const gradeAsInt = parseInt(Object.keys(answers.schoolclass)[0])
+      const gradeAsInt =
+        answers.schoolclass && parseInt(Object.keys(answers.schoolclass)[0])
       // const subjects = Object.keys(answers.subjects)
-      const subjects = answers.subjects
+      const subjects = answers.subjects || []
+
+      const data = {} as {
+        state: string
+        schooltype: string
+        gradeAsInt: number
+        subjects: ObjectAnswer<number | boolean>
+      }
+      state && (data['state'] = state)
+      schooltype && (data['schooltype'] = schooltype)
+      gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
+      subjects?.length > 0 && (data['subjects'] = subjects)
 
       await register({
         variables: {
           firstname,
           lastname,
           email,
-          state,
-          schooltype,
           password,
-          gradeAsInt,
-          subjects
+          ...data
         }
       })
     },
@@ -175,13 +185,19 @@ const RegistrationData: React.FC<Props> = () => {
       }
     }
 
+    const data = {} as {
+      subjects: LFSubject[]
+    }
+
+    subjects?.length && (data.subjects = subjects)
+
     await register({
       variables: {
         firstname,
         lastname,
         email,
         password,
-        subjects
+        ...data
       }
     })
   }, [
@@ -531,11 +547,12 @@ const RegistrationData: React.FC<Props> = () => {
       if (userType === 'pupil') {
         if (question.id === 'subjects') {
           const newAnswer: LFSubject[] = []
-          Object.entries(answer).forEach(
-            ([key, val]: [key: string, val: Answer]) => {
-              !!val && newAnswer.push({ name: val.label })
-            }
-          )
+          answer &&
+            Object.entries(answer).forEach(
+              ([key, val]: [key: string, val: Answer]) => {
+                !!val && newAnswer.push({ name: val.label })
+              }
+            )
 
           setAnswers(prev => ({
             ...prev,
