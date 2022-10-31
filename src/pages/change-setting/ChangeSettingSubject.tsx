@@ -14,7 +14,8 @@ import {
   Modal,
   Alert,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -27,6 +28,7 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import { Slider } from '@miblanchard/react-native-slider'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 const queryPupil = `query {
   me {
@@ -98,6 +100,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
 
         arr.push(sub)
       }
+
       return arr
     },
     []
@@ -140,7 +143,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
@@ -166,16 +169,25 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   marginRight={3}
                   marginBottom={3}
                   key={`selection-${index}`}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      setSelections(prev => {
-                        const res = [...prev]
-                        res.splice(index, 1)
-                        return res
-                      })
-                    }>
-                    <Row alignItems="center" justifyContent="center">
+                  <Row alignItems="center" justifyContent="center">
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (userType === 'student') {
+                          setSelectedClassRange([
+                            subject?.grade?.min || 1,
+                            subject?.grade?.max || 13
+                          ])
+                          setFocusedSelection({ name: subject.name })
+                          setShowFocusSelection(true)
+                        } else {
+                          setSelections(prev => [
+                            ...prev,
+                            { name: subject.name }
+                          ])
+                        }
+                      }}>
                       <IconTagList
+                        initial={false}
                         iconPath={`subjects/icon_${subject?.name?.toLowerCase()}.svg`}
                         text={
                           t(
@@ -188,11 +200,22 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                           }`
                         }
                       />
-                      <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                        x
-                      </Text>
-                    </Row>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        setSelections(prev => {
+                          const res = [...prev]
+                          res.splice(index, 1)
+                          return res
+                        })
+                      }>
+                      <Box ml="2">
+                        <Text color={'danger.500'} fontSize="xl" ml="1" bold>
+                          x
+                        </Text>
+                      </Box>
+                    </TouchableOpacity>
+                  </Row>
                 </Column>
               ))}
             </Row>
@@ -371,7 +394,19 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   min: selectedClassRange[0],
                   max: selectedClassRange[1]
                 }
-                item.name && setSelections(prev => [...prev, item])
+
+                const find = selections.findIndex(
+                  sel => sel.name === focusedSelection?.name
+                )
+                console.log({ find })
+                if (find > -1) {
+                  const sel = [...selections]
+                  sel[find] = item
+                  setSelections(sel)
+                } else {
+                  item.name && setSelections(prev => [...prev, item])
+                }
+
                 setFocusedSelection({ name: '' })
                 setShowFocusSelection(false)
               }}>
