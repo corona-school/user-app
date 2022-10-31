@@ -83,6 +83,11 @@ const Theme = extendTheme({
     modalbg: VAR_COLOR_MODAL_BG
   },
   fontSizes: {
+    // xs: '0.714rem',
+    // sm: '0.857rem',
+    // md: '1rem',
+    // lg: '1.214rem',
+    // xl: '1.357rem'
     xs: 10,
     sm: 12,
     md: 14,
@@ -102,8 +107,9 @@ const Theme = extendTheme({
   components: {
     Text: {
       defaultProps: {
-        color: VAR_COLOR_PRIMARY_DARK,
-      },
+        fontSize: 'md',
+        color: VAR_COLOR_PRIMARY_DARK
+      }
     },
     Heading: {
       defaultProps: {
@@ -228,8 +234,8 @@ const Theme = extendTheme({
         onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
         _hover: {
           offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-          onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-        },
+          onTrackColor: VAR_COLOR_PRIMARY_LIGHT
+        }
       }
     }
   },
