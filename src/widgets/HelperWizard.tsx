@@ -45,14 +45,15 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                     title: t('helperwizard.kennenlernen.title'),
                     text: (
                       <>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.kennenlernen.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.kennenlernen.button')}
-                          </Button>
-                        </Box>
+                        <Text
+                          display="block"
+                          maxWidth="500px"
+                          marginBottom={space['1']}>
+                          {t('helperwizard.kennenlernen.content')}
+                        </Text>
+                        <Button width={ButtonContainer}>
+                          {t('helperwizard.kennenlernen.button')}
+                        </Button>
                       </>
                     )
                   }
@@ -78,7 +79,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           <Text maxWidth="500px" marginBottom={space['1']}>
                             {t('helperwizard.zeugnis.content')}
                           </Text>
-                          <Button width={ButtonContainer}>
+                          <Button overflow="visible" width={ButtonContainer}>
                             {t('helperwizard.zeugnis.button')}
                           </Button>
                         </Box>

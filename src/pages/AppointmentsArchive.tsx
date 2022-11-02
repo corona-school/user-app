@@ -149,15 +149,19 @@ const AppointmentsArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.appointments.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
-          <VStack space={space['0.5']}>
+          <VStack space={space['0.5']} maxWidth={ContainerWidth}>
             <Heading>{t('archive.appointments.title')}</Heading>
             <Text maxWidth={ContentContainerWidth}>
               {t('archive.appointments.content')}
             </Text>
           </VStack>
-          <Row paddingY={space['1']}>
+          <Row paddingY={space['1']} maxWidth={ContentContainerWidth}>
             <Input
               flex="1"
               size="lg"

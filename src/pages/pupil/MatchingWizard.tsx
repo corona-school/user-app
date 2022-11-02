@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../hooks/useModal'
-import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
+import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 

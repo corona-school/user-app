@@ -47,6 +47,11 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
@@ -66,8 +71,10 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
   }, [])
 
   return (
-    <VStack space={space['1']} maxWidth={ContainerWidth}>
-      <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
+    <VStack space={space['1']}>
+      <Heading paddingTop={space['1']}>
+        {t('course.CourseDate.Preview.headline')}
+      </Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
       <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
@@ -81,7 +88,17 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.courseSubject')}
       </Heading>
-      {subject && <IconTagList isDisabled text={subject.name || ''} />}
+
+      {subject && (
+        <>
+          <IconTagList
+            iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+            isDisabled
+            text={subject.name || ''}
+          />
+          {console.log(subject.name.toLowerCase())}
+        </>
+      )}
 
       <Box bg="gray.500" h="180">
         <Image src={pickedPhoto} h="100%" />

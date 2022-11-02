@@ -278,7 +278,11 @@ const DashboardStudent: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {!called || (loading && <CenterLoadingSpinner />)}
         {called && !loading && (
-          <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+          <VStack
+            paddingX={space['1']}
+            marginX="auto"
+            width="100%"
+            maxWidth={ContainerWidth}>
             <VStack space={space['1']}>
               <VStack>
                 <HelperWizard index={0} />
@@ -364,10 +368,10 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="350"
+                    width="max-content"
                     colorScheme="info">
                     <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
+                      <Alert.Icon color="danger.100" />
                       <Text>
                         {t('dashboard.myappointments.noappointments')}
                       </Text>
@@ -425,10 +429,10 @@ const DashboardStudent: React.FC<Props> = () => {
                       <Alert
                         alignItems="start"
                         marginY={space['1']}
-                        maxW="400"
+                        width="max-content"
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon />
+                          <Alert.Icon color="danger.100" />
                           <Text>{t('empty.courses')}</Text>
                         </HStack>
                       </Alert>
@@ -455,7 +459,7 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="400"
+                    width="max-content"
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">
                       <Alert.Icon color="danger.100" />
@@ -520,10 +524,10 @@ const DashboardStudent: React.FC<Props> = () => {
                       <Alert
                         alignItems="start"
                         marginY={space['1']}
-                        maxW="350"
+                        width="max-content"
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon />
+                          <Alert.Icon color="danger.100" />
                           <Text>{t('empty.matchings')}</Text>
                         </HStack>
                       </Alert>
@@ -545,7 +549,7 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="450"
+                    width="max-content"
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">
                       <Alert.Icon color="danger.100" />

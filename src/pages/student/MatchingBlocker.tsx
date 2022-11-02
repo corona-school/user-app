@@ -64,6 +64,8 @@ const MatchingBlocker: React.FC<Props> = () => {
     <>
       <Container
         maxWidth={ContainerWidth}
+        width="100%"
+        marginX="auto"
         paddingX={space['1.5']}
         alignItems="stretch"
         marginBottom={space['0.5']}>
@@ -72,7 +74,7 @@ const MatchingBlocker: React.FC<Props> = () => {
         </Heading>
         <Image
           width="100%"
-          height="350px"
+          height="500px"
           borderRadius="15px"
           marginBottom={space['1']}
           source={{

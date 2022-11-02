@@ -239,7 +239,11 @@ const SingleCourse: React.FC<Props> = () => {
             : course?.course?.name
         }
         showBack>
-        <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
+        <Box
+          paddingX={space['1.5']}
+          maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%">
           <Box height="178px" marginBottom={space['1.5']}>
             <Image
               alt={course?.course?.name}
@@ -420,10 +424,10 @@ const SingleCourse: React.FC<Props> = () => {
                 <Alert
                   alignItems="start"
                   marginY={space['1']}
-                  maxW="350"
+                  width="max-content"
                   colorScheme="info">
                   <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon />
+                    <Alert.Icon color="danger.100" />
                     {/* { 
                     !course?.isParticipant ?  
                       <Text>{course?.canJoin?.reason}</Text>

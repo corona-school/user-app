@@ -8,7 +8,8 @@ import {
   Row,
   Column,
   HStack,
-  Flex
+  Flex,
+  Alert
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -53,15 +54,18 @@ const PupilGroup: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('matching.group.pupil.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
-          <VStack space={space['0.5']}>
+          <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
             <Heading>{t('matching.group.pupil.title')}</Heading>
-            <Text maxWidth={ContentContainerWidth}>
-              {t('matching.group.pupil.content')}
-            </Text>
+            <Text>{t('matching.group.pupil.content')}</Text>
           </VStack>
           <Input
+            maxWidth={ContentContainerWidth}
             size="lg"
             placeholder={t('matching.group.pupil.searchplaceholder')}
           />
@@ -94,7 +98,21 @@ const PupilGroup: React.FC<Props> = () => {
                                 title="Diskussionen in Mathe!? – Die Kurvendiskussion"
                               />
                             </Column>
-                          ) || <Text>Es wurden keine Kurse gefunden.</Text>
+                          ) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color="danger.100" />
+                                <Text>Es wurden keine Kurse gefunden.</Text>
+                              </HStack>
+                            </Alert>
+                          )
                       )}
                     </Flex>
                   </>
@@ -127,7 +145,21 @@ const PupilGroup: React.FC<Props> = () => {
                                 title="Diskussionen in Mathe!? – Die Kurvendiskussion"
                               />
                             </Column>
-                          ) || <Text>Es wurden keine Kurse gefunden.</Text>
+                          ) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon />
+                                <Text>Es wurden keine Kurse gefunden.</Text>
+                              </HStack>
+                            </Alert>
+                          )
                       )}
                     </Flex>
                   </>
@@ -160,7 +192,21 @@ const PupilGroup: React.FC<Props> = () => {
                                 title="Diskussionen in Mathe!? – Die Kurvendiskussion"
                               />
                             </Column>
-                          ) || <Text>Es wurden keine Angebote gefunden.</Text>
+                          ) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon />
+                                <Text>Es wurden keine Angebote gefunden.</Text>
+                              </HStack>
+                            </Alert>
+                          )
                       )}
                     </Flex>
                   </>

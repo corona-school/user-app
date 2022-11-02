@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
-import {getSubjectKey} from "../../types/lernfair/Subject";
+import { getSubjectKey } from '../../types/lernfair/Subject'
 
 type Props = {
   selectedSubjects: any
@@ -85,7 +85,7 @@ const RequestMatchWizard: React.FC<Props> = ({
   }, [])
 
   return (
-    <VStack maxWidth={ContainerWidth}>
+    <VStack marginX="auto" maxWidth={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
       <Text>{t('matching.student.text')}</Text>
 
