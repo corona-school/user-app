@@ -78,6 +78,9 @@ const lernfair = {
   schoolclass: '{{class}}. Klasse',
 
   reason: {
+    'subcourse-full': {
+      coursetext: 'Dieser Kurs ist leider grade ausgebucht.'
+    },
     proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
@@ -92,7 +95,7 @@ const lernfair = {
     },
     'not-screened': {
       matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
-      course: ''
+      course: 'Es wurden keine Kurse gefunden.'
     },
     'not-tutee': {
       matching: 'Du bist nicht für das Matching zugelassen.'
@@ -100,6 +103,9 @@ const lernfair = {
     'not-tutor': {
       matching: 'Du bist nicht für das Matching zugelassen.'
     },
+    undefined: {
+      matching: 'Es wurden keine Matchings gefunden.'
+    }
   }
 }
 
