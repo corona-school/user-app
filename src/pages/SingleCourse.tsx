@@ -231,44 +231,45 @@ const SingleCourse: React.FC<Props> = () => {
   if (loading) return <></>
 
   return (
-    <WithNavigation
-      headerTitle={
-        course?.course?.name.length > 20
-          ? course?.course?.name.substring(0, 20)
-          : course?.course?.name
-      }
-      showBack>
-      <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
-        <Box height="178px" marginBottom={space['1.5']}>
-          <Image
-            alt={course?.course?.name}
-            borderRadius="8px"
-            position="absolute"
-            w="100%"
-            height="100%"
-            bgColor="gray.300"
-            source={{
-              uri: course?.course?.image
-            }}
-          />
-        </Box>
-        <Box paddingBottom={space['0.5']}>
-          <Row>
-            {course?.course?.tags?.map((tag: LFTag) => (
-              <Column marginRight={space['0.5']}>
-                <Tag text={tag.name} />
-              </Column>
-            ))}
-          </Row>
-        </Box>
-        <Text paddingBottom={space['0.5']}>
-          {t('single.global.clockFrom')}{' '}
-          {Utility.formatDate(course?.lectures[0].start)}{' '}
-          {t('single.global.clock')}
-        </Text>
-        <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
-        <Row alignItems="center" paddingBottom={space['1']}>
-          {/* <ProfilAvatar
+    <>
+      <WithNavigation
+        headerTitle={
+          course?.course?.name.length > 20
+            ? course?.course?.name.substring(0, 20)
+            : course?.course?.name
+        }
+        showBack>
+        <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
+          <Box height="178px" marginBottom={space['1.5']}>
+            <Image
+              alt={course?.course?.name}
+              borderRadius="8px"
+              position="absolute"
+              w="100%"
+              height="100%"
+              bgColor="gray.300"
+              source={{
+                uri: course?.course?.image
+              }}
+            />
+          </Box>
+          <Box paddingBottom={space['0.5']}>
+            <Row>
+              {course?.course?.tags?.map((tag: LFTag) => (
+                <Column marginRight={space['0.5']}>
+                  <Tag text={tag.name} />
+                </Column>
+              ))}
+            </Row>
+          </Box>
+          <Text paddingBottom={space['0.5']}>
+            {t('single.global.clockFrom')}{' '}
+            {Utility.formatDate(course?.lectures[0].start)}{' '}
+            {t('single.global.clock')}
+          </Text>
+          <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
+          <Row alignItems="center" paddingBottom={space['1']}>
+            {/* <ProfilAvatar
             size="sm"
             marginRight={space['0.5']} 
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
