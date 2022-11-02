@@ -28,6 +28,7 @@ type Props = {
   headerContent?: ReactNode | ReactNode[]
   headerTitle?: string
   isSidebarMenu?: boolean
+  showBack?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -36,7 +37,8 @@ const WithNavigation: React.FC<Props> = ({
   headerRight,
   headerContent,
   headerTitle,
-  isSidebarMenu = true
+  isSidebarMenu = true,
+  showBack
 }) => {
   const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
@@ -63,6 +65,7 @@ const WithNavigation: React.FC<Props> = ({
         w="100vw"
         h="100%">
         <HeaderCard
+          showBack={showBack}
           leftContent={headerLeft}
           rightContent={isSidebarMenu ? <SettingsButton /> : ''}
           title={headerTitle}
@@ -79,7 +82,7 @@ const WithNavigation: React.FC<Props> = ({
               />
             </Column>
             <Column flex="1" padding={innerPaddingContent}>
-              {(view && (
+              {(isMobile && view && (
                 <>
                   <View h={`${headerHeight}px`}></View>
                   {view}

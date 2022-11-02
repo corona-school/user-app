@@ -54,9 +54,7 @@ const OnboardingTourList: React.FC<Props> = () => {
   })
 
   return (
-    <WithNavigation
-      headerTitle={t('onboardingList.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('onboardingList.header')} showBack>
       <VStack
         maxWidth={ContainerWidth}
         paddingBottom={7}

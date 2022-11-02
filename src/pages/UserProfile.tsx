@@ -66,6 +66,7 @@ const UserProfile: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation
+        showBack
         headerTitle={t('profile.title')}
         headerContent={
           <Box
@@ -115,7 +116,6 @@ const UserProfile: React.FC<Props> = () => {
         }
         headerLeft={
           <Row space={space['1']}>
-            <BackButton />
             <NotificationAlert />
           </Row>
         }>

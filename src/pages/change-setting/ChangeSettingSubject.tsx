@@ -14,7 +14,8 @@ import {
   Modal,
   Alert,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,11 +23,17 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
-import { LFSubject, subjects } from '../../types/lernfair/Subject'
+import {
+  LFSubject,
+  subjects,
+  getSubjectKey
+} from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import { Slider } from '@miblanchard/react-native-slider'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { useNavigate } from 'react-router-dom'
 
 const queryPupil = `query {
   me {
@@ -64,11 +71,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { userType = '' } = useLernfair()
   const { trackPageView } = useMatomo()
+  const navigate = useNavigate()
 
   const [focusedSelection, setFocusedSelection] = useState<LFSubject>()
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>()
   const [selections, setSelections] = useState<LFSubject[]>([])
-  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
+
   const [showError, setShowError] = useState<boolean>()
   const [selectedClassRange, setSelectedClassRange] = useState<number[]>([
     1, 13
@@ -98,6 +106,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
 
         arr.push(sub)
       }
+
       return arr
     },
     []
@@ -113,9 +122,9 @@ const ChangeSettingSubject: React.FC<Props> = () => {
 
   useEffect(() => {
     if (_updateSubjects.data && !_updateSubjects.error) {
-      setUserSettingChanged(true)
+      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
     }
-  }, [_updateSubjects.data, _updateSubjects.error])
+  }, [_updateSubjects.data, _updateSubjects.error, navigate])
 
   useEffect(() => {
     if (_updateSubjects.error) {
@@ -140,13 +149,13 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
       <WithNavigation
         headerTitle={t('profile.NeedHelpIn.single.header')}
-        headerLeft={<BackButton />}>
+        showBack>
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
@@ -166,20 +175,30 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   marginRight={3}
                   marginBottom={3}
                   key={`selection-${index}`}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      setSelections(prev => {
-                        const res = [...prev]
-                        res.splice(index, 1)
-                        return res
-                      })
-                    }>
-                    <Row alignItems="center" justifyContent="center">
+                  <Row alignItems="center" justifyContent="center">
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (userType === 'student') {
+                          setSelectedClassRange([
+                            subject?.grade?.min || 1,
+                            subject?.grade?.max || 13
+                          ])
+                          setFocusedSelection({ name: subject.name })
+                          setShowFocusSelection(true)
+                        } else {
+                          setSelections(prev => [
+                            ...prev,
+                            { name: subject.name }
+                          ])
+                        }
+                      }}>
                       <IconTagList
-                        iconPath={`subjects/icon_${subject?.name?.toLowerCase()}.svg`}
+                        iconPath={`subjects/icon_${getSubjectKey(
+                          subject?.name
+                        )}.svg`}
                         text={
                           t(
-                            `lernfair.subjects.${subject?.name?.toLowerCase()}`
+                            `lernfair.subjects.${getSubjectKey(subject?.name)}`
                           ) +
                           ` ${
                             (userType === 'student' &&
@@ -188,11 +207,22 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                           }`
                         }
                       />
-                      <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                        x
-                      </Text>
-                    </Row>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        setSelections(prev => {
+                          const res = [...prev]
+                          res.splice(index, 1)
+                          return res
+                        })
+                      }>
+                      <Box ml="2">
+                        <Text color={'danger.500'} fontSize="xl" ml="1" bold>
+                          x
+                        </Text>
+                      </Box>
+                    </TouchableOpacity>
+                  </Row>
                 </Column>
               ))}
             </Row>
@@ -265,7 +295,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           paddingX={space['1.5']}
           paddingBottom={space['1.5']}
           maxWidth={ContainerWidth}>
-          {userSettingChanged && (
+          {/* {userSettingChanged && (
             <Alert marginY={3} colorScheme="success" status="success">
               <VStack space={2} flexShrink={1} w="100%">
                 <HStack
@@ -280,7 +310,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                 </HStack>
               </VStack>
             </Alert>
-          )}
+          )} */}
           {showError && (
             <Alert marginY={3} bgColor="danger.500">
               <VStack space={2} flexShrink={1} w="100%">
@@ -371,7 +401,19 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                   min: selectedClassRange[0],
                   max: selectedClassRange[1]
                 }
-                item.name && setSelections(prev => [...prev, item])
+
+                const find = selections.findIndex(
+                  sel => sel.name === focusedSelection?.name
+                )
+
+                if (find > -1) {
+                  const sel = [...selections]
+                  sel[find] = item
+                  setSelections(sel)
+                } else {
+                  item.name && setSelections(prev => [...prev, item])
+                }
+
                 setFocusedSelection({ name: '' })
                 setShowFocusSelection(false)
               }}>

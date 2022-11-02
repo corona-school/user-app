@@ -120,8 +120,7 @@ const ViewPager: React.FC<Props> = ({
                   _text={{
                     color: 'lightText',
                     fontWeight: '700',
-                    textDecoration: 'none',
-                    fontSize: '14px'
+                    textDecoration: 'none'
                   }}>
                   {t('skip')}
                 </Link>

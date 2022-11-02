@@ -92,6 +92,7 @@ const mutStudent = `mutation register(
 
 const RegistrationData: React.FC<Props> = () => {
   const { space } = useTheme()
+  const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -126,6 +127,11 @@ const RegistrationData: React.FC<Props> = () => {
     `
   )
 
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '500px'
+  })
+
   useEffect(() => {
     // go to next slide if data is provided
     // TODO validate email
@@ -135,23 +141,33 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the pupil with all data
   const registerPupil = useCallback(
     async (answers: { [key: string]: ObjectAnswer }) => {
-      const state = Object.keys(answers.state)[0]
-      const schooltype = Object.keys(answers.schooltype)[0]
+      const state = answers.state && Object.keys(answers.state)[0]
+      const schooltype =
+        answers.schooltype && Object.keys(answers.schooltype)[0]
 
-      const gradeAsInt = parseInt(Object.keys(answers.schoolclass)[0])
+      const gradeAsInt =
+        answers.schoolclass && parseInt(Object.keys(answers.schoolclass)[0])
       // const subjects = Object.keys(answers.subjects)
-      const subjects = answers.subjects
+      const subjects = answers.subjects || []
+
+      const data = {} as {
+        state: string
+        schooltype: string
+        gradeAsInt: number
+        subjects: ObjectAnswer<number | boolean>
+      }
+      state && (data['state'] = state)
+      schooltype && (data['schooltype'] = schooltype)
+      gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
+      subjects?.length > 0 && (data['subjects'] = subjects)
 
       await register({
         variables: {
           firstname,
           lastname,
           email,
-          state,
-          schooltype,
           password,
-          gradeAsInt,
-          subjects
+          ...data
         }
       })
     },
@@ -169,13 +185,19 @@ const RegistrationData: React.FC<Props> = () => {
       }
     }
 
+    const data = {} as {
+      subjects: LFSubject[]
+    }
+
+    subjects?.length && (data.subjects = subjects)
+
     await register({
       variables: {
         firstname,
         lastname,
         email,
         password,
-        subjects
+        ...data
       }
     })
   }, [
@@ -188,85 +210,6 @@ const RegistrationData: React.FC<Props> = () => {
     register
   ])
 
-  // when all questions are answered, register
-  const onQuestionnaireFinished = useCallback(
-    async (answers: { [key: string]: Answer }) => {
-      if (userType === 'pupil') {
-        await registerPupil(answers)
-      } else {
-        await registerStudent()
-      }
-    },
-    [registerPupil, registerStudent, userType]
-  )
-
-  const ModalContainerWidth = useBreakpointValue({
-    base: '90%',
-    lg: '500px'
-  })
-
-  const { trackPageView, trackEvent } = useMatomo()
-
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Registrierung – Auswahl-Kacheln'
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // registration went through without error
-  useEffect(() => {
-    if (data && !error) {
-      setVariant('dark')
-      setContent(
-        <VStack
-          space={space['1']}
-          p={space['1']}
-          flex="1"
-          width={ModalContainerWidth}
-          marginX="auto"
-          alignItems="center"
-          justifyContent="center">
-          <Box justifyContent="center" marginLeft="40px">
-            <EventIcon />
-          </Box>
-          <Heading
-            textAlign="center"
-            marginX="auto"
-            width={ModalContainerWidth}
-            color="lightText">
-            {t('registration.result.success.title')}
-          </Heading>
-          <Text
-            textAlign="center"
-            marginX="auto"
-            width={ModalContainerWidth}
-            color="lightText"
-            fontSize={'lg'}>
-            {t('registration.result.success.text')}
-          </Text>
-          <Button
-            marginX="auto"
-            width={ModalContainerWidth}
-            onPress={() => {
-              setShow(false)
-              navigate('/login')
-              trackEvent({
-                category: 'registrierung',
-                action: 'click-event',
-                name: 'Registrierung erfolgreich',
-                documentTitle: 'Registrierung war erfolgreich'
-              })
-            }}>
-            {t('registration.result.success.btn')}
-          </Button>
-        </VStack>
-      )
-      setShow(true)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, data, error, setContent, setShow, setVariant, space, t])
-
   const registerError = useCallback(() => {
     setShow(false)
     trackEvent({
@@ -278,15 +221,15 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // registration has an error
-  useEffect(() => {
-    if (error) {
+  const showErrorModal = useCallback(
+    (error: string) => {
+      console.log('show error')
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <Text color="lightText">
-            {t(`registration.error.message.${error.message}`, {
-              defaultValue: error.message
+            {t(`registration.error.message.${error}`, {
+              defaultValue: error
             })}
           </Text>
           <Button onPress={() => registerError()}>
@@ -295,8 +238,170 @@ const RegistrationData: React.FC<Props> = () => {
         </VStack>
       )
       setShow(true)
-    }
-  }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
+    },
+    [registerError, setContent, setShow, setVariant, space, t]
+  )
+
+  const showSuccessModal = useCallback(() => {
+    setVariant('dark')
+    setContent(
+      <VStack
+        space={space['1']}
+        p={space['1']}
+        flex="1"
+        width={ModalContainerWidth}
+        marginX="auto"
+        alignItems="center"
+        justifyContent="center">
+        <Box justifyContent="center" marginLeft="40px">
+          <EventIcon />
+        </Box>
+        <Heading
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText">
+          {t('registration.result.success.title')}
+        </Heading>
+        <Text
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText"
+          fontSize={'lg'}>
+          {t('registration.result.success.text')}
+        </Text>
+        <Button
+          marginX="auto"
+          width={ModalContainerWidth}
+          onPress={() => {
+            setShow(false)
+            navigate('/login')
+            trackEvent({
+              category: 'registrierung',
+              action: 'click-event',
+              name: 'Registrierung erfolgreich',
+              documentTitle: 'Registrierung war erfolgreich'
+            })
+          }}>
+          {t('registration.result.success.btn')}
+        </Button>
+      </VStack>
+    )
+    setShow(true)
+  }, [
+    ModalContainerWidth,
+    navigate,
+    setContent,
+    setShow,
+    setVariant,
+    space,
+    t,
+    trackEvent
+  ])
+
+  // when all questions are answered, register
+  const onQuestionnaireFinished = useCallback(
+    async (answers: { [key: string]: Answer }) => {
+      let res: any
+
+      try {
+        if (userType === 'pupil') {
+          res = await registerPupil(answers)
+        } else {
+          res = await registerStudent()
+        }
+      } catch (e: any) {
+        console.log(e)
+        showErrorModal(e.message)
+      }
+
+      if (res) {
+        showSuccessModal()
+      }
+    },
+    [registerPupil, registerStudent, showErrorModal, showSuccessModal, userType]
+  )
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Auswahl-Kacheln'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // // registration went through without error
+  // useEffect(() => {
+  //   if (data && !error) {
+  //     setVariant('dark')
+  //     setContent(
+  //       <VStack
+  //         space={space['1']}
+  //         p={space['1']}
+  //         flex="1"
+  //         width={ModalContainerWidth}
+  //         marginX="auto"
+  //         alignItems="center"
+  //         justifyContent="center">
+  //         <Box justifyContent="center" marginLeft="40px">
+  //           <EventIcon />
+  //         </Box>
+  //         <Heading
+  //           textAlign="center"
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           color="lightText">
+  //           {t('registration.result.success.title')}
+  //         </Heading>
+  //         <Text
+  //           textAlign="center"
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           color="lightText"
+  //           fontSize={'lg'}>
+  //           {t('registration.result.success.text')}
+  //         </Text>
+  //         <Button
+  //           marginX="auto"
+  //           width={ModalContainerWidth}
+  //           onPress={() => {
+  //             setShow(false)
+  //             navigate('/login')
+  //             trackEvent({
+  //               category: 'registrierung',
+  //               action: 'click-event',
+  //               name: 'Registrierung erfolgreich',
+  //               documentTitle: 'Registrierung war erfolgreich'
+  //             })
+  //           }}>
+  //           {t('registration.result.success.btn')}
+  //         </Button>
+  //       </VStack>
+  //     )
+  //     setShow(true)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigate, data, error, setContent, setShow, setVariant, space, t])
+
+  // // registration has an error
+  // useEffect(() => {
+  //   if (error) {
+  //     setVariant('dark')
+  //     setContent(
+  //       <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+  //         <Text color="lightText">
+  //           {t(`registration.error.message.${error.message}`, {
+  //             defaultValue: error.message
+  //           })}
+  //         </Text>
+  //         <Button onPress={() => registerError()}>
+  //           {t('registration.result.error.btn')}
+  //         </Button>
+  //       </VStack>
+  //     )
+  //     setShow(true)
+  //   }
+  // }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
@@ -325,38 +430,49 @@ const RegistrationData: React.FC<Props> = () => {
   // )
 
   // modify selection question based on answers etc
-  const modifySelectionQuestionBeforeRender = useCallback(
+  const modifySelectionQuestionBeforeRender: (
+    question: SelectionQuestion
+  ) => SelectionQuestion = useCallback(
     (question: SelectionQuestion) => {
+      // question.options = new Array(13).fill(0).map((_, i) => ({
+      //   key: `${i + 1}`,
+      //   label: t('lernfair.schoolclass', { class: i + 1 })
+      // }))
+
       // is question about schoolclass?
       if (question.id === 'schoolclass') {
+        question.options = new Array(13).fill(0).map((_, i) => ({
+          key: `${i + 1}`,
+          label: t('lernfair.schoolclass', { class: i + 1 })
+        }))
+        return question
+
         // change displayed classes based on selected schoolform
-        const answer = answers.schooltype
+        // if (!answer) {
+        //   question.options = new Array(8).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        //   return question
+        // }
 
-        if (!answer) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-          return question
-        }
-
-        if (answer['grundschule']) {
-          question.options = new Array(4).fill(0).map((_, i) => ({
-            key: `${i + 1}`,
-            label: t('lernfair.schoolclass', { class: i + 1 })
-          }))
-        } else {
-          question.options = new Array(6).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
-        if (answer['gymnasium']) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
+        // if (answer['grundschule']) {
+        //   question.options = new Array(4).fill(0).map((_, i) => ({
+        //     key: `${i + 1}`,
+        //     label: t('lernfair.schoolclass', { class: i + 1 })
+        //   }))
+        // } else {
+        //   question.options = new Array(6).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        // }
+        // if (answer['gymnasium']) {
+        //   question.options = new Array(8).fill(0).map((_, i) => ({
+        //     key: `${i + 5}`,
+        //     label: t('lernfair.schoolclass', { class: i + 5 })
+        //   }))
+        // }
       }
       return question
     },
@@ -385,9 +501,9 @@ const RegistrationData: React.FC<Props> = () => {
   const modifyQuestionBeforeNext = useCallback(() => {
     const currentQuestion = questions[currentIndex]
     // is question about language?
-    if (currentQuestion.id === 'language') {
-      if (!answers['language']) return
-      const answer = Object.keys(answers['language'])
+    if (currentQuestion.id === 'languages') {
+      if (!answers['languages']) return
+      const answer = Object.keys(answers['languages'])
 
       if (!answer) return
 
@@ -408,12 +524,18 @@ const RegistrationData: React.FC<Props> = () => {
         setQuestions && setQuestions(qs)
       }
     }
+
     // if question is followup question to "Sprache"/language
     // react to answer and add new question to questionnaire
     if (currentQuestion.id === 'deutsch') {
       if (Object.keys(answers['deutsch']).includes('<1')) {
         const qs = [...questions]
-        qs.splice(currentIndex + 1, 1)
+        qs.splice(currentIndex + 1, 1, {
+          id: 'subjects',
+          imgRootPath: 'subjects',
+          type: 'selection',
+          options: [{ key: 'deutsch-2', label: 'Deutsch als Zweitsprache' }]
+        } as SelectionQuestion)
         setQuestions && setQuestions(qs)
       }
     }
@@ -425,11 +547,12 @@ const RegistrationData: React.FC<Props> = () => {
       if (userType === 'pupil') {
         if (question.id === 'subjects') {
           const newAnswer: LFSubject[] = []
-          Object.entries(answer).forEach(
-            ([key, val]: [key: string, val: Answer]) => {
-              !!val && newAnswer.push({ name: val.label })
-            }
-          )
+          answer &&
+            Object.entries(answer).forEach(
+              ([key, val]: [key: string, val: Answer]) => {
+                !!val && newAnswer.push({ name: val.label })
+              }
+            )
 
           setAnswers(prev => ({
             ...prev,

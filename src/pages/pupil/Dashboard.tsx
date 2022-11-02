@@ -124,6 +124,8 @@ const Dashboard: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const isMobile = useBreakpointValue({ base: true, lg: false })
+
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
@@ -190,12 +192,12 @@ const Dashboard: React.FC<Props> = () => {
               maxWidth={ContainerWidth}
               space={space['1']}
               alignItems="center"
-              bgColor={'primary.900'}
+              bgColor={isMobile ? 'primary.900' : 'transparent'}
               padding={space['0.5']}>
-              <ProfilAvatar
+              {/* <ProfilAvatar
                 size="md"
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-              />
+              /> */}
               <Heading color={'#fff'}>
                 {t('hallo')} {data?.me?.firstname}!
               </Heading>

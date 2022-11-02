@@ -1,9 +1,19 @@
-import { Row, CircleIcon, useTheme, Link, Center, Text, Box } from 'native-base'
+import {
+  Row,
+  CircleIcon,
+  useTheme,
+  Link,
+  Center,
+  Text,
+  Box,
+  Pressable
+} from 'native-base'
 import { useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
 import '../web/scss/components/BottomNavigationBar.scss'
+import useLernfair from '../hooks/useLernfair'
 
 type Props = {
   show?: boolean
@@ -11,14 +21,9 @@ type Props = {
 }
 
 const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
-  const location = useLocation()
   const { space, colors } = useTheme()
-
-  const path = useMemo(() => {
-    const p = location.pathname.replace('/', '')
-    if (Object.keys(navItems).includes(p)) return p
-    return 'dashboard'
-  }, [location.pathname, navItems])
+  const navigate = useNavigate()
+  const { rootPath, setRootPath } = useLernfair()
 
   return (
     (show && (
@@ -38,7 +43,16 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
           }}>
           {Object.entries(navItems).map(
             ([key, { label, icon: Icon, disabled }]) => (
-              <Link href={disabled ? undefined : key} key={key}>
+              <Pressable
+                onPress={
+                  disabled
+                    ? undefined
+                    : () => {
+                        setRootPath && setRootPath(`${key}`)
+                        navigate(`/${key}`)
+                      }
+                }
+                key={key}>
                 <CSSWrapper className="navigation__item">
                   <Center>
                     <Box>
@@ -47,20 +61,20 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         color={
                           disabled
                             ? 'transparent'
-                            : key === path
+                            : key === rootPath
                             ? 'primary.900'
                             : 'transparent'
                         }
                       />
                       <CSSWrapper
                         className={`navigation__item__icon ${
-                          !disabled && key === path ? 'active' : ''
+                          !disabled && key === rootPath ? 'active' : ''
                         }`}>
                         <Icon
                           fill={
                             disabled
                               ? colors['gray']['300']
-                              : key === path
+                              : key === rootPath
                               ? colors['lightText']
                               : colors['primary']['900']
                           }
@@ -78,7 +92,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                     </Text>
                   </Center>
                 </CSSWrapper>
-              </Link>
+              </Pressable>
             )
           )}
         </Row>

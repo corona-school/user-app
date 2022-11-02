@@ -19,6 +19,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import useRegistration from '../hooks/useRegistration'
+import CenterLoadingSpinner from './CenterLoadingSpinner'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
 import { ISelectionItem } from './questionnaire/SelectionItem'
 
@@ -28,6 +29,7 @@ export type Question = {
   question?: string
   type: 'selection'
   text?: string
+  required?: boolean
 }
 
 export type QuestionnaireViewType = string | 'normal' | 'large'
@@ -105,9 +107,15 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
+    console.log('before modify')
     modifyAnswerBeforeNext &&
       modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
-
+    console.log('after modify')
+    console.log(
+      currentIndex >= questions.length - 1,
+      currentIndex,
+      questions.length - 1
+    )
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -154,6 +162,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // skip one question
   const skip = useCallback(() => {
+    console.log('skip')
     delete answers[currentQuestion.id]
     next()
   }, [answers, currentQuestion.id, next])
@@ -173,7 +182,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     lg: sizes['desktopbuttonWidth']
   })
 
-  if (questions.length === 0) return <></>
+  if (questions.length === 0) return <CenterLoadingSpinner />
   return (
     <Flex flex="1" pb={space['1']}>
       <Box
@@ -224,12 +233,14 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.btn.next')}
         </Button>
 
-        <Button
-          isDisabled={disableNavigation}
-          onPress={skip}
-          variant={'outline'}>
-          {t('questionnaire.btn.skip')}
-        </Button>
+        {!currentQuestion.required && (
+          <Button
+            isDisabled={disableNavigation}
+            onPress={skip}
+            variant={'outline'}>
+            {t('questionnaire.btn.skip')}
+          </Button>
+        )}
 
         {currentIndex > 0 && (
           <Button

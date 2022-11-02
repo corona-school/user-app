@@ -21,9 +21,7 @@ const DigitaleTools: React.FC<Props> = () => {
   }, [])
 
   return (
-    <WithNavigation
-      headerTitle={t('digitaletools.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('digitaletools.header')} showBack>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('digitaletools.title')}</Heading>
         <Text paddingBottom={space['1']}>{t('digitaletools.content')}</Text>

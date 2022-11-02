@@ -63,7 +63,7 @@ const AllFaq: React.FC<Props> = () => {
   }, [])
 
   return (
-    <WithNavigation headerTitle="Alle FAQ" headerLeft={<BackButton />}>
+    <WithNavigation headerTitle="Alle FAQ" showBack>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>Alle Fragen und Antworten</Heading>
         <Text paddingBottom={space['1']}>

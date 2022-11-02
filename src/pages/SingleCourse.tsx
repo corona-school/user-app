@@ -238,7 +238,7 @@ const SingleCourse: React.FC<Props> = () => {
             ? course?.course?.name.substring(0, 20)
             : course?.course?.name
         }
-        headerLeft={<BackButton />}>
+        showBack>
         <Box paddingX={space['1.5']} maxWidth={ContainerWidth}>
           <Box height="178px" marginBottom={space['1.5']}>
             <Image
