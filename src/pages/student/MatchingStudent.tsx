@@ -166,7 +166,11 @@ const MatchingStudent: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation headerTitle={t('matching.request.check.header')}>
-        <VStack paddingX={space['1']} width={ContainerWidth}>
+        <VStack
+          paddingX={space['1']}
+          maxWidth={ContainerWidth}
+          width="100%"
+          marginX="auto">
           <Heading paddingBottom={space['0.5']}>
             {t('matching.request.check.title')}
           </Heading>
@@ -193,10 +197,10 @@ const MatchingStudent: React.FC<Props> = () => {
               <Alert
                 alignItems="start"
                 marginY={space['1']}
-                maxW="450"
+                width="max-content"
                 colorScheme="info">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
+                  <Alert.Icon color="danger.100" />
                   <Text>
                     {t(
                       `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
@@ -240,13 +244,13 @@ const MatchingStudent: React.FC<Props> = () => {
                                   <Alert
                                     alignItems="start"
                                     marginY={space['1']}
-                                    maxW="350"
+                                    width="max-content"
                                     colorScheme="info">
                                     <HStack
                                       space={2}
                                       flexShrink={1}
                                       alignItems="center">
-                                      <Alert.Icon />
+                                      <Alert.Icon color="danger.100" />
                                       <Text>
                                         {t(
                                           'matching.request.check.resoloveMatch'
@@ -262,10 +266,10 @@ const MatchingStudent: React.FC<Props> = () => {
                         <Alert
                           alignItems="start"
                           marginY={space['1']}
-                          maxW="350"
+                          width="max-content"
                           colorScheme="info">
                           <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon />
+                            <Alert.Icon color="danger.100" />
                             <Text>{t('matching.request.check.noMatches')}</Text>
                           </HStack>
                         </Alert>
@@ -313,13 +317,13 @@ const MatchingStudent: React.FC<Props> = () => {
                           <Alert
                             alignItems="start"
                             marginY={space['1']}
-                            maxW="350"
+                            width="max-content"
                             colorScheme="info">
                             <HStack
                               space={2}
                               flexShrink={1}
                               alignItems="center">
-                              <Alert.Icon />
+                              <Alert.Icon color="danger.100" />
                               <Text>
                                 {t('matching.request.check.noMatches')}
                               </Text>

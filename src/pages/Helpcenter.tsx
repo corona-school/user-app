@@ -16,7 +16,8 @@ import {
   InfoIcon,
   Alert,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  View
 } from 'native-base'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
@@ -137,28 +138,30 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <WithNavigation headerTitle="Hilfebereich">
-      <Box
-        maxWidth={ContainerWidth}
-        paddingBottom={space['1.5']}
-        paddingX={space['1.5']}>
-        <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
-        <Text>{t('helpcenter.subtitle')}</Text>
+      <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
+        <Box
+          maxWidth={ContentContainerWidth}
+          paddingBottom={space['1.5']}
+          paddingX={space['1.5']}>
+          <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
+          <Text>{t('helpcenter.subtitle')}</Text>
+        </Box>
+        <Box
+          maxWidth={ContentContainerWidth}
+          paddingBottom={space['2.5']}
+          paddingX={space['1.5']}>
+          <Heading paddingBottom={space['0.5']}>
+            {t('helpcenter.onboarding.title')}
+          </Heading>
+          <Text paddingBottom={space['1.5']}>
+            {t('helpcenter.onboarding.content')}
+          </Text>
+          <Button width={buttonWidth} onPress={() => onboardingCheck()}>
+            {t('helpcenter.onboarding.button')}
+          </Button>
+        </Box>
       </Box>
-      <Box
-        maxWidth={ContainerWidth}
-        paddingBottom={space['2.5']}
-        paddingX={space['1.5']}>
-        <Heading paddingBottom={space['0.5']}>
-          {t('helpcenter.onboarding.title')}
-        </Heading>
-        <Text width={ContentContainerWidth} paddingBottom={space['1.5']}>
-          {t('helpcenter.onboarding.content')}
-        </Text>
-        <Button width={buttonWidth} onPress={() => onboardingCheck()}>
-          {t('helpcenter.onboarding.button')}
-        </Button>
-      </Box>
-      <Box width="100%">
+      <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
         <Tabs
           tabInset={space['1.5']}
           tabs={[
@@ -264,7 +267,7 @@ const HelpCenter: React.FC<Props> = () => {
             {
               title: t('helpcenter.contact.tabName'),
               content: (
-                <>
+                <View paddingLeft={space['1.5']}>
                   <Heading paddingBottom={space['0.5']}>
                     {t('helpcenter.contact.title')}
                   </Heading>
@@ -272,7 +275,7 @@ const HelpCenter: React.FC<Props> = () => {
                     {t('helpcenter.contact.content')}
                   </Text>
 
-                  <FormControl width={formControlWidth}>
+                  <FormControl maxWidth={ContentContainerWidth}>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       <FormControl.Label>
                         {t('helpcenter.contact.topic.label')}
@@ -387,6 +390,7 @@ const HelpCenter: React.FC<Props> = () => {
                     <Row flexDirection="column" paddingY={space['0.5']}>
                       {messageSent && (
                         <Alert
+                          width="max-content"
                           marginY={3}
                           colorScheme="success"
                           status="success">
@@ -400,7 +404,7 @@ const HelpCenter: React.FC<Props> = () => {
                                 space={2}
                                 flexShrink={1}
                                 alignItems="center">
-                                <Alert.Icon />
+                                <Alert.Icon color="danger.100" />
                                 <Text>{t('helpcenter.contact.success')}</Text>
                               </HStack>
                             </HStack>
@@ -442,7 +446,7 @@ const HelpCenter: React.FC<Props> = () => {
                       </Button>
                     </Row>
                   </FormControl>
-                </>
+                </View>
               )
             }
           ]}

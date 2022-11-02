@@ -30,6 +30,11 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
@@ -39,7 +44,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
   }, [])
 
   return (
-    <VStack maxWidth={ContainerWidth}>
+    <VStack marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
         <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}

@@ -137,7 +137,7 @@ const CourseArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.course.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack paddingX={space['1']} marginX="auto" maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.course.title')}</Heading>
@@ -217,10 +217,10 @@ const CourseArchive: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="400"
+                    width="max-content"
                     colorScheme="info">
                     <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
+                      <Alert.Icon color="danger.100" />
                       <Text>{t('empty.courses')}</Text>
                     </HStack>
                   </Alert>

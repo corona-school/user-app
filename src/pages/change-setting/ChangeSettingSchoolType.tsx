@@ -115,6 +115,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <Heading>{t('profile.SchoolType.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
@@ -134,6 +136,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolType.single.others')}>
           <ProfileSettingItem
@@ -191,6 +195,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         {/* {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">

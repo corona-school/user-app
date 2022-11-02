@@ -163,6 +163,8 @@ const Profile: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
+            marginX="auto"
+            width="100%"
             maxWidth={ContainerWidth}
             bg={HeaderStyle.bgColor}
             alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
@@ -170,6 +172,8 @@ const Profile: React.FC<Props> = () => {
             paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
             <Box
+              marginX="auto"
+              width="100%"
               maxWidth={ContainerWidth}
               bg={HeaderStyle.bgColor}
               alignItems="center"
@@ -234,14 +238,18 @@ const Profile: React.FC<Props> = () => {
                 alignItems="center"
                 justifyContent="space-between">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('profile.successmessage')}</Text>
                 </HStack>
               </HStack>
             </VStack>
           </Alert>
         )}
-        <VStack space={space['1']} width={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          width="100%"
+          marginX="auto"
+          maxWidth={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />

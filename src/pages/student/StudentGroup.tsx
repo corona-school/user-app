@@ -119,7 +119,11 @@ const StudentGroup: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('matching.group.helper.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        maxWidth={ContainerWidth}
+        width="100%">
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('matching.group.helper.title')}</Heading>
@@ -204,13 +208,13 @@ const StudentGroup: React.FC<Props> = () => {
                           <Alert
                             alignItems="start"
                             marginY={space['1']}
-                            maxW="350"
+                            width="max-content"
                             colorScheme="info">
                             <HStack
                               space={2}
                               flexShrink={1}
                               alignItems="center">
-                              <Alert.Icon />
+                              <Alert.Icon color="danger.100" />
                               <Text>{t('empty.courses')}</Text>
                             </HStack>
                           </Alert>
@@ -256,13 +260,13 @@ const StudentGroup: React.FC<Props> = () => {
                           <Alert
                             alignItems="start"
                             marginY={space['1']}
-                            maxW="350"
+                            width="max-content"
                             colorScheme="info">
                             <HStack
                               space={2}
                               flexShrink={1}
                               alignItems="center">
-                              <Alert.Icon />
+                              <Alert.Icon color="danger.100" />
                               <Text>{t('empty.coursescheck')}</Text>
                             </HStack>
                           </Alert>
@@ -301,13 +305,13 @@ const StudentGroup: React.FC<Props> = () => {
                           <Alert
                             alignItems="start"
                             marginY={space['1']}
-                            maxW="350"
+                            width="max-content"
                             colorScheme="info">
                             <HStack
                               space={2}
                               flexShrink={1}
                               alignItems="center">
-                              <Alert.Icon />
+                              <Alert.Icon color="danger.100" />
                               <Text>{t('empty.coursesdraft')}</Text>
                             </HStack>
                           </Alert>
@@ -344,13 +348,13 @@ const StudentGroup: React.FC<Props> = () => {
                           <Alert
                             alignItems="start"
                             marginY={space['1']}
-                            maxW="350"
+                            width="max-content"
                             colorScheme="info">
                             <HStack
                               space={2}
                               flexShrink={1}
                               alignItems="center">
-                              <Alert.Icon />
+                              <Alert.Icon color="danger.100" />
                               <Text>{t('empty.courses')}</Text>
                             </HStack>
                           </Alert>
@@ -388,10 +392,10 @@ const StudentGroup: React.FC<Props> = () => {
                 <Alert
                   alignItems="start"
                   marginY={space['1']}
-                  maxW="350"
+                  width="max-content"
                   colorScheme="info">
                   <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon />
+                    <Alert.Icon color="danger.100" />
                     <Text>{t('empty.offers')}</Text>
                   </HStack>
                 </Alert>

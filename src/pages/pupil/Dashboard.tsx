@@ -207,7 +207,11 @@ const Dashboard: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {!called || (loading && <CenterLoadingSpinner />)}
         {called && !loading && (
-          <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+          <VStack
+            paddingX={space['1']}
+            marginX="auto"
+            width="100%"
+            maxWidth={ContainerWidth}>
             <VStack space={space['1']} marginTop={space['1']}>
               {sortedAppointments[0] && (
                 <VStack space={space['0.5']}>
@@ -286,10 +290,10 @@ const Dashboard: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="350"
+                    width="max-content"
                     colorScheme="info">
                     <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
+                      <Alert.Icon color="danger.100" />
                       <Text>
                         {t('dashboard.myappointments.noappointments')}
                       </Text>
@@ -349,10 +353,10 @@ const Dashboard: React.FC<Props> = () => {
                         <Alert
                           alignItems="start"
                           marginY={space['1']}
-                          maxW="350"
+                          width="max-content"
                           colorScheme="info">
                           <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon />
+                            <Alert.Icon color="danger.100" />
                             <Text>{t('dashboard.offers.noMatching')}</Text>
                           </HStack>
                         </Alert>
@@ -377,10 +381,10 @@ const Dashboard: React.FC<Props> = () => {
                     <Alert
                       alignItems="start"
                       marginY={space['1']}
-                      maxW="450"
+                      width="max-content"
                       colorScheme="info">
                       <HStack space={2} flexShrink={1} alignItems="center">
-                        <Alert.Icon />
+                        <Alert.Icon color="danger.100" />
                         <Text>
                           {t(
                             `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
@@ -436,10 +440,10 @@ const Dashboard: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     marginY={space['1']}
-                    maxW="350"
+                    width="max-content"
                     colorScheme="info">
                     <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
+                      <Alert.Icon color="danger.100" />
                       <Text>{t('lernfair.reason.proposals')}</Text>
                     </HStack>
                   </Alert>

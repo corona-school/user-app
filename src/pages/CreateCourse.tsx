@@ -338,12 +338,15 @@ const CreateCourse: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   if (loading) return <></>
 
   return (
-    <WithNavigation
-      headerTitle={t('course.header')}
-      showBack>
+    <WithNavigation headerTitle={t('course.header')} showBack>
       <CreateCourseContext.Provider
         value={{
           courseName,
@@ -372,7 +375,9 @@ const CreateCourse: React.FC<Props> = () => {
           <VStack
             space={space['1']}
             padding={space['1']}
-            width={ContainerWidth}>
+            marginX="auto"
+            width="100%"
+            maxWidth={ContentContainerWidth}>
             <InstructionProgress
               isDark={false}
               currentIndex={currentIndex}

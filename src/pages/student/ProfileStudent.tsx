@@ -176,6 +176,8 @@ const ProfileStudent: React.FC<Props> = () => {
         headerContent={
           <Flex
             maxWidth={ContainerWidth}
+            marginX="auto"
+            width="100%"
             bg={HeaderStyle.bgColor}
             alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
             justifyContent="center"
@@ -263,8 +265,9 @@ const ProfileStudent: React.FC<Props> = () => {
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <Alert
             maxWidth={ContainerWidth}
+            marginX="auto"
+            width="100%"
             marginY={10}
-            marginX={space['1.5']}
             colorScheme="success"
             status="success">
             <VStack space={2} flexShrink={1} w="100%">
@@ -274,7 +277,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 alignItems="center"
                 justifyContent="space-between">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('profile.successmessage')}</Text>
                 </HStack>
               </HStack>
@@ -284,12 +287,18 @@ const ProfileStudent: React.FC<Props> = () => {
 
         <VStack
           maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%"
           paddingX={space['1']}
           paddingY={space['1']}>
           <HelperWizard index={0} />
         </VStack>
 
-        <VStack space={space['1']} maxWidth={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%">
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />

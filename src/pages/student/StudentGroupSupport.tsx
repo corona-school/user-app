@@ -46,7 +46,7 @@ const StudentGroupSupport: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('matching.group.helper.support.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} marginX="auto" width={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('matching.group.helper.support.title')}</Heading>

@@ -56,7 +56,9 @@ const OnboardingTourList: React.FC<Props> = () => {
   return (
     <WithNavigation headerTitle={t('onboardingList.header')} showBack>
       <VStack
+        marginX="auto"
         maxWidth={ContainerWidth}
+        width="100%"
         paddingBottom={7}
         paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
@@ -69,7 +71,9 @@ const OnboardingTourList: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['2']}
-        maxWidth={ContainerWidth}>
+        maxWidth={ContainerWidth}
+        marginX="auto"
+        width="100%">
         <Stagger
           initial={{ opacity: 0, translateY: 20 }}
           animate={{
