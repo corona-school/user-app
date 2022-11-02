@@ -26,12 +26,13 @@ import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
+import { LFCourse, LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { getFirstLectureFromSubcourse } from '../../Utility'
 
 type Props = {}
 
@@ -143,7 +144,13 @@ const Dashboard: React.FC<Props> = () => {
       if (!data?.me?.pupil?.subcoursesJoined) return []
 
       for (const sub of data?.me?.pupil?.subcoursesJoined) {
-        for (const lecture of sub.lectures) {
+        const futureLectures = sub.lectures.filter(
+          (lecture: LFLecture) =>
+            DateTime.now().toMillis() <
+            DateTime.fromISO(lecture.start).toMillis()
+        )
+
+        for (const lecture of futureLectures) {
           lectures.push({ lecture: lecture, course: sub })
         }
       }

@@ -110,6 +110,7 @@ const DashboardStudent: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Helfer Dashboard'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -176,42 +177,6 @@ const DashboardStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  // TODO: Optimizable?
-  const nextAppointment: [
-    appointment: Partial<LFLecture>,
-    course: Partial<LFSubCourse>
-  ] = useMemo(() => {
-    if (!data?.me?.student) return [{}, {}]
-
-    let firstCourse: LFSubCourse = null!
-    let firstDate: DateTime = DateTime.now()
-    let firstLecture: LFLecture = null!
-
-    for (const sub of data?.me?.student?.subcoursesInstructing) {
-      let _firstDate: DateTime = DateTime.now()
-      let _firstLecture: LFLecture = null!
-
-      for (const lecture of sub.lectures) {
-        const date = DateTime.fromISO(lecture.start)
-
-        if (date.toMillis() < _firstDate.toMillis()) {
-          _firstDate = date
-          _firstLecture = lecture
-        }
-      }
-
-      if (firstCourse !== sub) {
-        if (_firstDate.toMillis() < firstDate.toMillis()) {
-          firstDate = _firstDate
-          firstLecture = _firstLecture
-          firstCourse = sub
-        }
-      }
-    }
-
-    return [firstLecture || null, firstCourse || null]
-  }, [data?.me?.student])
-
   const publishedSubcourses = useMemo(
     () =>
       data?.me?.student?.subcoursesInstructing.filter(
@@ -224,6 +189,7 @@ const DashboardStudent: React.FC<Props> = () => {
     if (!publishedSubcourses) return []
 
     const courses = [...publishedSubcourses]
+
     courses.sort((a: LFSubCourse, b: LFSubCourse) => {
       const aLecture = getFirstLectureFromSubcourse(a.lectures)
       const bLecture = getFirstLectureFromSubcourse(b.lectures)
@@ -234,13 +200,53 @@ const DashboardStudent: React.FC<Props> = () => {
       const aDate = DateTime.fromISO(aLecture.start).toMillis()
       const bDate = DateTime.fromISO(bLecture.start).toMillis()
 
-      if (aDate === bDate) return 0
+      if (aDate < DateTime.now().toMillis()) return 1
+      if (bDate < DateTime.now().toMillis()) return 1
 
+      if (aDate === bDate) return 0
       return aDate > bDate ? 1 : -1
     })
 
     return courses
   }, [publishedSubcourses])
+
+  // TODO: Optimizable?
+  const nextAppointment:
+    | [appointment: LFLecture, course: LFSubCourse]
+    | undefined = useMemo(() => {
+    if (!data?.me?.student) return undefined
+
+    let firstCourse: LFSubCourse = null!
+    let firstDate: DateTime = DateTime.now()
+    let firstLecture: LFLecture = null!
+
+    for (const sub of sortedPublishedSubcourses) {
+      if (!firstCourse) {
+        firstCourse = sub
+      }
+
+      let _firstLecture: LFLecture | null = getFirstLectureFromSubcourse(
+        sub.lectures
+      )
+      let _firstDate: DateTime | null =
+        _firstLecture && DateTime.fromISO(_firstLecture.start)
+
+      if (!firstLecture) {
+        firstLecture = _firstLecture
+      }
+      if (!firstDate) {
+        firstDate = _firstDate
+      }
+
+      if (_firstDate && _firstDate.toMillis() < firstDate.toMillis()) {
+        firstLecture = _firstLecture
+        firstDate = _firstDate
+        firstCourse = sub
+      }
+    }
+
+    return [firstLecture, firstCourse]
+  }, [data?.me?.student, sortedPublishedSubcourses])
 
   const activeMatches = useMemo(
     () =>
@@ -280,8 +286,7 @@ const DashboardStudent: React.FC<Props> = () => {
 
               {/* Next Appointment */}
               {data?.me?.student?.subcoursesInstructing?.length > 0 &&
-                nextAppointment[0] &&
-                nextAppointment[1] && (
+                nextAppointment && (
                   <VStack space={space['0.5']}>
                     <Heading marginY={space['1']}>
                       {t('dashboard.appointmentcard.header')}
@@ -294,10 +299,10 @@ const DashboardStudent: React.FC<Props> = () => {
                           action: 'click-event',
                           name:
                             'Helfer Dashboard Kachelklick   ' +
-                            nextAppointment[1].course?.name,
+                              nextAppointment[1].course?.name || '',
                           documentTitle:
-                            'Helfer Dashboard – Nächster Termin   ' +
-                            nextAppointment[1].course?.name
+                            'Helfer Dashboard – Nächster Termin ' +
+                              nextAppointment[1].course?.name || ''
                         })
                         navigate('/single-course', {
                           state: { course: nextAppointment[1].id }
