@@ -5,6 +5,8 @@ import reportWebVitals from './reportWebVitals'
 import './I18n'
 const root = document.getElementById('root')
 
+console.log('LernFair Web App Version', `${process.env.REACT_APP_VERSION}`)
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
