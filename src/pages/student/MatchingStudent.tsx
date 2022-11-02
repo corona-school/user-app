@@ -283,38 +283,50 @@ const MatchingStudent: React.FC<Props> = () => {
                       {data?.me?.student?.openMatchRequestCount}
                     </Heading>
                     <VStack space={space['0.5']}>
-                      {(data?.me?.student?.openMatchRequestCount &&
-                        new Array(data?.me?.student?.openMatchRequestCount)
-                          .fill('')
-                          .map((_, i) => (
-                            <Box
-                              bgColor="primary.100"
-                              padding={space['1']}
-                              borderRadius={8}>
-                              <Heading>
-                                Anfrage {`${i + 1}`.padStart(2, '0')}
-                              </Heading>
+                      <Flex direction="row" flexWrap="wrap">
+                        {(data?.me?.student?.openMatchRequestCount &&
+                          new Array(data?.me?.student?.openMatchRequestCount)
+                            .fill('')
+                            .map((_, i) => (
+                              <Column
+                                width={CardGrid}
+                                marginRight="15px"
+                                marginBottom="15px">
+                                <Box
+                                  bgColor="primary.100"
+                                  padding={space['1']}
+                                  borderRadius={8}>
+                                  <Heading>
+                                    Anfrage {`${i + 1}`.padStart(2, '0')}
+                                  </Heading>
 
-                              <Button
-                                isDisabled={cancelLoading}
-                                variant="outline"
-                                mt="3"
-                                onPress={showCancelMatchRequestModal}>
-                                Anfrage zurücknehmen
-                              </Button>
-                            </Box>
-                          ))) || (
-                        <Alert
-                          alignItems="start"
-                          marginY={space['1']}
-                          maxW="350"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon />
-                            <Text>{t('matching.request.check.noMatches')}</Text>
-                          </HStack>
-                        </Alert>
-                      )}
+                                  <Button
+                                    isDisabled={cancelLoading}
+                                    variant="outline"
+                                    mt="3"
+                                    onPress={showCancelMatchRequestModal}>
+                                    Anfrage zurücknehmen
+                                  </Button>
+                                </Box>
+                              </Column>
+                            ))) || (
+                          <Alert
+                            alignItems="start"
+                            marginY={space['1']}
+                            maxW="350"
+                            colorScheme="info">
+                            <HStack
+                              space={2}
+                              flexShrink={1}
+                              alignItems="center">
+                              <Alert.Icon />
+                              <Text>
+                                {t('matching.request.check.noMatches')}
+                              </Text>
+                            </HStack>
+                          </Alert>
+                        )}
+                      </Flex>
                     </VStack>
                   </VStack>
                 )

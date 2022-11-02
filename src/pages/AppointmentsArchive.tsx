@@ -135,6 +135,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   const CardGrid = useBreakpointValue({
     base: '100%',
     lg: '47%'
@@ -148,7 +153,9 @@ const AppointmentsArchive: React.FC<Props> = () => {
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.appointments.title')}</Heading>
-            <Text>{t('archive.appointments.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.appointments.content')}
+            </Text>
           </VStack>
           <Row paddingY={space['1']}>
             <Input

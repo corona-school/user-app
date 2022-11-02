@@ -9,10 +9,13 @@ import {
   Box,
   Flex,
   Image,
-  useBreakpointValue
+  useBreakpointValue,
+  Alert,
+  HStack,
+  WarningTwoIcon
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { composeInitialProps, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
@@ -149,21 +152,72 @@ const RegistrationAccount: React.FC<Props> = () => {
             placeholder={t('email')}
             onChangeText={t => setRegistrationData({ email: t })}
           />
+          {email.length < 6 && (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="350"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.email.invalid')}</Text>
+              </HStack>
+            </Alert>
+          )}
+
           <TextInput
             placeholder={t('password')}
             type="password"
-            onChangeText={t => setRegistrationData({ password: t })}
+            onChangeText={t => {
+              setRegistrationData({ password: t })
+            }}
           />
           <TextInput
             placeholder={t('registration.password_repeat')}
             type="password"
             onChangeText={setPasswordConfirm}
           />
+          {password !== passwordConfirm ? (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="350"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.password.nomatch')}</Text>
+              </HStack>
+            </Alert>
+          ) : (
+            ''
+          )}
+
+          {password.length < 6 ? (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="400"
+              backgroundColor="#fff8f8"
+              colorScheme="error">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.password.length')}</Text>
+              </HStack>
+            </Alert>
+          ) : (
+            ''
+          )}
+
           <Text fontSize="xs" opacity=".6">
             {t('registration.hint.password.length')}
           </Text>
         </VStack>
-        <VStack space={space['0.5']} marginTop={space['1']}>
+        <VStack
+          space={space['0.5']}
+          marginTop={space['1']}
+          marginBottom={space['1']}>
           <Heading>{t('registration.i_am')}</Heading>
           {/* <ToggleButton
             Icon={ParentIcon}
@@ -177,21 +231,38 @@ const RegistrationAccount: React.FC<Props> = () => {
             label={t('registration.pupil.label')}
             dataKey="pupil"
             isActive={userType === 'pupil'}
-            onPress={() => setRegistrationData({ userType: 'pupil' })}
+            onPress={() => {
+              setRegistrationData({ userType: 'pupil' })
+            }}
           />
           <ToggleButton
             Icon={StudentIcon}
             label={t('registration.student.label')}
             dataKey="student"
             isActive={userType === 'student'}
-            onPress={() => setRegistrationData({ userType: 'student' })}
+            onPress={() => {
+              setRegistrationData({ userType: 'student' })
+            }}
           />
         </VStack>
+        {!userType && (
+          <Alert
+            alignItems="start"
+            marginBottom="10px"
+            maxW="350"
+            backgroundColor="#fff8f8"
+            colorScheme="warning">
+            <HStack space={2} flexShrink={1} alignItems="center">
+              <WarningTwoIcon color="danger.400" />
+              <Text>{t('registration.hint.userType.missing')}</Text>
+            </HStack>
+          </Alert>
+        )}
         <VStack space={space['1']} marginTop={space['1']}>
           <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
             {t('registration.check_legal')}
           </Checkbox>
-          <Row justifyContent="center">
+          <Row justifyContent="center" marginBottom={space['3']}>
             <Button
               width={buttonWidth}
               onPress={() => {
@@ -214,21 +285,6 @@ const RegistrationAccount: React.FC<Props> = () => {
               {t('registration.btn.next')}
             </Button>
           </Row>
-          {!userType && (
-            <Text color="danger.500">
-              {t('registration.hint.userType.missing')}
-            </Text>
-          )}
-          {email.length < 6 && (
-            <Text color="danger.500">
-              {t('registration.hint.email.invalid')}
-            </Text>
-          )}
-          <Text
-            color="danger.500"
-            opacity={password !== passwordConfirm ? 1 : 0}>
-            {t('registration.hint.password.nomatch')}
-          </Text>
         </VStack>
       </VStack>
     </Flex>

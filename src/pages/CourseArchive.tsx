@@ -9,7 +9,9 @@ import {
   Column,
   Row,
   Spinner,
-  Box
+  Box,
+  Alert,
+  HStack
 } from 'native-base'
 
 import { useTranslation } from 'react-i18next'
@@ -126,6 +128,11 @@ const CourseArchive: React.FC<Props> = () => {
     searchString
   ])
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <WithNavigation
       headerTitle={t('archive.course.header')}
@@ -134,7 +141,9 @@ const CourseArchive: React.FC<Props> = () => {
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.course.title')}</Heading>
-            <Text>{t('archive.course.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.course.content')}
+            </Text>
           </VStack>
           <Row paddingY={space['1']}>
             <Input
@@ -146,7 +155,9 @@ const CourseArchive: React.FC<Props> = () => {
           </Row>
           <VStack space={space['1']}>
             <Heading>{t('archive.course.sectionHeadline')}</Heading>
-            <Text>{t('archive.course.sectionContent')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.course.sectionContent')}
+            </Text>
           </VStack>
           <VStack flex="1">
             {loading && (
@@ -202,7 +213,18 @@ const CourseArchive: React.FC<Props> = () => {
                       )
                     })}
                   </Flex>
-                )) || <Text>Es wurden keine Ergebnisse gefunden.</Text>}
+                )) || (
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    maxW="400"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon />
+                      <Text>{t('empty.courses')}</Text>
+                    </HStack>
+                  </Alert>
+                )}
               </>
             )}
           </VStack>
