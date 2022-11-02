@@ -23,7 +23,11 @@ import { TouchableOpacity } from 'react-native'
 import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
-import { LFSubject, subjects } from '../../types/lernfair/Subject'
+import {
+  LFSubject,
+  subjects,
+  getSubjectKey
+} from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -189,11 +193,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                         }
                       }}>
                       <IconTagList
-                        initial={false}
-                        iconPath={`subjects/icon_${subject?.name?.toLowerCase()}.svg`}
+                        iconPath={`subjects/icon_${getSubjectKey(
+                          subject?.name
+                        )}.svg`}
                         text={
                           t(
-                            `lernfair.subjects.${subject?.name?.toLowerCase()}`
+                            `lernfair.subjects.${getSubjectKey(subject?.name)}`
                           ) +
                           ` ${
                             (userType === 'student' &&

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../hooks/useModal'
-import { LFSubject } from '../../types/lernfair/Subject'
+import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
@@ -126,7 +126,7 @@ const MatchingWizard: React.FC<Props> = () => {
               initial={selection?.name === sub.name}
               text={sub.name}
               variant="selection"
-              iconPath={`languages/icon_${sub.name.toLowerCase()}.svg`}
+              iconPath={`languages/icon_${getSubjectKey(sub.name)}.svg`}
               onPress={() => setSelection(sub)}
             />
           ))}

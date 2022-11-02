@@ -30,6 +30,7 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { getSubjectKey } from '../../types/lernfair/Subject'
 
 type Props = {}
 
@@ -349,7 +350,9 @@ const Profile: React.FC<Props> = () => {
                         <Column marginRight={3} mb={space['0.5']}>
                           <IconTagList
                             isDisabled
-                            iconPath={`subjects/icon_${sub.name.toLowerCase()}.svg`}
+                            iconPath={`subjects/icon_${getSubjectKey(
+                              sub.name
+                            )}.svg`}
                             text={sub.name}
                           />
                         </Column>

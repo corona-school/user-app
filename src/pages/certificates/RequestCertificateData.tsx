@@ -18,7 +18,7 @@ import { useContext, useEffect, useState } from 'react'
 import Accordion from '../../components/Accordion'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
-import { LFSubject } from '../../types/lernfair/Subject'
+import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 import { RequestCertificateContext } from '../RequestCertificate'
@@ -103,7 +103,7 @@ const RequestCertificateData: React.FC<Props> = ({ onNext, onBack }) => {
                 initial={state?.subject === subject.name}
                 variant="selection"
                 text={subject.name}
-                iconPath={`languages/icon_${subject.name.toLowerCase()}.svg`}
+                iconPath={`languages/icon_${getSubjectKey(subject.name)}.svg`}
                 onPress={() =>
                   setState(prev => ({ ...prev, subject: subject.name }))
                 }
