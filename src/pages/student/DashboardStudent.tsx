@@ -32,6 +32,7 @@ import { getFirstLectureFromSubcourse } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
 
 type Props = {}
 
@@ -128,8 +129,8 @@ const DashboardStudent: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!) {
-        matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(dissolveReason: $dissaolveReason, matchId: $matchId)
       }
     `,
     {
@@ -593,35 +594,19 @@ const DashboardStudent: React.FC<Props> = () => {
           </VStack>
         )}
       </WithNavigation>
-      <Modal isOpen={showDissolveModal}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Match auflösen</Modal.Header>
-          <Modal.Body>
-            <VStack>
-              <Text>
-                Möchtest du das Match mit{' '}
-                <Text bold>{dissolveData?.pupil.firstname}</Text> wirklich
-                auflösen?
-              </Text>
-            </VStack>
-          </Modal.Body>
-          <Modal.Footer>
-            <Row space={space['1']}>
-              <Button
-                onPress={() => {
-                  dissolve({ variables: { matchId: dissolveData?.id } })
-                  setShowDissolveModal(false)
-                }}>
-                Match auflösen
-              </Button>
-              <Button onPress={() => setShowDissolveModal(false)}>
-                Zurück
-              </Button>
-            </Row>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+      <DissolveMatchModal
+        showDissolveModal={showDissolveModal}
+        onPressDissolve={(reason: string) => {
+          dissolve({
+            variables: {
+              matchId: dissolveData?.id,
+              dissolveReason: parseInt(reason)
+            }
+          })
+          setShowDissolveModal(false)
+        }}
+        onPressBack={() => setShowDissolveModal(false)}
+      />
     </AsNavigationItem>
   )
 }

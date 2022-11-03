@@ -8,32 +8,33 @@ import {
   useBreakpointValue,
   Pressable,
   Flex,
-  Column,
-  Spinner,
   Modal,
   useToast,
   Row,
-  Alert
+  Alert,
+  FormControl,
+  Checkbox,
+  Radio
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import TeacherCard from '../../widgets/TeacherCard'
 import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { LFCourse, LFLecture, LFSubCourse } from '../../types/lernfair/Course'
+import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 
 import { LFMatch } from '../../types/lernfair/Match'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
-import { getFirstLectureFromSubcourse } from '../../Utility'
+
 import AsNavigationItem from '../../components/AsNavigationItem'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
 
 type Props = {}
 
@@ -168,8 +169,8 @@ const Dashboard: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!) {
-        matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(dissolveReason: dissolveReason, matchId: $matchId)
       }
     `,
     {
@@ -409,7 +410,6 @@ const Dashboard: React.FC<Props> = () => {
               </HSection>
 
               {/* Suggestions */}
-
               <HSection
                 title={t('dashboard.relatedcontent.header')}
                 onShowAll={() => navigate('/group/offer')}
@@ -461,35 +461,19 @@ const Dashboard: React.FC<Props> = () => {
           </VStack>
         )}
       </WithNavigation>
-      <Modal isOpen={showDissolveModal}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Match auflösen</Modal.Header>
-          <Modal.Body>
-            <VStack>
-              <Text>
-                Möchtest du das Match mit{' '}
-                <Text bold>{dissolveData?.student.firstname}</Text> wirklich
-                auflösen?
-              </Text>
-            </VStack>
-          </Modal.Body>
-          <Modal.Footer>
-            <Row space={space['1']}>
-              <Button
-                onPress={() => {
-                  dissolve({ variables: { matchId: dissolveData?.id } })
-                  setShowDissolveModal(false)
-                }}>
-                Match auflösen
-              </Button>
-              <Button onPress={() => setShowDissolveModal(false)}>
-                Zurück
-              </Button>
-            </Row>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+      <DissolveMatchModal
+        showDissolveModal={showDissolveModal}
+        onPressDissolve={(reason: string) => {
+          dissolve({
+            variables: {
+              matchId: dissolveData?.id,
+              dissolveReason: parseInt(reason)
+            }
+          })
+          setShowDissolveModal(false)
+        }}
+        onPressBack={() => setShowDissolveModal(false)}
+      />
     </AsNavigationItem>
   )
 }
