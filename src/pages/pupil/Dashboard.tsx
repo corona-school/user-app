@@ -14,7 +14,8 @@ import {
   Alert,
   FormControl,
   Checkbox,
-  Radio
+  Radio,
+  Column
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'

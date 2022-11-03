@@ -283,10 +283,10 @@ const MatchingStudent: React.FC<Props> = () => {
                 title: 'Anfragen',
                 content: (
                   <VStack space={space['1']}>
-                    <Heading>
-                      Offene Anfragen:{' '}
+                    <Text marginBottom={space['1']}>
+                      Offene Anfragen:{'  '}
                       {data?.me?.student?.openMatchRequestCount}
-                    </Heading>
+                    </Text>
                     <VStack space={space['0.5']}>
                       <Flex direction="row" flexWrap="wrap">
                         {(data?.me?.student?.openMatchRequestCount &&
