@@ -12,7 +12,8 @@ import {
   useBreakpointValue,
   Alert,
   HStack,
-  WarningTwoIcon
+  WarningTwoIcon,
+  ScrollView
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { composeInitialProps, useTranslation } from 'react-i18next'
@@ -43,6 +44,21 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { createToken } = useApollo()
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
+
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '768px'
+  })
+
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
 
   useEffect(() => {
     createToken()
@@ -100,194 +116,199 @@ const RegistrationAccount: React.FC<Props> = () => {
       </VStack>
     ))
     setShow(true)
-  }, [onBarrierSolved, setContent, setShow, setVariant, space, t])
-
-  const ContainerWidth = useBreakpointValue({
-    base: '90%',
-    lg: '768px'
-  })
-
-  const ModalContainerWidth = useBreakpointValue({
-    base: '90%',
-    lg: sizes['formsWidth']
-  })
-
-  const buttonWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
+  }, [
+    ModalContainerWidth,
+    onBarrierSolved,
+    setContent,
+    setShow,
+    setVariant,
+    space,
+    t
+  ])
 
   return (
-    <Flex overflowY={'auto'} height="100vh">
-      <Box
-        position="relative"
-        paddingY={space['2']}
-        bgColor="primary.500"
-        justifyContent="center"
-        alignItems="center"
-        borderBottomRadius={8}>
-        <Image
-          alt="Lernfair"
-          position="absolute"
-          zIndex="-1"
-          borderBottomRadius={15}
-          width="100%"
-          height="100%"
-          source={{
-            uri: require('../../assets/images/globals/lf-bg.png')
-          }}
-        />
-        <Logo />
-        <Heading mt={space['1']}>{t('registration.new')}</Heading>
-      </Box>
-      <VStack
-        flex="1"
-        paddingX={space['1']}
-        mt={space['4']}
-        width={ContainerWidth}
-        marginX="auto">
-        <VStack space={space['0.5']}>
-          <TextInput
-            keyboardType="email-address"
-            placeholder={t('email')}
-            onChangeText={t => setRegistrationData({ email: t })}
-          />
-          {email.length < 6 && (
-            <Alert
-              alignItems="start"
-              marginBottom="10px"
-              maxW="350"
-              backgroundColor="#fff8f8"
-              colorScheme="error">
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <WarningTwoIcon color="danger.400" />
-                <Text>{t('registration.hint.email.invalid')}</Text>
-              </HStack>
-            </Alert>
-          )}
-
-          <TextInput
-            placeholder={t('password')}
-            type="password"
-            onChangeText={t => {
-              setRegistrationData({ password: t })
+    <ScrollView>
+      <Flex paddingBottom={space['1']}>
+        <Box
+          position="relative"
+          paddingY={space['2']}
+          bgColor="primary.500"
+          justifyContent="center"
+          alignItems="center"
+          borderBottomRadius={8}>
+          <Image
+            alt="Lernfair"
+            position="absolute"
+            zIndex="-1"
+            borderBottomRadius={15}
+            width="100%"
+            height="100%"
+            source={{
+              uri: require('../../assets/images/globals/lf-bg.png')
             }}
           />
-          <TextInput
-            placeholder={t('registration.password_repeat')}
-            type="password"
-            onChangeText={setPasswordConfirm}
-          />
-          {password !== passwordConfirm ? (
-            <Alert
-              alignItems="start"
-              marginBottom="10px"
-              maxW="350"
-              backgroundColor="#fff8f8"
-              colorScheme="error">
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <WarningTwoIcon color="danger.400" />
-                <Text>{t('registration.hint.password.nomatch')}</Text>
-              </HStack>
-            </Alert>
-          ) : (
-            ''
-          )}
-
-          {password.length < 6 ? (
-            <Alert
-              alignItems="start"
-              marginBottom="10px"
-              maxW="400"
-              backgroundColor="#fff8f8"
-              colorScheme="error">
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <WarningTwoIcon color="danger.400" />
-                <Text>{t('registration.hint.password.length')}</Text>
-              </HStack>
-            </Alert>
-          ) : (
-            ''
-          )}
-
-          <Text fontSize="xs" opacity=".6">
-            {t('registration.hint.password.length')}
-          </Text>
-        </VStack>
+          <Logo />
+          <Heading mt={space['1']}>{t('registration.new')}</Heading>
+        </Box>
         <VStack
-          space={space['0.5']}
-          marginTop={space['1']}
-          marginBottom={space['1']}>
-          <Heading>{t('registration.i_am')}</Heading>
-          {/* <ToggleButton
+          flex="1"
+          paddingX={space['1']}
+          mt={space['4']}
+          width={ContainerWidth}
+          marginX="auto">
+          <VStack space={space['0.5']}>
+            <TextInput
+              keyboardType="email-address"
+              placeholder={t('email')}
+              onChangeText={t => setRegistrationData({ email: t })}
+            />
+            {email.length < 6 && (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="350"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.email.invalid')}</Text>
+                </HStack>
+              </Alert>
+            )}
+
+            <TextInput
+              placeholder={t('password')}
+              type="password"
+              onChangeText={t => {
+                setRegistrationData({ password: t })
+              }}
+            />
+            <TextInput
+              placeholder={t('registration.password_repeat')}
+              type="password"
+              onChangeText={setPasswordConfirm}
+            />
+            {password !== passwordConfirm ? (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="350"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.password.nomatch')}</Text>
+                </HStack>
+              </Alert>
+            ) : (
+              ''
+            )}
+
+            {password.length < 6 ? (
+              <Alert
+                alignItems="start"
+                marginBottom="10px"
+                maxW="400"
+                backgroundColor="#fff8f8"
+                colorScheme="error">
+                <HStack space={2} flexShrink={1} alignItems="center">
+                  <WarningTwoIcon color="danger.400" />
+                  <Text>{t('registration.hint.password.length')}</Text>
+                </HStack>
+              </Alert>
+            ) : (
+              ''
+            )}
+
+            <Text fontSize="xs" opacity=".6">
+              {t('registration.hint.password.length')}
+            </Text>
+          </VStack>
+          <VStack
+            space={space['0.5']}
+            marginTop={space['1']}
+            marginBottom={space['1']}>
+            <Heading>{t('registration.i_am')}</Heading>
+            {/* <ToggleButton
             Icon={ParentIcon}
             label={t('registration.parent')}
             dataKey="parent"
             isActive={typeSelection === 'parent'}
             onPress={setTypeSelection}
           /> */}
-          <ToggleButton
-            Icon={PupilIcon}
-            label={t('registration.pupil.label')}
-            dataKey="pupil"
-            isActive={userType === 'pupil'}
-            onPress={() => {
-              setRegistrationData({ userType: 'pupil' })
-            }}
-          />
-          <ToggleButton
-            Icon={StudentIcon}
-            label={t('registration.student.label')}
-            dataKey="student"
-            isActive={userType === 'student'}
-            onPress={() => {
-              setRegistrationData({ userType: 'student' })
-            }}
-          />
-        </VStack>
-        {!userType && (
-          <Alert
-            alignItems="start"
-            marginBottom="10px"
-            maxW="350"
-            backgroundColor="#fff8f8"
-            colorScheme="warning">
-            <HStack space={2} flexShrink={1} alignItems="center">
-              <WarningTwoIcon color="danger.400" />
-              <Text>{t('registration.hint.userType.missing')}</Text>
-            </HStack>
-          </Alert>
-        )}
-        <VStack space={space['1']} marginTop={space['1']}>
-          <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
-            {t('registration.check_legal')}
-          </Checkbox>
-          <Row justifyContent="center" marginBottom={space['3']}>
-            <Button
-              width={buttonWidth}
+            <ToggleButton
+              Icon={PupilIcon}
+              label={t('registration.pupil.label')}
+              dataKey="pupil"
+              isActive={userType === 'pupil'}
               onPress={() => {
-                trackEvent({
-                  category: 'kurse',
-                  action: 'click-event',
-                  name: 'Registrierung – Account Informationen – Bestätigung',
-                  documentTitle: 'Registrierung – Seite 1'
-                })
-
-                userType === 'pupil' ? showModal() : navigate('/registration/2')
+                setRegistrationData({ userType: 'pupil' })
               }}
-              isDisabled={
-                !legalChecked ||
-                !userType ||
-                password.length < 6 ||
-                password !== passwordConfirm ||
-                email.length < 6
-              }>
-              {t('registration.btn.next')}
-            </Button>
-          </Row>
+            />
+            <ToggleButton
+              Icon={StudentIcon}
+              label={t('registration.student.label')}
+              dataKey="student"
+              isActive={userType === 'student'}
+              onPress={() => {
+                setRegistrationData({ userType: 'student' })
+              }}
+            />
+          </VStack>
+          {!userType && (
+            <Alert
+              alignItems="start"
+              marginBottom="10px"
+              maxW="350"
+              backgroundColor="#fff8f8"
+              colorScheme="warning">
+              <HStack space={2} flexShrink={1} alignItems="center">
+                <WarningTwoIcon color="danger.400" />
+                <Text>{t('registration.hint.userType.missing')}</Text>
+              </HStack>
+            </Alert>
+          )}
+          <VStack space={space['1']} marginTop={space['1']} flex="1">
+            <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
+              {t('registration.check_legal')}
+            </Checkbox>
+            <Row justifyContent="center" marginBottom={space['3']}>
+              <Button
+                width={buttonWidth}
+                onPress={() => {
+                  trackEvent({
+                    category: 'kurse',
+                    action: 'click-event',
+                    name: 'Registrierung – Account Informationen – Bestätigung',
+                    documentTitle: 'Registrierung – Seite 1'
+                  })
+
+                  userType === 'pupil'
+                    ? showModal()
+                    : navigate('/registration/2')
+                }}
+                isDisabled={
+                  !legalChecked ||
+                  !userType ||
+                  password.length < 6 ||
+                  password !== passwordConfirm ||
+                  email.length < 6
+                }>
+                {t('registration.btn.next')}
+              </Button>
+            </Row>
+          </VStack>
         </VStack>
-      </VStack>
-    </Flex>
+        <Flex alignItems="center">
+          <Button
+            variant={'link'}
+            width={buttonWidth}
+            onPress={() => navigate('/login')}>
+            {t('registration.to_login')}
+          </Button>
+        </Flex>
+      </Flex>
+    </ScrollView>
   )
 }
 export default RegistrationAccount
