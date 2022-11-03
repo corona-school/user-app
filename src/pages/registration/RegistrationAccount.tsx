@@ -30,6 +30,7 @@ import useModal from '../../hooks/useModal'
 import useApollo from '../../hooks/useApollo'
 import TextInput from '../../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import PasswordInput from '../../components/PasswordInput'
 
 type Props = {}
 
@@ -176,9 +177,8 @@ const RegistrationAccount: React.FC<Props> = () => {
               </Alert>
             )}
 
-            <TextInput
+            <PasswordInput
               placeholder={t('password')}
-              type="password"
               onChangeText={t => {
                 setRegistrationData({ password: t })
               }}
