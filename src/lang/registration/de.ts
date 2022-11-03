@@ -4,6 +4,7 @@ const registration = {
   password_repeat: 'Passwort wiederholen',
   i_am: 'Ich bin',
   parent: 'Elternteil',
+  to_login: 'Ich habe bereits einen Account',
   btn: {
     next: 'Weiter'
   },

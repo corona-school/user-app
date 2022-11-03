@@ -111,8 +111,13 @@ export const getFirstLectureFromSubcourse: (
   let firstDate: DateTime = null!
   let firstLecture: LFLecture = null!
 
+  const now = DateTime.now().toMillis()
+
   for (const lecture of lectures) {
     const date = DateTime.fromISO(lecture.start)
+
+    if (date.toMillis() < now) continue
+
     if (!firstLecture) {
       firstLecture = lecture
       firstDate = date

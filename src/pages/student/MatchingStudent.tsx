@@ -18,6 +18,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AsNavigationItem from '../../components/AsNavigationItem'
 import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
 import { LFMatch } from '../../types/lernfair/Match'
@@ -164,7 +165,7 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   return (
-    <>
+    <AsNavigationItem path="matching">
       <WithNavigation headerTitle={t('matching.request.check.header')}>
         <VStack
           paddingX={space['1']}
@@ -365,7 +366,7 @@ const MatchingStudent: React.FC<Props> = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </>
+    </AsNavigationItem>
   )
 }
 export default MatchingStudent
