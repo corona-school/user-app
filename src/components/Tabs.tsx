@@ -1,14 +1,14 @@
 import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
 import { Fragment, ReactNode, useState } from 'react'
 
-type Tab = {
+export type Tab = {
   title: string
   content: ReactNode | ReactNode[]
 }
 type Props = {
   tabs: Tab[]
   removeSpace?: boolean
-  onPressTab?: (tab: Tab) => any
+  onPressTab?: (tab: Tab, index: number) => any
   tabInset?: number | string
 }
 
@@ -33,7 +33,7 @@ const Tabs: React.FC<Props> = ({
     <Pressable
       onPress={() => {
         setCurrentIndex(index)
-        onPressTab && onPressTab(tab)
+        onPressTab && onPressTab(tab, index)
       }}>
       <Box
         borderBottomWidth={(active && 3) || 1}

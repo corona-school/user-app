@@ -2,22 +2,18 @@ import {
   View,
   Text,
   VStack,
-  Row,
   Button,
   Image,
   Box,
   Flex,
   useTheme,
-  SearchIcon,
-  Input,
   Spinner,
-  Heading,
-  ArrowBackIcon
+  Heading
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { Pressable } from 'react-native'
-import BackButton from '../components/BackButton'
 import Pagination from '../components/Pagination'
+import SearchBar from '../components/SearchBar'
 import TwoColGrid from '../widgets/TwoColGrid'
 
 type Props = {
@@ -27,29 +23,33 @@ type Props = {
 
 const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
   const { space } = useTheme()
-  const [searchString, setSearchString] = useState<string>()
 
   const [isLoading, setIsLoading] = useState<boolean>()
   const [photos, setPhotos] = useState([])
   const [selectedPhoto, setSelectedPhoto] = useState<string>('')
   const [pageIndex, setPageIndex] = useState<number>(1)
+  const [lastSearch, setLastSearch] = useState<string>('')
 
-  const search = useCallback(async () => {
-    setIsLoading(true)
+  const search = useCallback(
+    async (s: string) => {
+      setLastSearch(s)
+      setIsLoading(true)
 
-    const data = await fetch(
-      `https://api.unsplash.com/search/photos?query=${searchString}&page=${pageIndex}&per_page=20`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`
+      const data = await fetch(
+        `https://api.unsplash.com/search/photos?query=${s}&page=${pageIndex}&per_page=20`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`
+          }
         }
-      }
-    )
-    const res = await data.json()
-    setPhotos(res.results)
-    setIsLoading(false)
-  }, [pageIndex, searchString])
+      )
+      const res = await data.json()
+      setPhotos(res.results)
+      setIsLoading(false)
+    },
+    [pageIndex]
+  )
 
   const pickPhoto = useCallback(() => {
     onPhotoSelected && onPhotoSelected(selectedPhoto)
@@ -65,19 +65,9 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
 
   return (
     <VStack flex="1" overflowY="scroll" h="100%">
-      <Row paddingX={space['1']} paddingY={space['0.5']}>
-        <Button padding={space['1']} onPress={onClose}>
-          <ArrowBackIcon />
-        </Button>
-        <Input
-          flex="1"
-          onChangeText={setSearchString}
-          placeholder="Suchbegriff eingeben"
-        />
-        <Button onPress={search} padding={space['1']}>
-          <SearchIcon />
-        </Button>
-      </Row>
+      <Box paddingX={space['1']} paddingY={space['0.5']}>
+        <SearchBar showBack onSearch={s => search(s)} />
+      </Box>
       <View overflowY={'scroll'} flex="1">
         {(photos.length > 0 && (
           <VStack pb={'72px'} marginX={space['1']}>
@@ -110,15 +100,15 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
               currentIndex={pageIndex}
               onPrev={() => {
                 setPageIndex(prev => prev - 1)
-                search()
+                search(lastSearch)
               }}
               onNext={() => {
                 setPageIndex(prev => prev + 1)
-                search()
+                search(lastSearch)
               }}
               onSelectIndex={index => {
                 setPageIndex(index)
-                search()
+                search(lastSearch)
               }}
             />
           </VStack>

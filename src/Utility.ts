@@ -106,8 +106,9 @@ export const handleDateString: (
 }
 
 export const getFirstLectureFromSubcourse: (
-  lectures: LFLecture[]
-) => LFLecture = lectures => {
+  lectures: LFLecture[],
+  pastLectures?: boolean
+) => LFLecture = (lectures, pastLectures) => {
   let firstDate: DateTime = null!
   let firstLecture: LFLecture = null!
 
@@ -116,7 +117,7 @@ export const getFirstLectureFromSubcourse: (
   for (const lecture of lectures) {
     const date = DateTime.fromISO(lecture.start)
 
-    if (date.toMillis() < now) continue
+    if (!pastLectures && date.toMillis() < now) continue
 
     if (!firstLecture) {
       firstLecture = lecture

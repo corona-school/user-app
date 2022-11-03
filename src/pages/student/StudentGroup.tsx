@@ -24,6 +24,7 @@ import Utility from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -107,6 +108,27 @@ const StudentGroup: React.FC<Props> = () => {
     [data?.me?.student?.coursesInstructing]
   )
 
+  const pastCourses: LFSubCourse[] = useMemo(
+    () =>
+      data?.me?.student?.subcoursesInstructing.filter((course: LFSubCourse) => {
+        let ok = true
+        if (!course.lectures) return false
+        for (const lecture of course.lectures) {
+          if (
+            DateTime.fromISO(lecture.start).toMillis() <
+            DateTime.now().toMillis()
+          ) {
+            continue
+          } else {
+            ok = false
+            break
+          }
+        }
+        return ok
+      }),
+    [data?.me?.student?.subcoursesInstructing]
+  )
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -115,6 +137,51 @@ const StudentGroup: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const renderCourse = (course: LFCourse, index: number) => (
+    <Column width={CardGrid} marginRight="15px">
+      <AppointmentCard
+        key={index}
+        variant="horizontal"
+        description={course.outline}
+        tags={course.tags}
+        image={course.image}
+        title={course.name}
+        onPressToCourse={() =>
+          navigate('/single-course', {
+            state: { course: course.id }
+          })
+        }
+      />
+    </Column>
+  )
+
+  const renderSubcourse = (
+    course: LFSubCourse,
+    index: number,
+    showDate: boolean = true
+  ) => {
+    const firstLecture = Utility.getFirstLectureFromSubcourse(course.lectures)
+    return (
+      <Column width={CardGrid} marginRight="15px">
+        <AppointmentCard
+          key={index}
+          variant="horizontal"
+          description={course.outline}
+          tags={course.course.tags}
+          date={(showDate && firstLecture?.start) || ''}
+          countCourse={course.lectures.length}
+          onPressToCourse={() =>
+            navigate('/single-course', {
+              state: { course: course.id }
+            })
+          }
+          image={course.course.image}
+          title={course.course.name}
+        />
+      </Column>
+    )
+  }
 
   if (loading) return <CenterLoadingSpinner />
 
@@ -183,30 +250,7 @@ const StudentGroup: React.FC<Props> = () => {
                           {(publishedSubcourses.length > 0 &&
                             publishedSubcourses?.map(
                               (sub: LFSubCourse, index: number) => {
-                                const firstLecture =
-                                  Utility.getFirstLectureFromSubcourse(
-                                    sub.lectures
-                                  )
-
-                                return (
-                                  <Column width={CardGrid} marginRight="15px">
-                                    <AppointmentCard
-                                      key={index}
-                                      variant="horizontal"
-                                      description={sub.outline}
-                                      tags={sub.course.tags}
-                                      date={firstLecture?.start || ''}
-                                      countCourse={sub.lectures.length}
-                                      onPressToCourse={() =>
-                                        navigate('/single-course', {
-                                          state: { course: sub.id }
-                                        })
-                                      }
-                                      image={sub.course.image}
-                                      title={sub.course.name}
-                                    />
-                                  </Column>
-                                )
+                                return renderSubcourse(sub, index)
                               }
                             )) || (
                             <Alert
@@ -234,32 +278,8 @@ const StudentGroup: React.FC<Props> = () => {
                         <Flex direction="row" flexWrap="wrap">
                           {(submittedSubcourses.length > 0 &&
                             submittedSubcourses?.map(
-                              (sub: LFSubCourse, index: number) => {
-                                const firstLecture =
-                                  Utility.getFirstLectureFromSubcourse(
-                                    sub.lectures
-                                  )
-
-                                return (
-                                  <Column width={CardGrid} marginRight="15px">
-                                    <AppointmentCard
-                                      key={index}
-                                      variant="horizontal"
-                                      description={sub.outline}
-                                      tags={sub.course.tags}
-                                      date={firstLecture?.start || ''}
-                                      countCourse={sub.lectures.length}
-                                      onPressToCourse={() =>
-                                        navigate('/single-course', {
-                                          state: { course: sub.id }
-                                        })
-                                      }
-                                      image={sub.course.image}
-                                      title={sub.course.name}
-                                    />
-                                  </Column>
-                                )
-                              }
+                              (sub: LFSubCourse, index: number) =>
+                                renderSubcourse(sub, index)
                             )) || (
                             <Alert
                               alignItems="start"
@@ -286,25 +306,8 @@ const StudentGroup: React.FC<Props> = () => {
                         <Flex direction="row" flexWrap="wrap">
                           {(draftedCourses.length > 0 &&
                             draftedCourses?.map(
-                              (course: LFCourse, index: number) => {
-                                return (
-                                  <Column width={CardGrid} marginRight="15px">
-                                    <AppointmentCard
-                                      key={index}
-                                      variant="horizontal"
-                                      description={course.outline}
-                                      tags={course.tags}
-                                      image={course.image}
-                                      title={course.name}
-                                      onPressToCourse={() =>
-                                        navigate('/single-course', {
-                                          state: { course: course.id }
-                                        })
-                                      }
-                                    />
-                                  </Column>
-                                )
-                              }
+                              (course: LFCourse, index: number) =>
+                                renderCourse(course, index)
                             )) || (
                             <Alert
                               alignItems="start"
@@ -329,25 +332,8 @@ const StudentGroup: React.FC<Props> = () => {
                     content: (
                       <>
                         <Flex direction="row" flexWrap="wrap">
-                          {new Array(3).fill(0).map(
-                            (course: LFCourse, index) =>
-                              !!course && (
-                                <Column width={CardGrid} marginRight="15px">
-                                  <AppointmentCard
-                                    key={index}
-                                    variant="horizontal"
-                                    description={course.outline}
-                                    tags={course.tags}
-                                    image={course.image}
-                                    title={course.name}
-                                    onPressToCourse={() =>
-                                      navigate('/single-course', {
-                                        state: { course: course.id }
-                                      })
-                                    }
-                                  />
-                                </Column>
-                              )
+                          {pastCourses.map((course: LFSubCourse, index) =>
+                            renderSubcourse(course, index, false)
                           ) || (
                             <Alert
                               alignItems="start"
@@ -375,24 +361,9 @@ const StudentGroup: React.FC<Props> = () => {
                 onShowAll={() => navigate('/group/offer')}
                 title={t('matching.group.helper.offers.title')}
                 showAll={true}>
-                {new Array(0).fill(0).map(
-                  (course: LFCourse, index) =>
-                    !!course && (
-                      <AppointmentCard
-                        key={index}
-                        variant="horizontal"
-                        description={course.outline}
-                        tags={course.tags}
-                        image={course.image}
-                        title={course.name}
-                        onPressToCourse={() =>
-                          navigate('/single-course', {
-                            state: { course: course.id }
-                          })
-                        }
-                      />
-                    )
-                ) || (
+                {new Array(0)
+                  .fill(0)
+                  .map((course: LFCourse, index) => <></>) || (
                   <Alert
                     alignItems="start"
                     marginY={space['1']}

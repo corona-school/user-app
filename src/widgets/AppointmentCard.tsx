@@ -17,7 +17,7 @@ import {
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
-import { toTimerString, TIME_THRESHOLD } from '../Utility'
+import { toTimerString } from '../Utility'
 import useInterval from '../hooks/useInterval'
 import { LFTag } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
@@ -242,7 +242,7 @@ const AppointmentCard: React.FC<Props> = ({
                     {'Ab'} {date.toFormat('dd.MM.yyyy')}
                   </Text>
                 )}
-                {countCourse && (
+                {date && countCourse && (
                   <>
                     <Text>•</Text>
                     <Text>
