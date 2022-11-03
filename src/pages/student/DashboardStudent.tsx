@@ -341,29 +341,38 @@ const DashboardStudent: React.FC<Props> = () => {
                       if (!firstLecture) return <></>
 
                       return (
-                        <AppointmentCard
-                          onPressToCourse={() => {
-                            trackEvent({
-                              category: 'dashboard',
-                              action: 'click-event',
-                              name:
-                                'Helfer Dashboard Kachelklick  ' + course.name,
-                              documentTitle:
-                                'Helfer Dashboard – Meine Termin  ' +
-                                course.name
-                            })
+                        <Column
+                          minWidth="230px"
+                          maxWidth="300px"
+                          flex={1}
+                          h="100%">
+                          <AppointmentCard
+                            isGrid
+                            isFullHeight
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'dashboard',
+                                action: 'click-event',
+                                name:
+                                  'Helfer Dashboard Kachelklick  ' +
+                                  course.name,
+                                documentTitle:
+                                  'Helfer Dashboard – Meine Termin  ' +
+                                  course.name
+                              })
 
-                            navigate('/single-course', {
-                              state: { course: el.id }
-                            })
-                          }}
-                          key={`appointment-${el.id}`}
-                          description={course.outline}
-                          tags={course.tags}
-                          date={firstLecture.start}
-                          image={course.image}
-                          title={course.name}
-                        />
+                              navigate('/single-course', {
+                                state: { course: el.id }
+                              })
+                            }}
+                            key={`appointment-${el.id}`}
+                            description={course.outline}
+                            tags={course.tags}
+                            date={firstLecture.start}
+                            image={course.image}
+                            title={course.name}
+                          />
+                        </Column>
                       )
                     })) || (
                   <Alert
@@ -398,6 +407,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         return (
                           <Column width={CardGrid} marginRight="15px">
                             <AppointmentCard
+                              isFullHeight
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -564,7 +574,7 @@ const DashboardStudent: React.FC<Props> = () => {
                   </Alert>
                 )}
 
-                <Text fontSize="xs">
+                <Text>
                   Offene Anfragen:{' '}
                   {`${data?.me?.student?.openMatchRequestCount}`}
                 </Text>

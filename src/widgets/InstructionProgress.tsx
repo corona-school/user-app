@@ -46,7 +46,7 @@ const InstructionProgress: React.FC<Props> = ({
           const circleLabelColor = (isActive = false, isDark = false) => {
             if (isDark) {
               if (isActive) {
-                return 'primary.400'
+                return 'white'
               } else {
                 return 'primary.900'
               }
@@ -95,7 +95,7 @@ const InstructionProgress: React.FC<Props> = ({
         })}
       </Row>
       {instructions && instructions[currentIndex]?.content && (
-        <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
+        <Row display="block">
           {instructions[currentIndex].content?.map((instruction, i) => (
             <InstructionMessage
               isDark={isDark ? true : false}
@@ -104,7 +104,7 @@ const InstructionProgress: React.FC<Props> = ({
               text={instruction.text}
             />
           ))}
-        </HSection>
+        </Row>
       )}
     </View>
   )

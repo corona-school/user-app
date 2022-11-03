@@ -19,9 +19,15 @@ body {
   }
 }
 
-#root {
+html {
+  font-size: 14px;
   
+  @media screen and (max-width: 992px ) {
+    font-size: 13px;
+  }
+}
 
+#root {
   display: flex;
   flex-wrap: nowrap;
   height: 100vh;
