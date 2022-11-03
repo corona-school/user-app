@@ -266,11 +266,13 @@ const SingleCourse: React.FC<Props> = () => {
               ))}
             </Row>
           </Box>
-          <Text paddingBottom={space['0.5']}>
-            {t('single.global.clockFrom')}{' '}
-            {Utility.formatDate(course?.lectures[0].start)}{' '}
-            {t('single.global.clock')}
-          </Text>
+          {course?.lectures.length > 0 && (
+            <Text paddingBottom={space['0.5']}>
+              {t('single.global.clockFrom')}{' '}
+              {Utility.formatDate(course?.lectures[0].start)}{' '}
+              {t('single.global.clock')}
+            </Text>
+          )}
           <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
           <Row alignItems="center" paddingBottom={space['1']}>
             {/* <ProfilAvatar
