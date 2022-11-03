@@ -454,6 +454,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 </Flex>
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
+                    marginTop={space['1']}
                     width={ButtonContainer}
                     onPress={() => {
                       trackEvent({
@@ -547,6 +548,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 {(data?.me?.student?.canRequestMatch?.allowed && (
                   <>
                     <Button
+                      marginTop={space['1']}
                       width={ButtonContainer}
                       isDisabled={isMatchRequested}
                       marginY={space['1']}

@@ -37,7 +37,7 @@ const Tabs: React.FC<Props> = ({
       }}>
       <Box
         borderBottomWidth={(active && 3) || 1}
-        borderBottomColor={active ? 'primary.400' : 'primary.100'}
+        borderBottomColor={active ? 'primary.400' : 'transparent'}
         paddingX={space['1']}
         paddingY={space['0.5']}>
         <Text
@@ -52,7 +52,13 @@ const Tabs: React.FC<Props> = ({
 
   return (
     <VStack>
-      <Row overflowX={'scroll'} flexWrap="nowrap" paddingX={tabInset}>
+      <Row
+        overflowX="scroll"
+        flexWrap="nowrap"
+        width="100%"
+        paddingX={tabInset}
+        borderBottomColor="primary.grey"
+        borderBottomWidth={1}>
         {tabs.map(
           (tab, i) => (
             <Tab

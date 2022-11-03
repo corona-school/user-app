@@ -23,7 +23,7 @@ const HelperCardCertificates: React.FC<Props> = ({
   const { space } = useTheme()
 
   return (
-    <Card>
+    <Card flexibleWidth>
       <Container
         padding={space['1']}
         width="100%"
@@ -53,7 +53,7 @@ const HelperCardCertificates: React.FC<Props> = ({
                 Fach:
               </Text>
               {subject.map((sub: string) => (
-                <Text>{sub}</Text>
+                <Text marginRight="5px">{sub}</Text>
               ))}
             </Row>
           )}

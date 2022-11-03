@@ -412,7 +412,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
@@ -459,7 +459,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
