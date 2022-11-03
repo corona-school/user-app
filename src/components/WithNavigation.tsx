@@ -51,7 +51,7 @@ const WithNavigation: React.FC<Props> = ({
     lg: space['1']
   })
 
-  const [view, setView] = useState(null)
+  // const [view, setView] = useState(null)
 
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
@@ -68,9 +68,8 @@ const WithNavigation: React.FC<Props> = ({
           showBack={showBack}
           leftContent={headerLeft}
           rightContent={isSidebarMenu ? <SettingsButton /> : ''}
-          title={headerTitle}
-          portal={setView}>
-          {headerContent}
+          title={headerTitle}>
+          {!isMobile && headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
           <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden">
@@ -81,11 +80,12 @@ const WithNavigation: React.FC<Props> = ({
                 paddingTop={'72px'}
               />
             </Column>
+
             <Column flex="1" padding={innerPaddingContent}>
-              {(isMobile && view && (
+              {(isMobile && (
                 <>
                   <View h={`${headerHeight}px`}></View>
-                  {view}
+                  {headerContent}
                 </>
               )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}
