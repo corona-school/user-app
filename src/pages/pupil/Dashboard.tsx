@@ -220,10 +220,10 @@ const Dashboard: React.FC<Props> = () => {
             marginX="auto"
             width="100%"
             maxWidth={ContainerWidth}>
-            <VStack space={space['1']} marginTop={space['1']}>
+            <VStack marginTop={space['1']}>
               {sortedAppointments[0] && (
-                <VStack space={space['0.5']}>
-                  <Heading marginY={space['1']}>
+                <VStack marginBottom={space['1.5']}>
+                  <Heading marginBottom={space['1']}>
                     {t('dashboard.appointmentcard.header')}
                   </Heading>
 
@@ -253,6 +253,7 @@ const Dashboard: React.FC<Props> = () => {
 
               {/* Appointments */}
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.myappointments.header')}
                 showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
@@ -320,6 +321,7 @@ const Dashboard: React.FC<Props> = () => {
 
               {/* Matches */}
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.learningpartner.header')}
                 showAll={data?.me?.pupil?.matches?.length > 2}
                 wrap>
@@ -379,7 +381,7 @@ const Dashboard: React.FC<Props> = () => {
                       )
                   )}
                 </Flex>
-                <VStack space={space['0.5']} mt="3">
+                <VStack marginBottom={space['1.5']} mt="3">
                   {(data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       onPress={() => {
@@ -396,7 +398,7 @@ const Dashboard: React.FC<Props> = () => {
                   )) || (
                     <Alert
                       alignItems="start"
-                      marginY={space['1']}
+                      marginBottom={space['1.5']}
                       width="max-content"
                       colorScheme="info">
                       <HStack space={2} flexShrink={1} alignItems="center">
@@ -419,6 +421,7 @@ const Dashboard: React.FC<Props> = () => {
               {/* Suggestions */}
 
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.relatedcontent.header')}
                 onShowAll={() => navigate('/group/offer')}
                 showAll={data?.subcoursesPublic?.length > 4}>

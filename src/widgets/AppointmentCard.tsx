@@ -126,7 +126,7 @@ const AppointmentCard: React.FC<Props> = ({
               flexDirection={isTeaser ? CardMobileDirection : 'column'}>
               <Box
                 w={isTeaser ? CardMobileImage : 'auto'}
-                h={isTeaser ? teaserImage : '120'}
+                h={isTeaser ? teaserImage : '121'}
                 padding={space['1']}>
                 <Image
                   position="absolute"

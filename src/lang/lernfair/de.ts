@@ -86,6 +86,9 @@ const lernfair = {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
       matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
     },
+    'not-participant': {
+      coursetext: 'Du bist derzeit noch kein Teilnehmer.'
+    },
     'max-matches': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
       matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'

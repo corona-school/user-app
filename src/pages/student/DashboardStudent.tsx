@@ -284,16 +284,16 @@ const DashboardStudent: React.FC<Props> = () => {
             marginX="auto"
             width="100%"
             maxWidth={ContainerWidth}>
-            <VStack space={space['1']}>
-              <VStack>
+            <VStack>
+              <VStack marginBottom={space['1.5']}>
                 <HelperWizard index={0} />
               </VStack>
 
               {/* Next Appointment */}
               {data?.me?.student?.subcoursesInstructing?.length > 0 &&
                 nextAppointment && (
-                  <VStack space={space['0.5']}>
-                    <Heading marginY={space['1']}>
+                  <VStack marginBottom={space['1.5']}>
+                    <Heading marginBottom={space['1']}>
                       {t('dashboard.appointmentcard.header')}
                     </Heading>
 
@@ -324,6 +324,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 )}
               <HSection
                 title={t('dashboard.myappointments.header')}
+                marginBottom={space['1.5']}
                 showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
                 {(sortedPublishedSubcourses?.length > 1 &&
@@ -377,7 +378,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     })) || (
                   <Alert
                     alignItems="start"
-                    marginY={space['1']}
                     width="max-content"
                     colorScheme="info">
                     <HStack space={2} flexShrink={1} alignItems="center">
@@ -394,6 +394,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 showAll={data?.me?.student?.canCreateCourse?.allowed}
                 onShowAll={() => navigate('/course-archive')}
                 wrap
+                marginBottom={space['1.5']}
                 scrollable={false}>
                 <Flex direction="row" flexWrap="wrap">
                   {(sortedPublishedSubcourses.length > 0 &&
@@ -439,7 +440,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     (data?.me?.student?.canCreateCourse?.allowed ? (
                       <Alert
                         alignItems="start"
-                        marginY={space['1']}
                         width="max-content"
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
@@ -454,7 +454,6 @@ const DashboardStudent: React.FC<Props> = () => {
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
                     width={ButtonContainer}
-                    marginY={space['1']}
                     onPress={() => {
                       trackEvent({
                         category: 'dashboard',
@@ -469,7 +468,6 @@ const DashboardStudent: React.FC<Props> = () => {
                 )) || (
                   <Alert
                     alignItems="start"
-                    marginY={space['1']}
                     width="max-content"
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">
@@ -500,8 +498,8 @@ const DashboardStudent: React.FC<Props> = () => {
               icon={<PartyIcon />}
             />
           </VStack> */}
-              <VStack space={space['0.5']}>
-                <Heading marginY={space['1']}>
+              <VStack marginBottom={space['1.5']}>
+                <Heading marginBottom={space['1']}>
                   {t('dashboard.helpers.headlines.myLearningPartner')}
                 </Heading>
                 <Flex direction="row" flexWrap="wrap">
@@ -534,7 +532,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     (data?.me?.student?.canRequestMatch?.allowed ? (
                       <Alert
                         alignItems="start"
-                        marginY={space['1']}
                         width="max-content"
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
@@ -559,8 +556,8 @@ const DashboardStudent: React.FC<Props> = () => {
                 )) || (
                   <Alert
                     alignItems="start"
-                    marginY={space['1']}
                     width="max-content"
+                    marginBottom={space['0.5']}
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">
                       <Alert.Icon color="danger.100" />
@@ -579,8 +576,8 @@ const DashboardStudent: React.FC<Props> = () => {
                   {`${data?.me?.student?.openMatchRequestCount}`}
                 </Text>
               </VStack>
-              <VStack space={space['0.5']} marginBottom={space['1.5']}>
-                <Heading marginY={space['1']}>
+              <VStack marginBottom={space['1.5']}>
+                <Heading marginBottom={space['1']}>
                   {t('dashboard.helpers.headlines.recommend')}
                 </Heading>
                 <CTACard
