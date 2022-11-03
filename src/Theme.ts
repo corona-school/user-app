@@ -158,6 +158,10 @@ const Theme = extendTheme({
               color: 'white'
             }
           }
+        },
+        link: {
+          textDecoration: 'underline',
+          textDecorationColor: VAR_COLOR_PRIMARY
         }
       }
     },

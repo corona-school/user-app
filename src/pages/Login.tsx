@@ -168,9 +168,10 @@ export default function Login() {
           </Text>
         )}
 
-        <Box paddingY={4}>
-          <Link>{t('login.btn.password')}</Link>
-        </Box>
+        <Button marginY={4} variant="link">
+          {t('login.btn.password')}
+        </Button>
+
         <Box paddingTop={4} marginX="90px" display="block">
           <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
             {t('login.btn.login')}
@@ -179,14 +180,10 @@ export default function Login() {
 
         <Box paddingTop={10} paddingBottom={1}>
           <Text textAlign="center">{t('login.noaccount')}</Text>
-          <Pressable
-            onPress={loginRegisterLink}
-            justifyContent="center"
-            alignItems="center">
-            <Box>
-              <Text>{t('login.btn.register')}</Text>
-            </Box>
-          </Pressable>
+
+          <Button onPress={loginRegisterLink} variant="link">
+            {t('login.btn.register')}
+          </Button>
         </Box>
       </Row>
     </VStack>
