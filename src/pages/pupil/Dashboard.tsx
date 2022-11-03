@@ -221,15 +221,15 @@ const Dashboard: React.FC<Props> = () => {
             marginX="auto"
             width="100%"
             maxWidth={ContainerWidth}>
-            <VStack space={space['1']} marginTop={space['1']}>
+            <VStack marginTop={space['1']}>
               {sortedAppointments[0] && (
-                <VStack space={space['0.5']}>
-                  <Heading marginY={space['1']}>
+                <VStack marginBottom={space['1.5']}>
+                  <Heading marginBottom={space['1']}>
                     {t('dashboard.appointmentcard.header')}
                   </Heading>
 
                   <AppointmentCard
-                    isTeaser
+                    isTeaser={true}
                     onPressToCourse={() => {
                       trackEvent({
                         category: 'dashboard',
@@ -254,6 +254,7 @@ const Dashboard: React.FC<Props> = () => {
 
               {/* Appointments */}
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.myappointments.header')}
                 showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
@@ -271,28 +272,36 @@ const Dashboard: React.FC<Props> = () => {
                         if (!course) return <></>
 
                         return (
-                          <AppointmentCard
-                            onPressToCourse={() => {
-                              trackEvent({
-                                category: 'dashboard',
-                                action: 'click-event',
-                                name:
-                                  'Schüler Dashboard – Meine Termin | Klick auf' +
-                                  course.course.name,
-                                documentTitle: 'Schüler Dashboard'
-                              })
+                          <Column
+                            minWidth="230px"
+                            maxWidth="300px"
+                            flex={1}
+                            h="100%">
+                            <AppointmentCard
+                              isGrid
+                              isFullHeight
+                              onPressToCourse={() => {
+                                trackEvent({
+                                  category: 'dashboard',
+                                  action: 'click-event',
+                                  name:
+                                    'Schüler Dashboard – Meine Termin | Klick auf' +
+                                    course.course.name,
+                                  documentTitle: 'Schüler Dashboard'
+                                })
 
-                              navigate('/single-course', {
-                                state: { course: course.id }
-                              })
-                            }}
-                            key={`appointment-${course.id}`}
-                            description={course.course.outline}
-                            tags={course.course.tags}
-                            date={lecture.start}
-                            image={course.course.image}
-                            title={course.course.name}
-                          />
+                                navigate('/single-course', {
+                                  state: { course: course.id }
+                                })
+                              }}
+                              key={`appointment-${course.id}`}
+                              description={course.course.outline}
+                              tags={course.course.tags}
+                              date={lecture.start}
+                              image={course.course.image}
+                              title={course.course.name}
+                            />
+                          </Column>
                         )
                       }
                     )) || (
@@ -313,6 +322,7 @@ const Dashboard: React.FC<Props> = () => {
 
               {/* Matches */}
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.learningpartner.header')}
                 showAll={data?.me?.pupil?.matches?.length > 2}
                 wrap>
@@ -372,7 +382,7 @@ const Dashboard: React.FC<Props> = () => {
                       )
                   )}
                 </Flex>
-                <VStack space={space['0.5']} mt="3">
+                <VStack marginBottom={space['1.5']} mt="3">
                   {(data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       onPress={() => {
@@ -389,7 +399,7 @@ const Dashboard: React.FC<Props> = () => {
                   )) || (
                     <Alert
                       alignItems="start"
-                      marginY={space['1']}
+                      marginBottom={space['1.5']}
                       width="max-content"
                       colorScheme="info">
                       <HStack space={2} flexShrink={1} alignItems="center">
@@ -402,7 +412,7 @@ const Dashboard: React.FC<Props> = () => {
                       </HStack>
                     </Alert>
                   )}
-                  <Text fontSize="xs">
+                  <Text>
                     Offene Anfragen:{' '}
                     {`${data?.me?.pupil?.openMatchRequestCount}`}
                   </Text>
@@ -411,6 +421,7 @@ const Dashboard: React.FC<Props> = () => {
 
               {/* Suggestions */}
               <HSection
+                marginBottom={space['1.5']}
                 title={t('dashboard.relatedcontent.header')}
                 onShowAll={() => navigate('/group/offer')}
                 showAll={data?.subcoursesPublic?.length > 4}>

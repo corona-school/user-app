@@ -11,7 +11,8 @@ import {
   Image,
   Column,
   useBreakpointValue,
-  Pressable
+  Pressable,
+  Heading
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
@@ -20,6 +21,8 @@ import { toTimerString } from '../Utility'
 import useInterval from '../hooks/useInterval'
 import { LFTag } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
+
+import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg'
 
 type Props = {
   tags?: LFTag[]
@@ -33,6 +36,8 @@ type Props = {
   buttonlink?: string
   variant?: 'card' | 'horizontal'
   isTeaser?: boolean
+  isGrid?: boolean
+  isFullHeight?: boolean
   image?: string
   onPressToCourse?: () => any
   countCourse?: number
@@ -51,6 +56,8 @@ const AppointmentCard: React.FC<Props> = ({
   button,
   buttonlink,
   isTeaser = false,
+  isGrid = false,
+  isFullHeight = false,
   image,
   onPressToCourse
 }) => {
@@ -92,11 +99,26 @@ const AppointmentCard: React.FC<Props> = ({
     lg: sizes['desktopbuttonWidth']
   })
 
+  const teaserHeadline = useBreakpointValue({
+    base: '15px',
+    lg: '16px'
+  })
+
+  const teaserImage = useBreakpointValue({
+    base: '160px',
+    lg: 'auto'
+  })
+
+  const headline = useBreakpointValue({
+    base: '13px',
+    lg: '14px'
+  })
+
   return (
-    <View>
+    <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
         <Card
-          flexibleWidth={isTeaser ? true : false}
+          flexibleWidth={isTeaser || isGrid ? true : false}
           variant={isTeaser ? 'dark' : 'normal'}>
           <Pressable onPress={onPressToCourse}>
             <Column
@@ -104,7 +126,7 @@ const AppointmentCard: React.FC<Props> = ({
               flexDirection={isTeaser ? CardMobileDirection : 'column'}>
               <Box
                 w={isTeaser ? CardMobileImage : 'auto'}
-                h={isTeaser ? '200' : '120'}
+                h={isTeaser ? teaserImage : '121'}
                 padding={space['1']}>
                 <Image
                   position="absolute"
@@ -126,7 +148,9 @@ const AppointmentCard: React.FC<Props> = ({
                 </Row>
               </Box>
 
-              <Box padding={isTeaser ? CardMobilePadding : space['1']}>
+              <Box
+                padding={isTeaser ? CardMobilePadding : space['1']}
+                maxWidth="731px">
                 {!isTeaser && date && (
                   <Row paddingTop={space['1']} space={1}>
                     <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
@@ -135,17 +159,28 @@ const AppointmentCard: React.FC<Props> = ({
                   </Row>
                 )}
                 {date && isTeaser && (
-                  <Row paddingBottom={space['0.5']}>
-                    <Text color={textColor}>Startet in: </Text>
-                    <Text bold color="primary.400">
-                      {remainingTime}
-                    </Text>
+                  <Row marginBottom={space['1']} alignItems="center">
+                    <Column marginRight="10px">
+                      <Text>{<LFTimerIcon />}</Text>
+                    </Column>
+                    <Column>
+                      <Row>
+                        <Text color={textColor}>Startet in: </Text>
+                        <Text bold color="primary.400">
+                          {remainingTime}
+                        </Text>
+                      </Row>
+                    </Column>
                   </Row>
                 )}
 
-                <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
+                <Heading
+                  color={textColor}
+                  bold
+                  fontSize={isTeaser ? teaserHeadline : headline}
+                  mb={space['0.5']}>
                   {title}
-                </Text>
+                </Heading>
 
                 {isTeaser && (
                   <>
@@ -196,7 +231,7 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
 
             <Box paddingX="10px" paddingY={space['1.5']}>
-              <Row space={space['0.5']} flexWrap="wrap" maxWidth="250px">
+              <Row space={space['0.5']} flexWrap="wrap" maxWidth="260px">
                 {tags?.map((tag, i) => (
                   <Tag key={`tag-${i}`} text={tag.name} />
                 ))}
