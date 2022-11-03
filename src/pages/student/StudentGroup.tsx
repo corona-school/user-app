@@ -22,6 +22,8 @@ import { gql, useQuery } from '@apollo/client'
 import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
 import Utility from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import AsNavigationItem from '../../components/AsNavigationItem'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -111,47 +113,49 @@ const StudentGroup: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Helfer Gruppe'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
-    <WithNavigation
-      headerTitle={t('matching.group.helper.header')}
-      headerLeft={<NotificationAlert />}>
-      <VStack
-        paddingX={space['1']}
-        marginX="auto"
-        maxWidth={ContainerWidth}
-        width="100%">
-        <VStack space={space['1']}>
-          <VStack space={space['0.5']}>
-            <Heading>{t('matching.group.helper.title')}</Heading>
-            <Text>{t('matching.group.helper.content')}</Text>
-          </VStack>
-          <VStack>
-            <Heading fontSize="sm" marginBottom="5px">
-              {t('matching.group.helper.contentHeadline')}
-            </Heading>
-            <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
-          </VStack>
-          <VStack paddingY={space['1']}>
-            <Button
-              width={ButtonContainer}
-              onPress={() => {
-                trackEvent({
-                  category: 'matching',
-                  action: 'click-event',
-                  name: 'Helfer Matching Gruppen – Kurs erstellen',
-                  documentTitle:
-                    'Matching Gruppen Lernunterstützung Kurs erstellen'
-                })
-                navigate('/create-course')
-              }}>
-              {t('matching.group.helper.button')}
-            </Button>
-          </VStack>
-          {/* <HSection
+    <AsNavigationItem path="group">
+      <WithNavigation
+        headerTitle={t('matching.group.helper.header')}
+        headerLeft={<NotificationAlert />}>
+        <VStack
+          paddingX={space['1']}
+          marginX="auto"
+          maxWidth={ContainerWidth}
+          width="100%">
+          <VStack space={space['1']}>
+            <VStack space={space['0.5']}>
+              <Heading>{t('matching.group.helper.title')}</Heading>
+              <Text>{t('matching.group.helper.content')}</Text>
+            </VStack>
+            <VStack>
+              <Heading fontSize="sm" marginBottom="5px">
+                {t('matching.group.helper.contentHeadline')}
+              </Heading>
+              <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
+            </VStack>
+            <VStack paddingY={space['1']}>
+              <Button
+                width={ButtonContainer}
+                onPress={() => {
+                  trackEvent({
+                    category: 'matching',
+                    action: 'click-event',
+                    name: 'Helfer Matching Gruppen – Kurs erstellen',
+                    documentTitle:
+                      'Matching Gruppen Lernunterstützung Kurs erstellen'
+                  })
+                  navigate('/create-course')
+                }}>
+                {t('matching.group.helper.button')}
+              </Button>
+            </VStack>
+            {/* <HSection
             title={t('dashboard.helpers.headlines.course')}
             showAll={false}>
             {new Array(5).fill(0).map(({}, index) => (
@@ -165,125 +169,169 @@ const StudentGroup: React.FC<Props> = () => {
               />
             ))}
           </HSection> */}
-          <VStack>
-            <Heading marginBottom={space['1.5']}>
-              {t('matching.group.helper.course.title')}
-            </Heading>
-            <Tabs
-              tabs={[
-                {
-                  title: t('matching.group.helper.course.tabs.tab1.title'),
-                  content: (
-                    <>
-                      <Flex direction="row" flexWrap="wrap">
-                        {(publishedSubcourses.length > 0 &&
-                          publishedSubcourses?.map(
-                            (sub: LFSubCourse, index: number) => {
-                              const firstLecture =
-                                Utility.getFirstLectureFromSubcourse(
-                                  sub.lectures
-                                )
+            <VStack>
+              <Heading marginBottom={space['1.5']}>
+                {t('matching.group.helper.course.title')}
+              </Heading>
+              <Tabs
+                tabs={[
+                  {
+                    title: t('matching.group.helper.course.tabs.tab1.title'),
+                    content: (
+                      <>
+                        <Flex direction="row" flexWrap="wrap">
+                          {(publishedSubcourses.length > 0 &&
+                            publishedSubcourses?.map(
+                              (sub: LFSubCourse, index: number) => {
+                                const firstLecture =
+                                  Utility.getFirstLectureFromSubcourse(
+                                    sub.lectures
+                                  )
 
-                              return (
-                                <Column width={CardGrid} marginRight="15px">
-                                  <AppointmentCard
-                                    key={index}
-                                    variant="horizontal"
-                                    description={sub.outline}
-                                    tags={sub.course.tags}
-                                    date={firstLecture?.start || ''}
-                                    countCourse={sub.lectures.length}
-                                    onPressToCourse={() =>
-                                      navigate('/single-course', {
-                                        state: { course: sub.id }
-                                      })
-                                    }
-                                    image={sub.course.image}
-                                    title={sub.course.name}
-                                  />
-                                </Column>
-                              )
-                            }
-                          )) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            width="max-content"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon color="danger.100" />
-                              <Text>{t('empty.courses')}</Text>
-                            </HStack>
-                          </Alert>
-                        )}
-                      </Flex>
-                    </>
-                  )
-                },
-                {
-                  title: t('matching.group.helper.course.tabs.tab2.title'),
-                  content: (
-                    <>
-                      <Flex direction="row" flexWrap="wrap">
-                        {(submittedSubcourses.length > 0 &&
-                          submittedSubcourses?.map(
-                            (sub: LFSubCourse, index: number) => {
-                              const firstLecture =
-                                Utility.getFirstLectureFromSubcourse(
-                                  sub.lectures
+                                return (
+                                  <Column width={CardGrid} marginRight="15px">
+                                    <AppointmentCard
+                                      key={index}
+                                      variant="horizontal"
+                                      description={sub.outline}
+                                      tags={sub.course.tags}
+                                      date={firstLecture?.start || ''}
+                                      countCourse={sub.lectures.length}
+                                      onPressToCourse={() =>
+                                        navigate('/single-course', {
+                                          state: { course: sub.id }
+                                        })
+                                      }
+                                      image={sub.course.image}
+                                      title={sub.course.name}
+                                    />
+                                  </Column>
                                 )
+                              }
+                            )) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color="danger.100" />
+                                <Text>{t('empty.courses')}</Text>
+                              </HStack>
+                            </Alert>
+                          )}
+                        </Flex>
+                      </>
+                    )
+                  },
+                  {
+                    title: t('matching.group.helper.course.tabs.tab2.title'),
+                    content: (
+                      <>
+                        <Flex direction="row" flexWrap="wrap">
+                          {(submittedSubcourses.length > 0 &&
+                            submittedSubcourses?.map(
+                              (sub: LFSubCourse, index: number) => {
+                                const firstLecture =
+                                  Utility.getFirstLectureFromSubcourse(
+                                    sub.lectures
+                                  )
 
-                              return (
-                                <Column width={CardGrid} marginRight="15px">
-                                  <AppointmentCard
-                                    key={index}
-                                    variant="horizontal"
-                                    description={sub.outline}
-                                    tags={sub.course.tags}
-                                    date={firstLecture?.start || ''}
-                                    countCourse={sub.lectures.length}
-                                    onPressToCourse={() =>
-                                      navigate('/single-course', {
-                                        state: { course: sub.id }
-                                      })
-                                    }
-                                    image={sub.course.image}
-                                    title={sub.course.name}
-                                  />
-                                </Column>
-                              )
-                            }
-                          )) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            width="max-content"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon color="danger.100" />
-                              <Text>{t('empty.coursescheck')}</Text>
-                            </HStack>
-                          </Alert>
-                        )}
-                      </Flex>
-                    </>
-                  )
-                },
-                {
-                  title: t('matching.group.helper.course.tabs.tab3.title'),
-                  content: (
-                    <>
-                      <Flex direction="row" flexWrap="wrap">
-                        {(draftedCourses.length > 0 &&
-                          draftedCourses?.map(
-                            (course: LFCourse, index: number) => {
-                              return (
+                                return (
+                                  <Column width={CardGrid} marginRight="15px">
+                                    <AppointmentCard
+                                      key={index}
+                                      variant="horizontal"
+                                      description={sub.outline}
+                                      tags={sub.course.tags}
+                                      date={firstLecture?.start || ''}
+                                      countCourse={sub.lectures.length}
+                                      onPressToCourse={() =>
+                                        navigate('/single-course', {
+                                          state: { course: sub.id }
+                                        })
+                                      }
+                                      image={sub.course.image}
+                                      title={sub.course.name}
+                                    />
+                                  </Column>
+                                )
+                              }
+                            )) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color="danger.100" />
+                                <Text>{t('empty.coursescheck')}</Text>
+                              </HStack>
+                            </Alert>
+                          )}
+                        </Flex>
+                      </>
+                    )
+                  },
+                  {
+                    title: t('matching.group.helper.course.tabs.tab3.title'),
+                    content: (
+                      <>
+                        <Flex direction="row" flexWrap="wrap">
+                          {(draftedCourses.length > 0 &&
+                            draftedCourses?.map(
+                              (course: LFCourse, index: number) => {
+                                return (
+                                  <Column width={CardGrid} marginRight="15px">
+                                    <AppointmentCard
+                                      key={index}
+                                      variant="horizontal"
+                                      description={course.outline}
+                                      tags={course.tags}
+                                      image={course.image}
+                                      title={course.name}
+                                      onPressToCourse={() =>
+                                        navigate('/single-course', {
+                                          state: { course: course.id }
+                                        })
+                                      }
+                                    />
+                                  </Column>
+                                )
+                              }
+                            )) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color="danger.100" />
+                                <Text>{t('empty.coursesdraft')}</Text>
+                              </HStack>
+                            </Alert>
+                          )}
+                        </Flex>
+                      </>
+                    )
+                  },
+                  {
+                    title: t('matching.group.helper.course.tabs.tab4.title'),
+                    content: (
+                      <>
+                        <Flex direction="row" flexWrap="wrap">
+                          {new Array(3).fill(0).map(
+                            (course: LFCourse, index) =>
+                              !!course && (
                                 <Column width={CardGrid} marginRight="15px">
                                   <AppointmentCard
                                     key={index}
@@ -300,111 +348,68 @@ const StudentGroup: React.FC<Props> = () => {
                                   />
                                 </Column>
                               )
-                            }
-                          )) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            width="max-content"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon color="danger.100" />
-                              <Text>{t('empty.coursesdraft')}</Text>
-                            </HStack>
-                          </Alert>
-                        )}
-                      </Flex>
-                    </>
-                  )
-                },
-                {
-                  title: t('matching.group.helper.course.tabs.tab4.title'),
-                  content: (
-                    <>
-                      <Flex direction="row" flexWrap="wrap">
-                        {new Array(3).fill(0).map(
-                          (course: LFCourse, index) =>
-                            !!course && (
-                              <Column width={CardGrid} marginRight="15px">
-                                <AppointmentCard
-                                  key={index}
-                                  variant="horizontal"
-                                  description={course.outline}
-                                  tags={course.tags}
-                                  image={course.image}
-                                  title={course.name}
-                                  onPressToCourse={() =>
-                                    navigate('/single-course', {
-                                      state: { course: course.id }
-                                    })
-                                  }
-                                />
-                              </Column>
-                            )
-                        ) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            width="max-content"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon color="danger.100" />
-                              <Text>{t('empty.courses')}</Text>
-                            </HStack>
-                          </Alert>
-                        )}
-                      </Flex>
-                    </>
-                  )
-                }
-              ]}
-            />
-          </VStack>
-          <VStack>
-            <HSection
-              onShowAll={() => navigate('/group/offer')}
-              title={t('matching.group.helper.offers.title')}
-              showAll={true}>
-              {new Array(0).fill(0).map(
-                (course: LFCourse, index) =>
-                  !!course && (
-                    <AppointmentCard
-                      key={index}
-                      variant="horizontal"
-                      description={course.outline}
-                      tags={course.tags}
-                      image={course.image}
-                      title={course.name}
-                      onPressToCourse={() =>
-                        navigate('/single-course', {
-                          state: { course: course.id }
-                        })
-                      }
-                    />
-                  )
-              ) || (
-                <Alert
-                  alignItems="start"
-                  marginY={space['1']}
-                  width="max-content"
-                  colorScheme="info">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon color="danger.100" />
-                    <Text>{t('empty.offers')}</Text>
-                  </HStack>
-                </Alert>
-              )}
-            </HSection>
+                          ) || (
+                            <Alert
+                              alignItems="start"
+                              marginY={space['1']}
+                              width="max-content"
+                              colorScheme="info">
+                              <HStack
+                                space={2}
+                                flexShrink={1}
+                                alignItems="center">
+                                <Alert.Icon color="danger.100" />
+                                <Text>{t('empty.courses')}</Text>
+                              </HStack>
+                            </Alert>
+                          )}
+                        </Flex>
+                      </>
+                    )
+                  }
+                ]}
+              />
+            </VStack>
+            <VStack>
+              <HSection
+                onShowAll={() => navigate('/group/offer')}
+                title={t('matching.group.helper.offers.title')}
+                showAll={true}>
+                {new Array(0).fill(0).map(
+                  (course: LFCourse, index) =>
+                    !!course && (
+                      <AppointmentCard
+                        key={index}
+                        variant="horizontal"
+                        description={course.outline}
+                        tags={course.tags}
+                        image={course.image}
+                        title={course.name}
+                        onPressToCourse={() =>
+                          navigate('/single-course', {
+                            state: { course: course.id }
+                          })
+                        }
+                      />
+                    )
+                ) || (
+                  <Alert
+                    alignItems="start"
+                    marginY={space['1']}
+                    width="max-content"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="danger.100" />
+                      <Text>{t('empty.offers')}</Text>
+                    </HStack>
+                  </Alert>
+                )}
+              </HSection>
+            </VStack>
           </VStack>
         </VStack>
-      </VStack>
-    </WithNavigation>
+      </WithNavigation>
+    </AsNavigationItem>
   )
 }
 export default StudentGroup

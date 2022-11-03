@@ -33,6 +33,7 @@ import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getFirstLectureFromSubcourse } from '../../Utility'
+import AsNavigationItem from '../../components/AsNavigationItem'
 
 type Props = {}
 
@@ -191,7 +192,7 @@ const Dashboard: React.FC<Props> = () => {
   }, [_dissolve?.data?.matchDissolve, toast, toastShown])
 
   return (
-    <>
+    <AsNavigationItem path="dashboard">
       <WithNavigation
         headerContent={
           !loading && (
@@ -489,7 +490,7 @@ const Dashboard: React.FC<Props> = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </>
+    </AsNavigationItem>
   )
 }
 export default Dashboard

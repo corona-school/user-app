@@ -31,6 +31,7 @@ import { DateTime } from 'luxon'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import AsNavigationItem from '../../components/AsNavigationItem'
 
 type Props = {}
 
@@ -255,7 +256,7 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   return (
-    <>
+    <AsNavigationItem path="dashboard">
       <WithNavigation
         headerContent={
           called &&
@@ -621,7 +622,7 @@ const DashboardStudent: React.FC<Props> = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </>
+    </AsNavigationItem>
   )
 }
 export default DashboardStudent

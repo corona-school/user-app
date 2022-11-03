@@ -3,6 +3,7 @@ import { Text, VStack, Button, Modal, useTheme, Heading } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AsNavigationItem from '../../components/AsNavigationItem'
 import WithNavigation from '../../components/WithNavigation'
 import MatchingOnboarding from './MatchingOnboarding'
 import MatchingWizard from './MatchingWizard'
@@ -27,12 +28,14 @@ const Matching: React.FC<Props> = () => {
 
   return (
     <>
-      <WithNavigation>
-        {currentIndex === 0 && (
-          <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
-        )}
-        {currentIndex === 1 && <MatchingWizard />}
-      </WithNavigation>
+      <AsNavigationItem path="matching">
+        <WithNavigation>
+          {currentIndex === 0 && (
+            <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
+          )}
+          {currentIndex === 1 && <MatchingWizard />}
+        </WithNavigation>
+      </AsNavigationItem>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content>
           <Modal.CloseButton />
