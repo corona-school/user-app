@@ -8,13 +8,9 @@ import {
   useBreakpointValue,
   Pressable,
   Flex,
-  Modal,
   useToast,
-  Row,
   Alert,
-  FormControl,
-  Checkbox,
-  Radio
+  Column
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
