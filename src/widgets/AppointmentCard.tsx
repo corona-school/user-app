@@ -114,6 +114,16 @@ const AppointmentCard: React.FC<Props> = ({
     lg: '14px'
   })
 
+  const buttonteaser = useBreakpointValue({
+    base: space['2'],
+    lg: 0
+  })
+
+  const buttonteaserSpace = useBreakpointValue({
+    base: space['1'],
+    lg: space['4']
+  })
+
   return (
     <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
@@ -189,9 +199,6 @@ const AppointmentCard: React.FC<Props> = ({
                         ? description.substring(0, 56) + '...'
                         : description}
                     </Text>
-                    <Button width={ButtonContainer} onPress={onPressToCourse}>
-                      Zum Kurs
-                    </Button>
                   </>
                 )}
                 {child && <CommunityUser name={child} />}
@@ -205,6 +212,19 @@ const AppointmentCard: React.FC<Props> = ({
                       {button}
                     </Button>
                   </Link>
+                )}
+              </Box>
+              <Box
+                flex="1"
+                alignItems="flex-end"
+                justifyContent="center"
+                paddingX={space['1']}
+                paddingRight={buttonteaserSpace}
+                marginBottom={buttonteaser}>
+                {isTeaser && (
+                  <Button width={ButtonContainer} onPress={onPressToCourse}>
+                    Zum Kurs
+                  </Button>
                 )}
               </Box>
             </Column>

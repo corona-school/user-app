@@ -6,7 +6,8 @@ import {
   useTheme,
   Button,
   Box,
-  useBreakpointValue
+  useBreakpointValue,
+  Column
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
@@ -23,6 +24,21 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const ButtonSpace = useBreakpointValue({
+    base: 0,
+    lg: '25px'
+  })
+
+  const ContentsDirection = useBreakpointValue({
+    base: 'flex-start',
+    lg: 'center'
   })
 
   return (
@@ -44,17 +60,24 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.kennenlernen.title'),
                     text: (
-                      <>
+                      <Box
+                        flexDir={ButtonDirection}
+                        alignItems={ContentsDirection}
+                        width="100%"
+                        justifyContent="space-between">
                         <Text
                           display="block"
                           maxWidth="500px"
                           marginBottom={space['1']}>
                           {t('helperwizard.kennenlernen.content')}
                         </Text>
-                        <Button width={ButtonContainer}>
+                        <Button
+                          width={ButtonContainer}
+                          marginRight={ButtonSpace}
+                          marginBottom={space['2']}>
                           {t('helperwizard.kennenlernen.button')}
                         </Button>
-                      </>
+                      </Box>
                     )
                   }
                 ]
@@ -66,8 +89,12 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.zeugnis.title'),
                     text: (
-                      <>
-                        <Box flexDirection="row" marginBottom={space['0.5']}>
+                      <Box width="100%">
+                        <Box
+                          flexDirection="row"
+                          marginBottom={space['0.5']}
+                          display="block"
+                          maxWidth="500px">
                           <Text marginRight="5px">
                             {t('helperwizard.zeugnis.einreichen')}
                           </Text>
@@ -75,15 +102,27 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                             tt.mm.jjjj
                           </Text>
                         </Box>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.zeugnis.content')}
-                          </Text>
-                          <Button overflow="visible" width={ButtonContainer}>
-                            {t('helperwizard.zeugnis.button')}
-                          </Button>
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column>
+                            <Text maxWidth="500px" marginBottom={space['1']}>
+                              {t('helperwizard.zeugnis.content')}
+                            </Text>
+                          </Column>
+                          <Column>
+                            <Button
+                              overflow="visible"
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}
+                              marginBottom={space['2']}>
+                              {t('helperwizard.zeugnis.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
@@ -95,16 +134,27 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.angebot.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.angebot.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.angebot.button')}
-                          </Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column>
+                            <Text maxWidth="500px" marginBottom={space['1']}>
+                              {t('helperwizard.angebot.content')}
+                            </Text>
+                          </Column>
+                          <Column>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}
+                              marginBottom={space['2']}>
+                              {t('helperwizard.angebot.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
@@ -116,16 +166,27 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.zeugnisHochladen.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            {t('helperwizard.zeugnisHochladen.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.zeugnisHochladen.button')}
-                          </Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column>
+                            <Text maxWidth="500px" marginBottom={space['1']}>
+                              {t('helperwizard.zeugnisHochladen.content')}
+                            </Text>
+                          </Column>
+                          <Column>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}
+                              marginBottom={space['2']}>
+                              {t('helperwizard.zeugnisHochladen.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
