@@ -514,8 +514,14 @@ const RegistrationData: React.FC<Props> = () => {
           type: 'selection',
           imgRootPath: 'text',
           options: [
-            { key: '<1', label: t('registration.questions.deutsch2.lower') },
-            { key: '>1', label: t('registration.questions.deutsch2.higher') }
+            {
+              key: '<1',
+              label: t('registration.questions.pupil.deutsch2.lower')
+            },
+            {
+              key: '>1',
+              label: t('registration.questions.pupil.deutsch2.higher')
+            }
           ]
         }
 
