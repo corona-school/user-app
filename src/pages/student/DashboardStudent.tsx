@@ -407,9 +407,9 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                         if (!firstLecture) return <></>
                         return (
-                          <Column width={CardGrid} marginRight="15px">
+                          <Column width={CardGrid} height="auto">
                             <AppointmentCard
-                              isFullHeight
+                              isFullHeight={false}
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -560,6 +560,7 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     width="max-content"
+                    marginTop={space['0.5']}
                     marginBottom={space['0.5']}
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">

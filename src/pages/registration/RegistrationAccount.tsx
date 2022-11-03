@@ -171,7 +171,7 @@ const RegistrationAccount: React.FC<Props> = () => {
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.email.invalid')}</Text>
                 </HStack>
               </Alert>
@@ -196,7 +196,7 @@ const RegistrationAccount: React.FC<Props> = () => {
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.password.nomatch')}</Text>
                 </HStack>
               </Alert>
@@ -212,7 +212,7 @@ const RegistrationAccount: React.FC<Props> = () => {
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.password.length')}</Text>
                 </HStack>
               </Alert>
@@ -263,7 +263,7 @@ const RegistrationAccount: React.FC<Props> = () => {
               backgroundColor="#fff8f8"
               colorScheme="warning">
               <HStack space={2} flexShrink={1} alignItems="center">
-                <WarningTwoIcon color="danger.400" />
+                <Alert.Icon color="danger.100" />
                 <Text>{t('registration.hint.userType.missing')}</Text>
               </HStack>
             </Alert>

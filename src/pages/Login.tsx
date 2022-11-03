@@ -22,6 +22,7 @@ import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import PasswordInput from '../components/PasswordInput'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -144,7 +145,7 @@ export default function Login() {
             />
           </Row>
           <Row marginBottom={3}>
-            <TextInput
+            <PasswordInput
               width="100%"
               type="password"
               isRequired={true}

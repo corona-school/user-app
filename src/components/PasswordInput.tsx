@@ -10,6 +10,8 @@ import {
 } from 'native-base'
 import { InterfaceInputProps } from 'native-base/lib/typescript/components/primitives/Input/types'
 import { useState } from 'react'
+import ShowPassword from '../assets/icons/lernfair/lf-show-password.svg'
+import HidePassword from '../assets/icons/lernfair/lf-hide-password.svg'
 
 interface Props extends InterfaceInputProps {
   placeholder?: string
@@ -53,11 +55,10 @@ const PasswordInput: React.FC<Props> = props => {
       <Pressable
         position={'absolute'}
         right={space['1']}
-        onPress={() => setShowPassword(prev => !prev)}>
-        <Box
-          w="32px"
-          h="32px"
-          bgColor={showPassword ? 'red.200' : 'blue.200'}></Box>
+        onPress={() => {
+          setShowPassword(prev => !prev)
+        }}>
+        {showPassword ? <ShowPassword /> : <HidePassword />}
       </Pressable>
     </Flex>
   )
