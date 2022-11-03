@@ -83,16 +83,16 @@ const Theme = extendTheme({
     modalbg: VAR_COLOR_MODAL_BG
   },
   fontSizes: {
-    // xs: '0.714rem',
-    // sm: '0.857rem',
-    // md: '1rem',
-    // lg: '1.214rem',
-    // xl: '1.357rem'
-    xs: 10,
-    sm: 12,
-    md: 14,
-    lg: 17,
-    xl: 19
+    xs: '0.714rem',
+    sm: '0.857rem',
+    md: '1rem',
+    lg: '1.214rem',
+    xl: '1.357rem'
+    // xs: 10,
+    // sm: 12,
+    // md: 15,
+    // lg: 17,
+    // xl: 19
   },
   sizes: {
     headerSizePx: 56,

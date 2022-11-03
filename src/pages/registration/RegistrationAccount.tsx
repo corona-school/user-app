@@ -156,7 +156,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Alert
               alignItems="start"
               marginBottom="10px"
-              maxW="350"
+              width="max-content"
               backgroundColor="#fff8f8"
               colorScheme="error">
               <HStack space={2} flexShrink={1} alignItems="center">
@@ -182,7 +182,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Alert
               alignItems="start"
               marginBottom="10px"
-              maxW="350"
+              width="max-content"
               backgroundColor="#fff8f8"
               colorScheme="error">
               <HStack space={2} flexShrink={1} alignItems="center">
@@ -198,7 +198,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Alert
               alignItems="start"
               marginBottom="10px"
-              maxW="400"
+              width="max-content"
               backgroundColor="#fff8f8"
               colorScheme="error">
               <HStack space={2} flexShrink={1} alignItems="center">
@@ -249,7 +249,7 @@ const RegistrationAccount: React.FC<Props> = () => {
           <Alert
             alignItems="start"
             marginBottom="10px"
-            maxW="350"
+            width="max-content"
             backgroundColor="#fff8f8"
             colorScheme="warning">
             <HStack space={2} flexShrink={1} alignItems="center">
