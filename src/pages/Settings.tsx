@@ -51,7 +51,7 @@ const Settings: React.FC<Props> = () => {
   if (loading) return <></>
 
   return (
-    <WithNavigation headerTitle={t('settings.header')} showBack>
+    <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
       <VStack
         paddingBottom={7}
         paddingX={space['1.5']}
