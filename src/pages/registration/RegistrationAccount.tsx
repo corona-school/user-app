@@ -31,6 +31,7 @@ import useApollo from '../../hooks/useApollo'
 import TextInput from '../../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../../components/PasswordInput'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -183,17 +184,7 @@ const RegistrationAccount: React.FC<Props> = () => {
               onChangeText={t => setRegistrationData({ email: t })}
             />
             {email.length < 6 && (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                width="max-content"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color="danger.100" />
-                  <Text>{t('registration.hint.email.invalid')}</Text>
-                </HStack>
-              </Alert>
+              <AlertMessage content={t('registration.hint.email.invalid')} />
             )}
 
             <PasswordInput
@@ -208,40 +199,16 @@ const RegistrationAccount: React.FC<Props> = () => {
               onChangeText={setPasswordConfirm}
             />
             {password !== passwordConfirm ? (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                width="max-content"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color="danger.100" />
-                  <Text>{t('registration.hint.password.nomatch')}</Text>
-                </HStack>
-              </Alert>
+              <AlertMessage content={t('registration.hint.password.nomatch')} />
             ) : (
               ''
             )}
 
             {password.length < 6 ? (
-              <Alert
-                alignItems="start"
-                marginBottom="10px"
-                width="max-content"
-                backgroundColor="#fff8f8"
-                colorScheme="error">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color="danger.100" />
-                  <Text>{t('registration.hint.password.length')}</Text>
-                </HStack>
-              </Alert>
+              <AlertMessage content={t('registration.hint.password.length')} />
             ) : (
               ''
             )}
-
-            <Text fontSize="xs" opacity=".6">
-              {t('registration.hint.password.length')}
-            </Text>
           </VStack>
           <VStack
             space={space['0.5']}
@@ -275,17 +242,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             />
           </VStack>
           {!userType && (
-            <Alert
-              alignItems="start"
-              marginBottom="10px"
-              width="max-content"
-              backgroundColor="#fff8f8"
-              colorScheme="warning">
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <Alert.Icon color="danger.100" />
-                <Text>{t('registration.hint.userType.missing')}</Text>
-              </HStack>
-            </Alert>
+            <AlertMessage content={t('registration.hint.userType.missing')} />
           )}
           <VStack space={space['1']} marginTop={space['1']} flex="1">
             <Checkbox value={'legalChecked'} onChange={setLegalChecked}>

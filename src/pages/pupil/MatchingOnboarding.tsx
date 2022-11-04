@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {
   onRequestMatch: () => any
@@ -132,20 +133,11 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
           {t('matching.blocker.button')}
         </Button>
         {!data?.me?.pupil?.canRequestMatch?.allowed && (
-          <Alert
-            alignItems="start"
-            marginY={space['1']}
-            width="max-content"
-            colorScheme="info">
-            <HStack space={2} flexShrink={1} alignItems="center">
-              <Alert.Icon color="danger.100" />
-              <Text>
-                {t(
-                  `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                )}
-              </Text>
-            </HStack>
-          </Alert>
+          <AlertMessage
+            content={t(
+              `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+            )}
+          />
         )}
       </VStack>
       <Box paddingBottom={space['3']}>

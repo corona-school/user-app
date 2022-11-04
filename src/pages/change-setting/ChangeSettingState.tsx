@@ -19,6 +19,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
 import { states } from '../../types/lernfair/State'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -170,22 +171,7 @@ const ChangeSettingState: React.FC<Props> = () => {
             </VStack>
           </Alert>
         )} */}
-        {showError && (
-          <Alert marginY={3} bgColor="danger.500">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color={'lightText'} />
-                  <Text color="lightText">{t('profile.errormessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )}
+        {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}
           onPress={() => {

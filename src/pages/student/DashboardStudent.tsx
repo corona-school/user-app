@@ -33,6 +33,8 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
+import CSSWrapper from '../../components/CSSWrapper'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -360,17 +362,9 @@ const DashboardStudent: React.FC<Props> = () => {
                         </Column>
                       )
                     })) || (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t('dashboard.myappointments.noappointments')}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('dashboard.myappointments.noappointments')}
+                  />
                 )}
               </HSection>
               <HSection
@@ -380,7 +374,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 wrap
                 marginBottom={space['1.5']}
                 scrollable={false}>
-                <Flex direction="row" flexWrap="wrap">
+                <CSSWrapper className="course-list__wrapper">
                   {(sortedPublishedSubcourses.length > 0 &&
                     sortedPublishedSubcourses
                       .slice(0, 4)
@@ -390,9 +384,10 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                         if (!firstLecture) return <></>
                         return (
-                          <Column width={CardGrid} height="auto">
+                          <CSSWrapper className="course-list__item">
                             <AppointmentCard
                               isFullHeight={false}
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -418,23 +413,16 @@ const DashboardStudent: React.FC<Props> = () => {
                               image={sub.course.image}
                               title={sub.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       })) ||
                     (data?.me?.student?.canCreateCourse?.allowed ? (
-                      <Alert
-                        alignItems="start"
-                        width="max-content"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon color="danger.100" />
-                          <Text>{t('empty.courses')}</Text>
-                        </HStack>
-                      </Alert>
+                      <AlertMessage content={t('empty.courses')} />
                     ) : (
                       ''
                     ))}
-                </Flex>
+                </CSSWrapper>
+
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
                     marginTop={space['1']}
@@ -451,19 +439,11 @@ const DashboardStudent: React.FC<Props> = () => {
                     {t('dashboard.helpers.buttons.course')}
                   </Button>
                 )) || (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="warning">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t(
-                          `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
-                        )}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t(
+                      `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                    )}
+                  />
                 )}
               </HSection>
 
@@ -492,10 +472,10 @@ const DashboardStudent: React.FC<Props> = () => {
                     Offene Anfragen:{' '}
                     {`${data?.me?.student?.openMatchRequestCount}`}
                   </Text>
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {(activeMatches?.length &&
                       activeMatches.map((match: LFMatch, index: number) => (
-                        <Column width={CardGrid} marginRight="15px">
+                        <CSSWrapper className="course-list__item">
                           <LearningPartner
                             key={index}
                             isDark={true}
@@ -517,22 +497,15 @@ const DashboardStudent: React.FC<Props> = () => {
                               )
                             }
                           />
-                        </Column>
+                        </CSSWrapper>
                       ))) ||
                       (data?.me?.student?.canRequestMatch?.allowed ? (
-                        <Alert
-                          alignItems="start"
-                          width="max-content"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon color="danger.100" />
-                            <Text>{t('empty.matchings')}</Text>
-                          </HStack>
-                        </Alert>
+                        <AlertMessage content={t('empty.matchings')} />
                       ) : (
                         ''
                       ))}
-                  </Flex>
+                  </CSSWrapper>
+
                   {(data?.me?.student?.canRequestMatch?.reason !==
                     'not-tutor' &&
                     data?.me?.student?.canRequestMatch?.allowed && (
@@ -547,22 +520,11 @@ const DashboardStudent: React.FC<Props> = () => {
                         </Button>
                       </>
                     )) || (
-                    <Alert
-                      alignItems="start"
-                      width="max-content"
-                      marginTop={space['0.5']}
-                      marginBottom={space['0.5']}
-                      colorScheme="warning">
-                      <HStack space={2} flexShrink={1} alignItems="center">
-                        <Alert.Icon color="danger.100" />
-                        <Text>
-                          {' '}
-                          {t(
-                            `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                          )}
-                        </Text>
-                      </HStack>
-                    </Alert>
+                    <AlertMessage
+                      content={t(
+                        `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                      )}
+                    />
                   )}
                 </VStack>
               }

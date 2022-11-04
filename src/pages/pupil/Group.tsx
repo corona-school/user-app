@@ -5,9 +5,7 @@ import {
   VStack,
   useBreakpointValue,
   Column,
-  HStack,
-  Flex,
-  Alert
+  Flex
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +23,7 @@ import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -274,10 +273,12 @@ const PupilGroup: React.FC<Props> = () => {
           <VStack space={space['1']}>
             <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
               <Heading>{t('matching.group.pupil.title')}</Heading>
-              <Text>{t('matching.group.pupil.content')}</Text>
+              <Text marginBottom={space['0.5']}>
+                {t('matching.group.pupil.content')}
+              </Text>
             </VStack>
 
-            <VStack maxWidth={ContentContainerWidth}>
+            <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
               <SearchBar
                 value={lastSearch}
                 onChangeText={text => setLastSearch(text)}
@@ -335,19 +336,10 @@ const PupilGroup: React.FC<Props> = () => {
                           </Column>
                         )
                       )) || (
-                      <Alert
-                        alignItems="start"
-                        marginY={space['1']}
-                        width="max-content"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon color="danger.100" />
-                          <Text>
-                            Es wurden keine Kurse gefunden. Bitte passe deine
-                            Suche an.
-                          </Text>
-                        </HStack>
-                      </Alert>
+                      <AlertMessage
+                        content="Es wurden keine Kurse gefunden. Bitte passe deine
+                          Suche an."
+                      />
                     )}
                   </>
                 )) || <CenterLoadingSpinner />}

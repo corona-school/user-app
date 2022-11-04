@@ -39,6 +39,7 @@ import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -269,24 +270,7 @@ const ProfileStudent: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <Container maxWidth={ContainerWidth} paddingX={space['1']}>
-            <Alert
-              width="max-content"
-              marginY={10}
-              colorScheme="success"
-              status="success">
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack
-                  flexShrink={1}
-                  space={2}
-                  alignItems="center"
-                  justifyContent="space-between">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon color="danger.100" />
-                    <Text>{t('profile.successmessage')}</Text>
-                  </HStack>
-                </HStack>
-              </VStack>
-            </Alert>
+            <AlertMessage content={t('profile.successmessage')} />
           </Container>
         )}
 
@@ -430,7 +414,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )
@@ -477,7 +465,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )

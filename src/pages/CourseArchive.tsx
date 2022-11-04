@@ -25,6 +25,8 @@ import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import AlertMessage from '../widgets/AlertMessage'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -168,7 +170,7 @@ const CourseArchive: React.FC<Props> = () => {
             {!loading && (
               <>
                 {(searchResults.length && (
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {searchResults.map((sub: LFSubCourse, index: number) => {
                       let firstDate: DateTime = null!
 
@@ -187,8 +189,9 @@ const CourseArchive: React.FC<Props> = () => {
                       }
 
                       return (
-                        <Column width={CardGrid} marginRight="15px" key={index}>
+                        <CSSWrapper className="course-list__item">
                           <AppointmentCard
+                            isSpaceMarginBottom={false}
                             variant="horizontal"
                             description={sub.course.outline}
                             tags={sub.course.tags}
@@ -209,22 +212,11 @@ const CourseArchive: React.FC<Props> = () => {
                             image={sub.course.image}
                             title={sub.course.name}
                           />
-                        </Column>
+                        </CSSWrapper>
                       )
                     })}
-                  </Flex>
-                )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>{t('empty.courses')}</Text>
-                    </HStack>
-                  </Alert>
-                )}
+                  </CSSWrapper>
+                )) || <AlertMessage content={t('empty.courses')} />}
               </>
             )}
           </VStack>

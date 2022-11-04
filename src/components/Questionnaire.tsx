@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Progress,
   Text,
   useBreakpointValue,
@@ -190,7 +191,19 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         bgColor="primary.500"
         justifyContent="center"
         alignItems="center"
+        position="relative"
         borderBottomRadius={8}>
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          zIndex="-1"
+          borderBottomRadius={15}
+          width="100%"
+          height="100%"
+          source={{
+            uri: require('../assets/images/globals/lf-bg.png')
+          }}
+        />
         <Heading>
           {t(`registration.questions.${userType}.${currentQuestion.id}.label`)}
         </Heading>

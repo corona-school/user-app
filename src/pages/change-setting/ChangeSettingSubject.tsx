@@ -34,6 +34,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import { Slider } from '@miblanchard/react-native-slider'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { useNavigate } from 'react-router-dom'
+import AlertMessage from '../../widgets/AlertMessage'
 
 const queryPupil = `query {
   me {
@@ -317,22 +318,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               </VStack>
             </Alert>
           )} */}
-          {showError && (
-            <Alert marginY={3} bgColor="danger.500">
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack
-                  flexShrink={1}
-                  space={2}
-                  alignItems="center"
-                  justifyContent="space-between">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon color={'lightText'} />
-                    <Text color="lightText">{t('profile.errormessage')}</Text>
-                  </HStack>
-                </HStack>
-              </VStack>
-            </Alert>
-          )}
+          {showError && <AlertMessage content={t('profile.errormessage')} />}
           <Button
             width={ButtonContainer}
             onPress={() => {

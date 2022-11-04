@@ -17,6 +17,7 @@ import {
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import AlertMessage from '../../widgets/AlertMessage'
 
 import { CreateCourseContext } from '../CreateCourse'
 import CourseDateWizard from './CourseDateWizard'
@@ -118,11 +119,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
           </Text>
         </Pressable>
 
-        {!isValidInput && (
-          <Alert status="error" backgroundColor="#fecaca">
-            <Text>{t('course.noticeDate')}</Text>
-          </Alert>
-        )}
+        {!isValidInput && <AlertMessage content={t('course.noticeDate')} />}
       </VStack>
 
       <Row

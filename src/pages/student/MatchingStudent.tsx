@@ -11,9 +11,7 @@ import {
   Column,
   Modal,
   useToast,
-  Box,
-  Alert,
-  HStack
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +22,7 @@ import WithNavigation from '../../components/WithNavigation'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
 import Hello from '../../widgets/Hello'
+import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
@@ -204,20 +203,11 @@ const MatchingStudent: React.FC<Props> = () => {
                 {t('matching.request.check.requestmatchButton')}
               </Button>
             )) || (
-              <Alert
-                alignItems="start"
-                marginY={space['1']}
-                width="max-content"
-                colorScheme="info">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color="danger.100" />
-                  <Text>
-                    {t(
-                      `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                    )}
-                  </Text>
-                </HStack>
-              </Alert>
+              <AlertMessage
+                content={t(
+                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                )}
+              />
             )}
           </VStack>
 
@@ -251,38 +241,19 @@ const MatchingStudent: React.FC<Props> = () => {
                                     {t('dashboard.helpers.buttons.solveMatch')}
                                   </Button>
                                 )) || (
-                                  <Alert
-                                    alignItems="start"
-                                    marginY={space['1']}
-                                    width="max-content"
-                                    colorScheme="info">
-                                    <HStack
-                                      space={2}
-                                      flexShrink={1}
-                                      alignItems="center">
-                                      <Alert.Icon color="danger.100" />
-                                      <Text>
-                                        {t(
-                                          'matching.request.check.resoloveMatch'
-                                        )}
-                                      </Text>
-                                    </HStack>
-                                  </Alert>
+                                  <AlertMessage
+                                    content={t(
+                                      'matching.request.check.resoloveMatch'
+                                    )}
+                                  />
                                 )
                               }
                             />
                           </Column>
                         ))) || (
-                        <Alert
-                          alignItems="start"
-                          marginY={space['1']}
-                          width="max-content"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon color="danger.100" />
-                            <Text>{t('matching.request.check.noMatches')}</Text>
-                          </HStack>
-                        </Alert>
+                        <AlertMessage
+                          content={t('matching.request.check.noMatches')}
+                        />
                       )}
                     </Flex>
                   </VStack>
@@ -324,21 +295,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                 </Box>
                               </Column>
                             ))) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            width="max-content"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon color="danger.100" />
-                              <Text>
-                                {t('matching.request.check.noMatches')}
-                              </Text>
-                            </HStack>
-                          </Alert>
+                          <AlertMessage
+                            content={t('matching.request.check.noMatches')}
+                          />
                         )}
                       </Flex>
                     </VStack>

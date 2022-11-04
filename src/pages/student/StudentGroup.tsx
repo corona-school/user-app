@@ -6,9 +6,7 @@ import {
   Button,
   useBreakpointValue,
   Flex,
-  Column,
-  Alert,
-  HStack
+  Column
 } from 'native-base'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -26,6 +24,7 @@ import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -217,40 +216,16 @@ const StudentGroup: React.FC<Props> = () => {
             {locState && Object.keys(locState).length > 0 && (
               <>
                 {locState.courseSuccess && (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="primary.500" />
-                      <Text>
-                        Dein Kurs wurde erfolgreich erstellt. Er befindet sich
-                        nun in Prüfung.
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
+                   nun in Prüfung."
+                  />
                 )}
                 {!locState.courseSuccess && (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="danger">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>Dein Kurs konnte nicht erstellt werden.</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage content="Dein Kurs konnte nicht erstellt werden." />
                 )}
                 {locState.imageError && (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="danger">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>Dein Bild konnte nicht hochgeladen werden.</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage content="Dein Bild konnte nicht hochgeladen werden." />
                 )}
               </>
             )}
@@ -300,21 +275,7 @@ const StudentGroup: React.FC<Props> = () => {
                               (sub: LFSubCourse, index: number) => {
                                 return renderSubcourse(sub, index)
                               }
-                            )) || (
-                            <Alert
-                              alignItems="start"
-                              marginY={space['1']}
-                              width="max-content"
-                              colorScheme="info">
-                              <HStack
-                                space={2}
-                                flexShrink={1}
-                                alignItems="center">
-                                <Alert.Icon color="danger.100" />
-                                <Text>{t('empty.courses')}</Text>
-                              </HStack>
-                            </Alert>
-                          )}
+                            )) || <AlertMessage content={t('empty.courses')} />}
                         </Flex>
                       </>
                     )
@@ -329,19 +290,7 @@ const StudentGroup: React.FC<Props> = () => {
                               (sub: LFSubCourse, index: number) =>
                                 renderSubcourse(sub, index)
                             )) || (
-                            <Alert
-                              alignItems="start"
-                              marginY={space['1']}
-                              width="max-content"
-                              colorScheme="info">
-                              <HStack
-                                space={2}
-                                flexShrink={1}
-                                alignItems="center">
-                                <Alert.Icon color="danger.100" />
-                                <Text>{t('empty.coursescheck')}</Text>
-                              </HStack>
-                            </Alert>
+                            <AlertMessage content={t('empty.coursescheck')} />
                           )}
                         </Flex>
                       </>
@@ -357,19 +306,7 @@ const StudentGroup: React.FC<Props> = () => {
                               (course: LFCourse, index: number) =>
                                 renderCourse(course, index)
                             )) || (
-                            <Alert
-                              alignItems="start"
-                              marginY={space['1']}
-                              width="max-content"
-                              colorScheme="info">
-                              <HStack
-                                space={2}
-                                flexShrink={1}
-                                alignItems="center">
-                                <Alert.Icon color="danger.100" />
-                                <Text>{t('empty.coursesdraft')}</Text>
-                              </HStack>
-                            </Alert>
+                            <AlertMessage content={t('empty.coursesdraft')} />
                           )}
                         </Flex>
                       </>
@@ -382,21 +319,7 @@ const StudentGroup: React.FC<Props> = () => {
                         <Flex direction="row" flexWrap="wrap">
                           {pastCourses.map((course: LFSubCourse, index) =>
                             renderSubcourse(course, index, false)
-                          ) || (
-                            <Alert
-                              alignItems="start"
-                              marginY={space['1']}
-                              width="max-content"
-                              colorScheme="info">
-                              <HStack
-                                space={2}
-                                flexShrink={1}
-                                alignItems="center">
-                                <Alert.Icon color="danger.100" />
-                                <Text>{t('empty.courses')}</Text>
-                              </HStack>
-                            </Alert>
-                          )}
+                          ) || <AlertMessage content={t('empty.courses')} />}
                         </Flex>
                       </>
                     )
@@ -412,16 +335,7 @@ const StudentGroup: React.FC<Props> = () => {
                 {new Array(0)
                   .fill(0)
                   .map((course: LFCourse, index) => <></>) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>{t('empty.offers')}</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage content={t('empty.offers')} />
                 )}
               </HSection>
             </VStack>
