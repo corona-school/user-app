@@ -132,9 +132,13 @@ const RequestMatchWizard: React.FC<Props> = ({
         })}
       </TwoColGrid>
 
-      <Link my="3" href="/change-setting/subjects" textDecoration={'underline'}>
+      <Button
+        variant={'link'}
+        alignSelf="flex-start"
+        _text={{ color: 'darkText', fontWeight: 'normal', fontSize: 'sm' }}
+        onPress={() => navigate('/change-setting/subjects')}>
         Du möchtest noch ein weiteres Fach anbieten?
-      </Link>
+      </Button>
 
       <Row
         marginY={space['1.5']}
