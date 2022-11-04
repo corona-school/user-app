@@ -46,6 +46,7 @@ const registration = {
     }
   },
   personal: {
+    title: 'Gib deine persönlichen Daten ein',
     about: {
       label: 'Über mich',
       text: 'Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können.'
