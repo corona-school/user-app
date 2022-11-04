@@ -223,7 +223,7 @@ const Dashboard: React.FC<Props> = () => {
               space={space['1']}
               alignItems="center"
               bgColor={isMobile ? 'primary.900' : 'transparent'}
-              padding={space['0.5']}>
+              padding={isMobile ? space['1.5'] : space['0.5']}>
               {/* <ProfilAvatar
                 size="md"
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
