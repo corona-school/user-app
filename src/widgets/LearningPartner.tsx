@@ -35,7 +35,7 @@ const LearningPartner: React.FC<Props> = ({
         <Row padding={space['1']}>
           {avatar && (
             <Box marginRight={space['1.5']}>
-              <ProfilAvatar image={avatar} size="lg" />
+              {/* <ProfilAvatar image={avatar} size="lg" /> */}
             </Box>
           )}
           <Box flex="1">

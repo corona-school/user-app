@@ -22,7 +22,7 @@ const LeftImageCard: React.FC<Props> = ({
     <Card flexibleWidth variant={variant} isFullHeight={false}>
       <Row>
         <Box w={100} padding={avatar ? '16px' : ''}>
-          {avatar && <ProfilAvatar image={avatar} size="lg" />}
+          {/* {avatar && <ProfilAvatar image={avatar} size="lg" />} */}
         </Box>
         <VStack
           paddingX={space['0.5']}

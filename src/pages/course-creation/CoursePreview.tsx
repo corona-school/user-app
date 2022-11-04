@@ -9,7 +9,9 @@ import {
   Row,
   Box,
   Image,
-  useBreakpointValue
+  useBreakpointValue,
+  Alert,
+  HStack
 } from 'native-base'
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -35,7 +37,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     description,
     maxParticipantCount,
     tags,
-    courseClasses,
+    classRange: courseClasses,
     joinAfterStart,
     allowContact,
     lectures,
@@ -68,6 +70,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Vorschau'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -96,9 +99,13 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
             isDisabled
             text={subject.name || ''}
           />
-          {console.log(subject.name.toLowerCase())}
         </>
       )}
+
+      <Heading fontSize="md">
+        Klassen {courseClasses && courseClasses[0]} -{' '}
+        {courseClasses && courseClasses[1]}
+      </Heading>
 
       <Box bg="gray.500" h="180">
         <Image src={pickedPhoto} h="100%" />
@@ -126,17 +133,6 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.classHeadline')}
       </Heading>
-      {courseClasses &&
-        courseClasses.map(c => {
-          const range = Utility.intToClassRange(c)
-          return (
-            <ToggleButton
-              label={`${range.min}. - ${range.max}. Klasse`}
-              dataKey={c.toString()}
-              isActive={false}
-            />
-          )
-        })}
 
       <VStack>
         <Row>

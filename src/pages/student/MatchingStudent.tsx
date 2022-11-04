@@ -21,8 +21,8 @@ import { useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
-import { LFSubject } from '../../types/lernfair/Subject'
 import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
@@ -36,7 +36,7 @@ const query = gql`
           dissolved
           pupil {
             firstname
-
+            grade
             subjectsFormatted {
               name
             }
@@ -104,19 +104,25 @@ const MatchingStudent: React.FC<Props> = () => {
     setShowDissolveModal(true)
   }, [])
 
-  const dissolve = useCallback(() => {
-    trackEvent({
-      category: 'matching',
-      action: 'click-event',
-      name: 'Helfer Matching lösen',
-      documentTitle: 'Helfer Matching'
-    })
-    setShowDissolveModal(false)
-    dissolveMatch({
-      variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
-    })
+  const dissolve = useCallback(
+    (reason: string) => {
+      trackEvent({
+        category: 'matching',
+        action: 'click-event',
+        name: 'Helfer Matching lösen',
+        documentTitle: 'Helfer Matching'
+      })
+      dissolveMatch({
+        variables: {
+          matchId: focusedMatch?.id,
+          dissolveReason: parseInt(reason)
+        }
+      })
+      setShowDissolveModal(false)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dissolveMatch, focusedMatch?.id])
+    [dissolveMatch, focusedMatch?.id]
+  )
 
   const showCancelMatchRequestModal = useCallback(() => {
     setShowCancelModal(true)
@@ -226,11 +232,11 @@ const MatchingStudent: React.FC<Props> = () => {
                               key={index}
                               isDark={true}
                               name={match?.pupil?.firstname}
-                              subjects={match?.pupil?.subjectsFormatted.map(
-                                (sub: LFSubject) => sub.name
-                              )}
-                              schooltype="Grundschule"
-                              schoolclass={4}
+                              subjects={match?.pupil?.subjectsFormatted}
+                              schooltype={
+                                match?.pupil?.schooltype || 'Backend Error'
+                              }
+                              schoolclass={match?.pupil?.grade}
                               avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                               button={
                                 (!match.dissolved && (
@@ -340,19 +346,14 @@ const MatchingStudent: React.FC<Props> = () => {
           />
         </VStack>
       </WithNavigation>
-      <Modal isOpen={showDissolveModal}>
-        <Modal.Content>
-          <Modal.Header>Auflösen</Modal.Header>
-          <Modal.CloseButton onPress={() => setShowDissolveModal(false)} />
-          <Modal.Body>Möchtest du das Match wirklich auflösen?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="ghost" onPress={() => setShowDissolveModal(false)}>
-              Abbrechen
-            </Button>
-            <Button onPress={dissolve}>Match auflösen</Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+
+      <DissolveMatchModal
+        showDissolveModal={showDissolveModal}
+        onPressDissolve={(reason: string) => {
+          dissolve(reason)
+        }}
+        onPressBack={() => setShowDissolveModal(false)}
+      />
       <Modal isOpen={showCancelModal}>
         <Modal.Content>
           <Modal.Header>Anfrage löschen</Modal.Header>

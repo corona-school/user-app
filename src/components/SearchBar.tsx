@@ -7,6 +7,7 @@ import {
   SearchIcon
 } from 'native-base'
 import { useState } from 'react'
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
 type Props = {
   placeholder?: string
@@ -28,6 +29,14 @@ const SearchBar: React.FC<Props> = ({
   const { space } = useTheme()
   const [searchString, setSearchString] = useState<string>('')
 
+  const handleKeyPress = (
+    e: NativeSyntheticEvent<TextInputKeyPressEventData>
+  ) => {
+    if (e.nativeEvent.key === 'Enter') {
+      onSearch(searchString)
+    }
+  }
+
   return (
     <Row>
       {showBack && (
@@ -40,6 +49,7 @@ const SearchBar: React.FC<Props> = ({
         value={value || searchString}
         onChangeText={onChangeText || setSearchString}
         placeholder={placeholder || 'Suchbegriff eingeben'}
+        onKeyPress={handleKeyPress}
       />
       <Button onPress={() => onSearch(searchString)} padding={space['1']}>
         <SearchIcon />

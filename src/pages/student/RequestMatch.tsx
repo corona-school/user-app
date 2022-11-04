@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { VStack, Modal, Button, useTheme, Heading } from 'native-base'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -131,37 +131,6 @@ const RequestMatch: React.FC<Props> = () => {
         <Modal.Content>
           <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
-            {/* <VStack space={space['1']}>
-              {[
-                `1. - 4. Klasse`,
-                `5. - 8. Klasse`,
-                `9. - 10. Klasse`,
-                `11. - 13. Klasse`
-              ].map((c, index) => {
-                const i = index + 1
-                const isSelected =
-                  focusedSubject &&
-                  !!selectedClasses[focusedSubject.name] &&
-                  !!selectedClasses[focusedSubject.name][i]
-
-                return (
-                  <ToggleButton
-                    label={c}
-                    dataKey={`${i}`}
-                    isActive={isSelected}
-                    onPress={key => {
-                      setSelectedClasses(prev => ({
-                        ...prev,
-                        [focusedSubject.name]: {
-                          ...selectedClasses[focusedSubject.name],
-                          [key]: !isSelected
-                        }
-                      }))
-                    }}
-                  />
-                )
-              })}
-            </VStack> */}
             <Heading fontSize="md">
               Klassen{' '}
               {(selectedClasses[focusedSubject.name] &&

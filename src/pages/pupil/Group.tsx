@@ -23,6 +23,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { getFirstLectureFromSubcourse } from '../../Utility'
+import { DateTime } from 'luxon'
 
 type Props = {}
 
@@ -79,34 +80,36 @@ const PupilGroup: React.FC<Props> = () => {
   const [lastSearch, setLastSearch] = useState<string>('')
   const [activeTab, setActiveTab] = useState<number>(0)
 
-  const { data, error, loading } = useQuery(query)
+  const { data, loading } = useQuery(query)
 
-  const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading }] =
-    useLazyQuery(gql`
-      query ($name: String!) {
-        subcoursesPublic(search: $name, take: 20, excludeKnown: true) {
-          id
-          lectures {
-            start
-          }
-          course {
+  const [
+    searchAllSubcoursesQuery,
+    { loading: allSubcoursesSearchLoading, data: allSubcoursesData }
+  ] = useLazyQuery(gql`
+    query ($name: String!) {
+      subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+        id
+        lectures {
+          start
+        }
+        course {
+          name
+          outline
+          image
+          tags {
             name
-            outline
-            image
-            tags {
-              name
-            }
           }
         }
       }
-    `)
+    }
+  `)
 
   const [
     searchRecommendationsQuery,
-    { loading: recommendationsSearchLoading }
+    { loading: recommendationsSearchLoading, data: recommendationsData }
   ] = useLazyQuery(gql`
     query ($name: String!) {
-      subcoursesPublic(search: $name, take: 20, excludeKnown: true) {
+      subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
         id
         lectures {
           start
@@ -131,16 +134,42 @@ const PupilGroup: React.FC<Props> = () => {
   }, [])
 
   const courses: LFSubCourse[] = useMemo(() => {
+    let arr
     switch (activeTab) {
       case 0:
       default:
-        return data?.me?.pupil?.subcoursesJoined
+        arr = data?.me?.pupil?.subcoursesJoined || []
+        break
       case 1:
-        return []
+        arr = recommendationsData?.subcoursesPublic || []
+        break
       case 2:
-        return []
+        arr = allSubcoursesData?.subcoursesPublic || []
+        break
     }
-  }, [activeTab, data?.me?.pupil?.subcoursesJoined])
+    return arr
+  }, [
+    activeTab,
+    allSubcoursesData,
+    data?.me?.pupil?.subcoursesJoined,
+    recommendationsData
+  ])
+
+  const activeCourses: LFSubCourse[] = useMemo(
+    () =>
+      courses.filter((course: LFSubCourse) => {
+        let ok = false
+        for (const lecture of course.lectures) {
+          const date = DateTime.fromISO(lecture.start).toMillis()
+          const now = DateTime.now().toMillis()
+          if (date > now) {
+            ok = true
+          }
+        }
+        return ok
+      }),
+    [courses]
+  )
 
   const getLecture: (lectures: LFLecture[]) => LFLecture | null = useCallback(
     (lectures: LFLecture[]) => {
@@ -164,13 +193,15 @@ const PupilGroup: React.FC<Props> = () => {
     )
 
   const searchResults: LFSubCourse[] = useMemo(() => {
-    if (lastSearch.length === 0) return courses
+    if (lastSearch.length === 0) return activeCourses
     return (
-      courses?.filter((sub: LFSubCourse) =>
+      (activeTab !== 0 && activeCourses) ||
+      activeCourses?.filter((sub: LFSubCourse) =>
         sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())
-      ) || []
+      ) ||
+      []
     )
-  }, [lastSearch, courses])
+  }, [lastSearch, activeTab, activeCourses])
 
   const sortedSearchResults: LFSubCourse[] = useMemo(() => {
     return searchResults

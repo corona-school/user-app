@@ -39,10 +39,10 @@ const HeaderCard: React.FC<Props> = ({
     lg: false
   })
 
-  useEffect(() => {
-    portal && portal(children)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   portal && portal(children)
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <Box
