@@ -127,6 +127,12 @@ const AppointmentCard: React.FC<Props> = ({
     lg: '32px'
   })
 
+  const tagMaxWidth = useBreakpointValue({
+    base: '270px',
+    lg: '240px',
+    xl: '370px'
+  })
+
   return (
     <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
@@ -274,7 +280,10 @@ const AppointmentCard: React.FC<Props> = ({
 
             <Box paddingX="10px" paddingY={space['1.5']}>
               <CSSWrapper className="course-list__item-tags">
-                <Row space={space['0.5']} flexWrap="wrap" maxWidth="370px">
+                <Row
+                  space={space['0.5']}
+                  flexWrap="wrap"
+                  maxWidth={tagMaxWidth}>
                   {tags?.map((tag, i) => (
                     <Tag key={`tag-${i}`} text={tag.name} />
                   ))}
