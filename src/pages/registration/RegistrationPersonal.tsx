@@ -70,7 +70,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
           }}
         />
         <Logo />
-        <Heading mt={space['1']}>{t('registration.new')}</Heading>
+        <Heading mt={space['1']}>{t('registration.personal.title')}</Heading>
       </Box>
       <VStack
         space={space['1']}

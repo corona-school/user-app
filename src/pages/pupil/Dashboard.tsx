@@ -12,7 +12,8 @@ import {
   Alert,
   Column,
   Modal,
-  Radio
+  Radio,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -33,6 +34,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
+import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
@@ -226,9 +228,7 @@ const Dashboard: React.FC<Props> = () => {
                 size="md"
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
               /> */}
-              <Heading color={'#fff'}>
-                {t('hallo')} {data?.me?.firstname}!
-              </Heading>
+              <Hello />
             </HStack>
           )
         }
@@ -340,18 +340,20 @@ const Dashboard: React.FC<Props> = () => {
                   {activeMatches.map(
                     (match: LFMatch) =>
                       (
-                        <Pressable
+                        <Box
                           width={CardGrid}
                           marginRight="10px"
                           marginBottom="10px"
-                          onPress={() =>
-                            navigate('/profile', {
-                              state: {
-                                userType: 'student',
-                                id: match.student.id
-                              }
-                            })
-                          }>
+
+                          // onPress={() =>
+                          //   navigate('/user-profile', {
+                          //     state: {
+                          //       userType: 'student',
+                          //       id: match.student.id
+                          //     }
+                          //   })
+                          // }
+                        >
                           <TeacherCard
                             name={`${match.student?.firstname} ${match.student?.lastname}`}
                             variant="dark"
@@ -373,7 +375,7 @@ const Dashboard: React.FC<Props> = () => {
                               )
                             }
                           />
-                        </Pressable>
+                        </Box>
                       ) || (
                         <AlertMessage
                           content={t('dashboard.offers.noMatching')}

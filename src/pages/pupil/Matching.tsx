@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import WithNavigation from '../../components/WithNavigation'
+import Hello from '../../widgets/Hello'
 import MatchingOnboarding from './MatchingOnboarding'
 import MatchingWizard from './MatchingWizard'
 
@@ -29,7 +30,7 @@ const Matching: React.FC<Props> = () => {
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation>
+        <WithNavigation headerContent={<Hello />}>
           {currentIndex === 0 && (
             <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
           )}

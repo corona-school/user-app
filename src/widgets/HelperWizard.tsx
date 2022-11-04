@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client'
 import {
   View,
   Text,
@@ -9,6 +10,7 @@ import {
   useBreakpointValue,
   Column
 } from 'native-base'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
@@ -20,7 +22,27 @@ type Props = {
 const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
-
+  const { data, loading, called } = useQuery(gql`
+    query {
+      me {
+        student {
+          firstMatchRequest
+          openMatchRequestCount
+          certificateOfConduct {
+            id
+          }
+          canRequestMatch {
+            allowed
+            reason
+          }
+          canCreateCourse {
+            allowed
+            reason
+          }
+        }
+      }
+    }
+  `)
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
@@ -56,6 +78,19 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
     lg: 'auto'
   })
 
+  const onboardingIndex: number = useMemo(() => {
+    if (data?.me?.student?.canCreateCourse.reason === 'not-screened') return 0
+    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
+    if (!data?.me?.student?.firstMatchRequest) return 2
+    if (!data?.me?.student?.certificateOfConduct?.id) return 3
+    return 0
+  }, [
+    data?.me?.student?.canCreateCourse.reason,
+    data?.me?.student?.canRequestMatch.reason,
+    data?.me?.student?.certificateOfConduct?.id,
+    data?.me?.student?.firstMatchRequest
+  ])
+
   return (
     <View>
       <Card variant="dark" flexibleWidth>
@@ -65,7 +100,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
           </Heading>
 
           <InstructionProgress
-            currentIndex={index}
+            currentIndex={onboardingIndex}
             isDark={true}
             instructions={[
               {

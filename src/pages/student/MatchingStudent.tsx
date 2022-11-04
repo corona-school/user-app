@@ -11,9 +11,7 @@ import {
   Column,
   Modal,
   useToast,
-  Box,
-  Alert,
-  HStack
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +21,7 @@ import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
+import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
 
@@ -173,7 +172,9 @@ const MatchingStudent: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="matching">
-      <WithNavigation headerTitle={t('matching.request.check.header')}>
+      <WithNavigation
+        headerTitle={t('matching.request.check.header')}
+        headerContent={<Hello />}>
         <VStack
           paddingX={space['1']}
           maxWidth={ContainerWidth}

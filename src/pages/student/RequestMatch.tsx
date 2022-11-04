@@ -18,7 +18,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
   const { t } = useTranslation()
   const { setShow, setContent } = useModal()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
@@ -137,6 +137,8 @@ const RequestMatch: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={
                 (selectedClasses[focusedSubject.name] && [
                   selectedClasses[focusedSubject.name].min,

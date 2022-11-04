@@ -91,7 +91,7 @@ const mutStudent = `mutation register(
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -161,15 +161,20 @@ const RegistrationData: React.FC<Props> = () => {
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
 
-      await register({
-        variables: {
-          firstname,
-          lastname,
-          email,
-          password,
-          ...data
-        }
-      })
+      try {
+        await register({
+          variables: {
+            firstname,
+            lastname,
+            email,
+            password,
+            ...data
+          }
+        })
+        return true
+      } catch (e) {
+        return false
+      }
     },
     [email, firstname, lastname, password, register]
   )
@@ -191,15 +196,20 @@ const RegistrationData: React.FC<Props> = () => {
 
     subjects?.length && (data.subjects = subjects)
 
-    await register({
-      variables: {
-        firstname,
-        lastname,
-        email,
-        password,
-        ...data
-      }
-    })
+    try {
+      await register({
+        variables: {
+          firstname,
+          lastname,
+          email,
+          password,
+          ...data
+        }
+      })
+      return true
+    } catch (e) {
+      return false
+    }
   }, [
     answers.subjects,
     classes,
@@ -253,7 +263,7 @@ const RegistrationData: React.FC<Props> = () => {
         marginX="auto"
         alignItems="center"
         justifyContent="center">
-        <Box justifyContent="center" marginLeft="40px">
+        <Box justifyContent="center" alignItems="center">
           <EventIcon />
         </Box>
         <Heading
@@ -642,6 +652,8 @@ const RegistrationData: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={
                 (classes[focusedSelection.key] && [
                   classes[focusedSelection.key]?.min,

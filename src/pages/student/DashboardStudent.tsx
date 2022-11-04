@@ -9,7 +9,8 @@ import {
   useBreakpointValue,
   Flex,
   Column,
-  Alert
+  Alert,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -31,8 +32,9 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
-import AlertMessage from '../../widgets/AlertMessage'
+import Hello from '../../widgets/Hello'
 import CSSWrapper from '../../components/CSSWrapper'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -43,9 +45,6 @@ const query = gql`
       student {
         firstMatchRequest
         openMatchRequestCount
-        certificateOfConduct {
-          id
-        }
         canRequestMatch {
           allowed
           reason
@@ -118,18 +117,6 @@ const DashboardStudent: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createMatchRequest, matchRequest] = useMutation(
-    gql`
-      mutation {
-        studentCreateMatchRequest
-      }
-    `,
-    {
-      refetchQueries: [query]
-    }
-  )
 
   const [dissolve, _dissolve] = useMutation(
     gql`
@@ -254,19 +241,6 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
-  const onboardingIndex: number = useMemo(() => {
-    if (data?.me?.student?.canCreateCourse.reason === 'not-screened') return 0
-    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
-    if (!data?.me?.student?.firstMatchRequest) return 2
-    if (!data?.me?.student?.certificateOfConduct?.id) return 3
-    return 0
-  }, [
-    data?.me?.student?.canCreateCourse.reason,
-    data?.me?.student?.canRequestMatch.reason,
-    data?.me?.student?.certificateOfConduct?.id,
-    data?.me?.student?.firstMatchRequest
-  ])
-
   return (
     <AsNavigationItem path="dashboard">
       <WithNavigation
@@ -282,9 +256,9 @@ const DashboardStudent: React.FC<Props> = () => {
               size="md"
               image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             /> */}
-              <Heading color={'#fff'} paddingY={space['1.5']}>
-                {t('hallo')} {data?.me?.firstname}!
-              </Heading>
+              <Box paddingY={space['1.5']}>
+                <Hello />
+              </Box>
             </HStack>
           )
         }
@@ -298,7 +272,7 @@ const DashboardStudent: React.FC<Props> = () => {
             maxWidth={ContainerWidth}>
             <VStack>
               <VStack marginBottom={space['1.5']}>
-                <HelperWizard index={onboardingIndex} />
+                <HelperWizard />
               </VStack>
 
               {/* Next Appointment */}
@@ -491,9 +465,13 @@ const DashboardStudent: React.FC<Props> = () => {
           </VStack> */}
               {
                 <VStack marginBottom={space['1.5']}>
-                  <Heading marginBottom={space['1']}>
+                  <Heading>
                     {t('dashboard.helpers.headlines.myLearningPartner')}
                   </Heading>
+                  <Text marginTop={space['0.5']} marginBottom={space['1']}>
+                    Offene Anfragen:{' '}
+                    {`${data?.me?.student?.openMatchRequestCount}`}
+                  </Text>
                   <CSSWrapper className="course-list__wrapper">
                     {(activeMatches?.length &&
                       activeMatches.map((match: LFMatch, index: number) => (
@@ -548,11 +526,6 @@ const DashboardStudent: React.FC<Props> = () => {
                       )}
                     />
                   )}
-
-                  <Text>
-                    Offene Anfragen:{' '}
-                    {`${data?.me?.student?.openMatchRequestCount}`}
-                  </Text>
                 </VStack>
               }
               <VStack marginBottom={space['1.5']}>

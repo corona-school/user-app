@@ -5,9 +5,7 @@ import {
   VStack,
   useBreakpointValue,
   Column,
-  HStack,
-  Flex,
-  Alert
+  Flex
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +22,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { DateTime } from 'luxon'
+import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
@@ -263,6 +262,7 @@ const PupilGroup: React.FC<Props> = () => {
   return (
     <AsNavigationItem path="group">
       <WithNavigation
+        headerContent={<Hello />}
         headerTitle={t('matching.group.pupil.header')}
         headerLeft={<NotificationAlert />}>
         <VStack

@@ -6,9 +6,7 @@ import {
   Button,
   useBreakpointValue,
   Flex,
-  Column,
-  Alert,
-  HStack
+  Column
 } from 'native-base'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +23,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { DateTime } from 'luxon'
+import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
@@ -195,6 +194,7 @@ const StudentGroup: React.FC<Props> = () => {
   return (
     <AsNavigationItem path="group">
       <WithNavigation
+        headerContent={<Hello />}
         headerTitle={t('matching.group.helper.header')}
         headerLeft={<NotificationAlert />}>
         <VStack
