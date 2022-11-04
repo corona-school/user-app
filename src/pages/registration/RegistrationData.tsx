@@ -161,15 +161,20 @@ const RegistrationData: React.FC<Props> = () => {
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
 
-      await register({
-        variables: {
-          firstname,
-          lastname,
-          email,
-          password,
-          ...data
-        }
-      })
+      try {
+        await register({
+          variables: {
+            firstname,
+            lastname,
+            email,
+            password,
+            ...data
+          }
+        })
+        return true
+      } catch (e) {
+        return false
+      }
     },
     [email, firstname, lastname, password, register]
   )
@@ -191,15 +196,20 @@ const RegistrationData: React.FC<Props> = () => {
 
     subjects?.length && (data.subjects = subjects)
 
-    await register({
-      variables: {
-        firstname,
-        lastname,
-        email,
-        password,
-        ...data
-      }
-    })
+    try {
+      await register({
+        variables: {
+          firstname,
+          lastname,
+          email,
+          password,
+          ...data
+        }
+      })
+      return true
+    } catch (e) {
+      return false
+    }
   }, [
     answers.subjects,
     classes,
@@ -253,7 +263,7 @@ const RegistrationData: React.FC<Props> = () => {
         marginX="auto"
         alignItems="center"
         justifyContent="center">
-        <Box justifyContent="center" marginLeft="40px">
+        <Box justifyContent="center" alignItems="center">
           <EventIcon />
         </Box>
         <Heading

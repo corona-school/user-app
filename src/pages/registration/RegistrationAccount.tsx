@@ -138,6 +138,7 @@ const RegistrationAccount: React.FC<Props> = () => {
   }, [
     ModalContainerWidth,
     onBarrierSolved,
+    overflowBar,
     setContent,
     setShow,
     setVariant,
