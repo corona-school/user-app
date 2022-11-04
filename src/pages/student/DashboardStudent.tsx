@@ -5,8 +5,6 @@ import {
   HStack,
   useTheme,
   VStack,
-  Modal,
-  Row,
   useToast,
   useBreakpointValue,
   Flex,
@@ -41,7 +39,11 @@ const query = gql`
     me {
       firstname
       student {
+        firstMatchRequest
         openMatchRequestCount
+        certificateOfConduct {
+          id
+        }
         canRequestMatch {
           allowed
           reason
@@ -139,14 +141,8 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   const requestMatch = useCallback(async () => {
-    setIsMatchRequested(true)
-    const res = (await createMatchRequest()) as {
-      data: {
-        studentCreateMatchRequest: boolean
-      }
-    }
-    setIsMatchRequested(res?.data?.studentCreateMatchRequest)
-  }, [createMatchRequest])
+    navigate('/request-match')
+  }, [navigate])
 
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
@@ -256,6 +252,19 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
+  const onboardingIndex: number = useMemo(() => {
+    if (data?.me?.student?.canCreateCourse.reason === 'not-screened') return 0
+    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
+    if (!data?.me?.student?.firstMatchRequest) return 2
+    if (!data?.me?.student?.certificateOfConduct?.id) return 3
+    return 0
+  }, [
+    data?.me?.student?.canCreateCourse.reason,
+    data?.me?.student?.canRequestMatch.reason,
+    data?.me?.student?.certificateOfConduct?.id,
+    data?.me?.student?.firstMatchRequest
+  ])
+
   return (
     <AsNavigationItem path="dashboard">
       <WithNavigation
@@ -287,7 +296,7 @@ const DashboardStudent: React.FC<Props> = () => {
             maxWidth={ContainerWidth}>
             <VStack>
               <VStack marginBottom={space['1.5']}>
-                <HelperWizard index={1} />
+                <HelperWizard index={onboardingIndex} />
               </VStack>
 
               {/* Next Appointment */}
@@ -500,86 +509,90 @@ const DashboardStudent: React.FC<Props> = () => {
               icon={<PartyIcon />}
             />
           </VStack> */}
-              <VStack marginBottom={space['1.5']}>
-                <Heading marginBottom={space['1']}>
-                  {t('dashboard.helpers.headlines.myLearningPartner')}
-                </Heading>
-                <Flex direction="row" flexWrap="wrap">
-                  {(activeMatches?.length &&
-                    activeMatches.map((match: LFMatch, index: number) => (
-                      <Column width={CardGrid} marginRight="15px">
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted}
-                          schooltype={match?.pupil?.schooltype || ''}
-                          schoolclass={match?.pupil?.grade}
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('matching.request.buttons.dissolve')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                {t('matching.status.dissolved')}
-                              </Text>
-                            )
-                          }
-                        />
-                      </Column>
-                    ))) ||
-                    (data?.me?.student?.canRequestMatch?.allowed ? (
-                      <Alert
-                        alignItems="start"
-                        width="max-content"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon color="danger.100" />
-                          <Text>{t('empty.matchings')}</Text>
-                        </HStack>
-                      </Alert>
-                    ) : (
-                      ''
-                    ))}
-                </Flex>
-                {(data?.me?.student?.canRequestMatch?.allowed && (
-                  <>
-                    <Button
-                      marginTop={space['1']}
-                      width={ButtonContainer}
-                      isDisabled={isMatchRequested}
-                      marginY={space['1']}
-                      onPress={requestMatch}>
-                      {t('dashboard.helpers.buttons.requestMatch')}
-                    </Button>
-                  </>
-                )) || (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    marginTop={space['0.5']}
-                    marginBottom={space['0.5']}
-                    colorScheme="warning">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {' '}
-                        {t(
-                          `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                        )}
-                      </Text>
-                    </HStack>
-                  </Alert>
-                )}
+              {
+                <VStack marginBottom={space['1.5']}>
+                  <Heading marginBottom={space['1']}>
+                    {t('dashboard.helpers.headlines.myLearningPartner')}
+                  </Heading>
+                  <Flex direction="row" flexWrap="wrap">
+                    {(activeMatches?.length &&
+                      activeMatches.map((match: LFMatch, index: number) => (
+                        <Column width={CardGrid} marginRight="15px">
+                          <LearningPartner
+                            key={index}
+                            isDark={true}
+                            name={match?.pupil?.firstname}
+                            subjects={match?.pupil?.subjectsFormatted}
+                            schooltype={match?.pupil?.schooltype || ''}
+                            schoolclass={match?.pupil?.grade}
+                            button={
+                              (!match.dissolved && (
+                                <Button
+                                  variant="outlinelight"
+                                  onPress={() => dissolveMatch(match)}>
+                                  {t('matching.request.buttons.dissolve')}
+                                </Button>
+                              )) || (
+                                <Text color="lightText">
+                                  {t('matching.status.dissolved')}
+                                </Text>
+                              )
+                            }
+                          />
+                        </Column>
+                      ))) ||
+                      (data?.me?.student?.canRequestMatch?.allowed ? (
+                        <Alert
+                          alignItems="start"
+                          width="max-content"
+                          colorScheme="info">
+                          <HStack space={2} flexShrink={1} alignItems="center">
+                            <Alert.Icon color="danger.100" />
+                            <Text>{t('empty.matchings')}</Text>
+                          </HStack>
+                        </Alert>
+                      ) : (
+                        ''
+                      ))}
+                  </Flex>
+                  {(data?.me?.student?.canRequestMatch?.reason !==
+                    'not-tutor' &&
+                    data?.me?.student?.canRequestMatch?.allowed && (
+                      <>
+                        <Button
+                          marginTop={space['1']}
+                          width={ButtonContainer}
+                          isDisabled={isMatchRequested}
+                          marginY={space['1']}
+                          onPress={requestMatch}>
+                          {t('dashboard.helpers.buttons.requestMatch')}
+                        </Button>
+                      </>
+                    )) || (
+                    <Alert
+                      alignItems="start"
+                      width="max-content"
+                      marginTop={space['0.5']}
+                      marginBottom={space['0.5']}
+                      colorScheme="warning">
+                      <HStack space={2} flexShrink={1} alignItems="center">
+                        <Alert.Icon color="danger.100" />
+                        <Text>
+                          {' '}
+                          {t(
+                            `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                          )}
+                        </Text>
+                      </HStack>
+                    </Alert>
+                  )}
 
-                <Text>
-                  Offene Anfragen:{' '}
-                  {`${data?.me?.student?.openMatchRequestCount}`}
-                </Text>
-              </VStack>
+                  <Text>
+                    Offene Anfragen:{' '}
+                    {`${data?.me?.student?.openMatchRequestCount}`}
+                  </Text>
+                </VStack>
+              }
               <VStack marginBottom={space['1.5']}>
                 <Heading marginBottom={space['1']}>
                   {t('dashboard.helpers.headlines.recommend')}

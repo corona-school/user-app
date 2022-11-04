@@ -86,8 +86,8 @@ const RequestMatchPreview: React.FC<Props> = ({
             <ToggleButton
               dataKey={`${index}`}
               isActive={false}
-              label={`${classes[sub.name].min}. - ${
-                classes[sub.name].max
+              label={`${classes[sub.name] && classes[sub.name].min}. - ${
+                classes[sub.name] && classes[sub.name].max
               }. Klasse`}
             />
           </VStack>

@@ -10,10 +10,9 @@ import {
   Flex,
   useToast,
   Alert,
-  FormControl,
-  Checkbox,
-  Radio,
-  Column
+  Column,
+  Modal,
+  Radio
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -45,12 +44,16 @@ const query = gql`
         matches {
           id
           dissolved
+          subjectsFormatted {
+            name
+          }
           student {
             id
             firstname
             lastname
           }
         }
+        firstMatchRequest
         openMatchRequestCount
         canRequestMatch {
           allowed
@@ -166,6 +169,16 @@ const Dashboard: React.FC<Props> = () => {
       })
     }, [data?.me?.pupil?.subcoursesJoined])
 
+  const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
+    gql`
+      mutation cancelMatchRequest {
+        pupilDeleteMatchRequest
+      }
+    `,
+    {
+      refetchQueries: [query]
+    }
+  )
   const [dissolve, _dissolve] = useMutation(
     gql`
       mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
@@ -190,6 +203,12 @@ const Dashboard: React.FC<Props> = () => {
       })
     }
   }, [_dissolve?.data?.matchDissolve, toast, toastShown])
+
+  const activeMatches = useMemo(() => {
+    return data?.me?.pupil?.matches?.filter(
+      (match: LFMatch) => !match.dissolved
+    )
+  }, [data?.me?.pupil?.matches])
 
   return (
     <AsNavigationItem path="dashboard">
@@ -326,7 +345,7 @@ const Dashboard: React.FC<Props> = () => {
                 showAll={data?.me?.pupil?.matches?.length > 2}
                 wrap>
                 <Flex direction="row" flexWrap="wrap" marginRight="-10px">
-                  {data?.me?.pupil?.matches?.slice(0, 2).map(
+                  {activeMatches.map(
                     (match: LFMatch) =>
                       (
                         <Pressable
@@ -345,13 +364,9 @@ const Dashboard: React.FC<Props> = () => {
                             name={`${match.student?.firstname} ${match.student?.lastname}`}
                             variant="dark"
                             tags={
-                              match.subjectsFormatted?.map(s => s.name) || [
-                                'Fehler',
-                                'Backend',
-                                'Permission'
-                              ]
+                              match.subjectsFormatted?.map(s => s.name) || []
                             }
-                            avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                            avatar=""
                             button={
                               (!match.dissolved && (
                                 <Button
@@ -396,25 +411,45 @@ const Dashboard: React.FC<Props> = () => {
                       {t('dashboard.offers.requestMatching')}
                     </Button>
                   )) || (
-                    <Alert
-                      alignItems="start"
-                      marginBottom={space['1.5']}
-                      width="max-content"
-                      colorScheme="info">
-                      <HStack space={2} flexShrink={1} alignItems="center">
-                        <Alert.Icon color="danger.100" />
+                    // <Alert
+                    //   alignItems="start"
+                    //   marginBottom={space['1.5']}
+                    //   width="max-content"
+                    //   colorScheme="info">
+                    <VStack space={2} flexShrink={1}>
+                      {/* <Alert.Icon color="danger.100" />
                         <Text>
                           {t(
                             `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
                           )}
-                        </Text>
-                      </HStack>
-                    </Alert>
+                        </Text> */}
+                      {/* <Text>
+                        Du hast bereits eine Matching Anfrage gestellt.
+                      </Text> */}
+                      <Text>
+                        Anfrage erstellt am:{' '}
+                        {DateTime.fromISO(
+                          data?.me?.pupil?.firstMatchRequest
+                        ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
+                        Uhr
+                      </Text>
+                      <Text bold>
+                        Bitte beachte dass die Suche nach einer/einem
+                        Lernpartner:in zu{' '}
+                        <Text>Wartezeiten von 3 - 6 Monaten</Text> kommen kann
+                      </Text>
+                      <Button
+                        isDisabled={_cancelMatchRequest?.loading}
+                        onPress={() => cancelMatchRequest()}>
+                        Anfrage zurücknehmen
+                      </Button>
+                    </VStack>
+                    // </Alert>
                   )}
-                  <Text>
+                  {/* <Text>
                     Offene Anfragen:{' '}
                     {`${data?.me?.pupil?.openMatchRequestCount}`}
-                  </Text>
+                  </Text> */}
                 </VStack>
               </HSection>
 
