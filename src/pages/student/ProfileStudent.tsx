@@ -296,7 +296,7 @@ const ProfileStudent: React.FC<Props> = () => {
           width="100%"
           paddingX={space['1']}
           paddingY={space['1']}>
-          <HelperWizard index={0} />
+          <HelperWizard />
         </VStack>
 
         <VStack

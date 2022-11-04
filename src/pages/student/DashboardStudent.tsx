@@ -41,9 +41,6 @@ const query = gql`
       student {
         firstMatchRequest
         openMatchRequestCount
-        certificateOfConduct {
-          id
-        }
         canRequestMatch {
           allowed
           reason
@@ -116,18 +113,6 @@ const DashboardStudent: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createMatchRequest, matchRequest] = useMutation(
-    gql`
-      mutation {
-        studentCreateMatchRequest
-      }
-    `,
-    {
-      refetchQueries: [query]
-    }
-  )
 
   const [dissolve, _dissolve] = useMutation(
     gql`
@@ -252,19 +237,6 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
-  const onboardingIndex: number = useMemo(() => {
-    if (data?.me?.student?.canCreateCourse.reason === 'not-screened') return 0
-    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
-    if (!data?.me?.student?.firstMatchRequest) return 2
-    if (!data?.me?.student?.certificateOfConduct?.id) return 3
-    return 0
-  }, [
-    data?.me?.student?.canCreateCourse.reason,
-    data?.me?.student?.canRequestMatch.reason,
-    data?.me?.student?.certificateOfConduct?.id,
-    data?.me?.student?.firstMatchRequest
-  ])
-
   return (
     <AsNavigationItem path="dashboard">
       <WithNavigation
@@ -296,7 +268,7 @@ const DashboardStudent: React.FC<Props> = () => {
             maxWidth={ContainerWidth}>
             <VStack>
               <VStack marginBottom={space['1.5']}>
-                <HelperWizard index={onboardingIndex} />
+                <HelperWizard />
               </VStack>
 
               {/* Next Appointment */}
