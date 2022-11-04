@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { VStack, Modal, Button, useTheme, Heading } from 'native-base'
+import { VStack, Modal, Button, useTheme, Heading, Text } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
@@ -13,6 +13,7 @@ import RequestMatchPreview from './RequestMatchPreview'
 import RequestMatchWizard from './RequestMatchWizard'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
@@ -28,8 +29,10 @@ const RequestMatch: React.FC<Props> = () => {
     [key: string]: ClassRange
   }>({})
 
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [focusedSubject, setFocusedSubject] = useState<any>({ name: '' })
   const [showModal, setShowModal] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   const { data } = useQuery(gql`
     query {
@@ -68,18 +71,7 @@ const RequestMatch: React.FC<Props> = () => {
 
   useEffect(() => {
     if (matchRequest?.data?.studentCreateMatchRequest) {
-      setContent(
-        <>
-          <Heading>Deine Anfrage wurde erstellt!</Heading>
-          <Button
-            onPress={() => {
-              setShow(false)
-            }}>
-            Weiter
-          </Button>
-        </>
-      )
-      setShow(true)
+      setShowSuccessModal(true)
     }
   }, [matchRequest?.data?.studentCreateMatchRequest, setContent, setShow])
 
@@ -167,6 +159,31 @@ const RequestMatch: React.FC<Props> = () => {
                 setShowModal(false)
               }}>
               {t('matching.request.modal.save')}
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false)
+          navigate('/matching')
+        }}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Anfrage erstellt</Modal.Header>
+          <Modal.Body>
+            <>
+              <Text>Deine Anfrage wurde erfolgreich erstellt!</Text>
+            </>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onPress={() => {
+                setShowSuccessModal(false)
+                navigate('/matching')
+              }}>
+              {t('next')}
             </Button>
           </Modal.Footer>
         </Modal.Content>
