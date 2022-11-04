@@ -67,7 +67,7 @@ const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
 type Props = {}
 
 const ChangeSettingSubject: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+  const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
   const { userType = '' } = useLernfair()
   const { trackPageView } = useMatomo()
@@ -389,6 +389,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={selectedClassRange}
               step={1}
               onValueChange={(value: number | number[]) => {

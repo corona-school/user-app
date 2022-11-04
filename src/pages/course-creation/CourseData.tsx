@@ -52,7 +52,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     }
   `)
 
-  const { space, sizes } = useTheme()
+  const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
   const {
     courseName,
@@ -181,6 +181,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={classRange || [1, 13]}
               step={1}
               onValueChange={(value: number | number[]) => {

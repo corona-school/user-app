@@ -91,7 +91,7 @@ const mutStudent = `mutation register(
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -642,6 +642,8 @@ const RegistrationData: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={
                 (classes[focusedSelection.key] && [
                   classes[focusedSelection.key]?.min,
