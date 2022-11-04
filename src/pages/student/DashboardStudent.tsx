@@ -407,9 +407,9 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                         if (!firstLecture) return <></>
                         return (
-                          <Column width={CardGrid} marginRight="15px">
+                          <Column width={CardGrid} height="auto">
                             <AppointmentCard
-                              isFullHeight
+                              isFullHeight={false}
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -454,6 +454,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 </Flex>
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
+                    marginTop={space['1']}
                     width={ButtonContainer}
                     onPress={() => {
                       trackEvent({
@@ -547,6 +548,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 {(data?.me?.student?.canRequestMatch?.allowed && (
                   <>
                     <Button
+                      marginTop={space['1']}
                       width={ButtonContainer}
                       isDisabled={isMatchRequested}
                       marginY={space['1']}
@@ -558,6 +560,7 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Alert
                     alignItems="start"
                     width="max-content"
+                    marginTop={space['0.5']}
                     marginBottom={space['0.5']}
                     colorScheme="warning">
                     <HStack space={2} flexShrink={1} alignItems="center">

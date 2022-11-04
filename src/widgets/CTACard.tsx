@@ -8,7 +8,8 @@ import {
   useTheme,
   Container,
   Tooltip,
-  useBreakpointValue
+  useBreakpointValue,
+  Column
 } from 'native-base'
 import Card from '../components/Card'
 
@@ -60,6 +61,36 @@ const CTACard: React.FC<Props> = ({
     lg: 'center'
   })
 
+  const ButtonDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const ButtonSpace = useBreakpointValue({
+    base: 0,
+    lg: '25px'
+  })
+
+  const ContentsDirection = useBreakpointValue({
+    base: 'flex-start',
+    lg: 'space-between'
+  })
+
+  const IconSpace = useBreakpointValue({
+    base: 0,
+    lg: space['2']
+  })
+
+  const IconSpaceBottom = useBreakpointValue({
+    base: space['1'],
+    lg: 0
+  })
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: '92%'
+  })
+
   return (
     <Wrapper flexibleWidth width={width} isFullHeight>
       <Box
@@ -69,39 +100,55 @@ const CTACard: React.FC<Props> = ({
         alignItems={CardMobileAlignItems}
         mb={marginBottom}
         backgroundColor={variant === 'dark' ? 'primary.900' : 'primary.300'}
-        padding={variant === 'normal' || variant === 'dark' ? space['1'] : 0}
+        padding={variant === 'normal' || variant === 'dark' ? space['1.5'] : 0}
         borderRadius={15}
         flexWrap={'wrap'}>
         <Row
           flexWrap={'wrap'}
           w="100%"
           justifyContent={closeable ? 'space-between' : ''}>
-          <Box>{icon}</Box>
-          <Container marginLeft={icon ? space['1'] : ''}>
-            <Text
-              maxWidth="340px"
-              bold
-              fontSize={'lg'}
-              flex="1"
-              marginBottom={space['0.5']}
-              color={variant === 'dark' ? 'lightText' : 'primary.800'}
-              display="flex">
-              {title}
+          <Box marginBottom={IconSpaceBottom}>{icon}</Box>
+          <Container
+            maxWidth="100%"
+            flexDirection={ButtonDirection}
+            width={ContainerWidth}
+            marginLeft={IconSpace}>
+            <Row
+              width="100%"
+              justifyContent={ContentsDirection}
+              flexDirection={ButtonDirection}>
+              <Column>
+                <Text
+                  maxWidth="340px"
+                  bold
+                  fontSize={'lg'}
+                  flex="1"
+                  marginBottom={space['0.5']}
+                  color={variant === 'dark' ? 'lightText' : 'primary.800'}
+                  display="flex">
+                  {title}
 
-              {infotooltip && (
-                <Tooltip label={infotooltip}>
-                  <Box marginLeft="10px" marginRight="10px">
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              )}
-            </Text>
-            <Text
-              color={variant === 'dark' ? 'lightText' : 'primary.800'}
-              maxWidth="500px">
-              {content}
-            </Text>
-            <Row>{button && <Box marginTop={space['1']}>{button}</Box>}</Row>
+                  {infotooltip && (
+                    <Tooltip label={infotooltip}>
+                      <Box
+                        marginLeft="10px"
+                        marginRight={space['2']}
+                        marginBottom={IconSpaceBottom}>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  )}
+                </Text>
+                <Text
+                  color={variant === 'dark' ? 'lightText' : 'primary.800'}
+                  maxWidth="500px">
+                  {content}
+                </Text>
+              </Column>
+              <Column>
+                {button && <Box marginTop={space['1']}>{button}</Box>}
+              </Column>
+            </Row>
           </Container>
           {closeable && (
             <Pressable onPress={onClose} testID="close">

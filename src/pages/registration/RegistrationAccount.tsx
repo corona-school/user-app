@@ -52,13 +52,18 @@ const RegistrationAccount: React.FC<Props> = () => {
   })
 
   const ModalContainerWidth = useBreakpointValue({
-    base: '90%',
+    base: '93%',
     lg: sizes['formsWidth']
   })
 
   const buttonWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
+  })
+
+  const overflowBar = useBreakpointValue({
+    base: 'scroll',
+    lg: 'none'
   })
 
   useEffect(() => {
@@ -94,26 +99,39 @@ const RegistrationAccount: React.FC<Props> = () => {
         justifyContent="center"
         marginX="auto"
         width={ModalContainerWidth}>
-        <WarningIcon />
-        <Heading color={'lightText'}>{t('registration.barrier.title')}</Heading>
-        <Text fontSize={'md'} color={'lightText'}>
-          {t(`registration.barrier.text`)}
-        </Text>
-        <VStack paddingBottom={space['2']}>
-          {new Array(3).fill(0).map((_, i) => (
-            <Text fontSize={'md'} color={'lightText'}>
-              {t(`registration.barrier.point_${i}`)}
-            </Text>
-          ))}
-        </VStack>
-        <Row width={ModalContainerWidth} space={space['1']}>
-          <Button onPress={() => onBarrierSolved(true)} flex="1">
-            {t('registration.barrier.btn.yes')}
-          </Button>
-          <Button onPress={() => onBarrierSolved(false)} flex="1">
-            {t('registration.barrier.btn.no')}
-          </Button>
-        </Row>
+        <Box
+          alignItems="center"
+          marginY={space['4']}
+          overflowY={overflowBar}
+          height="100vh">
+          <Box marginTop={space['3']} marginBottom={space['1']}>
+            <WarningIcon />
+          </Box>
+          <Heading color={'lightText'} marginBottom={space['1']}>
+            {t('registration.barrier.title')}
+          </Heading>
+          <Text fontSize={'md'} color={'lightText'} textAlign="center">
+            {t(`registration.barrier.text`)}
+          </Text>
+          <VStack paddingBottom={space['2']}>
+            {new Array(3).fill(0).map((_, i) => (
+              <Text fontSize={'md'} color={'lightText'} textAlign="center">
+                {t(`registration.barrier.point_${i}`)}
+              </Text>
+            ))}
+          </VStack>
+          <Row
+            width={ModalContainerWidth}
+            space={space['1']}
+            marginBottom={space['2']}>
+            <Button onPress={() => onBarrierSolved(true)} flex="1">
+              {t('registration.barrier.btn.yes')}
+            </Button>
+            <Button onPress={() => onBarrierSolved(false)} flex="1">
+              {t('registration.barrier.btn.no')}
+            </Button>
+          </Row>
+        </Box>
       </VStack>
     ))
     setShow(true)
@@ -167,11 +185,11 @@ const RegistrationAccount: React.FC<Props> = () => {
               <Alert
                 alignItems="start"
                 marginBottom="10px"
-                maxW="350"
+                width="max-content"
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.email.invalid')}</Text>
                 </HStack>
               </Alert>
@@ -192,11 +210,11 @@ const RegistrationAccount: React.FC<Props> = () => {
               <Alert
                 alignItems="start"
                 marginBottom="10px"
-                maxW="350"
+                width="max-content"
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.password.nomatch')}</Text>
                 </HStack>
               </Alert>
@@ -208,11 +226,11 @@ const RegistrationAccount: React.FC<Props> = () => {
               <Alert
                 alignItems="start"
                 marginBottom="10px"
-                maxW="400"
+                width="max-content"
                 backgroundColor="#fff8f8"
                 colorScheme="error">
                 <HStack space={2} flexShrink={1} alignItems="center">
-                  <WarningTwoIcon color="danger.400" />
+                  <Alert.Icon color="danger.100" />
                   <Text>{t('registration.hint.password.length')}</Text>
                 </HStack>
               </Alert>
@@ -259,11 +277,11 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Alert
               alignItems="start"
               marginBottom="10px"
-              maxW="350"
+              width="max-content"
               backgroundColor="#fff8f8"
               colorScheme="warning">
               <HStack space={2} flexShrink={1} alignItems="center">
-                <WarningTwoIcon color="danger.400" />
+                <Alert.Icon color="danger.100" />
                 <Text>{t('registration.hint.userType.missing')}</Text>
               </HStack>
             </Alert>
