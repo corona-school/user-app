@@ -511,9 +511,13 @@ const DashboardStudent: React.FC<Props> = () => {
           </VStack> */}
               {
                 <VStack marginBottom={space['1.5']}>
-                  <Heading marginBottom={space['1']}>
+                  <Heading>
                     {t('dashboard.helpers.headlines.myLearningPartner')}
                   </Heading>
+                  <Text marginTop={space['0.5']} marginBottom={space['1']}>
+                    Offene Anfragen:{' '}
+                    {`${data?.me?.student?.openMatchRequestCount}`}
+                  </Text>
                   <Flex direction="row" flexWrap="wrap">
                     {(activeMatches?.length &&
                       activeMatches.map((match: LFMatch, index: number) => (
@@ -586,11 +590,6 @@ const DashboardStudent: React.FC<Props> = () => {
                       </HStack>
                     </Alert>
                   )}
-
-                  <Text>
-                    Offene Anfragen:{' '}
-                    {`${data?.me?.student?.openMatchRequestCount}`}
-                  </Text>
                 </VStack>
               }
               <VStack marginBottom={space['1.5']}>
