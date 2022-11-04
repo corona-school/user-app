@@ -1,0 +1,19 @@
+:root {
+    --course-gap: 20px;
+}
+
+.course-list {
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--course-gap);
+    }
+
+    &__item {
+        flex-basis: calc( 50% - var(--course-gap));
+
+        @media screen and (max-width: 992px ) {
+            flex-basis: 100%;
+        }  
+    }
+}

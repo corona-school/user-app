@@ -32,6 +32,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import AlertMessage from '../../widgets/AlertMessage'
+import CSSWrapper from '../../components/CSSWrapper'
 
 type Props = {}
 
@@ -399,7 +400,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 wrap
                 marginBottom={space['1.5']}
                 scrollable={false}>
-                <Flex direction="row" flexWrap="wrap">
+                <CSSWrapper className="course-list__wrapper">
                   {(sortedPublishedSubcourses.length > 0 &&
                     sortedPublishedSubcourses
                       .slice(0, 4)
@@ -409,9 +410,10 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                         if (!firstLecture) return <></>
                         return (
-                          <Column width={CardGrid} height="auto">
+                          <CSSWrapper className="course-list__item">
                             <AppointmentCard
                               isFullHeight={false}
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -437,7 +439,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               image={sub.course.image}
                               title={sub.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       })) ||
                     (data?.me?.student?.canCreateCourse?.allowed ? (
@@ -445,7 +447,8 @@ const DashboardStudent: React.FC<Props> = () => {
                     ) : (
                       ''
                     ))}
-                </Flex>
+                </CSSWrapper>
+
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
                     marginTop={space['1']}
@@ -491,10 +494,10 @@ const DashboardStudent: React.FC<Props> = () => {
                   <Heading marginBottom={space['1']}>
                     {t('dashboard.helpers.headlines.myLearningPartner')}
                   </Heading>
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {(activeMatches?.length &&
                       activeMatches.map((match: LFMatch, index: number) => (
-                        <Column width={CardGrid} marginRight="15px">
+                        <CSSWrapper className="course-list__item">
                           <LearningPartner
                             key={index}
                             isDark={true}
@@ -516,14 +519,15 @@ const DashboardStudent: React.FC<Props> = () => {
                               )
                             }
                           />
-                        </Column>
+                        </CSSWrapper>
                       ))) ||
                       (data?.me?.student?.canRequestMatch?.allowed ? (
                         <AlertMessage content={t('empty.matchings')} />
                       ) : (
                         ''
                       ))}
-                  </Flex>
+                  </CSSWrapper>
+
                   {(data?.me?.student?.canRequestMatch?.reason !==
                     'not-tutor' &&
                     data?.me?.student?.canRequestMatch?.allowed && (

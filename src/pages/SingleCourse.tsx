@@ -216,6 +216,11 @@ const SingleCourse: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const imageHeight = useBreakpointValue({
+    base: '178px',
+    lg: '260px'
+  })
+
   useEffect(() => {
     trackPageView({
       documentTitle: course?.course?.name
@@ -245,7 +250,7 @@ const SingleCourse: React.FC<Props> = () => {
           maxWidth={ContainerWidth}
           marginX="auto"
           width="100%">
-          <Box height="178px" marginBottom={space['1.5']}>
+          <Box height={imageHeight} marginBottom={space['1.5']}>
             <Image
               alt={course?.course?.name}
               borderRadius="8px"

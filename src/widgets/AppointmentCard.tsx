@@ -23,6 +23,7 @@ import { LFTag } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 
 import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {
   tags?: LFTag[]
@@ -37,6 +38,7 @@ type Props = {
   variant?: 'card' | 'horizontal'
   isTeaser?: boolean
   isGrid?: boolean
+  isSpaceMarginBottom?: boolean
   isFullHeight?: boolean
   image?: string
   onPressToCourse?: () => any
@@ -57,6 +59,7 @@ const AppointmentCard: React.FC<Props> = ({
   buttonlink,
   isTeaser = false,
   isGrid = false,
+  isSpaceMarginBottom = true,
   isFullHeight = false,
   image,
   onPressToCourse
@@ -255,7 +258,7 @@ const AppointmentCard: React.FC<Props> = ({
             flexDirection="row"
             borderRadius="15px"
             backgroundColor="primary.100"
-            marginBottom={space['1']}>
+            marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
             <Box display="block" marginRight={space['1']}>
               <Image
                 width="110px"
@@ -270,11 +273,14 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
 
             <Box paddingX="10px" paddingY={space['1.5']}>
-              <Row space={space['0.5']} flexWrap="wrap" maxWidth="370px">
-                {tags?.map((tag, i) => (
-                  <Tag key={`tag-${i}`} text={tag.name} />
-                ))}
-              </Row>
+              <CSSWrapper className="course-list__item-tags">
+                <Row space={space['0.5']} flexWrap="wrap" maxWidth="370px">
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
+                  ))}
+                </Row>
+              </CSSWrapper>
+
               <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>

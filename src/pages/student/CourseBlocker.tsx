@@ -12,6 +12,7 @@ import {
 } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import LFIconBook from '../../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
 import LFImageLearing from '../../assets/images/course/course-blocker.jpg'
 import BackButton from '../../components/BackButton'
@@ -24,6 +25,7 @@ type Props = {}
 const CourseBlocker: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
@@ -89,7 +91,11 @@ const CourseBlocker: React.FC<Props> = () => {
           title={t('course.blocker.cta.title')}
           content={t('course.blocker.cta.content')}
           icon={<LFIconBook />}
-          button={<Button>{t('course.blocker.cta.button')}</Button>}
+          button={
+            <Button onPress={() => navigate('/onboarding-list')}>
+              {t('course.blocker.cta.button')}
+            </Button>
+          }
         />
       </Container>
       <Container
