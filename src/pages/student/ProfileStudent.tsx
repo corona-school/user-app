@@ -61,27 +61,32 @@ const ProfileStudent: React.FC<Props> = () => {
     showSuccessfulChangeAlert: boolean
   }
 
-  const { data, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        lastname
-        student {
-          state
-          aboutMe
-          subjectsFormatted {
-            name
-          }
-          participationCertificates {
-            subjectsFormatted
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          firstname
+          lastname
+          student {
             state
-            startDate
-            pupilId
+            aboutMe
+            subjectsFormatted {
+              name
+            }
+            participationCertificates {
+              subjectsFormatted
+              state
+              startDate
+              pupilId
+            }
           }
         }
       }
+    `,
+    {
+      fetchPolicy: 'no-cache'
     }
-  `)
+  )
 
   const [changeName, _changeName] = useMutation(gql`
     mutation changeName($firstname: String!, $lastname: String!) {
