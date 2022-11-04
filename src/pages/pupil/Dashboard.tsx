@@ -10,7 +10,9 @@ import {
   Flex,
   useToast,
   Alert,
-  Column
+  Column,
+  Modal,
+  Radio
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -51,6 +53,7 @@ const query = gql`
             lastname
           }
         }
+        firstMatchRequest
         openMatchRequestCount
         canRequestMatch {
           allowed
@@ -166,6 +169,16 @@ const Dashboard: React.FC<Props> = () => {
       })
     }, [data?.me?.pupil?.subcoursesJoined])
 
+  const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
+    gql`
+      mutation cancelMatchRequest {
+        pupilDeleteMatchRequest
+      }
+    `,
+    {
+      refetchQueries: [query]
+    }
+  )
   const [dissolve, _dissolve] = useMutation(
     gql`
       mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
@@ -410,13 +423,26 @@ const Dashboard: React.FC<Props> = () => {
                             `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
                           )}
                         </Text> */}
-                      <Text>
+                      {/* <Text>
                         Du hast bereits eine Matching Anfrage gestellt.
-                      </Text>
+                      </Text> */}
                       <Text>
-                        Bitte beachte dass die Suche nach einer/einem
-                        Lernpartner:in bis zu 7 Tage dauern kann.
+                        Anfrage erstellt am:{' '}
+                        {DateTime.fromISO(
+                          data?.me?.pupil?.firstMatchRequest
+                        ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
+                        Uhr
                       </Text>
+                      <Text bold>
+                        Bitte beachte dass die Suche nach einer/einem
+                        Lernpartner:in zu{' '}
+                        <Text>Wartezeiten von 3 - 6 Monaten</Text> kommen kann
+                      </Text>
+                      <Button
+                        isDisabled={_cancelMatchRequest?.loading}
+                        onPress={() => cancelMatchRequest()}>
+                        Anfrage zurücknehmen
+                      </Button>
                     </VStack>
                     // </Alert>
                   )}
