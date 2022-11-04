@@ -54,8 +54,8 @@ type ICreateCourseContext = {
   setCourseName?: Dispatch<SetStateAction<string>>
   subject?: LFSubject
   setSubject?: Dispatch<SetStateAction<LFSubject>>
-  courseClasses?: number[]
-  setCourseClasses?: Dispatch<SetStateAction<number[]>>
+  classRange?: [number, number]
+  setClassRange?: Dispatch<SetStateAction<[number, number]>>
   outline?: string
   setOutline?: Dispatch<SetStateAction<string>>
   description?: string
@@ -78,7 +78,7 @@ export const CreateCourseContext = createContext<ICreateCourseContext>({})
 const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [subject, setSubject] = useState<LFSubject>({ name: '' })
-  const [courseClasses, setCourseClasses] = useState<number[]>([])
+  const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13])
   const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
@@ -150,6 +150,7 @@ const CreateCourse: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Kurs erstellen'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onFinish = useCallback(async () => {
@@ -186,8 +187,8 @@ const CreateCourse: React.FC<Props> = () => {
         joinAfterStart: boolean
         lectures: LFLecture[]
       } = {
-        minGrade: 11,
-        maxGrade: 13,
+        minGrade: courseClasses[0],
+        maxGrade: courseClasses[1],
         maxParticipants: parseInt(maxParticipantCount),
         joinAfterStart,
         lectures: []
@@ -214,10 +215,11 @@ const CreateCourse: React.FC<Props> = () => {
       })
     }
   }, [
+    courseClasses,
     courseData,
     courseError,
     createSubcourse,
-    data?.me?.student?.id,
+    data.me.student.id,
     joinAfterStart,
     lectures,
     maxParticipantCount
@@ -301,19 +303,18 @@ const CreateCourse: React.FC<Props> = () => {
     formData.append('file', data, 'img_course.jpeg')
 
     try {
-      // const raw = await fetch(process.env.REACT_APP_UPLOAD_URL, {
-      //   method: 'POST',
-      //   body: formData
-      // })
+      const raw = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+        method: 'POST',
+        body: formData
+      })
 
-      if (true) {
+      if (raw) {
         setCourseImage({
           variables: {
             courseId: courseData.courseCreate.id,
-            fileId: '1071e47c-8257-4017-bc1e-37dd8219ffae'
+            fileId: raw
           }
         })
-        console.log('set photo')
       }
     } catch (e) {
       console.error(e)
@@ -351,8 +352,8 @@ const CreateCourse: React.FC<Props> = () => {
         value={{
           courseName,
           setCourseName,
-          courseClasses,
-          setCourseClasses,
+          classRange: courseClasses,
+          setClassRange: setCourseClasses,
           subject,
           setSubject,
           outline,
