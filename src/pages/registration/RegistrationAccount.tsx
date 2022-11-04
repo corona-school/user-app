@@ -120,7 +120,7 @@ const RegistrationAccount: React.FC<Props> = () => {
               </Text>
             ))}
           </VStack>
-          <Row
+          <VStack
             width={ModalContainerWidth}
             space={space['1']}
             marginBottom={space['2']}>
@@ -130,7 +130,7 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Button onPress={() => onBarrierSolved(false)} flex="1">
               {t('registration.barrier.btn.no')}
             </Button>
-          </Row>
+          </VStack>
         </Box>
       </VStack>
     ))

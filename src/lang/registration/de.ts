@@ -29,8 +29,8 @@ const registration = {
     point_9:
       'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de',
     btn: {
-      yes: 'Ja,\ndie Punkte\ntreffen zu',
-      no: 'Nein,\ndie Punkte\ntreffen nicht zu'
+      yes: 'Ja, die Punkte treffen zu',
+      no: 'Nein, die Punkte treffen nicht zu'
     }
   },
   hint: {
