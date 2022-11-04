@@ -65,10 +65,13 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     setOutline,
     description,
     setDescription,
+    tags,
     setTags,
     maxParticipantCount,
     setMaxParticipantCount,
+    joinAfterStart,
     setJoinAfterStart,
+    allowContact,
     setAllowContact,
     pickedPhoto
   } = useContext(CreateCourseContext)
@@ -247,6 +250,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
           placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
+          value={outline}
           onChangeText={setOutline}
         />
         <Text fontSize="xs">
@@ -260,6 +264,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <TextArea
           placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
           autoCompleteType={'normal'}
+          value={description}
           onChangeText={setDescription}
         />
       </FormControl>
@@ -272,6 +277,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
           placeholder={t('course.CourseDate.form.tagsPlaceholder')}
           autoCompleteType={'normal'}
+          value={tags}
           onChangeText={setTags}
         />
         <Text fontSize="xs">{t('course.CourseDate.form.tagsInfo')}</Text>
@@ -300,7 +306,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
       </Heading>
       <Row>
         <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
-        <Switch onValueChange={setJoinAfterStart} />
+        <Switch value={joinAfterStart} onValueChange={setJoinAfterStart} />
       </Row>
       <Row marginBottom={space['2']}>
         <Text flex="1" justifyContent="center">
@@ -316,7 +322,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
             />
           </Tooltip>
         </Text>
-        <Switch onValueChange={setAllowContact} />
+        <Switch value={allowContact} onValueChange={setAllowContact} />
       </Row>
       <Row
         space={space['1']}

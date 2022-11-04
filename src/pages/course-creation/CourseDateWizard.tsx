@@ -41,6 +41,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Daten'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -89,6 +90,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           {t('course.CourseDate.Wizard.duration')}
         </FormControl.Label>
         <Select
+          selectedValue={lectures && lectures[index].duration}
           placeholder={t('course.selectPlaceHolderDuration')}
           onValueChange={e => {
             if (!lectures || !lectures[index]) return
@@ -116,10 +118,10 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           }} 
         />*/}
       </FormControl>
-      <Row marginY={space['1.5']}>
+      {/* <Row marginY={space['1.5']}>
         <Text flex="1">{t('course.CourseDate.Wizard.repeatAppoint')}</Text>
         <Switch />
-      </Row>
+      </Row> */}
     </VStack>
   )
 }
