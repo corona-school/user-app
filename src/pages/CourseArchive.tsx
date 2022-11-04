@@ -25,6 +25,7 @@ import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import AlertMessage from '../widgets/AlertMessage'
 
 type Props = {}
 
@@ -213,18 +214,7 @@ const CourseArchive: React.FC<Props> = () => {
                       )
                     })}
                   </Flex>
-                )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>{t('empty.courses')}</Text>
-                    </HStack>
-                  </Alert>
-                )}
+                )) || <AlertMessage content={t('empty.courses')} />}
               </>
             )}
           </VStack>

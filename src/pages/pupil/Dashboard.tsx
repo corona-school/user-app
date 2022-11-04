@@ -33,6 +33,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -323,18 +324,9 @@ const Dashboard: React.FC<Props> = () => {
                         )
                       }
                     )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t('dashboard.myappointments.noappointments')}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('dashboard.myappointments.noappointments')}
+                  />
                 )}
               </HSection>
 
@@ -383,16 +375,9 @@ const Dashboard: React.FC<Props> = () => {
                           />
                         </Pressable>
                       ) || (
-                        <Alert
-                          alignItems="start"
-                          marginY={space['1']}
-                          width="max-content"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon color="danger.100" />
-                            <Text>{t('dashboard.offers.noMatching')}</Text>
-                          </HStack>
-                        </Alert>
+                        <AlertMessage
+                          content={t('dashboard.offers.noMatching')}
+                        />
                       )
                   )}
                 </Flex>
@@ -490,16 +475,7 @@ const Dashboard: React.FC<Props> = () => {
                         }}
                       />
                     ))) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>{t('lernfair.reason.proposals')}</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage content={t('lernfair.reason.proposals')} />
                 )}
               </HSection>
             </VStack>

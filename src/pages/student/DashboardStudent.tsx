@@ -31,6 +31,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -386,17 +387,9 @@ const DashboardStudent: React.FC<Props> = () => {
                         </Column>
                       )
                     })) || (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t('dashboard.myappointments.noappointments')}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('dashboard.myappointments.noappointments')}
+                  />
                 )}
               </HSection>
               <HSection
@@ -448,15 +441,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                       })) ||
                     (data?.me?.student?.canCreateCourse?.allowed ? (
-                      <Alert
-                        alignItems="start"
-                        width="max-content"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon color="danger.100" />
-                          <Text>{t('empty.courses')}</Text>
-                        </HStack>
-                      </Alert>
+                      <AlertMessage content={t('empty.courses')} />
                     ) : (
                       ''
                     ))}
@@ -477,19 +462,11 @@ const DashboardStudent: React.FC<Props> = () => {
                     {t('dashboard.helpers.buttons.course')}
                   </Button>
                 )) || (
-                  <Alert
-                    alignItems="start"
-                    width="max-content"
-                    colorScheme="warning">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t(
-                          `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
-                        )}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t(
+                      `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                    )}
+                  />
                 )}
               </HSection>
 
@@ -542,15 +519,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         </Column>
                       ))) ||
                       (data?.me?.student?.canRequestMatch?.allowed ? (
-                        <Alert
-                          alignItems="start"
-                          width="max-content"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon color="danger.100" />
-                            <Text>{t('empty.matchings')}</Text>
-                          </HStack>
-                        </Alert>
+                        <AlertMessage content={t('empty.matchings')} />
                       ) : (
                         ''
                       ))}
@@ -569,22 +538,11 @@ const DashboardStudent: React.FC<Props> = () => {
                         </Button>
                       </>
                     )) || (
-                    <Alert
-                      alignItems="start"
-                      width="max-content"
-                      marginTop={space['0.5']}
-                      marginBottom={space['0.5']}
-                      colorScheme="warning">
-                      <HStack space={2} flexShrink={1} alignItems="center">
-                        <Alert.Icon color="danger.100" />
-                        <Text>
-                          {' '}
-                          {t(
-                            `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                          )}
-                        </Text>
-                      </HStack>
-                    </Alert>
+                    <AlertMessage
+                      content={t(
+                        `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                      )}
+                    />
                   )}
 
                   <Text>

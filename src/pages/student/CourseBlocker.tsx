@@ -7,7 +7,8 @@ import {
   Text,
   useTheme,
   Image,
-  Link
+  Link,
+  useBreakpointValue
 } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +22,7 @@ import HelperWizard from '../../widgets/HelperWizard'
 type Props = {}
 
 const CourseBlocker: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { trackPageView } = useMatomo()
 
@@ -31,40 +32,54 @@ const CourseBlocker: React.FC<Props> = () => {
     })
   }, [])
 
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <>
       <Container
-        maxWidth="100%"
+        maxWidth={ContainerWidth}
+        width="100%"
+        marginX="auto"
         paddingX={space['1.5']}
         alignItems="stretch"
         marginBottom={space['0.5']}>
-        <Heading paddingTop="64px" marginBottom={space['1']}>
-          {t('course.blocker.title')}
-        </Heading>
+        <Heading marginBottom={space['1']}>{t('course.blocker.title')}</Heading>
         <Image
           width="100%"
-          height="200px"
+          height="400px"
           borderRadius="15px"
-          marginBottom={space['1']}
+          marginBottom={space['1.5']}
           source={{
             uri: LFImageLearing
           }}
         />
-        <Text marginBottom={space['1']}>
+        <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
           {t('course.blocker.firstContent')}
         </Text>
-        <Text marginBottom={space['1']}>
+        <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
           {t('course.blocker.secContent')}
           <Link> {t('course.blocker.here')} </Link>
           {t('course.blocker.thrContent')}
         </Text>
-        <Text bold marginBottom="4px">
+        <Text maxWidth={ContentContainerWidth} bold marginBottom="4px">
           {t('course.blocker.contentHeadline')}
         </Text>
-        <Text marginBottom={space['1']}>{t('course.blocker.content')}</Text>
+        <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
+          {t('course.blocker.content')}
+        </Text>
       </Container>
       <Container
-        maxWidth="100%"
+        maxWidth={ContainerWidth}
+        width="100%"
+        marginX="auto"
         paddingX={space['1.5']}
         marginBottom={space['1.5']}
         alignItems="stretch">
@@ -78,7 +93,9 @@ const CourseBlocker: React.FC<Props> = () => {
         />
       </Container>
       <Container
-        maxWidth="100%"
+        maxWidth={ContainerWidth}
+        width="100%"
+        marginX="auto"
         paddingX={space['1.5']}
         marginBottom={space['1.5']}
         alignItems="stretch">

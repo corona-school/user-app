@@ -108,7 +108,8 @@ const Theme = extendTheme({
     Text: {
       defaultProps: {
         fontSize: 'md',
-        color: VAR_COLOR_PRIMARY_DARK
+        fontWeight: 500,
+        color: VAR_COLOR_PRIMARY_DARK,
       }
     },
     Heading: {

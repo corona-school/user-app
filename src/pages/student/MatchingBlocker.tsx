@@ -100,11 +100,13 @@ const MatchingBlocker: React.FC<Props> = () => {
         </Button>
       </Container>
       <Container
-        maxWidth={CardGrid}
+        maxWidth={ContainerWidth}
+        width="100%"
+        marginX="auto"
         paddingX={space['1.5']}
-        marginBottom={space['1.5']}
-        alignItems="stretch">
+        marginBottom={space['1.5']}>
         <CTACard
+          width="100px"
           variant="dark"
           title="Gruppen-Lernunterstützung"
           content="Kurzfristige Unterstützung bei spezifischen Problemen und Fragen"

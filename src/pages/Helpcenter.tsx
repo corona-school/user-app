@@ -34,6 +34,7 @@ import useModal from '../hooks/useModal'
 import IFrame from '../components/IFrame'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
+import AlertMessage from '../widgets/AlertMessage'
 
 type Props = {}
 
@@ -391,48 +392,14 @@ const HelpCenter: React.FC<Props> = () => {
                       </Row>
                       <Row flexDirection="column" paddingY={space['0.5']}>
                         {messageSent && (
-                          <Alert
-                            width="max-content"
-                            marginY={3}
-                            colorScheme="success"
-                            status="success">
-                            <VStack space={2} flexShrink={1} w="100%">
-                              <HStack
-                                flexShrink={1}
-                                space={2}
-                                alignItems="center"
-                                justifyContent="space-between">
-                                <HStack
-                                  space={2}
-                                  flexShrink={1}
-                                  alignItems="center">
-                                  <Alert.Icon color="danger.100" />
-                                  <Text>{t('helpcenter.contact.success')}</Text>
-                                </HStack>
-                              </HStack>
-                            </VStack>
-                          </Alert>
+                          <AlertMessage
+                            content={t('helpcenter.contact.success')}
+                          />
                         )}
                         {showError && (
-                          <Alert marginY={3} bgColor="danger.500">
-                            <VStack space={2} flexShrink={1} w="100%">
-                              <HStack
-                                flexShrink={1}
-                                space={2}
-                                alignItems="center"
-                                justifyContent="space-between">
-                                <HStack
-                                  space={2}
-                                  flexShrink={1}
-                                  alignItems="center">
-                                  <Alert.Icon color={'lightText'} />
-                                  <Text color="lightText">
-                                    {t('helpcenter.contact.error')}
-                                  </Text>
-                                </HStack>
-                              </HStack>
-                            </VStack>
-                          </Alert>
+                          <AlertMessage
+                            content={t('helpcenter.contact.error')}
+                          />
                         )}
                         <Button
                           marginX="auto"

@@ -350,9 +350,11 @@ export default function Navigator() {
         <Route
           path="/request-match"
           element={
-            <RequireAuth>
-              <SwitchUserType studentComponent={<RequestMatch />} />
-            </RequireAuth>
+            // <RequireAuth>
+            // <SwitchUserType studentComponent={<RequestMatch />} />
+            // </RequireAuth>
+
+            <RequestMatch />
           }
         />
 

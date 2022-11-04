@@ -30,6 +30,7 @@ import useLernfair from '../hooks/useLernfair'
 import { useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
+import AlertMessage from '../widgets/AlertMessage'
 
 type Props = {}
 
@@ -392,9 +393,9 @@ const SingleCourse: React.FC<Props> = () => {
                             {`${i + 1}`.padStart(2, '0')}
                           </Heading>
                           <Text paddingBottom={space['0.5']}>
-                            {DateTime.fromISO(lec.start).toFormat(
-                              'dd.MM.yyyy hh:mm'
-                            )}{' '}
+                            {DateTime.fromISO(lec.start).toFormat('dd.MM.yyyy')}
+                            <Text marginX="3px">•</Text>
+                            {DateTime.fromISO(lec.start).toFormat('hh:mm')}{' '}
                             {t('single.global.clock')}
                           </Text>
                           <Text>
@@ -423,28 +424,11 @@ const SingleCourse: React.FC<Props> = () => {
           {userType === 'pupil' && (
             <Box marginBottom={space['0.5']} paddingLeft={space['1']}>
               {!course?.canJoin?.allowed && !course?.isParticipant && (
-                <Alert
-                  alignItems="start"
-                  marginY={space['1']}
-                  width="max-content"
-                  colorScheme="info">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon color="danger.100" />
-                    {/* { 
-                    !course?.isParticipant ?  
-                      <Text>{course?.canJoin?.reason}</Text>
-                    : !course?.isOnWaitingList ? 
-
-                    :  ''
-                  } */}
-
-                    <Text>
-                      {t(
-                        `lernfair.reason.${course?.canJoin?.reason}.coursetext`
-                      )}
-                    </Text>
-                  </HStack>
-                </Alert>
+                <AlertMessage
+                  content={t(
+                    `lernfair.reason.${course?.canJoin?.reason}.coursetext`
+                  )}
+                />
               )}
               {!course?.isParticipant && !course?.isOnWaitingList && (
                 <Button
@@ -474,16 +458,9 @@ const SingleCourse: React.FC<Props> = () => {
               )}
               {course?.isOnWaitingList && (
                 <VStack space={space['0.5']}>
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="350"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
-                      <Text>{t('single.buttoninfo.waitingListMember')}</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('single.buttoninfo.waitingListMember')}
+                  />
                   <Button
                     onPress={() => {
                       leaveWaitingList({ variables: { courseId: courseId } })
@@ -497,16 +474,9 @@ const SingleCourse: React.FC<Props> = () => {
               )}
               {course?.isParticipant && (
                 <VStack space={space['0.5']}>
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="350"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
-                      <Text>{t('single.buttoninfo.successMember')}</Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('single.buttoninfo.successMember')}
+                  />
 
                   <Button
                     onPress={() => {

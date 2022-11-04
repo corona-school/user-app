@@ -31,6 +31,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -225,25 +226,7 @@ const Profile: React.FC<Props> = () => {
           </Row>
         }>
         {(showSuccessfulChangeAlert || userSettingChanged) && (
-          <Alert
-            width="max-content"
-            marginY={10}
-            marginX={space['1.5']}
-            colorScheme="success"
-            status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color="danger.100" />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
+          <AlertMessage content={t('profile.successmessage')} />
         )}
         <VStack
           space={space['1']}
