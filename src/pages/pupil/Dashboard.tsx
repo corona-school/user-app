@@ -10,9 +10,6 @@ import {
   Flex,
   useToast,
   Alert,
-  FormControl,
-  Checkbox,
-  Radio,
   Column
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -194,6 +191,12 @@ const Dashboard: React.FC<Props> = () => {
     }
   }, [_dissolve?.data?.matchDissolve, toast, toastShown])
 
+  const activeMatches = useMemo(() => {
+    return data?.me?.pupil?.matches?.filter(
+      (match: LFMatch) => !match.dissolved
+    )
+  }, [data?.me?.pupil?.matches])
+
   return (
     <AsNavigationItem path="dashboard">
       <WithNavigation
@@ -329,7 +332,7 @@ const Dashboard: React.FC<Props> = () => {
                 showAll={data?.me?.pupil?.matches?.length > 2}
                 wrap>
                 <Flex direction="row" flexWrap="wrap" marginRight="-10px">
-                  {data?.me?.pupil?.matches?.slice(0, 2).map(
+                  {activeMatches.map(
                     (match: LFMatch) =>
                       (
                         <Pressable
@@ -395,25 +398,32 @@ const Dashboard: React.FC<Props> = () => {
                       {t('dashboard.offers.requestMatching')}
                     </Button>
                   )) || (
-                    <Alert
-                      alignItems="start"
-                      marginBottom={space['1.5']}
-                      width="max-content"
-                      colorScheme="info">
-                      <HStack space={2} flexShrink={1} alignItems="center">
-                        <Alert.Icon color="danger.100" />
+                    // <Alert
+                    //   alignItems="start"
+                    //   marginBottom={space['1.5']}
+                    //   width="max-content"
+                    //   colorScheme="info">
+                    <VStack space={2} flexShrink={1}>
+                      {/* <Alert.Icon color="danger.100" />
                         <Text>
                           {t(
                             `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
                           )}
-                        </Text>
-                      </HStack>
-                    </Alert>
+                        </Text> */}
+                      <Text>
+                        Du hast bereits eine Matching Anfrage gestellt.
+                      </Text>
+                      <Text>
+                        Bitte beachte dass die Suche nach einer/einem
+                        Lernpartner:in bis zu 7 Tage dauern kann.
+                      </Text>
+                    </VStack>
+                    // </Alert>
                   )}
-                  <Text>
+                  {/* <Text>
                     Offene Anfragen:{' '}
                     {`${data?.me?.pupil?.openMatchRequestCount}`}
-                  </Text>
+                  </Text> */}
                 </VStack>
               </HSection>
 

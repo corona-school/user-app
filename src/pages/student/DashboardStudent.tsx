@@ -5,8 +5,6 @@ import {
   HStack,
   useTheme,
   VStack,
-  Modal,
-  Row,
   useToast,
   useBreakpointValue,
   Flex,
@@ -41,7 +39,11 @@ const query = gql`
     me {
       firstname
       student {
+        firstMatchRequest
         openMatchRequestCount
+        certificateOfConduct {
+          id
+        }
         canRequestMatch {
           allowed
           reason
@@ -139,14 +141,8 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   const requestMatch = useCallback(async () => {
-    setIsMatchRequested(true)
-    const res = (await createMatchRequest()) as {
-      data: {
-        studentCreateMatchRequest: boolean
-      }
-    }
-    setIsMatchRequested(res?.data?.studentCreateMatchRequest)
-  }, [createMatchRequest])
+    navigate('/request-match')
+  }, [navigate])
 
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
@@ -256,6 +252,14 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
+  const onboardingIndex: number = useMemo(() => {
+    if (data?.me?.student?.canCreateCourse.reason) return 0
+    if (data?.me?.student?.canRequestMatch.reason) return 1
+    if (!data?.me?.student?.firstMatchRequest) return 2
+    if (!data?.me?.student?.certificateOfConduct?.id) return 3
+    return 0
+  }, [])
+
   return (
     <AsNavigationItem path="dashboard">
       <WithNavigation
@@ -287,7 +291,7 @@ const DashboardStudent: React.FC<Props> = () => {
             maxWidth={ContainerWidth}>
             <VStack>
               <VStack marginBottom={space['1.5']}>
-                <HelperWizard index={0} />
+                <HelperWizard index={onboardingIndex} />
               </VStack>
 
               {/* Next Appointment */}
