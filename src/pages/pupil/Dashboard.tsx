@@ -228,7 +228,7 @@ const Dashboard: React.FC<Props> = () => {
               space={space['1']}
               alignItems="center"
               bgColor={isMobile ? 'primary.900' : 'transparent'}
-              padding={space['0.5']}>
+              padding={isMobile ? space['1.5'] : space['0.5']}>
               {/* <ProfilAvatar
                 size="md"
                 image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -336,60 +336,65 @@ const Dashboard: React.FC<Props> = () => {
               </HSection>
 
               {/* Matches */}
-              <HSection
-                marginBottom={space['1.5']}
-                title={t('dashboard.learningpartner.header')}
-                showAll={data?.me?.pupil?.matches?.length > 2}
-                wrap>
-                <Flex direction="row" flexWrap="wrap" marginRight="-10px">
-                  {activeMatches.map(
-                    (match: LFMatch) =>
-                      (
-                        <Box
-                          width={CardGrid}
-                          marginRight="10px"
-                          marginBottom="10px"
+              {(activeMatches.length > 0 ||
+                data?.me?.pupil?.canRequestMatch?.allowed ||
+                data?.me?.pupil?.openMatchRequestCount > 0) && (
+                <HSection
+                  marginBottom={space['1.5']}
+                  title={t('dashboard.learningpartner.header')}
+                  showAll={activeMatches > 2}
+                  wrap>
+                  <Flex direction="row" flexWrap="wrap" marginRight="-10px">
+                    {activeMatches.map(
+                      (match: LFMatch) =>
+                        (
+                          <Box
+                            width={CardGrid}
+                            marginRight="10px"
+                            marginBottom="10px"
 
-                          // onPress={() =>
-                          //   navigate('/user-profile', {
-                          //     state: {
-                          //       userType: 'student',
-                          //       id: match.student.id
-                          //     }
-                          //   })
-                          // }
-                        >
-                          <TeacherCard
-                            name={`${match.student?.firstname} ${match.student?.lastname}`}
-                            variant="dark"
-                            tags={
-                              match.subjectsFormatted?.map(s => s.name) || []
-                            }
-                            avatar=""
-                            button={
-                              (!match.dissolved && (
-                                <Button
-                                  variant="outlinelight"
-                                  onPress={() => dissolveMatch(match)}>
-                                  {t('dashboard.offers.match')}
-                                </Button>
-                              )) || (
-                                <Text color="lightText">
-                                  {t('matching.status.dissolved')}
-                                </Text>
-                              )
-                            }
+                            // onPress={() =>
+                            //   navigate('/user-profile', {
+                            //     state: {
+                            //       userType: 'student',
+                            //       id: match.student.id
+                            //     }
+                            //   })
+                            // }
+                          >
+                            <TeacherCard
+                              name={`${match.student?.firstname} ${match.student?.lastname}`}
+                              variant="dark"
+                              tags={
+                                match.subjectsFormatted?.map(s => s.name) || []
+                              }
+                              avatar=""
+                              button={
+                                (!match.dissolved && (
+                                  <Button
+                                    variant="outlinelight"
+                                    onPress={() => dissolveMatch(match)}>
+                                    {t('dashboard.offers.match')}
+                                  </Button>
+                                )) || (
+                                  <Text color="lightText">
+                                    {t('matching.status.dissolved')}
+                                  </Text>
+                                )
+                              }
+                            />
+                          </Box>
+                        ) || (
+                          <AlertMessage
+                            content={t('dashboard.offers.noMatching')}
                           />
-                        </Box>
-                      ) || (
-                        <AlertMessage
-                          content={t('dashboard.offers.noMatching')}
-                        />
-                      )
-                  )}
-                </Flex>
-                <VStack marginBottom={space['1.5']} mt="3">
-                  {(data?.me?.pupil?.canRequestMatch?.allowed && (
+                        )
+                    )}
+                  </Flex>
+                  {/* {(data?.me?.pupil?.canRequestMatch?.allowed ||
+                    data?.me?.pupil?.openMatchRequestCount > 0) && (
+                    <VStack> */}
+                  {data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       onPress={() => {
                         trackEvent({
@@ -402,22 +407,9 @@ const Dashboard: React.FC<Props> = () => {
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
-                  )) || (
-                    // <Alert
-                    //   alignItems="start"
-                    //   marginBottom={space['1.5']}
-                    //   width="max-content"
-                    //   colorScheme="info">
+                  )}
+                  {data?.me?.pupil?.openMatchRequestCount > 0 && (
                     <VStack space={2} flexShrink={1} maxWidth="700px">
-                      {/* <Alert.Icon color="danger.100" />
-                        <Text>
-                          {t(
-                            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                          )}
-                        </Text> */}
-                      {/* <Text>
-                        Du hast bereits eine Matching Anfrage gestellt.
-                      </Text> */}
                       <Text>
                         Anfrage erstellt am:{' '}
                         {DateTime.fromISO(
@@ -447,14 +439,11 @@ const Dashboard: React.FC<Props> = () => {
                         Anfrage zurücknehmen
                       </Button>
                     </VStack>
-                    // </Alert>
+                    //   )}
+                    // </VStack>
                   )}
-                  {/* <Text>
-                    Offene Anfragen:{' '}
-                    {`${data?.me?.pupil?.openMatchRequestCount}`}
-                  </Text> */}
-                </VStack>
-              </HSection>
+                </HSection>
+              )}
 
               {/* Suggestions */}
               <HSection

@@ -60,14 +60,15 @@ const Tabs: React.FC<Props> = ({
         borderBottomColor="primary.grey"
         borderBottomWidth={1}>
         {tabs.map(
-          (tab, i) => (
-            <Tab
-              key={`tab-${i}`}
-              tab={tab}
-              index={i}
-              active={i === currentIndex}
-            />
-          ),
+          (tab, i) =>
+            tab && (
+              <Tab
+                key={`tab-${i}`}
+                tab={tab}
+                index={i}
+                active={i === currentIndex}
+              />
+            ),
           []
         )}
       </Row>
