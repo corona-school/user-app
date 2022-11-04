@@ -4,9 +4,7 @@ import {
   useTheme,
   VStack,
   Button,
-  useBreakpointValue,
-  Flex,
-  Column
+  useBreakpointValue
 } from 'native-base'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -89,10 +87,10 @@ const StudentGroup: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const CardGrid = useBreakpointValue({
-    base: '100%',
-    lg: '47%'
-  })
+  // const CardGrid = useBreakpointValue({
+  //   base: '100%',
+  //   lg: '47%'
+  // })
 
   const publishedSubcourses: LFSubCourse[] = useMemo(
     () =>
@@ -330,7 +328,7 @@ const StudentGroup: React.FC<Props> = () => {
                 ]}
               />
             </VStack>
-            <VStack>
+            {/* <VStack>
               <HSection
                 onShowAll={() => navigate('/group/offer')}
                 title={t('matching.group.helper.offers.title')}
@@ -341,7 +339,7 @@ const StudentGroup: React.FC<Props> = () => {
                   <AlertMessage content={t('empty.offers')} />
                 )}
               </HSection>
-            </VStack>
+            </VStack> */}
           </VStack>
         </VStack>
       </WithNavigation>
