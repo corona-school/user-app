@@ -24,6 +24,7 @@ import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -181,7 +182,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
             {!loading && (
               <>
                 {(sortedSearchResults.length > 0 && (
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {sortedSearchResults.map(
                       (
                         {
@@ -191,12 +192,10 @@ const AppointmentsArchive: React.FC<Props> = () => {
                         index: number
                       ) => {
                         return (
-                          <Column
-                            width={CardGrid}
-                            marginRight="15px"
-                            key={index}>
+                          <CSSWrapper className="course-list__item" key={index}>
                             <AppointmentCard
                               key={index}
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               description={sub.course.outline}
                               tags={sub.course.tags}
@@ -210,11 +209,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
                               image={sub.course.image}
                               title={sub.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       }
                     )}
-                  </Flex>
+                  </CSSWrapper>
                 )) || <Text>Es wurden keine Ergebnisse gefunden.</Text>}
               </>
             )}

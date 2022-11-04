@@ -5,7 +5,8 @@ import {
   VStack,
   useBreakpointValue,
   Column,
-  Flex
+  Flex,
+  Box
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +25,7 @@ import { getFirstLectureFromSubcourse } from '../../Utility'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
+import CSSWrapper from '../../components/CSSWrapper'
 
 type Props = {}
 
@@ -308,18 +310,18 @@ const PupilGroup: React.FC<Props> = () => {
                 }
               ]}
             />
-            <Flex direction="row" flexWrap="wrap">
+            <CSSWrapper className="course-list__wrapper">
               {(!recommendationsSearchLoading &&
                 !allSubcoursesSearchLoading && (
                   <>
                     {(sortedSearchResults?.length &&
                       sortedSearchResults.map(
                         (course: LFSubCourse, index: number) => (
-                          <Column
-                            width={CardGrid}
-                            marginRight="15px"
+                          <CSSWrapper
+                            className="course-list__item"
                             key={`subcourse-${index}`}>
                             <AppointmentCard
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               description={course.course.outline}
                               tags={course.course.tags}
@@ -333,17 +335,19 @@ const PupilGroup: React.FC<Props> = () => {
                               image={course.course.image}
                               title={course.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       )) || (
-                      <AlertMessage
-                        content="Es wurden keine Kurse gefunden. Bitte passe deine
+                      <Box paddingLeft={space['1']}>
+                        <AlertMessage
+                          content="Es wurden keine Kurse gefunden. Bitte passe deine
                           Suche an."
-                      />
+                        />
+                      </Box>
                     )}
                   </>
                 )) || <CenterLoadingSpinner />}
-            </Flex>
+            </CSSWrapper>
           </VStack>
         </VStack>
       </WithNavigation>

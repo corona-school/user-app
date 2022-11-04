@@ -144,6 +144,11 @@ const Dashboard: React.FC<Props> = () => {
     lg: '46%'
   })
 
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] =
     useMemo(() => {
       const lectures: { course: LFSubCourse; lecture: LFLecture }[] = []
@@ -403,7 +408,7 @@ const Dashboard: React.FC<Props> = () => {
                     //   marginBottom={space['1.5']}
                     //   width="max-content"
                     //   colorScheme="info">
-                    <VStack space={2} flexShrink={1}>
+                    <VStack space={2} flexShrink={1} maxWidth="700px">
                       {/* <Alert.Icon color="danger.100" />
                         <Text>
                           {t(
@@ -420,12 +425,23 @@ const Dashboard: React.FC<Props> = () => {
                         ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
                         Uhr
                       </Text>
-                      <Text bold>
-                        Bitte beachte dass die Suche nach einer/einem
-                        Lernpartner:in zu{' '}
-                        <Text>Wartezeiten von 3 - 6 Monaten</Text> kommen kann
-                      </Text>
+                      <Alert
+                        maxWidth="520px"
+                        alignItems="start"
+                        marginY={space['0.5']}
+                        colorScheme="info">
+                        <HStack space={2} flexShrink={1} alignItems="center">
+                          <Alert.Icon color="danger.100" />
+                          <Text>
+                            Bitte beachte dass die Suche nach einer/einem
+                            Lernpartner:in zu Wartezeiten von 3 - 6 Monaten
+                            kommen kann
+                          </Text>
+                        </HStack>
+                      </Alert>
+
                       <Button
+                        width={ButtonContainer}
                         isDisabled={_cancelMatchRequest?.loading}
                         onPress={() => cancelMatchRequest()}>
                         Anfrage zurücknehmen

@@ -7,7 +7,8 @@ import {
   Button,
   useTheme,
   useBreakpointValue,
-  Row
+  Row,
+  Box
 } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -70,7 +71,7 @@ const RequestMatchPreview: React.FC<Props> = ({
       {subjects.map((sub: LFSubject, index: number) => {
         return (
           <VStack paddingBottom={space['1']}>
-            <Text bold>
+            <Text bold paddingBottom="10px">
               {t('matching.request.check.preview.subject')} {index + 1}
             </Text>
             <IconTagList
@@ -79,17 +80,19 @@ const RequestMatchPreview: React.FC<Props> = ({
               isDisabled
               iconPath={`subjects/icon_${sub?.name?.toLowerCase()}.svg`}
             />
-            <Text paddingTop={space['1']} bold>
+            <Text paddingTop={space['1']} bold paddingBottom="10px">
               {t('matching.request.check.preview.subjectForClass')} {index + 1}
             </Text>
 
-            <ToggleButton
-              dataKey={`${index}`}
-              isActive={false}
-              label={`${classes[sub.name] && classes[sub.name].min}. - ${
-                classes[sub.name] && classes[sub.name].max
-              }. Klasse`}
-            />
+            <Box maxWidth="fit-content">
+              <ToggleButton
+                dataKey={`${index}`}
+                isActive={false}
+                label={`${classes[sub.name] && classes[sub.name].min}. - ${
+                  classes[sub.name] && classes[sub.name].max
+                }. Klasse`}
+              />
+            </Box>
           </VStack>
         )
       })}

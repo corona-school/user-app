@@ -25,6 +25,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
+import CSSWrapper from '../../components/CSSWrapper'
 
 type Props = {}
 
@@ -145,8 +146,9 @@ const StudentGroup: React.FC<Props> = () => {
   }, [])
 
   const renderCourse = (course: LFCourse, index: number) => (
-    <Column width={CardGrid} marginRight="15px">
+    <CSSWrapper className="course-list__item">
       <AppointmentCard
+        isSpaceMarginBottom={false}
         key={index}
         variant="horizontal"
         description={course.outline}
@@ -159,7 +161,7 @@ const StudentGroup: React.FC<Props> = () => {
           })
         }
       />
-    </Column>
+    </CSSWrapper>
   )
 
   const renderSubcourse = (
@@ -169,8 +171,9 @@ const StudentGroup: React.FC<Props> = () => {
   ) => {
     const firstLecture = Utility.getFirstLectureFromSubcourse(course.lectures)
     return (
-      <Column width={CardGrid} marginRight="15px">
+      <CSSWrapper className="course-list__item">
         <AppointmentCard
+          isSpaceMarginBottom={false}
           key={index}
           variant="horizontal"
           description={course.outline}
@@ -185,7 +188,7 @@ const StudentGroup: React.FC<Props> = () => {
           image={course.course.image}
           title={course.course.name}
         />
-      </Column>
+      </CSSWrapper>
     )
   }
 
@@ -269,14 +272,14 @@ const StudentGroup: React.FC<Props> = () => {
                     title: t('matching.group.helper.course.tabs.tab1.title'),
                     content: (
                       <>
-                        <Flex direction="row" flexWrap="wrap">
+                        <CSSWrapper className="course-list__wrapper">
                           {(publishedSubcourses.length > 0 &&
                             publishedSubcourses?.map(
                               (sub: LFSubCourse, index: number) => {
                                 return renderSubcourse(sub, index)
                               }
                             )) || <AlertMessage content={t('empty.courses')} />}
-                        </Flex>
+                        </CSSWrapper>
                       </>
                     )
                   },
@@ -284,7 +287,7 @@ const StudentGroup: React.FC<Props> = () => {
                     title: t('matching.group.helper.course.tabs.tab2.title'),
                     content: (
                       <>
-                        <Flex direction="row" flexWrap="wrap">
+                        <CSSWrapper className="course-list__wrapper">
                           {(submittedSubcourses.length > 0 &&
                             submittedSubcourses?.map(
                               (sub: LFSubCourse, index: number) =>
@@ -292,7 +295,7 @@ const StudentGroup: React.FC<Props> = () => {
                             )) || (
                             <AlertMessage content={t('empty.coursescheck')} />
                           )}
-                        </Flex>
+                        </CSSWrapper>
                       </>
                     )
                   },
@@ -300,7 +303,7 @@ const StudentGroup: React.FC<Props> = () => {
                     title: t('matching.group.helper.course.tabs.tab3.title'),
                     content: (
                       <>
-                        <Flex direction="row" flexWrap="wrap">
+                        <CSSWrapper className="course-list__wrapper">
                           {(draftedCourses.length > 0 &&
                             draftedCourses?.map(
                               (course: LFCourse, index: number) =>
@@ -308,7 +311,7 @@ const StudentGroup: React.FC<Props> = () => {
                             )) || (
                             <AlertMessage content={t('empty.coursesdraft')} />
                           )}
-                        </Flex>
+                        </CSSWrapper>
                       </>
                     )
                   },
@@ -316,11 +319,11 @@ const StudentGroup: React.FC<Props> = () => {
                     title: t('matching.group.helper.course.tabs.tab4.title'),
                     content: (
                       <>
-                        <Flex direction="row" flexWrap="wrap">
+                        <CSSWrapper className="course-list__wrapper">
                           {pastCourses.map((course: LFSubCourse, index) =>
                             renderSubcourse(course, index, false)
                           ) || <AlertMessage content={t('empty.courses')} />}
-                        </Flex>
+                        </CSSWrapper>
                       </>
                     )
                   }

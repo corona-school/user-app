@@ -139,7 +139,11 @@ const CourseArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.course.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} marginX="auto" maxWidth={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.course.title')}</Heading>
@@ -147,7 +151,7 @@ const CourseArchive: React.FC<Props> = () => {
               {t('archive.course.content')}
             </Text>
           </VStack>
-          <Row paddingY={space['1']}>
+          <Row paddingY={space['1']} maxWidth={ContentContainerWidth}>
             <Input
               flex="1"
               size="lg"
