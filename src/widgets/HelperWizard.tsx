@@ -33,12 +33,27 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
 
   const ButtonSpace = useBreakpointValue({
     base: 0,
-    lg: '25px'
+    lg: 0
   })
 
   const ContentsDirection = useBreakpointValue({
     base: 'flex-start',
     lg: 'center'
+  })
+
+  const ContentsSpace = useBreakpointValue({
+    base: space['1'],
+    lg: 0
+  })
+
+  const ZeugnisContentSectionWidth = useBreakpointValue({
+    base: '100%',
+    lg: '70%'
+  })
+
+  const ButtonWidthContainer = useBreakpointValue({
+    base: '100%',
+    lg: 'auto'
   })
 
   return (
@@ -66,15 +81,14 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                         width="100%"
                         justifyContent="space-between">
                         <Text
+                          width={ZeugnisContentSectionWidth}
                           display="block"
-                          maxWidth="500px"
-                          marginBottom={space['1']}>
+                          marginBottom={ContentsSpace}>
                           {t('helperwizard.kennenlernen.content')}
                         </Text>
                         <Button
                           width={ButtonContainer}
-                          marginRight={ButtonSpace}
-                          marginBottom={space['2']}>
+                          marginRight={ButtonSpace}>
                           {t('helperwizard.kennenlernen.button')}
                         </Button>
                       </Box>
@@ -107,17 +121,16 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           alignItems={ContentsDirection}
                           width="100%"
                           justifyContent="space-between">
-                          <Column>
-                            <Text maxWidth="500px" marginBottom={space['1']}>
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
                               {t('helperwizard.zeugnis.content')}
                             </Text>
                           </Column>
-                          <Column>
+                          <Column width={ButtonWidthContainer}>
                             <Button
                               overflow="visible"
                               width={ButtonContainer}
-                              marginRight={ButtonSpace}
-                              marginBottom={space['2']}>
+                              marginRight={ButtonSpace}>
                               {t('helperwizard.zeugnis.button')}
                             </Button>
                           </Column>
@@ -140,16 +153,15 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           alignItems={ContentsDirection}
                           width="100%"
                           justifyContent="space-between">
-                          <Column>
-                            <Text maxWidth="500px" marginBottom={space['1']}>
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
                               {t('helperwizard.angebot.content')}
                             </Text>
                           </Column>
-                          <Column>
+                          <Column width={ButtonWidthContainer}>
                             <Button
                               width={ButtonContainer}
-                              marginRight={ButtonSpace}
-                              marginBottom={space['2']}>
+                              marginRight={ButtonSpace}>
                               {t('helperwizard.angebot.button')}
                             </Button>
                           </Column>
@@ -172,16 +184,15 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           alignItems={ContentsDirection}
                           width="100%"
                           justifyContent="space-between">
-                          <Column>
-                            <Text maxWidth="500px" marginBottom={space['1']}>
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
                               {t('helperwizard.zeugnisHochladen.content')}
                             </Text>
                           </Column>
-                          <Column>
+                          <Column width={ButtonWidthContainer}>
                             <Button
                               width={ButtonContainer}
-                              marginRight={ButtonSpace}
-                              marginBottom={space['2']}>
+                              marginRight={ButtonSpace}>
                               {t('helperwizard.zeugnisHochladen.button')}
                             </Button>
                           </Column>

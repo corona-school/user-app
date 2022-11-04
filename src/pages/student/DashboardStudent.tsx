@@ -287,7 +287,7 @@ const DashboardStudent: React.FC<Props> = () => {
             maxWidth={ContainerWidth}>
             <VStack>
               <VStack marginBottom={space['1.5']}>
-                <HelperWizard index={0} />
+                <HelperWizard index={1} />
               </VStack>
 
               {/* Next Appointment */}

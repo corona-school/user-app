@@ -58,7 +58,7 @@ const PasswordInput: React.FC<Props> = props => {
         onPress={() => {
           setShowPassword(prev => !prev)
         }}>
-        {showPassword ? <ShowPassword /> : <HidePassword />}
+        {!showPassword ? <ShowPassword /> : <HidePassword />}
       </Pressable>
     </Flex>
   )

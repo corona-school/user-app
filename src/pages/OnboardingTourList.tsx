@@ -86,6 +86,7 @@ const OnboardingTourList: React.FC<Props> = () => {
             {new Array(5).fill(0).map(({}, index) => (
               <Column width={CardGrid} marginRight="15px">
                 <CTACard
+                  isOnboardingCard
                   key={`card-${index}`}
                   marginBottom={space['1']}
                   variant="dark"

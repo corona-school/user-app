@@ -162,10 +162,10 @@ const AppointmentCard: React.FC<Props> = ({
                 padding={isTeaser ? CardMobilePadding : space['1']}
                 maxWidth="731px">
                 {!isTeaser && date && (
-                  <Row paddingTop={space['1']} space={1}>
+                  <Row paddingTop="9px" space={1}>
                     <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
                     <Text color={textColor}>•</Text>
-                    <Text color={textColor}>{date.toFormat('HH:mm')}</Text>
+                    <Text color={textColor}>{date.toFormat('HH:mm')} Uhr</Text>
                   </Row>
                 )}
                 {date && isTeaser && (
@@ -188,6 +188,7 @@ const AppointmentCard: React.FC<Props> = ({
                   color={textColor}
                   bold
                   fontSize={isTeaser ? teaserHeadline : headline}
+                  mt="4px"
                   mb={space['0.5']}>
                   {title}
                 </Heading>
@@ -256,7 +257,7 @@ const AppointmentCard: React.FC<Props> = ({
                   <Tag key={`tag-${i}`} text={tag.name} />
                 ))}
               </Row>
-              <Row space={1} marginY={space['0.5']}>
+              <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>
                     {'Ab'} {date.toFormat('dd.MM.yyyy')}
@@ -271,7 +272,12 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text bold fontSize={'md'} mb={space['0.5']} maxWidth="200px">
+              <Text
+                bold
+                fontSize={'md'}
+                mt="4px"
+                mb={space['0.5']}
+                maxWidth="200px">
                 {title}
               </Text>
             </Box>

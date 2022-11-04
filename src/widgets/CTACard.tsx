@@ -27,6 +27,7 @@ type Props = {
   marginBottom?: number
   width?: number | string
   height?: number | string
+  isOnboardingCard?: boolean
 }
 
 const CTACard: React.FC<Props> = ({
@@ -39,6 +40,7 @@ const CTACard: React.FC<Props> = ({
   icon,
   closeable = false,
   variant = 'normal',
+  isOnboardingCard = false,
   onClose,
   marginBottom = 0
 }) => {
@@ -107,16 +109,18 @@ const CTACard: React.FC<Props> = ({
           flexWrap={'wrap'}
           w="100%"
           justifyContent={closeable ? 'space-between' : ''}>
-          <Box marginBottom={IconSpaceBottom}>{icon}</Box>
+          <Box marginBottom={isOnboardingCard ? space['1'] : IconSpaceBottom}>
+            {icon}
+          </Box>
           <Container
             maxWidth="100%"
-            flexDirection={ButtonDirection}
-            width={ContainerWidth}
-            marginLeft={IconSpace}>
+            flexDirection={isOnboardingCard ? 'column' : ButtonDirection}
+            width={isOnboardingCard ? '100%' : ContainerWidth}
+            marginLeft={!isOnboardingCard ? IconSpace : ''}>
             <Row
               width="100%"
               justifyContent={ContentsDirection}
-              flexDirection={ButtonDirection}>
+              flexDirection={isOnboardingCard ? 'column' : ButtonDirection}>
               <Column>
                 <Text
                   maxWidth="340px"

@@ -275,13 +275,15 @@ const PupilGroup: React.FC<Props> = () => {
               <Text>{t('matching.group.pupil.content')}</Text>
             </VStack>
 
-            <SearchBar
-              value={lastSearch}
-              onChangeText={text => setLastSearch(text)}
-              onSearch={s => {
-                search()
-              }}
-            />
+            <VStack maxWidth={ContentContainerWidth}>
+              <SearchBar
+                value={lastSearch}
+                onChangeText={text => setLastSearch(text)}
+                onSearch={s => {
+                  search()
+                }}
+              />
+            </VStack>
 
             <Tabs
               onPressTab={(tab: Tab, index: number) => {
