@@ -14,7 +14,12 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value }) => {
   return (
     <>
       <div className="lf__datepicker">
-        <input type={type} onChange={onChange} value={value} min={min} />
+        <input
+          type={type}
+          onChange={onChange}
+          value={value}
+          min={(type === 'date' && min) || undefined}
+        />
       </div>
     </>
   )
