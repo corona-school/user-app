@@ -154,9 +154,9 @@ export default function Login() {
               onKeyPress={handleKeyPress}
             />
           </Row>
-          <Text opacity={0.6} fontSize="xs">
+          {/* <Text opacity={0.6} fontSize="xs">
             {t('login.hint.mandatory')}
-          </Text>
+          </Text> */}
         </Box>
         {error && (
           <Text

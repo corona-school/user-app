@@ -362,7 +362,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
+            {/* <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
               <Container
                 maxWidth="100%"
                 width="100%"
@@ -491,7 +491,7 @@ const ProfileStudent: React.FC<Props> = () => {
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>
-            </ProfileSettingRow>
+            </ProfileSettingRow> */}
           </VStack>
         </VStack>
       </WithNavigation>

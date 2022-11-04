@@ -42,7 +42,7 @@ const mutPupil = `mutation register(
   $password: String!
   $gradeAsInt: Int!
   $subjects: [SubjectInput!]
-  $aboutMe: String!
+  
 ) {
   meRegisterPupil(
     data: {
@@ -60,7 +60,7 @@ const mutPupil = `mutation register(
   }
   passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects, aboutMe: $aboutMe } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects,  } }
   )
 }
 `
@@ -162,7 +162,7 @@ const RegistrationData: React.FC<Props> = () => {
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
-      aboutMe && (data['aboutMe'] = aboutMe)
+      // aboutMe && (data['aboutMe'] = aboutMe)
 
       try {
         await register({
