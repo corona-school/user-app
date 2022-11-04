@@ -42,6 +42,7 @@ const mutPupil = `mutation register(
   $password: String!
   $gradeAsInt: Int!
   $subjects: [SubjectInput!]
+  $aboutMe: String!
 ) {
   meRegisterPupil(
     data: {
@@ -59,7 +60,7 @@ const mutPupil = `mutation register(
   }
   passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects, aboutMe: $aboutMe } }
   )
 }
 `
@@ -71,7 +72,6 @@ const mutStudent = `mutation register(
   $email: String!
   $password: String!
   $subjects: [SubjectInput!]
-
 ) {
   meRegisterStudent(
     data: {
@@ -111,7 +111,8 @@ const RegistrationData: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
 
   // data provided by previous slides
-  const { firstname, lastname, email, password, userType } = useRegistration()
+  const { firstname, lastname, email, password, userType, aboutMe } =
+    useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -155,11 +156,13 @@ const RegistrationData: React.FC<Props> = () => {
         schooltype: string
         gradeAsInt: number
         subjects: ObjectAnswer<number | boolean>
+        aboutMe?: string
       }
       state && (data['state'] = state)
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
+      aboutMe && (data['aboutMe'] = aboutMe)
 
       try {
         await register({
@@ -176,7 +179,7 @@ const RegistrationData: React.FC<Props> = () => {
         return false
       }
     },
-    [email, firstname, lastname, password, register]
+    [email, firstname, lastname, password, aboutMe, register]
   )
 
   // at the end register the student with all data

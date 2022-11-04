@@ -14,6 +14,7 @@ type LFRegistration = {
   email: string
   password: string
   userType: LFUserType
+  aboutMe?: string
   setRegistrationData: (data: Partial<LFRegistration>) => any
 }
 

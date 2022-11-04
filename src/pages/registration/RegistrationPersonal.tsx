@@ -27,7 +27,15 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
-  const { setRegistrationData, email, password, userType } = useRegistration()
+  const {
+    setRegistrationData,
+    email,
+    password,
+    userType,
+    firstname,
+    lastname,
+    aboutMe
+  } = useRegistration()
 
   useEffect(() => {
     if (!email && !password) navigate('/registration/1')
@@ -79,10 +87,12 @@ const RegistrationPersonal: React.FC<Props> = () => {
         marginX="auto"
         width={ContainerWidth}>
         <TextInput
+          value={firstname}
           placeholder={t('firstname')}
           onChangeText={t => setRegistrationData({ firstname: t })}
         />
         <TextInput
+          value={lastname}
           placeholder={t('lastname')}
           onChangeText={t => setRegistrationData({ lastname: t })}
         />
@@ -91,6 +101,8 @@ const RegistrationPersonal: React.FC<Props> = () => {
             <Heading>{t('registration.personal.about.label')}</Heading>
             <TextArea
               h={150}
+              value={aboutMe}
+              onChangeText={t => setRegistrationData({ aboutMe: t })}
               placeholder={t('registration.personal.about.text')}
               autoCompleteType={{}}
             />
