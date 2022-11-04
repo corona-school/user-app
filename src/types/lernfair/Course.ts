@@ -33,3 +33,5 @@ export type LFTag = {
   name: string
   category?: string
 }
+
+export type TrafficStatus = 'full' | 'last' | 'free'

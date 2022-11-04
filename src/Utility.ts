@@ -1,4 +1,4 @@
-import { LFLecture } from './types/lernfair/Course'
+import { LFLecture, TrafficStatus } from './types/lernfair/Course'
 import { ClassRange } from './types/lernfair/SchoolClass'
 import { DateTime } from 'luxon'
 
@@ -134,6 +134,17 @@ export const getFirstLectureFromSubcourse: (
   return firstLecture
 }
 
+export const getTrafficStatus: (
+  participants: number,
+  maxParticipants: number
+) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
+  return participants === maxParticipants
+    ? 'full'
+    : maxParticipants - participants < 5
+    ? 'last'
+    : 'free'
+}
+
 const Utility = {
   createToken,
   toTimerString,
@@ -142,6 +153,7 @@ const Utility = {
   findMinMaxClassRange,
   formatDate,
   handleDateString,
-  getFirstLectureFromSubcourse
+  getFirstLectureFromSubcourse,
+  getTrafficStatus
 }
 export default Utility

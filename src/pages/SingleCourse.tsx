@@ -23,7 +23,7 @@ import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 
-import Utility from '../Utility'
+import Utility, { getTrafficStatus } from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
@@ -291,13 +291,10 @@ const SingleCourse: React.FC<Props> = () => {
 
           <Box>
             <CourseTrafficLamp
-              status={
-                course?.participantsCount === course?.maxParticipants
-                  ? 'full'
-                  : course?.maxParticipants - course?.participantsCount < 5
-                  ? 'last'
-                  : 'free'
-              }
+              status={getTrafficStatus(
+                course?.participantsCount,
+                course?.maxParticipants
+              )}
             />
           </Box>
 
