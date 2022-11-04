@@ -121,7 +121,7 @@ const AppointmentCard: React.FC<Props> = ({
 
   const buttonteaserSpace = useBreakpointValue({
     base: space['1'],
-    lg: space['4']
+    lg: '32px'
   })
 
   return (
@@ -151,22 +151,40 @@ const AppointmentCard: React.FC<Props> = ({
                     uri: image
                   }}
                 />
-                <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
-                  {tags?.map((tag, i) => (
-                    <Tag key={`tag-${i}`} text={tag.name} />
-                  ))}
-                </Row>
+
+                {isTeaser && (
+                  <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
               </Box>
 
               <Box
                 padding={isTeaser ? CardMobilePadding : space['1']}
                 maxWidth="731px">
                 {!isTeaser && date && (
-                  <Row paddingTop={space['1']} space={1}>
-                    <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
-                    <Text color={textColor}>•</Text>
-                    <Text color={textColor}>{date.toFormat('HH:mm')}</Text>
-                  </Row>
+                  <>
+                    <Row
+                      paddingTop="5px"
+                      space={space['0.5']}
+                      flexWrap="wrap"
+                      maxWidth="280px">
+                      {tags?.map((tag, i) => (
+                        <Tag key={`tag-${i}`} text={tag.name} />
+                      ))}
+                    </Row>
+                    <Row paddingTop="4px" space={1}>
+                      <Text color={textColor}>
+                        {date.toFormat('dd.MM.yyyy')}
+                      </Text>
+                      <Text color={textColor}>•</Text>
+                      <Text color={textColor}>
+                        {date.toFormat('HH:mm')} Uhr
+                      </Text>
+                    </Row>
+                  </>
                 )}
                 {date && isTeaser && (
                   <Row marginBottom={space['1']} alignItems="center">
@@ -188,6 +206,7 @@ const AppointmentCard: React.FC<Props> = ({
                   color={textColor}
                   bold
                   fontSize={isTeaser ? teaserHeadline : headline}
+                  mt="5px"
                   mb={space['0.5']}>
                   {title}
                 </Heading>
@@ -251,12 +270,12 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
 
             <Box paddingX="10px" paddingY={space['1.5']}>
-              <Row space={space['0.5']} flexWrap="wrap" maxWidth="260px">
+              <Row space={space['0.5']} flexWrap="wrap" maxWidth="370px">
                 {tags?.map((tag, i) => (
                   <Tag key={`tag-${i}`} text={tag.name} />
                 ))}
               </Row>
-              <Row space={1} marginY={space['0.5']}>
+              <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>
                     {'Ab'} {date.toFormat('dd.MM.yyyy')}
@@ -271,7 +290,12 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text bold fontSize={'md'} mb={space['0.5']} maxWidth="200px">
+              <Text
+                bold
+                fontSize={'md'}
+                mt="4px"
+                mb={space['0.5']}
+                maxWidth="200px">
                 {title}
               </Text>
             </Box>

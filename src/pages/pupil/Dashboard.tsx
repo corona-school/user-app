@@ -239,7 +239,7 @@ const Dashboard: React.FC<Props> = () => {
             marginX="auto"
             width="100%"
             maxWidth={ContainerWidth}>
-            <VStack marginTop={space['1']}>
+            <VStack>
               {sortedAppointments[0] && (
                 <VStack marginBottom={space['1.5']}>
                   <Heading marginBottom={space['1']}>
