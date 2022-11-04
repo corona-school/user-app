@@ -555,7 +555,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         ''
                       ))}
                   </Flex>
-                  {(data?.me?.student?.canRequestMatch?.reason ===
+                  {(data?.me?.student?.canRequestMatch?.reason !==
                     'not-tutor' &&
                     data?.me?.student?.canRequestMatch?.allowed && (
                       <>
