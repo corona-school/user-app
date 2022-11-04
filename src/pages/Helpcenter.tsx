@@ -28,6 +28,7 @@ import useModal from '../hooks/useModal'
 import IFrame from '../components/IFrame'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
+import Hello from '../widgets/Hello'
 
 type Props = {}
 
@@ -144,7 +145,7 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="hilfebereich">
-      <WithNavigation headerTitle="Hilfebereich">
+      <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
         <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
           <Box
             maxWidth={ContentContainerWidth}

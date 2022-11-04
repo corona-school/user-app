@@ -9,7 +9,8 @@ import {
   useBreakpointValue,
   Flex,
   Column,
-  Alert
+  Alert,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -31,6 +32,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
+import Hello from '../../widgets/Hello'
 
 type Props = {}
 
@@ -252,9 +254,9 @@ const DashboardStudent: React.FC<Props> = () => {
               size="md"
               image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             /> */}
-              <Heading color={'#fff'} paddingY={space['1.5']}>
-                {t('hallo')} {data?.me?.firstname}!
-              </Heading>
+              <Box paddingY={space['1.5']}>
+                <Hello />
+              </Box>
             </HStack>
           )
         }

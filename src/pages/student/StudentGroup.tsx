@@ -25,6 +25,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { DateTime } from 'luxon'
+import Hello from '../../widgets/Hello'
 
 type Props = {}
 
@@ -194,6 +195,7 @@ const StudentGroup: React.FC<Props> = () => {
   return (
     <AsNavigationItem path="group">
       <WithNavigation
+        headerContent={<Hello />}
         headerTitle={t('matching.group.helper.header')}
         headerLeft={<NotificationAlert />}>
         <VStack

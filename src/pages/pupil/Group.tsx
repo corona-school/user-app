@@ -24,6 +24,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { DateTime } from 'luxon'
+import Hello from '../../widgets/Hello'
 
 type Props = {}
 
@@ -262,6 +263,7 @@ const PupilGroup: React.FC<Props> = () => {
   return (
     <AsNavigationItem path="group">
       <WithNavigation
+        headerContent={<Hello />}
         headerTitle={t('matching.group.pupil.header')}
         headerLeft={<NotificationAlert />}>
         <VStack
