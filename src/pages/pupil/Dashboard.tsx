@@ -12,7 +12,8 @@ import {
   Alert,
   Column,
   Modal,
-  Radio
+  Radio,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -348,18 +349,20 @@ const Dashboard: React.FC<Props> = () => {
                   {activeMatches.map(
                     (match: LFMatch) =>
                       (
-                        <Pressable
+                        <Box
                           width={CardGrid}
                           marginRight="10px"
                           marginBottom="10px"
-                          onPress={() =>
-                            navigate('/profile', {
-                              state: {
-                                userType: 'student',
-                                id: match.student.id
-                              }
-                            })
-                          }>
+
+                          // onPress={() =>
+                          //   navigate('/user-profile', {
+                          //     state: {
+                          //       userType: 'student',
+                          //       id: match.student.id
+                          //     }
+                          //   })
+                          // }
+                        >
                           <TeacherCard
                             name={`${match.student?.firstname} ${match.student?.lastname}`}
                             variant="dark"
@@ -381,7 +384,7 @@ const Dashboard: React.FC<Props> = () => {
                               )
                             }
                           />
-                        </Pressable>
+                        </Box>
                       ) || (
                         <Alert
                           alignItems="start"
