@@ -40,6 +40,7 @@ import useModal from '../hooks/useModal'
 import Unsplash from './Unsplash'
 import CourseBlocker from './student/CourseBlocker'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 
 type Props = {}
 
@@ -88,6 +89,10 @@ const CreateCourse: React.FC<Props> = () => {
   const [lectures, setLectures] = useState<Lecture[]>([])
   const [pickedPhoto, setPickedPhoto] = useState<string>('')
 
+  const [imageLoading, setImageLoading] = useState<boolean>(false)
+  const [uploadResult, setUploadResult] = useState<
+    'success' | 'error' | string
+  >('')
   const [fileId, setFileId] = useState<string>('')
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
@@ -107,7 +112,12 @@ const CreateCourse: React.FC<Props> = () => {
 
   const [
     createCourse,
-    { data: courseData, error: courseError, reset: resetCourse }
+    {
+      data: courseData,
+      error: courseError,
+      reset: resetCourse,
+      loading: courseLoading
+    }
   ] = useMutation(gql`
     mutation createCourse($course: PublicCourseCreateInput!) {
       courseCreate(course: $course) {
@@ -117,7 +127,12 @@ const CreateCourse: React.FC<Props> = () => {
   `)
   const [
     createSubcourse,
-    { data: subcourseData, error: subcourseError, reset: resetSubcourse }
+    {
+      data: subcourseData,
+      error: subcourseError,
+      reset: resetSubcourse,
+      loading: subcourseLoading
+    }
   ] = useMutation(gql`
     mutation createSubcourse(
       $courseId: Float!
@@ -219,7 +234,6 @@ const CreateCourse: React.FC<Props> = () => {
     courseData,
     courseError,
     createSubcourse,
-    data.me.student.id,
     joinAfterStart,
     lectures,
     maxParticipantCount
@@ -241,20 +255,20 @@ const CreateCourse: React.FC<Props> = () => {
     navigate(-1)
   }, [navigate])
 
-  useEffect(() => {
-    if (mutImage.data && !mutImage.error) {
-      setShowModal(true)
-    } else {
-      console.log('error loading up image')
-    }
-  }, [
-    courseData,
-    courseError,
-    mutImage.data,
-    mutImage.error,
-    subcourseData,
-    subcourseError
-  ])
+  // useEffect(() => {
+  //   if (mutImage.data && !mutImage.error) {
+  //     setShowModal(true)
+  //   } else {
+  //     console.log('error loading up image')
+  //   }
+  // }, [
+  //   courseData,
+  //   courseError,
+  //   mutImage.data,
+  //   mutImage.error,
+  //   subcourseData,
+  //   subcourseError
+  // ])
 
   useEffect(() => {
     if (courseError) {
@@ -296,6 +310,7 @@ const CreateCourse: React.FC<Props> = () => {
       console.log("no course id, can't upload photo")
     if (!courseData?.courseCreate?.id) return
 
+    setImageLoading(true)
     const formData: FormData = new FormData()
 
     const base64 = await fetch(pickedPhoto)
@@ -308,17 +323,19 @@ const CreateCourse: React.FC<Props> = () => {
         body: formData
       })
 
-      if (raw) {
-        setCourseImage({
-          variables: {
-            courseId: courseData.courseCreate.id,
-            fileId: raw
-          }
-        })
-      }
+      const res = (await setCourseImage({
+        variables: {
+          courseId: courseData.courseCreate.id,
+          fileId: raw
+        }
+      })) as { setCourseImage: boolean }
+
+      setUploadResult(res.setCourseImage ? 'success' : 'error')
     } catch (e) {
       console.error(e)
+      setUploadResult('error')
     }
+    setImageLoading(false)
   }, [courseData?.courseCreate?.id, pickedPhoto, setCourseImage])
 
   useEffect(() => {
@@ -334,6 +351,37 @@ const CreateCourse: React.FC<Props> = () => {
     uploadPhoto
   ])
 
+  useEffect(() => {
+    if (!uploadResult) return
+    if (uploadResult === 'success' && !mutImage.called) return
+
+    const notLoading =
+      !courseLoading && !subcourseLoading && !mutImage.loading && !imageLoading
+
+    const hasData = !!courseData && !!subcourseData
+
+    if (notLoading && hasData) {
+      navigate('/group', {
+        state: {
+          courseSuccess: courseData && subcourseData,
+          imageError: uploadResult === 'error' || !!mutImage.error
+        }
+      })
+    }
+  }, [
+    courseData,
+    courseLoading,
+    imageLoading,
+    mutImage.called,
+    mutImage.data,
+    mutImage.error,
+    mutImage.loading,
+    navigate,
+    subcourseData,
+    subcourseLoading,
+    uploadResult
+  ])
+
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
@@ -344,7 +392,7 @@ const CreateCourse: React.FC<Props> = () => {
     lg: sizes['contentContainerWidth']
   })
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <WithNavigation headerTitle={t('course.header')} showBack>
@@ -409,7 +457,9 @@ const CreateCourse: React.FC<Props> = () => {
                 <CoursePreview
                   onNext={onNext}
                   onBack={onBack}
-                  isDisabled={loading}
+                  isDisabled={
+                    loading || courseLoading || subcourseLoading || imageLoading
+                  }
                 />
                 <Modal
                   isOpen={showModal}

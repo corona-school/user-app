@@ -86,6 +86,7 @@ const WithNavigation: React.FC<Props> = ({
                 <>
                   <View h={`${headerHeight}px`}></View>
                   {headerContent}
+                  <View h={`${headerHeight}px`}></View>
                 </>
               )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}

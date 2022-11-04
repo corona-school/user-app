@@ -9,7 +9,9 @@ import {
   Row,
   Box,
   Image,
-  useBreakpointValue
+  useBreakpointValue,
+  Alert,
+  HStack
 } from 'native-base'
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -10,7 +10,7 @@ import {
   Alert,
   HStack
 } from 'native-base'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
@@ -71,6 +71,12 @@ const StudentGroup: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
+
+  const location = useLocation()
+  const locState = location.state as {
+    courseSuccess: boolean
+    imageError: boolean
+  }
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -206,6 +212,46 @@ const StudentGroup: React.FC<Props> = () => {
               </Heading>
               <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
             </VStack>
+            {locState && Object.keys(locState).length > 0 && (
+              <>
+                {locState.courseSuccess && (
+                  <Alert
+                    alignItems="start"
+                    width="max-content"
+                    colorScheme="info">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="primary.500" />
+                      <Text>
+                        Dein Kurs wurde erfolgreich erstellt. Er befindet sich
+                        nun in Prüfung.
+                      </Text>
+                    </HStack>
+                  </Alert>
+                )}
+                {!locState.courseSuccess && (
+                  <Alert
+                    alignItems="start"
+                    width="max-content"
+                    colorScheme="danger">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="danger.100" />
+                      <Text>Dein Kurs konnte nicht erstellt werden.</Text>
+                    </HStack>
+                  </Alert>
+                )}
+                {locState.imageError && (
+                  <Alert
+                    alignItems="start"
+                    width="max-content"
+                    colorScheme="danger">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon color="danger.100" />
+                      <Text>Dein Bild konnte nicht hochgeladen werden.</Text>
+                    </HStack>
+                  </Alert>
+                )}
+              </>
+            )}
             <VStack paddingY={space['1']}>
               <Button
                 width={ButtonContainer}
