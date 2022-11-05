@@ -42,6 +42,7 @@ const mutPupil = `mutation register(
   $password: String!
   $gradeAsInt: Int!
   $subjects: [SubjectInput!]
+  
 ) {
   meRegisterPupil(
     data: {
@@ -59,7 +60,7 @@ const mutPupil = `mutation register(
   }
   passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects,  } }
   )
 }
 `
@@ -71,7 +72,6 @@ const mutStudent = `mutation register(
   $email: String!
   $password: String!
   $subjects: [SubjectInput!]
-
 ) {
   meRegisterStudent(
     data: {
@@ -111,7 +111,8 @@ const RegistrationData: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
 
   // data provided by previous slides
-  const { firstname, lastname, email, password, userType } = useRegistration()
+  const { firstname, lastname, email, password, userType, aboutMe } =
+    useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -121,7 +122,7 @@ const RegistrationData: React.FC<Props> = () => {
   })
 
   // use different string depending on userType
-  const [register, { data, error, loading }] = useMutation(
+  const [register, { loading }] = useMutation(
     gql`
       ${userType === 'pupil' ? mutPupil : mutStudent}
     `
@@ -155,11 +156,13 @@ const RegistrationData: React.FC<Props> = () => {
         schooltype: string
         gradeAsInt: number
         subjects: ObjectAnswer<number | boolean>
+        aboutMe?: string
       }
       state && (data['state'] = state)
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
+      // aboutMe && (data['aboutMe'] = aboutMe)
 
       try {
         await register({
@@ -176,7 +179,7 @@ const RegistrationData: React.FC<Props> = () => {
         return false
       }
     },
-    [email, firstname, lastname, password, register]
+    [email, firstname, lastname, password, aboutMe, register]
   )
 
   // at the end register the student with all data
@@ -444,11 +447,6 @@ const RegistrationData: React.FC<Props> = () => {
     question: SelectionQuestion
   ) => SelectionQuestion = useCallback(
     (question: SelectionQuestion) => {
-      // question.options = new Array(13).fill(0).map((_, i) => ({
-      //   key: `${i + 1}`,
-      //   label: t('lernfair.schoolclass', { class: i + 1 })
-      // }))
-
       // is question about schoolclass?
       if (question.id === 'schoolclass') {
         question.options = new Array(13).fill(0).map((_, i) => ({
@@ -456,37 +454,10 @@ const RegistrationData: React.FC<Props> = () => {
           label: t('lernfair.schoolclass', { class: i + 1 })
         }))
         return question
-
-        // change displayed classes based on selected schoolform
-        // if (!answer) {
-        //   question.options = new Array(8).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        //   return question
-        // }
-
-        // if (answer['grundschule']) {
-        //   question.options = new Array(4).fill(0).map((_, i) => ({
-        //     key: `${i + 1}`,
-        //     label: t('lernfair.schoolclass', { class: i + 1 })
-        //   }))
-        // } else {
-        //   question.options = new Array(6).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        // }
-        // if (answer['gymnasium']) {
-        //   question.options = new Array(8).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        // }
       }
       return question
     },
-    [answers, t]
+    [t]
   )
 
   // modify questions based on answers etc

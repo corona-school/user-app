@@ -190,7 +190,7 @@ const Dashboard: React.FC<Props> = () => {
   const [dissolve, _dissolve] = useMutation(
     gql`
       mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
-        matchDissolve(dissolveReason: dissolveReason, matchId: $matchId)
+        matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
     {

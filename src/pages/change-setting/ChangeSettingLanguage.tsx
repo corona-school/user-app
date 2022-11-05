@@ -11,17 +11,15 @@ import {
   Input,
   FormControl,
   Stack,
-  Alert,
-  HStack,
   useBreakpointValue
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import { useLocation, useNavigate } from 'react-router-dom'
-import BackButton from '../../components/BackButton'
+import { useNavigate } from 'react-router-dom'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import useLernfair from '../../hooks/useLernfair'
 import { languages } from '../../types/lernfair/Language'
 import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
@@ -55,28 +53,29 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
 
-  const location = useLocation()
-  const { state } = location as { state: { userType: string } }
-
   const [selections, setSelections] = useState<string[]>([])
 
   const [showError, setShowError] = useState<boolean>()
+  const { userType = 'pupil' } = useLernfair()
 
   const navigate = useNavigate()
 
   const { data, loading } = useQuery(gql`
-    ${state?.userType === 'student' ? queryStudent : queryPupil}
+    ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
   const [updateLanguage, _updateLanguage] = useMutation(gql`
-    ${state?.userType === 'student' ? mutStudent : mutPupil}
+    ${userType === 'student' ? mutStudent : mutPupil}
   `)
 
   useEffect(() => {
-    if (data?.me[state?.userType].languages) {
-      setSelections(data?.me[state?.userType].languages)
+    if (
+      data?.me[userType || 'pupil'] &&
+      data?.me[userType || 'pupil'].languages
+    ) {
+      setSelections(data?.me[userType || 'pupil'].languages)
     }
-  }, [data?.me, state?.userType])
+  }, [data?.me, userType])
 
   useEffect(() => {
     if (_updateLanguage.data && !_updateLanguage.error) {

@@ -83,6 +83,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
+    if (!pickedPhoto) return false
     return true
   }, [
     classRange,
@@ -90,12 +91,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     description,
     maxParticipantCount,
     outline,
+    pickedPhoto,
     subject
   ])
-
-  useEffect(() => {
-    // TODO prefill
-  }, [])
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -138,6 +136,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           {t('course.CourseDate.form.courseNameHeadline')}
         </FormControl.Label>
         <Input
+          value={courseName}
           placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setCourseName}

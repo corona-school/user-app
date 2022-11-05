@@ -38,12 +38,7 @@ const SearchBar: React.FC<Props> = ({
   }
 
   return (
-    <Row>
-      {showBack && (
-        <Button padding={space['1']} onPress={onBack}>
-          <ArrowBackIcon />
-        </Button>
-      )}
+    <Row flex="1">
       <Input
         flex="1"
         value={value || searchString}
