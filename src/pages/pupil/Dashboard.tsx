@@ -456,32 +456,38 @@ const Dashboard: React.FC<Props> = () => {
                   data?.subcoursesPublic
                     ?.slice(0, 4)
                     .map((sc: LFSubCourse, i: number) => (
-                      <SignInCard
-                        tags={sc.course.tags}
-                        data={sc}
-                        onClickSignIn={() => {
-                          trackEvent({
-                            category: 'dashboard',
-                            action: 'click-event',
-                            name: 'Schüler Dashboard – Matching Vorschlag',
-                            documentTitle: 'Schüler Dashboard'
-                          })
-                          navigate('/single-course', {
-                            state: { course: sc.id }
-                          })
-                        }}
-                        onPress={() => {
-                          trackEvent({
-                            category: 'dashboard',
-                            action: 'click-event',
-                            name: 'Schüler Dashboard – Matching Vorschlag',
-                            documentTitle: 'Schüler Dashboard'
-                          })
-                          navigate('/single-course', {
-                            state: { course: sc.id }
-                          })
-                        }}
-                      />
+                      <Column
+                        minWidth="230px"
+                        maxWidth="280px"
+                        flex={1}
+                        h="100%">
+                        <SignInCard
+                          tags={sc.course.tags}
+                          data={sc}
+                          onClickSignIn={() => {
+                            trackEvent({
+                              category: 'dashboard',
+                              action: 'click-event',
+                              name: 'Schüler Dashboard – Matching Vorschlag',
+                              documentTitle: 'Schüler Dashboard'
+                            })
+                            navigate('/single-course', {
+                              state: { course: sc.id }
+                            })
+                          }}
+                          onPress={() => {
+                            trackEvent({
+                              category: 'dashboard',
+                              action: 'click-event',
+                              name: 'Schüler Dashboard – Matching Vorschlag',
+                              documentTitle: 'Schüler Dashboard'
+                            })
+                            navigate('/single-course', {
+                              state: { course: sc.id }
+                            })
+                          }}
+                        />
+                      </Column>
                     ))) || (
                   <AlertMessage content={t('lernfair.reason.proposals')} />
                 )}
