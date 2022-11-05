@@ -410,13 +410,15 @@ const Dashboard: React.FC<Props> = () => {
                   )}
                   {data?.me?.pupil?.openMatchRequestCount > 0 && (
                     <VStack space={2} flexShrink={1} maxWidth="700px">
-                      <Text>
-                        Anfrage erstellt am:{' '}
-                        {DateTime.fromISO(
-                          data?.me?.pupil?.firstMatchRequest
-                        ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                        Uhr
-                      </Text>
+                      {data?.me?.pupil?.firstMatchRequest && (
+                        <Text>
+                          Anfrage erstellt am:{' '}
+                          {DateTime.fromISO(
+                            data?.me?.pupil?.firstMatchRequest
+                          ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
+                          Uhr
+                        </Text>
+                      )}
                       <Alert
                         maxWidth="520px"
                         alignItems="start"
