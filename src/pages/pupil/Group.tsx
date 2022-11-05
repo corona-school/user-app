@@ -88,7 +88,7 @@ const PupilGroup: React.FC<Props> = () => {
     searchAllSubcoursesQuery,
     { loading: allSubcoursesSearchLoading, data: allSubcoursesData }
   ] = useLazyQuery(gql`
-    query ($name: String!) {
+    query ($name: String) {
       subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
         id
         lectures {
@@ -110,7 +110,7 @@ const PupilGroup: React.FC<Props> = () => {
     searchRecommendationsQuery,
     { loading: recommendationsSearchLoading, data: recommendationsData }
   ] = useLazyQuery(gql`
-    query ($name: String!) {
+    query ($name: String) {
       subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
         id
         lectures {
@@ -132,6 +132,8 @@ const PupilGroup: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Schüler Gruppe'
     })
+    searchRecommendationsQuery({ variables: {} })
+    searchAllSubcoursesQuery({ variables: {} })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -197,7 +199,7 @@ const PupilGroup: React.FC<Props> = () => {
   const searchResults: LFSubCourse[] = useMemo(() => {
     if (lastSearch.length === 0) return activeCourses
     return (
-      (activeTab !== 0 && activeCourses) ||
+      (lastSearch.length > 0 && activeTab !== 0 && activeCourses) ||
       activeCourses?.filter((sub: LFSubCourse) =>
         sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())
       ) ||
@@ -234,9 +236,9 @@ const PupilGroup: React.FC<Props> = () => {
     const { space } = useTheme()
     return (
       <>
-        <Text marginBottom={space['1.5']}>
+        {/* <Text marginBottom={space['1.5']}>
           {t('matching.group.pupil.tabs.tab1.content')}
-        </Text>
+        </Text> */}
       </>
     )
   }
@@ -244,9 +246,9 @@ const PupilGroup: React.FC<Props> = () => {
   const RecommendationsTab: React.FC = () => {
     return (
       <>
-        <Text marginBottom={space['1.5']}>
+        {/* <Text marginBottom={space['1.5']}>
           {t('matching.group.pupil.tabs.tab2.content')}
-        </Text>
+        </Text> */}
       </>
     )
   }
@@ -254,9 +256,9 @@ const PupilGroup: React.FC<Props> = () => {
   const AllSubcoursesTab: React.FC = () => {
     return (
       <>
-        <Text marginBottom={space['1.5']}>
+        {/* <Text marginBottom={space['1.5']}>
           {t('matching.group.pupil.tabs.tab3.content')}
-        </Text>
+        </Text> */}
       </>
     )
   }
@@ -300,10 +302,10 @@ const PupilGroup: React.FC<Props> = () => {
                   title: t('matching.group.pupil.tabs.tab1.title'),
                   content: <SubcoursesTab />
                 },
-                {
-                  title: t('matching.group.pupil.tabs.tab2.title'),
-                  content: <RecommendationsTab />
-                },
+                // {
+                //   title: t('matching.group.pupil.tabs.tab2.title'),
+                //   content: <RecommendationsTab />
+                // },
                 {
                   title: t('matching.group.pupil.tabs.tab3.title'),
                   content: <AllSubcoursesTab />
