@@ -36,6 +36,7 @@ import AsNavigationItem from '../../components/AsNavigationItem'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
+import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
 
 type Props = {}
 
@@ -121,7 +122,8 @@ const Dashboard: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
-  const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
+  const [showDissolveModal, setShowDissolveModal] = useState<boolean>(false)
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
   const [dissolveData, setDissolveData] = useState<LFMatch>()
   const [toastShown, setToastShown] = useState<boolean>()
 
@@ -187,6 +189,22 @@ const Dashboard: React.FC<Props> = () => {
       refetchQueries: [query]
     }
   )
+
+  const cancelMatchRequestReaction = useCallback(
+    (shareFeedback: boolean, feedback?: string) => {
+      trackEvent({
+        category: 'Schüler',
+        action: 'Match Request zurückgezogen',
+        name: 'Schüler - Dashboard'
+      })
+
+      cancelMatchRequest()
+      setShowCancelModal(false)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cancelMatchRequest]
+  )
+
   const [dissolve, _dissolve] = useMutation(
     gql`
       mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
@@ -411,13 +429,15 @@ const Dashboard: React.FC<Props> = () => {
                   )}
                   {data?.me?.pupil?.openMatchRequestCount > 0 && (
                     <VStack space={2} flexShrink={1} maxWidth="700px">
-                      <Text>
-                        Anfrage erstellt am:{' '}
-                        {DateTime.fromISO(
-                          data?.me?.pupil?.firstMatchRequest
-                        ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                        Uhr
-                      </Text>
+                      {data?.me?.pupil?.firstMatchRequest && (
+                        <Text>
+                          Anfrage erstellt am:{' '}
+                          {DateTime.fromISO(
+                            data?.me?.pupil?.firstMatchRequest
+                          ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
+                          Uhr
+                        </Text>
+                      )}
                       <Alert
                         maxWidth="520px"
                         alignItems="start"
@@ -436,7 +456,7 @@ const Dashboard: React.FC<Props> = () => {
                       <Button
                         width={ButtonContainer}
                         isDisabled={_cancelMatchRequest?.loading}
-                        onPress={() => cancelMatchRequest()}>
+                        onPress={() => setShowCancelModal(true)}>
                         Anfrage zurücknehmen
                       </Button>
                     </VStack>
@@ -508,6 +528,12 @@ const Dashboard: React.FC<Props> = () => {
           setShowDissolveModal(false)
         }}
         onPressBack={() => setShowDissolveModal(false)}
+      />
+      <CancelMatchRequestModal
+        showModal={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onShareFeedback={feedback => cancelMatchRequestReaction(true, feedback)}
+        onSkipShareFeedback={() => cancelMatchRequestReaction(false)}
       />
     </AsNavigationItem>
   )
