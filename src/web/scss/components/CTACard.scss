@@ -1,0 +1,22 @@
+.cta-card {
+    &__wrapper {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    &__item {
+        &--content {
+            flex-basis: 70%;
+        }
+
+        &--icon {
+            flex-basis: 5%;
+        }
+
+        &--button {
+            width: 100%;
+        }
+    }
+}

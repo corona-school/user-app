@@ -279,9 +279,9 @@ const AppointmentCard: React.FC<Props> = ({
             flexDirection="row"
             height="100%"
             marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
-            <Box width="21%" display="block" marginRight={space['1']}>
+            <Box width="26%" display="block" marginRight="3px">
               <Image
-                width="110px"
+                width="120px"
                 height="100%"
                 borderTopLeftRadius="15px"
                 borderBottomLeftRadius="15px"
