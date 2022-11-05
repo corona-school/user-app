@@ -68,6 +68,7 @@ import CourseArchive from './pages/CourseArchive'
 import { useEffect } from 'react'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
+import NoAcceptRegistration from './pages/NoAcceptRegistration'
 
 export default function Navigator() {
   return (
@@ -89,6 +90,11 @@ export default function Navigator() {
         </Route>
 
         <Route path="/welcome" element={<Welcome />} />
+
+        <Route
+          path="/registration-rejected"
+          element={<NoAcceptRegistration />}
+        />
 
         {/* Private */}
 

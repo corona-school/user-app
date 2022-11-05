@@ -128,7 +128,12 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Button onPress={() => onBarrierSolved(true)} flex="1">
               {t('registration.barrier.btn.yes')}
             </Button>
-            <Button onPress={() => onBarrierSolved(false)} flex="1">
+            <Button
+              onPress={() => {
+                onBarrierSolved(false)
+                navigate('/registration-rejected')
+              }}
+              flex="1">
               {t('registration.barrier.btn.no')}
             </Button>
           </VStack>

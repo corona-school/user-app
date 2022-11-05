@@ -133,6 +133,12 @@ const AppointmentCard: React.FC<Props> = ({
     xl: '370px'
   })
 
+  const horizontalCardHeadline = useBreakpointValue({
+    base: '70%',
+    lg: '49%',
+    xl: '92%'
+  })
+
   return (
     <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
@@ -310,7 +316,7 @@ const AppointmentCard: React.FC<Props> = ({
                 fontSize={'md'}
                 mt="4px"
                 mb={space['0.5']}
-                maxWidth="200px">
+                maxWidth={horizontalCardHeadline}>
                 {title}
               </Text>
             </Box>
