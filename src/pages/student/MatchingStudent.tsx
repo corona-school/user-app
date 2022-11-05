@@ -92,8 +92,8 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
     gql`
-      mutation ($id: Float!) {
-        studentDeleteMatchRequest(studentId: $id)
+      mutation {
+        studentDeleteMatchRequest
       }
     `,
     { refetchQueries: [{ query }] }
@@ -136,15 +136,15 @@ const MatchingStudent: React.FC<Props> = () => {
       name: 'Helfer Matching Anfrage löschen',
       documentTitle: 'Helfer Matching'
     })
-    const res = (await cancelMatchRequest({
-      variables: { id: data?.me?.student?.id }
-    })) as { studentDeleteMatchRequest: boolean }
+    const res = (await cancelMatchRequest()) as {
+      studentDeleteMatchRequest: boolean
+    }
 
     if (res.studentDeleteMatchRequest) {
       toast.show({ description: 'Die Anfrage wurde gelöscht' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [data?.me?.student?.id])
 
   useEffect(() => {
     if (dissolveData?.matchDissolve && !toastShown) {
