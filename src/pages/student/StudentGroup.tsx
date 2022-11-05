@@ -174,7 +174,6 @@ const StudentGroup: React.FC<Props> = () => {
         <AppointmentCard
           isFullHeight
           isSpaceMarginBottom={false}
-          isHorizontalCardCourseChecked={true}
           key={index}
           variant="horizontal"
           description={course.outline}
