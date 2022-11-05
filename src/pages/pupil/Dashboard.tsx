@@ -396,6 +396,7 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack> */}
                   {data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
+                      width={ButtonContainer}
                       onPress={() => {
                         trackEvent({
                           category: 'dashboard',

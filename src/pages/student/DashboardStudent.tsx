@@ -386,7 +386,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         return (
                           <CSSWrapper className="course-list__item">
                             <AppointmentCard
-                              isFullHeight={false}
+                              isFullHeight
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}

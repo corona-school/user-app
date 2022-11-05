@@ -18,7 +18,7 @@ const NoAcceptRegistration: React.FC<Props> = () => {
 
   useEffect(() => {
     trackPageView({
-      documentTitle: 'Schüler Onboarding'
+      documentTitle: 'Registrierung fehlgeschlagen!'
     })
   }, [])
 

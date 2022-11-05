@@ -195,6 +195,7 @@ const CourseArchive: React.FC<Props> = () => {
                       return (
                         <CSSWrapper className="course-list__item">
                           <AppointmentCard
+                            isFullHeight
                             isSpaceMarginBottom={false}
                             variant="horizontal"
                             description={sub.course.outline}

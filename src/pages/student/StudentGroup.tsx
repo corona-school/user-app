@@ -146,6 +146,7 @@ const StudentGroup: React.FC<Props> = () => {
   const renderCourse = (course: LFCourse, index: number) => (
     <CSSWrapper className="course-list__item">
       <AppointmentCard
+        isFullHeight
         isSpaceMarginBottom={false}
         key={index}
         variant="horizontal"
@@ -171,7 +172,9 @@ const StudentGroup: React.FC<Props> = () => {
     return (
       <CSSWrapper className="course-list__item">
         <AppointmentCard
+          isFullHeight
           isSpaceMarginBottom={false}
+          isHorizontalCardCourseChecked={true}
           key={index}
           variant="horizontal"
           description={course.outline}
@@ -201,6 +204,7 @@ const StudentGroup: React.FC<Props> = () => {
         <VStack
           paddingX={space['1']}
           marginX="auto"
+          marginBottom={space['1']}
           maxWidth={ContainerWidth}
           width="100%">
           <VStack space={space['1']}>

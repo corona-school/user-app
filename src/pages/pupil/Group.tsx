@@ -269,6 +269,7 @@ const PupilGroup: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         <VStack
           paddingX={space['1']}
+          marginBottom={space['1']}
           marginX="auto"
           width="100%"
           maxWidth={ContainerWidth}>
@@ -321,6 +322,7 @@ const PupilGroup: React.FC<Props> = () => {
                             className="course-list__item"
                             key={`subcourse-${index}`}>
                             <AppointmentCard
+                              isHorizontalCardCourseChecked={true}
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               description={course.course.outline}

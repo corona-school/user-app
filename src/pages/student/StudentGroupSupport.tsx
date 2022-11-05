@@ -71,6 +71,7 @@ const StudentGroupSupport: React.FC<Props> = () => {
               {new Array(8).fill(0).map(({}, index) => (
                 <Column width={CardGrid} marginRight="15px">
                   <AppointmentCard
+                    isFullHeight
                     key={index}
                     variant="horizontal"
                     description="Lorem Ipsum"
