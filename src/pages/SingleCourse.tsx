@@ -498,7 +498,8 @@ const SingleCourse: React.FC<Props> = () => {
             <Box marginBottom={space['1.5']} paddingLeft={space['1']}>
               <Button
                 onPress={() => {
-                  window.location.href = 'mailto:testing@lernfair.de'
+                  window.location.href =
+                    'mailto:testing@lernfair.de?subject=Kontaktaufnahme'
                   trackEvent({
                     category: 'kurs',
                     action: 'click-event',
