@@ -154,7 +154,12 @@ const CTACard: React.FC<Props> = ({
                   </Text>
                 </Column>
               </CSSWrapper>
-              <CSSWrapper className="cta-card__item cta-card__item--button">
+              <CSSWrapper
+                className={
+                  isOnboardingCard
+                    ? 'cta-card__item cta-card__item--button cta-card__item--button--onboarding'
+                    : 'cta-card__item cta-card__item--button'
+                }>
                 <Column>
                   {button && <Box marginTop={space['1']}>{button}</Box>}
                 </Column>
