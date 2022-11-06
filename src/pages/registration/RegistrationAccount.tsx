@@ -203,6 +203,11 @@ const RegistrationAccount: React.FC<Props> = () => {
               type="password"
               onChangeText={setPasswordConfirm}
             />
+
+            <Text paddingBottom="10px" fontSize="xs">
+              {t('registration.hint.password.length')}
+            </Text>
+
             {password !== passwordConfirm ? (
               <AlertMessage content={t('registration.hint.password.nomatch')} />
             ) : (
