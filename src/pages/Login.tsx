@@ -155,11 +155,11 @@ export default function Login() {
                 onPress={() => resetPassword(pwEmail)}>
                 Passwort zurücksetzen
               </Button>
-              <Button
+              {/* <Button
                 variant={'outline'}
                 onPress={() => setShowPasswordModal(false)}>
                 Zurück
-              </Button>
+              </Button> */}
             </Row>
           </Modal.Footer>
         </Modal.Content>
