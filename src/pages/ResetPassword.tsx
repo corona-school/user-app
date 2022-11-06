@@ -120,12 +120,12 @@ const ResetPassword: React.FC<Props> = () => {
             {showResetPassword === 'success' && (
               <>
                 <PasswordInput
-                  placeholder={t('password')}
+                  placeholder={'Neues Passwort'}
                   value={password}
                   onChangeText={setPassword}
                 />
                 <PasswordInput
-                  placeholder={t('registration.password_repeat')}
+                  placeholder={'Neues Passwort wiederholen'}
                   value={passwordRepeat}
                   onChangeText={setPasswordRepeat}
                 />
