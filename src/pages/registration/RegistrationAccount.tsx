@@ -10,13 +10,10 @@ import {
   Flex,
   Image,
   useBreakpointValue,
-  Alert,
-  HStack,
-  WarningTwoIcon,
   ScrollView
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
-import { composeInitialProps, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
@@ -78,13 +75,17 @@ const RegistrationAccount: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Registrierung'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onBarrierSolved = useCallback(
     (isUserFit: boolean) => {
-      // TODO react to barrier result
+      if (isUserFit) {
+        navigate('/registration/2')
+      } else {
+        navigate('/registration-rejected')
+      }
       setShow(false)
-      navigate('/registration/2')
     },
     [navigate, setShow]
   )
@@ -131,7 +132,6 @@ const RegistrationAccount: React.FC<Props> = () => {
             <Button
               onPress={() => {
                 onBarrierSolved(false)
-                navigate('/registration-rejected')
               }}
               flex="1">
               {t('registration.barrier.btn.no')}
@@ -208,16 +208,8 @@ const RegistrationAccount: React.FC<Props> = () => {
               {t('registration.hint.password.length')}
             </Text>
 
-            {password !== passwordConfirm ? (
+            {password !== passwordConfirm && (
               <AlertMessage content={t('registration.hint.password.nomatch')} />
-            ) : (
-              ''
-            )}
-
-            {password.length < 6 ? (
-              <AlertMessage content={t('registration.hint.password.length')} />
-            ) : (
-              ''
             )}
           </VStack>
           <VStack
