@@ -69,6 +69,7 @@ import { useEffect } from 'react'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
 import NoAcceptRegistration from './pages/NoAcceptRegistration'
+import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
   return (
@@ -397,6 +398,8 @@ export default function Navigator() {
             </RequireAuth>
           }
         />
+
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Fallback */}
         <Route
