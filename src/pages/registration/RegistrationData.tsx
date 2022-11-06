@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
   Box,
   Button,
@@ -162,10 +163,10 @@ const RegistrationData: React.FC<Props> = () => {
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
-      // aboutMe && (data['aboutMe'] = aboutMe)
+      aboutMe && (data['aboutMe'] = aboutMe)
 
       try {
-        await register({
+        let res = await register({
           variables: {
             firstname,
             lastname,
@@ -174,9 +175,9 @@ const RegistrationData: React.FC<Props> = () => {
             ...data
           }
         })
-        return true
+        return res
       } catch (e) {
-        return false
+        return { errors: [{ message: e }] }
       }
     },
     [email, firstname, lastname, password, aboutMe, register]
@@ -200,7 +201,7 @@ const RegistrationData: React.FC<Props> = () => {
     subjects?.length && (data.subjects = subjects)
 
     try {
-      await register({
+      let res = await register({
         variables: {
           firstname,
           lastname,
@@ -209,9 +210,9 @@ const RegistrationData: React.FC<Props> = () => {
           ...data
         }
       })
-      return true
+      return res
     } catch (e) {
-      return false
+      return { errors: [{ message: e }] }
     }
   }, [
     answers.subjects,
@@ -234,17 +235,44 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  async function attemptRegistration(answers: { [key: string]: Answer }) {
+    let res: any
+
+    try {
+      if (userType === 'pupil') {
+        res = await registerPupil(answers)
+      } else {
+        res = await registerStudent()
+      }
+    } catch (e: any) {
+      console.log(e)
+      showErrorModal(e.message)
+    }
+
+    if (!res.errors) {
+      showSuccessModal()
+    } else {
+      showErrorModal(res.errors[0].message.message)
+    }
+  }
+
   const showErrorModal = useCallback(
     (error: string) => {
-      console.log('show error')
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <Text color="lightText">
-            {t(`registration.error.message.${error}`, {
+            {t(`registration.result.error.message.${error}`, {
               defaultValue: error
             })}
           </Text>
+          <Button
+            onPress={() => {
+              registerError()
+              attemptRegistration(answers)
+            }}>
+            Erneut versuchen
+          </Button>
           <Button onPress={() => registerError()}>
             {t('registration.result.error.btn')}
           </Button>
@@ -252,7 +280,8 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     },
-    [registerError, setContent, setShow, setVariant, space, t]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setVariant, setContent, space, t, setShow, registerError, answers]
   )
 
   const showSuccessModal = useCallback(() => {
@@ -316,24 +345,10 @@ const RegistrationData: React.FC<Props> = () => {
   // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      let res: any
-
-      try {
-        if (userType === 'pupil') {
-          res = await registerPupil(answers)
-        } else {
-          res = await registerStudent()
-        }
-      } catch (e: any) {
-        console.log(e)
-        showErrorModal(e.message)
-      }
-
-      if (res) {
-        showSuccessModal()
-      }
+      attemptRegistration(answers)
     },
-    [registerPupil, registerStudent, showErrorModal, showSuccessModal, userType]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   )
 
   useEffect(() => {
@@ -342,79 +357,6 @@ const RegistrationData: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // // registration went through without error
-  // useEffect(() => {
-  //   if (data && !error) {
-  //     setVariant('dark')
-  //     setContent(
-  //       <VStack
-  //         space={space['1']}
-  //         p={space['1']}
-  //         flex="1"
-  //         width={ModalContainerWidth}
-  //         marginX="auto"
-  //         alignItems="center"
-  //         justifyContent="center">
-  //         <Box justifyContent="center" marginLeft="40px">
-  //           <EventIcon />
-  //         </Box>
-  //         <Heading
-  //           textAlign="center"
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           color="lightText">
-  //           {t('registration.result.success.title')}
-  //         </Heading>
-  //         <Text
-  //           textAlign="center"
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           color="lightText"
-  //           fontSize={'lg'}>
-  //           {t('registration.result.success.text')}
-  //         </Text>
-  //         <Button
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           onPress={() => {
-  //             setShow(false)
-  //             navigate('/login')
-  //             trackEvent({
-  //               category: 'registrierung',
-  //               action: 'click-event',
-  //               name: 'Registrierung erfolgreich',
-  //               documentTitle: 'Registrierung war erfolgreich'
-  //             })
-  //           }}>
-  //           {t('registration.result.success.btn')}
-  //         </Button>
-  //       </VStack>
-  //     )
-  //     setShow(true)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [navigate, data, error, setContent, setShow, setVariant, space, t])
-
-  // // registration has an error
-  // useEffect(() => {
-  //   if (error) {
-  //     setVariant('dark')
-  //     setContent(
-  //       <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
-  //         <Text color="lightText">
-  //           {t(`registration.error.message.${error.message}`, {
-  //             defaultValue: error.message
-  //           })}
-  //         </Text>
-  //         <Button onPress={() => registerError()}>
-  //           {t('registration.result.error.btn')}
-  //         </Button>
-  //       </VStack>
-  //     )
-  //     setShow(true)
-  //   }
-  // }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
@@ -430,17 +372,6 @@ const RegistrationData: React.FC<Props> = () => {
   useEffect(() => {
     setQuestions(userType === 'pupil' ? pupilQuestions : studentQuestions)
   }, [userType])
-
-  // // set state => class range for corresponding subject
-  // const answerFocusSelection = useCallback(
-  //   (val: number) => {
-  //     setClasses(prev => ({
-  //       ...prev,
-  //       [focusedSelection.key]: val
-  //     }))
-  //   },
-  //   [focusedSelection.key]
-  // )
 
   // modify selection question based on answers etc
   const modifySelectionQuestionBeforeRender: (
@@ -594,30 +525,6 @@ const RegistrationData: React.FC<Props> = () => {
                 classes[focusedSelection.key].max) ||
                 13}
             </Heading>
-            {/* <ToggleButton
-              label={t('registration.student.classSelection.range1')}
-              dataKey="1"
-              isActive={classes[focusedSelection.key] === 1}
-              onPress={key => answerFocusSelection(1)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range2')}
-              dataKey="2"
-              isActive={classes[focusedSelection.key] === 2}
-              onPress={key => answerFocusSelection(2)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range3')}
-              dataKey="3"
-              isActive={classes[focusedSelection.key] === 3}
-              onPress={key => answerFocusSelection(3)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range4')}
-              dataKey="4"
-              isActive={classes[focusedSelection.key] === 4}
-              onPress={key => answerFocusSelection(4)}
-            /> */}
 
             <Slider
               animateTransitions

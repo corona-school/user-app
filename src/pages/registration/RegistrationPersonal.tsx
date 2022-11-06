@@ -28,7 +28,9 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const {
-    setRegistrationData,
+    setFirstname,
+    setLastname,
+    setAboutMe,
     email,
     password,
     userType,
@@ -89,12 +91,12 @@ const RegistrationPersonal: React.FC<Props> = () => {
         <TextInput
           value={firstname}
           placeholder={t('firstname')}
-          onChangeText={t => setRegistrationData({ firstname: t })}
+          onChangeText={setFirstname}
         />
         <TextInput
           value={lastname}
           placeholder={t('lastname')}
-          onChangeText={t => setRegistrationData({ lastname: t })}
+          onChangeText={setLastname}
         />
         {userType === 'pupil' && (
           <>
@@ -102,7 +104,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
             <TextArea
               h={150}
               value={aboutMe}
-              onChangeText={t => setRegistrationData({ aboutMe: t })}
+              onChangeText={setAboutMe}
               placeholder={t('registration.personal.about.text')}
               autoCompleteType={{}}
             />

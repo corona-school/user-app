@@ -29,6 +29,7 @@ import TextInput from '../../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../../components/PasswordInput'
 import AlertMessage from '../../widgets/AlertMessage'
+import { gql, useMutation } from '@apollo/client'
 
 type Props = {}
 
@@ -39,8 +40,25 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { setContent, setShow, setVariant } = useModal()
-  const { setRegistrationData, email, password, userType } = useRegistration()
+  const { email, password, userType, setEmail, setPassword, setUserType } =
+    useRegistration()
   const { createToken } = useApollo()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  const [showEmailNotAvailable, setShowEmailNotAvailable] =
+    useState<boolean>(false)
+  const [showEmailLength, setShowEmailLength] = useState<boolean>(false)
+  const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false)
+  const [showUserTypeMissing, setShowUserTypeMissing] = useState<boolean>(false)
+  const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] =
+    useState<boolean>(false)
+  const [showLegalNotChecked, setShowLegalNotChecked] = useState<boolean>(false)
+
+  const [isEmailAvailable, _isEmailAvailable] = useMutation(gql`
+    mutation isEmailAvailable($email: String!) {
+      isEmailAvailable(email: $email)
+    }
+  `)
 
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
 
@@ -68,8 +86,6 @@ const RegistrationAccount: React.FC<Props> = () => {
     createToken()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -152,6 +168,40 @@ const RegistrationAccount: React.FC<Props> = () => {
     t
   ])
 
+  const isInputValid = useCallback(() => {
+    setShowUserTypeMissing(!userType)
+    setShowPasswordLength(password.length < 6)
+    setShowPasswordConfirmNoMatch(password !== passwordConfirm)
+    setShowEmailLength(email.length < 6)
+    setShowLegalNotChecked(!legalChecked)
+    return (
+      legalChecked &&
+      userType &&
+      password.length >= 6 &&
+      password === passwordConfirm &&
+      email.length >= 6
+    )
+  }, [email.length, legalChecked, password, passwordConfirm, userType])
+
+  const checkEmail = useCallback(async () => {
+    if (!isInputValid()) return
+
+    const res = await isEmailAvailable({ variables: { email: email } })
+
+    if (res.data?.isEmailAvailable) {
+      trackEvent({
+        category: 'kurse',
+        action: 'click-event',
+        name: 'Registrierung – Account Informationen – Bestätigung',
+        documentTitle: 'Registrierung – Seite 1'
+      })
+
+      userType === 'pupil' ? showModal() : navigate('/registration/2')
+    }
+    setShowEmailNotAvailable(!res.data?.isEmailAvailable)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, isEmailAvailable, navigate, showModal, userType, isInputValid])
+
   return (
     <ScrollView>
       <Flex paddingBottom={space['1']}>
@@ -186,21 +236,23 @@ const RegistrationAccount: React.FC<Props> = () => {
             <TextInput
               keyboardType="email-address"
               placeholder={t('email')}
-              onChangeText={t => setRegistrationData({ email: t })}
+              onChangeText={setEmail}
             />
-            {email.length < 6 && (
+            {showEmailLength && (
               <AlertMessage content={t('registration.hint.email.invalid')} />
+            )}
+            {showEmailNotAvailable && (
+              <AlertMessage
+                content={t('registration.hint.email.unavailable')}
+              />
             )}
 
             <PasswordInput
               placeholder={t('password')}
-              onChangeText={t => {
-                setRegistrationData({ password: t })
-              }}
+              onChangeText={setPassword}
             />
-            <TextInput
+            <PasswordInput
               placeholder={t('registration.password_repeat')}
-              type="password"
               onChangeText={setPasswordConfirm}
             />
 
@@ -208,7 +260,10 @@ const RegistrationAccount: React.FC<Props> = () => {
               {t('registration.hint.password.length')}
             </Text>
 
-            {password !== passwordConfirm && (
+            {showPasswordLength && (
+              <AlertMessage content={t('registration.hint.password.length')} />
+            )}
+            {showPasswordConfirmNoMatch && (
               <AlertMessage content={t('registration.hint.password.nomatch')} />
             )}
           </VStack>
@@ -217,20 +272,14 @@ const RegistrationAccount: React.FC<Props> = () => {
             marginTop={space['1']}
             marginBottom={space['1']}>
             <Heading>{t('registration.i_am')}</Heading>
-            {/* <ToggleButton
-            Icon={ParentIcon}
-            label={t('registration.parent')}
-            dataKey="parent"
-            isActive={typeSelection === 'parent'}
-            onPress={setTypeSelection}
-          /> */}
+
             <ToggleButton
               Icon={PupilIcon}
               label={t('registration.pupil.label')}
               dataKey="pupil"
               isActive={userType === 'pupil'}
-              onPress={() => {
-                setRegistrationData({ userType: 'pupil' })
+              onPress={(key: string) => {
+                setUserType(key)
               }}
             />
             <ToggleButton
@@ -238,40 +287,34 @@ const RegistrationAccount: React.FC<Props> = () => {
               label={t('registration.student.label')}
               dataKey="student"
               isActive={userType === 'student'}
-              onPress={() => {
-                setRegistrationData({ userType: 'student' })
+              onPress={(key: string) => {
+                setUserType(key)
               }}
             />
           </VStack>
-          {!userType && (
+          {showUserTypeMissing && (
             <AlertMessage content={t('registration.hint.userType.missing')} />
           )}
           <VStack space={space['1']} marginTop={space['1']} flex="1">
-            <Checkbox value={'legalChecked'} onChange={setLegalChecked}>
+            <Checkbox
+              value={'legalChecked'}
+              onChange={val => {
+                setLegalChecked(val)
+              }}>
               {t('registration.check_legal')}
             </Checkbox>
+            {showLegalNotChecked && (
+              <AlertMessage
+                content={
+                  'Bitte akzeptiere unsere Nutzungsbedingungen und Datenschutzerklärung'
+                }
+              />
+            )}
             <Row justifyContent="center" marginBottom={space['3']}>
               <Button
                 width={buttonWidth}
-                onPress={() => {
-                  trackEvent({
-                    category: 'kurse',
-                    action: 'click-event',
-                    name: 'Registrierung – Account Informationen – Bestätigung',
-                    documentTitle: 'Registrierung – Seite 1'
-                  })
-
-                  userType === 'pupil'
-                    ? showModal()
-                    : navigate('/registration/2')
-                }}
-                isDisabled={
-                  !legalChecked ||
-                  !userType ||
-                  password.length < 6 ||
-                  password !== passwordConfirm ||
-                  email.length < 6
-                }>
+                onPress={checkEmail}
+                isDisabled={_isEmailAvailable.loading}>
                 {t('registration.btn.next')}
               </Button>
             </Row>
