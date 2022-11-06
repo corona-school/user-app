@@ -1,3 +1,4 @@
+import { gql, useMutation } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   VStack,
@@ -8,24 +9,75 @@ import {
   Flex,
   Box,
   Image,
-  Text,
   useBreakpointValue,
-  Row
+  Row,
+  Text
 } from 'native-base'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import TextInput from '../../components/TextInput'
+import useModal from '../../hooks/useModal'
 import useRegistration from '../../hooks/useRegistration'
 
 type Props = {}
 
+const mutPupil = gql`
+  mutation register(
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+    $aboutMe: String
+  ) {
+    meRegisterPupil(
+      data: {
+        firstname: $firstname
+        lastname: $lastname
+        email: $email
+        newsletter: false
+        registrationSource: normal
+        redirectTo: null
+        state: other
+        aboutMe: $aboutMe
+      }
+    ) {
+      id
+    }
+    passwordCreate(password: $password)
+  }
+`
+const mutStudent = gql`
+  mutation register(
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+  ) {
+    meRegisterStudent(
+      data: {
+        firstname: $firstname
+        lastname: $lastname
+        email: $email
+        newsletter: false
+        registrationSource: normal
+        redirectTo: null
+      }
+    ) {
+      id
+    }
+    passwordCreate(password: $password)
+  }
+`
+
 const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
+  const { setVariant, setShow, setContent } = useModal()
   const { space, sizes } = useTheme()
+  const { trackPageView } = useMatomo()
   const navigate = useNavigate()
   const {
     setFirstname,
@@ -39,8 +91,12 @@ const RegistrationPersonal: React.FC<Props> = () => {
     aboutMe
   } = useRegistration()
 
+  const [register, _register] = useMutation(
+    userType === 'pupil' ? mutPupil : mutStudent
+  )
+
   useEffect(() => {
-    if (!email && !password) navigate('/registration/1')
+    if (!email || !password) navigate('/registration/1')
   }, [email, navigate, password])
 
   const ContainerWidth = useBreakpointValue({
@@ -53,13 +109,114 @@ const RegistrationPersonal: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const { trackPageView, trackEvent } = useMatomo()
-
   useEffect(() => {
     trackPageView({
       documentTitle: 'Registrierung – Eingabemaske Persönliche Daten'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const attemptRegister = useCallback(async () => {
+    setVariant('dark')
+    try {
+      const res = await register({
+        variables: { firstname, lastname, email, password, aboutMe }
+      })
+      if (!res.errors) {
+        setContent(
+          <VStack
+            space={space['1']}
+            p={space['1']}
+            flex="1"
+            alignItems="center">
+            <Heading size="md" textAlign="center" color="white">
+              Fast geschafft!
+            </Heading>
+            <Text>{`Wir haben eine E-Mail an`}</Text>
+            <Text>{email}</Text>
+            <Text>
+              gesendet. Bevor du unser Angebot nutzen kannst, musst du deine
+              E-Mailadresse besstätigen und den AGB zustimmen. Wenn du deine
+              E-Mailadresse bestätigt hast, wirst du automatisch weitergeleitet.
+            </Text>
+            <Text bold>Keine E-Mail erhalten?</Text>
+            <Button variant={'link'}>Erneut senden</Button>
+          </VStack>
+        )
+      } else {
+        setContent(
+          <VStack
+            space={space['1']}
+            p={space['1']}
+            flex="1"
+            alignItems="center">
+            <Text color="lightText">
+              {t(`registration.result.error.message.${res.errors[0].message}`, {
+                defaultValue: res.errors[0].message
+              })}
+            </Text>
+            <Button
+              onPress={() => {
+                setShow(false)
+                attemptRegister()
+              }}>
+              Erneut versuchen
+            </Button>
+            <Button onPress={() => setShow(false)}>
+              {t('registration.result.error.btn')}
+            </Button>
+          </VStack>
+        )
+      }
+    } catch (e: any) {
+      setContent(
+        <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+          <Text color="lightText">
+            {t(`registration.result.error.message.${e.message}`, {
+              defaultValue: e.message
+            })}
+          </Text>
+          <Button
+            onPress={() => {
+              setShow(false)
+              attemptRegister()
+            }}>
+            Erneut versuchen
+          </Button>
+          <Button onPress={() => setShow(false)}>
+            {t('registration.result.error.btn')}
+          </Button>
+        </VStack>
+      )
+    }
+
+    // if (!res.errors) {
+    //   if (res.data?.meRegisterPupil?.id) {
+    //     // navigate('/registration/3')
+    //     // show success message
+
+    //   }
+    // } else {
+    //   // show error message
+    // }
+    setShow(true)
+  }, [
+    register,
+    firstname,
+    lastname,
+    email,
+    password,
+    aboutMe,
+    setVariant,
+    setContent,
+    space,
+    t,
+    setShow
+  ])
+
+  const isValidInput = useMemo(() => {
+    return firstname && lastname && email && password
+  }, [email, firstname, lastname, password])
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -113,8 +270,9 @@ const RegistrationPersonal: React.FC<Props> = () => {
 
         <Row justifyContent="center">
           <Button
+            isDisabled={!isValidInput || _register?.loading}
             width={buttonWidth}
-            onPress={() => navigate('/registration/3')}>
+            onPress={attemptRegister}>
             {t('registration.register')}
           </Button>
         </Row>
