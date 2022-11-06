@@ -33,14 +33,16 @@ const useApollo = () => {
 
   const tokenLink = useMemo(
     () =>
-      setContext((_, { headers }) => ({
-        headers: {
-          ...headers,
-          authorization: `Bearer ${
-            token || localStorage.getItem('lernfair:token')
-          }`
+      setContext((_, { headers }) => {
+        let _headers = { ...headers }
+        const tok = token || localStorage.getItem('lernfair:token')
+        if (tok) {
+          _headers.authorization = `Bearer ${tok}`
         }
-      })),
+        return {
+          headers: _headers
+        }
+      }),
 
     [token]
   )

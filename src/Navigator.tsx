@@ -72,6 +72,7 @@ import NoAcceptRegistration from './pages/NoAcceptRegistration'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
+import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
   const { userType } = useLernfair()
@@ -438,6 +439,7 @@ export default function Navigator() {
           }
         />
         <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Fallback */}
         <Route
