@@ -39,7 +39,8 @@ const registration = {
       nomatch: 'Die Passwörter stimmen nicht überein'
     },
     email: {
-      invalid: 'Ungültige Email-Adresse'
+      invalid: 'Ungültige Email-Adresse',
+      unavailable: 'Diese Email-Adresse ist bereits vergeben'
     },
     userType: {
       missing: 'Bitte identifiziere deine Rolle'
@@ -62,7 +63,11 @@ const registration = {
       btn: 'Zurück',
       message: {
         'Email is already used by another account':
-          'Diese Email ist bereits in Verwendung'
+          'Diese Email ist bereits in Verwendung',
+        'Response not successful: Received status code 400':
+          'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.',
+        'RateLimit Enforcement':
+          'Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.'
       }
     }
   },
