@@ -14,6 +14,7 @@ import {
 import Card from '../components/Card'
 
 import { Fragment, ReactNode } from 'react'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {
   title: string
@@ -96,6 +97,7 @@ const CTACard: React.FC<Props> = ({
   return (
     <Wrapper flexibleWidth width={width} isFullHeight>
       <Box
+        w="100%"
         height={height}
         flexDirection={CardMobileDirection}
         justifyContent={CardMobileJContent}
@@ -109,50 +111,60 @@ const CTACard: React.FC<Props> = ({
           flexWrap={'wrap'}
           w="100%"
           justifyContent={closeable ? 'space-between' : ''}>
-          <Box marginBottom={isOnboardingCard ? space['1'] : IconSpaceBottom}>
-            {icon}
-          </Box>
           <Container
             maxWidth="100%"
             flexDirection={isOnboardingCard ? 'column' : ButtonDirection}
-            width={isOnboardingCard ? '100%' : ContainerWidth}
-            marginLeft={!isOnboardingCard ? IconSpace : ''}>
-            <Row
-              width="100%"
-              justifyContent={ContentsDirection}
-              flexDirection={isOnboardingCard ? 'column' : ButtonDirection}>
-              <Column>
-                <Text
-                  maxWidth="340px"
-                  bold
-                  fontSize={'lg'}
-                  flex="1"
-                  marginBottom={space['0.5']}
-                  color={variant === 'dark' ? 'lightText' : 'primary.800'}
-                  display="flex">
-                  {title}
+            width="100%">
+            <CSSWrapper className="cta-card__wrapper">
+              <CSSWrapper className="cta-card__item cta-card__item--icon">
+                <Box
+                  marginBottom={
+                    isOnboardingCard ? space['1'] : IconSpaceBottom
+                  }>
+                  {icon}
+                </Box>
+              </CSSWrapper>
+              <CSSWrapper className="cta-card__item cta-card__item--content">
+                <Column>
+                  <Text
+                    maxWidth="340px"
+                    bold
+                    fontSize={'lg'}
+                    flex="1"
+                    marginBottom={space['0.5']}
+                    color={variant === 'dark' ? 'lightText' : 'primary.800'}
+                    display="flex">
+                    {title}
 
-                  {infotooltip && (
-                    <Tooltip label={infotooltip}>
-                      <Box
-                        marginLeft="10px"
-                        marginRight={space['2']}
-                        marginBottom={IconSpaceBottom}>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  )}
-                </Text>
-                <Text
-                  color={variant === 'dark' ? 'lightText' : 'primary.800'}
-                  maxWidth="500px">
-                  {content}
-                </Text>
-              </Column>
-              <Column>
-                {button && <Box marginTop={space['1']}>{button}</Box>}
-              </Column>
-            </Row>
+                    {infotooltip && (
+                      <Tooltip label={infotooltip}>
+                        <Box
+                          marginLeft="10px"
+                          marginRight={space['2']}
+                          marginBottom={IconSpaceBottom}>
+                          <InfoIcon />
+                        </Box>
+                      </Tooltip>
+                    )}
+                  </Text>
+                  <Text
+                    color={variant === 'dark' ? 'lightText' : 'primary.800'}
+                    maxWidth="500px">
+                    {content}
+                  </Text>
+                </Column>
+              </CSSWrapper>
+              <CSSWrapper
+                className={
+                  isOnboardingCard
+                    ? 'cta-card__item cta-card__item--button cta-card__item--button--onboarding'
+                    : 'cta-card__item cta-card__item--button'
+                }>
+                <Column>
+                  {button && <Box marginTop={space['1']}>{button}</Box>}
+                </Column>
+              </CSSWrapper>
+            </CSSWrapper>
           </Container>
           {closeable && (
             <Pressable onPress={onClose} testID="close">

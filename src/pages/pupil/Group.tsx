@@ -310,6 +310,7 @@ const PupilGroup: React.FC<Props> = () => {
                                 course.isParticipant
                               }
                               isSpaceMarginBottom={false}
+                              isFullHeight
                               variant="horizontal"
                               description={course.course.outline}
                               tags={course.course.tags}

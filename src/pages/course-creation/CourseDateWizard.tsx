@@ -57,6 +57,10 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>
 
+        <Text paddingBottom="10px" fontSize="xs">
+          {t('course.CourseDate.Wizard.dateInfo')}
+        </Text>
+
         <DatePicker
           value={lectures && lectures[index].date}
           onChange={e => {
@@ -66,9 +70,6 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
             setLectures && setLectures(arr)
           }}
         />
-        <Text paddingTop={space['1']} fontSize="xs">
-          {t('course.CourseDate.Wizard.dateInfo')}
-        </Text>
       </FormControl>
       <FormControl marginY={space['1']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
