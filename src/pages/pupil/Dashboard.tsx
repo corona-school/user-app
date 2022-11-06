@@ -354,7 +354,7 @@ const Dashboard: React.FC<Props> = () => {
               </HSection>
 
               {/* Matches */}
-              {(activeMatches.length > 0 ||
+              {(activeMatches?.length > 0 ||
                 data?.me?.pupil?.canRequestMatch?.allowed ||
                 data?.me?.pupil?.openMatchRequestCount > 0) && (
                 <HSection
