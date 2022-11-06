@@ -35,7 +35,7 @@ const registration = {
   },
   hint: {
     password: {
-      length: 'Das Password muss mindestens 6 Zeichen enthalten.',
+      length: 'Das Passwort muss mindestens 6 Zeichen enthalten.',
       nomatch: 'Die Passwörter stimmen nicht überein'
     },
     email: {
