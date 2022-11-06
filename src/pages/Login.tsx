@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { gql, useMutation } from '@apollo/client'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 
 import {
@@ -7,9 +7,6 @@ import {
   Button,
   Heading,
   Image,
-  Input,
-  Link,
-  Pressable,
   Row,
   Text,
   useBreakpointValue,
@@ -30,7 +27,7 @@ export default function Login() {
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
 
-  const [login, { data, error, loading }] = useMutation(gql`
+  const [login, { error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
@@ -71,22 +68,18 @@ export default function Login() {
   const attemptLogin = useCallback(async () => {
     createToken()
     loginButton()
-    await login({
+    const res = await login({
       variables: {
         email: email,
         password: password
       }
     })
-  }, [createToken, email, login, loginButton, password])
-
-  useEffect(() => {
-    if (loading) return
-    if (data && data.loginPassword) {
+    if (res?.data && res.data.loginPassword) {
       navigate('/')
     } else {
       clearToken()
     }
-  }, [clearToken, data, loading, navigate])
+  }, [clearToken, createToken, email, login, loginButton, navigate, password])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>

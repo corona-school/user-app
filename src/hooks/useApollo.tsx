@@ -13,7 +13,7 @@ import Utility from '../Utility'
 
 export type LFApollo = {
   client: ApolloClient<NormalizedCacheObject>
-  createToken: () => any
+  createToken: (token?: string) => any
   clearToken: () => any
   token: string
 }
@@ -74,8 +74,8 @@ const useApollo = () => {
     []
   )
 
-  const createToken = () => {
-    let tok = Utility.createToken()
+  const createToken = (tok?: string) => {
+    !tok && (tok = Utility.createToken())
     setToken(tok)
     localStorage.setItem('lernfair:token', tok)
     return tok

@@ -35,58 +35,22 @@ type Props = {}
 
 // GraqhQL pupil mutation
 const mutPupil = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $schooltype: SchoolType!
+  $schooltype: SchoolType
   $state: State!
-  $password: String!
   $gradeAsInt: Int!
-  $subjects: [SubjectInput!]
+  $subjects: [SubjectInput]
   
 ) {
-  meRegisterPupil(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-      schooltype: $schooltype
-      state: $state
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects,  } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects, state: $state, schooltype: $schooltype  } }
   )
 }
 `
 
 // GraphQL student mutation
 const mutStudent = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $password: String!
   $subjects: [SubjectInput!]
 ) {
-  meRegisterStudent(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(update: {student:{subjects: $subjects}})
 }
 `
@@ -112,8 +76,7 @@ const RegistrationData: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
 
   // data provided by previous slides
-  const { firstname, lastname, email, password, userType, aboutMe } =
-    useRegistration()
+  const { userType } = useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -133,12 +96,6 @@ const RegistrationData: React.FC<Props> = () => {
     base: '90%',
     lg: '500px'
   })
-
-  useEffect(() => {
-    // go to next slide if data is provided
-    // TODO validate email
-    if (!firstname && !lastname) navigate('/registration/2')
-  }, [email, firstname, lastname, navigate, password])
 
   // at the end register the pupil with all data
   const registerPupil = useCallback(
@@ -163,15 +120,10 @@ const RegistrationData: React.FC<Props> = () => {
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
-      aboutMe && (data['aboutMe'] = aboutMe)
 
       try {
         let res = await register({
           variables: {
-            firstname,
-            lastname,
-            email,
-            password,
             ...data
           }
         })
@@ -180,7 +132,7 @@ const RegistrationData: React.FC<Props> = () => {
         return { errors: [{ message: e }] }
       }
     },
-    [email, firstname, lastname, password, aboutMe, register]
+    [register]
   )
 
   // at the end register the student with all data
@@ -203,10 +155,6 @@ const RegistrationData: React.FC<Props> = () => {
     try {
       let res = await register({
         variables: {
-          firstname,
-          lastname,
-          email,
-          password,
           ...data
         }
       })
@@ -214,15 +162,7 @@ const RegistrationData: React.FC<Props> = () => {
     } catch (e) {
       return { errors: [{ message: e }] }
     }
-  }, [
-    answers.subjects,
-    classes,
-    email,
-    firstname,
-    lastname,
-    password,
-    register
-  ])
+  }, [answers.subjects, classes, register])
 
   const registerError = useCallback(() => {
     setShow(false)

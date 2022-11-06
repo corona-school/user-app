@@ -22,6 +22,7 @@ import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import TextInput from '../../components/TextInput'
 import useModal from '../../hooks/useModal'
 import useRegistration from '../../hooks/useRegistration'
+import VerifyEmailModal from '../../modals/VerifyEmailModal'
 
 type Props = {}
 
@@ -123,26 +124,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
         variables: { firstname, lastname, email, password, aboutMe }
       })
       if (!res.errors) {
-        setContent(
-          <VStack
-            space={space['1']}
-            p={space['1']}
-            flex="1"
-            alignItems="center">
-            <Heading size="md" textAlign="center" color="white">
-              Fast geschafft!
-            </Heading>
-            <Text>{`Wir haben eine E-Mail an`}</Text>
-            <Text>{email}</Text>
-            <Text>
-              gesendet. Bevor du unser Angebot nutzen kannst, musst du deine
-              E-Mailadresse besstätigen und den AGB zustimmen. Wenn du deine
-              E-Mailadresse bestätigt hast, wirst du automatisch weitergeleitet.
-            </Text>
-            <Text bold>Keine E-Mail erhalten?</Text>
-            <Button variant={'link'}>Erneut senden</Button>
-          </VStack>
-        )
+        setContent(<VerifyEmailModal email={email} />)
       } else {
         setContent(
           <VStack
