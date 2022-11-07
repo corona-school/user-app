@@ -12,7 +12,6 @@ import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
-import HSection from '../../widgets/HSection'
 import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
@@ -108,10 +107,10 @@ const StudentGroup: React.FC<Props> = () => {
     [data?.me?.student?.subcoursesInstructing]
   )
 
-  const draftedCourses: LFCourse[] = useMemo(
-    () => data?.me?.student?.coursesInstructing,
-    [data?.me?.student?.coursesInstructing]
-  )
+  // const draftedCourses: LFCourse[] = useMemo(
+  //   () => data?.me?.student?.coursesInstructing,
+  //   [data?.me?.student?.coursesInstructing]
+  // )
 
   const pastCourses: LFSubCourse[] = useMemo(
     () =>
@@ -174,7 +173,6 @@ const StudentGroup: React.FC<Props> = () => {
         <AppointmentCard
           isFullHeight
           isSpaceMarginBottom={false}
-          isHorizontalCardCourseChecked={true}
           key={index}
           variant="horizontal"
           description={course.outline}
@@ -301,22 +299,22 @@ const StudentGroup: React.FC<Props> = () => {
                       </>
                     )
                   },
-                  {
-                    title: t('matching.group.helper.course.tabs.tab3.title'),
-                    content: (
-                      <>
-                        <CSSWrapper className="course-list__wrapper">
-                          {(draftedCourses.length > 0 &&
-                            draftedCourses?.map(
-                              (course: LFCourse, index: number) =>
-                                renderCourse(course, index)
-                            )) || (
-                            <AlertMessage content={t('empty.coursesdraft')} />
-                          )}
-                        </CSSWrapper>
-                      </>
-                    )
-                  },
+                  // {
+                  //   title: t('matching.group.helper.course.tabs.tab3.title'),
+                  //   content: (
+                  //     <>
+                  //       <CSSWrapper className="course-list__wrapper">
+                  //         {(draftedCourses.length > 0 &&
+                  //           draftedCourses?.map(
+                  //             (course: LFCourse, index: number) =>
+                  //               renderCourse(course, index)
+                  //           )) || (
+                  //           <AlertMessage content={t('empty.coursesdraft')} />
+                  //         )}
+                  //       </CSSWrapper>
+                  //     </>
+                  //   )
+                  // },
                   {
                     title: t('matching.group.helper.course.tabs.tab4.title'),
                     content: (

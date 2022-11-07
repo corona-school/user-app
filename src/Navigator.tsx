@@ -69,8 +69,40 @@ import { useEffect } from 'react'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
 import NoAcceptRegistration from './pages/NoAcceptRegistration'
+import VerifyEmail from './pages/VerifyEmail'
+import VerifyEmailModal from './modals/VerifyEmailModal'
+import CenterLoadingSpinner from './components/CenterLoadingSpinner'
+import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
+  const { userType } = useLernfair()
+
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          email
+          pupil {
+            id
+            verifiedAt
+          }
+          student {
+            id
+            verifiedAt
+          }
+        }
+      }
+    `,
+    { skip: !userType }
+  )
+
+  if (loading) return <CenterLoadingSpinner />
+
+  if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+    return <VerifyEmailModal email={data.me.email} />
+  if (data && data.me.student && !data.me.student.verifiedAt)
+    return <VerifyEmailModal email={data.me.email} />
+
   return (
     <BrowserRouter>
       <Routes>
@@ -398,6 +430,18 @@ export default function Navigator() {
           }
         />
 
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route
+          path="/additional-data"
+          element={
+            <RequireAuth>
+              <RegistrationData />
+            </RequireAuth>
+          }
+        />
+        <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
         {/* Fallback */}
         <Route
           path="*"
@@ -437,9 +481,11 @@ const SwitchUserType = ({
         me {
           pupil {
             id
+            verifiedAt
           }
           student {
             id
+            verifiedAt
           }
         }
       }

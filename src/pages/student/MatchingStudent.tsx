@@ -36,6 +36,7 @@ const query = gql`
           dissolved
           pupil {
             firstname
+
             grade
             subjectsFormatted {
               name
