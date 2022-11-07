@@ -142,6 +142,7 @@ const CourseArchive: React.FC<Props> = () => {
       <VStack
         paddingX={space['1']}
         marginX="auto"
+        marginBottom={space['2.5']}
         width="100%"
         maxWidth={ContainerWidth}>
         <VStack space={space['1']}>

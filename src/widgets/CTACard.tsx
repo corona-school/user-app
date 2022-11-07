@@ -116,14 +116,16 @@ const CTACard: React.FC<Props> = ({
             flexDirection={isOnboardingCard ? 'column' : ButtonDirection}
             width="100%">
             <CSSWrapper className="cta-card__wrapper">
-              <CSSWrapper className="cta-card__item cta-card__item--icon">
-                <Box
-                  marginBottom={
-                    isOnboardingCard ? space['1'] : IconSpaceBottom
-                  }>
-                  {icon}
-                </Box>
-              </CSSWrapper>
+              {icon && (
+                <CSSWrapper className="cta-card__item cta-card__item--icon">
+                  <Box
+                    marginBottom={
+                      isOnboardingCard ? space['1'] : IconSpaceBottom
+                    }>
+                    {icon}
+                  </Box>
+                </CSSWrapper>
+              )}
               <CSSWrapper className="cta-card__item cta-card__item--content">
                 <Column>
                   <Text
