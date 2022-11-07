@@ -1,6 +1,14 @@
 import { DocumentNode, gql, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Button, Modal, useTheme, Heading } from 'native-base'
+import {
+  Text,
+  VStack,
+  Button,
+  Modal,
+  useTheme,
+  Heading,
+  useBreakpointValue
+} from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -41,12 +49,17 @@ const Matching: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const backArrow = useBreakpointValue({
+    base: true,
+    lg: false
+  })
+
   if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation headerContent={<Hello />}>
+        <WithNavigation showBack={backArrow} headerContent={<Hello />}>
           {(data?.me?.pupil.openMatchRequestCount === 0 && (
             <>
               {currentIndex === 0 && (

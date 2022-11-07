@@ -54,20 +54,36 @@ const MatchingPending: React.FC<Props> = ({ refetchQuery }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const ContentWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <>
-      <VStack space={space['1']}>
+      <VStack
+        space={space['1']}
+        paddingX={space['1']}
+        width="100%"
+        marginX="auto"
+        maxWidth={ContentContainerWidth}>
         <Heading>{t('matching.pending.header')}</Heading>
-        <Text>
+        <Text maxWidth={ContentWidth}>
           <Text bold>{t('matching.pending.requestFrom')}</Text> 25.07.2022
         </Text>
-        <Text>
+        <Text maxWidth={ContentWidth}>
           <Text bold>{t('matching.pending.waitingTime')}</Text>{' '}
           {t('matching.pending.waitingTimeMonthCa')} 3 - 6{' '}
           {t('matching.pending.waitingTimeMonth')}e
         </Text>
-        <Text>{t('matching.pending.content')}</Text>
+        <Text maxWidth={ContentWidth}>{t('matching.pending.content')}</Text>
         <Button
+          marginBottom={space['2']}
           w={buttonWidth}
           isDisabled={_cancelMatchRequest.loading}
           variant="outline"

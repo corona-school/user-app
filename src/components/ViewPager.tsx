@@ -2,13 +2,12 @@ import {
   Flex,
   Row,
   Box,
-  ArrowBackIcon,
   Pressable,
   Link,
-  ArrowForwardIcon,
   Modal,
   useBreakpointValue,
-  useTheme
+  useTheme,
+  Text
 } from 'native-base'
 import {
   createContext,
@@ -21,6 +20,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import OnBoardingSkipModal from '../widgets/OnBoardingSkipModal'
+import LfPrev from '../assets/icons/lernfair/lf-back.svg'
+import LfNext from '../assets/icons/lernfair/lf-next.svg'
 
 type Props = {
   children: ReactNode | ReactNode[]
@@ -106,11 +107,12 @@ const ViewPager: React.FC<Props> = ({
               <Box
                 width="32px"
                 height="32px"
+                padding="6px"
                 backgroundColor="primary.100"
                 justifyContent="center"
                 alignItems="center"
                 borderRadius="50%">
-                <ArrowBackIcon color="primary.900" />
+                <LfPrev />
               </Box>
             </Pressable>
             {isOnboarding && (
@@ -149,11 +151,12 @@ const ViewPager: React.FC<Props> = ({
               <Box
                 width="32px"
                 height="32px"
+                padding="6px"
                 backgroundColor="primary.100"
                 justifyContent="center"
                 alignItems="center"
                 borderRadius="50%">
-                <ArrowForwardIcon color="primary.900" />
+                <LfNext />
               </Box>
             </Pressable>
           </Box>
