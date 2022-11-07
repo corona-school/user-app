@@ -1,10 +1,10 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+
 import {
   Text,
   VStack,
   Heading,
-  TextArea,
   Button,
   useTheme,
   Modal,
@@ -40,7 +40,7 @@ const MatchingWizard: React.FC<Props> = () => {
     })
   }, [])
 
-  const { data, error, loading } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     query {
       me {
         pupil {
@@ -73,7 +73,8 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const onRequestMatch = useCallback(() => {
     const subjects = [...data?.me?.pupil?.subjectsFormatted]
-    const find = selection && subjects.find(sub => sub.name === selection.name)
+    let find = selection && subjects.find(sub => sub.name === selection.name)
+
     if (find) {
       find.mandatory = true
     }

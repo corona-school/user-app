@@ -140,7 +140,7 @@ const RegistrationData: React.FC<Props> = () => {
     const subjects = []
     for (let [sub, isSelected] of Object.entries(answers.subjects)) {
       // const grades = Utility.intToClassRange(classes[sub])
-      const grades = classes[sub]
+      const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
       if (isSelected && grades.min > 0 && grades.max > 0) {
         subjects.push({ name: sub, grade: grades })
       }

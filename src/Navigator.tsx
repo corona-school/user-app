@@ -75,33 +75,33 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
-  const { userType } = useLernfair()
+  // const { userType } = useLernfair()
 
-  const { data, loading } = useQuery(
-    gql`
-      query {
-        me {
-          email
-          pupil {
-            id
-            verifiedAt
-          }
-          student {
-            id
-            verifiedAt
-          }
-        }
-      }
-    `,
-    { skip: !userType }
-  )
+  // const { data, loading } = useQuery(
+  //   gql`
+  //     query {
+  //       me {
+  //         email
+  //         pupil {
+  //           id
+  //           verifiedAt
+  //         }
+  //         student {
+  //           id
+  //           verifiedAt
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   { skip: !userType }
+  // )
 
-  if (loading) return <CenterLoadingSpinner />
+  // if (loading) return <CenterLoadingSpinner />
 
-  if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-    return <VerifyEmailModal email={data.me.email} />
-  if (data && data.me.student && !data.me.student.verifiedAt)
-    return <VerifyEmailModal email={data.me.email} />
+  // if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+  //   return <VerifyEmailModal email={data.me.email} />
+  // if (data && data.me.student && !data.me.student.verifiedAt)
+  //   return <VerifyEmailModal email={data.me.email} />
 
   return (
     <BrowserRouter>
@@ -430,7 +430,7 @@ export default function Navigator() {
           }
         />
 
-        <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        {/* <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route
           path="/additional-data"
           element={
@@ -439,7 +439,7 @@ export default function Navigator() {
             </RequireAuth>
           }
         />
-        <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+        <Route path="/email-not-verified" element={<VerifyEmailModal />} /> */}
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Fallback */}
