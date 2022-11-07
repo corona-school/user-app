@@ -81,6 +81,7 @@ export default function Navigator() {
     gql`
       query {
         me {
+          email
           pupil {
             id
             verifiedAt
@@ -98,9 +99,9 @@ export default function Navigator() {
   if (loading) return <CenterLoadingSpinner />
 
   if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-    return <VerifyEmailModal />
+    return <VerifyEmailModal email={data.me.email} />
   if (data && data.me.student && !data.me.student.verifiedAt)
-    return <VerifyEmailModal />
+    return <VerifyEmailModal email={data.me.email} />
 
   return (
     <BrowserRouter>
