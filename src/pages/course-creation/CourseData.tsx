@@ -254,7 +254,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           value={outline}
           onChangeText={setOutline}
         />
-        <Text fontSize="xs">
+        <Text fontSize="xs" color="primary.grey">
           {t('course.CourseDate.form.shortDescriptionLimitNotice')}
         </Text>
       </FormControl>
@@ -281,7 +281,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           value={tags}
           onChangeText={setTags}
         />
-        <Text fontSize="xs">{t('course.CourseDate.form.tagsInfo')}</Text>
+        <Text fontSize="xs" color="primary.grey">
+          {t('course.CourseDate.form.tagsInfo')}
+        </Text>
       </FormControl>
       <Heading>{t('course.CourseDate.form.detailsHeadline')}</Heading>
 
@@ -300,7 +302,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
         />
 
-        <Text fontSize="xs">{t('course.CourseDate.form.maxMembersInfo')}</Text>
+        <Text fontSize="xs" color="primary.grey">
+          {t('course.CourseDate.form.maxMembersInfo')}
+        </Text>
       </FormControl>
       <Heading fontSize="md">
         {t('course.CourseDate.form.otherHeadline')}

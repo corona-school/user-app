@@ -57,7 +57,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>
 
-        <Text paddingBottom="10px" fontSize="xs">
+        <Text paddingBottom="10px" fontSize="xs" color="primary.grey">
           {t('course.CourseDate.Wizard.dateInfo')}
         </Text>
 

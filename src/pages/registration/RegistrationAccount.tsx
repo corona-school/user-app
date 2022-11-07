@@ -256,7 +256,7 @@ const RegistrationAccount: React.FC<Props> = () => {
               onChangeText={setPasswordConfirm}
             />
 
-            <Text paddingBottom="10px" fontSize="xs">
+            <Text paddingBottom="10px" fontSize="xs" color="primary.grey">
               {t('registration.hint.password.length')}
             </Text>
 

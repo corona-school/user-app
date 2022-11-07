@@ -1,6 +1,16 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Heading, Button, useTheme, Modal } from 'native-base'
+
+import {
+  Text,
+  VStack,
+  Heading,
+  Button,
+  useTheme,
+  Modal,
+  useBreakpointValue,
+  Row
+} from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +30,7 @@ const MatchingWizard: React.FC<Props> = () => {
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [selection, setSelection] = useState<LFSubject>()
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
 
   const { trackPageView, trackEvent } = useMatomo()
 
@@ -85,16 +95,43 @@ const MatchingWizard: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestData, requestError, setContent, setShow])
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const MatchingButton = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const MatchingButtonSpacing = useBreakpointValue({
+    base: space['1'],
+    lg: space['0.5']
+  })
+
   if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
-      <VStack space={space['1']} paddingX={space['1']}>
+      <VStack
+        space={space['1']}
+        paddingX={space['1']}
+        width="100%"
+        marginX="auto"
+        maxWidth={ContainerWidth}>
         <Heading>{t('matching.request.headline')}</Heading>
-        <Text>{t('matching.request.content')}</Text>
+        <Text maxWidth={ContentContainerWidth}>
+          {t('matching.request.content')}
+        </Text>
         <Heading fontSize="lg">{t('matching.request.yourDetails')}</Heading>
 
-        <VStack space={space['0.5']}>
+        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
           <Text>
             <Text bold>{t('matching.request.schoolType')}</Text>{' '}
             {data?.me?.pupil?.schooltype}
@@ -104,7 +141,7 @@ const MatchingWizard: React.FC<Props> = () => {
             {data?.me?.pupil?.gradeAsInt}
           </Text>
         </VStack>
-        <VStack space={space['0.5']}>
+        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
           <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
           <Text>{t('matching.request.needHelpInContent')}</Text>
           <TwoColGrid>
@@ -120,34 +157,40 @@ const MatchingWizard: React.FC<Props> = () => {
           </TwoColGrid>
         </VStack>
 
-        <Button
-          onPress={onRequestMatch}
-          isDisabled={
-            requestData || !data?.me?.pupil?.canRequestMatch?.allowed
-          }>
-          {t('matching.request.buttons.request')}
-        </Button>
+        <Row
+          flexDirection={MatchingButton}
+          space={space['1']}
+          marginBottom={space['1.5']}>
+          <Button
+            marginBottom={MatchingButtonSpacing}
+            onPress={onRequestMatch}
+            isDisabled={
+              requestData || !data?.me?.pupil?.canRequestMatch?.allowed
+            }>
+            {t('matching.request.buttons.request')}
+          </Button>
 
-        {!data?.me?.pupil?.canRequestMatch?.allowed && (
-          <Text>
-            {t(
-              `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-            )}
-          </Text>
-        )}
-        <Button
-          variant={'outline'}
-          onPress={() => {
-            trackEvent({
-              category: 'matching',
-              action: 'click-event',
-              name: 'Schüler Matching anfragen – Abbrechen',
-              documentTitle: 'Schüler Matching Anfragen'
-            })
-            navigate(-1)
-          }}>
-          {t('matching.request.buttons.cancel')}
-        </Button>
+          {!data?.me?.pupil?.canRequestMatch?.allowed && (
+            <Text>
+              {t(
+                `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+              )}
+            </Text>
+          )}
+          <Button
+            variant={'outline'}
+            onPress={() => {
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abbrechen',
+                documentTitle: 'Schüler Matching Anfragen'
+              })
+              navigate(-1)
+            }}>
+            {t('matching.request.buttons.cancel')}
+          </Button>
+        </Row>
       </VStack>
       <Modal
         isOpen={showSuccessModal}

@@ -185,15 +185,6 @@ const AppointmentCard: React.FC<Props> = ({
                 maxWidth="731px">
                 {!isTeaser && date && (
                   <>
-                    <Row
-                      paddingTop="5px"
-                      space={space['0.5']}
-                      flexWrap="wrap"
-                      maxWidth="280px">
-                      {tags?.map((tag, i) => (
-                        <Tag key={`tag-${i}`} text={tag.name} />
-                      ))}
-                    </Row>
                     <Row paddingTop="4px" space={1}>
                       <Text color={textColor}>
                         {date.toFormat('dd.MM.yyyy')}
@@ -239,6 +230,19 @@ const AppointmentCard: React.FC<Props> = ({
                     </Text>
                   </>
                 )}
+
+                {!isTeaser && (
+                  <Row
+                    paddingTop="5px"
+                    space={space['0.5']}
+                    flexWrap="wrap"
+                    maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
+
                 {child && <CommunityUser name={child} />}
 
                 {button && (
