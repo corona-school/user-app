@@ -297,14 +297,6 @@ const AppointmentCard: React.FC<Props> = ({
             </Box>
 
             <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
-              <CSSWrapper className="course-list__item-tags">
-                <Row space={space['0.5']} flexWrap="wrap">
-                  {tags?.map((tag, i) => (
-                    <Tag key={`tag-${i}`} text={tag.name} />
-                  ))}
-                </Row>
-              </CSSWrapper>
-
               <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>
@@ -320,9 +312,17 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text bold fontSize={'md'} mt="4px" mb={space['0.5']}>
+              <Text bold fontSize={'md'} mt="4px" mb={space['1']}>
                 {title}
               </Text>
+
+              <CSSWrapper className="course-list__item-tags">
+                <Row space={space['0.5']} flexWrap="wrap">
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
+                  ))}
+                </Row>
+              </CSSWrapper>
             </Box>
             {isHorizontalCardCourseChecked && (
               <Box position="absolute" right="20px" bottom="13px">
