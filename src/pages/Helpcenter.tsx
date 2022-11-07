@@ -114,6 +114,11 @@ const HelpCenter: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const backArrow = useBreakpointValue({
+    base: true,
+    lg: false
+  })
+
   // const formControlWidth = useBreakpointValue({
   //   base: '100%',
   //   lg: sizes['containerWidth']
@@ -143,7 +148,10 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="hilfebereich">
-      <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
+      <WithNavigation
+        showBack={backArrow}
+        headerTitle="Hilfebereich"
+        headerContent={<Hello />}>
         <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
           <Box
             maxWidth={ContentContainerWidth}

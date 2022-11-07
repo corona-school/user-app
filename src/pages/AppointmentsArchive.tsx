@@ -194,6 +194,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
                         return (
                           <CSSWrapper className="course-list__item" key={index}>
                             <AppointmentCard
+                              isFullHeight
                               key={index}
                               isSpaceMarginBottom={false}
                               variant="horizontal"

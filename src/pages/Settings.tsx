@@ -12,8 +12,10 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import WithNavigation from '../components/WithNavigation'
 import useApollo from '../hooks/useApollo'
+import useLernfair from '../hooks/useLernfair'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
@@ -26,13 +28,14 @@ const Settings: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { clearToken } = useApollo()
   const tabspace = 3
-  // const { user } = useLernfair()
+  const { userType } = useLernfair()
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Einstellungen'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const ContainerWidth = useBreakpointValue({
@@ -40,7 +43,7 @@ const Settings: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
-  const { data, error, loading } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     query {
       me {
         firstname
@@ -48,7 +51,7 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
@@ -79,7 +82,7 @@ const Settings: React.FC<Props> = () => {
               onPress={() => navigate('/profile')}
             />
           </Column>
-          <Column mb={tabspace}>
+          {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.general.languageVersion')}
               isDisabled
@@ -90,16 +93,18 @@ const Settings: React.FC<Props> = () => {
               label={t('settings.general.notifications')}
               isDisabled
             />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.general.onboarding')}
-              onPress={() => navigate('/onboarding-list')}
-            />
-          </Column>
+          </Column> */}
+          {userType === 'student' && (
+            <Column mb={tabspace}>
+              <EditDataRow
+                label={t('settings.general.onboarding')}
+                onPress={() => navigate('/onboarding-list')}
+              />
+            </Column>
+          )}
         </ProfileSettingRow>
         <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-          <Column mb={tabspace}>
+          {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
           </Column>
           <Column mb={tabspace}>
@@ -107,16 +112,16 @@ const Settings: React.FC<Props> = () => {
               label={t('settings.account.changePassword')}
               isDisabled
             />
-          </Column>
-          <Column mb={tabspace}>
+          </Column> */}
+          {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeUser')} isDisabled />
-          </Column>
-          <Column mb={tabspace}>
+          </Column> */}
+          {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.deleteAccount')}
               isDisabled
             />
-          </Column>
+          </Column> */}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.logout')}
@@ -133,7 +138,7 @@ const Settings: React.FC<Props> = () => {
             />
           </Column>
         </ProfileSettingRow>
-        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
             <EditDataRow label={t('settings.legal.imprint')} isDisabled />
           </Column>
@@ -143,7 +148,7 @@ const Settings: React.FC<Props> = () => {
           <Column mb={tabspace}>
             <EditDataRow label={t('settings.legal.terms')} isDisabled />
           </Column>
-        </ProfileSettingRow>
+        </ProfileSettingRow> */}
       </VStack>
     </WithNavigation>
   )

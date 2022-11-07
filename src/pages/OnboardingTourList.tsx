@@ -23,6 +23,7 @@ import IconHelp from '../assets/icons/lernfair/onboarding/lf-onboarding-help.svg
 import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-calender.svg'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -82,10 +83,11 @@ const OnboardingTourList: React.FC<Props> = () => {
             transition: { stagger: { offset: 60 }, duration: 500 }
           }}
           visible>
-          <Flex direction="row" flexWrap="wrap">
+          <CSSWrapper className="onboarding__wrapper">
             {new Array(5).fill(0).map(({}, index) => (
-              <Column width={CardGrid} marginRight="15px">
+              <CSSWrapper className="onboarding__item">
                 <CTACard
+                  height="100%"
                   isOnboardingCard
                   key={`card-${index}`}
                   marginBottom={space['1']}
@@ -99,6 +101,7 @@ const OnboardingTourList: React.FC<Props> = () => {
                   }
                   button={
                     <Button
+                      width="100%"
                       onPress={() => {
                         trackEvent({
                           category: 'onboarding',
@@ -131,9 +134,9 @@ const OnboardingTourList: React.FC<Props> = () => {
                     )
                   }
                 />
-              </Column>
+              </CSSWrapper>
             ))}
-          </Flex>
+          </CSSWrapper>
         </Stagger>
       </VStack>
     </WithNavigation>

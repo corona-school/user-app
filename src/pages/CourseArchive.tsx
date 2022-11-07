@@ -142,6 +142,7 @@ const CourseArchive: React.FC<Props> = () => {
       <VStack
         paddingX={space['1']}
         marginX="auto"
+        marginBottom={space['2.5']}
         width="100%"
         maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
@@ -195,6 +196,7 @@ const CourseArchive: React.FC<Props> = () => {
                       return (
                         <CSSWrapper className="course-list__item">
                           <AppointmentCard
+                            isFullHeight
                             isSpaceMarginBottom={false}
                             variant="horizontal"
                             description={sub.course.outline}

@@ -4,8 +4,6 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
-  Column,
-  Flex,
   Box
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
@@ -70,10 +68,10 @@ const PupilGroup: React.FC<Props> = () => {
     lg: sizes['contentContainerWidth']
   })
 
-  const CardGrid = useBreakpointValue({
-    base: '100%',
-    lg: '48%'
-  })
+  // const CardGrid = useBreakpointValue({
+  //   base: '100%',
+  //   lg: '48%'
+  // })
 
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -88,8 +86,9 @@ const PupilGroup: React.FC<Props> = () => {
     searchAllSubcoursesQuery,
     { loading: allSubcoursesSearchLoading, data: allSubcoursesData }
   ] = useLazyQuery(gql`
-    query ($name: String!) {
+    query ($name: String) {
       subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+        isParticipant
         id
         lectures {
           start
@@ -106,32 +105,35 @@ const PupilGroup: React.FC<Props> = () => {
     }
   `)
 
-  const [
-    searchRecommendationsQuery,
-    { loading: recommendationsSearchLoading, data: recommendationsData }
-  ] = useLazyQuery(gql`
-    query ($name: String!) {
-      subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
-        id
-        lectures {
-          start
-        }
-        course {
-          name
-          outline
-          image
-          tags {
-            name
-          }
-        }
-      }
-    }
-  `)
+  // const [
+  //   searchRecommendationsQuery,
+  //   { loading: recommendationsSearchLoading, data: recommendationsData }
+  // ] = useLazyQuery(gql`
+  //   query ($name: String) {
+  //     subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+  //       isParticipant
+  //       id
+  //       lectures {
+  //         start
+  //       }
+  //       course {
+  //         name
+  //         outline
+  //         image
+  //         tags {
+  //           name
+  //         }
+  //       }
+  //     }
+  //   }
+  // `)
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler Gruppe'
     })
+    // searchRecommendationsQuery({ variables: {} })
+    searchAllSubcoursesQuery({ variables: {} })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -142,10 +144,10 @@ const PupilGroup: React.FC<Props> = () => {
       default:
         arr = data?.me?.pupil?.subcoursesJoined || []
         break
+      // case 1:
+      //   arr = recommendationsData?.subcoursesPublic || []
+      //   break
       case 1:
-        arr = recommendationsData?.subcoursesPublic || []
-        break
-      case 2:
         arr = allSubcoursesData?.subcoursesPublic || []
         break
     }
@@ -153,8 +155,8 @@ const PupilGroup: React.FC<Props> = () => {
   }, [
     activeTab,
     allSubcoursesData,
-    data?.me?.pupil?.subcoursesJoined,
-    recommendationsData
+    data?.me?.pupil?.subcoursesJoined
+    // recommendationsData
   ])
 
   const activeCourses: LFSubCourse[] = useMemo(
@@ -197,7 +199,7 @@ const PupilGroup: React.FC<Props> = () => {
   const searchResults: LFSubCourse[] = useMemo(() => {
     if (lastSearch.length === 0) return activeCourses
     return (
-      (activeTab !== 0 && activeCourses) ||
+      (lastSearch.length > 0 && activeTab !== 0 && activeCourses) ||
       activeCourses?.filter((sub: LFSubCourse) =>
         sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())
       ) ||
@@ -214,51 +216,32 @@ const PupilGroup: React.FC<Props> = () => {
       case 0:
       default:
         break
+      // case 1:
+      //   searchRecommendationsQuery({ variables: { name: lastSearch } })
+      //   break
       case 1:
-        searchRecommendationsQuery({ variables: { name: lastSearch } })
-        break
-      case 2:
         searchAllSubcoursesQuery({ variables: { name: lastSearch } })
         break
     }
   }, [
     activeTab,
     lastSearch,
-    searchAllSubcoursesQuery,
-    searchRecommendationsQuery
+    searchAllSubcoursesQuery
+    // searchRecommendationsQuery
   ])
 
   if (loading) return <CenterLoadingSpinner />
 
   const SubcoursesTab: React.FC = () => {
-    const { space } = useTheme()
-    return (
-      <>
-        <Text marginBottom={space['1.5']}>
-          {t('matching.group.pupil.tabs.tab1.content')}
-        </Text>
-      </>
-    )
+    return <></>
   }
 
-  const RecommendationsTab: React.FC = () => {
-    return (
-      <>
-        <Text marginBottom={space['1.5']}>
-          {t('matching.group.pupil.tabs.tab2.content')}
-        </Text>
-      </>
-    )
-  }
+  // const RecommendationsTab: React.FC = () => {
+  //   return <></>
+  // }
 
   const AllSubcoursesTab: React.FC = () => {
-    return (
-      <>
-        <Text marginBottom={space['1.5']}>
-          {t('matching.group.pupil.tabs.tab3.content')}
-        </Text>
-      </>
-    )
+    return <></>
   }
 
   return (
@@ -269,6 +252,7 @@ const PupilGroup: React.FC<Props> = () => {
         headerLeft={<NotificationAlert />}>
         <VStack
           paddingX={space['1']}
+          marginBottom={space['1']}
           marginX="auto"
           width="100%"
           maxWidth={ContainerWidth}>
@@ -300,10 +284,10 @@ const PupilGroup: React.FC<Props> = () => {
                   title: t('matching.group.pupil.tabs.tab1.title'),
                   content: <SubcoursesTab />
                 },
-                {
-                  title: t('matching.group.pupil.tabs.tab2.title'),
-                  content: <RecommendationsTab />
-                },
+                // {
+                //   title: t('matching.group.pupil.tabs.tab2.title'),
+                //   content: <RecommendationsTab />
+                // },
                 {
                   title: t('matching.group.pupil.tabs.tab3.title'),
                   content: <AllSubcoursesTab />
@@ -311,8 +295,9 @@ const PupilGroup: React.FC<Props> = () => {
               ]}
             />
             <CSSWrapper className="course-list__wrapper">
-              {(!recommendationsSearchLoading &&
-                !allSubcoursesSearchLoading && (
+              {
+                // !recommendationsSearchLoading &&
+                (!allSubcoursesSearchLoading && (
                   <>
                     {(sortedSearchResults?.length &&
                       sortedSearchResults.map(
@@ -321,7 +306,11 @@ const PupilGroup: React.FC<Props> = () => {
                             className="course-list__item"
                             key={`subcourse-${index}`}>
                             <AppointmentCard
+                              isHorizontalCardCourseChecked={
+                                course.isParticipant
+                              }
                               isSpaceMarginBottom={false}
+                              isFullHeight
                               variant="horizontal"
                               description={course.course.outline}
                               tags={course.course.tags}
@@ -346,7 +335,8 @@ const PupilGroup: React.FC<Props> = () => {
                       </Box>
                     )}
                   </>
-                )) || <CenterLoadingSpinner />}
+                )) || <CenterLoadingSpinner />
+              }
             </CSSWrapper>
           </VStack>
         </VStack>

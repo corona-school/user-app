@@ -15,7 +15,7 @@ import SettingsButton from './SettingsButton'
 // TODO translations
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
-  appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
+  // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
   group: { label: 'Gruppe', icon: LFGroupIcon },
   matching: { label: 'Einzel', icon: LFMatchingIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }

@@ -12,7 +12,9 @@ import {
   Column,
   useBreakpointValue,
   Pressable,
-  Heading
+  Heading,
+  CheckCircleIcon,
+  Tooltip
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
@@ -40,6 +42,7 @@ type Props = {
   isGrid?: boolean
   isSpaceMarginBottom?: boolean
   isFullHeight?: boolean
+  isHorizontalCardCourseChecked?: boolean
   image?: string
   onPressToCourse?: () => any
   countCourse?: number
@@ -61,6 +64,7 @@ const AppointmentCard: React.FC<Props> = ({
   isGrid = false,
   isSpaceMarginBottom = true,
   isFullHeight = false,
+  isHorizontalCardCourseChecked = false,
   image,
   onPressToCourse
 }) => {
@@ -127,6 +131,18 @@ const AppointmentCard: React.FC<Props> = ({
     lg: '32px'
   })
 
+  const tagMaxWidth = useBreakpointValue({
+    base: '270px',
+    lg: '240px',
+    xl: '370px'
+  })
+
+  const horizontalCardHeadline = useBreakpointValue({
+    base: '70%',
+    lg: '49%',
+    xl: '92%'
+  })
+
   return (
     <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
@@ -169,15 +185,6 @@ const AppointmentCard: React.FC<Props> = ({
                 maxWidth="731px">
                 {!isTeaser && date && (
                   <>
-                    <Row
-                      paddingTop="5px"
-                      space={space['0.5']}
-                      flexWrap="wrap"
-                      maxWidth="280px">
-                      {tags?.map((tag, i) => (
-                        <Tag key={`tag-${i}`} text={tag.name} />
-                      ))}
-                    </Row>
                     <Row paddingTop="4px" space={1}>
                       <Text color={textColor}>
                         {date.toFormat('dd.MM.yyyy')}
@@ -223,6 +230,19 @@ const AppointmentCard: React.FC<Props> = ({
                     </Text>
                   </>
                 )}
+
+                {!isTeaser && (
+                  <Row
+                    paddingTop="5px"
+                    space={space['0.5']}
+                    flexWrap="wrap"
+                    maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
+
                 {child && <CommunityUser name={child} />}
 
                 {button && (
@@ -253,15 +273,19 @@ const AppointmentCard: React.FC<Props> = ({
           </Pressable>
         </Card>
       ) : (
-        <Pressable onPress={onPressToCourse} width="100%" height="100%">
+        <Pressable
+          onPress={onPressToCourse}
+          width="100%"
+          height="100%"
+          backgroundColor="primary.100"
+          borderRadius="15px">
           <Flex
             flexDirection="row"
-            borderRadius="15px"
-            backgroundColor="primary.100"
+            height="100%"
             marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
-            <Box display="block" marginRight={space['1']}>
+            <Box width="26%" display="block" marginRight="3px">
               <Image
-                width="110px"
+                width="120px"
                 height="100%"
                 borderTopLeftRadius="15px"
                 borderBottomLeftRadius="15px"
@@ -272,9 +296,9 @@ const AppointmentCard: React.FC<Props> = ({
               />
             </Box>
 
-            <Box paddingX="10px" paddingY={space['1.5']}>
+            <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
               <CSSWrapper className="course-list__item-tags">
-                <Row space={space['0.5']} flexWrap="wrap" maxWidth="370px">
+                <Row space={space['0.5']} flexWrap="wrap">
                   {tags?.map((tag, i) => (
                     <Tag key={`tag-${i}`} text={tag.name} />
                   ))}
@@ -296,15 +320,17 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text
-                bold
-                fontSize={'md'}
-                mt="4px"
-                mb={space['0.5']}
-                maxWidth="200px">
+              <Text bold fontSize={'md'} mt="4px" mb={space['0.5']}>
                 {title}
               </Text>
             </Box>
+            {isHorizontalCardCourseChecked && (
+              <Box position="absolute" right="20px" bottom="13px">
+                <Tooltip label="Du bist bereits angemeldet.">
+                  <CheckCircleIcon color="danger.100" size="20px" />
+                </Tooltip>
+              </Box>
+            )}
           </Flex>
         </Pressable>
       )}

@@ -12,7 +12,6 @@ import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
-import HSection from '../../widgets/HSection'
 import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
@@ -108,10 +107,10 @@ const StudentGroup: React.FC<Props> = () => {
     [data?.me?.student?.subcoursesInstructing]
   )
 
-  const draftedCourses: LFCourse[] = useMemo(
-    () => data?.me?.student?.coursesInstructing,
-    [data?.me?.student?.coursesInstructing]
-  )
+  // const draftedCourses: LFCourse[] = useMemo(
+  //   () => data?.me?.student?.coursesInstructing,
+  //   [data?.me?.student?.coursesInstructing]
+  // )
 
   const pastCourses: LFSubCourse[] = useMemo(
     () =>
@@ -146,6 +145,7 @@ const StudentGroup: React.FC<Props> = () => {
   const renderCourse = (course: LFCourse, index: number) => (
     <CSSWrapper className="course-list__item">
       <AppointmentCard
+        isFullHeight
         isSpaceMarginBottom={false}
         key={index}
         variant="horizontal"
@@ -171,6 +171,7 @@ const StudentGroup: React.FC<Props> = () => {
     return (
       <CSSWrapper className="course-list__item">
         <AppointmentCard
+          isFullHeight
           isSpaceMarginBottom={false}
           key={index}
           variant="horizontal"
@@ -201,6 +202,7 @@ const StudentGroup: React.FC<Props> = () => {
         <VStack
           paddingX={space['1']}
           marginX="auto"
+          marginBottom={space['1']}
           maxWidth={ContainerWidth}
           width="100%">
           <VStack space={space['1']}>
@@ -297,22 +299,22 @@ const StudentGroup: React.FC<Props> = () => {
                       </>
                     )
                   },
-                  {
-                    title: t('matching.group.helper.course.tabs.tab3.title'),
-                    content: (
-                      <>
-                        <CSSWrapper className="course-list__wrapper">
-                          {(draftedCourses.length > 0 &&
-                            draftedCourses?.map(
-                              (course: LFCourse, index: number) =>
-                                renderCourse(course, index)
-                            )) || (
-                            <AlertMessage content={t('empty.coursesdraft')} />
-                          )}
-                        </CSSWrapper>
-                      </>
-                    )
-                  },
+                  // {
+                  //   title: t('matching.group.helper.course.tabs.tab3.title'),
+                  //   content: (
+                  //     <>
+                  //       <CSSWrapper className="course-list__wrapper">
+                  //         {(draftedCourses.length > 0 &&
+                  //           draftedCourses?.map(
+                  //             (course: LFCourse, index: number) =>
+                  //               renderCourse(course, index)
+                  //           )) || (
+                  //           <AlertMessage content={t('empty.coursesdraft')} />
+                  //         )}
+                  //       </CSSWrapper>
+                  //     </>
+                  //   )
+                  // },
                   {
                     title: t('matching.group.helper.course.tabs.tab4.title'),
                     content: (

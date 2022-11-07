@@ -133,12 +133,12 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
           onPress={onNext}>
           {t('course.appointments.check')}
         </Button>
-        <Button
+        {/* <Button
           marginBottom={space['1']}
           width={ButtonContainer}
           variant={'outline'}>
           {t('course.appointments.saveDraft')}
-        </Button>
+        </Button> */}
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}

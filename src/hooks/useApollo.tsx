@@ -13,7 +13,7 @@ import Utility from '../Utility'
 
 export type LFApollo = {
   client: ApolloClient<NormalizedCacheObject>
-  createToken: () => any
+  createToken: (token?: string) => any
   clearToken: () => any
   token: string
 }
@@ -33,14 +33,16 @@ const useApollo = () => {
 
   const tokenLink = useMemo(
     () =>
-      setContext((_, { headers }) => ({
-        headers: {
-          ...headers,
-          authorization: `Bearer ${
-            token || localStorage.getItem('lernfair:token')
-          }`
+      setContext((_, { headers }) => {
+        let _headers = { ...headers }
+        const tok = token || localStorage.getItem('lernfair:token')
+        if (tok) {
+          _headers.authorization = `Bearer ${tok}`
         }
-      })),
+        return {
+          headers: _headers
+        }
+      }),
 
     [token]
   )
@@ -74,8 +76,8 @@ const useApollo = () => {
     []
   )
 
-  const createToken = () => {
-    let tok = Utility.createToken()
+  const createToken = (tok?: string) => {
+    !tok && (tok = Utility.createToken())
     setToken(tok)
     localStorage.setItem('lernfair:token', tok)
     return tok

@@ -34,8 +34,11 @@ const SignInCard: React.FC<Props> = ({
   const { space } = useTheme()
 
   return (
-    <Link onPress={onPress} width={flexibleWidth ? '100%' : undefined}>
-      <Card isFullHeight={false} width={'100%'}>
+    <Link
+      height="100%"
+      onPress={onPress}
+      width={flexibleWidth ? '100%' : undefined}>
+      <Card isFullHeight={true} width={'100%'}>
         <Box bg="primary.500" h="120" padding={space['0.5']}>
           <Image
             position="absolute"
@@ -50,12 +53,7 @@ const SignInCard: React.FC<Props> = ({
             }}
           />
         </Box>
-        <Box padding={space['0.5']} maxW="240px">
-          <Row space={space['0.5']} paddingY={space['0.5']} flexWrap="wrap">
-            {tags?.map((tag, i) => (
-              <Tag key={`tag-${i}`} text={tag.name} />
-            ))}
-          </Row>
+        <Box paddingX={space['1']} paddingY={space['1']} maxWidth="300px">
           <Row space={1.5}>
             {data?.lectures && data?.lectures[0] && (
               <Text>
@@ -76,6 +74,11 @@ const SignInCard: React.FC<Props> = ({
             paddingBottom={space['0.5']}>
             {data?.course?.name}
           </Text>
+          <Row space={space['0.5']} paddingY={space['0.5']} flexWrap="wrap">
+            {tags?.map((tag, i) => (
+              <Tag key={`tag-${i}`} text={tag.name} />
+            ))}
+          </Row>
           <Button
             variant="outline"
             marginTop={space['1']}
