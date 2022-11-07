@@ -27,6 +27,7 @@ import TextInput from '../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../components/PasswordInput'
 import AlertMessage from '../widgets/AlertMessage'
+import { DEEPLINK_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -35,7 +36,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>()
   const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false)
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
-    'success' | 'error' | undefined
+    'success' | 'error' | 'unknown' | undefined
   >()
   const [login, { data, error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
@@ -106,22 +107,35 @@ export default function Login() {
 
   const [resetPW, _resetPW] = useMutation(gql`
     mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-password-reset")
+      tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${DEEPLINK_PASSWORD}")
     }
   `)
   // redirectTo: "${window.location.origin}/reset-password"
   const resetPassword = async (pw: string) => {
-    const res = await resetPW({
-      variables: {
-        email: pw
-      }
-    })
-    setShowPasswordModal(false)
+    try {
+      const res = await resetPW({
+        variables: {
+          email: pw
+        }
+      })
 
-    if (res.data.tokenRequest) {
-      setShowPasswordResetResult('success')
-    } else {
-      setShowPasswordResetResult('error')
+      if (res.data.tokenRequest) {
+        setShowPasswordResetResult('success')
+      } else if (res.errors) {
+        if (res.errors[0].message.includes('Unknown User')) {
+          setShowPasswordResetResult('unknown')
+        } else {
+          setShowPasswordResetResult('error')
+        }
+      }
+    } catch (e: any) {
+      if (e.message.includes('Unknown User')) {
+        setShowPasswordResetResult('unknown')
+      } else {
+        setShowPasswordResetResult('unknown')
+      }
+    } finally {
+      setShowPasswordModal(false)
     }
   }
 
@@ -242,7 +256,9 @@ export default function Login() {
                 content={
                   showPasswordResetResult === 'success'
                     ? 'Bitte checke deine E-Mails um dein Passwort zurückzusetzen'
-                    : 'Leider konnte dein Passwort nicht zurückgesetzt werden'
+                    : showPasswordResetResult === 'error'
+                    ? 'Leider konnte dein Passwort nicht zurückgesetzt werden'
+                    : 'Für diese E-Mail Adresse ist kein Account registriert'
                 }
               />
             </Box>
