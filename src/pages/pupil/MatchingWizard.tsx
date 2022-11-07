@@ -120,7 +120,7 @@ const MatchingWizard: React.FC<Props> = () => {
                 initial={selection?.name === sub.name}
                 text={sub.name}
                 variant="selection"
-                iconPath={`languages/icon_${getSubjectKey(sub.name)}.svg`}
+                iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
                 onPress={() => setSelection(sub)}
               />
             ))}
