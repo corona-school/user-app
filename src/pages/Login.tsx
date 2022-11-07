@@ -1,18 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
-import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 
 import {
-  Alert,
   Box,
   Button,
-  FormControl,
   Heading,
   Image,
-  Input,
-  Link,
   Modal,
-  Pressable,
   Row,
   Text,
   useBreakpointValue,
