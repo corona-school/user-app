@@ -6,6 +6,7 @@
     "@apollo/client": "^3.6.9",
     "@babel/core": "^7.16.0",
     "@jonkoops/matomo-tracker-react": "^0.7.0",
+    "@miblanchard/react-native-slider": "^2.1.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^6.3.1",
     "@testing-library/jest-dom": "^5.16.4",

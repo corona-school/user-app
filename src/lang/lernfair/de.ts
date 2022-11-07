@@ -36,7 +36,7 @@ const lernfair = {
     italienisch: 'Italienisch',
     kunst: 'Kunst',
     latein: 'Latein',
-    mathe: 'Mathe',
+    mathematik: 'Mathematik',
     musik: 'Musik',
     paedagogik: 'Pädagogik',
     philosophie: 'Philosophie',
@@ -66,8 +66,7 @@ const lernfair = {
     sn: 'Sachsen',
     st: 'Sachsen-Anhalt',
     sh: 'Schleswig-Holstein',
-    th: 'Thüringen',
-    other: 'Andere'
+    th: 'Thüringen'
   },
   schooltypes: {
     grundschule: 'Grundschule',
@@ -79,9 +78,17 @@ const lernfair = {
   schoolclass: '{{class}}. Klasse',
 
   reason: {
+    'subcourse-full': {
+      coursetext: 'Dieser Kurs ist leider grade ausgebucht.'
+    },
+    proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-      matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
+      matching:
+        'Du hast bereits die maximale Anzahl an Matchinganfragen erreicht'
+    },
+    'not-participant': {
+      coursetext: 'Du bist derzeit noch kein Teilnehmer.'
     },
     'max-matches': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
@@ -91,10 +98,17 @@ const lernfair = {
       course: 'Du bist leider nicht als Tutor verifiziert.'
     },
     'not-screened': {
-      matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.'
+      matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
+      course: 'Es wurden keine Kurse gefunden.'
     },
     'not-tutee': {
-      matching: 'Du bist nicht für das Matching zugelassen'
+      matching: 'Du bist nicht für das Matching zugelassen.'
+    },
+    'not-tutor': {
+      matching: 'Du bist nicht für das Matching zugelassen.'
+    },
+    undefined: {
+      matching: 'Es wurden keine Matchings gefunden.'
     }
   }
 }

@@ -17,10 +17,12 @@ import {
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
 import { schooltypes } from '../../types/lernfair/SchoolType'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -55,10 +57,11 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const location = useLocation()
   const { state } = location as { state: { userType: string } }
 
-  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
 
-  const { data, error, loading } = useQuery(gql`
+  const navigate = useNavigate()
+
+  const { data, loading } = useQuery(gql`
     ${state?.userType === 'student' ? queryStudent : queryPupil}
   `)
 
@@ -74,9 +77,10 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
 
   useEffect(() => {
     if (_updateSchooltype.data && !_updateSchooltype.error) {
-      setUserSettingChanged(true)
+      // setUserSettingChanged(true)
+      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
     }
-  }, [_updateSchooltype.data, _updateSchooltype.error])
+  }, [_updateSchooltype.data, _updateSchooltype.error, navigate])
 
   useEffect(() => {
     if (_updateSchooltype.error) {
@@ -100,17 +104,20 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Profil Einstellungen – Bundesland'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolType.single.header')}
-      headerLeft={<BackButton />}>
+      showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <Heading>{t('profile.SchoolType.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
@@ -130,6 +137,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolType.single.others')}>
           <ProfileSettingItem
@@ -187,8 +196,10 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
-        {userSettingChanged && (
+        {/* {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
@@ -203,23 +214,8 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
               </HStack>
             </VStack>
           </Alert>
-        )}
-        {showError && (
-          <Alert marginY={3} bgColor="danger.500">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color={'lightText'} />
-                  <Text color="lightText">{t('profile.errormessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )}
+        )} */}
+        {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}
           onPress={() => {

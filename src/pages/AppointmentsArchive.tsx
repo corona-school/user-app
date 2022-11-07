@@ -24,6 +24,7 @@ import { gql, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -135,6 +136,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   const CardGrid = useBreakpointValue({
     base: '100%',
     lg: '47%'
@@ -144,13 +150,19 @@ const AppointmentsArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.appointments.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
-          <VStack space={space['0.5']}>
+          <VStack space={space['0.5']} maxWidth={ContainerWidth}>
             <Heading>{t('archive.appointments.title')}</Heading>
-            <Text>{t('archive.appointments.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.appointments.content')}
+            </Text>
           </VStack>
-          <Row paddingY={space['1']}>
+          <Row paddingY={space['1']} maxWidth={ContentContainerWidth}>
             <Input
               flex="1"
               size="lg"
@@ -170,7 +182,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
             {!loading && (
               <>
                 {(sortedSearchResults.length > 0 && (
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {sortedSearchResults.map(
                       (
                         {
@@ -180,12 +192,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
                         index: number
                       ) => {
                         return (
-                          <Column
-                            width={CardGrid}
-                            marginRight="15px"
-                            key={index}>
+                          <CSSWrapper className="course-list__item" key={index}>
                             <AppointmentCard
+                              isFullHeight
                               key={index}
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               description={sub.course.outline}
                               tags={sub.course.tags}
@@ -199,11 +210,11 @@ const AppointmentsArchive: React.FC<Props> = () => {
                               image={sub.course.image}
                               title={sub.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       }
                     )}
-                  </Flex>
+                  </CSSWrapper>
                 )) || <Text>Es wurden keine Ergebnisse gefunden.</Text>}
               </>
             )}

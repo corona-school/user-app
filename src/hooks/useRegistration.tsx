@@ -14,7 +14,14 @@ type LFRegistration = {
   email: string
   password: string
   userType: LFUserType
-  setRegistrationData: (data: Partial<LFRegistration>) => any
+  aboutMe?: string
+  // setRegistrationData: (data: Partial<LFRegistration>) => any
+  setFirstname: (firstname: string) => any
+  setLastname: (lastname: string) => any
+  setEmail: (email: string) => any
+  setPassword: (password: string) => any
+  setUserType: (userType: LFUserType) => any
+  setAboutMe: (aboutMe: string) => any
 }
 
 const LFRegistrationContext = createContext<LFRegistration>({
@@ -22,8 +29,14 @@ const LFRegistrationContext = createContext<LFRegistration>({
   lastname: '',
   email: '',
   password: '',
-  setRegistrationData: () => null,
-  userType: ''
+  // setRegistrationData: () => null,
+  userType: '',
+  setFirstname: () => null,
+  setLastname: () => null,
+  setEmail: () => null,
+  setPassword: () => null,
+  setUserType: () => null,
+  setAboutMe: () => null
 })
 
 export const useRegistration = () => useContext(LFRegistrationContext)
@@ -47,26 +60,41 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({
 }
 
 const useRegistrationProvider = () => {
-  const [firstname, setFirstname] = useState<string>('')
-  const [lastname, setLastname] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [userType, setUserType] = useState<string>('')
+  const [firstname, _setFirstname] = useState<string>('')
+  const [lastname, _setLastname] = useState<string>('')
+  const [email, _setEmail] = useState<string>('')
+  const [password, _setPassword] = useState<string>('')
+  const [userType, _setUserType] = useState<string>('')
+  const [aboutMe, _setAboutMe] = useState<string>('')
 
-  const setRegistrationData = (data: Partial<LFRegistration>) => {
-    data.firstname && setFirstname(data.firstname)
-    data.lastname && setLastname(data.lastname)
-    data.email && setEmail(data.email)
-    data.password && setPassword(data.password)
-    data.userType && setUserType(data.userType)
-  }
+  const setFirstname = (firstname: string) => _setFirstname(firstname)
+  const setLastname = (lastname: string) => _setLastname(lastname)
+  const setEmail = (email: string) => _setEmail(email)
+  const setPassword = (password: string) => _setPassword(password)
+  const setUserType = (userType: LFUserType) => _setUserType(userType)
+  const setAboutMe = (aboutMe: string) => _setAboutMe(aboutMe)
+
+  // const setRegistrationData = (data: Partial<LFRegistration>) => {
+  //   data.firstname && _setFirstname(data.firstname)
+  //   data.lastname && _setLastname(data.lastname)
+  //   data.email && _setEmail(data.email)
+  //   data.password && _setPassword(data.password)
+  //   data.userType && _setUserType(data.userType)
+  //   data.aboutMe && _setAboutMe(data.aboutMe)
+  // }
   const d: LFRegistration = {
     firstname,
     lastname,
     email,
     password,
     userType,
-    setRegistrationData
+    aboutMe,
+    setFirstname,
+    setLastname,
+    setEmail,
+    setPassword,
+    setUserType,
+    setAboutMe
   }
   return d
 }

@@ -9,7 +9,9 @@ import {
   Row,
   Box,
   Image,
-  useBreakpointValue
+  useBreakpointValue,
+  Alert,
+  HStack
 } from 'native-base'
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -35,7 +37,7 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     description,
     maxParticipantCount,
     tags,
-    courseClasses,
+    classRange: courseClasses,
     joinAfterStart,
     allowContact,
     lectures,
@@ -45,6 +47,11 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
   })
 
   const ButtonContainer = useBreakpointValue({
@@ -63,11 +70,14 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Vorschau'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <VStack space={space['1']} maxWidth={ContainerWidth}>
-      <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
+    <VStack space={space['1']}>
+      <Heading paddingTop={space['1']}>
+        {t('course.CourseDate.Preview.headline')}
+      </Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
       <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
@@ -81,7 +91,21 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.courseSubject')}
       </Heading>
-      {subject && <IconTagList isDisabled text={subject.name || ''} />}
+
+      {subject && (
+        <>
+          <IconTagList
+            iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+            isDisabled
+            text={subject.name || ''}
+          />
+        </>
+      )}
+
+      <Heading fontSize="md">
+        Klassen {courseClasses && courseClasses[0]} -{' '}
+        {courseClasses && courseClasses[1]}
+      </Heading>
 
       <Box bg="gray.500" h="180">
         <Image src={pickedPhoto} h="100%" />
@@ -109,17 +133,6 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.classHeadline')}
       </Heading>
-      {courseClasses &&
-        courseClasses.map(c => {
-          const range = Utility.intToClassRange(c)
-          return (
-            <ToggleButton
-              label={`${range.min}. - ${range.max}. Klasse`}
-              dataKey={c.toString()}
-              isActive={false}
-            />
-          )
-        })}
 
       <VStack>
         <Row>

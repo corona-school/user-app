@@ -10,7 +10,8 @@ const dashboard = {
   },
   myappointments: {
     header: 'Meine Termine',
-    linktext: 'Alle'
+    linktext: 'Alle',
+    noappointments: 'Es wurden keine weitere Termine gefunden.'
   },
   homework: {
     header: 'Hausaufgabenhilfe',

@@ -37,6 +37,7 @@ const OnBoardingHelperSlides: React.FC<Props> = () => {
     <Container
       backgroundColor="primary.100"
       maxWidth="100%"
+      overflowY="scroll"
       height="100%"
       alignItems="stretch">
       <View flex={1}>

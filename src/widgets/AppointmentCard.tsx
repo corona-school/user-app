@@ -11,15 +11,21 @@ import {
   Image,
   Column,
   useBreakpointValue,
-  Pressable
+  Pressable,
+  Heading,
+  CheckCircleIcon,
+  Tooltip
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
-import { toTimerString, TIME_THRESHOLD } from '../Utility'
+import { toTimerString } from '../Utility'
 import useInterval from '../hooks/useInterval'
 import { LFTag } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
+
+import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {
   tags?: LFTag[]
@@ -33,6 +39,10 @@ type Props = {
   buttonlink?: string
   variant?: 'card' | 'horizontal'
   isTeaser?: boolean
+  isGrid?: boolean
+  isSpaceMarginBottom?: boolean
+  isFullHeight?: boolean
+  isHorizontalCardCourseChecked?: boolean
   image?: string
   onPressToCourse?: () => any
   countCourse?: number
@@ -51,6 +61,10 @@ const AppointmentCard: React.FC<Props> = ({
   button,
   buttonlink,
   isTeaser = false,
+  isGrid = false,
+  isSpaceMarginBottom = true,
+  isFullHeight = false,
+  isHorizontalCardCourseChecked = false,
   image,
   onPressToCourse
 }) => {
@@ -92,11 +106,48 @@ const AppointmentCard: React.FC<Props> = ({
     lg: sizes['desktopbuttonWidth']
   })
 
+  const teaserHeadline = useBreakpointValue({
+    base: '15px',
+    lg: '16px'
+  })
+
+  const teaserImage = useBreakpointValue({
+    base: '160px',
+    lg: 'auto'
+  })
+
+  const headline = useBreakpointValue({
+    base: '13px',
+    lg: '14px'
+  })
+
+  const buttonteaser = useBreakpointValue({
+    base: space['2'],
+    lg: 0
+  })
+
+  const buttonteaserSpace = useBreakpointValue({
+    base: space['1'],
+    lg: '32px'
+  })
+
+  const tagMaxWidth = useBreakpointValue({
+    base: '270px',
+    lg: '240px',
+    xl: '370px'
+  })
+
+  const horizontalCardHeadline = useBreakpointValue({
+    base: '70%',
+    lg: '49%',
+    xl: '92%'
+  })
+
   return (
-    <View>
+    <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
         <Card
-          flexibleWidth={isTeaser ? true : false}
+          flexibleWidth={isTeaser || isGrid ? true : false}
           variant={isTeaser ? 'dark' : 'normal'}>
           <Pressable onPress={onPressToCourse}>
             <Column
@@ -104,7 +155,7 @@ const AppointmentCard: React.FC<Props> = ({
               flexDirection={isTeaser ? CardMobileDirection : 'column'}>
               <Box
                 w={isTeaser ? CardMobileImage : 'auto'}
-                h={isTeaser ? '200' : '120'}
+                h={isTeaser ? teaserImage : '121'}
                 padding={space['1']}>
                 <Image
                   position="absolute"
@@ -119,33 +170,56 @@ const AppointmentCard: React.FC<Props> = ({
                     uri: image
                   }}
                 />
-                <Row space={space['0.5']} flexWrap="wrap">
-                  {tags?.map((tag, i) => (
-                    <Tag key={`tag-${i}`} text={tag.name} />
-                  ))}
-                </Row>
+
+                {isTeaser && (
+                  <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
               </Box>
 
-              <Box padding={isTeaser ? CardMobilePadding : space['1']}>
+              <Box
+                padding={isTeaser ? CardMobilePadding : space['1']}
+                maxWidth="731px">
                 {!isTeaser && date && (
-                  <Row paddingTop={space['1']} space={1}>
-                    <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
-                    <Text color={textColor}>•</Text>
-                    <Text color={textColor}>{date.toFormat('HH:mm')}</Text>
-                  </Row>
+                  <>
+                    <Row paddingTop="4px" space={1}>
+                      <Text color={textColor}>
+                        {date.toFormat('dd.MM.yyyy')}
+                      </Text>
+                      <Text color={textColor}>•</Text>
+                      <Text color={textColor}>
+                        {date.toFormat('HH:mm')} Uhr
+                      </Text>
+                    </Row>
+                  </>
                 )}
                 {date && isTeaser && (
-                  <Row paddingBottom={space['0.5']}>
-                    <Text color={textColor}>Startet in: </Text>
-                    <Text bold color="primary.400">
-                      {remainingTime}
-                    </Text>
+                  <Row marginBottom={space['1']} alignItems="center">
+                    <Column marginRight="10px">
+                      <Text>{<LFTimerIcon />}</Text>
+                    </Column>
+                    <Column>
+                      <Row>
+                        <Text color={textColor}>Startet in: </Text>
+                        <Text bold color="primary.400">
+                          {remainingTime}
+                        </Text>
+                      </Row>
+                    </Column>
                   </Row>
                 )}
 
-                <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
+                <Heading
+                  color={textColor}
+                  bold
+                  fontSize={isTeaser ? teaserHeadline : headline}
+                  mt="5px"
+                  mb={space['0.5']}>
                   {title}
-                </Text>
+                </Heading>
 
                 {isTeaser && (
                   <>
@@ -154,11 +228,21 @@ const AppointmentCard: React.FC<Props> = ({
                         ? description.substring(0, 56) + '...'
                         : description}
                     </Text>
-                    <Button width={ButtonContainer} onPress={onPressToCourse}>
-                      Zum Kurs
-                    </Button>
                   </>
                 )}
+
+                {!isTeaser && (
+                  <Row
+                    paddingTop="5px"
+                    space={space['0.5']}
+                    flexWrap="wrap"
+                    maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
+
                 {child && <CommunityUser name={child} />}
 
                 {button && (
@@ -172,39 +256,62 @@ const AppointmentCard: React.FC<Props> = ({
                   </Link>
                 )}
               </Box>
+              <Box
+                flex="1"
+                alignItems="flex-end"
+                justifyContent="center"
+                paddingX={space['1']}
+                paddingRight={buttonteaserSpace}
+                marginBottom={buttonteaser}>
+                {isTeaser && (
+                  <Button width={ButtonContainer} onPress={onPressToCourse}>
+                    Zum Kurs
+                  </Button>
+                )}
+              </Box>
             </Column>
           </Pressable>
         </Card>
       ) : (
-        <Flex
-          borderRadius="15px"
+        <Pressable
+          onPress={onPressToCourse}
+          width="100%"
+          height="100%"
           backgroundColor="primary.100"
-          marginBottom={space['1']}>
-          <Pressable onPress={onPressToCourse} width="100%" height="100%">
-            <Box marginRight={space['1']}>
+          borderRadius="15px">
+          <Flex
+            flexDirection="row"
+            height="100%"
+            marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
+            <Box width="26%" display="block" marginRight="3px">
               <Image
-                width="110px"
+                width="120px"
+                height="100%"
                 borderTopLeftRadius="15px"
                 borderBottomLeftRadius="15px"
-                height="100%"
                 bgColor="gray.300"
-                source={{ uri: image }}
+                source={{
+                  uri: image
+                }}
               />
             </Box>
 
-            <Box paddingX={space['0.5']} paddingY={space['1.5']}>
-              <Row space={space['0.5']}>
-                {tags?.map((tag, i) => (
-                  <Tag key={`tag-${i}`} text={tag.name} />
-                ))}
-              </Row>
-              <Row space={1} marginY={space['0.5']}>
+            <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
+              <CSSWrapper className="course-list__item-tags">
+                <Row space={space['0.5']} flexWrap="wrap">
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
+                  ))}
+                </Row>
+              </CSSWrapper>
+
+              <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>
                     {'Ab'} {date.toFormat('dd.MM.yyyy')}
                   </Text>
                 )}
-                {countCourse && (
+                {date && countCourse && (
                   <>
                     <Text>•</Text>
                     <Text>
@@ -213,12 +320,19 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text bold fontSize={'md'} mb={space['0.5']} maxWidth="200px">
+              <Text bold fontSize={'md'} mt="4px" mb={space['0.5']}>
                 {title}
               </Text>
             </Box>
-          </Pressable>
-        </Flex>
+            {isHorizontalCardCourseChecked && (
+              <Box position="absolute" right="20px" bottom="13px">
+                <Tooltip label="Du bist bereits angemeldet.">
+                  <CheckCircleIcon color="danger.100" size="20px" />
+                </Tooltip>
+              </Box>
+            )}
+          </Flex>
+        </Pressable>
       )}
     </View>
   )

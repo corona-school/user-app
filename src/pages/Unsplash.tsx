@@ -2,22 +2,20 @@ import {
   View,
   Text,
   VStack,
-  Row,
   Button,
   Image,
   Box,
   Flex,
   useTheme,
-  SearchIcon,
-  Input,
   Spinner,
   Heading,
+  Row,
   ArrowBackIcon
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { Pressable } from 'react-native'
-import BackButton from '../components/BackButton'
 import Pagination from '../components/Pagination'
+import SearchBar from '../components/SearchBar'
 import TwoColGrid from '../widgets/TwoColGrid'
 
 type Props = {
@@ -27,18 +25,18 @@ type Props = {
 
 const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
   const { space } = useTheme()
-  const [searchString, setSearchString] = useState<string>()
 
   const [isLoading, setIsLoading] = useState<boolean>()
   const [photos, setPhotos] = useState([])
   const [selectedPhoto, setSelectedPhoto] = useState<string>('')
   const [pageIndex, setPageIndex] = useState<number>(1)
+  const [lastSearch, setLastSearch] = useState<string>('')
 
   const search = useCallback(async () => {
     setIsLoading(true)
 
     const data = await fetch(
-      `https://api.unsplash.com/search/photos?query=${searchString}&page=${pageIndex}&per_page=20`,
+      `https://api.unsplash.com/search/photos?query=${lastSearch}&page=${pageIndex}&per_page=20`,
       {
         method: 'GET',
         headers: {
@@ -49,7 +47,7 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
     const res = await data.json()
     setPhotos(res.results)
     setIsLoading(false)
-  }, [pageIndex, searchString])
+  }, [lastSearch, pageIndex])
 
   const pickPhoto = useCallback(() => {
     onPhotoSelected && onPhotoSelected(selectedPhoto)
@@ -65,18 +63,15 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
 
   return (
     <VStack flex="1" overflowY="scroll" h="100%">
-      <Row paddingX={space['1']} paddingY={space['0.5']}>
+      <Row w="100%" paddingX={space['1']} paddingY={space['0.5']}>
         <Button padding={space['1']} onPress={onClose}>
           <ArrowBackIcon />
         </Button>
-        <Input
-          flex="1"
-          onChangeText={setSearchString}
-          placeholder="Suchbegriff eingeben"
+        <SearchBar
+          onSearch={s => search()}
+          onChangeText={setLastSearch}
+          value={lastSearch}
         />
-        <Button onPress={search} padding={space['1']}>
-          <SearchIcon />
-        </Button>
       </Row>
       <View overflowY={'scroll'} flex="1">
         {(photos.length > 0 && (

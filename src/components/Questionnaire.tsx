@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Progress,
   Text,
   useBreakpointValue,
@@ -19,6 +20,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import useRegistration from '../hooks/useRegistration'
+import CenterLoadingSpinner from './CenterLoadingSpinner'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
 import { ISelectionItem } from './questionnaire/SelectionItem'
 
@@ -28,6 +30,7 @@ export type Question = {
   question?: string
   type: 'selection'
   text?: string
+  required?: boolean
 }
 
 export type QuestionnaireViewType = string | 'normal' | 'large'
@@ -105,9 +108,15 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
+    console.log('before modify')
     modifyAnswerBeforeNext &&
       modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
-
+    console.log('after modify')
+    console.log(
+      currentIndex >= questions.length - 1,
+      currentIndex,
+      questions.length - 1
+    )
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -154,6 +163,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // skip one question
   const skip = useCallback(() => {
+    console.log('skip')
     delete answers[currentQuestion.id]
     next()
   }, [answers, currentQuestion.id, next])
@@ -173,7 +183,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     lg: sizes['desktopbuttonWidth']
   })
 
-  if (questions.length === 0) return <></>
+  if (questions.length === 0) return <CenterLoadingSpinner />
   return (
     <Flex flex="1" pb={space['1']}>
       <Box
@@ -181,7 +191,19 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         bgColor="primary.500"
         justifyContent="center"
         alignItems="center"
+        position="relative"
         borderBottomRadius={8}>
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          zIndex="-1"
+          borderBottomRadius={15}
+          width="100%"
+          height="100%"
+          source={{
+            uri: require('../assets/images/globals/lf-bg.png')
+          }}
+        />
         <Heading>
           {t(`registration.questions.${userType}.${currentQuestion.id}.label`)}
         </Heading>
@@ -200,7 +222,12 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.step')} {currentIndex + 1} / {questions.length}
         </Text>
       </Box>
-      <Flex flex="1" overflowY={'scroll'} width={ContainerWidth} marginX="auto">
+      <Flex
+        flex="1"
+        overflowY={'scroll'}
+        width={ContainerWidth}
+        marginX="auto"
+        marginBottom={space['2']}>
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
             currentQuestion={currentQuestion as SelectionQuestion}
@@ -219,12 +246,14 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.btn.next')}
         </Button>
 
-        <Button
-          isDisabled={disableNavigation}
-          onPress={skip}
-          variant={'outline'}>
-          {t('questionnaire.btn.skip')}
-        </Button>
+        {!currentQuestion.required && (
+          <Button
+            isDisabled={disableNavigation}
+            onPress={skip}
+            variant={'outline'}>
+            {t('questionnaire.btn.skip')}
+          </Button>
+        )}
 
         {currentIndex > 0 && (
           <Button

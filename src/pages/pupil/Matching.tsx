@@ -1,13 +1,36 @@
+import { DocumentNode, gql, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Button, Modal, useTheme } from 'native-base'
+import {
+  Text,
+  VStack,
+  Button,
+  Modal,
+  useTheme,
+  Heading,
+  useBreakpointValue
+} from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AsNavigationItem from '../../components/AsNavigationItem'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import Hello from '../../widgets/Hello'
 import MatchingOnboarding from './MatchingOnboarding'
+import MatchingPending from './MatchingPending'
 import MatchingWizard from './MatchingWizard'
 
 type Props = {}
+
+const query: DocumentNode = gql`
+  query {
+    me {
+      pupil {
+        openMatchRequestCount
+      }
+    }
+  }
+`
 
 const Matching: React.FC<Props> = () => {
   const { space } = useTheme()
@@ -15,8 +38,9 @@ const Matching: React.FC<Props> = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { t } = useTranslation()
   const navigate = useNavigate()
-
   const { trackPageView, trackEvent } = useMatomo()
+
+  const { data, loading } = useQuery(query)
 
   useEffect(() => {
     trackPageView({
@@ -25,14 +49,27 @@ const Matching: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const backArrow = useBreakpointValue({
+    base: true,
+    lg: false
+  })
+
+  if (loading) return <CenterLoadingSpinner />
+
   return (
     <>
-      <WithNavigation>
-        {currentIndex === 0 && (
-          <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
-        )}
-        {currentIndex === 1 && <MatchingWizard />}
-      </WithNavigation>
+      <AsNavigationItem path="matching">
+        <WithNavigation showBack={backArrow} headerContent={<Hello />}>
+          {(data?.me?.pupil.openMatchRequestCount === 0 && (
+            <>
+              {currentIndex === 0 && (
+                <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
+              )}
+              {currentIndex === 1 && <MatchingWizard />}
+            </>
+          )) || <MatchingPending refetchQuery={query} />}
+        </WithNavigation>
+      </AsNavigationItem>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content>
           <Modal.CloseButton />

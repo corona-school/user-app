@@ -11,7 +11,8 @@ export const pupilQuestions: SelectionQuestion[] = [
     imgRootPath: 'schooltypes',
     type: 'selection',
     maxSelections: 1,
-    options: schooltypes
+    options: schooltypes,
+    required: true
   },
   {
     id: 'schoolclass',
@@ -19,7 +20,8 @@ export const pupilQuestions: SelectionQuestion[] = [
     type: 'selection',
     maxSelections: 1,
     // options are populated dynamically
-    options: []
+    options: [],
+    required: true
   },
   {
     id: 'languages',
@@ -38,7 +40,8 @@ export const pupilQuestions: SelectionQuestion[] = [
     imgRootPath: 'states',
     type: 'selection',
     maxSelections: 1,
-    options: states
+    options: states,
+    required: true
   }
 ]
 

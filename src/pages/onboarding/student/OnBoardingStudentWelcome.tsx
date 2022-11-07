@@ -77,7 +77,7 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
               name: 'Onboarding Schüler – Tour überspringen im Fenster',
               documentTitle: 'Onboarding Schüler – Welcome Page'
             })
-            navigate('/')
+            navigate('/onboarding-list')
           }}
         />
       </Modal>

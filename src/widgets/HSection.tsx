@@ -12,6 +12,7 @@ type Props = {
   scrollable?: boolean
   wrap?: boolean
   isNoSpace?: boolean
+  marginBottom?: number | string
 }
 
 const HSection: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const HSection: React.FC<Props> = ({
   scrollable = true,
   children,
   onShowAll,
+  marginBottom,
   wrap,
   smallTitle,
   isNoSpace = false
@@ -28,7 +30,7 @@ const HSection: React.FC<Props> = ({
   const { space, fontSizes } = useTheme()
   const { t } = useTranslation()
   return (
-    <Box>
+    <Box marginBottom={marginBottom}>
       <Row
         alignItems={'center'}
         justifyContent={'flex-end'}

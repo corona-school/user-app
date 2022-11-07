@@ -23,7 +23,7 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'italienisch', label: 'Italienisch' },
   { key: 'kunst', label: 'Kunst' },
   { key: 'latein', label: 'Latein' },
-  { key: 'mathe', label: 'Mathe' },
+  { key: 'mathematik', label: 'Mathematik' },
   { key: 'musik', label: 'Musik' },
   { key: 'paedagogik', label: 'Pädagogik' },
   { key: 'philosophie', label: 'Philosophie' },
@@ -37,3 +37,14 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'wirtschaft', label: 'Wirtschaft' },
   { key: 'other', label: 'Andere' }
 ]
+
+export const getSubjectKey: (
+    name: string
+) => string = (name) => {
+  for(let subject of subjects){
+    if(subject.label === name){
+      return subject.key;
+    }
+  }
+  return 'other';
+}

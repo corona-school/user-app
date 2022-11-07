@@ -4,10 +4,15 @@
 
 declare namespace NodeJS {
   interface LernFairEnv {
+    // App version dynamically fetched by the environment
     readonly REACT_APP_VERSION: string
+    // Apollo API Key
     readonly REACT_APP_APOLLO_CLIENT_URI: string
+    // Matomo API Key
     readonly REACT_APP_MATOMO_URL: string
+    // Unsplash API Key
     readonly REACT_APP_UNSPLASH: string
+    // URL to upload course photos
     readonly REACT_APP_UPLOAD_URL: string
   }
   interface ProcessEnv extends LernFairEnv {

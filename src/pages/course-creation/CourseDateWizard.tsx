@@ -30,16 +30,22 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Daten'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <VStack maxWidth={ContainerWidth}>
+    <VStack marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
         <Heading marginBottom={space['1']}>
           {t('course.CourseDate.Wizard.headline')}
@@ -51,6 +57,10 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           {t('course.CourseDate.Wizard.date')}
         </FormControl.Label>
 
+        <Text paddingBottom="10px" fontSize="xs" color="primary.grey">
+          {t('course.CourseDate.Wizard.dateInfo')}
+        </Text>
+
         <DatePicker
           value={lectures && lectures[index].date}
           onChange={e => {
@@ -60,9 +70,6 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
             setLectures && setLectures(arr)
           }}
         />
-        <Text paddingTop={space['1']} fontSize="xs">
-          {t('course.CourseDate.Wizard.dateInfo')}
-        </Text>
       </FormControl>
       <FormControl marginY={space['1']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
@@ -84,6 +91,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           {t('course.CourseDate.Wizard.duration')}
         </FormControl.Label>
         <Select
+          selectedValue={lectures && lectures[index].duration}
           placeholder={t('course.selectPlaceHolderDuration')}
           onValueChange={e => {
             if (!lectures || !lectures[index]) return
@@ -111,10 +119,10 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           }} 
         />*/}
       </FormControl>
-      <Row marginY={space['1.5']}>
+      {/* <Row marginY={space['1.5']}>
         <Text flex="1">{t('course.CourseDate.Wizard.repeatAppoint')}</Text>
         <Switch />
-      </Row>
+      </Row> */}
     </VStack>
   )
 }

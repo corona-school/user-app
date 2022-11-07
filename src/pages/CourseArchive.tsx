@@ -9,7 +9,9 @@ import {
   Column,
   Row,
   Spinner,
-  Box
+  Box,
+  Alert,
+  HStack
 } from 'native-base'
 
 import { useTranslation } from 'react-i18next'
@@ -23,6 +25,8 @@ import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import AlertMessage from '../widgets/AlertMessage'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -126,17 +130,29 @@ const CourseArchive: React.FC<Props> = () => {
     searchString
   ])
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   return (
     <WithNavigation
       headerTitle={t('archive.course.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        marginBottom={space['2.5']}
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.course.title')}</Heading>
-            <Text>{t('archive.course.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.course.content')}
+            </Text>
           </VStack>
-          <Row paddingY={space['1']}>
+          <Row paddingY={space['1']} maxWidth={ContentContainerWidth}>
             <Input
               flex="1"
               size="lg"
@@ -146,7 +162,9 @@ const CourseArchive: React.FC<Props> = () => {
           </Row>
           <VStack space={space['1']}>
             <Heading>{t('archive.course.sectionHeadline')}</Heading>
-            <Text>{t('archive.course.sectionContent')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.course.sectionContent')}
+            </Text>
           </VStack>
           <VStack flex="1">
             {loading && (
@@ -157,7 +175,7 @@ const CourseArchive: React.FC<Props> = () => {
             {!loading && (
               <>
                 {(searchResults.length && (
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {searchResults.map((sub: LFSubCourse, index: number) => {
                       let firstDate: DateTime = null!
 
@@ -176,8 +194,10 @@ const CourseArchive: React.FC<Props> = () => {
                       }
 
                       return (
-                        <Column width={CardGrid} marginRight="15px" key={index}>
+                        <CSSWrapper className="course-list__item">
                           <AppointmentCard
+                            isFullHeight
+                            isSpaceMarginBottom={false}
                             variant="horizontal"
                             description={sub.course.outline}
                             tags={sub.course.tags}
@@ -198,11 +218,11 @@ const CourseArchive: React.FC<Props> = () => {
                             image={sub.course.image}
                             title={sub.course.name}
                           />
-                        </Column>
+                        </CSSWrapper>
                       )
                     })}
-                  </Flex>
-                )) || <Text>Es wurden keine Ergebnisse gefunden.</Text>}
+                  </CSSWrapper>
+                )) || <AlertMessage content={t('empty.courses')} />}
               </>
             )}
           </VStack>

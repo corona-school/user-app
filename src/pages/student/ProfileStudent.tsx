@@ -15,7 +15,8 @@ import {
   HStack,
   TextArea,
   Container,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -26,7 +27,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserProgress from '../../widgets/UserProgress'
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -36,6 +37,9 @@ import HelperCardCertificates from '../../widgets/HelperCardCertificates'
 import HelperWizard from '../../widgets/HelperWizard'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -53,27 +57,37 @@ const ProfileStudent: React.FC<Props> = () => {
   const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        lastname
-        student {
-          state
-          aboutMe
-          subjectsFormatted {
-            name
-          }
-          participationCertificates {
-            subjectsFormatted
+  const location = useLocation()
+  const { showSuccessfulChangeAlert = false } = (location.state || {}) as {
+    showSuccessfulChangeAlert: boolean
+  }
+
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          firstname
+          lastname
+          student {
             state
-            startDate
-            pupilId
+            aboutMe
+            subjectsFormatted {
+              name
+            }
+            participationCertificates {
+              subjectsFormatted
+              state
+              startDate
+              pupilId
+            }
           }
         }
       }
+    `,
+    {
+      fetchPolicy: 'no-cache'
     }
-  `)
+  )
 
   const [changeName, _changeName] = useMutation(gql`
     mutation changeName($firstname: String!, $lastname: String!) {
@@ -131,28 +145,51 @@ const ProfileStudent: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
+  const HeaderStyle = useBreakpointValue({
+    base: {
+      isMobile: true,
+      bgColor: 'primary.700',
+      paddingY: space['2']
+    },
+    lg: {
+      isMobile: false,
+      bgColor: 'transparent',
+      paddingY: 0
+    }
+  })
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Helfer Matching'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  useEffect(() => {
+    if (showSuccessfulChangeAlert || userSettingChanged) {
+      window.scrollTo({ top: 0 })
+    }
+  }, [showSuccessfulChangeAlert, userSettingChanged])
+
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
       <WithNavigation
         headerTitle={t('profile.title')}
         headerContent={
-          <Box
+          <Flex
             maxWidth={ContainerWidth}
-            bg={'primary.700'}
-            alignItems="center"
-            paddingY={space['2']}
+            marginX="auto"
+            width="100%"
+            bg={HeaderStyle.bgColor}
+            alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
+            justifyContent="center"
+            paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
-            <Box position="relative">
+            {/* <Box position="relative">
               <ProfilAvatar
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
@@ -165,10 +202,10 @@ const ProfileStudent: React.FC<Props> = () => {
                   />
                 </Link>
               </Box>
-            </Box>
+            </Box> */}
             <Heading
-              paddingTop={3}
-              paddingBottom={9}
+              // paddingTop={3}
+              // paddingBottom={9}
               color={colors.white}
               bold
               fontSize="xl">
@@ -228,39 +265,29 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Text>
               </Column>
             </Row> */}
-          </Box>
+          </Flex>
         }
         headerLeft={<NotificationAlert />}>
-        {userSettingChanged && (
-          <Alert
-            maxWidth={ContainerWidth}
-            marginY={10}
-            marginX={space['1.5']}
-            colorScheme="success"
-            status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
+        {(showSuccessfulChangeAlert || userSettingChanged) && (
+          <Container maxWidth={ContainerWidth} paddingX={space['1']}>
+            <AlertMessage content={t('profile.successmessage')} />
+          </Container>
         )}
 
         <VStack
           maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%"
           paddingX={space['1']}
           paddingY={space['1']}>
-          <HelperWizard index={0} />
+          <HelperWizard />
         </VStack>
 
-        <VStack space={space['1']} maxWidth={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%">
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />
@@ -298,11 +325,13 @@ const ProfileStudent: React.FC<Props> = () => {
                 <Row>
                   {(data?.me?.student.state && (
                     <Column marginRight={3}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.student.state}`)}
-                      />
+                      {(data?.me?.student?.state !== 'other' && (
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.student.state}`)}
+                        />
+                      )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.State.empty')}</Text>}
                 </Row>
@@ -322,7 +351,9 @@ const ProfileStudent: React.FC<Props> = () => {
                       <Column marginRight={3}>
                         <IconTagList
                           isDisabled
-                          iconPath={'subjects/icon_mathe.svg'}
+                          iconPath={`subjects/icon_${getSubjectKey(
+                            sub.name
+                          )}.svg`}
                           text={sub.name}
                         />
                       </Column>
@@ -331,7 +362,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
+            {/* <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
               <Container
                 maxWidth="100%"
                 width="100%"
@@ -370,7 +401,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
@@ -383,7 +414,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )
@@ -417,7 +452,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
@@ -430,7 +465,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )
@@ -452,7 +491,7 @@ const ProfileStudent: React.FC<Props> = () => {
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>
-            </ProfileSettingRow>
+            </ProfileSettingRow> */}
           </VStack>
         </VStack>
       </WithNavigation>

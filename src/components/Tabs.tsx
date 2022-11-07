@@ -1,14 +1,14 @@
 import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
 import { Fragment, ReactNode, useState } from 'react'
 
-type Tab = {
+export type Tab = {
   title: string
   content: ReactNode | ReactNode[]
 }
 type Props = {
   tabs: Tab[]
   removeSpace?: boolean
-  onPressTab?: (tab: Tab) => any
+  onPressTab?: (tab: Tab, index: number) => any
   tabInset?: number | string
 }
 
@@ -33,11 +33,11 @@ const Tabs: React.FC<Props> = ({
     <Pressable
       onPress={() => {
         setCurrentIndex(index)
-        onPressTab && onPressTab(tab)
+        onPressTab && onPressTab(tab, index)
       }}>
       <Box
         borderBottomWidth={(active && 3) || 1}
-        borderBottomColor={active ? 'primary.400' : 'primary.100'}
+        borderBottomColor={active ? 'primary.400' : 'transparent'}
         paddingX={space['1']}
         paddingY={space['0.5']}>
         <Text
@@ -52,16 +52,23 @@ const Tabs: React.FC<Props> = ({
 
   return (
     <VStack>
-      <Row overflowX={'scroll'} flexWrap="nowrap" paddingX={tabInset}>
+      <Row
+        overflowX="scroll"
+        flexWrap="nowrap"
+        width="100%"
+        paddingX={tabInset}
+        borderBottomColor="primary.grey"
+        borderBottomWidth={1}>
         {tabs.map(
-          (tab, i) => (
-            <Tab
-              key={`tab-${i}`}
-              tab={tab}
-              index={i}
-              active={i === currentIndex}
-            />
-          ),
+          (tab, i) =>
+            tab && (
+              <Tab
+                key={`tab-${i}`}
+                tab={tab}
+                index={i}
+                active={i === currentIndex}
+              />
+            ),
           []
         )}
       </Row>

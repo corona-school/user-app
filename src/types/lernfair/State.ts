@@ -19,6 +19,5 @@ export const states: State[] = [
   { key: 'sn', label: 'Sachsen' },
   { key: 'st', label: 'Sachsen-Anhalt' },
   { key: 'sh', label: 'Schleswig-Holstein' },
-  { key: 'th', label: 'Thüringen' },
-  { key: 'other', label: 'Andere' }
+  { key: 'th', label: 'Thüringen' }
 ]

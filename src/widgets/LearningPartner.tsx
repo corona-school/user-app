@@ -1,6 +1,7 @@
 import { View, Text, Row, Box, Avatar, useTheme } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
+import Tag from '../components/Tag'
 import { LFSubject } from '../types/lernfair/Subject'
 import ProfilAvatar from './ProfilAvatar'
 
@@ -34,7 +35,7 @@ const LearningPartner: React.FC<Props> = ({
         <Row padding={space['1']}>
           {avatar && (
             <Box marginRight={space['1.5']}>
-              <ProfilAvatar image={avatar} size="lg" />
+              {/* <ProfilAvatar image={avatar} size="lg" /> */}
             </Box>
           )}
           <Box flex="1">
@@ -48,12 +49,12 @@ const LearningPartner: React.FC<Props> = ({
             )}
 
             {subjects && (
-              <Row flexWrap={'wrap'} space="5px">
-                <Text color="lightText">Fächer:</Text>
+              <Row flexWrap={'wrap'} space="5px" alignItems="center">
+                <Text color="lightText" marginBottom={space['0.5']}>
+                  Fächer:
+                </Text>
                 {subjects.map((sub: LFSubject) => (
-                  <Text color={isDark ? 'lightText' : 'primary.900'}>
-                    {sub.name}
-                  </Text>
+                  <Tag text={sub.name} variant="secondary" />
                 ))}
               </Row>
             )}

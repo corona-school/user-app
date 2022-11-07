@@ -35,6 +35,7 @@ const OnBoardingHelperMatchingSlides: React.FC<Props> = () => {
       backgroundColor="primary.100"
       maxWidth="100%"
       height="100%"
+      overflowY="scroll"
       alignItems="stretch">
       <View flex={1}>
         <ViewPager

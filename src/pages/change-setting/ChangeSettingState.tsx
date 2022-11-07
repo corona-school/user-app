@@ -3,25 +3,23 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Button,
   Text,
-  Heading,
   useTheme,
   VStack,
   Row,
   Column,
-  Input,
-  FormControl,
-  Stack,
   Alert,
   HStack,
   useBreakpointValue
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
 import { states } from '../../types/lernfair/State'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -56,11 +54,12 @@ const ChangeSettingState: React.FC<Props> = () => {
   const [userState, setUserState] = useState<string>('')
   const { t } = useTranslation()
 
-  const [userSettingChanged, setUserSettingChanged] = useState<boolean>()
   const [showError, setShowError] = useState<boolean>()
 
+  const navigate = useNavigate()
+
   const { userType } = useLernfair()
-  const { data, loading, error } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     ${userType === 'student' ? queryStudent : queryPupil}
   `)
 
@@ -85,9 +84,10 @@ const ChangeSettingState: React.FC<Props> = () => {
 
   useEffect(() => {
     if (_updateState.data && !_updateState.error) {
-      setUserSettingChanged(true)
+      // setUserSettingChanged(true)
+      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
     }
-  }, [_updateState.data, _updateState.error])
+  }, [_updateState.data, _updateState.error, navigate])
 
   useEffect(() => {
     if (_updateState.error) {
@@ -111,36 +111,18 @@ const ChangeSettingState: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Profil Einstellungen – Bundesland'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log({ userState })
-  if (loading) <></>
+
+  if (loading) <CenterLoadingSpinner />
 
   return (
-    <WithNavigation
-      headerTitle={t('profile.State.single.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('profile.State.single.header')} showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
-        maxWidth={ContainerWidth}>
-        <Heading>{t('profile.State.single.title')}</Heading>
-        <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
-          <Row flexWrap="wrap" width="100%">
-            {userState && (
-              <Column marginRight={3} marginBottom={3}>
-                <IconTagList
-                  isDisabled
-                  iconPath={`states/icon_${state.key}.svg`}
-                  text={state?.label}
-                />
-              </Column>
-            )}
-          </Row>
-        </ProfileSettingItem>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.State.single.others')}>
           <ProfileSettingItem
@@ -149,44 +131,20 @@ const ChangeSettingState: React.FC<Props> = () => {
             isHeaderspace={false}>
             <VStack w="100%">
               <Row flexWrap="wrap" width="100%">
-                {states.map(
-                  (s, index) =>
-                    state.key !== s.key && (
-                      <Column
-                        marginRight={3}
-                        marginBottom={3}
-                        key={`offers-${index}`}>
-                        <IconTagList
-                          iconPath={`states/icon_${s.key}.svg`}
-                          text={s.label}
-                          onPress={() => setUserState(s.key)}
-                        />
-                      </Column>
-                    )
-                )}
+                {states.map((s, index) => (
+                  <Column
+                    marginRight={3}
+                    marginBottom={3}
+                    key={`offers-${index}`}>
+                    <IconTagList
+                      initial={userState === s.key}
+                      iconPath={`states/icon_${s.key}.svg`}
+                      text={s.label}
+                      onPress={() => setUserState(s.key)}
+                    />
+                  </Column>
+                ))}
               </Row>
-              {userState === 'andere' && (
-                <Row>
-                  <FormControl>
-                    <Stack>
-                      <FormControl.Label>
-                        <Text bold>
-                          {t('profile.State.single.option.label')}
-                        </Text>
-                      </FormControl.Label>
-                      <Input
-                        type="text"
-                        multiline
-                        numberOfLines={3}
-                        h={70}
-                        placeholder={t(
-                          'profile.State.single.optional.placeholder'
-                        )}
-                      />
-                    </Stack>
-                  </FormControl>
-                </Row>
-              )}
             </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>
@@ -194,8 +152,10 @@ const ChangeSettingState: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
-        {userSettingChanged && (
+        {/* {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
             <VStack space={2} flexShrink={1} w="100%">
               <HStack
@@ -210,23 +170,8 @@ const ChangeSettingState: React.FC<Props> = () => {
               </HStack>
             </VStack>
           </Alert>
-        )}
-        {showError && (
-          <Alert marginY={3} bgColor="danger.500">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color={'lightText'} />
-                  <Text color="lightText">{t('profile.errormessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )}
+        )} */}
+        {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}
           onPress={() => {

@@ -2,13 +2,12 @@ import {
   Flex,
   Row,
   Box,
-  ArrowBackIcon,
   Pressable,
   Link,
-  ArrowForwardIcon,
   Modal,
   useBreakpointValue,
-  useTheme
+  useTheme,
+  Text
 } from 'native-base'
 import {
   createContext,
@@ -21,6 +20,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import OnBoardingSkipModal from '../widgets/OnBoardingSkipModal'
+import LfPrev from '../assets/icons/lernfair/lf-back.svg'
+import LfNext from '../assets/icons/lernfair/lf-next.svg'
 
 type Props = {
   children: ReactNode | ReactNode[]
@@ -80,7 +81,11 @@ const ViewPager: React.FC<Props> = ({
               (c, index) => index === currentIndex && <Flex flex="1">{c}</Flex>
             )}
         </Flex>
-        <Row backgroundColor="primary.900" width="100%" bottom="0">
+        <Row
+          position="fixed"
+          backgroundColor="primary.900"
+          width="100%"
+          bottom="0">
           <Box
             flexDirection="row"
             width={ContentContainerWidth}
@@ -102,11 +107,12 @@ const ViewPager: React.FC<Props> = ({
               <Box
                 width="32px"
                 height="32px"
+                padding="6px"
                 backgroundColor="primary.100"
                 justifyContent="center"
                 alignItems="center"
                 borderRadius="50%">
-                <ArrowBackIcon color="primary.900" />
+                <LfPrev />
               </Box>
             </Pressable>
             {isOnboarding && (
@@ -116,8 +122,7 @@ const ViewPager: React.FC<Props> = ({
                   _text={{
                     color: 'lightText',
                     fontWeight: '700',
-                    textDecoration: 'none',
-                    fontSize: '14px'
+                    textDecoration: 'none'
                   }}>
                   {t('skip')}
                 </Link>
@@ -146,11 +151,12 @@ const ViewPager: React.FC<Props> = ({
               <Box
                 width="32px"
                 height="32px"
+                padding="6px"
                 backgroundColor="primary.100"
                 justifyContent="center"
                 alignItems="center"
                 borderRadius="50%">
-                <ArrowForwardIcon color="primary.900" />
+                <LfNext />
               </Box>
             </Pressable>
           </Box>
@@ -162,7 +168,7 @@ const ViewPager: React.FC<Props> = ({
           <OnBoardingSkipModal
             onPressClose={() => setCancelModal(false)}
             onPressDefaultButton={() => setCancelModal(false)}
-            onPressOutlineButton={() => navigate('/')}
+            onPressOutlineButton={() => navigate('/onboarding-list')}
           />
         </Modal>
       </Flex>

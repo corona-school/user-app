@@ -4,7 +4,6 @@ import {
   useTheme,
   VStack,
   Row,
-  Link,
   Column,
   Text,
   Modal,
@@ -14,26 +13,25 @@ import {
   Alert,
   HStack,
   TextArea,
-  useBreakpointValue
+  useBreakpointValue,
+  Flex
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-import UserAchievements from '../../widgets/UserAchievements'
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import Star from '../../assets/icons/lernfair/lf-star.svg'
-import LFIcon from '../../components/LFIcon'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import BackButton from '../../components/BackButton'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -51,24 +49,34 @@ const Profile: React.FC<Props> = () => {
   const [aboutMe, setAboutMe] = useState<string>('')
   const [userSettingChanged, setUserSettings] = useState<boolean>(false)
 
-  const { data, error, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        lastname
-        pupil {
-          aboutMe
-          state
-          schooltype
-          languages
-          subjectsFormatted {
-            name
+  const location = useLocation()
+  const { showSuccessfulChangeAlert = false } = (location.state || {}) as {
+    showSuccessfulChangeAlert: boolean
+  }
+
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          firstname
+          lastname
+          pupil {
+            aboutMe
+            state
+            schooltype
+            languages
+            subjectsFormatted {
+              name
+            }
+            gradeAsInt
           }
-          gradeAsInt
         }
       }
+    `,
+    {
+      fetchPolicy: 'no-cache'
     }
-  `)
+  )
 
   const [changeName, _changeName] = useMutation(gql`
     mutation changeName($firstname: String!, $lastname: String!) {
@@ -124,33 +132,65 @@ const Profile: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const HeaderStyle = useBreakpointValue({
+    base: {
+      isMobile: true,
+      bgColor: 'primary.700',
+      paddingY: space['2']
+    },
+    lg: {
+      isMobile: false,
+      bgColor: 'transparent',
+      paddingY: 0
+    }
+  })
+
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler Profil'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <></>
+  useEffect(() => {
+    if (showSuccessfulChangeAlert || userSettingChanged) {
+      window.scrollTo({ top: 0 })
+    }
+  }, [showSuccessfulChangeAlert, userSettingChanged])
+
+  if (loading) return <CenterLoadingSpinner />
 
   return (
     <>
       <WithNavigation
+        showBack
         headerTitle={t('profile.title')}
         headerContent={
-          <Box
+          <Flex
+            marginX="auto"
+            width="100%"
             maxWidth={ContainerWidth}
-            bg={'primary.700'}
-            alignItems="center"
-            paddingY={space['2']}
+            bg={HeaderStyle.bgColor}
+            alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
+            justifyContent="center"
+            paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
-            <Box position="relative">
-              {/* <ProfilAvatar
+            <Box
+              marginX="auto"
+              width="100%"
+              maxWidth={ContainerWidth}
+              bg={HeaderStyle.bgColor}
+              alignItems="center"
+              paddingY={space['2']}
+              borderBottomRadius={16}>
+              <Box position="relative">
+                {/* <ProfilAvatar
                 image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                 size="xl"
               /> */}
-              {/* <Box position="absolute" right="-14px" bottom="8px">
+                {/* <Box position="absolute" right="-14px" bottom="8px">
                 <Link href="#">
                   <EditIcon
                     fill={colors['lightText']}
@@ -158,17 +198,17 @@ const Profile: React.FC<Props> = () => {
                   />
                 </Link>
               </Box> */}
-            </Box>
-            <Heading
-              paddingTop={3}
-              paddingBottom={9}
-              color={colors.white}
-              bold
-              fontSize="xl">
-              {data?.me?.firstname}
-            </Heading>
+              </Box>
+              <Heading
+                // paddingTop={3}
+                // paddingBottom={9}
+                color={colors.white}
+                bold
+                fontSize="xl">
+                {data?.me?.firstname}
+              </Heading>
 
-            {/* <Row width="80%" justifyContent="space-around">
+              {/* <Row width="80%" justifyContent="space-around">
               <Column
                 textAlign="center"
                 justifyContent="center"
@@ -182,36 +222,22 @@ const Profile: React.FC<Props> = () => {
                 <UserAchievements points={90} icon={<LFIcon Icon={Star} />} />
               </Column>
             </Row> */}
-          </Box>
+            </Box>
+          </Flex>
         }
         headerLeft={
           <Row space={space['1']}>
-            <BackButton />
             <NotificationAlert />
           </Row>
         }>
-        {userSettingChanged && (
-          <Alert
-            maxWidth={ContainerWidth}
-            marginY={10}
-            marginX={space['1.5']}
-            colorScheme="success"
-            status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
+        {(showSuccessfulChangeAlert || userSettingChanged) && (
+          <AlertMessage content={t('profile.successmessage')} />
         )}
-        <VStack space={space['1']} width={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          width="100%"
+          marginX="auto"
+          maxWidth={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />
@@ -261,11 +287,13 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
-                        text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
-                      />
+                      {(data?.me?.pupil?.state !== 'other' && (
+                        <IconTagList
+                          isDisabled
+                          iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                          text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
+                        />
+                      )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>
@@ -318,7 +346,9 @@ const Profile: React.FC<Props> = () => {
                         <Column marginRight={3} mb={space['0.5']}>
                           <IconTagList
                             isDisabled
-                            iconPath={'subjects/icon_mathe.svg'}
+                            iconPath={`subjects/icon_${getSubjectKey(
+                              sub.name
+                            )}.svg`}
                             text={sub.name}
                           />
                         </Column>

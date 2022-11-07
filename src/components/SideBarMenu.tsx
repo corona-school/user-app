@@ -6,10 +6,12 @@ import {
   Center,
   CircleIcon,
   Row,
-  useTheme
+  useTheme,
+  Pressable
 } from 'native-base'
 import { useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useLernfair from '../hooks/useLernfair'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
 
@@ -20,18 +22,19 @@ type Props = {
 }
 
 const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
-  const location = useLocation()
   const { space, colors } = useTheme()
+  const { rootPath, setRootPath } = useLernfair()
+  const navigate = useNavigate()
 
-  const path = useMemo(() => {
-    const p = location.pathname.replace('/', '')
-    if (Object.keys(navItems).includes(p)) return p
-    return 'dashboard'
-  }, [location.pathname, navItems])
+  // const path = useMemo(() => {
+  //   const p = location.pathname.replace('/', '')
+  //   if (Object.keys(navItems).includes(p)) return p
+  //   return 'dashboard'
+  // }, [location.pathname, navItems])
 
   return (
     (show && (
-      <View w="240" h="100%">
+      <View w="240" h="100vh">
         <VStack
           paddingTop={paddingTop}
           position="fixed"
@@ -48,7 +51,16 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
           bottom="0">
           {Object.entries(navItems).map(
             ([key, { label, icon: Icon, disabled }]) => (
-              <Link href={disabled ? undefined : key} key={key}>
+              <Pressable
+                onPress={
+                  disabled
+                    ? undefined
+                    : () => {
+                        setRootPath && setRootPath(`${key}`)
+                        navigate(`/${key}`)
+                      }
+                }
+                key={key}>
                 <Row
                   alignItems={'center'}
                   paddingX={space['1']}
@@ -60,7 +72,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                         color={
                           disabled
                             ? 'transparent'
-                            : key === path
+                            : key === rootPath
                             ? 'primary.900'
                             : 'transparent'
                         }
@@ -70,7 +82,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                           fill={
                             disabled
                               ? colors['gray']['300']
-                              : key === path
+                              : key === rootPath
                               ? colors['lightText']
                               : colors['primary']['900']
                           }
@@ -86,7 +98,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                     {label}
                   </Text>
                 </Row>
-              </Link>
+              </Pressable>
             )
           )}
         </VStack>

@@ -51,6 +51,11 @@ const LearningPartnerArchive: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
   // const ButtonContainer = useBreakpointValue({
   //   base: '100%',
   //   lg: sizes['desktopbuttonWidth']
@@ -97,11 +102,13 @@ const LearningPartnerArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.learningpartner.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack paddingX={space['1']} marginX="auto" maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.learningpartner.title')}</Heading>
-            <Text>{t('archive.learningpartner.content')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.learningpartner.content')}
+            </Text>
           </VStack>
           <Row paddingY={space['1']}>
             <Input
@@ -113,7 +120,9 @@ const LearningPartnerArchive: React.FC<Props> = () => {
           </Row>
           <VStack space={space['1']}>
             <Heading>{t('archive.learningpartner.sectionHeadline')}</Heading>
-            <Text>{t('archive.learningpartner.sectionContent')}</Text>
+            <Text maxWidth={ContentContainerWidth}>
+              {t('archive.learningpartner.sectionContent')}
+            </Text>
           </VStack>
           <VStack flex="1">
             {loading && (

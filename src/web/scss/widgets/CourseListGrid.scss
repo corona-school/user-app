@@ -1,0 +1,21 @@
+:root {
+    --course-gap: 20px;
+}
+
+.course-list {
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--course-gap);
+    }
+
+    &__item {
+        flex-basis: calc( 50% - var(--course-gap));
+        background-color: var(--color-primary_light);
+        border-radius: 15px;
+
+        @media screen and (max-width: 992px ) {
+            flex-basis: 100%;
+        }  
+    }
+}

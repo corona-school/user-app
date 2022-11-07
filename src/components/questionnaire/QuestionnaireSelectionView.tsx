@@ -104,10 +104,19 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
                   undefined
                 }
                 onPress={() => {
-                  setSelections((prev: Answer) => ({
-                    ...prev,
-                    [opt.key]: !selections[opt.key] ? opt : false
-                  }))
+                  if (
+                    !currentQuestion?.maxSelections ||
+                    currentQuestion?.maxSelections > 1
+                  ) {
+                    setSelections((prev: Answer) => ({
+                      ...prev,
+                      [opt.key]: !selections[opt.key] ? opt : false
+                    }))
+                  } else {
+                    setSelections({
+                      [opt.key]: !selections[opt.key] ? opt : false
+                    })
+                  }
                   onPressSelection && onPressSelection(opt)
                 }}
               />

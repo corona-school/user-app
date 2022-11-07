@@ -21,9 +21,7 @@ const QuickStart: React.FC<Props> = () => {
   }, [])
 
   return (
-    <WithNavigation
-      headerTitle={t('quickstart.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('quickstart.header')} showBack>
       <Box
         paddingTop={space['4']}
         paddingBottom={space['1.5']}
