@@ -103,7 +103,6 @@ const CreateCourse: React.FC<Props> = () => {
     query {
       me {
         student {
-          schooltype
           canCreateCourse {
             allowed
             reason
@@ -185,7 +184,7 @@ const CreateCourse: React.FC<Props> = () => {
     const errors = []
 
     /**
-     * Course Creatin
+     * Course Creation
      */
     const course = {
       outline,

@@ -214,7 +214,7 @@ const CoursePreview: React.FC<Props> = ({
 
       {isError && (
         <Box mt={space['1']}>
-          <AlertMessage content="Dein Kurs konnte leider nicht erstellt werden" />
+          <AlertMessage content={t('course.error.course')} />
         </Box>
       )}
       <Row
