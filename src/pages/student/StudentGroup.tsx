@@ -237,20 +237,8 @@ const StudentGroup: React.FC<Props> = () => {
                 {(locState?.errors?.length > 0 && (
                   <>
                     {locState.errors.map(e => (
-                      <AlertMessage content={e} />
+                      <AlertMessage content={t(`course.error.${e}`)} />
                     ))}
-                    {/* {locState.courseSuccess && (
-                      <AlertMessage
-                        content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
-                   nun in Prüfung."
-                      />
-                    )}
-                    {!locState.courseSuccess && (
-                      <AlertMessage content="Dein Kurs konnte nicht erstellt werden." />
-                    )}
-                    {locState.imageError && (
-                      <AlertMessage content="Dein Bild konnte nicht hochgeladen werden." />
-                    )} */}
                   </>
                 )) || <></>}
               </>

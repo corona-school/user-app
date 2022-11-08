@@ -184,7 +184,7 @@ const CreateCourse: React.FC<Props> = () => {
     const errors = []
 
     /**
-     * Course Creatin
+     * Course Creation
      */
     const course = {
       outline,
