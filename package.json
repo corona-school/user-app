@@ -1,6 +1,6 @@
 {
   "name": "lernfair",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.1.0",
