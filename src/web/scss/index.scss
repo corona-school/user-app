@@ -1,4 +1,7 @@
 @import "_generated";
+@import "./widgets/CourseListGrid.scss";
+@import "./components/CTACard.scss";
+@import "./components/Onboarding.scss";
 
 html,
 body {
@@ -16,16 +19,30 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+
+   @media screen and (min-width: 993px){
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none; 
+      ::-webkit-scrollbar {
+        display: none;
+      }
+   }
+  }
+}
+
+html {
+  font-size: 14px;
+  
+  @media screen and (max-width: 992px ) {
+    font-size: 13px;
   }
 }
 
 #root {
-  
-
   display: flex;
   flex-wrap: nowrap;
   height: 100vh;
-  height: -webkit-fill-available;
+  // height: -webkit-fill-available;
   // height: -moz-available;
 }
 

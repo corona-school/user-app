@@ -1,4 +1,5 @@
-import { Subject } from './Subject'
+import { State } from './State'
+import { LFSubject } from './Subject'
 
 export interface User {
   id: string
@@ -18,7 +19,7 @@ export interface User {
   isParticipant?: boolean
   isProjectCoach?: boolean
   // projectFields?: ProjectInformation[]
-  subjects: Subject[]
+  subjects: LFSubject[]
   // matches: Match[]
   // dissolvedMatches: Match[]
   // projectMatches: ProjectMatch[]
@@ -34,4 +35,22 @@ export interface User {
   // pupilTutoringInterestConfirmationStatus?: InterestConfirmationStatus
   isOfficial?: boolean
   isCodu?: boolean
+}
+
+export type LFUserType = string | 'pupil' | 'student'
+
+export type Pupil = {
+  firstname?: string
+  lastname?: string
+  state?: State
+}
+
+export interface Participant extends Partial<Pupil> {
+  firstname: string
+  grade: number
+}
+
+export type Student = {
+  firstname: string
+  lastname: string
 }

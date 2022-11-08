@@ -16,20 +16,16 @@ const InstructionMessage: React.FC<IInstructionMessage> = ({
 }) => {
   const { space } = useTheme()
   return (
-    <Card variant="dark">
-      <CSSWrapper className="halloben">
-        <VStack>
-          <Heading
-            fontSize="md"
-            color={isDark ? 'lightText' : 'primary.400'}
-            marginY={space['1']}
-            bold>
-            {title}
-          </Heading>
-          <Text color={isDark ? 'lightText' : 'primary.400'}>{text}</Text>
-        </VStack>
-      </CSSWrapper>
-    </Card>
+    <VStack>
+      <Heading
+        fontSize="md"
+        color={isDark ? 'lightText' : 'primary.400'}
+        marginY={space['1']}
+        bold>
+        {title}
+      </Heading>
+      <Text color={isDark ? 'lightText' : 'primary.400'}>{text}</Text>
+    </VStack>
   )
 }
 export default InstructionMessage

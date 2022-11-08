@@ -3,6 +3,8 @@
 __NOTE: This app uses 2 different navigators (Web + Native) right now because of conflicting versions of `native-base@0.34.9` and `react-native-web@0.18.x`__
 A fix was announced by GeekyAnts [(GitHub issue)](https://github.com/GeekyAnts/NativeBase/issues/5075), however, we do not know when.
 
+__NOTE: Due to version conflicts with `@miblanchard/react-native-slider` packages have to be installed with `--force` or `--legacy-peer-deps` in npm__
+
 
 ## Getting Started with Create React App
 
@@ -47,4 +49,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Environments
 
-* Available environment variables are noted in `src/react-app-env.d.ts`
+* Available environment variables are noted in `src/types/react-app-env.d.ts`

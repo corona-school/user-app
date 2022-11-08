@@ -1,24 +1,11 @@
-import {
-  Text,
-  Box,
-  Row,
-  InfoIcon,
-  CloseIcon,
-  Pressable,
-  useTheme,
-  Container,
-  Tooltip,
-  Column,
-  Button
-} from 'native-base'
+import { Text, Row, useTheme, Container, Column, Button } from 'native-base'
+import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
-
-import { Fragment } from 'react'
 import ProfilAvatar from './ProfilAvatar'
 
 type Props = {
   name: string
-  subject?: string
+  subject?: string[]
   status?: string
   createDate?: string
   avatar?: string
@@ -43,9 +30,7 @@ const HelperCardCertificates: React.FC<Props> = ({
         maxWidth="100%"
         alignItems="stretch">
         <Row space={space['1']} marginBottom={space['1']} alignItems="center">
-          <Column>
-            <ProfilAvatar size="md" image={avatar} />
-          </Column>
+          <Column>{/* <ProfilAvatar size="md" image={avatar} /> */}</Column>
           <Column>
             {name && (
               <>
@@ -61,12 +46,14 @@ const HelperCardCertificates: React.FC<Props> = ({
           space={space['0.5']}
           marginBottom={space['1']}>
           {subject && (
-            <Column flexDirection="row">
+            <Row>
               <Text bold marginRight="5px">
                 Fach:
               </Text>
-              <Text>{subject}</Text>
-            </Column>
+              {subject.map((sub: string) => (
+                <Text marginRight="5px">{sub}</Text>
+              ))}
+            </Row>
           )}
 
           {status && (

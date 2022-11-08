@@ -3,8 +3,10 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Progress,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack
 } from 'native-base'
@@ -17,25 +19,32 @@ import {
   useMemo
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import useRegistration from '../hooks/useRegistration'
+import CenterLoadingSpinner from './CenterLoadingSpinner'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
 import { ISelectionItem } from './questionnaire/SelectionItem'
 
 export type Question = {
-  label: string
-  question: string
+  id: string
+  label?: string
+  question?: string
   type: 'selection'
   text?: string
+  required?: boolean
 }
 
+export type QuestionnaireViewType = string | 'normal' | 'large'
 export interface SelectionQuestion extends Question {
   imgRootPath: string
   minSelections?: number
   maxSelections?: number
   options: ISelectionItem[]
-  viewType?: 'normal' | 'large'
+  viewType?: QuestionnaireViewType
 }
 
-export type Answer<T = boolean | number> = {
+export type Answer = any
+
+export interface ObjectAnswer<T = boolean | number> extends Answer {
   [key: string]: T
 }
 
@@ -59,15 +68,21 @@ export const QuestionnaireContext = createContext<IQuestionnaireContext>({
   questions: [],
   currentIndex: 0,
   answers: {},
-  currentQuestion: { label: '', question: '', type: 'selection' }
+  currentQuestion: {
+    label: '',
+    question: '',
+    type: 'selection',
+    id: ''
+  }
 })
 
 export type IQuestionnaire = {
-  onQuestionnaireFinished: (answers: { [key: string]: Answer }) => any
+  onQuestionnaireFinished: (answers: { [key: string]: ObjectAnswer }) => any
   onPressItem?: (data?: any) => any
   onQuestionChanged?: (question: Question) => any
   modifySelectionQuestionBeforeRender?: () => any
   modifyQuestionBeforeNext?: () => any
+  modifyAnswerBeforeNext?: (answer: ObjectAnswer, question: Question) => any
   disableNavigation?: boolean
 }
 
@@ -75,10 +90,13 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   onQuestionnaireFinished,
   onPressItem,
   modifyQuestionBeforeNext,
+  modifyAnswerBeforeNext,
   disableNavigation
 }) => {
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
+
+  const { userType } = useRegistration()
 
   const { currentIndex, questions, answers, setCurrentIndex, currentQuestion } =
     useContext(QuestionnaireContext)
@@ -90,6 +108,15 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
+    console.log('before modify')
+    modifyAnswerBeforeNext &&
+      modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
+    console.log('after modify')
+    console.log(
+      currentIndex >= questions.length - 1,
+      currentIndex,
+      questions.length - 1
+    )
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -99,6 +126,8 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   }, [
     answers,
     currentIndex,
+    currentQuestion,
+    modifyAnswerBeforeNext,
     modifyQuestionBeforeNext,
     onQuestionnaireFinished,
     questions.length,
@@ -106,10 +135,11 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   ])
 
   // check if answer is valid when question type is selection
-  const isValidSelectionAnswer: (answer: Answer) => boolean = useCallback(
-    (answer: Answer) => {
+  const isValidSelectionAnswer: (answer: ObjectAnswer) => boolean = useCallback(
+    (answer: ObjectAnswer) => {
       const question = currentQuestion as SelectionQuestion
       const answercount = Object.values(answer || {}).filter(a => !!a).length
+
       return (
         answercount >= (question.minSelections || 1) &&
         (question.maxSelections ? answercount <= question.maxSelections : true)
@@ -120,7 +150,8 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // check if current answer is appropriate for corresponding type
   const isValidAnswer: boolean = useMemo(() => {
-    const currentAnswer = answers[currentQuestion.label]
+    const currentAnswer = answers[currentQuestion.id]
+
     let isValid = false
     if (!currentAnswer) return false
     if (currentQuestion.type === 'selection') {
@@ -128,26 +159,31 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
     }
 
     return isValid
-  }, [
-    answers,
-    currentQuestion.label,
-    currentQuestion.type,
-    isValidSelectionAnswer
-  ])
+  }, [answers, currentQuestion, isValidSelectionAnswer])
 
   // skip one question
   const skip = useCallback(() => {
-    delete answers[currentQuestion.label]
+    console.log('skip')
+    delete answers[currentQuestion.id]
     next()
-  }, [answers, currentQuestion.label, next])
+  }, [answers, currentQuestion.id, next])
 
   // go one question back
   const back = useCallback(() => {
     setCurrentIndex && setCurrentIndex(prev => prev - 1)
   }, [setCurrentIndex])
 
-  if (questions.length === 0) return <></>
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
 
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  if (questions.length === 0) return <CenterLoadingSpinner />
   return (
     <Flex flex="1" pb={space['1']}>
       <Box
@@ -155,10 +191,28 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
         bgColor="primary.500"
         justifyContent="center"
         alignItems="center"
+        position="relative"
         borderBottomRadius={8}>
-        <Heading>{currentQuestion.label}</Heading>
+        <Image
+          alt="Lernfair"
+          position="absolute"
+          zIndex="-1"
+          borderBottomRadius={15}
+          width="100%"
+          height="100%"
+          source={{
+            uri: require('../assets/images/globals/lf-bg.png')
+          }}
+        />
+        <Heading>
+          {t(`registration.questions.${userType}.${currentQuestion.id}.label`)}
+        </Heading>
       </Box>
-      <Box paddingX={space['1']} mt={space['1']}>
+      <Box
+        paddingX={space['1']}
+        mt={space['4']}
+        width={ContainerWidth}
+        marginX="auto">
         <Progress
           value={((currentIndex + 1) / questions.length) * 100}
           h="3.5"
@@ -168,26 +222,38 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           {t('questionnaire.step')} {currentIndex + 1} / {questions.length}
         </Text>
       </Box>
-      <Flex flex="1" overflowY={'scroll'}>
+      <Flex
+        flex="1"
+        overflowY={'scroll'}
+        width={ContainerWidth}
+        marginX="auto"
+        marginBottom={space['2']}>
         {currentQuestion.type === 'selection' && (
           <QuestionnaireSelectionView
-            {...(currentQuestion as SelectionQuestion)}
-            prefill={answers[currentQuestion.label]}
+            currentQuestion={currentQuestion as SelectionQuestion}
+            prefill={answers[currentQuestion.id]}
+            userType={userType}
             onPressSelection={onPressItem}
           />
         )}
       </Flex>
-      <VStack paddingX={space['1']} space={space['0.5']}>
+      <VStack
+        paddingX={space['2']}
+        space={space['0.5']}
+        width={ContainerWidth}
+        marginX="auto">
         <Button isDisabled={disableNavigation || !isValidAnswer} onPress={next}>
           {t('questionnaire.btn.next')}
         </Button>
 
-        <Button
-          isDisabled={disableNavigation}
-          onPress={skip}
-          variant={'outline'}>
-          {t('questionnaire.btn.skip')}
-        </Button>
+        {!currentQuestion.required && (
+          <Button
+            isDisabled={disableNavigation}
+            onPress={skip}
+            variant={'outline'}>
+            {t('questionnaire.btn.skip')}
+          </Button>
+        )}
 
         {currentIndex > 0 && (
           <Button

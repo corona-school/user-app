@@ -1,12 +1,15 @@
-export type Subject = {
-  name?: string
-  minGrade?: number
-  maxGrade?: number
-  key: string
-  label: string
+export type LFSubject = {
+  name: string
+  grade?: {
+    min: number
+    max: number
+    __typename?: string
+  }
+  mandatory?: boolean
+  __typename?: string
 }
 
-export const subjects: Subject[] = [
+export const subjects: { key: string; label: string }[] = [
   { key: 'arbeitslehre', label: 'Arbeitslehre' },
   { key: 'biologie', label: 'Biologie' },
   { key: 'chemie', label: 'Chemie' },
@@ -14,13 +17,13 @@ export const subjects: Subject[] = [
   { key: 'deutsch-2', label: 'Deutsch als Zweitsprache' },
   { key: 'englisch', label: 'Englisch' },
   { key: 'erdkunde', label: 'Erdkunde' },
-  { key: 'franzoesisch', label: 'Französisch' },
+  { key: 'französisch', label: 'Französisch' },
   { key: 'geschichte', label: 'Geschichte' },
   { key: 'informatik', label: 'Informatik' },
   { key: 'italienisch', label: 'Italienisch' },
   { key: 'kunst', label: 'Kunst' },
   { key: 'latein', label: 'Latein' },
-  { key: 'mathe', label: 'Mathe' },
+  { key: 'mathematik', label: 'Mathematik' },
   { key: 'musik', label: 'Musik' },
   { key: 'paedagogik', label: 'Pädagogik' },
   { key: 'philosophie', label: 'Philosophie' },
@@ -31,7 +34,17 @@ export const subjects: Subject[] = [
   { key: 'sonstige', label: 'Sonstige' },
   { key: 'spanisch', label: 'Spanisch' },
   { key: 'tuerkisch', label: 'Türkisch' },
-  { key: 'wirtschaft', label: 'Wirtschaft' }
-
-  // { key: 'andere', label: 'Andere' }
+  { key: 'wirtschaft', label: 'Wirtschaft' },
+  { key: 'other', label: 'Andere' }
 ]
+
+export const getSubjectKey: (
+    name: string
+) => string = (name) => {
+  for(let subject of subjects){
+    if(subject.label === name){
+      return subject.key;
+    }
+  }
+  return 'other';
+}

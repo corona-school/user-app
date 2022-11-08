@@ -1,16 +1,23 @@
 import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
 import { Fragment, ReactNode, useState } from 'react'
 
-type Tab = {
+export type Tab = {
   title: string
   content: ReactNode | ReactNode[]
 }
 type Props = {
   tabs: Tab[]
-  onPressTab?: (tab: Tab) => any
+  removeSpace?: boolean
+  onPressTab?: (tab: Tab, index: number) => any
+  tabInset?: number | string
 }
 
-const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
+const Tabs: React.FC<Props> = ({
+  tabs,
+  removeSpace = false,
+  onPressTab,
+  tabInset
+}) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { space } = useTheme()
 
@@ -26,18 +33,18 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
     <Pressable
       onPress={() => {
         setCurrentIndex(index)
-        onPressTab && onPressTab(tab)
+        onPressTab && onPressTab(tab, index)
       }}>
       <Box
         borderBottomWidth={(active && 3) || 1}
-        borderBottomColor={active ? 'primary.400' : 'primary.100'}
+        borderBottomColor={active ? 'primary.400' : 'transparent'}
         paddingX={space['1']}
         paddingY={space['0.5']}>
         <Text
           fontSize="md"
           bold={active ? true : false}
           color={active ? 'primary.900' : 'primary.grey'}>
-          {tab.title}
+          {tab?.title}
         </Text>
       </Box>
     </Pressable>
@@ -45,20 +52,29 @@ const Tabs: React.FC<Props> = ({ tabs, onPressTab }) => {
 
   return (
     <VStack>
-      <Row overflowX={'scroll'} flexWrap="nowrap">
+      <Row
+        overflowX="scroll"
+        flexWrap="nowrap"
+        width="100%"
+        paddingX={tabInset}
+        borderBottomColor="primary.grey"
+        borderBottomWidth={1}>
         {tabs.map(
-          (tab, i) => (
-            <Tab
-              key={`tab-${i}`}
-              tab={tab}
-              index={i}
-              active={i === currentIndex}
-            />
-          ),
+          (tab, i) =>
+            tab && (
+              <Tab
+                key={`tab-${i}`}
+                tab={tab}
+                index={i}
+                active={i === currentIndex}
+              />
+            ),
           []
         )}
       </Row>
-      <Box paddingX={space['1']} paddingY={space['1.5']}>
+      <Box
+        paddingX={removeSpace === false ? space['1'] : ''}
+        paddingY={space['1.5']}>
         {tabs.map(
           (tab, i) =>
             i === currentIndex && (

@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
+  Box,
   Button,
   Flex,
   Heading,
   Modal,
   Text,
+  useBreakpointValue,
   useTheme,
   VStack
 } from 'native-base'
@@ -11,6 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Questionnaire, {
   Answer,
+  ObjectAnswer,
   Question,
   QuestionnaireContext,
   SelectionQuestion
@@ -21,71 +25,39 @@ import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
 import useRegistration from '../../hooks/useRegistration'
 import { useTranslation } from 'react-i18next'
-import ToggleButton from '../../components/ToggleButton'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
+import { LFSubject } from '../../types/lernfair/Subject'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Slider } from '@miblanchard/react-native-slider'
+import { ClassRange } from '../../types/lernfair/SchoolClass'
 
 type Props = {}
 
 // GraqhQL pupil mutation
 const mutPupil = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $schooltype: SchoolType!
+  $schooltype: SchoolType
   $state: State!
-  $password: String!
   $gradeAsInt: Int!
-  $subjects: [String!]
+  $subjects: [SubjectInput]
+  
 ) {
-  meRegisterPupil(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-      schooltype: $schooltype
-      state: $state
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects, state: $state, schooltype: $schooltype  } }
   )
 }
 `
 
 // GraphQL student mutation
 const mutStudent = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $password: String!
   $subjects: [SubjectInput!]
-
 ) {
-  meRegisterStudent(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(update: {student:{subjects: $subjects}})
 }
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
+  const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -96,13 +68,15 @@ const RegistrationData: React.FC<Props> = () => {
   const [answers, setAnswers] = useState<{ [key: string]: Answer }>({})
   // answers reset to true instead of number
   // have to track classes seperately can't find the bug
-  const [classes, setClasses] = useState<{ [key: string]: number }>({})
+  const [classes, setClasses] = useState<{
+    [key: string]: ClassRange
+  }>({})
 
   // show global modal
   const { setShow, setContent, setVariant } = useModal()
 
   // data provided by previous slides
-  const { firstname, lastname, email, password, userType } = useRegistration()
+  const { userType } = useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -112,153 +86,226 @@ const RegistrationData: React.FC<Props> = () => {
   })
 
   // use different string depending on userType
-  const [register, { data, error, loading }] = useMutation(
+  const [register, { loading }] = useMutation(
     gql`
       ${userType === 'pupil' ? mutPupil : mutStudent}
     `
   )
 
-  useEffect(() => {
-    // go to next slide if data is provided
-    // TODO validate email
-    if (!firstname && !lastname) navigate('/registration/2')
-  }, [email, firstname, lastname, navigate, password])
+  const ModalContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: '500px'
+  })
 
   // at the end register the pupil with all data
   const registerPupil = useCallback(
-    async (answers: { [key: string]: Answer }) => {
-      const state = Object.keys(answers.Bundesland)[0]
-      const schooltype = Object.keys(answers.Schulform)[0]
+    async (answers: { [key: string]: ObjectAnswer }) => {
+      const state = answers.state && Object.keys(answers.state)[0]
+      const schooltype =
+        answers.schooltype && Object.keys(answers.schooltype)[0]
 
-      const gradeAsInt = parseInt(Object.keys(answers.Klasse)[0])
-      const subjects = Object.keys(answers.Fächer)
+      const gradeAsInt =
+        answers.schoolclass && parseInt(Object.keys(answers.schoolclass)[0])
+      // const subjects = Object.keys(answers.subjects)
+      const subjects = answers.subjects || []
 
-      await register({
-        variables: {
-          firstname,
-          lastname,
-          email,
-          state,
-          schooltype,
-          password,
-          gradeAsInt,
-          subjects
-        }
-      })
+      const data = {} as {
+        state: string
+        schooltype: string
+        gradeAsInt: number
+        subjects: ObjectAnswer<number | boolean>
+        aboutMe?: string
+      }
+      state && (data['state'] = state)
+      schooltype && (data['schooltype'] = schooltype)
+      gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
+      subjects?.length > 0 && (data['subjects'] = subjects)
+
+      try {
+        let res = await register({
+          variables: {
+            ...data
+          }
+        })
+        return res
+      } catch (e) {
+        return { errors: [{ message: e }] }
+      }
     },
-    [email, firstname, lastname, password, register]
+    [register]
   )
 
   // at the end register the student with all data
   const registerStudent = useCallback(async () => {
     const subjects = []
-    for (let [sub, isSelected] of Object.entries(answers.Fächer)) {
-      // assosiate subject with selected class range
-      let minClass = 0
-      let maxClass = 0
-
-      switch (classes[sub]) {
-        case 1:
-          minClass = 1
-          maxClass = 4
-          break
-        case 2:
-          minClass = 5
-          maxClass = 8
-          break
-        case 3:
-          minClass = 9
-          maxClass = 10
-          break
-        case 4:
-          minClass = 11
-          maxClass = 13
-          break
-      }
-
-      if (isSelected && minClass > 0 && maxClass > 0) {
-        subjects.push({ name: sub, grade: { min: minClass, max: maxClass } })
+    for (let [sub, isSelected] of Object.entries(answers.subjects)) {
+      // const grades = Utility.intToClassRange(classes[sub])
+      const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
+      if (isSelected && grades.min > 0 && grades.max > 0) {
+        subjects.push({ name: sub, grade: grades })
       }
     }
 
-    await register({
-      variables: {
-        firstname,
-        lastname,
-        email,
-        password,
-        subjects
-      }
+    const data = {} as {
+      subjects: LFSubject[]
+    }
+
+    subjects?.length && (data.subjects = subjects)
+
+    try {
+      let res = await register({
+        variables: {
+          ...data
+        }
+      })
+      return res
+    } catch (e) {
+      return { errors: [{ message: e }] }
+    }
+  }, [answers.subjects, classes, register])
+
+  const registerError = useCallback(() => {
+    setShow(false)
+    trackEvent({
+      category: 'registrierung',
+      action: 'click-event',
+      name: 'Registrierung Fehler',
+      documentTitle: 'Fehler bei der Registrierung'
     })
-  }, [answers.Fächer, classes, email, firstname, lastname, password, register])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  // when all questions are answered, register
-  const onQuestionnaireFinished = useCallback(
-    async (answers: { [key: string]: Answer }) => {
+  async function attemptRegistration(answers: { [key: string]: Answer }) {
+    let res: any
+
+    try {
       if (userType === 'pupil') {
-        await registerPupil(answers)
+        res = await registerPupil(answers)
       } else {
-        await registerStudent()
+        res = await registerStudent()
       }
-    },
-    [registerPupil, registerStudent, userType]
-  )
-
-  // registration went through without error
-  useEffect(() => {
-    if (data && !error) {
-      setVariant('dark')
-      setContent(
-        <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
-          <EventIcon />
-          <Heading color="lightText">
-            {t('registration.result.success.title')}
-          </Heading>
-          <Text color="lightText" fontSize={'lg'}>
-            {t('registration.result.success.text')}
-          </Text>
-          <Button
-            w="100%"
-            onPress={() => {
-              setShow(false)
-              navigate('/login')
-            }}>
-            {t('registration.result.success.btn')}
-          </Button>
-        </VStack>
-      )
-      setShow(true)
+    } catch (e: any) {
+      console.log(e)
+      showErrorModal(e.message)
     }
-  }, [navigate, data, error, setContent, setShow, setVariant, space, t])
 
-  // registration has an error
-  useEffect(() => {
-    if (error) {
+    if (!res.errors) {
+      showSuccessModal()
+    } else {
+      showErrorModal(res.errors[0].message.message)
+    }
+  }
+
+  const showErrorModal = useCallback(
+    (error: string) => {
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <Text color="lightText">
-            {t(`registration.error.message.${error.message}`, {
-              defaultValue: error.message
+            {t(`registration.result.error.message.${error}`, {
+              defaultValue: error
             })}
           </Text>
-          <Button onPress={() => setShow(false)}>
+          <Button
+            onPress={() => {
+              registerError()
+              attemptRegistration(answers)
+            }}>
+            Erneut versuchen
+          </Button>
+          <Button onPress={() => registerError()}>
             {t('registration.result.error.btn')}
           </Button>
         </VStack>
       )
       setShow(true)
-    }
-  }, [answers, error, setContent, setShow, setVariant, space, t])
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setVariant, setContent, space, t, setShow, registerError, answers]
+  )
+
+  const showSuccessModal = useCallback(() => {
+    setVariant('dark')
+    setContent(
+      <VStack
+        space={space['1']}
+        p={space['1']}
+        flex="1"
+        width={ModalContainerWidth}
+        marginX="auto"
+        alignItems="center"
+        justifyContent="center">
+        <Box justifyContent="center" alignItems="center">
+          <EventIcon />
+        </Box>
+        <Heading
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText">
+          {t('registration.result.success.title')}
+        </Heading>
+        <Text
+          textAlign="center"
+          marginX="auto"
+          width={ModalContainerWidth}
+          color="lightText"
+          fontSize={'lg'}>
+          {t('registration.result.success.text')}
+        </Text>
+        <Button
+          marginX="auto"
+          width={ModalContainerWidth}
+          onPress={() => {
+            setShow(false)
+            navigate('/login')
+            trackEvent({
+              category: 'registrierung',
+              action: 'click-event',
+              name: 'Registrierung erfolgreich',
+              documentTitle: 'Registrierung war erfolgreich'
+            })
+          }}>
+          {t('registration.result.success.btn')}
+        </Button>
+      </VStack>
+    )
+    setShow(true)
+  }, [
+    ModalContainerWidth,
+    navigate,
+    setContent,
+    setShow,
+    setVariant,
+    space,
+    t,
+    trackEvent
+  ])
+
+  // when all questions are answered, register
+  const onQuestionnaireFinished = useCallback(
+    async (answers: { [key: string]: Answer }) => {
+      attemptRegistration(answers)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Auswahl-Kacheln'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
     (item: ISelectionItem) => {
-      if (answers?.Fächer && answers?.Fächer[item.key]) return
+      if (answers?.subjects && answers?.subjects[item.key]) return
       setFocusedSelection(item)
       setShowFocusSelection(true)
     },
-    [answers?.Fächer]
+    [answers?.subjects]
   )
 
   // populate questions depending on userType
@@ -266,54 +313,22 @@ const RegistrationData: React.FC<Props> = () => {
     setQuestions(userType === 'pupil' ? pupilQuestions : studentQuestions)
   }, [userType])
 
-  // set state => class range for corresponding subject
-  const answerFocusSelection = useCallback(
-    (val: number) => {
-      setClasses(prev => ({
-        ...prev,
-        [focusedSelection.key]: val
-      }))
-    },
-    [focusedSelection.key]
-  )
-
   // modify selection question based on answers etc
-  const modifySelectionQuestionBeforeRender = useCallback(
+  const modifySelectionQuestionBeforeRender: (
+    question: SelectionQuestion
+  ) => SelectionQuestion = useCallback(
     (question: SelectionQuestion) => {
       // is question about schoolclass?
-      if (question.label === 'Klasse') {
-        // change displayed classes based on selected schoolform
-        const answer = answers['Schulform']
-
-        if (!answer) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-          return question
-        }
-
-        if (answer['grundschule']) {
-          question.options = new Array(4).fill(0).map((_, i) => ({
-            key: `${i + 1}`,
-            label: t('lernfair.schoolclass', { class: i + 1 })
-          }))
-        } else {
-          question.options = new Array(6).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
-        if (answer['gymnasium']) {
-          question.options = new Array(8).fill(0).map((_, i) => ({
-            key: `${i + 5}`,
-            label: t('lernfair.schoolclass', { class: i + 5 })
-          }))
-        }
+      if (question.id === 'schoolclass') {
+        question.options = new Array(13).fill(0).map((_, i) => ({
+          key: `${i + 1}`,
+          label: t('lernfair.schoolclass', { class: i + 1 })
+        }))
+        return question
       }
       return question
     },
-    [answers, t]
+    [t]
   )
 
   // modify questions based on answers etc
@@ -335,26 +350,31 @@ const RegistrationData: React.FC<Props> = () => {
   }, [questions, currentIndex, modifyQuestionBeforeRender])
 
   // modify question before moving on to the next
-  const modifyQuestionBeforeNext = () => {
+  const modifyQuestionBeforeNext = useCallback(() => {
     const currentQuestion = questions[currentIndex]
     // is question about language?
-    if (currentQuestion.label === 'Sprache') {
-      if (!answers['Sprache']) return
-      const answer = Object.keys(answers['Sprache'])
+    if (currentQuestion.id === 'languages') {
+      if (!answers['languages']) return
+      const answer = Object.keys(answers['languages'])
 
       if (!answer) return
 
       // if answer does not include "deutsch" ask for more information
       if (!answer.includes('deutsch')) {
         const q: SelectionQuestion = {
+          id: 'deutsch',
           type: 'selection',
           imgRootPath: 'text',
           options: [
-            { key: '<1', label: t('registration.questions.deutsch2.lower') },
-            { key: '>1', label: t('registration.questions.deutsch2.higher') }
-          ],
-          label: 'Deutsch',
-          question: 'Seit wann lernst du Deutsch?'
+            {
+              key: '<1',
+              label: t('registration.questions.pupil.deutsch2.lower')
+            },
+            {
+              key: '>1',
+              label: t('registration.questions.pupil.deutsch2.higher')
+            }
+          ]
         }
 
         const qs = [...questions]
@@ -362,16 +382,45 @@ const RegistrationData: React.FC<Props> = () => {
         setQuestions && setQuestions(qs)
       }
     }
+
     // if question is followup question to "Sprache"/language
     // react to answer and add new question to questionnaire
-    if (currentQuestion.label === 'Deutsch') {
-      if (Object.keys(answers['Deutsch']).includes('<1')) {
+    if (currentQuestion.id === 'deutsch') {
+      if (Object.keys(answers['deutsch']).includes('<1')) {
         const qs = [...questions]
-        qs.splice(currentIndex + 1, 1)
+        qs.splice(currentIndex + 1, 1, {
+          id: 'subjects',
+          imgRootPath: 'subjects',
+          type: 'selection',
+          options: [{ key: 'deutsch-2', label: 'Deutsch als Zweitsprache' }]
+        } as SelectionQuestion)
         setQuestions && setQuestions(qs)
       }
     }
-  }
+  }, [answers, currentIndex, questions, t])
+
+  // modify the answer object before moving on to the next question
+  const modifyAnswerBeforeNext = useCallback(
+    (answer: ObjectAnswer, question: Question) => {
+      if (userType === 'pupil') {
+        if (question.id === 'subjects') {
+          const newAnswer: LFSubject[] = []
+          answer &&
+            Object.entries(answer).forEach(
+              ([key, val]: [key: string, val: Answer]) => {
+                !!val && newAnswer.push({ name: val.label })
+              }
+            )
+
+          setAnswers(prev => ({
+            ...prev,
+            [question.id]: newAnswer
+          }))
+        }
+      }
+    },
+    [userType]
+  )
 
   return (
     <QuestionnaireContext.Provider
@@ -388,9 +437,10 @@ const RegistrationData: React.FC<Props> = () => {
         <Questionnaire
           disableNavigation={loading}
           onQuestionnaireFinished={onQuestionnaireFinished}
+          modifyAnswerBeforeNext={modifyAnswerBeforeNext}
           onPressItem={(item: ISelectionItem) => {
             if (userType === 'student') {
-              if (currentModifiedQuestion?.label === 'Fächer') {
+              if (currentModifiedQuestion?.id === 'subjects') {
                 askSchoolClassForSelection(item)
               }
             }
@@ -405,29 +455,37 @@ const RegistrationData: React.FC<Props> = () => {
             <Heading>{t('registration.student.classSelection.title')}</Heading>
           </Modal.Header>
           <Modal.Body>
-            <ToggleButton
-              label={t('registration.student.classSelection.range1')}
-              dataKey="1"
-              isActive={classes[focusedSelection.key] === 1}
-              onPress={key => answerFocusSelection(1)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range2')}
-              dataKey="2"
-              isActive={classes[focusedSelection.key] === 2}
-              onPress={key => answerFocusSelection(2)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range3')}
-              dataKey="3"
-              isActive={classes[focusedSelection.key] === 3}
-              onPress={key => answerFocusSelection(3)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range4')}
-              dataKey="4"
-              isActive={classes[focusedSelection.key] === 4}
-              onPress={key => answerFocusSelection(4)}
+            <Heading fontSize="md">
+              Klassen{' '}
+              {(classes[focusedSelection.key] &&
+                classes[focusedSelection.key].min) ||
+                1}{' '}
+              -{' '}
+              {(classes[focusedSelection.key] &&
+                classes[focusedSelection.key].max) ||
+                13}
+            </Heading>
+
+            <Slider
+              animateTransitions
+              minimumValue={1}
+              maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
+              value={
+                (classes[focusedSelection.key] && [
+                  classes[focusedSelection.key]?.min,
+                  classes[focusedSelection.key]?.max
+                ]) || [1, 13]
+              }
+              step={1}
+              onValueChange={(value: number | number[]) => {
+                Array.isArray(value) &&
+                  setClasses(prev => ({
+                    ...prev,
+                    [focusedSelection.key]: { min: value[0], max: value[1] }
+                  }))
+              }}
             />
           </Modal.Body>
           <Modal.Footer>

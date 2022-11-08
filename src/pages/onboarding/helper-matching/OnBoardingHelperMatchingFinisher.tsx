@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import InfoScreen from '../../../widgets/InfoScreen'
 import MatchingCheck from '../../../assets/icons/lernfair/lf-matching-check.svg'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -10,6 +12,13 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { trackPageView, trackEvent } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Helfer Matching Onboarding Ende'
+    })
+  }, [])
 
   return (
     <>
@@ -31,9 +40,10 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
               </Text>
               <Heading
                 color="lightText"
-                fontSize="md"
+                fontSize="xs"
                 textAlign="center"
                 maxWidth="300px"
+                marginX="2px"
                 marginBottom={space['0.5']}>
                 {t(
                   'onboardingList.Wizard.helperMatching.finisher.headlineContent'
@@ -47,7 +57,7 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
                 marginBottom={space['1.5']}>
                 {t('onboardingList.Wizard.helperMatching.finisher.answer')}
               </Text>
-              <Box alignItems="center">
+              <Box alignItems="center" marginX="2px">
                 <Link
                   _text={{
                     color: 'primary.400',
@@ -66,12 +76,20 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
             'onboardingList.Wizard.helperMatching.finisher.buttonLinkText'
           )}
           outlinebuttonLink={() => {
-            navigate('/onboarding-helper-matching/welcome')
+            navigate('/onboarding/helpermatching/')
           }}
           defaultButtonText={t(
             'onboardingList.Wizard.helperMatching.finisher.buttonText'
           )}
-          defaultbuttonLink={() => navigate('/dashboard')}
+          defaultbuttonLink={() => {
+            trackEvent({
+              category: 'onboarding',
+              action: 'click-event',
+              name: 'Onboarding Helfer Matching – Abgeschlossen',
+              documentTitle: 'Onboarding Helfer Matching – Abgeschlossen'
+            })
+            navigate('/dashboard')
+          }}
           icon={<MatchingCheck />}
         />
       </View>

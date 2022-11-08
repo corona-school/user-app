@@ -1,4 +1,17 @@
-import { View, Text, Heading, Row, useTheme, Button, Box } from 'native-base'
+import { gql, useQuery } from '@apollo/client'
+import {
+  View,
+  Text,
+  Heading,
+  Row,
+  useTheme,
+  Button,
+  Box,
+  useBreakpointValue,
+  Column
+} from 'native-base'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
 
@@ -7,106 +20,227 @@ type Props = {
 }
 
 const HelperWizard: React.FC<Props> = ({ index }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
+  const { t } = useTranslation()
+  const { data } = useQuery(gql`
+    query {
+      me {
+        student {
+          firstMatchRequest
+          openMatchRequestCount
+          certificateOfConduct {
+            id
+          }
+          canRequestMatch {
+            allowed
+            reason
+          }
+          canCreateCourse {
+            allowed
+            reason
+          }
+        }
+      }
+    }
+  `)
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const ButtonSpace = useBreakpointValue({
+    base: 0,
+    lg: 0
+  })
+
+  const ContentsDirection = useBreakpointValue({
+    base: 'flex-start',
+    lg: 'center'
+  })
+
+  const ContentsSpace = useBreakpointValue({
+    base: space['1'],
+    lg: 0
+  })
+
+  const ZeugnisContentSectionWidth = useBreakpointValue({
+    base: '100%',
+    lg: '70%'
+  })
+
+  const ButtonWidthContainer = useBreakpointValue({
+    base: '100%',
+    lg: 'auto'
+  })
+
+  const onboardingIndex: number = useMemo(() => {
+    if (
+      data?.me?.student?.canCreateCourse.reason === 'not-screened' ||
+      data?.me?.student?.canCreateCourse.reason === 'not-instructor'
+    )
+      return 0
+    if (
+      data?.me?.student?.canRequestMatch?.reason === 'not-screened' ||
+      'not-tutor'
+    )
+      return 1
+    if (!data?.me?.student?.firstMatchRequest) return 2
+    if (!data?.me?.student?.certificateOfConduct?.id) return 3
+    return 0
+  }, [
+    data?.me?.student?.canCreateCourse.reason,
+    data?.me?.student?.canRequestMatch.reason,
+    data?.me?.student?.certificateOfConduct?.id,
+    data?.me?.student?.firstMatchRequest
+  ])
 
   return (
     <View>
       <Card variant="dark" flexibleWidth>
         <Row padding="30px" flexDirection="column">
           <Heading fontSize="lg" color="lightText" marginBottom="17px">
-            Die nächsten Schritte
+            {t('helperwizard.nextStep')}
           </Heading>
 
           <InstructionProgress
-            currentIndex={index}
+            currentIndex={onboardingIndex}
             isDark={true}
             instructions={[
               {
-                label: 'Kennenlernen',
+                label: t('helperwizard.kennenlernen.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Wir möchten dich kennenlernen',
+                    title: t('helperwizard.kennenlernen.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            Bevor du bei uns anfangen kannst möchten wir dich in
-                            einem persönlichen Gespräch kennenlernen. Vereinbare
-                            einfach einen Termin mit uns.
-                          </Text>
-                          <Button>Termin vereinbaren</Button>
-                        </Box>
-                      </>
+                      <Box
+                        flexDir={ButtonDirection}
+                        alignItems={ContentsDirection}
+                        width="100%"
+                        justifyContent="space-between">
+                        <Text
+                          width={ZeugnisContentSectionWidth}
+                          display="block"
+                          marginBottom={ContentsSpace}>
+                          {t('helperwizard.kennenlernen.content')}
+                        </Text>
+                        <Button
+                          width={ButtonContainer}
+                          marginRight={ButtonSpace}>
+                          {t('helperwizard.kennenlernen.button')}
+                        </Button>
+                      </Box>
                     )
                   }
                 ]
               },
               {
-                label: 'Führungszeugnis',
+                label: t('helperwizard.zeugnis.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Führungszeugnis beantragen',
+                    title: t('helperwizard.zeugnis.title'),
                     text: (
-                      <>
-                        <Box flexDirection="row" marginBottom={space['0.5']}>
-                          <Text marginRight="5px">Einreichen bis:</Text>
+                      <Box width="100%">
+                        <Box
+                          flexDirection="row"
+                          marginBottom={space['0.5']}
+                          display="block"
+                          maxWidth="500px">
+                          <Text marginRight="5px">
+                            {t('helperwizard.zeugnis.einreichen')}
+                          </Text>
                           <Text bold color="primary.400">
                             tt.mm.jjjj
                           </Text>
                         </Box>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            Denke dran, dein Führungszeugnis einzureichen, damit
-                            du weiterhin bei uns mitmachen kannst. Hierfür hast
-                            du 2 Monate nach Registrierung Zeit.
-                          </Text>
-                          <Button>Vorduck herunterladen</Button>
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.zeugnis.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              overflow="visible"
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.zeugnis.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
               },
               {
-                label: 'Angebot',
+                label: t('helperwizard.angebot.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Angebot erstellen',
+                    title: t('helperwizard.angebot.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat.
-                          </Text>
-                          <Button>Angebot erstellen</Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.angebot.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.angebot.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
               },
               {
-                label: 'Führungszeugnis',
+                label: t('helperwizard.zeugnisHochladen.label'),
                 title: '',
                 content: [
                   {
-                    title: 'Führungszeugnis hochladen',
+                    title: t('helperwizard.zeugnisHochladen.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat.
-                          </Text>
-                          <Button>Hochladen</Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.zeugnisHochladen.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.zeugnisHochladen.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]

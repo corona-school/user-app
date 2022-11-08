@@ -1,16 +1,15 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
-import CSSWrapper from '../components/CSSWrapper'
 import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
 type Instruction = {
   label: string
   title?: string
-  content: IInstructionMessage[]
+  content?: IInstructionMessage[]
 }
 
 type Props = {
-  instructions: Instruction[]
+  instructions?: Instruction[]
   currentIndex?: number
   isDark?: boolean
 }
@@ -24,9 +23,42 @@ const InstructionProgress: React.FC<Props> = ({
   return (
     <View>
       <Row>
-        {instructions.map((instruction, index) => {
+        {instructions?.map((instruction, index) => {
           const isLast = index >= instructions.length - 1
           const isActive = index === currentIndex
+
+          const circlebgColor = (isActive = false, isDark = false) => {
+            if (isDark) {
+              if (isActive) {
+                return 'primary.400'
+              } else {
+                return 'primary.800'
+              }
+            } else {
+              if (isActive) {
+                return 'primary.400'
+              } else {
+                return 'transparent'
+              }
+            }
+          }
+
+          const circleLabelColor = (isActive = false, isDark = false) => {
+            if (isDark) {
+              if (isActive) {
+                return 'white'
+              } else {
+                return 'primary.900'
+              }
+            } else {
+              if (isActive) {
+                return 'primary.900'
+              } else {
+                return 'primary.400'
+              }
+            }
+          }
+
           return (
             <Row
               key={`instruction-label-${index}`}
@@ -35,7 +67,7 @@ const InstructionProgress: React.FC<Props> = ({
               flexBasis={sizes['6'] + 'px'}
               mr={!isLast ? space['0.5'] : 0}>
               <Circle
-                bg={isActive ? 'primary.400' : 'primary.800'}
+                bg={circlebgColor(isActive, isDark)}
                 borderColor="primary.grey"
                 borderWidth={isActive ? 0 : 1}
                 size={sizes['1.5']}>
@@ -45,7 +77,7 @@ const InstructionProgress: React.FC<Props> = ({
               </Circle>
               {isActive && (
                 <Text
-                  color={isDark ? 'lightText' : 'primary.400'}
+                  color={circleLabelColor(isActive, isDark)}
                   bold
                   ml={space['0.5']}>
                   {instruction.label}
@@ -62,16 +94,18 @@ const InstructionProgress: React.FC<Props> = ({
           )
         })}
       </Row>
-      <HSection scrollable={false} smallTitle isDark={isDark ? true : false}>
-        {instructions[currentIndex].content.map((instruction, i) => (
-          <InstructionMessage
-            isDark={isDark ? true : false}
-            key={`instruction-${i}`}
-            title={instruction.title}
-            text={instruction.text}
-          />
-        ))}
-      </HSection>
+      {instructions && instructions[currentIndex]?.content && (
+        <Row display="block">
+          {instructions[currentIndex].content?.map((instruction, i) => (
+            <InstructionMessage
+              isDark={isDark ? true : false}
+              key={`instruction-${i}`}
+              title={instruction.title}
+              text={instruction.text}
+            />
+          ))}
+        </Row>
+      )}
     </View>
   )
 }

@@ -9,17 +9,27 @@ import {
   Button,
   Link,
   Image,
-  Column
+  Column,
+  useBreakpointValue,
+  Pressable,
+  Heading,
+  CheckCircleIcon,
+  Tooltip
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
-import { toTimerString, TIME_THRESHOLD } from '../Utility'
+import { toTimerString } from '../Utility'
 import useInterval from '../hooks/useInterval'
+import { LFTag } from '../types/lernfair/Course'
+import { DateTime } from 'luxon'
+
+import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {
-  tags: string[]
-  date: Date
+  tags?: LFTag[]
+  date?: string
   title: string
   description: string
   child?: string
@@ -29,15 +39,20 @@ type Props = {
   buttonlink?: string
   variant?: 'card' | 'horizontal'
   isTeaser?: boolean
-  image: string
+  isGrid?: boolean
+  isSpaceMarginBottom?: boolean
+  isFullHeight?: boolean
+  isHorizontalCardCourseChecked?: boolean
+  image?: string
   onPressToCourse?: () => any
-  href?: string
+  countCourse?: number
 }
 
 const AppointmentCard: React.FC<Props> = ({
   tags,
-  date,
+  date: _date,
   title,
+  countCourse,
   description,
   child,
   variant = 'card',
@@ -46,96 +61,194 @@ const AppointmentCard: React.FC<Props> = ({
   button,
   buttonlink,
   isTeaser = false,
+  isGrid = false,
+  isSpaceMarginBottom = true,
+  isFullHeight = false,
+  isHorizontalCardCourseChecked = false,
   image,
-  onPressToCourse,
-  href
+  onPressToCourse
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
 
+  const date = _date && DateTime.fromISO(_date)
+
   useEffect(() => {
-    setRemainingTime(toTimerString(date.getTime(), Date.now()))
+    date && setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, [date])
 
   useInterval(() => {
-    setRemainingTime(toTimerString(date.getTime(), Date.now()))
+    date && setRemainingTime(toTimerString(date.toMillis(), Date.now()))
   }, 1000)
 
-  const isStartingSoon = useMemo(
-    () => date.getTime() - Date.now() < TIME_THRESHOLD,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [date, remainingTime]
-  )
-
   const textColor = useMemo(
-    () => (isStartingSoon ? 'lightText' : 'darkText'),
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [date, remainingTime]
+    () => (isTeaser ? 'lightText' : 'darkText'),
+    [isTeaser]
   )
+
+  const CardMobileDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const CardMobileImage = useBreakpointValue({
+    base: '100%',
+    lg: '300px'
+  })
+
+  const CardMobilePadding = useBreakpointValue({
+    base: space['1'],
+    lg: '30px'
+  })
+
+  const ButtonContainer = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  const teaserHeadline = useBreakpointValue({
+    base: '15px',
+    lg: '16px'
+  })
+
+  const teaserImage = useBreakpointValue({
+    base: '160px',
+    lg: 'auto'
+  })
+
+  const headline = useBreakpointValue({
+    base: '13px',
+    lg: '14px'
+  })
+
+  const buttonteaser = useBreakpointValue({
+    base: space['2'],
+    lg: 0
+  })
+
+  const buttonteaserSpace = useBreakpointValue({
+    base: space['1'],
+    lg: '32px'
+  })
+
+  const tagMaxWidth = useBreakpointValue({
+    base: '270px',
+    lg: '240px',
+    xl: '370px'
+  })
+
+  const horizontalCardHeadline = useBreakpointValue({
+    base: '70%',
+    lg: '49%',
+    xl: '92%'
+  })
 
   return (
-    <View>
+    <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
         <Card
-          flexibleWidth={isTeaser ? true : false}
-          variant={isStartingSoon ? 'dark' : 'normal'}>
-          <Link href={href}>
-            <Column w="100%">
-              <Box h={isTeaser ? '170' : '120'} padding={space['1']}>
+          flexibleWidth={isTeaser || isGrid ? true : false}
+          variant={isTeaser ? 'dark' : 'normal'}>
+          <Pressable onPress={onPressToCourse}>
+            <Column
+              w="100%"
+              flexDirection={isTeaser ? CardMobileDirection : 'column'}>
+              <Box
+                w={isTeaser ? CardMobileImage : 'auto'}
+                h={isTeaser ? teaserImage : '121'}
+                padding={space['1']}>
                 <Image
                   position="absolute"
                   left={0}
                   right={0}
                   top={0}
                   width="100%"
+                  bgColor="gray.300"
                   height="100%"
                   alt={title}
                   source={{
                     uri: image
                   }}
                 />
-                <Row space={space['0.5']} flexWrap="wrap">
-                  {tags.map((t, i) => (
-                    <Tag key={`tag-${i}`} text={t} />
-                  ))}
-                </Row>
+
+                {isTeaser && (
+                  <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
               </Box>
 
-              <Box padding={space['1']}>
-                {!isStartingSoon && (
-                  <Row paddingTop={space['1']} space={1}>
-                    <Text color={textColor}>{date.toLocaleDateString()}</Text>
-                    <Text color={textColor}>•</Text>
-                    <Text color={textColor}>
-                      {date.toLocaleTimeString().slice(0, -3)}
-                    </Text>
-                  </Row>
-                )}
-                {isStartingSoon && (
-                  <Row paddingBottom={space['0.5']}>
-                    <Text color={textColor}>Startet in: </Text>
-                    <Text bold color="primary.400">
-                      {remainingTime}
-                    </Text>
-                  </Row>
-                )}
-                <Text color={textColor} bold fontSize={'md'} mb={space['0.5']}>
-                  {title}
-                </Text>
-                {isStartingSoon && (
+              <Box
+                padding={isTeaser ? CardMobilePadding : space['1']}
+                maxWidth="731px">
+                {!isTeaser && date && (
                   <>
-                    <Text paddingBottom={space['1']} color={textColor}>
-                      {description}
-                    </Text>
-                    <Button onPress={onPressToCourse}>Zum Kurs</Button>
+                    <Row paddingTop="4px" space={1}>
+                      <Text color={textColor}>
+                        {date.toFormat('dd.MM.yyyy')}
+                      </Text>
+                      <Text color={textColor}>•</Text>
+                      <Text color={textColor}>
+                        {date.toFormat('HH:mm')} Uhr
+                      </Text>
+                    </Row>
                   </>
                 )}
+                {date && isTeaser && (
+                  <Row marginBottom={space['1']} alignItems="center">
+                    <Column marginRight="10px">
+                      <Text>{<LFTimerIcon />}</Text>
+                    </Column>
+                    <Column>
+                      <Row>
+                        <Text color={textColor}>Startet in: </Text>
+                        <Text bold color="primary.400">
+                          {remainingTime}
+                        </Text>
+                      </Row>
+                    </Column>
+                  </Row>
+                )}
+
+                <Heading
+                  color={textColor}
+                  bold
+                  fontSize={isTeaser ? teaserHeadline : headline}
+                  mt="5px"
+                  mb={space['0.5']}>
+                  {title}
+                </Heading>
+
+                {isTeaser && (
+                  <>
+                    <Text paddingBottom={space['1']} color={textColor}>
+                      {description?.length > 56
+                        ? description.substring(0, 56) + '...'
+                        : description}
+                    </Text>
+                  </>
+                )}
+
+                {!isTeaser && (
+                  <Row
+                    paddingTop="5px"
+                    space={space['0.5']}
+                    flexWrap="wrap"
+                    maxWidth="280px">
+                    {tags?.map((tag, i) => (
+                      <Tag key={`tag-${i}`} text={tag.name} />
+                    ))}
+                  </Row>
+                )}
+
                 {child && <CommunityUser name={child} />}
 
                 {button && (
                   <Link href={buttonlink}>
                     <Button
+                      width={ButtonContainer}
                       paddingTop={space['1.5']}
                       paddingBottom={space['1.5']}>
                       {button}
@@ -143,43 +256,83 @@ const AppointmentCard: React.FC<Props> = ({
                   </Link>
                 )}
               </Box>
+              <Box
+                flex="1"
+                alignItems="flex-end"
+                justifyContent="center"
+                paddingX={space['1']}
+                paddingRight={buttonteaserSpace}
+                marginBottom={buttonteaser}>
+                {isTeaser && (
+                  <Button width={ButtonContainer} onPress={onPressToCourse}>
+                    Zum Kurs
+                  </Button>
+                )}
+              </Box>
             </Column>
-          </Link>
+          </Pressable>
         </Card>
       ) : (
-        <Flex
-          direction="row"
-          borderBottomColor="primary.100"
-          borderBottomWidth="1"
-          paddingLeft={space['0.5']}
-          paddingRight={space['0.5']}
-          paddingTop={space['1.5']}
-          paddingBottom={space['1.5']}>
-          <Box marginRight={space['1']}>
-            <CommunityUser
-              align="column"
-              avatar={avatar}
-              avatarsize="md"
-              name={avatarname || ''}
-              usernameweight="400"
-            />
-          </Box>
-          <Box>
-            <Row space={1}>
-              <Text>{date.toLocaleDateString()}</Text>
-              <Text>•</Text>
-              <Text>{date.toLocaleTimeString().slice(0, -3)}</Text>
-            </Row>
-            <Text bold fontSize={'md'} mb={space['0.5']}>
-              {title}
-            </Text>
-            <Row space={space['0.5']}>
-              {tags.map((t, i) => (
-                <Tag key={`tag-${i}`} text={t} />
-              ))}
-            </Row>
-          </Box>
-        </Flex>
+        <Pressable
+          onPress={onPressToCourse}
+          width="100%"
+          height="100%"
+          backgroundColor="primary.100"
+          borderRadius="15px">
+          <Flex
+            flexDirection="row"
+            height="100%"
+            marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
+            <Box width="26%" display="block" marginRight="3px">
+              <Image
+                width="120px"
+                height="100%"
+                borderTopLeftRadius="15px"
+                borderBottomLeftRadius="15px"
+                bgColor="gray.300"
+                source={{
+                  uri: image
+                }}
+              />
+            </Box>
+
+            <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
+              <Row space={1} marginTop={space['0.5']}>
+                {date && (
+                  <Text>
+                    {'Ab'} {date.toFormat('dd.MM.yyyy')}
+                  </Text>
+                )}
+                {date && countCourse && (
+                  <>
+                    <Text>•</Text>
+                    <Text>
+                      {countCourse} {'Termine'}
+                    </Text>
+                  </>
+                )}
+              </Row>
+              <Text bold fontSize={'md'} mt="4px" mb={space['1']}>
+                {title}
+              </Text>
+
+              <CSSWrapper className="course-list__item-tags">
+                <Row space={space['0.5']} flexWrap="wrap">
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
+                  ))}
+                </Row>
+              </CSSWrapper>
+            </Box>
+            {isHorizontalCardCourseChecked && (
+              <Box position="absolute" right="20px" bottom="13px">
+                <Tooltip label="Du bist bereits angemeldet.">
+                  <CheckCircleIcon color="danger.100" size="20px" />
+                </Tooltip>
+              </Box>
+            )}
+          </Flex>
+        </Pressable>
       )}
     </View>
   )

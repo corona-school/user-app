@@ -6,10 +6,12 @@ import {
   Center,
   CircleIcon,
   Row,
-  useTheme
+  useTheme,
+  Pressable
 } from 'native-base'
 import { useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useLernfair from '../hooks/useLernfair'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
 
@@ -20,30 +22,49 @@ type Props = {
 }
 
 const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
-  const location = useLocation()
   const { space, colors } = useTheme()
+  const { rootPath, setRootPath } = useLernfair()
+  const navigate = useNavigate()
 
-  const path = useMemo(() => {
-    const p = location.pathname.replace('/', '')
-    if (Object.keys(navItems).includes(p)) return p
-    return 'dashboard'
-  }, [location.pathname, navItems])
+  // const path = useMemo(() => {
+  //   const p = location.pathname.replace('/', '')
+  //   if (Object.keys(navItems).includes(p)) return p
+  //   return 'dashboard'
+  // }, [location.pathname, navItems])
 
   return (
     (show && (
-      <View w="240" h="100%">
+      <View w="240" h="100vh">
         <VStack
           paddingTop={paddingTop}
           position="fixed"
-          bgColor={'primary.100'}
+          bgColor={'lightText'}
+          style={{
+            shadowColor: '#000000',
+            shadowOpacity: 0.1,
+            shadowRadius: 30,
+            shadowOffset: { width: 2, height: 2 }
+          }}
           w="240"
           top="0"
           left="0"
           bottom="0">
           {Object.entries(navItems).map(
             ([key, { label, icon: Icon, disabled }]) => (
-              <Link href={disabled ? undefined : key} key={key}>
-                <Row alignItems={'center'} paddingX={space['0.5']}>
+              <Pressable
+                onPress={
+                  disabled
+                    ? undefined
+                    : () => {
+                        setRootPath && setRootPath(`${key}`)
+                        navigate(`/${key}`)
+                      }
+                }
+                key={key}>
+                <Row
+                  alignItems={'center'}
+                  paddingX={space['1']}
+                  paddingY="15px">
                   <Center>
                     <CSSWrapper className="navigation__item">
                       <CircleIcon
@@ -51,7 +72,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                         color={
                           disabled
                             ? 'transparent'
-                            : key === path
+                            : key === rootPath
                             ? 'primary.900'
                             : 'transparent'
                         }
@@ -61,7 +82,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                           fill={
                             disabled
                               ? colors['gray']['300']
-                              : key === path
+                              : key === rootPath
                               ? colors['lightText']
                               : colors['primary']['900']
                           }
@@ -70,12 +91,14 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                     </CSSWrapper>
                   </Center>
                   <Text
+                    fontSize="lg"
+                    fontWeight="500"
                     color={disabled ? colors['gray']['300'] : undefined}
                     marginLeft={space['0.5']}>
                     {label}
                   </Text>
                 </Row>
-              </Link>
+              </Pressable>
             )
           )}
         </VStack>

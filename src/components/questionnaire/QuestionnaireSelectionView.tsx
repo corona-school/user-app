@@ -1,29 +1,33 @@
-import { Heading, Text, useTheme, VStack } from 'native-base'
-import { useContext, useEffect, useState } from 'react'
+import { Column, Heading, Pressable, Text, useTheme, VStack } from 'native-base'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { LFUserType } from '../../types/lernfair/User'
+import CTACard from '../../widgets/CTACard'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
-import { Answer, QuestionnaireContext } from '../Questionnaire'
+import {
+  Answer,
+  ObjectAnswer,
+  QuestionnaireContext,
+  SelectionQuestion
+} from '../Questionnaire'
 import { ISelectionItem } from './SelectionItem'
+import BooksIcon from '../../assets/icons/lernfair/lf-books.svg'
 
 type Props = {
-  options: ISelectionItem[]
-  question: string
-  text?: string
-  imgRootPath: string
-  label: string
+  currentQuestion: SelectionQuestion
   prefill?: Answer
   onPressSelection: undefined | ((selection: ISelectionItem) => any)
+  userType: LFUserType
 }
 
 const QuestionnaireSelectionView: React.FC<Props> = ({
-  options,
-  question,
-  label,
-  text,
-  imgRootPath,
+  currentQuestion,
+  userType,
   prefill,
   onPressSelection
 }) => {
+  const { t } = useTranslation()
   const { setAnswers } = useContext(QuestionnaireContext)
   const [selections, setSelections] = useState<Answer>({})
   const { space } = useTheme()
@@ -34,44 +38,91 @@ const QuestionnaireSelectionView: React.FC<Props> = ({
       setSelections({})
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question])
+  }, [currentQuestion.id])
 
   useEffect(() => {
     if (!setAnswers) return
-    const sel: Answer = { ...selections }
-    for (const key in sel) {
-      if (!sel[key]) delete sel[key]
+    const sel: ObjectAnswer = { ...selections }
+    for (const k in sel) {
+      if (!sel[k]) delete sel[k]
     }
-    setAnswers(prev => ({ ...prev, [label]: sel }))
-  }, [label, selections, setAnswers])
+    setAnswers(prev => ({ ...prev, [currentQuestion.id]: sel }))
+  }, [currentQuestion.id, selections, setAnswers])
+
+  const textFormatted = useMemo(
+    () =>
+      t(`registration.questions.${userType}.${currentQuestion.id}.text`, {
+        defaultValue: ''
+      }),
+    [t, userType, currentQuestion.id]
+  )
+
+  const Wrapper =
+    (currentQuestion.viewType || 'normal') === 'normal' ? TwoColGrid : Column
 
   return (
     <VStack paddingX={space['1']} paddingTop={space['1']}>
-      <Heading>{question}</Heading>
-      {text && <Text>{text}</Text>}
-      <TwoColGrid>
-        {options.map((opt, index) => (
-          <IconTagList
-            key={`${imgRootPath}-${index}`}
-            initial={!!selections[opt.key]}
-            text={opt.label}
-            variant="selection"
-            textIcon={(imgRootPath === 'text' && opt.key) || undefined}
-            iconPath={
-              (imgRootPath !== 'text' &&
-                `${imgRootPath}/icon_${opt.key}.svg`) ||
-              undefined
-            }
-            onPress={() => {
-              setSelections(prev => ({
-                ...prev,
-                [opt.key]: !selections[opt.key]
-              }))
-              onPressSelection && onPressSelection(opt)
-            }}
-          />
-        ))}
-      </TwoColGrid>
+      <Heading>
+        {t(`registration.questions.${userType}.${currentQuestion.id}.question`)}
+      </Heading>
+      {textFormatted && <Text>{textFormatted}</Text>}
+      <Wrapper>
+        {currentQuestion.options.map(
+          (opt, index) =>
+            (currentQuestion.viewType === 'large' && (
+              <Pressable
+                mt={space['1']}
+                onPress={() => {
+                  setSelections((prev: Answer) => ({
+                    ...prev,
+                    [opt.key]: !selections[opt.key]
+                  }))
+                  onPressSelection && onPressSelection(opt)
+                }}>
+                <CTACard
+                  key={`${currentQuestion.imgRootPath}-${index}`}
+                  title={opt.label}
+                  closeable={false}
+                  content={opt.text && <Text>{opt.text}</Text>}
+                  icon={<BooksIcon />}
+                  variant={selections[opt.key] ? 'dark' : 'normal'}
+                />
+              </Pressable>
+            )) || (
+              <IconTagList
+                key={`${currentQuestion.imgRootPath}-${index}`}
+                initial={!!selections[opt.key]}
+                text={opt.label}
+                variant="selection"
+                textIcon={
+                  (currentQuestion.imgRootPath === 'text' && opt.key) ||
+                  undefined
+                }
+                iconPath={
+                  (currentQuestion.imgRootPath !== 'text' &&
+                    `${currentQuestion.imgRootPath}/icon_${opt.key}.svg`) ||
+                  undefined
+                }
+                onPress={() => {
+                  if (
+                    !currentQuestion?.maxSelections ||
+                    currentQuestion?.maxSelections > 1
+                  ) {
+                    setSelections((prev: Answer) => ({
+                      ...prev,
+                      [opt.key]: !selections[opt.key] ? opt : false
+                    }))
+                  } else {
+                    setSelections({
+                      [opt.key]: !selections[opt.key] ? opt : false
+                    })
+                  }
+                  onPressSelection && onPressSelection(opt)
+                }}
+              />
+            )
+        )}
+      </Wrapper>
     </VStack>
   )
 }

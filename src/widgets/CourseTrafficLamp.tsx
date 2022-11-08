@@ -15,20 +15,25 @@ import {
 
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { TrafficStatus } from '../types/lernfair/Course'
 import { ModalContext } from './FullPageModal'
 
 type Props = {
-  status: 'full' | 'last' | 'free'
+  status: TrafficStatus
   infoPopupTitle?: string
   infoPopupContent?: string
   infoPopupLastContent?: string
+  hideText?: boolean
+  paddingY?: number
 }
 
 const CourseTrafficLamp: React.FC<Props> = ({
   status = 'free',
   infoPopupTitle,
   infoPopupContent,
-  infoPopupLastContent
+  infoPopupLastContent,
+  hideText,
+  paddingY
 }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
@@ -36,7 +41,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
 
   return (
     <View>
-      <Row paddingY={5}>
+      <Row paddingY={paddingY || 5}>
         <Column flexDirection="row" alignItems="center">
           <Circle
             backgroundColor={
@@ -51,15 +56,17 @@ const CourseTrafficLamp: React.FC<Props> = ({
             size="20px"
             marginRight={3}
           />
-          <Text marginRight={7} bold>
-            {status === 'free'
-              ? t('single.global.status.free')
-              : status === 'last'
-              ? t('single.global.status.last')
-              : status === 'full'
-              ? t('single.global.status.full')
-              : ''}
-          </Text>
+          {!hideText && (
+            <Text marginRight={7} bold>
+              {status === 'free'
+                ? t('single.global.status.free')
+                : status === 'last'
+                ? t('single.global.status.last')
+                : status === 'full'
+                ? t('single.global.status.full')
+                : ''}
+            </Text>
+          )}
           {infoPopupTitle && (
             <Pressable
               onPress={() => {

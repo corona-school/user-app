@@ -4,6 +4,7 @@ const registration = {
   password_repeat: 'Passwort wiederholen',
   i_am: 'Ich bin',
   parent: 'Elternteil',
+  to_login: 'Ich habe bereits einen Account',
   btn: {
     next: 'Weiter'
   },
@@ -28,23 +29,25 @@ const registration = {
     point_9:
       'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de',
     btn: {
-      yes: 'Ja,\ndie Punkte\ntreffen zu',
-      no: 'Nein,\ndie Punkte\ntreffen nicht zu'
+      yes: 'Ja, die Punkte treffen zu',
+      no: 'Nein, die Punkte treffen nicht zu'
     }
   },
   hint: {
     password: {
-      length: 'Das Password muss mindestens 6 Zeichen enthalten.',
+      length: 'Das Passwort muss mindestens 6 Zeichen enthalten.',
       nomatch: 'Die Passwörter stimmen nicht überein'
     },
     email: {
-      invalid: 'Ungültige Email-Adresse'
+      invalid: 'Ungültige Email-Adresse',
+      unavailable: 'Diese Email-Adresse ist bereits vergeben'
     },
     userType: {
       missing: 'Bitte identifiziere deine Rolle'
     }
   },
   personal: {
+    title: 'Gib deine persönlichen Daten ein',
     about: {
       label: 'Über mich',
       text: 'Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können.'
@@ -60,14 +63,57 @@ const registration = {
       btn: 'Zurück',
       message: {
         'Email is already used by another account':
-          'Diese Email ist bereits in Verwendung'
+          'Diese Email ist bereits in Verwendung',
+        'Response not successful: Received status code 400':
+          'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.',
+        'RateLimit Enforcement':
+          'Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.'
       }
     }
   },
   questions: {
-    deutsch2: {
-      lower: 'weniger als 1 Jahr',
-      higher: 'mehr als 1 Jahr'
+    pupil: {
+      schooltype: {
+        label: 'Schulform',
+        question: 'Auf welche Schule gehst du?'
+      },
+      schoolclass: {
+        label: 'Klasse',
+        question: 'In welcher Klasse bist du?'
+      },
+      languages: {
+        label: 'Sprache',
+        question: 'Welche Sprache(n) sprichst du zu Hause?'
+      },
+      subjects: {
+        label: 'Fächer',
+        question: 'In welchen Fächern benötigst du Unterstützung?',
+        text: 'Du kannst mehrere Fächer auswählen'
+      },
+      state: {
+        label: 'Bundesland',
+        question: 'Aus welchem Bundesland kommst du?'
+      },
+      deutsch: {
+        label: 'Deutsch',
+        question: 'Seit wann lernst du Deutsch?'
+      },
+      deutsch2: {
+        lower: 'weniger als 1 Jahr',
+        higher: 'mehr als 1 Jahr'
+      }
+    },
+    student: {
+      offers: {
+        label: 'Unterstützung',
+        question: 'Welche Art der Unterstützung möchtest du anbieten?',
+        text: 'Eine Mehrfachauswahl ist möglich'
+      },
+      subjects: {
+        label: 'Fächer',
+        question: 'In welchen Fächern kannst du unterstützen?',
+        text: ''
+      }
     }
   },
   pupil: { label: 'Schüler:in' },

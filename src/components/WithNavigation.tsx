@@ -6,16 +6,18 @@ import { ReactNode, useState } from 'react'
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
-import LFExploreIcon from '../assets/icons/lernfair/lf-discover.svg'
+import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg'
+import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
-import CSSWrapper from './CSSWrapper'
 
+// TODO translations
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
-  appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
-  explore: { label: 'Erkunden', icon: LFExploreIcon },
+  // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
+  group: { label: 'Gruppe', icon: LFGroupIcon },
+  matching: { label: 'Einzel', icon: LFMatchingIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
 }
 
@@ -26,6 +28,8 @@ type Props = {
   headerContent?: ReactNode | ReactNode[]
   headerTitle?: string
   isSidebarMenu?: boolean
+  showBack?: boolean
+  hideMenu?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -34,14 +38,23 @@ const WithNavigation: React.FC<Props> = ({
   headerRight,
   headerContent,
   headerTitle,
-  isSidebarMenu = true
+  isSidebarMenu = true,
+  showBack,
+  hideMenu
 }) => {
+  const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
     base: true,
     lg: false
   })
-  const [view, setView] = useState(null)
-  const { sizes } = useTheme()
+
+  const innerPaddingContent = useBreakpointValue({
+    base: 0,
+    lg: space['1']
+  })
+
+  // const [view, setView] = useState(null)
+
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
     <View flex="1">
@@ -54,11 +67,11 @@ const WithNavigation: React.FC<Props> = ({
         w="100vw"
         h="100%">
         <HeaderCard
+          showBack={showBack}
           leftContent={headerLeft}
-          rightContent={isSidebarMenu ? <SettingsButton /> : ''}
-          title={headerTitle}
-          portal={setView}>
-          {headerContent}
+          rightContent={isSidebarMenu && !hideMenu ? <SettingsButton /> : ''}
+          title={headerTitle}>
+          {!isMobile && headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
           <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden">
@@ -69,13 +82,15 @@ const WithNavigation: React.FC<Props> = ({
                 paddingTop={'72px'}
               />
             </Column>
-            <Column flex="1">
-              {view && (
+
+            <Column flex="1" padding={innerPaddingContent}>
+              {(isMobile && (
                 <>
                   <View h={`${headerHeight}px`}></View>
-                  {view}
+                  {headerContent}
+                  <View h={`${headerHeight}px`}></View>
                 </>
-              )}
+              )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}
             </Column>
           </Row>

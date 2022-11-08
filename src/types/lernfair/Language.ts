@@ -41,7 +41,7 @@ export const languages: Language[] = [
     label: 'Englisch'
   },
   {
-    key: 'franzoesisch',
+    key: 'franz_sisch',
     label: 'Französisch'
   },
   {
@@ -73,7 +73,7 @@ export const languages: Language[] = [
     label: 'Spanisch'
   },
   {
-    key: 'tuerkisch',
+    key: 't_rkisch',
     label: 'Türkisch'
   },
   {

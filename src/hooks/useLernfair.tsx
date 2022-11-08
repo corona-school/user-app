@@ -5,14 +5,16 @@ import {
   useContext,
   useState
 } from 'react'
-import { User as LFUser } from '../types/lernfair/User'
+import { User as LFUser, LFUserType } from '../types/lernfair/User'
 
 type LernFair = {
-  user: LFUser | null
-  setUser?: (user: LFUser) => SetStateAction<LFUser>
+  userType: LFUserType | null
+  setUserType?: (user: LFUserType) => SetStateAction<LFUser>
+  rootPath?: string
+  setRootPath?: (path: string) => SetStateAction<string>
 }
 
-const LernfairContext = createContext<LernFair>({ user: null })
+const LernfairContext = createContext<LernFair>({ userType: null })
 
 export const LernfairProvider: React.FC<{ children: ReactNode }> = ({
   children
@@ -26,11 +28,13 @@ export const LernfairProvider: React.FC<{ children: ReactNode }> = ({
 }
 
 const useLernfairProvider = () => {
-  const [user, _setUser] = useState<LFUser>()
+  const [userType, _setUserType] = useState<LFUserType>()
+  const [rootPath, _setRootPath] = useState<string>('dashboard')
 
-  const setUser = (user: LFUser) => _setUser(prev => ({ ...prev, ...user }))
+  const setUserType = (user: LFUserType) => _setUserType(user)
+  const setRootPath = (path: string) => _setRootPath(path)
 
-  return { user, setUser } as LernFair
+  return { userType, setUserType, rootPath, setRootPath } as LernFair
 }
 
 const useLernfair = () => {

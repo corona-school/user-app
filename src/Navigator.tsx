@@ -7,10 +7,9 @@ import {
   useLocation
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
-import Dashboard from './pages/Dashboard'
-import EditProfile from './pages/EditProfile'
+import Dashboard from './pages/pupil/Dashboard'
 import Login from './pages/Login'
-import Profile from './pages/Profile'
+import Profile from './pages/pupil/Profile'
 
 import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
@@ -32,33 +31,78 @@ import RegistrationData from './pages/registration/RegistrationData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
 
+// Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
-import OnBoardingStudentMatching from './pages/onboarding/student/OnBoardingStudentMatching'
-import OnBoardingStudentCourse from './pages/onboarding/student/OnBoardingStudentCourse'
-import OnBoardingStudentHelpCenter from './pages/onboarding/student/OnBoardingStudentHelpCenter'
-import OnBoardingStudentProfile from './pages/onboarding/student/OnBoardingStudentProfile'
+import OnBoardingStudentSlides from './pages/onboarding/student/OnBoardingStudentSlides'
 import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher'
-import OnBoardingStudentAppointments from './pages/onboarding/student/OnBoardingStudentAppointments'
+
+// Onboarding Helper
 import OnBoardingHelperWelcome from './pages/onboarding/helper/OnBoardingHelperWelcome'
-import OnBoardingHelperMatch from './pages/onboarding/helper/OnBoardingHelperMatch'
-import OnBoardingHelperGroup from './pages/onboarding/helper/OnBoardingHelperGroup'
-import OnBoardingHelperHelpCenter from './pages/onboarding/helper/OnBoardingHelperHelpCenter'
-import OnBoardingHelperProfile from './pages/onboarding/helper/OnBoardingHelperProfile'
-import OnBoardingHelperSettings from './pages/onboarding/helper/OnBoardingHelperSettings'
+import OnBoardingHelperSlides from './pages/onboarding/helper/OnBoardingHelperSlides'
 import OnBoardingHelperFinisher from './pages/onboarding/helper/OnBoardingHelperFinisher'
-import OnBoardingHelperNotification from './pages/onboarding/helper/OnBoardingHelperNotification'
+
+// Onboarding Helper Matching
 import OnBoardingHelperMatchingWelcome from './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome'
-import OnBoardingHelperMatchingRequestMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequestMatch'
-import OnBoardingHelperMatchingRequest from './pages/onboarding/helper-matching/OnBoardingHelperMatchingRequest'
-import OnBoardingHelperMatchingMatch from './pages/onboarding/helper-matching/OnBoardingHelperMatchingMatch'
-import OnBoardingHelperMatchingContact from './pages/onboarding/helper-matching/OnBoardingHelperMatchingContact'
-import OnBoardingHelperMatchingSolveMatching from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSolveMatching'
+import OnBoardingHelperMatchingSlides from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides'
 import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
-import ProfileHelper from './pages/ProfileHelper'
-import OnBoardingHelperAppointment from './pages/onboarding/helper/OnBoardingHelperAppointments'
-import DashboardHelper from './pages/DashboardHelper'
+
+// Profile
+
+import CreateCourse from './pages/CreateCourse'
+import { gql, useQuery } from '@apollo/client'
+import MatchingBlocker from './pages/student/MatchingBlocker'
+import CourseBlocker from './pages/student/CourseBlocker'
+import DashboardStudent from './pages/student/DashboardStudent'
+import ProfileHelper from './pages/student/ProfileStudent'
+import Matching from './pages/pupil/Matching'
+import RequestMatch from './pages/student/RequestMatch'
+import ProfileStudent from './pages/student/ProfileStudent'
+import MatchingStudent from './pages/student/MatchingStudent'
+import useLernfair from './hooks/useLernfair'
+import RequestCertificate from './pages/RequestCertificate'
+import PupilGroup from './pages/pupil/Group'
+import StudentGroup from './pages/student/StudentGroup'
+import StudentGroupSupport from './pages/student/StudentGroupSupport'
+import AppointmentsArchive from './pages/AppointmentsArchive'
+import CourseArchive from './pages/CourseArchive'
+import { useEffect } from 'react'
+import LearningPartnerArchive from './pages/LearningPartnerArchive'
+import UserProfile from './pages/UserProfile'
+import NoAcceptRegistration from './pages/NoAcceptRegistration'
+import VerifyEmail from './pages/VerifyEmail'
+import VerifyEmailModal from './modals/VerifyEmailModal'
+import CenterLoadingSpinner from './components/CenterLoadingSpinner'
+import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
+  // const { userType } = useLernfair()
+
+  // const { data, loading } = useQuery(
+  //   gql`
+  //     query {
+  //       me {
+  //         email
+  //         pupil {
+  //           id
+  //           verifiedAt
+  //         }
+  //         student {
+  //           id
+  //           verifiedAt
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   { skip: !userType }
+  // )
+
+  // if (loading) return <CenterLoadingSpinner />
+
+  // if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+  //   return <VerifyEmailModal email={data.me.email} />
+  // if (data && data.me.student && !data.me.student.verifiedAt)
+  //   return <VerifyEmailModal email={data.me.email} />
+
   return (
     <BrowserRouter>
       <Routes>
@@ -79,18 +123,35 @@ export default function Navigator() {
 
         <Route path="/welcome" element={<Welcome />} />
 
+        <Route
+          path="/registration-rejected"
+          element={<NoAcceptRegistration />}
+        />
+
         {/* Private */}
 
         <Route
           path="/"
           element={
             <RequireAuth>
-              <Dashboard />
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardStudent />}
+              />
             </RequireAuth>
           }
         />
-
-        <Route path="/dashboard-helper" element={<DashboardHelper />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<Dashboard />}
+                studentComponent={<DashboardStudent />}
+              />
+            </RequireAuth>
+          }
+        />
 
         <Route
           path="/explore"
@@ -113,7 +174,10 @@ export default function Navigator() {
           path="/profile"
           element={
             <RequireAuth>
-              <Profile />
+              <SwitchUserType
+                pupilComponent={<Profile />}
+                studentComponent={<ProfileStudent />}
+              />
             </RequireAuth>
           }
         />
@@ -123,15 +187,6 @@ export default function Navigator() {
           element={
             <RequireAuth>
               <ProfileHelper />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/edit-profile"
-          element={
-            <RequireAuth>
-              <EditProfile />
             </RequireAuth>
           }
         />
@@ -194,130 +249,198 @@ export default function Navigator() {
         <Route
           path="/onboarding-list"
           element={
+            <RequireAuth>
+              <OnboardingTourList />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/matching-1-1"
+          element={
+            <RequireAuth>
+              <MatchingBlocker />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/course"
+          element={
+            <RequireAuth>
+              <CourseBlocker />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/request-certificate"
+          element={
             // <RequireAuth>
-            <OnboardingTourList />
+            <RequestCertificate />
             // </RequireAuth>
           }
         />
 
+        {/* Onboarding Subpages */}
+        <Route
+          path="/onboarding"
+          element={
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="students" element={<OnBoardingStudentWelcome />} />
+          <Route path="helper" element={<OnBoardingHelperWelcome />} />
+          <Route
+            path="helpermatching"
+            element={<OnBoardingHelperMatchingWelcome />}
+          />
+        </Route>
+
         {/* Onboarding Students */}
         <Route
-          path="/onboarding-students"
+          path="/onboarding/students"
           element={
-            // <RequireAuth>
-            <OnBoardingStudentWelcome />
-            // </RequireAuth>
-          }></Route>
-        <Route
-          path="/onboarding-students/welcome"
-          element={<OnBoardingStudentWelcome />}
-        />
-        <Route
-          path="/onboarding-students/matching"
-          element={<OnBoardingStudentMatching />}
-        />
-        <Route
-          path="/onboarding-students/groups"
-          element={<OnBoardingStudentCourse />}
-        />
-        <Route
-          path="/onboarding-students/appointments"
-          element={<OnBoardingStudentAppointments />}
-        />
-        <Route
-          path="/onboarding-students/helpcenter"
-          element={<OnBoardingStudentHelpCenter />}
-        />
-        <Route
-          path="/onboarding-students/profil"
-          element={<OnBoardingStudentProfile />}
-        />
-        <Route
-          path="/onboarding-students/finish"
-          element={<OnBoardingStudentFinisher />}
-        />
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingStudentWelcome />} />
+          <Route path="wizard" element={<OnBoardingStudentSlides />} />
+          <Route path="finish" element={<OnBoardingStudentFinisher />} />
+          <Route path="*" element={<OnBoardingStudentWelcome />} />
+        </Route>
 
         {/* Onboarding Helper */}
         <Route
-          path="/onboarding-helper"
+          path="/onboarding/helper"
           element={
-            // <RequireAuth>
-            <OnBoardingHelperWelcome />
-            // </RequireAuth>
-          }></Route>
-        <Route
-          path="/onboarding-helper/welcome"
-          element={<OnBoardingHelperWelcome />}
-        />
-        <Route
-          path="/onboarding-helper/matching"
-          element={<OnBoardingHelperMatch />}
-        />
-        <Route
-          path="/onboarding-helper/groups"
-          element={<OnBoardingHelperGroup />}
-        />
-        <Route
-          path="/onboarding-helper/appointment"
-          element={<OnBoardingHelperAppointment />}
-        />
-        <Route
-          path="/onboarding-helper/helpcenter"
-          element={<OnBoardingHelperHelpCenter />}
-        />
-        <Route
-          path="/onboarding-helper/profil"
-          element={<OnBoardingHelperProfile />}
-        />
-        <Route
-          path="/onboarding-helper/settings"
-          element={<OnBoardingHelperSettings />}
-        />
-        <Route
-          path="/onboarding-helper/notification"
-          element={<OnBoardingHelperNotification />}
-        />
-        <Route
-          path="/onboarding-helper/finish"
-          element={<OnBoardingHelperFinisher />}
-        />
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingHelperWelcome />} />
+          <Route path="wizard" element={<OnBoardingHelperSlides />} />
+          <Route path="finish" element={<OnBoardingHelperFinisher />} />
+          <Route path="*" element={<OnBoardingHelperWelcome />} />
+        </Route>
 
         {/* Onboarding Helper Matching */}
+
         <Route
-          path="/onboarding-helper-matching"
+          path="/onboarding/helpermatching"
           element={
-            // <RequireAuth>
-            <OnBoardingHelperMatchingWelcome />
-            // </RequireAuth>
+            <RequireAuth>
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route path="welcome" element={<OnBoardingHelperMatchingWelcome />} />
+          <Route path="wizard" element={<OnBoardingHelperMatchingSlides />} />
+          <Route path="finish" element={<OnBoardingHelperMatchingFinisher />} />
+          <Route path="*" element={<OnBoardingHelperMatchingWelcome />} />
+        </Route>
+
+        {/* Create Course */}
+        <Route
+          path="/create-course"
+          element={
+            <RequireAuth>
+              <CreateCourse />
+            </RequireAuth>
+          }
+        />
+
+        {/* Group */}
+        <Route
+          path="/group"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<PupilGroup />}
+                studentComponent={<StudentGroup />}
+              />
+            </RequireAuth>
           }></Route>
+
         <Route
-          path="/onboarding-helper-matching/welcome"
-          element={<OnBoardingHelperMatchingWelcome />}
+          path="/group/offer"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<PupilGroup />}
+                studentComponent={<StudentGroupSupport />}
+              />
+            </RequireAuth>
+          }></Route>
+
+        <Route
+          path="/matching"
+          element={
+            <RequireAuth>
+              <SwitchUserType
+                pupilComponent={<Matching />}
+                studentComponent={<MatchingStudent />}
+              />
+            </RequireAuth>
+          }
         />
         <Route
-          path="/onboarding-helper-matching/request-matching"
-          element={<OnBoardingHelperMatchingRequestMatch />}
+          path="/request-match"
+          element={
+            <RequireAuth>
+              <SwitchUserType studentComponent={<RequestMatch />} />
+            </RequireAuth>
+          }
         />
+
         <Route
-          path="/onboarding-helper-matching/request"
-          element={<OnBoardingHelperMatchingRequest />}
+          path="/appointments-archive"
+          element={
+            <RequireAuth>
+              <AppointmentsArchive />
+            </RequireAuth>
+          }
         />
+
         <Route
-          path="/onboarding-helper-matching/match"
-          element={<OnBoardingHelperMatchingMatch />}
+          path="/course-archive"
+          element={
+            <RequireAuth>
+              <CourseArchive />
+            </RequireAuth>
+          }
         />
+
         <Route
-          path="/onboarding-helper-matching/contact"
-          element={<OnBoardingHelperMatchingContact />}
+          path="/learningpartner-archive"
+          element={
+            <RequireAuth>
+              <LearningPartnerArchive />
+            </RequireAuth>
+          }
         />
+
         <Route
-          path="/onboarding-helper-matching/solve-matching"
-          element={<OnBoardingHelperMatchingSolveMatching />}
+          path="/user-profile"
+          element={
+            <RequireAuth>
+              <UserProfile />
+            </RequireAuth>
+          }
         />
+
+        {/* <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route
-          path="/onboarding-helper-matching/finish"
-          element={<OnBoardingHelperMatchingFinisher />}
+          path="/additional-data"
+          element={
+            <RequireAuth>
+              <RegistrationData />
+            </RequireAuth>
+          }
         />
+        <Route path="/email-not-verified" element={<VerifyEmailModal />} /> */}
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Fallback */}
         <Route
@@ -340,4 +463,54 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   if (!token)
     return <Navigate to="/welcome" state={{ from: location }} replace />
   return children
+}
+
+const SwitchUserType = ({
+  pupilComponent,
+  studentComponent
+}: {
+  pupilComponent?: JSX.Element
+  studentComponent?: JSX.Element
+}) => {
+  const location = useLocation()
+  const { userType, setUserType } = useLernfair()
+
+  const { data, error, loading } = useQuery(
+    gql`
+      query {
+        me {
+          pupil {
+            id
+            verifiedAt
+          }
+          student {
+            id
+            verifiedAt
+          }
+        }
+      }
+    `,
+    { skip: !!userType }
+  )
+  const me = data?.me
+
+  useEffect(() => {
+    !loading &&
+      !userType &&
+      setUserType &&
+      setUserType(!!me?.student ? 'student' : 'pupil')
+  }, [me?.student, setUserType, userType, loading])
+
+  if (loading || !userType) return <></>
+
+  if (!userType && !me && error)
+    return <Navigate to="/welcome" state={{ from: location }} replace />
+
+  if (userType === 'student' || !!me?.student) {
+    if (studentComponent) return studentComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
+  } else {
+    if (pupilComponent) return pupilComponent
+    else return <Navigate to="/dashboard" state={{ from: location }} replace />
+  }
 }

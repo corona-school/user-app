@@ -1,4 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Box, Heading, useTheme, Text } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -10,11 +12,16 @@ type Props = {}
 const DigitaleTools: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Digitale Tools'
+    })
+  }, [])
 
   return (
-    <WithNavigation
-      headerTitle={t('digitaletools.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('digitaletools.header')} showBack>
       <Box paddingTop={space['4']} paddingX={space['1.5']}>
         <Heading paddingBottom={1.5}>{t('digitaletools.title')}</Heading>
         <Text paddingBottom={space['1']}>{t('digitaletools.content')}</Text>

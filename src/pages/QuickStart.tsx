@@ -1,4 +1,6 @@
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Box, Heading, useTheme, Text, Column, Stagger } from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
 import NotificationAlert from '../components/NotificationAlert'
@@ -10,11 +12,16 @@ type Props = {}
 const QuickStart: React.FC<Props> = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const { trackPageView } = useMatomo()
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Onboarding'
+    })
+  }, [])
 
   return (
-    <WithNavigation
-      headerTitle={t('quickstart.header')}
-      headerLeft={<BackButton />}>
+    <WithNavigation headerTitle={t('quickstart.header')} showBack>
       <Box
         paddingTop={space['4']}
         paddingBottom={space['1.5']}

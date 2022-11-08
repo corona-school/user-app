@@ -9,19 +9,22 @@ import { MatomoProvider } from '@jonkoops/matomo-tracker-react'
 import './web/scss/index.scss'
 import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
+import { LernfairProvider } from './hooks/useLernfair'
 
 function App() {
   return (
-    <LFModalProvider>
-      <LFApolloProvider>
-        <NativeBaseProvider theme={Theme}>
-          <MatomoProvider value={matomo}>
-            <Navigator />
-            <FullPageModal />
-          </MatomoProvider>
-        </NativeBaseProvider>
-      </LFApolloProvider>
-    </LFModalProvider>
+    <LernfairProvider>
+      <LFModalProvider>
+        <LFApolloProvider>
+          <NativeBaseProvider theme={Theme}>
+            <MatomoProvider value={matomo}>
+              <Navigator />
+              <FullPageModal />
+            </MatomoProvider>
+          </NativeBaseProvider>
+        </LFApolloProvider>
+      </LFModalProvider>
+    </LernfairProvider>
   )
 }
 

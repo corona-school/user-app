@@ -1,3 +1,5 @@
+import { gql, useMutation } from '@apollo/client'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   VStack,
   Heading,
@@ -6,28 +8,198 @@ import {
   TextArea,
   Flex,
   Box,
-  Image
+  Image,
+  useBreakpointValue,
+  Row,
+  Text
 } from 'native-base'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import TextInput from '../../components/TextInput'
+import useModal from '../../hooks/useModal'
 import useRegistration from '../../hooks/useRegistration'
+import VerifyEmailModal from '../../modals/VerifyEmailModal'
+import { DEEPLINK_OPTIN } from '../../Utility'
 
 type Props = {}
 
+const mutPupil = gql`
+  mutation register(
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+    $aboutMe: String
+  ) {
+    meRegisterPupil(
+      data: {
+        firstname: $firstname
+        lastname: $lastname
+        email: $email
+        newsletter: false
+        registrationSource: normal
+        redirectTo: "${DEEPLINK_OPTIN}"
+        state: other
+        aboutMe: $aboutMe
+      }
+    ) {
+      id
+    }
+    passwordCreate(password: $password)
+  }
+`
+const mutStudent = gql`
+  mutation register(
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+  ) {
+    meRegisterStudent(
+      data: {
+        firstname: $firstname
+        lastname: $lastname
+        email: $email
+        newsletter: false
+        registrationSource: normal
+        redirectTo: "${DEEPLINK_OPTIN}"
+      }
+    ) {
+      id
+    }
+    passwordCreate(password: $password)
+  }
+`
+
 const RegistrationPersonal: React.FC<Props> = () => {
   const { t } = useTranslation()
-  const { space } = useTheme()
+  const { setVariant, setShow, setContent } = useModal()
+  const { space, sizes } = useTheme()
+  const { trackPageView } = useMatomo()
   const navigate = useNavigate()
-  const { setRegistrationData, email, password } = useRegistration()
+  const {
+    setFirstname,
+    setLastname,
+    setAboutMe,
+    email,
+    password,
+    userType,
+    firstname,
+    lastname,
+    aboutMe
+  } = useRegistration()
+
+  const [register, _register] = useMutation(
+    userType === 'pupil' ? mutPupil : mutStudent
+  )
 
   useEffect(() => {
-    if (!email && !password) navigate('/registration/1')
+    if (!email || !password) navigate('/registration/1')
   }, [email, navigate, password])
+
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Registrierung – Eingabemaske Persönliche Daten'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const attemptRegister = useCallback(async () => {
+    setVariant('dark')
+    try {
+      const res = await register({
+        variables: { firstname, lastname, email, password, aboutMe }
+      })
+      if (!res.errors) {
+        setContent(<VerifyEmailModal email={email} />)
+      } else {
+        setContent(
+          <VStack
+            space={space['1']}
+            p={space['1']}
+            flex="1"
+            alignItems="center">
+            <Text color="lightText">
+              {t(`registration.result.error.message.${res.errors[0].message}`, {
+                defaultValue: res.errors[0].message
+              })}
+            </Text>
+            <Button
+              onPress={() => {
+                setShow(false)
+                attemptRegister()
+              }}>
+              Erneut versuchen
+            </Button>
+            <Button onPress={() => setShow(false)}>
+              {t('registration.result.error.btn')}
+            </Button>
+          </VStack>
+        )
+      }
+    } catch (e: any) {
+      setContent(
+        <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
+          <Text color="lightText">
+            {t(`registration.result.error.message.${e.message}`, {
+              defaultValue: e.message
+            })}
+          </Text>
+          <Button
+            onPress={() => {
+              setShow(false)
+              attemptRegister()
+            }}>
+            Erneut versuchen
+          </Button>
+          <Button onPress={() => setShow(false)}>
+            {t('registration.result.error.btn')}
+          </Button>
+        </VStack>
+      )
+    }
+
+    // if (!res.errors) {
+    //   if (res.data?.meRegisterPupil?.id) {
+    //     // navigate('/registration/3')
+    //     // show success message
+
+    //   }
+    // } else {
+    //   // show error message
+    // }
+    setShow(true)
+  }, [
+    register,
+    firstname,
+    lastname,
+    email,
+    password,
+    aboutMe,
+    setVariant,
+    setContent,
+    space,
+    t,
+    setShow
+  ])
+
+  const isValidInput = useMemo(() => {
+    return firstname && lastname && email && password
+  }, [email, firstname, lastname, password])
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -48,28 +220,45 @@ const RegistrationPersonal: React.FC<Props> = () => {
           }}
         />
         <Logo />
-        <Heading mt={space['1']}>{t('registration.new')}</Heading>
+        <Heading mt={space['1']}>{t('registration.personal.title')}</Heading>
       </Box>
-      <VStack space={space['1']} paddingX={space['1']} mt={space['1']}>
+      <VStack
+        space={space['1']}
+        paddingX={space['1']}
+        mt={space['4']}
+        marginX="auto"
+        width={ContainerWidth}>
         <TextInput
+          value={firstname}
           placeholder={t('firstname')}
-          onChangeText={t => setRegistrationData({ firstname: t })}
+          onChangeText={setFirstname}
         />
         <TextInput
+          value={lastname}
           placeholder={t('lastname')}
-          onChangeText={t => setRegistrationData({ lastname: t })}
+          onChangeText={setLastname}
         />
-        <>
-          <Heading>{t('registration.personal.about.label')}</Heading>
-          <TextArea
-            h={150}
-            placeholder={t('registration.personal.about.text')}
-            autoCompleteType={{}}
-          />
-        </>
-        <Button onPress={() => navigate('/registration/3')}>
-          {t('registration.register')}
-        </Button>
+        {userType === 'pupil' && (
+          <>
+            <Heading>{t('registration.personal.about.label')}</Heading>
+            <TextArea
+              h={150}
+              value={aboutMe}
+              onChangeText={setAboutMe}
+              placeholder={t('registration.personal.about.text')}
+              autoCompleteType={{}}
+            />
+          </>
+        )}
+
+        <Row justifyContent="center">
+          <Button
+            isDisabled={!isValidInput || _register?.loading}
+            width={buttonWidth}
+            onPress={attemptRegister}>
+            {t('registration.register')}
+          </Button>
+        </Row>
       </VStack>
     </Flex>
   )

@@ -6,7 +6,9 @@ import {
   Heading,
   Button,
   Box,
-  Link
+  Link,
+  useBreakpointValue,
+  Text
 } from 'native-base'
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,11 +21,11 @@ type Props = {
 
   isOutlineButtonLink?: boolean
   outlineButtonText?: string
-  outlinebuttonLink?: () => any
+  outlinebuttonLink?: () => any | any
 
   isdefaultButtonFirst?: boolean
   defaultButtonText?: string
-  defaultbuttonLink?: () => any
+  defaultbuttonLink?: () => any | any
 }
 
 const InfoScreen: React.FC<Props> = ({
@@ -38,16 +40,30 @@ const InfoScreen: React.FC<Props> = ({
   defaultButtonText,
   defaultbuttonLink
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['smallWidth']
+  })
+
+  const buttonWidth = useBreakpointValue({
+    base: '80%',
+    lg: sizes['smallWidth']
+  })
 
   return (
     <View
       width="100vw"
       height="100vh"
+      alignContent="center"
+      justifyContent="center"
       backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
       <VStack>
         <Row
+          maxWidth={ContentContainerWidth}
+          marginX="auto"
           flexDirection="column"
           paddingY={space['4']}
           justifyContent="center"
@@ -68,19 +84,20 @@ const InfoScreen: React.FC<Props> = ({
             </Heading>
           )}
           {content && (
-            <Box
+            <Text
               maxWidth="300"
               paddingBottom={space['2']}
               color={variant === 'dark' ? 'lightText' : 'primary.700'}
               textAlign="center">
               {content}
-            </Box>
+            </Text>
           )}
           {outlineButtonText && isOutlineButtonLink === false && (
-            <Box marginX="90px" marginBottom={3} display="block" width="80%">
+            <Box alignItems="center" marginBottom={3} width={buttonWidth}>
               <Button
                 variant={variant === 'dark' ? 'outlinelight' : 'outline'}
-                width="100%"
+                width={buttonWidth}
+                minWidth="190px"
                 onPress={outlinebuttonLink}>
                 {t(outlineButtonText)}
               </Button>
@@ -88,15 +105,22 @@ const InfoScreen: React.FC<Props> = ({
           )}
 
           {isdefaultButtonFirst && defaultButtonText && (
-            <Box marginX="90px" display="block" width="80%">
-              <Button width="100%" onPress={defaultbuttonLink}>
+            <Box alignItems="center" width={buttonWidth}>
+              <Button
+                marginX="auto"
+                minWidth="190px"
+                width={buttonWidth}
+                onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>
           )}
           {defaultButtonText && !isdefaultButtonFirst && (
-            <Box marginX="90px" display="block" width="80%">
-              <Button width="100%" onPress={defaultbuttonLink}>
+            <Box alignItems="center" width={buttonWidth}>
+              <Button
+                width={buttonWidth}
+                minWidth="190px"
+                onPress={defaultbuttonLink}>
                 {t(defaultButtonText)}
               </Button>
             </Box>

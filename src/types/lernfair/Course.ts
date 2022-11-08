@@ -1,18 +1,37 @@
+import { LFDecision } from './Decision'
+import { Pupil } from './User'
+
 export type LFCourse = {
+  id?: string
   name: string
   description: string
   outline: string
+  tags?: LFTag[]
+  image?: string
 }
-
-export type LFSubCourse = {
-  id?: number
+export interface LFSubCourse extends LFCourse {
   lectures: LFLecture[]
   image?: string
+  isParticipant?: boolean
+  participants?: Pupil[]
+  participantsAsPupil?: Pupil[]
+  maxParticipants?: number
+  participantsCount?: number
   course: LFCourse
+  canJoin?: LFDecision
+  isOnWaitingList?: boolean
+  published?: boolean
 }
 
 export type LFLecture = {
   id?: number
-  start: Date
+  start: string
   duration: number
 }
+
+export type LFTag = {
+  name: string
+  category?: string
+}
+
+export type TrafficStatus = 'full' | 'last' | 'free'

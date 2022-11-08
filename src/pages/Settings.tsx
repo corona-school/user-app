@@ -1,10 +1,21 @@
 import { gql, useQuery } from '@apollo/client'
-import { Heading, useTheme, VStack, Column, HStack } from 'native-base'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import {
+  Heading,
+  useTheme,
+  VStack,
+  Column,
+  HStack,
+  useBreakpointValue
+} from 'native-base'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import WithNavigation from '../components/WithNavigation'
 import useApollo from '../hooks/useApollo'
+import useLernfair from '../hooks/useLernfair'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
@@ -12,14 +23,27 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow'
 type Props = {}
 
 const Settings: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { clearToken } = useApollo()
   const tabspace = 3
-  // const { user } = useLernfair()
+  const { userType } = useLernfair()
+  const { trackPageView, trackEvent } = useMatomo()
 
-  const { data, error, loading } = useQuery(gql`
+  useEffect(() => {
+    trackPageView({
+      documentTitle: 'Einstellungen'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const { data, loading } = useQuery(gql`
     query {
       me {
         firstname
@@ -27,22 +51,30 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
-  if (loading) return <></>
+  if (loading) return <CenterLoadingSpinner />
 
   return (
-    <WithNavigation
-      headerTitle={t('settings.header')}
-      headerLeft={<BackButton />}>
-      <VStack paddingTop={space['4']} paddingBottom={7} paddingX={space['1.5']}>
+    <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
+      <VStack
+        paddingBottom={7}
+        paddingX={space['1.5']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <HStack space={space['1']} alignItems="center">
-          <ProfilAvatar
+          {/* <ProfilAvatar
             size="md"
             image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          />
+          /> */}
           <Heading>{data?.me?.firstname}</Heading>
         </HStack>
       </VStack>
-      <VStack paddingX={space['1.5']} space={space['1']}>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
           <Column mb={tabspace}>
             <EditDataRow
@@ -50,7 +82,7 @@ const Settings: React.FC<Props> = () => {
               onPress={() => navigate('/profile')}
             />
           </Column>
-          <Column mb={tabspace}>
+          {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.general.languageVersion')}
               isDisabled
@@ -61,16 +93,18 @@ const Settings: React.FC<Props> = () => {
               label={t('settings.general.notifications')}
               isDisabled
             />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.general.onboarding')}
-              onPress={() => navigate('/onboarding-list')}
-            />
-          </Column>
+          </Column> */}
+          {userType === 'student' && (
+            <Column mb={tabspace}>
+              <EditDataRow
+                label={t('settings.general.onboarding')}
+                onPress={() => navigate('/onboarding-list')}
+              />
+            </Column>
+          )}
         </ProfileSettingRow>
         <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-          <Column mb={tabspace}>
+          {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
           </Column>
           <Column mb={tabspace}>
@@ -78,27 +112,33 @@ const Settings: React.FC<Props> = () => {
               label={t('settings.account.changePassword')}
               isDisabled
             />
-          </Column>
-          <Column mb={tabspace}>
+          </Column> */}
+          {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeUser')} isDisabled />
-          </Column>
-          <Column mb={tabspace}>
+          </Column> */}
+          {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.deleteAccount')}
               isDisabled
             />
-          </Column>
+          </Column> */}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
+                trackEvent({
+                  category: 'profil',
+                  action: 'click-event',
+                  name: 'Abmelden im Account',
+                  documentTitle: 'Logout'
+                })
                 clearToken()
                 navigate(0)
               }}
             />
           </Column>
         </ProfileSettingRow>
-        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
             <EditDataRow label={t('settings.legal.imprint')} isDisabled />
           </Column>
@@ -108,7 +148,7 @@ const Settings: React.FC<Props> = () => {
           <Column mb={tabspace}>
             <EditDataRow label={t('settings.legal.terms')} isDisabled />
           </Column>
-        </ProfileSettingRow>
+        </ProfileSettingRow> */}
       </VStack>
     </WithNavigation>
   )

@@ -9,9 +9,9 @@ describe('LearningPartner', () => {
       <LearningPartner
         avatar=""
         name="Milan"
-        fach={['Englisch', 'Informatik']}
-        schulform="Gymnasium"
-        klasse={13}
+        subjects={['Englisch', 'Informatik']}
+        schooltype="Gymnasium"
+        schoolclass={13}
       />,
       { wrapper: TestWrapper }
     )

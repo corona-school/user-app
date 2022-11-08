@@ -1,10 +1,13 @@
+import { DateTime } from 'luxon'
 import { Text, Box, Row, useTheme, Button, Image, Link } from 'native-base'
+import { useCallback, useMemo } from 'react'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
-import { LFSubCourse } from '../types/lernfair/Course'
+import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
+import Utility from '../Utility'
 
 type Props = {
-  // tags?: string[]
+  tags?: LFTag[]
   // date?: Date
   // numAppointments?: number
   // title?: string
@@ -13,10 +16,11 @@ type Props = {
   data: LFSubCourse
   onClickSignIn?: () => any
   flexibleWidth?: boolean
+  onPress?: () => any
 }
 
 const SignInCard: React.FC<Props> = ({
-  // tags,
+  tags,
   // date,
   // numAppointments,
   // title,
@@ -24,12 +28,17 @@ const SignInCard: React.FC<Props> = ({
   // href,
   data,
   onClickSignIn,
-  flexibleWidth
+  flexibleWidth,
+  onPress
 }) => {
   const { space } = useTheme()
+
   return (
-    <Link href={'/single-course'} width={flexibleWidth ? '100%' : undefined}>
-      <Card isFullHeight={false} width={'100%'}>
+    <Link
+      height="100%"
+      onPress={onPress}
+      width={flexibleWidth ? '100%' : undefined}>
+      <Card isFullHeight={true} width={'100%'}>
         <Box bg="primary.500" h="120" padding={space['0.5']}>
           <Image
             position="absolute"
@@ -44,15 +53,15 @@ const SignInCard: React.FC<Props> = ({
             }}
           />
         </Box>
-        <Box padding={space['0.5']}>
-          <Row space={space['0.5']} paddingY={space['0.5']} flexWrap="wrap">
-            {['???', '???'].map((t, i) => (
-              <Tag key={`tag-${i}`} text={t} />
-            ))}
-          </Row>
+        <Box paddingX={space['1']} paddingY={space['1']} maxWidth="300px">
           <Row space={1.5}>
-            {data?.lectures && (
-              <Text>Ab {data.lectures[0].start.toLocaleDateString()}</Text>
+            {data?.lectures && data?.lectures[0] && (
+              <Text>
+                Ab{' '}
+                {DateTime.fromISO(data.lectures[0].start).toFormat(
+                  'dd.MM.yyyy'
+                )}
+              </Text>
             )}
             <Text>•</Text>
             <Text>{data.lectures?.length} Termine</Text>
@@ -65,6 +74,11 @@ const SignInCard: React.FC<Props> = ({
             paddingBottom={space['0.5']}>
             {data?.course?.name}
           </Text>
+          <Row space={space['0.5']} paddingY={space['0.5']} flexWrap="wrap">
+            {tags?.map((tag, i) => (
+              <Tag key={`tag-${i}`} text={tag.name} />
+            ))}
+          </Row>
           <Button
             variant="outline"
             marginTop={space['1']}

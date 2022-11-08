@@ -9,6 +9,17 @@ const onboarding = {
   begin: 'Ab',
   all: 'Alle',
   firstname: 'Vorname',
-  lastname: 'Nachname'
+  lastname: 'Nachname',
+  skip: 'Überspringen',
+  important: 'Wichtig',
+  empty: {
+    appointments: 'Du hast momentan keine Termine.',
+    courses: 'Es wurden keine Kurse gefunden.',
+    offers: 'Es wurden keine Angebote gefunden.',
+    coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
+    coursesdraft: 'Es wurden keine Kursentwürfe gefunden.',
+    matchings: 'Es wurden keine Matchings gefunden.',
+    norequests: 'Es wurden keine Anfragen gefunden.',
+  }
 }
 export default onboarding
