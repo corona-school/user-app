@@ -27,6 +27,8 @@ import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
+import InstructorRow from '../../widgets/InstructorRow'
+import { LFInstructor } from '../../types/lernfair/Course'
 
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
   const { t } = useTranslation()
@@ -80,9 +82,15 @@ type Props = {
   onNext: () => any
   onCancel: () => any
   onShowUnsplash: () => any
+  onShowAddInstructor: () => any
 }
 
-const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
+const CourseData: React.FC<Props> = ({
+  onNext,
+  onCancel,
+  onShowUnsplash,
+  onShowAddInstructor
+}) => {
   const { data } = useQuery(gql`
     query {
       me {
@@ -120,7 +128,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     setJoinAfterStart,
     allowContact,
     setAllowContact,
-    pickedPhoto
+    pickedPhoto,
+    addedInstructors
   } = useContext(CreateCourseContext)
 
   const isValidInput: boolean = useMemo(() => {
@@ -244,8 +253,15 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         </Box>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
-        <Row space={space['0.5']}>
-          <WidgetAddInstructor onPress={() => alert('Funktion')} />
+        <Heading>Weitere Kursleiter</Heading>
+        <VStack mt={space['1']}>
+          {addedInstructors &&
+            addedInstructors.map((instructor: LFInstructor) => (
+              <InstructorRow instructor={instructor} />
+            ))}
+        </VStack>
+        <Row space={space['0.5']} mt={space['1']}>
+          <WidgetAddInstructor onPress={onShowAddInstructor} />
         </Row>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
