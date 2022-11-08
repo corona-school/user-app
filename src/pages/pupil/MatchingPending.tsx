@@ -15,6 +15,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
 import CTACard from '../../widgets/CTACard'
+import LFGruppenLearnIcon from '../../assets/icons/lernfair/lf-books.svg'
 
 type Props = { refetchQuery: DocumentNode }
 
@@ -92,6 +93,8 @@ const MatchingPending: React.FC<Props> = ({ refetchQuery }) => {
         </Button>
 
         <CTACard
+          variant="dark"
+          icon={<LFGruppenLearnIcon />}
           title={t('matching.pending.cta.title')}
           content={<Text>{t('matching.pending.cta.content')}</Text>}
           button={<Button>{t('matching.pending.buttons.cta')}</Button>}
