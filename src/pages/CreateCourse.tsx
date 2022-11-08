@@ -103,7 +103,6 @@ const CreateCourse: React.FC<Props> = () => {
     query {
       me {
         student {
-          schooltype
           canCreateCourse {
             allowed
             reason
