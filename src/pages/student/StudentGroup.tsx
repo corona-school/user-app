@@ -14,7 +14,7 @@ import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
 import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
-import { LFCourse, LFSubCourse } from '../../types/lernfair/Course'
+import { LFSubCourse } from '../../types/lernfair/Course'
 import Utility from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
@@ -72,8 +72,7 @@ const StudentGroup: React.FC<Props> = () => {
 
   const location = useLocation()
   const locState = location.state as {
-    courseSuccess: boolean
-    imageError: boolean
+    errors: string[]
   }
 
   const ContainerWidth = useBreakpointValue({
@@ -142,25 +141,25 @@ const StudentGroup: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const renderCourse = (course: LFCourse, index: number) => (
-    <CSSWrapper className="course-list__item">
-      <AppointmentCard
-        isFullHeight
-        isSpaceMarginBottom={false}
-        key={index}
-        variant="horizontal"
-        description={course.outline}
-        tags={course.tags}
-        image={course.image}
-        title={course.name}
-        onPressToCourse={() =>
-          navigate('/single-course', {
-            state: { course: course.id }
-          })
-        }
-      />
-    </CSSWrapper>
-  )
+  // const renderCourse = (course: LFCourse, index: number) => (
+  //   <CSSWrapper className="course-list__item">
+  //     <AppointmentCard
+  //       isFullHeight
+  //       isSpaceMarginBottom={false}
+  //       key={index}
+  //       variant="horizontal"
+  //       description={course.outline}
+  //       tags={course.tags}
+  //       image={course.image}
+  //       title={course.name}
+  //       onPressToCourse={() =>
+  //         navigate('/single-course', {
+  //           state: { course: course.id }
+  //         })
+  //       }
+  //     />
+  //   </CSSWrapper>
+  // )
 
   const renderSubcourse = (
     course: LFSubCourse,
@@ -191,6 +190,17 @@ const StudentGroup: React.FC<Props> = () => {
     )
   }
 
+  const showSuccess = useMemo(() => {
+    if (locState?.errors) {
+      return (
+        locState.errors.filter(
+          error => error === 'course' || error === 'subcourse'
+        ).length === 0
+      )
+    }
+    return false
+  }, [locState.errors])
+
   if (loading) return <CenterLoadingSpinner />
 
   return (
@@ -218,18 +228,31 @@ const StudentGroup: React.FC<Props> = () => {
             </VStack>
             {locState && Object.keys(locState).length > 0 && (
               <>
-                {locState.courseSuccess && (
+                {showSuccess && (
                   <AlertMessage
                     content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
                    nun in Prüfung."
                   />
                 )}
-                {!locState.courseSuccess && (
-                  <AlertMessage content="Dein Kurs konnte nicht erstellt werden." />
-                )}
-                {locState.imageError && (
-                  <AlertMessage content="Dein Bild konnte nicht hochgeladen werden." />
-                )}
+                {(locState?.errors?.length > 0 && (
+                  <>
+                    {locState.errors.map(e => (
+                      <AlertMessage content={e} />
+                    ))}
+                    {/* {locState.courseSuccess && (
+                      <AlertMessage
+                        content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
+                   nun in Prüfung."
+                      />
+                    )}
+                    {!locState.courseSuccess && (
+                      <AlertMessage content="Dein Kurs konnte nicht erstellt werden." />
+                    )}
+                    {locState.imageError && (
+                      <AlertMessage content="Dein Bild konnte nicht hochgeladen werden." />
+                    )} */}
+                  </>
+                )) || <></>}
               </>
             )}
             <VStack paddingY={space['1']}>

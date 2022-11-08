@@ -7,13 +7,13 @@ import {
   Box,
   Flex,
   useTheme,
-  Spinner,
   Heading,
   Row,
   ArrowBackIcon
 } from 'native-base'
 import { useCallback, useState } from 'react'
 import { Pressable } from 'react-native'
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import Pagination from '../components/Pagination'
 import SearchBar from '../components/SearchBar'
 import TwoColGrid from '../widgets/TwoColGrid'
@@ -54,12 +54,7 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
     setSelectedPhoto('')
   }, [onPhotoSelected, selectedPhoto])
 
-  if (isLoading)
-    return (
-      <Flex flex="1" justifyContent="center" alignItems="center" h="100%">
-        <Spinner />
-      </Flex>
-    )
+  if (isLoading) return <CenterLoadingSpinner />
 
   return (
     <VStack flex="1" overflowY="scroll" h="100%">

@@ -21,21 +21,76 @@ import {
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import ToggleButton from '../../components/ToggleButton'
 import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
+import InstructorRow from '../../widgets/InstructorRow'
+import { LFInstructor } from '../../types/lernfair/Course'
+
+const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Pressable onPress={onPress} alignItems="center" flexDirection="row">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bg={'primary.900'}
+        w="40px"
+        h="40px"
+        marginRight="15px"
+        borderRadius="10px">
+        <Text color="white" fontSize="32px">
+          +
+        </Text>
+      </Box>
+      <Text bold>{t('course.CourseDate.form.courseAddOntherLeadText')}</Text>
+    </Pressable>
+  )
+}
+
+const WidgetUnsplash: React.FC<{
+  photo: string | undefined
+  onShowUnsplash: () => any
+}> = ({ photo, onShowUnsplash }) => {
+  const { space } = useTheme()
+  const { t } = useTranslation()
+  return (
+    <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
+      <Column marginRight={space['1']}>
+        <Image
+          width="90px"
+          height="90px"
+          alt="Image Placeholder"
+          source={{
+            uri: photo || ImagePlaceHolder
+          }}
+        />
+      </Column>
+      <Column>
+        <Link>{t('course.uploadImage')}</Link>
+      </Column>
+    </Pressable>
+  )
+}
 
 type Props = {
   onNext: () => any
   onCancel: () => any
   onShowUnsplash: () => any
+  onShowAddInstructor: () => any
 }
 
-const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
+const CourseData: React.FC<Props> = ({
+  onNext,
+  onCancel,
+  onShowUnsplash,
+  onShowAddInstructor
+}) => {
   const { data } = useQuery(gql`
     query {
       me {
@@ -73,7 +128,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     setJoinAfterStart,
     allowContact,
     setAllowContact,
-    pickedPhoto
+    pickedPhoto,
+    addedInstructors
   } = useContext(CreateCourseContext)
 
   const isValidInput: boolean = useMemo(() => {
@@ -94,11 +150,6 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     pickedPhoto,
     subject
   ])
-
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -198,49 +249,19 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
         <Box paddingY={space['1']}>
-          <Pressable
-            onPress={onShowUnsplash}
-            flexDirection="row"
-            alignItems="center">
-            <Column marginRight={space['1']}>
-              <Image
-                width="90px"
-                height="90px"
-                alt="Image Placeholder"
-                source={{
-                  uri: pickedPhoto || ImagePlaceHolder
-                }}
-              />
-            </Column>
-            <Column>
-              <Link>{t('course.uploadImage')}</Link>
-            </Column>
-          </Pressable>
+          <WidgetUnsplash photo={pickedPhoto} onShowUnsplash={onShowUnsplash} />
         </Box>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
-        <Row space={space['0.5']}>
-          <Pressable
-            onPress={() => alert('Funktion')}
-            alignItems="center"
-            flexDirection="row">
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg={'primary.900'}
-              w="40px"
-              h="40px"
-              marginRight="15px"
-              borderRadius="10px">
-              <Text color="white" fontSize="32px">
-                +
-              </Text>
-            </Box>
-            <Text bold>
-              {t('course.CourseDate.form.courseAddOntherLeadText')}
-            </Text>
-          </Pressable>
+        <Heading>Weitere Kursleiter</Heading>
+        <VStack mt={space['1']}>
+          {addedInstructors &&
+            addedInstructors.map((instructor: LFInstructor) => (
+              <InstructorRow instructor={instructor} />
+            ))}
+        </VStack>
+        <Row space={space['0.5']} mt={space['1']}>
+          <WidgetAddInstructor onPress={onShowAddInstructor} />
         </Row>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
