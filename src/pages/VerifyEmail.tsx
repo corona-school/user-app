@@ -102,7 +102,10 @@ const VerifyEmail: React.FC<Props> = () => {
           {(showSuccess && (
             <VStack>
               <Heading>Dein Account wurde aktiviert!</Heading>
-              <Button onPress={() => navigate('/additional-data')}>
+              <Button
+                onPress={() =>
+                  navigate('/additional-data', { state: { token } })
+                }>
                 Fortfahren
               </Button>
             </VStack>

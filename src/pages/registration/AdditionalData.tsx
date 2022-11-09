@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Modal,
   Text,
   useBreakpointValue,
@@ -11,7 +12,7 @@ import {
   VStack
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Questionnaire, {
   Answer,
   ObjectAnswer,
@@ -22,14 +23,16 @@ import Questionnaire, {
 import { pupilQuestions, studentQuestions } from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
-import { gql, useMutation } from '@apollo/client'
-import useRegistration from '../../hooks/useRegistration'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
+import { LFUserType } from '../../types/lernfair/User'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 
 type Props = {}
 
@@ -60,6 +63,42 @@ const RegistrationData: React.FC<Props> = () => {
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { token } = useParams() as { token: string }
+
+  const [login, { error: loginError }] = useMutation(gql`
+    mutation ($token: String!) {
+      loginToken(token: $token)
+    }
+  `)
+
+  const [
+    meQuery,
+    { data: meData, loading: meLoading, called, error: meError }
+  ] = useLazyQuery(gql`
+    query {
+      me {
+        pupil {
+          id
+        }
+        student {
+          id
+        }
+      }
+    }
+  `)
+
+  const tokenLogin = useCallback(async () => {
+    if (token) {
+      const res = await login({ variables: { token } })
+      if (res?.data.loginToken) {
+        meQuery()
+      }
+    }
+  }, [login, meQuery, token])
+
+  useEffect(() => {
+    tokenLogin()
+  }, [token, tokenLogin])
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [questions, setQuestions] = useState<Question[]>([])
@@ -75,15 +114,19 @@ const RegistrationData: React.FC<Props> = () => {
   // show global modal
   const { setShow, setContent, setVariant } = useModal()
 
-  // data provided by previous slides
-  const { userType } = useRegistration()
-
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
   const [focusedSelection, setFocusedSelection] = useState<ISelectionItem>({
     key: '',
     label: ''
   })
+
+  // determine user type based on data available
+  const userType: LFUserType = useMemo(() => {
+    if (meData?.me?.student?.id) return 'student'
+    else if (meData?.me?.pupil?.id) return 'pupil'
+    else return 'unknown'
+  }, [meData?.me])
 
   // use different string depending on userType
   const [register, { loading }] = useMutation(
@@ -175,8 +218,13 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function attemptRegistration(answers: { [key: string]: Answer }) {
+  const attemptRegistration = async (answers: { [key: string]: Answer }) => {
     let res: any
+
+    if (!userType || userType === 'unknown') {
+      showErrorModal('Unknown User Type')
+      return
+    }
 
     try {
       if (userType === 'pupil') {
@@ -422,6 +470,8 @@ const RegistrationData: React.FC<Props> = () => {
     [userType]
   )
 
+  if (!token || loginError || meError) return <AdditionalDataError />
+  if (!called || meLoading) return <CenterLoadingSpinner />
   return (
     <QuestionnaireContext.Provider
       value={{
@@ -502,3 +552,46 @@ const RegistrationData: React.FC<Props> = () => {
   )
 }
 export default RegistrationData
+
+const AdditionalDataError = () => {
+  const { space, sizes } = useTheme()
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  return (
+    <Flex overflowY={'auto'} height="100vh">
+      <>
+        <Box
+          position="relative"
+          paddingY={space['2']}
+          justifyContent="center"
+          alignItems="center">
+          <Image
+            alt="Lernfair"
+            position="absolute"
+            zIndex="-1"
+            borderBottomRadius={15}
+            width="100%"
+            height="100%"
+            source={{
+              uri: require('../../assets/images/globals/lf-bg.png')
+            }}
+          />
+          <Logo />
+          <Heading mt={space['1']}>Weitere Daten</Heading>
+        </Box>
+        <VStack
+          space={space['1']}
+          paddingX={space['1']}
+          mt={space['4']}
+          marginX="auto"
+          width={ContainerWidth}
+          justifyContent="center">
+          <Heading>Token ungültig</Heading>
+        </VStack>
+      </>
+    </Flex>
+  )
+}

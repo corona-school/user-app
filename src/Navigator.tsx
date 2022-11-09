@@ -27,7 +27,7 @@ import SingleCourse from './pages/SingleCourse'
 
 import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
-import RegistrationData from './pages/registration/RegistrationData'
+import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
 
@@ -118,7 +118,7 @@ export default function Navigator() {
           }>
           <Route path="1" element={<RegistrationAccount />} />
           <Route path="2" element={<RegistrationPersonal />} />
-          <Route path="3" element={<RegistrationData />} />
+          <Route path="3" element={<AdditionalData />} />
         </Route>
 
         <Route path="/welcome" element={<Welcome />} />
@@ -431,14 +431,7 @@ export default function Navigator() {
         />
 
         <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route
-          path="/additional-data"
-          element={
-            <RequireAuth>
-              <RegistrationData />
-            </RequireAuth>
-          }
-        />
+        <Route path="/additional-data" element={<AdditionalData />} />
         <Route path="/email-not-verified" element={<VerifyEmailModal />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
