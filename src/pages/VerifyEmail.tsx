@@ -22,7 +22,7 @@ const VerifyEmail: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { token } = useParams() as { token: string }
-  const { createToken, clearToken } = useApollo()
+  // const { createToken, clearToken } = useApollo()
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [loginToken, { loading }] = useMutation(gql`
     mutation ($token: String!) {
@@ -40,7 +40,7 @@ const VerifyEmail: React.FC<Props> = () => {
 
     if (!res.errors) {
       if (res.data?.loginToken) {
-        createToken(token)
+        // createToken(token)
         setShowSuccess(true)
       } else {
         navigate('/login')
@@ -57,7 +57,7 @@ const VerifyEmail: React.FC<Props> = () => {
 
   useEffect(() => {
     return () => {
-      clearToken()
+      // clearToken()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

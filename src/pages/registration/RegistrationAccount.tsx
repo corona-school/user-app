@@ -42,7 +42,7 @@ const RegistrationAccount: React.FC<Props> = () => {
   const { setContent, setShow, setVariant } = useModal()
   const { email, password, userType, setEmail, setPassword, setUserType } =
     useRegistration()
-  const { createToken } = useApollo()
+  // const { createToken } = useApollo()
   const { trackPageView, trackEvent } = useMatomo()
 
   const [showEmailNotAvailable, setShowEmailNotAvailable] =
@@ -83,7 +83,7 @@ const RegistrationAccount: React.FC<Props> = () => {
   })
 
   useEffect(() => {
-    createToken()
+    // createToken()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

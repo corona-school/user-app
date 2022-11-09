@@ -24,7 +24,7 @@ const ResetPassword: React.FC<Props> = () => {
   const { token } = useParams() as { token: string }
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { createToken, clearToken } = useApollo()
+  // const { createToken, clearToken } = useApollo()
   const [password, setPassword] = useState<string>()
   const [passwordRepeat, setPasswordRepeat] = useState<string>()
   const { space, sizes } = useTheme()
@@ -75,7 +75,7 @@ const ResetPassword: React.FC<Props> = () => {
   }, [loginToken, token])
 
   useEffect(() => {
-    createToken()
+    // createToken()
     if (token) {
       login()
     }
@@ -83,7 +83,7 @@ const ResetPassword: React.FC<Props> = () => {
   }, [login, loginToken, token])
 
   const onNext = () => {
-    clearToken()
+    // clearToken()
     navigate('/login')
   }
 

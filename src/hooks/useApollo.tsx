@@ -219,6 +219,7 @@ const useApolloInternal = () => {
 
     const deviceToken = result.data.tokenCreate
     setDeviceToken(deviceToken)
+    setSessionState('logged-in')
   }, [client])
 
   // ------------ Session Initialization ------------------
@@ -305,7 +306,6 @@ const useApolloInternal = () => {
     clearDeviceToken()
     setSessionState('logged-out')
   }, [client])
-
   return useMemo(
     () => ({ client, logout, createDeviceToken, sessionState }),
     [client, logout, createDeviceToken, sessionState]

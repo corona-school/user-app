@@ -26,6 +26,7 @@ import { DEEPLINK_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
+  const { createDeviceToken } = useApollo()
   const { space, sizes } = useTheme()
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -39,7 +40,6 @@ export default function Login() {
       loginPassword(password: $password, email: $email)
     }
   `)
-
 
   const navigate = useNavigate()
   const { trackPageView, trackEvent } = useMatomo()
@@ -81,11 +81,10 @@ export default function Login() {
       }
     })
     if (res?.data && res.data.loginPassword) {
-      createDeviceToken(); // fire and forget
+      await createDeviceToken() // fire and forget
       navigate('/')
-    } 
-  }, [email, login, password])
-
+    }
+  }, [createDeviceToken, email, login, loginButton, navigate, password])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
