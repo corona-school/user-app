@@ -93,7 +93,7 @@ const VerifyEmail: React.FC<Props> = () => {
   }, [setUserType, userType])
 
   if (loading) return <CenterLoadingSpinner />
-  console.log('verify', userType, _userType)
+
   return (
     <Flex overflowY={'auto'} height="100vh">
       <>

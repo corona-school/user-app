@@ -430,7 +430,6 @@ const RegistrationData: React.FC<Props> = () => {
     [userType]
   )
 
-  console.log('additional', userType)
   if (!token || !userType) return <AdditionalDataError />
 
   return (

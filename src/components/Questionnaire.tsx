@@ -109,15 +109,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
-    console.log('before modify')
     modifyAnswerBeforeNext &&
       modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
-    console.log('after modify')
-    console.log(
-      currentIndex >= questions.length - 1,
-      currentIndex,
-      questions.length - 1
-    )
+
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -164,7 +158,6 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // skip one question
   const skip = useCallback(() => {
-    console.log('skip')
     delete answers[currentQuestion.id]
     next()
   }, [answers, currentQuestion.id, next])
