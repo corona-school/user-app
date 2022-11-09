@@ -27,7 +27,7 @@ import SingleCourse from './pages/SingleCourse'
 
 import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
-import RegistrationData from './pages/registration/RegistrationData'
+import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
 import Explore from './pages/Explore'
 
@@ -75,33 +75,33 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
-  // const { userType } = useLernfair()
+  const { userType } = useLernfair()
 
-  // const { data, loading } = useQuery(
-  //   gql`
-  //     query {
-  //       me {
-  //         email
-  //         pupil {
-  //           id
-  //           verifiedAt
-  //         }
-  //         student {
-  //           id
-  //           verifiedAt
-  //         }
-  //       }
-  //     }
-  //   `,
-  //   { skip: !userType }
-  // )
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          email
+          pupil {
+            id
+            verifiedAt
+          }
+          student {
+            id
+            verifiedAt
+          }
+        }
+      }
+    `,
+    { skip: !userType }
+  )
 
-  // if (loading) return <CenterLoadingSpinner />
+  if (loading) return <CenterLoadingSpinner />
 
-  // if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-  //   return <VerifyEmailModal email={data.me.email} />
-  // if (data && data.me.student && !data.me.student.verifiedAt)
-  //   return <VerifyEmailModal email={data.me.email} />
+  if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+    return <VerifyEmailModal email={data.me.email} />
+  if (data && data.me.student && !data.me.student.verifiedAt)
+    return <VerifyEmailModal email={data.me.email} />
 
   return (
     <BrowserRouter>
@@ -118,7 +118,7 @@ export default function Navigator() {
           }>
           <Route path="1" element={<RegistrationAccount />} />
           <Route path="2" element={<RegistrationPersonal />} />
-          <Route path="3" element={<RegistrationData />} />
+          <Route path="3" element={<AdditionalData />} />
         </Route>
 
         <Route path="/welcome" element={<Welcome />} />
@@ -430,17 +430,10 @@ export default function Navigator() {
           }
         />
 
-        {/* <Route path="/verify-email/:token" element={<VerifyEmail />} />
-        <Route
-          path="/additional-data"
-          element={
-            <RequireAuth>
-              <RegistrationData />
-            </RequireAuth>
-          }
-        />
-        <Route path="/email-not-verified" element={<VerifyEmailModal />} /> */}
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/additional-data" element={<AdditionalData />} />
+        <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Fallback */}
         <Route

@@ -11,7 +11,7 @@ import {
   useBreakpointValue
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import useApollo from '../hooks/useApollo'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
@@ -21,8 +21,8 @@ type Props = {}
 const VerifyEmail: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
-  const { token } = useParams() as { token: string }
-  // const { createToken, clearToken } = useApollo()
+  const [searchParams] = useSearchParams()
+  const token = searchParams?.get('token') || ''
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const [loginToken, { loading }] = useMutation(gql`
     mutation ($token: String!) {
@@ -101,7 +101,10 @@ const VerifyEmail: React.FC<Props> = () => {
           {(showSuccess && (
             <VStack>
               <Heading>Dein Account wurde aktiviert!</Heading>
-              <Button onPress={() => navigate('/additional-data')}>
+              <Button
+                onPress={() =>
+                  navigate('/additional-data', { state: { token } })
+                }>
                 Fortfahren
               </Button>
             </VStack>
