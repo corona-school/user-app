@@ -62,7 +62,7 @@ const RequestMatchPreview: React.FC<Props> = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(classes)
+
   return (
     <VStack marginX="auto" space={space['1']} maxWidth={ContainerWidth}>
       <Heading>{t('matching.request.check.preview.title')}</Heading>

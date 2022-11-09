@@ -67,7 +67,9 @@ const registration = {
         'Response not successful: Received status code 400':
           'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.',
         'RateLimit Enforcement':
-          'Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.'
+          'Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.',
+        'Unknown User Type':
+          'Dein Account-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login.'
       }
     }
   },

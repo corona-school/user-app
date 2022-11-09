@@ -45,12 +45,6 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const reg = useRegistrationProvider()
-  const { createToken } = useApollo()
-
-  useEffect(() => {
-    createToken()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <LFRegistrationContext.Provider value={reg}>

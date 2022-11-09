@@ -31,10 +31,10 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
 
   const [sendVerification, _sendVerification] = useMutation(gql`
     mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${DEEPLINK_OPTIN}")
+      tokenRequest(email: $email, action: "user-verify-email", redirectTo: "${DEEPLINK_OPTIN}")
     }
   `)
-  // redirectTo: "${window.location.origin}/verify-email"
+
   const requestEmailVerification = useCallback(async () => {
     const res = await sendVerification({
       variables: {

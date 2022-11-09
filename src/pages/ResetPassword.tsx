@@ -12,7 +12,7 @@ import {
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import PasswordInput from '../components/PasswordInput'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import { gql, useMutation } from '@apollo/client'
@@ -21,10 +21,11 @@ import useApollo from '../hooks/useApollo'
 type Props = {}
 
 const ResetPassword: React.FC<Props> = () => {
-  const { token } = useParams() as { token: string }
+  const [searchParams] = useSearchParams()
+  const token = searchParams?.get('token') || ''
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { createToken, clearToken } = useApollo()
+  // const { createToken, clearToken } = useApollo()
   const [password, setPassword] = useState<string>()
   const [passwordRepeat, setPasswordRepeat] = useState<string>()
   const { space, sizes } = useTheme()
@@ -75,7 +76,7 @@ const ResetPassword: React.FC<Props> = () => {
   }, [loginToken, token])
 
   useEffect(() => {
-    createToken()
+    // createToken()
     if (token) {
       login()
     }
@@ -83,7 +84,7 @@ const ResetPassword: React.FC<Props> = () => {
   }, [login, loginToken, token])
 
   const onNext = () => {
-    clearToken()
+    // clearToken()
     navigate('/login')
   }
 
