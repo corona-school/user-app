@@ -26,7 +26,7 @@ const Settings: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { clearToken } = useApollo()
+  const { logout } = useApollo()
   const tabspace = 3
   const { userType } = useLernfair()
   const { trackPageView, trackEvent } = useMatomo()
@@ -132,7 +132,7 @@ const Settings: React.FC<Props> = () => {
                   name: 'Abmelden im Account',
                   documentTitle: 'Logout'
                 })
-                clearToken()
+                logout()
                 navigate(0)
               }}
             />

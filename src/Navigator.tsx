@@ -457,12 +457,16 @@ export default function Navigator() {
 }
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const { token } = useApollo()
   const location = useLocation()
+  const { sessionState } = useApollo();
 
-  if (!token)
+  if (sessionState === 'logged-out')
     return <Navigate to="/welcome" state={{ from: location }} replace />
-  return children
+
+  if (sessionState === 'logged-in')
+    return children;
+
+  return <>...</>; // TODO: Loading spinner?
 }
 
 const SwitchUserType = ({

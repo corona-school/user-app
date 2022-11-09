@@ -33,13 +33,14 @@ export default function Login() {
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
   >()
+
   const [login, { error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
   `)
 
-  const { clearToken, createToken } = useApollo()
+
   const navigate = useNavigate()
   const { trackPageView, trackEvent } = useMatomo()
 
@@ -72,7 +73,6 @@ export default function Login() {
   }, [navigate])
 
   const attemptLogin = useCallback(async () => {
-    createToken()
     loginButton()
     const res = await login({
       variables: {
@@ -81,11 +81,11 @@ export default function Login() {
       }
     })
     if (res?.data && res.data.loginPassword) {
+      createDeviceToken(); // fire and forget
       navigate('/')
-    } else {
-      clearToken()
-    }
-  }, [clearToken, createToken, email, login, loginButton, navigate, password])
+    } 
+  }, [email, login, password])
+
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
