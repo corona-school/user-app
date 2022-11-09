@@ -34,7 +34,6 @@ export default function Login() {
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
   >()
-
   const [login, { error, loading }] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
