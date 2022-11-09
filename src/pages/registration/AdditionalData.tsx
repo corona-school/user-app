@@ -30,7 +30,6 @@ import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import useLernfair from '../../hooks/useLernfair'
 
@@ -41,7 +40,7 @@ const mutPupil = `mutation register(
   $schooltype: SchoolType
   $state: State!
   $gradeAsInt: Int!
-  $subjects: [SubjectInput]
+  $subjects: [SubjectInput!]
   
 ) {
   meUpdate(
@@ -141,13 +140,15 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the student with all data
   const registerStudent = useCallback(async () => {
     const subjects = []
-    for (let [sub, isSelected] of Object.entries(answers.subjects)) {
-      // const grades = Utility.intToClassRange(classes[sub])
-      const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
-      if (isSelected && grades.min > 0 && grades.max > 0) {
-        subjects.push({ name: sub, grade: grades })
+
+    if (answers.subjects)
+      for (let [sub, isSelected] of Object.entries(answers.subjects)) {
+        // const grades = Utility.intToClassRange(classes[sub])
+        const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
+        if (isSelected && grades.min > 0 && grades.max > 0) {
+          subjects.push({ name: sub, grade: grades })
+        }
       }
-    }
 
     const data = {} as {
       subjects: LFSubject[]
