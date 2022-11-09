@@ -12,7 +12,7 @@ import {
   VStack
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Questionnaire, {
   Answer,
   ObjectAnswer,
@@ -23,16 +23,16 @@ import Questionnaire, {
 import { pupilQuestions, studentQuestions } from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
-import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
-import { LFUserType } from '../../types/lernfair/User'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -63,42 +63,9 @@ const RegistrationData: React.FC<Props> = () => {
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { token } = useParams() as { token: string }
-
-  const [login, { error: loginError }] = useMutation(gql`
-    mutation ($token: String!) {
-      loginToken(token: $token)
-    }
-  `)
-
-  const [
-    meQuery,
-    { data: meData, loading: meLoading, called, error: meError }
-  ] = useLazyQuery(gql`
-    query {
-      me {
-        pupil {
-          id
-        }
-        student {
-          id
-        }
-      }
-    }
-  `)
-
-  const tokenLogin = useCallback(async () => {
-    if (token) {
-      const res = await login({ variables: { token } })
-      if (res?.data.loginToken) {
-        meQuery()
-      }
-    }
-  }, [login, meQuery, token])
-
-  useEffect(() => {
-    tokenLogin()
-  }, [token, tokenLogin])
+  const { userType } = useLernfair()
+  const location = useLocation() as { state: { token: string } }
+  const { token } = location.state
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [questions, setQuestions] = useState<Question[]>([])
@@ -120,13 +87,6 @@ const RegistrationData: React.FC<Props> = () => {
     key: '',
     label: ''
   })
-
-  // determine user type based on data available
-  const userType: LFUserType = useMemo(() => {
-    if (meData?.me?.student?.id) return 'student'
-    else if (meData?.me?.pupil?.id) return 'pupil'
-    else return 'unknown'
-  }, [meData?.me])
 
   // use different string depending on userType
   const [register, { loading }] = useMutation(
@@ -470,8 +430,9 @@ const RegistrationData: React.FC<Props> = () => {
     [userType]
   )
 
-  if (!token || loginError || meError) return <AdditionalDataError />
-  if (!called || meLoading) return <CenterLoadingSpinner />
+  console.log('additional', userType)
+  if (!token || !userType) return <AdditionalDataError />
+
   return (
     <QuestionnaireContext.Provider
       value={{

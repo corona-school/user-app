@@ -75,34 +75,6 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 
 export default function Navigator() {
-  const { userType } = useLernfair()
-
-  const { data, loading } = useQuery(
-    gql`
-      query {
-        me {
-          email
-          pupil {
-            id
-            verifiedAt
-          }
-          student {
-            id
-            verifiedAt
-          }
-        }
-      }
-    `,
-    { skip: !userType }
-  )
-
-  if (loading) return <CenterLoadingSpinner />
-
-  if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-    return <VerifyEmailModal email={data.me.email} />
-  if (data && data.me.student && !data.me.student.verifiedAt)
-    return <VerifyEmailModal email={data.me.email} />
-
   return (
     <BrowserRouter>
       <Routes>
@@ -450,13 +422,42 @@ export default function Navigator() {
 }
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  const { userType } = useLernfair()
   const location = useLocation()
   const { sessionState } = useApollo()
+
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          email
+          pupil {
+            id
+            verifiedAt
+          }
+          student {
+            id
+            verifiedAt
+          }
+        }
+      }
+    `,
+    { skip: !userType }
+  )
 
   if (sessionState === 'logged-out')
     return <Navigate to="/welcome" state={{ from: location }} replace />
 
-  if (sessionState === 'logged-in') return children
+  if (sessionState === 'logged-in') {
+    if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+      return <VerifyEmailModal email={data.me.email} />
+    if (data && data.me.student && !data.me.student.verifiedAt)
+      return <VerifyEmailModal email={data.me.email} />
+
+    return children
+  }
+
+  if (loading) return <CenterLoadingSpinner />
 
   return <Navigate to="/welcome" state={{ from: location }} replace />
 }

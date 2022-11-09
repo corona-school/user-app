@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import { GraphQLError } from 'graphql'
 import {
   VStack,
@@ -10,11 +10,13 @@ import {
   useTheme,
   useBreakpointValue
 } from 'native-base'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
-import useApollo from '../hooks/useApollo'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
+import useApollo from '../hooks/useApollo'
+import useLernfair from '../hooks/useLernfair'
+import { LFUserType } from '../types/lernfair/User'
 
 type Props = {}
 
@@ -24,9 +26,25 @@ const VerifyEmail: React.FC<Props> = () => {
   const [searchParams] = useSearchParams()
   const token = searchParams?.get('token') || ''
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
+  const { createDeviceToken } = useApollo()
+  const { setUserType, userType: _userType } = useLernfair()
+
   const [loginToken, { loading }] = useMutation(gql`
     mutation ($token: String!) {
       loginToken(token: $token)
+    }
+  `)
+
+  const [meQuery, { data: meData }] = useLazyQuery(gql`
+    query {
+      me {
+        pupil {
+          id
+        }
+        student {
+          id
+        }
+      }
     }
   `)
 
@@ -40,7 +58,10 @@ const VerifyEmail: React.FC<Props> = () => {
 
     if (!res.errors) {
       if (res.data?.loginToken) {
-        // createToken(token)
+        const token = await createDeviceToken()
+        if (token) {
+          await meQuery()
+        }
         setShowSuccess(true)
       } else {
         navigate('/login')
@@ -55,20 +76,24 @@ const VerifyEmail: React.FC<Props> = () => {
     if (token) login()
   }, [login, token])
 
-  useEffect(() => {
-    return () => {
-      // clearToken()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // determine user type based on data available
+  const userType: LFUserType = useMemo(() => {
+    if (meData?.me?.student?.id) return 'student'
+    else if (meData?.me?.pupil?.id) return 'pupil'
+    else return 'unknown'
+  }, [meData?.me])
 
   const ContainerWidth = useBreakpointValue({
     base: '90%',
     lg: sizes['formsWidth']
   })
 
-  if (loading) return <CenterLoadingSpinner />
+  useEffect(() => {
+    setUserType && setUserType(userType)
+  }, [setUserType, userType])
 
+  if (loading) return <CenterLoadingSpinner />
+  console.log('verify', userType, _userType)
   return (
     <Flex overflowY={'auto'} height="100vh">
       <>
@@ -102,6 +127,7 @@ const VerifyEmail: React.FC<Props> = () => {
             <VStack>
               <Heading>Dein Account wurde aktiviert!</Heading>
               <Button
+                marginTop={space['1']}
                 onPress={() =>
                   navigate('/additional-data', { state: { token } })
                 }>

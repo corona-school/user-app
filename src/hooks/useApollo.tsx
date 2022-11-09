@@ -30,7 +30,7 @@ import userAgentParser from 'ua-parser-js'
 export type LFApollo = {
   client: ApolloClient<NormalizedCacheObject>
   logout: () => Promise<void>
-  createDeviceToken: () => Promise<void>
+  createDeviceToken: () => Promise<string>
   sessionState: 'unknown' | 'logged-out' | 'logged-in'
 }
 
@@ -220,6 +220,7 @@ const useApolloInternal = () => {
     const deviceToken = result.data.tokenCreate
     setDeviceToken(deviceToken)
     setSessionState('logged-in')
+    return deviceToken
   }, [client])
 
   // ------------ Session Initialization ------------------
