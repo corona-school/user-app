@@ -5,8 +5,10 @@ import { DateTime } from 'luxon'
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000
 export const TOKEN_LENGTH = 32
 
-export const DEEPLINK_OPTIN = 'https://lern-fair.de/verify-email'
-export const DEEPLINK_PASSWORD = 'https://lern-fair.de/reset-password'
+// eslint-disable-next-line no-restricted-globals
+export const DEEPLINK_OPTIN = `${location.origin}/verify-email`
+// eslint-disable-next-line no-restricted-globals
+export const DEEPLINK_PASSWORD = `${location.origin}/reset-password`
 
 export const secondsToTimerString = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
