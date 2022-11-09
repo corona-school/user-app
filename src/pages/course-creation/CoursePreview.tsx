@@ -14,8 +14,8 @@ import {
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
-import ToggleButton from '../../components/ToggleButton'
 import Utility from '../../Utility'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 
@@ -23,9 +23,15 @@ type Props = {
   onNext: () => any
   onBack: () => any
   isDisabled?: boolean
+  isError?: boolean
 }
 
-const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
+const CoursePreview: React.FC<Props> = ({
+  onNext,
+  onBack,
+  isDisabled,
+  isError
+}) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const {
@@ -35,17 +41,12 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     description,
     maxParticipantCount,
     tags,
-    courseClasses,
+    classRange: courseClasses,
     joinAfterStart,
     allowContact,
     lectures,
     pickedPhoto
   } = useContext(CreateCourseContext)
-
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -63,11 +64,14 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Vorschau'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <VStack space={space['1']} maxWidth={ContainerWidth}>
-      <Heading>{t('course.CourseDate.Preview.headline')}</Heading>
+    <VStack space={space['1']}>
+      <Heading paddingTop={space['1']}>
+        {t('course.CourseDate.Preview.headline')}
+      </Heading>
       <Text>{t('course.CourseDate.Preview.content')}</Text>
 
       <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
@@ -81,7 +85,21 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.courseSubject')}
       </Heading>
-      {subject && <IconTagList isDisabled text={subject.name || ''} />}
+
+      {subject && (
+        <>
+          <IconTagList
+            iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+            isDisabled
+            text={subject.name || ''}
+          />
+        </>
+      )}
+
+      <Heading fontSize="md">
+        Klassen {courseClasses && courseClasses[0]} -{' '}
+        {courseClasses && courseClasses[1]}
+      </Heading>
 
       <Box bg="gray.500" h="180">
         <Image src={pickedPhoto} h="100%" />
@@ -109,17 +127,6 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.classHeadline')}
       </Heading>
-      {courseClasses &&
-        courseClasses.map(c => {
-          const range = Utility.intToClassRange(c)
-          return (
-            <ToggleButton
-              label={`${range.min}. - ${range.max}. Klasse`}
-              dataKey={c.toString()}
-              isActive={false}
-            />
-          )
-        })}
 
       <VStack>
         <Row>
@@ -205,6 +212,11 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           </VStack>
         ))}
 
+      {isError && (
+        <Box mt={space['1']}>
+          <AlertMessage content={t('course.error.course')} />
+        </Box>
+      )}
       <Row
         space={space['1']}
         alignItems="center"

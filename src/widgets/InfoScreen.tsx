@@ -21,11 +21,11 @@ type Props = {
 
   isOutlineButtonLink?: boolean
   outlineButtonText?: string
-  outlinebuttonLink?: () => any
+  outlinebuttonLink?: () => any | any
 
   isdefaultButtonFirst?: boolean
   defaultButtonText?: string
-  defaultbuttonLink?: () => any
+  defaultbuttonLink?: () => any | any
 }
 
 const InfoScreen: React.FC<Props> = ({

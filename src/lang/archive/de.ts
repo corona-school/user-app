@@ -10,10 +10,10 @@ const archive = {
   },
   course: {
     header: 'Alle Kurse',
-    title: 'Alle  Kurse',
+    title: 'Alle Kurse',
     content:
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et',
-    sectionHeadline: 'Alle  Kurse im Überblick',
+    sectionHeadline: 'Alle Kurse im Überblick',
     sectionContent:
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et'
   },

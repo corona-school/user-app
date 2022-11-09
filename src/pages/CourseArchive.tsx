@@ -25,6 +25,8 @@ import useLernfair from '../hooks/useLernfair'
 import { DateTime } from 'luxon'
 import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import AlertMessage from '../widgets/AlertMessage'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -137,7 +139,12 @@ const CourseArchive: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('archive.course.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
+      <VStack
+        paddingX={space['1']}
+        marginX="auto"
+        marginBottom={space['2.5']}
+        width="100%"
+        maxWidth={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('archive.course.title')}</Heading>
@@ -145,7 +152,7 @@ const CourseArchive: React.FC<Props> = () => {
               {t('archive.course.content')}
             </Text>
           </VStack>
-          <Row paddingY={space['1']}>
+          <Row paddingY={space['1']} maxWidth={ContentContainerWidth}>
             <Input
               flex="1"
               size="lg"
@@ -168,7 +175,7 @@ const CourseArchive: React.FC<Props> = () => {
             {!loading && (
               <>
                 {(searchResults.length && (
-                  <Flex direction="row" flexWrap="wrap">
+                  <CSSWrapper className="course-list__wrapper">
                     {searchResults.map((sub: LFSubCourse, index: number) => {
                       let firstDate: DateTime = null!
 
@@ -187,8 +194,10 @@ const CourseArchive: React.FC<Props> = () => {
                       }
 
                       return (
-                        <Column width={CardGrid} marginRight="15px" key={index}>
+                        <CSSWrapper className="course-list__item">
                           <AppointmentCard
+                            isFullHeight
+                            isSpaceMarginBottom={false}
                             variant="horizontal"
                             description={sub.course.outline}
                             tags={sub.course.tags}
@@ -209,22 +218,11 @@ const CourseArchive: React.FC<Props> = () => {
                             image={sub.course.image}
                             title={sub.course.name}
                           />
-                        </Column>
+                        </CSSWrapper>
                       )
                     })}
-                  </Flex>
-                )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="400"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
-                      <Text>{t('empty.courses')}</Text>
-                    </HStack>
-                  </Alert>
-                )}
+                  </CSSWrapper>
+                )) || <AlertMessage content={t('empty.courses')} />}
               </>
             )}
           </VStack>

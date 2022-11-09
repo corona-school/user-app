@@ -39,6 +39,7 @@ import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -61,27 +62,32 @@ const ProfileStudent: React.FC<Props> = () => {
     showSuccessfulChangeAlert: boolean
   }
 
-  const { data, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        lastname
-        student {
-          state
-          aboutMe
-          subjectsFormatted {
-            name
-          }
-          participationCertificates {
-            subjectsFormatted
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          firstname
+          lastname
+          student {
             state
-            startDate
-            pupilId
+            aboutMe
+            subjectsFormatted {
+              name
+            }
+            participationCertificates {
+              subjectsFormatted
+              state
+              startDate
+              pupilId
+            }
           }
         }
       }
+    `,
+    {
+      fetchPolicy: 'no-cache'
     }
-  `)
+  )
 
   const [changeName, _changeName] = useMutation(gql`
     mutation changeName($firstname: String!, $lastname: String!) {
@@ -176,6 +182,8 @@ const ProfileStudent: React.FC<Props> = () => {
         headerContent={
           <Flex
             maxWidth={ContainerWidth}
+            marginX="auto"
+            width="100%"
             bg={HeaderStyle.bgColor}
             alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
             justifyContent="center"
@@ -261,35 +269,25 @@ const ProfileStudent: React.FC<Props> = () => {
         }
         headerLeft={<NotificationAlert />}>
         {(showSuccessfulChangeAlert || userSettingChanged) && (
-          <Alert
-            maxWidth={ContainerWidth}
-            marginY={10}
-            marginX={space['1.5']}
-            colorScheme="success"
-            status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
+          <Container maxWidth={ContainerWidth} paddingX={space['1']}>
+            <AlertMessage content={t('profile.successmessage')} />
+          </Container>
         )}
 
         <VStack
           maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%"
           paddingX={space['1']}
           paddingY={space['1']}>
-          <HelperWizard index={0} />
+          <HelperWizard />
         </VStack>
 
-        <VStack space={space['1']} maxWidth={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          maxWidth={ContainerWidth}
+          marginX="auto"
+          width="100%">
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />
@@ -364,7 +362,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
+            {/* <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
               <Container
                 maxWidth="100%"
                 width="100%"
@@ -403,7 +401,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
@@ -416,7 +414,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )
@@ -450,7 +452,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                       )
 
                                 return (
-                                  <Column>
+                                  <Column minWidth="220px">
                                     <HelperCardCertificates
                                       name={el.pupilId}
                                       subject={el.subjectsFormatted}
@@ -463,7 +465,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                     />
                                   </Column>
                                 )
-                              })}
+                              }) || (
+                              <AlertMessage
+                                content={t('profile.successmessage')}
+                              />
+                            )}
                           </HSection>
                         </>
                       )
@@ -485,7 +491,7 @@ const ProfileStudent: React.FC<Props> = () => {
                   {t('profile.Helper.certificate.button')}
                 </Button>
               </Container>
-            </ProfileSettingRow>
+            </ProfileSettingRow> */}
           </VStack>
         </VStack>
       </WithNavigation>

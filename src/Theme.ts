@@ -83,22 +83,22 @@ const Theme = extendTheme({
     modalbg: VAR_COLOR_MODAL_BG
   },
   fontSizes: {
-    // xs: '0.714rem',
-    // sm: '0.857rem',
-    // md: '1rem',
-    // lg: '1.214rem',
-    // xl: '1.357rem'
-    xs: 10,
-    sm: 12,
-    md: 14,
-    lg: 17,
-    xl: 19
+    xs: '0.714rem',
+    sm: '0.857rem',
+    md: '1rem',
+    lg: '1.214rem',
+    xl: '1.357rem'
+    // xs: 10,
+    // sm: 12,
+    // md: 15,
+    // lg: 17,
+    // xl: 19
   },
   sizes: {
     headerSizePx: 56,
     headerPaddingYPx: 8,
-    contentContainerWidth: '670px',
-    containerWidth: '940px',
+    contentContainerWidth: '680px',
+    containerWidth: '1500px',
     desktopbuttonWidth: 'max-content',
     ModalContent: '590px',
     formsWidth: '768px',
@@ -108,7 +108,8 @@ const Theme = extendTheme({
     Text: {
       defaultProps: {
         fontSize: 'md',
-        color: VAR_COLOR_PRIMARY_DARK
+        fontWeight: 500,
+        color: VAR_COLOR_PRIMARY_DARK,
       }
     },
     Heading: {
@@ -158,6 +159,10 @@ const Theme = extendTheme({
               color: 'white'
             }
           }
+        },
+        link: {
+          textDecoration: 'underline',
+          textDecorationColor: VAR_COLOR_PRIMARY
         }
       }
     },

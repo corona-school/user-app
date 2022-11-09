@@ -1,9 +1,12 @@
-import { LFLecture } from './types/lernfair/Course'
+import { LFLecture, TrafficStatus } from './types/lernfair/Course'
 import { ClassRange } from './types/lernfair/SchoolClass'
 import { DateTime } from 'luxon'
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000
 export const TOKEN_LENGTH = 32
+
+export const DEEPLINK_OPTIN = 'https://lern-fair.de/verify-email'
+export const DEEPLINK_PASSWORD = 'https://lern-fair.de/reset-password'
 
 export const secondsToTimerString = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
@@ -106,8 +109,9 @@ export const handleDateString: (
 }
 
 export const getFirstLectureFromSubcourse: (
-  lectures: LFLecture[]
-) => LFLecture = lectures => {
+  lectures: LFLecture[],
+  pastLectures?: boolean
+) => LFLecture = (lectures, pastLectures) => {
   let firstDate: DateTime = null!
   let firstLecture: LFLecture = null!
 
@@ -116,7 +120,7 @@ export const getFirstLectureFromSubcourse: (
   for (const lecture of lectures) {
     const date = DateTime.fromISO(lecture.start)
 
-    if (date.toMillis() < now) continue
+    if (!pastLectures && date.toMillis() < now) continue
 
     if (!firstLecture) {
       firstLecture = lecture
@@ -133,6 +137,17 @@ export const getFirstLectureFromSubcourse: (
   return firstLecture
 }
 
+export const getTrafficStatus: (
+  participants: number,
+  maxParticipants: number
+) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
+  return participants === maxParticipants
+    ? 'full'
+    : maxParticipants - participants < 5
+    ? 'last'
+    : 'free'
+}
+
 const Utility = {
   createToken,
   toTimerString,
@@ -141,6 +156,7 @@ const Utility = {
   findMinMaxClassRange,
   formatDate,
   handleDateString,
-  getFirstLectureFromSubcourse
+  getFirstLectureFromSubcourse,
+  getTrafficStatus
 }
 export default Utility

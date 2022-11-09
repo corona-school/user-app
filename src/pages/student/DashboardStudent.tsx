@@ -5,13 +5,12 @@ import {
   HStack,
   useTheme,
   VStack,
-  Modal,
-  Row,
   useToast,
   useBreakpointValue,
   Flex,
   Column,
-  Alert
+  Alert,
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -31,6 +30,11 @@ import { DateTime } from 'luxon'
 import { getFirstLectureFromSubcourse } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import AsNavigationItem from '../../components/AsNavigationItem'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
+import Hello from '../../widgets/Hello'
+import CSSWrapper from '../../components/CSSWrapper'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -39,6 +43,7 @@ const query = gql`
     me {
       firstname
       student {
+        firstMatchRequest
         openMatchRequestCount
         canRequestMatch {
           allowed
@@ -113,22 +118,10 @@ const DashboardStudent: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createMatchRequest, matchRequest] = useMutation(
-    gql`
-      mutation {
-        studentCreateMatchRequest
-      }
-    `,
-    {
-      refetchQueries: [query]
-    }
-  )
-
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!) {
-        matchDissolve(dissolveReason: 1.0, matchId: $matchId)
+      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(dissolveReason: $dissaolveReason, matchId: $matchId)
       }
     `,
     {
@@ -137,14 +130,8 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   const requestMatch = useCallback(async () => {
-    setIsMatchRequested(true)
-    const res = (await createMatchRequest()) as {
-      data: {
-        studentCreateMatchRequest: boolean
-      }
-    }
-    setIsMatchRequested(res?.data?.studentCreateMatchRequest)
-  }, [createMatchRequest])
+    navigate('/request-match')
+  }, [navigate])
 
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
@@ -255,7 +242,7 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   return (
-    <>
+    <AsNavigationItem path="dashboard">
       <WithNavigation
         headerContent={
           called &&
@@ -269,26 +256,30 @@ const DashboardStudent: React.FC<Props> = () => {
               size="md"
               image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
             /> */}
-              <Heading color={'#fff'} paddingY={space['1.5']}>
-                {t('hallo')} {data?.me?.firstname}!
-              </Heading>
+              <Box paddingY={space['1.5']}>
+                <Hello />
+              </Box>
             </HStack>
           )
         }
         headerLeft={<NotificationAlert />}>
         {!called || (loading && <CenterLoadingSpinner />)}
         {called && !loading && (
-          <VStack paddingX={space['1']} maxWidth={ContainerWidth}>
-            <VStack space={space['1']}>
-              <VStack>
-                <HelperWizard index={0} />
+          <VStack
+            paddingX={space['1']}
+            marginX="auto"
+            width="100%"
+            maxWidth={ContainerWidth}>
+            <VStack>
+              <VStack marginBottom={space['1.5']}>
+                <HelperWizard />
               </VStack>
 
               {/* Next Appointment */}
               {data?.me?.student?.subcoursesInstructing?.length > 0 &&
                 nextAppointment && (
-                  <VStack space={space['0.5']}>
-                    <Heading marginY={space['1']}>
+                  <VStack marginBottom={space['1.5']}>
+                    <Heading marginBottom={space['1']}>
                       {t('dashboard.appointmentcard.header')}
                     </Heading>
 
@@ -319,6 +310,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 )}
               <HSection
                 title={t('dashboard.myappointments.header')}
+                marginBottom={space['1.5']}
                 showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
                 onShowAll={() => navigate('/appointments-archive')}>
                 {(sortedPublishedSubcourses?.length > 1 &&
@@ -336,43 +328,43 @@ const DashboardStudent: React.FC<Props> = () => {
                       if (!firstLecture) return <></>
 
                       return (
-                        <AppointmentCard
-                          onPressToCourse={() => {
-                            trackEvent({
-                              category: 'dashboard',
-                              action: 'click-event',
-                              name:
-                                'Helfer Dashboard Kachelklick  ' + course.name,
-                              documentTitle:
-                                'Helfer Dashboard – Meine Termin  ' +
-                                course.name
-                            })
+                        <Column
+                          minWidth="230px"
+                          maxWidth="300px"
+                          flex={1}
+                          h="100%">
+                          <AppointmentCard
+                            isGrid
+                            isFullHeight
+                            onPressToCourse={() => {
+                              trackEvent({
+                                category: 'dashboard',
+                                action: 'click-event',
+                                name:
+                                  'Helfer Dashboard Kachelklick  ' +
+                                  course.name,
+                                documentTitle:
+                                  'Helfer Dashboard – Meine Termin  ' +
+                                  course.name
+                              })
 
-                            navigate('/single-course', {
-                              state: { course: el.id }
-                            })
-                          }}
-                          key={`appointment-${el.id}`}
-                          description={course.outline}
-                          tags={course.tags}
-                          date={firstLecture.start}
-                          image={course.image}
-                          title={course.name}
-                        />
+                              navigate('/single-course', {
+                                state: { course: el.id }
+                              })
+                            }}
+                            key={`appointment-${el.id}`}
+                            description={course.outline}
+                            tags={course.tags}
+                            date={firstLecture.start}
+                            image={course.image}
+                            title={course.name}
+                          />
+                        </Column>
                       )
                     })) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="350"
-                    colorScheme="info">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
-                      <Text>
-                        {t('dashboard.myappointments.noappointments')}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t('dashboard.myappointments.noappointments')}
+                  />
                 )}
               </HSection>
               <HSection
@@ -380,8 +372,9 @@ const DashboardStudent: React.FC<Props> = () => {
                 showAll={data?.me?.student?.canCreateCourse?.allowed}
                 onShowAll={() => navigate('/course-archive')}
                 wrap
+                marginBottom={space['1.5']}
                 scrollable={false}>
-                <Flex direction="row" flexWrap="wrap">
+                <CSSWrapper className="course-list__wrapper">
                   {(sortedPublishedSubcourses.length > 0 &&
                     sortedPublishedSubcourses
                       .slice(0, 4)
@@ -391,8 +384,10 @@ const DashboardStudent: React.FC<Props> = () => {
                         )
                         if (!firstLecture) return <></>
                         return (
-                          <Column width={CardGrid} marginRight="15px">
+                          <CSSWrapper className="course-list__item">
                             <AppointmentCard
+                              isFullHeight
+                              isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
                               description={sub.outline}
@@ -418,28 +413,20 @@ const DashboardStudent: React.FC<Props> = () => {
                               image={sub.course.image}
                               title={sub.course.name}
                             />
-                          </Column>
+                          </CSSWrapper>
                         )
                       })) ||
                     (data?.me?.student?.canCreateCourse?.allowed ? (
-                      <Alert
-                        alignItems="start"
-                        marginY={space['1']}
-                        maxW="400"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon />
-                          <Text>{t('empty.courses')}</Text>
-                        </HStack>
-                      </Alert>
+                      <AlertMessage content={t('empty.courses')} />
                     ) : (
                       ''
                     ))}
-                </Flex>
+                </CSSWrapper>
+
                 {(data?.me?.student?.canCreateCourse?.allowed && (
                   <Button
+                    marginTop={space['1']}
                     width={ButtonContainer}
-                    marginY={space['1']}
                     onPress={() => {
                       trackEvent({
                         category: 'dashboard',
@@ -452,20 +439,11 @@ const DashboardStudent: React.FC<Props> = () => {
                     {t('dashboard.helpers.buttons.course')}
                   </Button>
                 )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="400"
-                    colorScheme="warning">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {t(
-                          `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
-                        )}
-                      </Text>
-                    </HStack>
-                  </Alert>
+                  <AlertMessage
+                    content={t(
+                      `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`
+                    )}
+                  />
                 )}
               </HSection>
 
@@ -485,87 +463,73 @@ const DashboardStudent: React.FC<Props> = () => {
               icon={<PartyIcon />}
             />
           </VStack> */}
-              <VStack space={space['0.5']}>
-                <Heading marginY={space['1']}>
-                  {t('dashboard.helpers.headlines.myLearningPartner')}
-                </Heading>
-                <Flex direction="row" flexWrap="wrap">
-                  {(activeMatches?.length &&
-                    activeMatches.map((match: LFMatch, index: number) => (
-                      <Column width={CardGrid} marginRight="15px">
-                        <LearningPartner
-                          key={index}
-                          isDark={true}
-                          name={match?.pupil?.firstname}
-                          subjects={match?.pupil?.subjectsFormatted}
-                          schooltype={match?.pupil?.schooltype || ''}
-                          schoolclass={match?.pupil?.grade}
-                          button={
-                            (!match.dissolved && (
-                              <Button
-                                variant="outlinelight"
-                                onPress={() => dissolveMatch(match)}>
-                                {t('matching.request.buttons.dissolve')}
-                              </Button>
-                            )) || (
-                              <Text color="lightText">
-                                {t('matching.status.dissolved')}
-                              </Text>
-                            )
-                          }
-                        />
-                      </Column>
-                    ))) ||
-                    (data?.me?.student?.canRequestMatch?.allowed ? (
-                      <Alert
-                        alignItems="start"
-                        marginY={space['1']}
-                        maxW="350"
-                        colorScheme="info">
-                        <HStack space={2} flexShrink={1} alignItems="center">
-                          <Alert.Icon />
-                          <Text>{t('empty.matchings')}</Text>
-                        </HStack>
-                      </Alert>
-                    ) : (
-                      ''
-                    ))}
-                </Flex>
-                {(data?.me?.student?.canRequestMatch?.allowed && (
-                  <>
-                    <Button
-                      width={ButtonContainer}
-                      isDisabled={isMatchRequested}
-                      marginY={space['1']}
-                      onPress={requestMatch}>
-                      {t('dashboard.helpers.buttons.requestMatch')}
-                    </Button>
-                  </>
-                )) || (
-                  <Alert
-                    alignItems="start"
-                    marginY={space['1']}
-                    maxW="450"
-                    colorScheme="warning">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon color="danger.100" />
-                      <Text>
-                        {' '}
-                        {t(
-                          `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                        )}
-                      </Text>
-                    </HStack>
-                  </Alert>
-                )}
+              {
+                <VStack marginBottom={space['1.5']}>
+                  <Heading>
+                    {t('dashboard.helpers.headlines.myLearningPartner')}
+                  </Heading>
+                  <Text marginTop={space['0.5']} marginBottom={space['1']}>
+                    Offene Anfragen:{' '}
+                    {`${data?.me?.student?.openMatchRequestCount}`}
+                  </Text>
+                  <CSSWrapper className="course-list__wrapper">
+                    {(activeMatches?.length &&
+                      activeMatches.map((match: LFMatch, index: number) => (
+                        <CSSWrapper className="course-list__item">
+                          <LearningPartner
+                            key={index}
+                            isDark={true}
+                            name={match?.pupil?.firstname}
+                            subjects={match?.pupil?.subjectsFormatted}
+                            schooltype={match?.pupil?.schooltype || ''}
+                            schoolclass={match?.pupil?.grade}
+                            button={
+                              (!match.dissolved && (
+                                <Button
+                                  variant="outlinelight"
+                                  onPress={() => dissolveMatch(match)}>
+                                  {t('matching.request.buttons.dissolve')}
+                                </Button>
+                              )) || (
+                                <Text color="lightText">
+                                  {t('matching.status.dissolved')}
+                                </Text>
+                              )
+                            }
+                          />
+                        </CSSWrapper>
+                      ))) ||
+                      (data?.me?.student?.canRequestMatch?.allowed ? (
+                        <AlertMessage content={t('empty.matchings')} />
+                      ) : (
+                        ''
+                      ))}
+                  </CSSWrapper>
 
-                <Text fontSize="xs">
-                  Offene Anfragen:{' '}
-                  {`${data?.me?.student?.openMatchRequestCount}`}
-                </Text>
-              </VStack>
-              <VStack space={space['0.5']} marginBottom={space['1.5']}>
-                <Heading marginY={space['1']}>
+                  {(data?.me?.student?.canRequestMatch?.reason !==
+                    'not-tutor' &&
+                    data?.me?.student?.canRequestMatch?.allowed && (
+                      <>
+                        <Button
+                          marginTop={space['1']}
+                          width={ButtonContainer}
+                          isDisabled={isMatchRequested}
+                          marginY={space['1']}
+                          onPress={requestMatch}>
+                          {t('dashboard.helpers.buttons.requestMatch')}
+                        </Button>
+                      </>
+                    )) || (
+                    <AlertMessage
+                      content={t(
+                        `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                      )}
+                    />
+                  )}
+                </VStack>
+              }
+              <VStack marginBottom={space['1.5']}>
+                <Heading marginBottom={space['1']}>
                   {t('dashboard.helpers.headlines.recommend')}
                 </Heading>
                 <CTACard
@@ -588,36 +552,20 @@ const DashboardStudent: React.FC<Props> = () => {
           </VStack>
         )}
       </WithNavigation>
-      <Modal isOpen={showDissolveModal}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Match auflösen</Modal.Header>
-          <Modal.Body>
-            <VStack>
-              <Text>
-                Möchtest du das Match mit{' '}
-                <Text bold>{dissolveData?.pupil.firstname}</Text> wirklich
-                auflösen?
-              </Text>
-            </VStack>
-          </Modal.Body>
-          <Modal.Footer>
-            <Row space={space['1']}>
-              <Button
-                onPress={() => {
-                  dissolve({ variables: { matchId: dissolveData?.id } })
-                  setShowDissolveModal(false)
-                }}>
-                Match auflösen
-              </Button>
-              <Button onPress={() => setShowDissolveModal(false)}>
-                Zurück
-              </Button>
-            </Row>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
-    </>
+      <DissolveMatchModal
+        showDissolveModal={showDissolveModal}
+        onPressDissolve={(reason: string) => {
+          dissolve({
+            variables: {
+              matchId: dissolveData?.id,
+              dissolveReason: parseInt(reason)
+            }
+          })
+          setShowDissolveModal(false)
+        }}
+        onPressBack={() => setShowDissolveModal(false)}
+      />
+    </AsNavigationItem>
   )
 }
 export default DashboardStudent

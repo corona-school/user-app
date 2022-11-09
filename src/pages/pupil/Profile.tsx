@@ -31,6 +31,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
@@ -53,24 +54,29 @@ const Profile: React.FC<Props> = () => {
     showSuccessfulChangeAlert: boolean
   }
 
-  const { data, loading } = useQuery(gql`
-    query {
-      me {
-        firstname
-        lastname
-        pupil {
-          aboutMe
-          state
-          schooltype
-          languages
-          subjectsFormatted {
-            name
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          firstname
+          lastname
+          pupil {
+            aboutMe
+            state
+            schooltype
+            languages
+            subjectsFormatted {
+              name
+            }
+            gradeAsInt
           }
-          gradeAsInt
         }
       }
+    `,
+    {
+      fetchPolicy: 'no-cache'
     }
-  `)
+  )
 
   const [changeName, _changeName] = useMutation(gql`
     mutation changeName($firstname: String!, $lastname: String!) {
@@ -163,6 +169,8 @@ const Profile: React.FC<Props> = () => {
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
+            marginX="auto"
+            width="100%"
             maxWidth={ContainerWidth}
             bg={HeaderStyle.bgColor}
             alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
@@ -170,6 +178,8 @@ const Profile: React.FC<Props> = () => {
             paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
             <Box
+              marginX="auto"
+              width="100%"
               maxWidth={ContainerWidth}
               bg={HeaderStyle.bgColor}
               alignItems="center"
@@ -221,27 +231,13 @@ const Profile: React.FC<Props> = () => {
           </Row>
         }>
         {(showSuccessfulChangeAlert || userSettingChanged) && (
-          <Alert
-            maxWidth={ContainerWidth}
-            marginY={10}
-            marginX={space['1.5']}
-            colorScheme="success"
-            status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
+          <AlertMessage content={t('profile.successmessage')} />
         )}
-        <VStack space={space['1']} width={ContainerWidth}>
+        <VStack
+          space={space['1']}
+          width="100%"
+          marginX="auto"
+          maxWidth={ContainerWidth}>
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
               <UserProgress percent={profileCompleteness} />

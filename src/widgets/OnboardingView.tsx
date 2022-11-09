@@ -6,7 +6,8 @@ import {
   Heading,
   Image,
   Row,
-  Pressable
+  Pressable,
+  useBreakpointValue
 } from 'native-base'
 import { useContext } from 'react'
 import Bullet from '../components/Bullet'
@@ -27,9 +28,14 @@ const OnboardingView: React.FC<Props> = ({
   image,
   isBigger = false
 }) => {
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const { currentIndex, setCurrentIndex, itemCount } =
     useContext(ViewPagerContext)
+
+  const contentWidth = useBreakpointValue({
+    base: '300px',
+    lg: '570px'
+  })
 
   return (
     <View>
@@ -49,7 +55,7 @@ const OnboardingView: React.FC<Props> = ({
                 color="lightText"
                 textAlign="center"
                 paddingY={space['1']}
-                maxWidth="350px">
+                maxWidth={contentWidth}>
                 {title}
               </Heading>
             )}
@@ -57,7 +63,7 @@ const OnboardingView: React.FC<Props> = ({
               <Text
                 color="lightText"
                 textAlign="center"
-                maxWidth="350px"
+                maxWidth={contentWidth}
                 paddingBottom={space['1']}>
                 {content}
               </Text>
@@ -67,7 +73,7 @@ const OnboardingView: React.FC<Props> = ({
               <Text
                 color="lightText"
                 textAlign="center"
-                maxWidth="350px"
+                maxWidth={contentWidth}
                 paddingBottom={space['1']}>
                 {contentEnd}
               </Text>

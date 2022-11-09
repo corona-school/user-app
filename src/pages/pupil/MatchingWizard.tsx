@@ -1,11 +1,22 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { Text, VStack, Heading, TextArea, Button, useTheme } from 'native-base'
+
+import {
+  Text,
+  VStack,
+  Heading,
+  Button,
+  useTheme,
+  Modal,
+  useBreakpointValue,
+  Row
+} from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import useModal from '../../hooks/useModal'
-import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
+import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
 
@@ -16,9 +27,10 @@ const MatchingWizard: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { setShow, setContent } = useModal()
 
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [selection, setSelection] = useState<LFSubject>()
 
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
 
   const { trackPageView, trackEvent } = useMatomo()
 
@@ -28,7 +40,7 @@ const MatchingWizard: React.FC<Props> = () => {
     })
   }, [])
 
-  const { data, error, loading } = useQuery(gql`
+  const { data, loading } = useQuery(gql`
     query {
       me {
         pupil {
@@ -61,7 +73,8 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const onRequestMatch = useCallback(() => {
     const subjects = [...data?.me?.pupil?.subjectsFormatted]
-    const find = selection && subjects.find(sub => sub.name === selection.name)
+    let find = selection && subjects.find(sub => sub.name === selection.name)
+
     if (find) {
       find.mandatory = true
     }
@@ -77,89 +90,130 @@ const MatchingWizard: React.FC<Props> = () => {
 
   useEffect(() => {
     if (requestData && !requestError) {
-      setContent(
-        <>
-          <Heading>Deine Anfrage wurde erstellt!</Heading>
-          <Button
-            onPress={() => {
-              setShow(false)
-              trackEvent({
-                category: 'matching',
-                action: 'click-event',
-                name: 'Schüler Matching anfragen – Abgeschlossen',
-                documentTitle: 'Schüler Matching Anfrage'
-              })
-            }}>
-            Weiter
-          </Button>
-        </>
-      )
-      setShow(true)
+      setShowSuccessModal(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestData, requestError, setContent, setShow])
 
-  if (loading) return <></>
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
+  })
+
+  const ContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['containerWidth']
+  })
+
+  const MatchingButton = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const MatchingButtonSpacing = useBreakpointValue({
+    base: space['1'],
+    lg: space['0.5']
+  })
+
+  if (loading) return <CenterLoadingSpinner />
 
   return (
-    <VStack space={space['1']} paddingX={space['1']}>
-      <Heading>{t('matching.request.headline')}</Heading>
-      <Text>{t('matching.request.content')}</Text>
-      <Heading fontSize="lg">{t('matching.request.yourDetails')}</Heading>
-
-      <VStack space={space['0.5']}>
-        <Text>
-          <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-          {data?.me?.pupil?.schooltype}
+    <>
+      <VStack
+        space={space['1']}
+        paddingX={space['1']}
+        width="100%"
+        marginX="auto"
+        maxWidth={ContainerWidth}>
+        <Heading>{t('matching.request.headline')}</Heading>
+        <Text maxWidth={ContentContainerWidth}>
+          {t('matching.request.content')}
         </Text>
-        <Text>
-          <Text bold>{t('matching.request.grade')}</Text>{' '}
-          {data?.me?.pupil?.gradeAsInt}
-        </Text>
-      </VStack>
-      <VStack space={space['0.5']}>
-        <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
-        <Text>{t('matching.request.needHelpInContent')}</Text>
-        <TwoColGrid>
-          {data?.me?.pupil?.subjectsFormatted.map((sub: LFSubject) => (
-            <IconTagList
-              initial={selection?.name === sub.name}
-              text={sub.name}
-              variant="selection"
-              iconPath={`languages/icon_${getSubjectKey(sub.name)}.svg`}
-              onPress={() => setSelection(sub)}
-            />
-          ))}
-        </TwoColGrid>
-      </VStack>
+        <Heading fontSize="lg">{t('matching.request.yourDetails')}</Heading>
 
-      <Button
-        onPress={onRequestMatch}
-        isDisabled={requestData || !data?.me?.pupil?.canRequestMatch?.allowed}>
-        {t('matching.request.buttons.request')}
-      </Button>
+        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+          <Text>
+            <Text bold>{t('matching.request.schoolType')}</Text>{' '}
+            {data?.me?.pupil?.schooltype}
+          </Text>
+          <Text>
+            <Text bold>{t('matching.request.grade')}</Text>{' '}
+            {data?.me?.pupil?.gradeAsInt}
+          </Text>
+        </VStack>
+        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+          <Text bold>{t('matching.request.needHelpInHeadline')}</Text>
+          <Text>{t('matching.request.needHelpInContent')}</Text>
+          <TwoColGrid>
+            {data?.me?.pupil?.subjectsFormatted.map((sub: LFSubject) => (
+              <IconTagList
+                initial={selection?.name === sub.name}
+                text={sub.name}
+                variant="selection"
+                iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
+                onPress={() => setSelection(sub)}
+              />
+            ))}
+          </TwoColGrid>
+        </VStack>
 
-      {!data?.me?.pupil?.canRequestMatch?.allowed && (
-        <Text>
-          {t(
-            `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+        <Row
+          flexDirection={MatchingButton}
+          space={space['1']}
+          marginBottom={space['1.5']}>
+          <Button
+            marginBottom={MatchingButtonSpacing}
+            onPress={onRequestMatch}
+            isDisabled={
+              requestData || !data?.me?.pupil?.canRequestMatch?.allowed
+            }>
+            {t('matching.request.buttons.request')}
+          </Button>
+
+          {!data?.me?.pupil?.canRequestMatch?.allowed && (
+            <Text>
+              {t(
+                `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+              )}
+            </Text>
           )}
-        </Text>
-      )}
-      <Button
-        variant={'outline'}
-        onPress={() => {
-          trackEvent({
-            category: 'matching',
-            action: 'click-event',
-            name: 'Schüler Matching anfragen – Abbrechen',
-            documentTitle: 'Schüler Matching Anfragen'
-          })
-          navigate(-1)
+          <Button
+            variant={'outline'}
+            onPress={() => {
+              trackEvent({
+                category: 'matching',
+                action: 'click-event',
+                name: 'Schüler Matching anfragen – Abbrechen',
+                documentTitle: 'Schüler Matching Anfragen'
+              })
+              navigate(-1)
+            }}>
+            {t('matching.request.buttons.cancel')}
+          </Button>
+        </Row>
+      </VStack>
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false)
+          navigate('/dashboard')
         }}>
-        {t('matching.request.buttons.cancel')}
-      </Button>
-    </VStack>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Anfrage erstellt</Modal.Header>
+          <Modal.Body>Deine Anfrage wurde erfolgreich erstellt!</Modal.Body>
+          <Modal.Footer>
+            <Button
+              onPress={() => {
+                setShowSuccessModal(false)
+                navigate('/dashboard')
+              }}>
+              Weiter
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    </>
   )
 }
 export default MatchingWizard

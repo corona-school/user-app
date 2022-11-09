@@ -23,16 +23,14 @@ const HelperCardCertificates: React.FC<Props> = ({
   const { space } = useTheme()
 
   return (
-    <Card>
+    <Card flexibleWidth>
       <Container
         padding={space['1']}
         width="100%"
         maxWidth="100%"
         alignItems="stretch">
         <Row space={space['1']} marginBottom={space['1']} alignItems="center">
-          <Column>
-            <ProfilAvatar size="md" image={avatar} />
-          </Column>
+          <Column>{/* <ProfilAvatar size="md" image={avatar} /> */}</Column>
           <Column>
             {name && (
               <>
@@ -53,7 +51,7 @@ const HelperCardCertificates: React.FC<Props> = ({
                 Fach:
               </Text>
               {subject.map((sub: string) => (
-                <Text>{sub}</Text>
+                <Text marginRight="5px">{sub}</Text>
               ))}
             </Row>
           )}

@@ -46,7 +46,7 @@ const StudentGroupSupport: React.FC<Props> = () => {
     <WithNavigation
       headerTitle={t('matching.group.helper.support.header')}
       headerLeft={<NotificationAlert />}>
-      <VStack paddingX={space['1']} width={ContainerWidth}>
+      <VStack paddingX={space['1']} marginX="auto" width={ContainerWidth}>
         <VStack space={space['1']}>
           <VStack space={space['0.5']}>
             <Heading>{t('matching.group.helper.support.title')}</Heading>
@@ -71,6 +71,7 @@ const StudentGroupSupport: React.FC<Props> = () => {
               {new Array(8).fill(0).map(({}, index) => (
                 <Column width={CardGrid} marginRight="15px">
                   <AppointmentCard
+                    isFullHeight
                     key={index}
                     variant="horizontal"
                     description="Lorem Ipsum"

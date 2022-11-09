@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
   Box,
   Button,
@@ -34,64 +35,28 @@ type Props = {}
 
 // GraqhQL pupil mutation
 const mutPupil = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $schooltype: SchoolType!
+  $schooltype: SchoolType
   $state: State!
-  $password: String!
   $gradeAsInt: Int!
-  $subjects: [SubjectInput!]
+  $subjects: [SubjectInput]
+  
 ) {
-  meRegisterPupil(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-      schooltype: $schooltype
-      state: $state
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(
-    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects } }
+    update: { pupil: { gradeAsInt: $gradeAsInt, subjects: $subjects, state: $state, schooltype: $schooltype  } }
   )
 }
 `
 
 // GraphQL student mutation
 const mutStudent = `mutation register(
-  $firstname: String!
-  $lastname: String!
-  $email: String!
-  $password: String!
   $subjects: [SubjectInput!]
-
 ) {
-  meRegisterStudent(
-    data: {
-      firstname: $firstname
-      lastname: $lastname
-      email: $email
-      newsletter: false
-      registrationSource: normal
-      redirectTo: null
-    }
-  ) {
-    id
-  }
-  passwordCreate(password: $password)
   meUpdate(update: {student:{subjects: $subjects}})
 }
 `
 
 const RegistrationData: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -111,7 +76,7 @@ const RegistrationData: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
 
   // data provided by previous slides
-  const { firstname, lastname, email, password, userType } = useRegistration()
+  const { userType } = useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -121,7 +86,7 @@ const RegistrationData: React.FC<Props> = () => {
   })
 
   // use different string depending on userType
-  const [register, { data, error, loading }] = useMutation(
+  const [register, { loading }] = useMutation(
     gql`
       ${userType === 'pupil' ? mutPupil : mutStudent}
     `
@@ -131,12 +96,6 @@ const RegistrationData: React.FC<Props> = () => {
     base: '90%',
     lg: '500px'
   })
-
-  useEffect(() => {
-    // go to next slide if data is provided
-    // TODO validate email
-    if (!firstname && !lastname) navigate('/registration/2')
-  }, [email, firstname, lastname, navigate, password])
 
   // at the end register the pupil with all data
   const registerPupil = useCallback(
@@ -155,23 +114,25 @@ const RegistrationData: React.FC<Props> = () => {
         schooltype: string
         gradeAsInt: number
         subjects: ObjectAnswer<number | boolean>
+        aboutMe?: string
       }
       state && (data['state'] = state)
       schooltype && (data['schooltype'] = schooltype)
       gradeAsInt && (data['gradeAsInt'] = gradeAsInt)
       subjects?.length > 0 && (data['subjects'] = subjects)
 
-      await register({
-        variables: {
-          firstname,
-          lastname,
-          email,
-          password,
-          ...data
-        }
-      })
+      try {
+        let res = await register({
+          variables: {
+            ...data
+          }
+        })
+        return res
+      } catch (e) {
+        return { errors: [{ message: e }] }
+      }
     },
-    [email, firstname, lastname, password, register]
+    [register]
   )
 
   // at the end register the student with all data
@@ -179,7 +140,7 @@ const RegistrationData: React.FC<Props> = () => {
     const subjects = []
     for (let [sub, isSelected] of Object.entries(answers.subjects)) {
       // const grades = Utility.intToClassRange(classes[sub])
-      const grades = classes[sub]
+      const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
       if (isSelected && grades.min > 0 && grades.max > 0) {
         subjects.push({ name: sub, grade: grades })
       }
@@ -191,24 +152,17 @@ const RegistrationData: React.FC<Props> = () => {
 
     subjects?.length && (data.subjects = subjects)
 
-    await register({
-      variables: {
-        firstname,
-        lastname,
-        email,
-        password,
-        ...data
-      }
-    })
-  }, [
-    answers.subjects,
-    classes,
-    email,
-    firstname,
-    lastname,
-    password,
-    register
-  ])
+    try {
+      let res = await register({
+        variables: {
+          ...data
+        }
+      })
+      return res
+    } catch (e) {
+      return { errors: [{ message: e }] }
+    }
+  }, [answers.subjects, classes, register])
 
   const registerError = useCallback(() => {
     setShow(false)
@@ -221,17 +175,44 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  async function attemptRegistration(answers: { [key: string]: Answer }) {
+    let res: any
+
+    try {
+      if (userType === 'pupil') {
+        res = await registerPupil(answers)
+      } else {
+        res = await registerStudent()
+      }
+    } catch (e: any) {
+      console.log(e)
+      showErrorModal(e.message)
+    }
+
+    if (!res.errors) {
+      showSuccessModal()
+    } else {
+      showErrorModal(res.errors[0].message.message)
+    }
+  }
+
   const showErrorModal = useCallback(
     (error: string) => {
-      console.log('show error')
       setVariant('dark')
       setContent(
         <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
           <Text color="lightText">
-            {t(`registration.error.message.${error}`, {
+            {t(`registration.result.error.message.${error}`, {
               defaultValue: error
             })}
           </Text>
+          <Button
+            onPress={() => {
+              registerError()
+              attemptRegistration(answers)
+            }}>
+            Erneut versuchen
+          </Button>
           <Button onPress={() => registerError()}>
             {t('registration.result.error.btn')}
           </Button>
@@ -239,7 +220,8 @@ const RegistrationData: React.FC<Props> = () => {
       )
       setShow(true)
     },
-    [registerError, setContent, setShow, setVariant, space, t]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setVariant, setContent, space, t, setShow, registerError, answers]
   )
 
   const showSuccessModal = useCallback(() => {
@@ -253,7 +235,7 @@ const RegistrationData: React.FC<Props> = () => {
         marginX="auto"
         alignItems="center"
         justifyContent="center">
-        <Box justifyContent="center" marginLeft="40px">
+        <Box justifyContent="center" alignItems="center">
           <EventIcon />
         </Box>
         <Heading
@@ -303,24 +285,10 @@ const RegistrationData: React.FC<Props> = () => {
   // when all questions are answered, register
   const onQuestionnaireFinished = useCallback(
     async (answers: { [key: string]: Answer }) => {
-      let res: any
-
-      try {
-        if (userType === 'pupil') {
-          res = await registerPupil(answers)
-        } else {
-          res = await registerStudent()
-        }
-      } catch (e: any) {
-        console.log(e)
-        showErrorModal(e.message)
-      }
-
-      if (res) {
-        showSuccessModal()
-      }
+      attemptRegistration(answers)
     },
-    [registerPupil, registerStudent, showErrorModal, showSuccessModal, userType]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   )
 
   useEffect(() => {
@@ -329,79 +297,6 @@ const RegistrationData: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // // registration went through without error
-  // useEffect(() => {
-  //   if (data && !error) {
-  //     setVariant('dark')
-  //     setContent(
-  //       <VStack
-  //         space={space['1']}
-  //         p={space['1']}
-  //         flex="1"
-  //         width={ModalContainerWidth}
-  //         marginX="auto"
-  //         alignItems="center"
-  //         justifyContent="center">
-  //         <Box justifyContent="center" marginLeft="40px">
-  //           <EventIcon />
-  //         </Box>
-  //         <Heading
-  //           textAlign="center"
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           color="lightText">
-  //           {t('registration.result.success.title')}
-  //         </Heading>
-  //         <Text
-  //           textAlign="center"
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           color="lightText"
-  //           fontSize={'lg'}>
-  //           {t('registration.result.success.text')}
-  //         </Text>
-  //         <Button
-  //           marginX="auto"
-  //           width={ModalContainerWidth}
-  //           onPress={() => {
-  //             setShow(false)
-  //             navigate('/login')
-  //             trackEvent({
-  //               category: 'registrierung',
-  //               action: 'click-event',
-  //               name: 'Registrierung erfolgreich',
-  //               documentTitle: 'Registrierung war erfolgreich'
-  //             })
-  //           }}>
-  //           {t('registration.result.success.btn')}
-  //         </Button>
-  //       </VStack>
-  //     )
-  //     setShow(true)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [navigate, data, error, setContent, setShow, setVariant, space, t])
-
-  // // registration has an error
-  // useEffect(() => {
-  //   if (error) {
-  //     setVariant('dark')
-  //     setContent(
-  //       <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
-  //         <Text color="lightText">
-  //           {t(`registration.error.message.${error.message}`, {
-  //             defaultValue: error.message
-  //           })}
-  //         </Text>
-  //         <Button onPress={() => registerError()}>
-  //           {t('registration.result.error.btn')}
-  //         </Button>
-  //       </VStack>
-  //     )
-  //     setShow(true)
-  //   }
-  // }, [answers, error, registerError, setContent, setShow, setVariant, space, t])
 
   // if item is pressed, ask for school class for subject
   const askSchoolClassForSelection = useCallback(
@@ -418,27 +313,11 @@ const RegistrationData: React.FC<Props> = () => {
     setQuestions(userType === 'pupil' ? pupilQuestions : studentQuestions)
   }, [userType])
 
-  // // set state => class range for corresponding subject
-  // const answerFocusSelection = useCallback(
-  //   (val: number) => {
-  //     setClasses(prev => ({
-  //       ...prev,
-  //       [focusedSelection.key]: val
-  //     }))
-  //   },
-  //   [focusedSelection.key]
-  // )
-
   // modify selection question based on answers etc
   const modifySelectionQuestionBeforeRender: (
     question: SelectionQuestion
   ) => SelectionQuestion = useCallback(
     (question: SelectionQuestion) => {
-      // question.options = new Array(13).fill(0).map((_, i) => ({
-      //   key: `${i + 1}`,
-      //   label: t('lernfair.schoolclass', { class: i + 1 })
-      // }))
-
       // is question about schoolclass?
       if (question.id === 'schoolclass') {
         question.options = new Array(13).fill(0).map((_, i) => ({
@@ -446,37 +325,10 @@ const RegistrationData: React.FC<Props> = () => {
           label: t('lernfair.schoolclass', { class: i + 1 })
         }))
         return question
-
-        // change displayed classes based on selected schoolform
-        // if (!answer) {
-        //   question.options = new Array(8).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        //   return question
-        // }
-
-        // if (answer['grundschule']) {
-        //   question.options = new Array(4).fill(0).map((_, i) => ({
-        //     key: `${i + 1}`,
-        //     label: t('lernfair.schoolclass', { class: i + 1 })
-        //   }))
-        // } else {
-        //   question.options = new Array(6).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        // }
-        // if (answer['gymnasium']) {
-        //   question.options = new Array(8).fill(0).map((_, i) => ({
-        //     key: `${i + 5}`,
-        //     label: t('lernfair.schoolclass', { class: i + 5 })
-        //   }))
-        // }
       }
       return question
     },
-    [answers, t]
+    [t]
   )
 
   // modify questions based on answers etc
@@ -514,8 +366,14 @@ const RegistrationData: React.FC<Props> = () => {
           type: 'selection',
           imgRootPath: 'text',
           options: [
-            { key: '<1', label: t('registration.questions.deutsch2.lower') },
-            { key: '>1', label: t('registration.questions.deutsch2.higher') }
+            {
+              key: '<1',
+              label: t('registration.questions.pupil.deutsch2.lower')
+            },
+            {
+              key: '>1',
+              label: t('registration.questions.pupil.deutsch2.higher')
+            }
           ]
         }
 
@@ -607,35 +465,13 @@ const RegistrationData: React.FC<Props> = () => {
                 classes[focusedSelection.key].max) ||
                 13}
             </Heading>
-            {/* <ToggleButton
-              label={t('registration.student.classSelection.range1')}
-              dataKey="1"
-              isActive={classes[focusedSelection.key] === 1}
-              onPress={key => answerFocusSelection(1)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range2')}
-              dataKey="2"
-              isActive={classes[focusedSelection.key] === 2}
-              onPress={key => answerFocusSelection(2)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range3')}
-              dataKey="3"
-              isActive={classes[focusedSelection.key] === 3}
-              onPress={key => answerFocusSelection(3)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range4')}
-              dataKey="4"
-              isActive={classes[focusedSelection.key] === 4}
-              onPress={key => answerFocusSelection(4)}
-            /> */}
 
             <Slider
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={
                 (classes[focusedSelection.key] && [
                   classes[focusedSelection.key]?.min,

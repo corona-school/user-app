@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
-import {getSubjectKey} from "../../types/lernfair/Subject";
+import { getSubjectKey } from '../../types/lernfair/Subject'
 
 type Props = {
   selectedSubjects: any
@@ -85,7 +85,7 @@ const RequestMatchWizard: React.FC<Props> = ({
   }, [])
 
   return (
-    <VStack maxWidth={ContainerWidth}>
+    <VStack marginX="auto" maxWidth={ContainerWidth}>
       <Heading mb={space['0.5']}>{t('matching.student.title')}</Heading>
       <Text>{t('matching.student.text')}</Text>
 
@@ -132,9 +132,13 @@ const RequestMatchWizard: React.FC<Props> = ({
         })}
       </TwoColGrid>
 
-      <Link my="3" href="/change-setting/subjects" textDecoration={'underline'}>
+      <Button
+        variant={'link'}
+        alignSelf="flex-start"
+        _text={{ color: 'darkText', fontWeight: 'normal', fontSize: 'sm' }}
+        onPress={() => navigate('/change-setting/subjects')}>
         Du möchtest noch ein weiteres Fach anbieten?
-      </Link>
+      </Button>
 
       <Row
         marginY={space['1.5']}

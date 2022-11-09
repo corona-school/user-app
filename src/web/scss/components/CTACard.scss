@@ -1,0 +1,30 @@
+.cta-card {
+    &__wrapper {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    &__item {
+        &--content {
+            flex-basis: 70%;
+        }
+
+        &--icon {
+            flex-basis: 5%;
+        }
+
+        &--button {
+            width: 100%;
+
+            @media screen and (min-width: 1300px){
+                width: 19%;
+            }
+
+            &--onboarding {
+                width: 100%;
+            }
+        }
+    }
+}

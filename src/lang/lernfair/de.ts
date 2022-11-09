@@ -84,7 +84,11 @@ const lernfair = {
     proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-      matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht'
+      matching:
+        'Du hast bereits die maximale Anzahl an Matchinganfragen erreicht'
+    },
+    'not-participant': {
+      coursetext: 'Du bist derzeit noch kein Teilnehmer.'
     },
     'max-matches': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',

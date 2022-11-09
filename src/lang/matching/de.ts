@@ -123,7 +123,7 @@ const matching = {
     header: 'Gruppen-Lernunterstützung',
     title: 'Angebote',
     content:
-      ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+      'Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
     searchplaceholder: 'Suche',
     tabs: {
       tab1: {
@@ -146,7 +146,7 @@ const matching = {
       header: 'Gruppen-Lernunterstützung',
       title: 'Angebote',
       content:
-        ' Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
+        'Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
       searchplaceholder: 'Suche',
       tabs: {
         tab1: {

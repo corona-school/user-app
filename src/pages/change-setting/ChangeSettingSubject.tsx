@@ -34,6 +34,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 import { Slider } from '@miblanchard/react-native-slider'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { useNavigate } from 'react-router-dom'
+import AlertMessage from '../../widgets/AlertMessage'
 
 const queryPupil = `query {
   me {
@@ -67,7 +68,7 @@ const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
 type Props = {}
 
 const ChangeSettingSubject: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+  const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
   const { userType = '' } = useLernfair()
   const { trackPageView } = useMatomo()
@@ -159,6 +160,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
+          marginX="auto"
+          width="100%"
           maxWidth={ContainerWidth}>
           <Heading>
             {userType === 'student'
@@ -231,6 +234,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
+          marginX="auto"
+          width="100%"
           maxWidth={ContainerWidth}>
           <ProfileSettingRow title={t('profile.NeedHelpIn.single.others')}>
             <ProfileSettingItem
@@ -294,6 +299,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
         <VStack
           paddingX={space['1.5']}
           paddingBottom={space['1.5']}
+          width="100%"
+          marginX="auto"
           maxWidth={ContainerWidth}>
           {/* {userSettingChanged && (
             <Alert marginY={3} colorScheme="success" status="success">
@@ -311,22 +318,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               </VStack>
             </Alert>
           )} */}
-          {showError && (
-            <Alert marginY={3} bgColor="danger.500">
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack
-                  flexShrink={1}
-                  space={2}
-                  alignItems="center"
-                  justifyContent="space-between">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon color={'lightText'} />
-                    <Text color="lightText">{t('profile.errormessage')}</Text>
-                  </HStack>
-                </HStack>
-              </VStack>
-            </Alert>
-          )}
+          {showError && <AlertMessage content={t('profile.errormessage')} />}
           <Button
             width={ButtonContainer}
             onPress={() => {
@@ -383,6 +375,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={selectedClassRange}
               step={1}
               onValueChange={(value: number | number[]) => {

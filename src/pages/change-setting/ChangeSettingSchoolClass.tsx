@@ -19,6 +19,7 @@ import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 import WithNavigation from '../../components/WithNavigation'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
@@ -133,6 +134,8 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <Heading>{t('profile.SchoolClass.single.title')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
@@ -155,6 +158,8 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         <ProfileSettingRow title={t('profile.SchoolClass.single.others')}>
           <ProfileSettingItem
@@ -210,6 +215,8 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['1.5']}
+        marginX="auto"
+        width="100%"
         maxWidth={ContainerWidth}>
         {/* {userSettingChanged && (
           <Alert marginY={3} colorScheme="success" status="success">
@@ -227,22 +234,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
             </VStack>
           </Alert>
         )} */}
-        {showError && (
-          <Alert marginY={3} bgColor="danger.500" maxWidth={ContainerWidth}>
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon color={'lightText'} />
-                  <Text color="lightText">{t('profile.errormessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )}
+        {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}
           onPress={() =>

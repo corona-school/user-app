@@ -5,6 +5,7 @@ import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
 type Props = { count?: number }
 
 const NotificationAlert: React.FC<Props> = ({ count = 1 }) => {
+  return <></>
   return (
     <Box>
       <Circle

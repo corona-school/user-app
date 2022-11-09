@@ -15,7 +15,7 @@ import SettingsButton from './SettingsButton'
 // TODO translations
 const navItems: NavigationItems = {
   dashboard: { label: 'Dashboard', icon: LFHomeIcon },
-  appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
+  // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
   group: { label: 'Gruppe', icon: LFGroupIcon },
   matching: { label: 'Einzel', icon: LFMatchingIcon },
   hilfebereich: { label: 'Hilfe', icon: LFHelpIcon }
@@ -29,6 +29,7 @@ type Props = {
   headerTitle?: string
   isSidebarMenu?: boolean
   showBack?: boolean
+  hideMenu?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -38,7 +39,8 @@ const WithNavigation: React.FC<Props> = ({
   headerContent,
   headerTitle,
   isSidebarMenu = true,
-  showBack
+  showBack,
+  hideMenu
 }) => {
   const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
@@ -51,7 +53,7 @@ const WithNavigation: React.FC<Props> = ({
     lg: space['1']
   })
 
-  const [view, setView] = useState(null)
+  // const [view, setView] = useState(null)
 
   const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2
   return (
@@ -67,10 +69,9 @@ const WithNavigation: React.FC<Props> = ({
         <HeaderCard
           showBack={showBack}
           leftContent={headerLeft}
-          rightContent={isSidebarMenu ? <SettingsButton /> : ''}
-          title={headerTitle}
-          portal={setView}>
-          {headerContent}
+          rightContent={isSidebarMenu && !hideMenu ? <SettingsButton /> : ''}
+          title={headerTitle}>
+          {!isMobile && headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
           <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden">
@@ -81,11 +82,13 @@ const WithNavigation: React.FC<Props> = ({
                 paddingTop={'72px'}
               />
             </Column>
+
             <Column flex="1" padding={innerPaddingContent}>
-              {(isMobile && view && (
+              {(isMobile && (
                 <>
                   <View h={`${headerHeight}px`}></View>
-                  {view}
+                  {headerContent}
+                  <View h={`${headerHeight}px`}></View>
                 </>
               )) || <View h={`${sizes['headerSizePx']}px`}></View>}
               {children}

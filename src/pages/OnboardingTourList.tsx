@@ -23,6 +23,7 @@ import IconHelp from '../assets/icons/lernfair/onboarding/lf-onboarding-help.svg
 import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-calender.svg'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
+import CSSWrapper from '../components/CSSWrapper'
 
 type Props = {}
 
@@ -56,7 +57,9 @@ const OnboardingTourList: React.FC<Props> = () => {
   return (
     <WithNavigation headerTitle={t('onboardingList.header')} showBack>
       <VStack
+        marginX="auto"
         maxWidth={ContainerWidth}
+        width="100%"
         paddingBottom={7}
         paddingX={space['1.5']}>
         <Heading paddingBottom={space['0.5']}>
@@ -69,7 +72,9 @@ const OnboardingTourList: React.FC<Props> = () => {
       <VStack
         paddingX={space['1.5']}
         paddingBottom={space['2']}
-        maxWidth={ContainerWidth}>
+        maxWidth={ContainerWidth}
+        marginX="auto"
+        width="100%">
         <Stagger
           initial={{ opacity: 0, translateY: 20 }}
           animate={{
@@ -78,10 +83,12 @@ const OnboardingTourList: React.FC<Props> = () => {
             transition: { stagger: { offset: 60 }, duration: 500 }
           }}
           visible>
-          <Flex direction="row" flexWrap="wrap">
+          <CSSWrapper className="onboarding__wrapper">
             {new Array(5).fill(0).map(({}, index) => (
-              <Column width={CardGrid} marginRight="15px">
+              <CSSWrapper className="onboarding__item">
                 <CTACard
+                  height="100%"
+                  isOnboardingCard
                   key={`card-${index}`}
                   marginBottom={space['1']}
                   variant="dark"
@@ -94,6 +101,7 @@ const OnboardingTourList: React.FC<Props> = () => {
                   }
                   button={
                     <Button
+                      width="100%"
                       onPress={() => {
                         trackEvent({
                           category: 'onboarding',
@@ -126,9 +134,9 @@ const OnboardingTourList: React.FC<Props> = () => {
                     )
                   }
                 />
-              </Column>
+              </CSSWrapper>
             ))}
-          </Flex>
+          </CSSWrapper>
         </Stagger>
       </VStack>
     </WithNavigation>

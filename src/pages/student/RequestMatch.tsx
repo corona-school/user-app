@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { VStack, Modal, Button, useTheme, Heading } from 'native-base'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { VStack, Modal, Button, useTheme, Heading, Text } from 'native-base'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -13,11 +13,12 @@ import RequestMatchPreview from './RequestMatchPreview'
 import RequestMatchWizard from './RequestMatchWizard'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const RequestMatch: React.FC<Props> = () => {
-  const { space } = useTheme()
+  const { space, colors } = useTheme()
   const { t } = useTranslation()
   const { setShow, setContent } = useModal()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
@@ -28,8 +29,10 @@ const RequestMatch: React.FC<Props> = () => {
     [key: string]: ClassRange
   }>({})
 
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [focusedSubject, setFocusedSubject] = useState<any>({ name: '' })
   const [showModal, setShowModal] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   const { data } = useQuery(gql`
     query {
@@ -68,18 +71,7 @@ const RequestMatch: React.FC<Props> = () => {
 
   useEffect(() => {
     if (matchRequest?.data?.studentCreateMatchRequest) {
-      setContent(
-        <>
-          <Heading>Deine Anfrage wurde erstellt!</Heading>
-          <Button
-            onPress={() => {
-              setShow(false)
-            }}>
-            Weiter
-          </Button>
-        </>
-      )
-      setShow(true)
+      setShowSuccessModal(true)
     }
   }, [matchRequest?.data?.studentCreateMatchRequest, setContent, setShow])
 
@@ -131,37 +123,6 @@ const RequestMatch: React.FC<Props> = () => {
         <Modal.Content>
           <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
           <Modal.Body>
-            {/* <VStack space={space['1']}>
-              {[
-                `1. - 4. Klasse`,
-                `5. - 8. Klasse`,
-                `9. - 10. Klasse`,
-                `11. - 13. Klasse`
-              ].map((c, index) => {
-                const i = index + 1
-                const isSelected =
-                  focusedSubject &&
-                  !!selectedClasses[focusedSubject.name] &&
-                  !!selectedClasses[focusedSubject.name][i]
-
-                return (
-                  <ToggleButton
-                    label={c}
-                    dataKey={`${i}`}
-                    isActive={isSelected}
-                    onPress={key => {
-                      setSelectedClasses(prev => ({
-                        ...prev,
-                        [focusedSubject.name]: {
-                          ...selectedClasses[focusedSubject.name],
-                          [key]: !isSelected
-                        }
-                      }))
-                    }}
-                  />
-                )
-              })}
-            </VStack> */}
             <Heading fontSize="md">
               Klassen{' '}
               {(selectedClasses[focusedSubject.name] &&
@@ -176,6 +137,8 @@ const RequestMatch: React.FC<Props> = () => {
               animateTransitions
               minimumValue={1}
               maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
               value={
                 (selectedClasses[focusedSubject.name] && [
                   selectedClasses[focusedSubject.name].min,
@@ -198,6 +161,31 @@ const RequestMatch: React.FC<Props> = () => {
                 setShowModal(false)
               }}>
               {t('matching.request.modal.save')}
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false)
+          navigate('/matching')
+        }}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Anfrage erstellt</Modal.Header>
+          <Modal.Body>
+            <>
+              <Text>Deine Anfrage wurde erfolgreich erstellt!</Text>
+            </>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onPress={() => {
+                setShowSuccessModal(false)
+                navigate('/matching')
+              }}>
+              {t('next')}
             </Button>
           </Modal.Footer>
         </Modal.Content>

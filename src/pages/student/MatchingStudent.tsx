@@ -11,17 +11,18 @@ import {
   Column,
   Modal,
   useToast,
-  Box,
-  Alert,
-  HStack
+  Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AsNavigationItem from '../../components/AsNavigationItem'
 import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
-import { LFSubject } from '../../types/lernfair/Subject'
+import Hello from '../../widgets/Hello'
+import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
@@ -36,6 +37,7 @@ const query = gql`
           pupil {
             firstname
 
+            grade
             subjectsFormatted {
               name
             }
@@ -91,8 +93,8 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
     gql`
-      mutation ($id: Float!) {
-        studentDeleteMatchRequest(studentId: $id)
+      mutation {
+        studentDeleteMatchRequest
       }
     `,
     { refetchQueries: [{ query }] }
@@ -103,19 +105,25 @@ const MatchingStudent: React.FC<Props> = () => {
     setShowDissolveModal(true)
   }, [])
 
-  const dissolve = useCallback(() => {
-    trackEvent({
-      category: 'matching',
-      action: 'click-event',
-      name: 'Helfer Matching lösen',
-      documentTitle: 'Helfer Matching'
-    })
-    setShowDissolveModal(false)
-    dissolveMatch({
-      variables: { matchId: focusedMatch?.id, dissolveReason: 1 }
-    })
+  const dissolve = useCallback(
+    (reason: string) => {
+      trackEvent({
+        category: 'matching',
+        action: 'click-event',
+        name: 'Helfer Matching lösen',
+        documentTitle: 'Helfer Matching'
+      })
+      dissolveMatch({
+        variables: {
+          matchId: focusedMatch?.id,
+          dissolveReason: parseInt(reason)
+        }
+      })
+      setShowDissolveModal(false)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dissolveMatch, focusedMatch?.id])
+    [dissolveMatch, focusedMatch?.id]
+  )
 
   const showCancelMatchRequestModal = useCallback(() => {
     setShowCancelModal(true)
@@ -129,15 +137,15 @@ const MatchingStudent: React.FC<Props> = () => {
       name: 'Helfer Matching Anfrage löschen',
       documentTitle: 'Helfer Matching'
     })
-    const res = (await cancelMatchRequest({
-      variables: { id: data?.me?.student?.id }
-    })) as { studentDeleteMatchRequest: boolean }
+    const res = (await cancelMatchRequest()) as {
+      studentDeleteMatchRequest: boolean
+    }
 
     if (res.studentDeleteMatchRequest) {
       toast.show({ description: 'Die Anfrage wurde gelöscht' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [data?.me?.student?.id])
 
   useEffect(() => {
     if (dissolveData?.matchDissolve && !toastShown) {
@@ -164,9 +172,15 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   return (
-    <>
-      <WithNavigation headerTitle={t('matching.request.check.header')}>
-        <VStack paddingX={space['1']} width={ContainerWidth}>
+    <AsNavigationItem path="matching">
+      <WithNavigation
+        headerTitle={t('matching.request.check.header')}
+        headerContent={<Hello />}>
+        <VStack
+          paddingX={space['1']}
+          maxWidth={ContainerWidth}
+          width="100%"
+          marginX="auto">
           <Heading paddingBottom={space['0.5']}>
             {t('matching.request.check.title')}
           </Heading>
@@ -190,20 +204,11 @@ const MatchingStudent: React.FC<Props> = () => {
                 {t('matching.request.check.requestmatchButton')}
               </Button>
             )) || (
-              <Alert
-                alignItems="start"
-                marginY={space['1']}
-                maxW="450"
-                colorScheme="info">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>
-                    {t(
-                      `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                    )}
-                  </Text>
-                </HStack>
-              </Alert>
+              <AlertMessage
+                content={t(
+                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                )}
+              />
             )}
           </VStack>
 
@@ -221,11 +226,11 @@ const MatchingStudent: React.FC<Props> = () => {
                               key={index}
                               isDark={true}
                               name={match?.pupil?.firstname}
-                              subjects={match?.pupil?.subjectsFormatted.map(
-                                (sub: LFSubject) => sub.name
-                              )}
-                              schooltype="Grundschule"
-                              schoolclass={4}
+                              subjects={match?.pupil?.subjectsFormatted}
+                              schooltype={
+                                match?.pupil?.schooltype || 'Backend Error'
+                              }
+                              schoolclass={match?.pupil?.grade}
                               avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                               button={
                                 (!match.dissolved && (
@@ -237,38 +242,19 @@ const MatchingStudent: React.FC<Props> = () => {
                                     {t('dashboard.helpers.buttons.solveMatch')}
                                   </Button>
                                 )) || (
-                                  <Alert
-                                    alignItems="start"
-                                    marginY={space['1']}
-                                    maxW="350"
-                                    colorScheme="info">
-                                    <HStack
-                                      space={2}
-                                      flexShrink={1}
-                                      alignItems="center">
-                                      <Alert.Icon />
-                                      <Text>
-                                        {t(
-                                          'matching.request.check.resoloveMatch'
-                                        )}
-                                      </Text>
-                                    </HStack>
-                                  </Alert>
+                                  <AlertMessage
+                                    content={t(
+                                      'matching.request.check.resoloveMatch'
+                                    )}
+                                  />
                                 )
                               }
                             />
                           </Column>
                         ))) || (
-                        <Alert
-                          alignItems="start"
-                          marginY={space['1']}
-                          maxW="350"
-                          colorScheme="info">
-                          <HStack space={2} flexShrink={1} alignItems="center">
-                            <Alert.Icon />
-                            <Text>{t('matching.request.check.noMatches')}</Text>
-                          </HStack>
-                        </Alert>
+                        <AlertMessage
+                          content={t('matching.request.check.noMatches')}
+                        />
                       )}
                     </Flex>
                   </VStack>
@@ -278,10 +264,10 @@ const MatchingStudent: React.FC<Props> = () => {
                 title: 'Anfragen',
                 content: (
                   <VStack space={space['1']}>
-                    <Heading>
-                      Offene Anfragen:{' '}
+                    <Text marginBottom={space['1']}>
+                      Offene Anfragen:{'  '}
                       {data?.me?.student?.openMatchRequestCount}
-                    </Heading>
+                    </Text>
                     <VStack space={space['0.5']}>
                       <Flex direction="row" flexWrap="wrap">
                         {(data?.me?.student?.openMatchRequestCount &&
@@ -310,21 +296,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                 </Box>
                               </Column>
                             ))) || (
-                          <Alert
-                            alignItems="start"
-                            marginY={space['1']}
-                            maxW="350"
-                            colorScheme="info">
-                            <HStack
-                              space={2}
-                              flexShrink={1}
-                              alignItems="center">
-                              <Alert.Icon />
-                              <Text>
-                                {t('matching.request.check.noMatches')}
-                              </Text>
-                            </HStack>
-                          </Alert>
+                          <AlertMessage
+                            content={t('matching.request.check.noMatches')}
+                          />
                         )}
                       </Flex>
                     </VStack>
@@ -335,19 +309,14 @@ const MatchingStudent: React.FC<Props> = () => {
           />
         </VStack>
       </WithNavigation>
-      <Modal isOpen={showDissolveModal}>
-        <Modal.Content>
-          <Modal.Header>Auflösen</Modal.Header>
-          <Modal.CloseButton onPress={() => setShowDissolveModal(false)} />
-          <Modal.Body>Möchtest du das Match wirklich auflösen?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="ghost" onPress={() => setShowDissolveModal(false)}>
-              Abbrechen
-            </Button>
-            <Button onPress={dissolve}>Match auflösen</Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+
+      <DissolveMatchModal
+        showDissolveModal={showDissolveModal}
+        onPressDissolve={(reason: string) => {
+          dissolve(reason)
+        }}
+        onPressBack={() => setShowDissolveModal(false)}
+      />
       <Modal isOpen={showCancelModal}>
         <Modal.Content>
           <Modal.Header>Anfrage löschen</Modal.Header>
@@ -361,7 +330,7 @@ const MatchingStudent: React.FC<Props> = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </>
+    </AsNavigationItem>
   )
 }
 export default MatchingStudent

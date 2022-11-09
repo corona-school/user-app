@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client'
 import {
   View,
   Text,
@@ -6,8 +7,10 @@ import {
   useTheme,
   Button,
   Box,
-  useBreakpointValue
+  useBreakpointValue,
+  Column
 } from 'native-base'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
@@ -19,11 +22,82 @@ type Props = {
 const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
-
+  const { data } = useQuery(gql`
+    query {
+      me {
+        student {
+          firstMatchRequest
+          openMatchRequestCount
+          certificateOfConduct {
+            id
+          }
+          canRequestMatch {
+            allowed
+            reason
+          }
+          canCreateCourse {
+            allowed
+            reason
+          }
+        }
+      }
+    }
+  `)
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
   })
+
+  const ButtonDirection = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
+  const ButtonSpace = useBreakpointValue({
+    base: 0,
+    lg: 0
+  })
+
+  const ContentsDirection = useBreakpointValue({
+    base: 'flex-start',
+    lg: 'center'
+  })
+
+  const ContentsSpace = useBreakpointValue({
+    base: space['1'],
+    lg: 0
+  })
+
+  const ZeugnisContentSectionWidth = useBreakpointValue({
+    base: '100%',
+    lg: '70%'
+  })
+
+  const ButtonWidthContainer = useBreakpointValue({
+    base: '100%',
+    lg: 'auto'
+  })
+
+  const onboardingIndex: number = useMemo(() => {
+    if (
+      data?.me?.student?.canCreateCourse.reason === 'not-screened' ||
+      data?.me?.student?.canCreateCourse.reason === 'not-instructor'
+    )
+      return 0
+    if (
+      data?.me?.student?.canRequestMatch?.reason === 'not-screened' ||
+      'not-tutor'
+    )
+      return 1
+    if (!data?.me?.student?.firstMatchRequest) return 2
+    if (!data?.me?.student?.certificateOfConduct?.id) return 3
+    return 0
+  }, [
+    data?.me?.student?.canCreateCourse.reason,
+    data?.me?.student?.canRequestMatch.reason,
+    data?.me?.student?.certificateOfConduct?.id,
+    data?.me?.student?.firstMatchRequest
+  ])
 
   return (
     <View>
@@ -34,7 +108,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
           </Heading>
 
           <InstructionProgress
-            currentIndex={index}
+            currentIndex={onboardingIndex}
             isDark={true}
             instructions={[
               {
@@ -44,16 +118,23 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.kennenlernen.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.kennenlernen.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.kennenlernen.button')}
-                          </Button>
-                        </Box>
-                      </>
+                      <Box
+                        flexDir={ButtonDirection}
+                        alignItems={ContentsDirection}
+                        width="100%"
+                        justifyContent="space-between">
+                        <Text
+                          width={ZeugnisContentSectionWidth}
+                          display="block"
+                          marginBottom={ContentsSpace}>
+                          {t('helperwizard.kennenlernen.content')}
+                        </Text>
+                        <Button
+                          width={ButtonContainer}
+                          marginRight={ButtonSpace}>
+                          {t('helperwizard.kennenlernen.button')}
+                        </Button>
+                      </Box>
                     )
                   }
                 ]
@@ -65,8 +146,12 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.zeugnis.title'),
                     text: (
-                      <>
-                        <Box flexDirection="row" marginBottom={space['0.5']}>
+                      <Box width="100%">
+                        <Box
+                          flexDirection="row"
+                          marginBottom={space['0.5']}
+                          display="block"
+                          maxWidth="500px">
                           <Text marginRight="5px">
                             {t('helperwizard.zeugnis.einreichen')}
                           </Text>
@@ -74,15 +159,26 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                             tt.mm.jjjj
                           </Text>
                         </Box>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.zeugnis.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.zeugnis.button')}
-                          </Button>
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.zeugnis.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              overflow="visible"
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.zeugnis.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
@@ -94,16 +190,26 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.angebot.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text maxWidth="500px" marginBottom={space['1']}>
-                            {t('helperwizard.angebot.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.angebot.button')}
-                          </Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.angebot.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.angebot.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]
@@ -115,16 +221,26 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                   {
                     title: t('helperwizard.zeugnisHochladen.title'),
                     text: (
-                      <>
-                        <Box>
-                          <Text marginBottom={space['1']}>
-                            {t('helperwizard.zeugnisHochladen.content')}
-                          </Text>
-                          <Button width={ButtonContainer}>
-                            {t('helperwizard.zeugnisHochladen.button')}
-                          </Button>
+                      <Box width="100%">
+                        <Box
+                          flexDir={ButtonDirection}
+                          alignItems={ContentsDirection}
+                          width="100%"
+                          justifyContent="space-between">
+                          <Column width={ZeugnisContentSectionWidth}>
+                            <Text marginBottom={ContentsSpace}>
+                              {t('helperwizard.zeugnisHochladen.content')}
+                            </Text>
+                          </Column>
+                          <Column width={ButtonWidthContainer}>
+                            <Button
+                              width={ButtonContainer}
+                              marginRight={ButtonSpace}>
+                              {t('helperwizard.zeugnisHochladen.button')}
+                            </Button>
+                          </Column>
                         </Box>
-                      </>
+                      </Box>
                     )
                   }
                 ]

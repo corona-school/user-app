@@ -8,7 +8,8 @@ import {
   Heading,
   Image,
   Alert,
-  HStack
+  HStack,
+  AspectRatio
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import CTACard from '../../widgets/CTACard'
@@ -18,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
+import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {
   onRequestMatch: () => any
@@ -69,6 +71,11 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
     lg: '48%'
   })
 
+  const ImageHeader = useBreakpointValue({
+    base: '20px',
+    lg: '500px'
+  })
+
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
@@ -81,19 +88,30 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
     <VStack
       space={space['0.5']}
       paddingX={space['1']}
+      width="100%"
+      marginX="auto"
       maxWidth={ContainerWidth}>
       <Heading paddingBottom={space['0.5']}>
         {t('matching.blocker.title')}
       </Heading>
-      <Image
-        width="100%"
-        height="300px"
-        borderRadius="10px"
-        marginBottom={space['1']}
-        source={{
-          uri: require('../../assets/images/matching/1-1-matching.jpg')
+      <AspectRatio
+        ratio={{
+          base: 4 / 3,
+          md: 16 / 6
         }}
-      />
+        height={{
+          base: 1,
+          md: 1
+        }}>
+        <Image
+          borderRadius="10px"
+          marginBottom={space['1']}
+          resizeMode="cover"
+          source={{
+            uri: require('../../assets/images/matching/1-1-matching.jpg')
+          }}
+        />
+      </AspectRatio>
       <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
         {t('matching.blocker.firstContent')}
       </Text>
@@ -115,25 +133,15 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
           {t('matching.blocker.button')}
         </Button>
         {!data?.me?.pupil?.canRequestMatch?.allowed && (
-          <Alert
-            alignItems="start"
-            marginY={space['1']}
-            maxW="350"
-            colorScheme="info">
-            <HStack space={2} flexShrink={1} alignItems="center">
-              <Alert.Icon />
-              <Text>
-                {t(
-                  `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
-                )}
-              </Text>
-            </HStack>
-          </Alert>
+          <AlertMessage
+            content={t(
+              `lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`
+            )}
+          />
         )}
       </VStack>
-      <Box width={CardGrid}>
+      <Box paddingBottom={space['3']}>
         <CTACard
-          width={ContentContainerWidth}
           variant="dark"
           icon={<Icon />}
           title={t('matching.blocker.ctaCardHeader')}

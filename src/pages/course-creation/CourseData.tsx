@@ -21,20 +21,76 @@ import {
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import ToggleButton from '../../components/ToggleButton'
-import {getSubjectKey, LFSubject} from '../../types/lernfair/Subject'
+import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { Slider } from '@miblanchard/react-native-slider'
+import InstructorRow from '../../widgets/InstructorRow'
+import { LFInstructor } from '../../types/lernfair/Course'
+
+const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Pressable onPress={onPress} alignItems="center" flexDirection="row">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bg={'primary.900'}
+        w="40px"
+        h="40px"
+        marginRight="15px"
+        borderRadius="10px">
+        <Text color="white" fontSize="32px">
+          +
+        </Text>
+      </Box>
+      <Text bold>{t('course.CourseDate.form.courseAddOntherLeadText')}</Text>
+    </Pressable>
+  )
+}
+
+const WidgetUnsplash: React.FC<{
+  photo: string | undefined
+  onShowUnsplash: () => any
+}> = ({ photo, onShowUnsplash }) => {
+  const { space } = useTheme()
+  const { t } = useTranslation()
+  return (
+    <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
+      <Column marginRight={space['1']}>
+        <Image
+          width="90px"
+          height="90px"
+          alt="Image Placeholder"
+          source={{
+            uri: photo || ImagePlaceHolder
+          }}
+        />
+      </Column>
+      <Column>
+        <Link>{t('course.uploadImage')}</Link>
+      </Column>
+    </Pressable>
+  )
+}
 
 type Props = {
   onNext: () => any
   onCancel: () => any
   onShowUnsplash: () => any
+  onShowAddInstructor: () => any
 }
 
-const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
+const CourseData: React.FC<Props> = ({
+  onNext,
+  onCancel,
+  onShowUnsplash,
+  onShowAddInstructor
+}) => {
   const { data } = useQuery(gql`
     query {
       me {
@@ -51,75 +107,49 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
     }
   `)
 
-  const { space, sizes } = useTheme()
+  const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
   const {
     courseName,
     setCourseName,
     subject,
     setSubject,
-    courseClasses,
-    setCourseClasses,
+    classRange,
+    setClassRange,
     outline,
     setOutline,
     description,
     setDescription,
+    tags,
     setTags,
     maxParticipantCount,
     setMaxParticipantCount,
+    joinAfterStart,
     setJoinAfterStart,
+    allowContact,
     setAllowContact,
-    pickedPhoto
+    pickedPhoto,
+    addedInstructors
   } = useContext(CreateCourseContext)
-
-  type SplitGrade = { minGrade: number; maxGrade: number; id: number }
-
-  const splitGrades: SplitGrade[] = useMemo(() => {
-    const arr: SplitGrade[] = []
-
-    if (subject?.grade?.max && subject.grade?.min) {
-      if (subject.grade?.min < 13 && subject?.grade?.max >= 11) {
-        arr.push({ minGrade: 11, maxGrade: 13, id: 4 })
-      }
-      if (subject.grade?.min < 10 && subject?.grade?.max >= 9) {
-        arr.push({ minGrade: 9, maxGrade: 10, id: 3 })
-      }
-      if (subject.grade?.min < 8 && subject?.grade?.max >= 5) {
-        arr.push({ minGrade: 5, maxGrade: 8, id: 2 })
-      }
-      if (subject.grade?.min > 1 && subject?.grade?.max < 4) {
-        arr.push({ minGrade: 1, maxGrade: 4, id: 1 })
-      }
-    }
-
-    return arr.reverse()
-  }, [subject])
 
   const isValidInput: boolean = useMemo(() => {
     if (!courseName || courseName?.length < 3) return false
     if (!subject) return false
-    if (!courseClasses || !courseClasses.length) return false
+    if (!classRange || !classRange.length) return false
     if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
+    if (!pickedPhoto) return false
     return true
   }, [
-    courseClasses,
+    classRange,
     courseName,
     description,
     maxParticipantCount,
     outline,
+    pickedPhoto,
     subject
   ])
-
-  useEffect(() => {
-    // TODO prefill
-  }, [])
-
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -129,6 +159,11 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
   const ButtonContainerDirection = useBreakpointValue({
     base: 'column',
     lg: 'row'
+  })
+
+  const ContentContainerWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['contentContainerWidth']
   })
 
   const { trackPageView, trackEvent } = useMatomo()
@@ -141,13 +176,18 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
   }, [])
 
   return (
-    <VStack space={space['1']} maxWidth={ContainerWidth}>
+    <VStack
+      space={space['1']}
+      marginX="auto"
+      width="100%"
+      maxWidth={ContentContainerWidth}>
       <Heading paddingY={space['1']}>{t('course.CourseDate.headline')}</Heading>
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseNameHeadline')}
         </FormControl.Label>
         <Input
+          value={courseName}
           placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
           autoCompleteType={'normal'}
           onChangeText={setCourseName}
@@ -162,61 +202,66 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
             <IconTagList
               initial={subject?.name === sub.name}
               text={sub.name}
-              onPress={() => setSubject && setSubject({ ...sub })}
+              onPress={() => {
+                setSubject && setSubject({ ...sub })
+                setClassRange &&
+                  setClassRange([sub.grade?.min || 1, sub.grade?.max || 13])
+              }}
               iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
             />
           ))}
         </Row>
       </FormControl>
 
+      {subject?.name && (
+        <FormControl>
+          <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
+            {t('course.CourseDate.form.detailsContent')}
+          </FormControl.Label>
+
+          <Text>
+            {t(
+              `Klassen ${(classRange && classRange[0]) || 1} - ${
+                (classRange && classRange[1]) || 13
+              }`
+            )}
+          </Text>
+          <Box>
+            <Slider
+              animateTransitions
+              minimumValue={1}
+              maximumValue={13}
+              minimumTrackTintColor={colors['primary']['500']}
+              thumbTintColor={colors['primary']['900']}
+              value={classRange || [1, 13]}
+              step={1}
+              onValueChange={(value: number | number[]) => {
+                Array.isArray(value) &&
+                  setClassRange &&
+                  setClassRange([value[0], value[1]])
+              }}
+            />
+          </Box>
+        </FormControl>
+      )}
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
         <Box paddingY={space['1']}>
-          <Pressable
-            onPress={onShowUnsplash}
-            flexDirection="row"
-            alignItems="center">
-            <Column marginRight={space['1']}>
-              <Image
-                width="90px"
-                height="90px"
-                alt="Image Placeholder"
-                source={{
-                  uri: pickedPhoto || ImagePlaceHolder
-                }}
-              />
-            </Column>
-            <Column>
-              <Link>{t('course.uploadImage')}</Link>
-            </Column>
-          </Pressable>
+          <WidgetUnsplash photo={pickedPhoto} onShowUnsplash={onShowUnsplash} />
         </Box>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
-        <Row space={space['0.5']}>
-          <Pressable
-            onPress={() => alert('Funktion')}
-            alignItems="center"
-            flexDirection="row">
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg={'primary.900'}
-              w="40px"
-              h="40px"
-              marginRight="15px"
-              borderRadius="10px">
-              <Text color="white" fontSize="32px">
-                +
-              </Text>
-            </Box>
-            <Text bold>
-              {t('course.CourseDate.form.courseAddOntherLeadText')}
-            </Text>
-          </Pressable>
+        <Heading>Weitere Kursleiter</Heading>
+        <VStack mt={space['1']}>
+          {addedInstructors &&
+            addedInstructors.map((instructor: LFInstructor) => (
+              <InstructorRow instructor={instructor} />
+            ))}
+        </VStack>
+        <Row space={space['0.5']} mt={space['1']}>
+          <WidgetAddInstructor onPress={onShowAddInstructor} />
         </Row>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
@@ -227,9 +272,10 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
           placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
+          value={outline}
           onChangeText={setOutline}
         />
-        <Text fontSize="xs">
+        <Text fontSize="xs" color="primary.grey">
           {t('course.CourseDate.form.shortDescriptionLimitNotice')}
         </Text>
       </FormControl>
@@ -240,6 +286,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
         <TextArea
           placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
           autoCompleteType={'normal'}
+          value={description}
           onChangeText={setDescription}
         />
       </FormControl>
@@ -252,35 +299,15 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
           placeholder={t('course.CourseDate.form.tagsPlaceholder')}
           autoCompleteType={'normal'}
+          value={tags}
           onChangeText={setTags}
         />
-        <Text fontSize="xs">{t('course.CourseDate.form.tagsInfo')}</Text>
+        <Text fontSize="xs" color="primary.grey">
+          {t('course.CourseDate.form.tagsInfo')}
+        </Text>
       </FormControl>
       <Heading>{t('course.CourseDate.form.detailsHeadline')}</Heading>
-      <FormControl>
-        <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
-          {t('course.CourseDate.form.detailsContent')}
-        </FormControl.Label>
-        {splitGrades.map((grade: SplitGrade, i) => (
-          <ToggleButton
-            isActive={courseClasses?.includes(grade?.id) || false}
-            dataKey={subject?.name || 'subject'}
-            label={`${grade.minGrade}. - ${grade.maxGrade}. Klasse`}
-            onPress={() => {
-              if (courseClasses?.includes(grade?.id)) {
-                setCourseClasses &&
-                  setCourseClasses(prev => {
-                    prev.splice(i, 1)
-                    return [...prev]
-                  })
-              } else {
-                setCourseClasses &&
-                  setCourseClasses(prev => [...prev, grade.id])
-              }
-            }}
-          />
-        ))}
-      </FormControl>
+
       <FormControl marginBottom={space['2']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.maxMembersLabel')}
@@ -296,14 +323,16 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
           marginBottom={space['0.5']}
         />
 
-        <Text fontSize="xs">{t('course.CourseDate.form.maxMembersInfo')}</Text>
+        <Text fontSize="xs" color="primary.grey">
+          {t('course.CourseDate.form.maxMembersInfo')}
+        </Text>
       </FormControl>
       <Heading fontSize="md">
         {t('course.CourseDate.form.otherHeadline')}
       </Heading>
       <Row>
         <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
-        <Switch onValueChange={setJoinAfterStart} />
+        <Switch value={joinAfterStart} onValueChange={setJoinAfterStart} />
       </Row>
       <Row marginBottom={space['2']}>
         <Text flex="1" justifyContent="center">
@@ -319,7 +348,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash }) => {
             />
           </Tooltip>
         </Text>
-        <Switch onValueChange={setAllowContact} />
+        <Switch value={allowContact} onValueChange={setAllowContact} />
       </Row>
       <Row
         space={space['1']}

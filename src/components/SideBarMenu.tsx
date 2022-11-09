@@ -34,7 +34,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
 
   return (
     (show && (
-      <View w="240" h="100%">
+      <View w="240" h="100vh">
         <VStack
           paddingTop={paddingTop}
           position="fixed"
