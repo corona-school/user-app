@@ -143,7 +143,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const [addCourseInstructor] = useMutation(gql`
     mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
-      courseAddInstructor(studentId: $studentId, courseId: $courseId)
+      subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
     }
   `)
 
@@ -274,7 +274,7 @@ const CreateCourse: React.FC<Props> = () => {
       for await (const instructor of addedInstructors) {
         let res = await addCourseInstructor({
           variables: {
-            courseId: courseId,
+            courseId: subRes.data?.subcourseCreate?.id,
             studentId: instructor.id
           }
         })
