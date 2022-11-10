@@ -23,7 +23,7 @@ import TextInput from '../../components/TextInput'
 import useModal from '../../hooks/useModal'
 import useRegistration from '../../hooks/useRegistration'
 import VerifyEmailModal from '../../modals/VerifyEmailModal'
-import { DEEPLINK_OPTIN } from '../../Utility'
+import { REDIRECT_OPTIN } from '../../Utility'
 
 type Props = {}
 
@@ -50,7 +50,7 @@ const mutPupil = gql`
       id
     }
     passwordCreate(password: $password)
-    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${DEEPLINK_OPTIN}")
+    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
   }
 `
 const mutStudent = gql`
@@ -74,7 +74,7 @@ const mutStudent = gql`
       id
     }
     passwordCreate(password: $password)
-    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${DEEPLINK_OPTIN}")
+    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
   }
 `
 

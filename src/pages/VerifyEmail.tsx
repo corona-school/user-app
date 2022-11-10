@@ -24,10 +24,11 @@ const VerifyEmail: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const token = searchParams?.get('secretToken') || ''
+  const token = searchParams?.get('secret_token') || ''
+  const redirectTo = searchParams?.get('redirectTo')
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const { createDeviceToken } = useApollo()
-  const { setUserType, userType: _userType } = useLernfair()
+  const { setUserType } = useLernfair()
 
   const [loginToken, { loading }] = useMutation(gql`
     mutation ($token: String!) {
@@ -129,7 +130,7 @@ const VerifyEmail: React.FC<Props> = () => {
               <Button
                 marginTop={space['1']}
                 onPress={() =>
-                  navigate('/additional-data', { state: { token } })
+                  navigate(redirectTo || '/', { state: { token } })
                 }>
                 Fortfahren
               </Button>

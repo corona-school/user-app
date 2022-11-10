@@ -22,7 +22,7 @@ import TextInput from '../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../components/PasswordInput'
 import AlertMessage from '../widgets/AlertMessage'
-import { DEEPLINK_LOGIN, DEEPLINK_PASSWORD } from '../Utility'
+import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -112,12 +112,12 @@ export default function Login() {
 
   const [resetPW, _resetPW] = useMutation(gql`
     mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${DEEPLINK_PASSWORD}")
+      tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
     }
   `)
   const [sendToken, _sendToken] = useMutation(gql`
     mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${DEEPLINK_LOGIN}")
+      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
     }
   `)
 
