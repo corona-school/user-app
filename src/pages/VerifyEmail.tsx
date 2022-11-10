@@ -24,7 +24,7 @@ const VerifyEmail: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const token = searchParams?.get('token') || ''
+  const token = searchParams?.get('secretToken') || ''
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
   const { createDeviceToken } = useApollo()
   const { setUserType, userType: _userType } = useLernfair()

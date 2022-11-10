@@ -22,7 +22,7 @@ type Props = {}
 
 const ResetPassword: React.FC<Props> = () => {
   const [searchParams] = useSearchParams()
-  const token = searchParams?.get('token') || ''
+  const token = searchParams?.get('secretToken') || ''
   const { t } = useTranslation()
   const navigate = useNavigate()
   // const { createToken, clearToken } = useApollo()
