@@ -130,6 +130,9 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           {t('helperwizard.kennenlernen.content')}
                         </Text>
                         <Button
+                          onPress={() =>
+                            window.open(process.env.REACT_APP_SCREENING_URL)
+                          }
                           width={ButtonContainer}
                           marginRight={ButtonSpace}>
                           {t('helperwizard.kennenlernen.button')}
