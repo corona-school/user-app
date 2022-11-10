@@ -81,14 +81,10 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
   const onboardingIndex: number = useMemo(() => {
     if (
       data?.me?.student?.canCreateCourse.reason === 'not-screened' ||
-      data?.me?.student?.canCreateCourse.reason === 'not-instructor'
+      data?.me?.student?.canRequestMatch.reason === 'not-screened'
     )
       return 0
-    if (
-      data?.me?.student?.canRequestMatch?.reason === 'not-screened' ||
-      'not-tutor'
-    )
-      return 1
+    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
     if (!data?.me?.student?.firstMatchRequest) return 2
     if (!data?.me?.student?.certificateOfConduct?.id) return 3
     return 0
