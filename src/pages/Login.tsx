@@ -101,7 +101,7 @@ export default function Login() {
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
   ) => {
     if (e.nativeEvent.key === 'Enter') {
-      attemptLogin()
+      getLoginOption()
     }
   }
 
