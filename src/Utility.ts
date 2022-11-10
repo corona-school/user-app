@@ -7,6 +7,8 @@ export const TOKEN_LENGTH = 32
 // eslint-disable-next-line no-restricted-globals
 export const DEEPLINK_OPTIN = `${location.origin}/verify-email`
 // eslint-disable-next-line no-restricted-globals
+export const DEEPLINK_LOGIN = `${location.origin}/login`
+// eslint-disable-next-line no-restricted-globals
 export const DEEPLINK_PASSWORD = `${location.origin}/reset-password`
 
 export const secondsToTimerString = (seconds: number) => {

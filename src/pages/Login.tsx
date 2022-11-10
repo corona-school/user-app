@@ -22,14 +22,18 @@ import TextInput from '../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../components/PasswordInput'
 import AlertMessage from '../widgets/AlertMessage'
-import { DEEPLINK_PASSWORD } from '../Utility'
+import { DEEPLINK_LOGIN, DEEPLINK_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
   const { createDeviceToken } = useApollo()
   const { space, sizes } = useTheme()
+  const [showNoAccountModal, setShowNoAccountModal] = useState(false)
   const [email, setEmail] = useState<string>()
+  const [showEmailSent, setShowEmailSent] = useState(false)
+  const [loginEmail, setLoginEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
+  const [showPasswordField, setShowPasswordField] = useState<boolean>(false)
   const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false)
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
@@ -42,6 +46,14 @@ export default function Login() {
 
   const navigate = useNavigate()
   const { trackPageView, trackEvent } = useMatomo()
+
+  const [determineLoginOptions, _determineLoginOptions] = useMutation(
+    gql`
+      mutation determineLoginOptions($email: String!) {
+        userDetermineLoginOptions(email: $email)
+      }
+    `
+  )
 
   useEffect(() => {
     trackPageView({
@@ -103,7 +115,12 @@ export default function Login() {
       tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${DEEPLINK_PASSWORD}")
     }
   `)
-  // redirectTo: "${window.location.origin}/reset-password"
+  const [sendToken, _sendToken] = useMutation(gql`
+    mutation ($email: String!) {
+      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${DEEPLINK_LOGIN}")
+    }
+  `)
+
   const resetPassword = async (pw: string) => {
     try {
       const res = await resetPW({
@@ -162,17 +179,79 @@ export default function Login() {
                 onPress={() => resetPassword(pwEmail)}>
                 Passwort zurücksetzen
               </Button>
-              {/* <Button
-                variant={'outline'}
-                onPress={() => setShowPasswordModal(false)}>
-                Zurück
-              </Button> */}
             </Row>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
     )
   }
+
+  const NoAccountModal: React.FC<{
+    email: string
+    showModal: boolean
+  }> = ({ email, showModal }) => {
+    return (
+      <Modal isOpen={showModal} onClose={() => setShowNoAccountModal(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Login</Modal.Header>
+          <Modal.Body>
+            <VStack space={space['0.5']}>
+              <Text>
+                Es konnte kein Account mit der E-Mail Adresse{' '}
+                <Text bold>{email}</Text> gefunden werden
+              </Text>
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Row space={space['0.5']}>
+              <Button onPress={() => setShowNoAccountModal(false)}>OK</Button>
+            </Row>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    )
+  }
+
+  const requestToken = useCallback(async () => {
+    const res = await sendToken({
+      variables: {
+        email: email
+      }
+    })
+
+    if (res.data.tokenRequest) {
+      setShowEmailSent(true)
+    } else if (res.errors) {
+      if (res.errors[0].message.includes('Unknown User')) {
+        setShowNoAccountModal(true)
+      } else {
+        setShowEmailSent(true)
+      }
+    }
+  }, [email, sendToken])
+
+  const getLoginOption = useCallback(async () => {
+    if (!email || email.length < 6) return
+    const res = await determineLoginOptions({ variables: { email } })
+    if (res.data.userDetermineLoginOptions === 'password') {
+      setShowPasswordField(true)
+      setLoginEmail(email)
+    } else if (res.data.userDetermineLoginOptions === 'email') {
+      requestToken()
+    } else {
+      setShowNoAccountModal(true)
+    }
+  }, [determineLoginOptions, email, requestToken])
+
+  useEffect(() => {
+    if (loginEmail) {
+      if (loginEmail !== email) {
+        setPassword('')
+        setShowPasswordField(false)
+      }
+    }
+  }, [email, loginEmail])
 
   return (
     <>
@@ -218,19 +297,19 @@ export default function Login() {
                 onKeyPress={handleKeyPress}
               />
             </Row>
-            <Row marginBottom={3}>
-              <PasswordInput
-                width="100%"
-                type="password"
-                isRequired={true}
-                placeholder={t('password')}
-                onChangeText={setPassword}
-                onKeyPress={handleKeyPress}
-              />
-            </Row>
-            {/* <Text opacity={0.6} fontSize="xs">
-            {t('login.hint.mandatory')}
-          </Text> */}
+            {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
+            {showPasswordField && (
+              <Row marginBottom={3}>
+                <PasswordInput
+                  width="100%"
+                  type="password"
+                  isRequired={true}
+                  placeholder={t('password')}
+                  onChangeText={setPassword}
+                  onKeyPress={handleKeyPress}
+                />
+              </Row>
+            )}
           </Box>
           {error && (
             <Text
@@ -264,7 +343,16 @@ export default function Login() {
           </Button>
 
           <Box paddingTop={4} marginX="90px" display="block">
-            <Button onPress={attemptLogin} width="100%" isDisabled={loading}>
+            <Button
+              onPress={showPasswordField ? attemptLogin : getLoginOption}
+              width="100%"
+              isDisabled={
+                loading ||
+                !email ||
+                email.length < 6 ||
+                _determineLoginOptions.loading ||
+                _sendToken.loading
+              }>
               {t('login.btn.login')}
             </Button>
           </Box>
@@ -279,6 +367,7 @@ export default function Login() {
         </Row>
       </VStack>
       <PasswordModal showModal={showPasswordModal} email={email || ''} />
+      <NoAccountModal showModal={showNoAccountModal} email={email || ''} />
     </>
   )
 }
