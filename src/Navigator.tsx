@@ -53,7 +53,6 @@ import { gql, useQuery } from '@apollo/client'
 import MatchingBlocker from './pages/student/MatchingBlocker'
 import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
-import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
@@ -128,14 +127,6 @@ export default function Navigator() {
         />
 
         <Route
-          path="/explore"
-          element={
-            <RequireAuth>
-              <Explore />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="/single-course"
           element={
             <RequireAuth>
@@ -152,15 +143,6 @@ export default function Navigator() {
                 pupilComponent={<Profile />}
                 studentComponent={<ProfileStudent />}
               />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/profile-helper"
-          element={
-            <RequireAuth>
-              <ProfileHelper />
             </RequireAuth>
           }
         />
@@ -197,30 +179,6 @@ export default function Navigator() {
           }></Route>
 
         <Route
-          path="/alle-faqs"
-          element={
-            <RequireAuth>
-              <AllFaq />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/quick-start"
-          element={
-            <RequireAuth>
-              <QuickStart />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/digitale-tools"
-          element={
-            <RequireAuth>
-              <DigitaleTools />
-            </RequireAuth>
-          }></Route>
-
-        <Route
           path="/onboarding-list"
           element={
             <RequireAuth>
@@ -230,29 +188,11 @@ export default function Navigator() {
         />
 
         <Route
-          path="/matching-1-1"
-          element={
-            <RequireAuth>
-              <MatchingBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/course"
-          element={
-            <RequireAuth>
-              <CourseBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
           path="/request-certificate"
           element={
-            // <RequireAuth>
-            <RequestCertificate />
-            // </RequireAuth>
+            <RequireAuth>
+              <RequestCertificate />
+            </RequireAuth>
           }
         />
 
