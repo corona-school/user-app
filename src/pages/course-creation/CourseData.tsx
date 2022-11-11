@@ -30,6 +30,8 @@ import { Slider } from '@miblanchard/react-native-slider'
 import InstructorRow from '../../widgets/InstructorRow'
 import { LFInstructor } from '../../types/lernfair/Course'
 
+const MAX_OUTLINE_LENGTH = 140
+
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
   const { t } = useTranslation()
 
@@ -273,7 +275,9 @@ const CourseData: React.FC<Props> = ({
           placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
           value={outline}
-          onChangeText={setOutline}
+          onChangeText={text =>
+            setOutline && setOutline(text.substring(0, MAX_OUTLINE_LENGTH))
+          }
         />
         <Text fontSize="xs" color="primary.grey">
           {t('course.CourseDate.form.shortDescriptionLimitNotice')}
