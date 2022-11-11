@@ -71,7 +71,7 @@ const StudentGroup: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   const location = useLocation()
-  const locState = location.state as {
+  const locState = location?.state as {
     errors: string[]
   }
 
@@ -199,7 +199,7 @@ const StudentGroup: React.FC<Props> = () => {
       )
     }
     return false
-  }, [locState.errors])
+  }, [locState?.errors])
 
   if (loading) return <CenterLoadingSpinner />
 
