@@ -298,7 +298,7 @@ export default function Login() {
               />
             </Row>
             {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
-            {showPasswordField && (
+            {(showPasswordField && (
               <Row marginBottom={3}>
                 <PasswordInput
                   width="100%"
@@ -309,7 +309,7 @@ export default function Login() {
                   onKeyPress={handleKeyPress}
                 />
               </Row>
-            )}
+            )) || <input type="password" style={{ display: 'none' }} />}
           </Box>
           {error && (
             <Text
