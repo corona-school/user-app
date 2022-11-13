@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 jobs:
  
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,7 +16,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install Dependencies
         run: npm ci
+
       - name: Build App
+        env:
+          CI: false # TODO: Remove once all build warnings were fixed
         run: npm run build
+
+      - name: Run Unit Tests
+        run: npm run test
