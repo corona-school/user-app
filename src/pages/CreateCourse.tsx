@@ -42,6 +42,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import AddCourseInstructor from '../modals/AddCourseInstructor'
 import { GraphQLError } from 'graphql'
+import { BACKEND_URL } from '../config'
 
 type Props = {}
 
@@ -300,7 +301,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     let uploadFileId
     try {
-      uploadFileId = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+      uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
         method: 'POST',
         body: formData
       })

@@ -6,18 +6,22 @@ declare namespace NodeJS {
   interface LernFairEnv {
     // App version dynamically fetched by the environment
     readonly REACT_APP_VERSION: string
-    // Apollo API Key
-    readonly REACT_APP_APOLLO_CLIENT_URI: string
+    // Pointing to a running instance of corona-school/backend
+    readonly REACT_APP_BACKEND_URL: string
     // Matomo API Key
     readonly REACT_APP_MATOMO_URL: string
     // Unsplash API Key
     readonly REACT_APP_UNSPLASH: string
-    // URL to upload course photos
-    readonly REACT_APP_UPLOAD_URL: string
   }
   interface ProcessEnv extends LernFairEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test'
     readonly PUBLIC_URL: string
+  }
+}
+
+declare interface Window {
+  readonly liveConfig: {
+    readonly RUNTIME_BACKEND_URL: string
   }
 }
 

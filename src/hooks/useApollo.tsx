@@ -26,6 +26,7 @@ import Utility from '../Utility'
 import { createOperation } from '@apollo/client/link/utils'
 import { SubscriptionObserver } from 'zen-observable-ts'
 import userAgentParser from 'ua-parser-js'
+import { BACKEND_URL } from '../config'
 
 export type LFApollo = {
   client: ApolloClient<NormalizedCacheObject>
@@ -184,7 +185,7 @@ const useApolloInternal = () => {
     }))
 
     const uriLink = new HttpLink({
-      uri: process.env.REACT_APP_APOLLO_CLIENT_URI + '/apollo'
+      uri: BACKEND_URL + '/apollo'
     })
 
     return new ApolloClient({
