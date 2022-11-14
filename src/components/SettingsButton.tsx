@@ -1,5 +1,4 @@
-import { HamburgerIcon } from 'native-base'
-import { TouchableOpacity } from 'react-native'
+import { Button, HamburgerIcon } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 
 type Props = {}
@@ -7,9 +6,9 @@ type Props = {}
 const SettingsButton: React.FC<Props> = () => {
   const navigate = useNavigate()
   return (
-    <TouchableOpacity onPress={() => navigate('/settings')}>
+    <Button bgColor="" ml={-4} onPress={() => navigate('/settings')}>
       <HamburgerIcon size="xl" color="lightText" />
-    </TouchableOpacity>
+    </Button>
   )
 }
 export default SettingsButton

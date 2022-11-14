@@ -230,7 +230,7 @@ const useApolloInternal = () => {
   //  ?token=... is a legacy token where each user has exactly one
   //  ?secret_token=... is a new token, based on 'secrets'
   useEffect(() => {
-    ;(async function () {
+    (async function () {
       const { searchParams } = new URL(window.location.href)
       const legacyToken = searchParams.get('token')
       if (legacyToken) {

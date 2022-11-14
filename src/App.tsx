@@ -17,10 +17,10 @@ function App() {
       <LFModalProvider>
         <LFApolloProvider>
           <NativeBaseProvider theme={Theme}>
-            <MatomoProvider value={matomo}>
+            {/* <MatomoProvider value={matomo}> */}
               <Navigator />
               <FullPageModal />
-            </MatomoProvider>
+            {/* </MatomoProvider> */}
           </NativeBaseProvider>
         </LFApolloProvider>
       </LFModalProvider>

@@ -3,7 +3,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { VStack, Modal, Button, useTheme, Heading, Text } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import NotificationAlert from '../../components/NotificationAlert'
+import NotificationAlert from '../../components/Notification/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import useModal from '../../hooks/useModal'
 

@@ -3,7 +3,7 @@ import { Box, Heading, useTheme, Text } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/NotificationAlert'
+import NotificationAlert from '../components/Notification/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import WebServiceCard from '../widgets/WebServiceCard'
 

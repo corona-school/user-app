@@ -18,7 +18,7 @@ import {
   useBreakpointValue,
   Flex
 } from 'native-base'
-import NotificationAlert from '../../components/NotificationAlert'
+import NotificationAlert from '../../components/Notification/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
 import ProfilAvatar from '../../widgets/ProfilAvatar'
