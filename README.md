@@ -1,51 +1,33 @@
-# Project specific info
+# LernFair User App
 
-__NOTE: This app uses 2 different navigators (Web + Native) right now because of conflicting versions of `native-base@0.34.9` and `react-native-web@0.18.x`__
-A fix was announced by GeekyAnts [(GitHub issue)](https://github.com/GeekyAnts/NativeBase/issues/5075), however, we do not know when.
+The user app provides a user interface for pupils and helpers and talks with the [backend](https://github.com/corona-school/backend) via GraphQL.
 
-__NOTE: Due to version conflicts with `@miblanchard/react-native-slider` packages have to be installed with `--force` or `--legacy-peer-deps` in npm__
+To develop locally, install all dependencies with `npm ci`, then use `npm start` to start a development server on port 3000 that talks to the "dev backend" (our staging landscape). Unit tests can be run with `npm run test`. To test out the productive deployment build the app with `npm run build`, then run `PORT=3000 npm run serve` to start the server on the specified port.
 
-## Getting Started with Create React App
+## Structure
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository is set up as a React Native app although it is currently only shipped as a web app. 
+In the future it might be desirable to also offer native apps.
 
-## Available Scripts
+All texts are stored in i18n files in `/src/lang` to simplify translation of the app in the future.
 
-In the project directory, you can run:
 
-### `npm start`
+## Configuration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Most configuration is done via `REACT_APP_` environment variables, which are inlined into the bundled version when the app is built. However as the app is only built once in Heroku and used for both staging and production and it is desirable to be able to change certain configuration without rebuilding the app, there is a separate mechanism for configuration: `RUNTIME_` variables added to the server (i.e. `RUNTIME_BACKEND_URL=https://example.com npm run serve`) are injected into `window.liveConfig`, where they can be read by frontend code. Changing these only requires the server process to restart, clients will then pick them up once the page is reloaded (while the bundle is still cached).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts). 
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Further Resources
 
-### `npm run build`
+- [Create React App Documentation](https://github.com/facebook/create-react-app)
+- [React documentation](https://reactjs.org/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contributing
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+We're always happy and open about contributions, please [contact the HR team](mailto:team@lern-fair.de) in case you are interested in joining our team of volunteers.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Security Issues
 
-### `npm run eject`
-
-**Note: this app has been ejected**
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Environments
-
-* Available environment variables are noted in `src/types/react-app-env.d.ts`
+We follow the guidelines for responsible disclosure: If you find a vulnerability, we would encourage you to [contact Support](mailto:support@lern-fair.de) and gives us some time to tackle the issues, before publishing it. We take security very seriously and these issues are automatically highest priority for us. Since we are a non-profit organization with not much of a budget, we can't offer a bug bounty program. 
