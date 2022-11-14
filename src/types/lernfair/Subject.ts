@@ -31,20 +31,17 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'politik', label: 'Politik' },
   { key: 'russisch', label: 'Russisch' },
   { key: 'sachkunde', label: 'Sachkunde' },
-  { key: 'sonstige', label: 'Sonstige' },
   { key: 'spanisch', label: 'Spanisch' },
   { key: 'tuerkisch', label: 'Türkisch' },
   { key: 'wirtschaft', label: 'Wirtschaft' },
   { key: 'other', label: 'Andere' }
 ]
 
-export const getSubjectKey: (
-    name: string
-) => string = (name) => {
-  for(let subject of subjects){
-    if(subject.label === name){
-      return subject.key;
+export const getSubjectKey: (name: string) => string = name => {
+  for (let subject of subjects) {
+    if (subject.label === name) {
+      return subject.key
     }
   }
-  return 'other';
+  return 'other'
 }

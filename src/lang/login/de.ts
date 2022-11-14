@@ -10,7 +10,10 @@ const login = {
     login: 'Anmelden',
     register: 'Neu registrieren'
   },
-  noaccount: 'Ich habe doch noch keinen Account'
+  noaccount: 'Ich habe doch noch keinen Account',
+  email: {
+    sent: 'Wir haben dir eine E-Mail zum Login geschickt'
+  }
 }
 
 export default login
