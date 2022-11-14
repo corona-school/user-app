@@ -4,6 +4,8 @@ The user app provides a user interface for pupils and helpers and talks with the
 
 To develop locally, install all dependencies with `npm ci`, then use `npm start` to start a development server on port 3000 that talks to the "dev backend" (our staging landscape). Unit tests can be run with `npm run test`. To test out the productive deployment build the app with `npm run build`, then run `PORT=3000 npm run serve` to start the server on the specified port.
 
+To analyze and optimize the bundle, run `npm run analyze-bundle`, then navigate to `http://localhost:3000/static/source-map.html`. 
+
 ## Structure
 
 This repository is set up as a React Native app although it is currently only shipped as a web app. 
