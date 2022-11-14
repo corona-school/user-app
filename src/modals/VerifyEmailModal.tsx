@@ -12,7 +12,7 @@ import {
 import { useCallback, useState } from 'react'
 import Icon from '../assets/icons/lernfair/ic_email.svg'
 import AlertMessage from '../widgets/AlertMessage'
-import { DEEPLINK_OPTIN } from '../Utility'
+import { REDIRECT_OPTIN } from '../Utility'
 
 type Props = {
   email?: string
@@ -31,7 +31,7 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
 
   const [sendVerification, _sendVerification] = useMutation(gql`
     mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-verify-email", redirectTo: "${DEEPLINK_OPTIN}")
+      tokenRequest(email: $email, action: "user-verify-email", redirectTo: "${REDIRECT_OPTIN}")
     }
   `)
 
