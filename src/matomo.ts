@@ -1,4 +1,5 @@
 import { createInstance } from '@jonkoops/matomo-tracker-react'
+import { DISABLE_MATOMO } from './config'
 
 export default createInstance({
   urlBase: process.env.REACT_APP_MATOMO_URL,
@@ -6,5 +7,5 @@ export default createInstance({
   disabled:
     process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'test' ||
-    process.env.REACT_APP_DISABLE_MATOMO === 'true'
+    DISABLE_MATOMO === 'true'
 })

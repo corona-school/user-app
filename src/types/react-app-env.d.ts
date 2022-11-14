@@ -10,6 +10,7 @@ declare namespace NodeJS {
     readonly REACT_APP_BACKEND_URL: string
     // Matomo API Key
     readonly REACT_APP_MATOMO_URL: string
+    readonly REACT_APP_DISABLE_MATOMO?: "true"
     // Unsplash API Key
     readonly REACT_APP_UNSPLASH: string
     // URL for student screenings
@@ -24,6 +25,7 @@ declare namespace NodeJS {
 declare interface Window {
   readonly liveConfig: {
     readonly RUNTIME_BACKEND_URL: string
+    readonly RUNTIME_DISABLE_MATOMO?: "true" | "false"
   }
 }
 
