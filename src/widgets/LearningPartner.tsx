@@ -67,7 +67,7 @@ const LearningPartner: React.FC<Props> = ({
 
             {schoolclass && (
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Klasse: {schoolclass}
+                Klasse: {schoolclass.UNKNOWN.DEREF}
               </Text>
             )}
           </Box>
