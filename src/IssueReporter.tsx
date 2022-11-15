@@ -73,7 +73,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     const closeRef = useRef(null);
 
     return <>
-        <AlertDialog isOpen={!!issue} onClose={() => setIssue(null)} leastDestructiveRef={closeRef}>
+        <AlertDialog isOpen={!!issue} onClose={() => window.location.reload()} leastDestructiveRef={closeRef}>
                 <AlertDialog.Content>
                     <AlertDialog.Header>
                         Ein Fehler ist aufgetreten
@@ -87,7 +87,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                             <Button colorScheme="blue" onPress={contactSupport} ref={closeRef}>
                                 Support kontaktieren
                             </Button>
-                            <Button variant="unstyled" colorScheme="coolGray" onPress={() => setIssue(null)}>
+                            <Button variant="unstyled" colorScheme="coolGray" onPress={() => window.location.reload()}>
                                 Trotzdem fortfahren
                             </Button>
                         </Button.Group>
