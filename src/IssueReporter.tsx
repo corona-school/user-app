@@ -7,16 +7,21 @@ import AlertMessage from "./widgets/AlertMessage";
 // c.f. https://reactjs.org/docs/error-boundaries.html
 type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
 class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
+    state = { hasError: false };
+
     constructor(props: ErrorBoundaryProps) {
       super(props);
     }
   
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        this.setState({ error, errorInfo });
+        this.props.onError(error, errorInfo);
+        this.setState({ hasError: true });
     }
 
     render() {
-      return this.props.children; 
+      if (!this.state.hasError)
+        return this.props.children;
+      return null;
     }
 }
 
@@ -65,27 +70,30 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
 
     const closeRef = useRef(null);
 
-    return <ErrorBoundary onError={reportIssue}>
+    return <>
         <AlertDialog isOpen={!!issue} onClose={() => setIssue(null)} leastDestructiveRef={closeRef}>
-            <AlertDialog.Content>
-                <AlertDialog.Header>
-
-                </AlertDialog.Header>
-                <AlertDialog.Body>
-
-                </AlertDialog.Body>
-                <AlertDialog.Footer>
-                    <Button.Group space={2}>
-                        <Button colorScheme="blue" onPress={contactSupport} ref={closeRef}>
-                            Cancel
-                        </Button>
-                        <Button variant="unstyled" colorScheme="coolGray" onPress={() => setIssue(null)}>
-                            Trotzdem fortfahren
-                        </Button>
-                    </Button.Group>
-                </AlertDialog.Footer>
-            </AlertDialog.Content>
-        </AlertDialog>
-        {children}
-    </ErrorBoundary>;
+                <AlertDialog.Content>
+                    <AlertDialog.Header>
+                        Ein Fehler ist aufgetreten
+                    </AlertDialog.Header>
+                    <AlertDialog.Body>
+                        Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler.
+                        Solltest du Fragen haben, kontaktiere den Support
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                        <Button.Group space={2}>
+                            <Button colorScheme="blue" onPress={contactSupport} ref={closeRef}>
+                                Support kontaktieren
+                            </Button>
+                            <Button variant="unstyled" colorScheme="coolGray" onPress={() => setIssue(null)}>
+                                Trotzdem fortfahren
+                            </Button>
+                        </Button.Group>
+                    </AlertDialog.Footer>
+                </AlertDialog.Content>
+            </AlertDialog>
+            <ErrorBoundary onError={reportIssue}>
+                {children}
+            </ErrorBoundary>
+    </>;
 }
