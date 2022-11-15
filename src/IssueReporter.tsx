@@ -1,6 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { AlertDialog, Button } from "native-base";
-import React, { ErrorInfo, useRef, useState } from "react";
+import React, { ErrorInfo, useEffect, useRef, useState } from "react";
 import useApollo from "./hooks/useApollo";
 import AlertMessage from "./widgets/AlertMessage";
 
@@ -50,6 +50,19 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
         window.open(`mailto:support@lern-fair.de?subject=Tech-Issue ${issue}`, '_blank');
     }
     
+    useEffect(() => {
+        const errorHandler = (event: ErrorEvent) => { reportIssue(event.error, { componentStack: "unknown error" }); return true };
+        const unhandledHandler = (event: PromiseRejectionEvent) => { reportIssue(event.reason, { componentStack: "unhandled rejection"}); return true };
+
+        window.addEventListener('error', errorHandler);
+        window.addEventListener('unhandledrejection', unhandledHandler);
+
+        return () => {
+            window.removeEventListener('error', errorHandler);
+            window.removeEventListener('unhandledrejection', unhandledHandler);
+        };
+    }, []);
+
     const closeRef = useRef(null);
 
     return <ErrorBoundary onError={reportIssue}>
