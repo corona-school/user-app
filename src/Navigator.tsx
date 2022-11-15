@@ -7,79 +7,76 @@ import {
   useLocation
 } from 'react-router-dom'
 import useApollo from './hooks/useApollo'
-import { gql, useQuery } from '@apollo/client'
+import Dashboard from './pages/pupil/Dashboard'
+import Login from './pages/Login'
+import Profile from './pages/pupil/Profile'
+
+import Settings from './pages/Settings'
+import OnboardingTourList from './pages/OnboardingTourList'
+import Welcome from './pages/Welcome'
+import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
+import HelpCenter from './pages/Helpcenter'
+import AllFaq from './pages/AllFaq'
+import QuickStart from './pages/QuickStart'
+import DigitaleTools from './pages/DigitaleTools'
+import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
+import ChangeSettingState from './pages/change-setting/ChangeSettingState'
+import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
+import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass'
+import SingleCourse from './pages/SingleCourse'
+
+import RegistrationAccount from './pages/registration/RegistrationAccount'
+import RegistrationPersonal from './pages/registration/RegistrationPersonal'
+import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
-import useLernfair from './hooks/useLernfair'
-import { useEffect, lazy, Suspense } from 'react'
-
-import VerifyEmailModal from './modals/VerifyEmailModal'
-import CenterLoadingSpinner from './components/CenterLoadingSpinner'
-
-const Dashboard = lazy(() => import('./pages/pupil/Dashboard'));
-const Login = lazy(() => import('./pages/Login'));
-const Profile = lazy(() => import( './pages/pupil/Profile'));
-
-const Settings = lazy(() => import( './pages/Settings'));
-const OnboardingTourList = lazy(() => import( './pages/OnboardingTourList'));
-const Welcome = lazy(() => import( './pages/Welcome'));
-const ChangeSettingSubject = lazy(() => import( './pages/change-setting/ChangeSettingSubject'));
-const HelpCenter = lazy(() => import( './pages/Helpcenter'));
-const AllFaq = lazy(() => import( './pages/AllFaq'));
-const QuickStart = lazy(() => import( './pages/QuickStart'));
-const DigitaleTools = lazy(() => import( './pages/DigitaleTools'));
-const ChangeSettingSchoolType = lazy(() => import( './pages/change-setting/ChangeSettingSchoolType'));
-const ChangeSettingState = lazy(() => import( './pages/change-setting/ChangeSettingState'));
-const ChangeSettingLanguage = lazy(() => import( './pages/change-setting/ChangeSettingLanguage'));
-const ChangeSettingSchoolClass = lazy(() => import( './pages/change-setting/ChangeSettingSchoolClass'));
-const SingleCourse = lazy(() => import( './pages/SingleCourse'));
-
-const RegistrationAccount = lazy(() => import( './pages/registration/RegistrationAccount'));
-const RegistrationPersonal = lazy(() => import( './pages/registration/RegistrationPersonal'));
-const AdditionalData = lazy(() => import( './pages/registration/AdditionalData'));
-const Explore = lazy(() => import( './pages/Explore'));
+import Explore from './pages/Explore'
 
 // Onboarding Students
-const OnBoardingStudentWelcome = lazy(() => import( './pages/onboarding/student/OnBoardingStudentWelcome'));
-const OnBoardingStudentSlides = lazy(() => import( './pages/onboarding/student/OnBoardingStudentSlides'));
-const OnBoardingStudentFinisher = lazy(() => import( './pages/onboarding/student/OnBoardingStudentFinisher'));
+import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
+import OnBoardingStudentSlides from './pages/onboarding/student/OnBoardingStudentSlides'
+import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher'
 
 // Onboarding Helper
-const OnBoardingHelperWelcome = lazy(() => import( './pages/onboarding/helper/OnBoardingHelperWelcome'));
-const OnBoardingHelperSlides = lazy(() => import( './pages/onboarding/helper/OnBoardingHelperSlides'));
-const OnBoardingHelperFinisher = lazy(() => import( './pages/onboarding/helper/OnBoardingHelperFinisher'));
+import OnBoardingHelperWelcome from './pages/onboarding/helper/OnBoardingHelperWelcome'
+import OnBoardingHelperSlides from './pages/onboarding/helper/OnBoardingHelperSlides'
+import OnBoardingHelperFinisher from './pages/onboarding/helper/OnBoardingHelperFinisher'
 
 // Onboarding Helper Matching
-const OnBoardingHelperMatchingWelcome = lazy(() => import( './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome'));
-const OnBoardingHelperMatchingSlides = lazy(() => import( './pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides'));
-const OnBoardingHelperMatchingFinisher = lazy(() => import( './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'));
+import OnBoardingHelperMatchingWelcome from './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome'
+import OnBoardingHelperMatchingSlides from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides'
+import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher'
 
 // Profile
 
-const CreateCourse = lazy(() => import( './pages/CreateCourse'));
-const MatchingBlocker = lazy(() => import( './pages/student/MatchingBlocker'));
-const CourseBlocker = lazy(() => import( './pages/student/CourseBlocker'));
-const DashboardStudent = lazy(() => import( './pages/student/DashboardStudent'));
-const ProfileHelper = lazy(() => import( './pages/student/ProfileStudent'));
-const Matching = lazy(() => import( './pages/pupil/Matching'));
-const RequestMatch = lazy(() => import( './pages/student/RequestMatch'));
-const ProfileStudent = lazy(() => import( './pages/student/ProfileStudent'));
-const MatchingStudent = lazy(() => import( './pages/student/MatchingStudent'));
-const RequestCertificate = lazy(() => import( './pages/RequestCertificate'));
-const PupilGroup = lazy(() => import( './pages/pupil/Group'));
-const StudentGroup = lazy(() => import( './pages/student/StudentGroup'));
-const StudentGroupSupport = lazy(() => import( './pages/student/StudentGroupSupport'));
-const AppointmentsArchive = lazy(() => import( './pages/AppointmentsArchive'));
-const CourseArchive = lazy(() => import( './pages/CourseArchive'));
-const LearningPartnerArchive = lazy(() => import( './pages/LearningPartnerArchive'));
-const UserProfile = lazy(() => import( './pages/UserProfile'));
-const NoAcceptRegistration = lazy(() => import( './pages/NoAcceptRegistration'));
-const VerifyEmail = lazy(() => import( './pages/VerifyEmail'));
-const ResetPassword = lazy(() => import( './pages/ResetPassword'));
-const LoginToken = lazy(() => import( './pages/LoginToken'));
+import CreateCourse from './pages/CreateCourse'
+import { gql, useQuery } from '@apollo/client'
+import MatchingBlocker from './pages/student/MatchingBlocker'
+import CourseBlocker from './pages/student/CourseBlocker'
+import DashboardStudent from './pages/student/DashboardStudent'
+import ProfileHelper from './pages/student/ProfileStudent'
+import Matching from './pages/pupil/Matching'
+import RequestMatch from './pages/student/RequestMatch'
+import ProfileStudent from './pages/student/ProfileStudent'
+import MatchingStudent from './pages/student/MatchingStudent'
+import useLernfair from './hooks/useLernfair'
+import RequestCertificate from './pages/RequestCertificate'
+import PupilGroup from './pages/pupil/Group'
+import StudentGroup from './pages/student/StudentGroup'
+import StudentGroupSupport from './pages/student/StudentGroupSupport'
+import AppointmentsArchive from './pages/AppointmentsArchive'
+import CourseArchive from './pages/CourseArchive'
+import { useEffect } from 'react'
+import LearningPartnerArchive from './pages/LearningPartnerArchive'
+import UserProfile from './pages/UserProfile'
+import NoAcceptRegistration from './pages/NoAcceptRegistration'
+import VerifyEmail from './pages/VerifyEmail'
+import VerifyEmailModal from './modals/VerifyEmailModal'
+import CenterLoadingSpinner from './components/CenterLoadingSpinner'
+import ResetPassword from './pages/ResetPassword'
+import LoginToken from './pages/LoginToken'
 
 export default function Navigator() {
   return (
-    <Suspense fallback={<CenterLoadingSpinner />}>
     <BrowserRouter>
       <Routes>
         {/* Public */}
@@ -423,7 +420,6 @@ export default function Navigator() {
         />
       </Routes>
     </BrowserRouter>
-    </Suspense>
   )
 }
 
