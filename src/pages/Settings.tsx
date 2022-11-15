@@ -138,17 +138,20 @@ const Settings: React.FC<Props> = () => {
             />
           </Column>
         </ProfileSettingRow>
-        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.imprint')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.imprint')}
+              onPress={() => navigate('/imprint')}
+            />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.datapolicy')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.datapolicy')}
+              onPress={() => navigate('/privacy')}
+            />
           </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.terms')} isDisabled />
-          </Column>
-        </ProfileSettingRow> */}
+        </ProfileSettingRow>
       </VStack>
     </WithNavigation>
   )

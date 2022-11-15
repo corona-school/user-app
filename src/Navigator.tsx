@@ -73,6 +73,7 @@ import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 import LoginToken from './pages/LoginToken'
+import IFrame from './components/IFrame'
 
 export default function Navigator() {
   return (
@@ -347,7 +348,25 @@ export default function Navigator() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/additional-data" element={<AdditionalData />} />
         <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route
+          path="/privacy"
+          element={
+            <IFrame
+              title="datenschutz"
+              src="https://www.lern-fair.de/iframe/datenschutz"
+            />
+          }
+        />
+        <Route
+          path="/imprint"
+          element={
+            <IFrame
+              title="impressum"
+              src="https://www.lern-fair.de/iframe/impressum"
+            />
+          }
+        />
 
         {/* Fallback */}
         <Route
