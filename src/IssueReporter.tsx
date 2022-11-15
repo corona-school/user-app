@@ -36,6 +36,8 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     `);
 
     function reportIssue(error: Error, errorInfo: ErrorInfo) {
+        if (issue) return; // Only return the first error occuring
+
         const issueTag = Date.now().toString(36);
 
         reportToBackend({
