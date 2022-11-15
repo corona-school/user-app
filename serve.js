@@ -1,4 +1,6 @@
 const Express = require("express");
+const compression = require("compression");
+
 const app = Express();
 
 // Enforce HTTPS - The backend will reject requests from HTTP frontends anyways
@@ -21,6 +23,9 @@ app.get('/config.js', (req, res) => {
 
     res.end(`window.liveConfig = ${ JSON.stringify(runtimeEnvironment) };`);
 });
+
+// Compress assets with gzip for smaller responses:
+app.use(compression());
 
 // Aggressively cache assets as js and css files are different for each build anyways
 //  and logos, manifest et. al. also won't change often
