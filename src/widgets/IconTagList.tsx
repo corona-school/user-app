@@ -1,5 +1,7 @@
 import { View, Box, Link, Row, Column, Text, CircleIcon } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
+import { IconLoader } from '../components/IconLoader'
+
 
 export type IIconTagList = {
   iconPath?: string
@@ -32,11 +34,7 @@ const IconTagList: React.FC<IIconTagList> = ({
 
   const renderIcon = useMemo(() => {
     if (!iconPath) return
-    try {
-      const Res = require(`../assets/icons/lernfair/${iconPath}`).default
-      return <Res />
-    } catch (e) {}
-    return <CircleIcon size={'30px'} color="lightText" />
+    return <IconLoader iconPath={iconPath} />;
   }, [iconPath])
 
   const renderText = useMemo(() => {
