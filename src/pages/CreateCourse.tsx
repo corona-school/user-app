@@ -295,7 +295,9 @@ const CreateCourse: React.FC<Props> = () => {
     setImageLoading(true)
     const formData: FormData = new FormData()
 
-    const base64 = await fetch(pickedPhoto)
+    const base64 = pickedPhoto
+      ? await fetch(pickedPhoto)
+      : require('../assets/images/globals/image-placeholder.png')
     const data = await base64.blob()
     formData.append('file', data, 'img_course.jpeg')
 

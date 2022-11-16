@@ -62,6 +62,7 @@ const WidgetUnsplash: React.FC<{
 }> = ({ photo, onShowUnsplash, onDeletePhoto }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
+
   return (
     <>
       <Pressable
@@ -157,7 +158,7 @@ const CourseData: React.FC<Props> = ({
     if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
-    if (!pickedPhoto) return false
+    // if (!pickedPhoto) return false
     return true
   }, [
     classRange,
@@ -165,7 +166,7 @@ const CourseData: React.FC<Props> = ({
     description,
     maxParticipantCount,
     outline,
-    pickedPhoto,
+    // pickedPhoto,
     subject
   ])
 
