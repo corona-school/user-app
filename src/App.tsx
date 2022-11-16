@@ -18,8 +18,8 @@ function App() {
         <LFApolloProvider>
           <NativeBaseProvider theme={Theme}>
             {/* <MatomoProvider value={matomo}> */}
-              <Navigator />
-              <FullPageModal />
+            <Navigator />
+            <FullPageModal />
             {/* </MatomoProvider> */}
           </NativeBaseProvider>
         </LFApolloProvider>

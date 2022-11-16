@@ -224,11 +224,6 @@ const Profile: React.FC<Props> = () => {
             </Row> */}
             </Box>
           </Flex>
-        }
-        headerLeft={
-          <Row space={space['1']}>
-            <NotificationAlert />
-          </Row>
         }>
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <AlertMessage content={t('profile.successmessage')} />

@@ -1,11 +1,20 @@
-//TO DO: adjust in-app-model
-export type InAppNotification = {
-  _typename: string
+export type _UserNotification = {
+  headline: String
+  createdAt?: String
+  notification: Notification
+}
+
+export type _Notification = {
+  category: String
+  description: String
+}
+
+export type UserNotification = {
   id: number
-  description: string
-  category: NotificationType[]
-  active: boolean
-  mailjetTemplate: number
+  headline: string
+  body: string
+  notificationClass: string
+  createdAt?: string
 }
 
 //TO DO: adjust notification types

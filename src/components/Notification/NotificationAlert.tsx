@@ -1,9 +1,11 @@
-import { Button, Text, Circle, Popover } from 'native-base'
+import { Button, Text, Circle, Popover, VStack } from 'native-base'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
+import { useAllNotifications } from '../../hooks/useNotificationPanel'
 import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
-  const count = 4 //TO DO: count from hook
+  const count = 4 //TO DO
+  // const { data, loading, error } = useAllNotifications()
 
   return (
     <>
@@ -11,12 +13,13 @@ const NotificationAlert: React.FC = () => {
         placement="bottom"
         trigger={triggerProps => {
           return (
-            <>
+            <VStack>
               {count !== null && (
                 <Circle
+                  //_web
                   position="absolute"
-                  top="3.5"
-                  left="2"
+                  my={3}
+                  alignSelf="flex-start"
                   bgColor="danger.500"
                   size="3.5"
                   zIndex={1}>
@@ -28,7 +31,7 @@ const NotificationAlert: React.FC = () => {
               <Button {...triggerProps} bgColor="">
                 <BellIcon />
               </Button>
-            </>
+            </VStack>
           )
         }}
         children={<NotificationPanel />}></Popover>

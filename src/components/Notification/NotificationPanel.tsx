@@ -1,38 +1,61 @@
-import { Box, Popover, ScrollView } from 'native-base'
-import React from 'react'
+import { Box, Button, Popover, ScrollView } from 'native-base'
+import { useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
-import { InAppNotification } from '../../types/lernfair/Notification'
+import { UserNotification } from '../../types/lernfair/Notification'
 import MessageBox from './MessageBox'
 import { useAllNotifications } from '../../hooks/useNotificationPanel'
 
 const NotificationPanel: React.FC = () => {
-  const { data, loading, error } = useAllNotifications()
+  const [showOldNotifications, setShowOldNotifications] = useState(false)
+  const { data } = useAllNotifications()
 
   return (
     <>
-      {!error && (
-        <Popover.Content>
-          <Popover.Arrow />
-          <Popover.CloseButton />
-          <Popover.Header>
-            <Box alignSelf="flex-end" mr={10}>
-              <SettingsIcon />
-            </Box>
-          </Popover.Header>
-          <Popover.Body>
-            <ScrollView w="320" h="387">
-              <Box>
-                {!loading &&
-                  data.notifications.map((noti: InAppNotification) => (
-                    <>
-                      <MessageBox key={noti.id} notification={noti} />
-                    </>
+      <Popover.Content>
+        <Popover.Arrow />
+        <Popover.CloseButton />
+        <Popover.Header>
+          <Box alignSelf="flex-end" mr={10}>
+            <SettingsIcon />
+          </Box>
+        </Popover.Header>
+        <Popover.Body>
+          {!showOldNotifications && (
+            <>
+              <Box w="320">
+                {data.userNotificationsList.notifications
+                  .slice(0, 5)
+                  .map((notification: UserNotification) => (
+                    <MessageBox
+                      key={notification.id}
+                      notification={notification}
+                    />
                   ))}
               </Box>
+              <Button
+                onPress={() => setShowOldNotifications(!showOldNotifications)}>
+                Ältere Benachrichtigungen anzeigen
+              </Button>
+            </>
+          )}
+          {showOldNotifications && (
+            <ScrollView w="320" h="387">
+              <Box>
+                {data.userNotificationsList.notifications.map(
+                  (notification: UserNotification) => (
+                    <>
+                      <MessageBox
+                        key={notification.id}
+                        notification={notification}
+                      />
+                    </>
+                  )
+                )}
+              </Box>
             </ScrollView>
-          </Popover.Body>
-        </Popover.Content>
-      )}
+          )}
+        </Popover.Body>
+      </Popover.Content>
     </>
   )
 }

@@ -1,32 +1,38 @@
 import { gql, useQuery } from '@apollo/client'
-import { DateTime, Interval } from 'luxon'
 
-//NOTIFICATION PANEL
-//TO DO: query for all user specific notifications
-const queryNotis = gql`
+const userNotificationQuery = gql`
   query {
-    notifications {
-      id
-      description
-      category
-      mailjetTemplateId
-      active
+    me {
+      concrete_notifications {
+        notification {
+          category
+          description
+        }
+        headline
+        createdAt
+      }
     }
   }
 `
 
-const getTimedifference = () => {
-  const now = DateTime.now()
-  const notiTime = DateTime.local(2022, 11, 14, 11)
-  const intervall = Interval.fromDateTimes(notiTime, now)
-  const diff = intervall.toDuration('minutes').toObject()
-  console.log(diff)
-}
+//query draft
+const queryUserNotification = gql`
+  query {
+    userNotificationsList {
+      user
+      notifications {
+        id
+        headline
+        body
+        notificationClass
+        createdAt
+      }
+    }
+  }
+`
 
 const useAllNotifications = () => {
-  const { data, loading, error } = useQuery(queryNotis)
-  getTimedifference()
-  console.log('Daten von hook', data)
+  const { data, loading, error } = useQuery(queryUserNotification)
   return { data, loading, error }
 }
 
