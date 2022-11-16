@@ -58,25 +58,40 @@ const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
 const WidgetUnsplash: React.FC<{
   photo: string | undefined
   onShowUnsplash: () => any
-}> = ({ photo, onShowUnsplash }) => {
+  onDeletePhoto?: () => any
+}> = ({ photo, onShowUnsplash, onDeletePhoto }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
   return (
-    <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
-      <Column marginRight={space['1']}>
-        <Image
-          width="90px"
-          height="90px"
-          alt="Image Placeholder"
-          source={{
-            uri: photo || ImagePlaceHolder
-          }}
-        />
-      </Column>
-      <Column>
-        <Link>{t('course.uploadImage')}</Link>
-      </Column>
-    </Pressable>
+    <>
+      <Pressable
+        onPress={onShowUnsplash}
+        flexDirection="row"
+        alignItems="center">
+        <Column marginRight={space['1']}>
+          <Image
+            width="90px"
+            height="90px"
+            alt="Image Placeholder"
+            source={{
+              uri: photo || ImagePlaceHolder
+            }}
+          />
+        </Column>
+        <Column>
+          <Link>{photo ? 'Foto ändern' : t('course.uploadImage')}</Link>
+        </Column>
+      </Pressable>
+      {photo && (
+        <Button
+          variant="link"
+          justifyContent="flex-start"
+          pl="0"
+          onPress={onDeletePhoto}>
+          Bild löschen
+        </Button>
+      )}
+    </>
   )
 }
 
@@ -131,6 +146,7 @@ const CourseData: React.FC<Props> = ({
     allowContact,
     setAllowContact,
     pickedPhoto,
+    setPickedPhoto,
     addedInstructors
   } = useContext(CreateCourseContext)
 
@@ -251,7 +267,11 @@ const CourseData: React.FC<Props> = ({
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
         <Box paddingY={space['1']}>
-          <WidgetUnsplash photo={pickedPhoto} onShowUnsplash={onShowUnsplash} />
+          <WidgetUnsplash
+            photo={pickedPhoto}
+            onShowUnsplash={onShowUnsplash}
+            onDeletePhoto={() => setPickedPhoto && setPickedPhoto('')}
+          />
         </Box>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>

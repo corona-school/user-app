@@ -73,6 +73,7 @@ type ICreateCourseContext = {
   lectures?: Lecture[]
   setLectures?: Dispatch<SetStateAction<Lecture[]>>
   pickedPhoto?: string
+  setPickedPhoto?: Dispatch<SetStateAction<string>>
   addedInstructors?: LFInstructor[]
   setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>
 }
@@ -456,6 +457,7 @@ const CreateCourse: React.FC<Props> = () => {
           lectures,
           setLectures,
           pickedPhoto,
+          setPickedPhoto,
           addedInstructors
         }}>
         {(studentData?.me?.student?.canCreateCourse?.allowed && (
