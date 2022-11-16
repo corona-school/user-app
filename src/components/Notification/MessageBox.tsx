@@ -3,31 +3,31 @@ import {
   getIconForCategory,
   getTimeDifference
 } from '../../helper/notification-helper'
-import { UserNotification } from '../../types/lernfair/Notification'
+import { DummyUserNotification } from '../../types/lernfair/Notification'
 
 type Props = {
-  notification: UserNotification
+  notification: DummyUserNotification
 }
 
 const MessageBox: React.FC<Props> = ({ notification }) => {
-  const { notificationClass, headline, body, createdAt } = notification
-  // const { headline, description, category, createdAt }
-  const createdAtDummy = '2022-11-12T14:00'
+  const { id, description, category } = notification
+  // const { headline, body, messageType, createdAt } = notification
+  const createdAtDummy = '2022-11-16T12:34'
 
   return (
     <Box borderRadius={2} bgColor="primary.100" mb={2} h="54px">
       <HStack alignItems="center" space={2}>
         <VStack>
-          <Box pl={'8px'}>{getIconForCategory(notificationClass)}</Box>
+          <Box pl={'8px'}>{getIconForCategory('NotificationClass0')}</Box>
         </VStack>
         <VStack>
           <Text bold mt={2}>
-            {headline}
+            {description.slice(0, 10)}
           </Text>
-          <Text>{body.slice(0, 10)}</Text>
+          <Text>{description.slice(0, 10)}</Text>
         </VStack>
         <Spacer />
-        {createdAt && (
+        {createdAtDummy && (
           <VStack>
             <Text pr={'8px'}>{getTimeDifference(createdAtDummy)}</Text>
           </VStack>

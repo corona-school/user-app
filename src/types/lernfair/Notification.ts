@@ -9,12 +9,10 @@ export type _Notification = {
   description: String
 }
 
-export type UserNotification = {
+export type DummyUserNotification = {
   id: number
-  headline: string
-  body: string
-  notificationClass: string
-  createdAt?: string
+  description: string
+  category: string[]
 }
 
 //TO DO: adjust notification types

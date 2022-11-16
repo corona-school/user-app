@@ -1,38 +1,34 @@
 import { gql, useQuery } from '@apollo/client'
 
 const userNotificationQuery = gql`
-  query {
+  {
     me {
       concrete_notifications {
-        notification {
-          category
-          description
-        }
+        id
         headline
+        body
         createdAt
+        notification {
+          class
+        }
       }
     }
   }
 `
 
-//query draft
 const queryUserNotification = gql`
   query {
-    userNotificationsList {
-      user
-      notifications {
-        id
-        headline
-        body
-        notificationClass
-        createdAt
-      }
+    notifications {
+      id
+      description
+      category
     }
   }
 `
 
 const useAllNotifications = () => {
   const { data, loading, error } = useQuery(queryUserNotification)
+  console.log(data)
   return { data, loading, error }
 }
 

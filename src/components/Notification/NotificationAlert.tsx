@@ -5,7 +5,6 @@ import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
   const count = 4 //TO DO
-  // const { data, loading, error } = useAllNotifications()
 
   return (
     <>
