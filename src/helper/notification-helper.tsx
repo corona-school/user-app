@@ -44,11 +44,16 @@ const getTimeDifference = (timestamp: string) => {
 
   const diffTime = now.diff(createdAt, 'minutes') //minuten vergangen
   const diffInMin = diffTime.minutes
+  // const diffInMilSec = diffTime.milliseconds
 
   const createdAtAsTime = DateTime.fromISO(timestamp).toFormat('T')
   const diffAsString = diffTime.toFormat('m')
 
-  if (diffInMin < 60) {
+  if (diffInMin < 1) {
+    return ''
+  } else if (diffInMin > 1 && diffInMin < 2) {
+    return 'gerade'
+  } else if (diffInMin < 60) {
     return `vor ${diffAsString} min`
   } else if (diffInMin > 60) {
     if (diffInMin > 1440) {
