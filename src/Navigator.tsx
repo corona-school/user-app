@@ -16,9 +16,7 @@ import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
 import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
-import AllFaq from './pages/AllFaq'
-import QuickStart from './pages/QuickStart'
-import DigitaleTools from './pages/DigitaleTools'
+
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/change-setting/ChangeSettingState'
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
@@ -29,7 +27,6 @@ import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
 import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
-import Explore from './pages/Explore'
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
@@ -50,8 +47,6 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
-import MatchingBlocker from './pages/student/MatchingBlocker'
-import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
