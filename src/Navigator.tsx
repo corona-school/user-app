@@ -348,7 +348,7 @@ export default function Navigator() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/additional-data" element={<AdditionalData />} />
         <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/privacy"
           element={
