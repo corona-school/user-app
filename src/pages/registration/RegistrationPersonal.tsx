@@ -23,7 +23,7 @@ import TextInput from '../../components/TextInput'
 import useModal from '../../hooks/useModal'
 import useRegistration from '../../hooks/useRegistration'
 import VerifyEmailModal from '../../modals/VerifyEmailModal'
-import { DEEPLINK_OPTIN } from '../../Utility'
+import { REDIRECT_OPTIN } from '../../Utility'
 
 type Props = {}
 
@@ -36,13 +36,13 @@ const mutPupil = gql`
     $aboutMe: String
   ) {
     meRegisterPupil(
+      noEmail: true,
       data: {
         firstname: $firstname
         lastname: $lastname
         email: $email
         newsletter: false
         registrationSource: normal
-        redirectTo: "${DEEPLINK_OPTIN}"
         state: other
         aboutMe: $aboutMe
       }
@@ -50,6 +50,7 @@ const mutPupil = gql`
       id
     }
     passwordCreate(password: $password)
+    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
   }
 `
 const mutStudent = gql`
@@ -60,18 +61,20 @@ const mutStudent = gql`
     $password: String!
   ) {
     meRegisterStudent(
+      noEmail: true,
       data: {
         firstname: $firstname
         lastname: $lastname
         email: $email
         newsletter: false
         registrationSource: normal
-        redirectTo: "${DEEPLINK_OPTIN}"
+        
       }
     ) {
       id
     }
     passwordCreate(password: $password)
+    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
   }
 `
 
