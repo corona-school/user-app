@@ -1,37 +1,31 @@
 import { Box, HStack, Spacer, Text, VStack } from 'native-base'
-import {
-  getIconForCategory,
-  getTimeDifference
-} from '../../helper/notification-helper'
-import { DummyUserNotification } from '../../types/lernfair/Notification'
+import { getIconForCategory } from '../../helper/notification-helper'
+import { useTimeDifference } from '../../hooks/useNotificationPanel'
+import { UserNotification } from '../../types/lernfair/Notification'
 
 type Props = {
-  notification: DummyUserNotification
+  userNotification: UserNotification
 }
 
-const MessageBox: React.FC<Props> = ({ notification }) => {
-  const { id, description, category } = notification
-  // const { headline, body, messageType, createdAt } = notification
-  const createdAtDummy = '2022-11-16T12:34'
+const MessageBox: React.FC<Props> = ({ userNotification }) => {
+  const { headline, body, notification, sentAt } = userNotification
 
   return (
     <Box borderRadius={2} bgColor="primary.100" mb={2} h="54px">
       <HStack alignItems="center" space={2}>
         <VStack>
-          <Box pl={'8px'}>{getIconForCategory('NotificationClass0')}</Box>
+          <Box pl={'8px'}>{getIconForCategory(notification.messageType)}</Box>
         </VStack>
         <VStack>
           <Text bold mt={2}>
-            {description.slice(0, 10)}
+            {headline}
           </Text>
-          <Text>{description.slice(0, 10)}</Text>
+          <Text>{body.slice(0, 20)}</Text>
         </VStack>
         <Spacer />
-        {createdAtDummy && (
-          <VStack>
-            <Text pr={'8px'}>{getTimeDifference(createdAtDummy)}</Text>
-          </VStack>
-        )}
+        <VStack>
+          <Text pr={'8px'}>{useTimeDifference(sentAt)}</Text>
+        </VStack>
       </HStack>
     </Box>
   )
