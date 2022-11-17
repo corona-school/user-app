@@ -1,11 +1,10 @@
 import { Button, Text, Circle, Popover, VStack } from 'native-base'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
-import { useAllNotifications } from '../../hooks/useNotificationPanel'
 import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
   // TODO: the implementation is done in the upcoming PR
-  const count = 4 
+  const count: number = 4
 
   return (
     <>
@@ -14,7 +13,7 @@ const NotificationAlert: React.FC = () => {
         trigger={triggerProps => {
           return (
             <VStack>
-              {count !== null && (
+              {count !== 0 && (
                 <Circle
                   //_web
                   position="absolute"
@@ -33,10 +32,9 @@ const NotificationAlert: React.FC = () => {
               </Button>
             </VStack>
           )
-        }}
-        >
+        }}>
         <NotificationPanel />
-        </Popover>
+      </Popover>
     </>
   )
 }
