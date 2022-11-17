@@ -189,13 +189,17 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                           setFocusedSelection({ name: subject.name })
                           setShowFocusSelection(true)
                         } else {
-                          setSelections(prev => [
-                            ...prev,
-                            { name: subject.name }
-                          ])
+                          if (!selections.find(s => s.name === subject.name)) {
+                            setSelections(prev => [
+                              ...prev,
+                              { name: subject.name }
+                            ])
+                          }
                         }
                       }}>
                       <IconTagList
+                        isDisabled
+                        initial={false}
                         iconPath={`subjects/icon_${getSubjectKey(
                           subject?.name
                         )}.svg`}

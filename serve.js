@@ -9,6 +9,19 @@ app.use((req, res, next) => {
       next();
 });
 
+// Provide environment variables from the process,
+// so that they can easily be switched in the deployment without rebuilding the app
+// Unlike env variables starting with REACT_APP_ which are built into the minified files,
+//  variables prefixed with RUNTIME_ are loaded on demand
+app.get('/config.js', (req, res) => {
+    const runtimeEnvironment = Object.fromEntries(
+        Object.entries(process.env)
+            .filter(([key]) => key.startsWith("RUNTIME_"))
+    );
+
+    res.end(`window.liveConfig = ${ JSON.stringify(runtimeEnvironment) };`);
+});
+
 // Aggressively cache assets as js and css files are different for each build anyways
 //  and logos, manifest et. al. also won't change often
 app.use(Express.static(__dirname + '/build', {

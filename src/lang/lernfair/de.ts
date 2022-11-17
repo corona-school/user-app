@@ -44,7 +44,6 @@ const lernfair = {
     politik: 'Politik',
     russisch: 'Russisch',
     sachkunde: 'Sachkunde',
-    sonstige: 'Sonstige',
     spanisch: 'Spanisch',
     tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',

@@ -73,6 +73,7 @@ import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
+import LoginToken from './pages/LoginToken'
 
 export default function Navigator() {
   return (
@@ -81,6 +82,7 @@ export default function Navigator() {
         {/* Public */}
 
         <Route path="/login" element={<Login />} />
+        <Route path="/login-token" element={<LoginToken />} />
         <Route
           path="/registration"
           element={
