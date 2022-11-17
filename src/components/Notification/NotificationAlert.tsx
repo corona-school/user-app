@@ -4,7 +4,8 @@ import { useAllNotifications } from '../../hooks/useNotificationPanel'
 import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
-  const count = 4 //TO DO
+  // TODO: the implementation is done in the upcoming PR
+  const count = 4 
 
   return (
     <>
