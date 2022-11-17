@@ -16,6 +16,7 @@ import helperwizard from './helperwizard/de'
 import matching from './matching/de'
 import course from './course/de'
 import archive from './archive/de'
+import notification from './notification/de'
 
 const de = {
   ...shared,
@@ -27,7 +28,7 @@ const de = {
   helpcenter,
   profile,
   single,
-  settings, 
+  settings,
   onboardingList,
   quickstart,
   digitaletools,
@@ -35,6 +36,7 @@ const de = {
   helperwizard,
   matching,
   course,
-  archive
+  archive,
+  notification
 }
 export default de
