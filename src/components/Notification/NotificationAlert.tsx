@@ -34,7 +34,9 @@ const NotificationAlert: React.FC = () => {
             </VStack>
           )
         }}
-        children={<NotificationPanel />}></Popover>
+        >
+        <NotificationPanel />
+        </Popover>
     </>
   )
 }
