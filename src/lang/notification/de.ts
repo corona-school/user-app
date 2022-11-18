@@ -1,7 +1,7 @@
 const notification = {
   timedifference: {
-    yesterday: 'gestern',
-    dayBeforeYesterday: 'vorgestern',
+    yesterday: 'Gestern',
+    dayBeforeYesterday: 'Vorgestern',
     lastWeek: 'letzte Woche',
     lastMonth: 'letzten Monat',
     now: 'gerade eben',
