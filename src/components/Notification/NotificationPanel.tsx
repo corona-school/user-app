@@ -2,20 +2,21 @@ import { Box, Button, Popover, ScrollView, Spinner, Text } from 'native-base'
 import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
-import { useAllNotifications } from '../../hooks/useNotificationPanel'
+import { useNotifications } from '../../hooks/useNotifications'
 import MessageBox from './MessageBox'
 import { useTranslation } from 'react-i18next'
 
 const NotificationPanel: React.FC = () => {
   const [showOldNotifications, setShowOldNotifications] =
     useState<boolean>(false)
-  const { data, loading, refetch } = useAllNotifications()
+  const { notifications, loading, refetch } = useNotifications()
   const { t } = useTranslation()
 
   const handleClick = () => {
     refetch()
     setShowOldNotifications(!showOldNotifications)
   }
+
   useEffect(() => {
     // TODO: implementation in the upcoming PR - setNotifications to render based on showOld
   })
@@ -37,14 +38,12 @@ const NotificationPanel: React.FC = () => {
             <Box w="320" maxH="580">
               <ScrollView>
                 <Box w="320">
-                  {data.me.concreteNotifications.map(
-                    (notification: UserNotification) => (
-                      <MessageBox
-                        key={notification.id}
-                        userNotification={notification}
-                      />
-                    )
-                  )}
+                  {notifications.map((notification: UserNotification) => (
+                    <MessageBox
+                      key={notification.id}
+                      userNotification={notification}
+                    />
+                  ))}
                 </Box>
               </ScrollView>
               {!showOldNotifications && (
