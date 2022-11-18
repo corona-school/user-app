@@ -13,7 +13,7 @@ const NotificationAlert: React.FC = () => {
         trigger={triggerProps => {
           return (
             <VStack>
-              {count !== 0 && (
+              {count && (
                 <Circle
                   //_web
                   position="absolute"

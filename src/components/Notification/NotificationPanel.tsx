@@ -1,13 +1,24 @@
-import { Box, Button, Popover, ScrollView, Spinner } from 'native-base'
-import { useState } from 'react'
+import { Box, Button, Popover, ScrollView, Spinner, Text } from 'native-base'
+import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
 import { useAllNotifications } from '../../hooks/useNotificationPanel'
 import MessageBox from './MessageBox'
+import { useTranslation } from 'react-i18next'
 
 const NotificationPanel: React.FC = () => {
-  const [showOldNotifications, setShowOldNotifications] = useState(false)
-  const { data, loading } = useAllNotifications()
+  const [showOldNotifications, setShowOldNotifications] =
+    useState<boolean>(false)
+  const { data, loading, refetch } = useAllNotifications()
+  const { t } = useTranslation()
+
+  const handleClick = () => {
+    refetch()
+    setShowOldNotifications(!showOldNotifications)
+  }
+  useEffect(() => {
+    // TODO: implementation in the upcoming PR - setNotifications to render based on showOld
+  })
 
   return (
     <>
@@ -23,43 +34,27 @@ const NotificationPanel: React.FC = () => {
             </Box>
           </Popover.Header>
           <Popover.Body>
-            {!showOldNotifications && (
-              <Box w="320" maxH="580">
-                <ScrollView>
-                  <Box w="320">
-                    {data.me.concreteNotifications
-                      .slice(0, 5)
-                      .map((notification: UserNotification) => (
-                        <MessageBox
-                          key={notification.id}
-                          userNotification={notification}
-                        />
-                      ))}
-                  </Box>
-                </ScrollView>
-                <Button
-                  onPress={() => setShowOldNotifications(!showOldNotifications)}
-                  variant={'outline'}>
-                  Ältere Benachrichtigungen anzeigen
-                </Button>
-              </Box>
-            )}
-            {showOldNotifications && (
-              <ScrollView w="320" maxH="580">
-                <Box>
+            <Box w="320" maxH="580">
+              <ScrollView>
+                <Box w="320">
                   {data.me.concreteNotifications.map(
                     (notification: UserNotification) => (
-                      <Box>
-                        <MessageBox
-                          key={notification.id}
-                          userNotification={notification}
-                        />
-                      </Box>
+                      <MessageBox
+                        key={notification.id}
+                        userNotification={notification}
+                      />
                     )
                   )}
                 </Box>
               </ScrollView>
-            )}
+              {!showOldNotifications && (
+                <Button onPress={handleClick} variant={'outline'}>
+                  <Text fontSize="10px">
+                    {t('notification.panel.button.text')}
+                  </Text>
+                </Button>
+              )}
+            </Box>
           </Popover.Body>
         </Popover.Content>
       )}

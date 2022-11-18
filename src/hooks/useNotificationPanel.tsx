@@ -13,43 +13,56 @@ const userNotificationQuery = gql`
         notification {
           messageType
         }
-        sentAt
+        createdAt
       }
     }
   }
 `
 
 const useAllNotifications = (skip?: number, take?: number) => {
-  const { data, loading, error } = useQuery(userNotificationQuery)
-  return { data, loading, error }
+  const { data, loading, error, refetch } = useQuery(userNotificationQuery)
+  return { data, loading, error, refetch }
 }
 
-const useTimeDifference = (timestamp: string) => {
-  const { t } = useTranslation()
-
+const getTimeDifference = (timestamp: string) => {
   const now = DateTime.now()
   const createdAt = DateTime.fromISO(timestamp)
-
   const timeDiff = now.diff(createdAt, 'minutes')
-  const timeDiffInMin = timeDiff.minutes
+  const minutesDiff = now.diff(createdAt, 'minutes').minutes
+  const hoursDiff = now.diff(createdAt, 'hours').hours
+  const daysDiff = now.diff(createdAt, 'days').days
+  const weeksDiff = now.diff(createdAt, 'weeks').weeks
+  const timeDiffString = timeDiff.toFormat('m')
 
+  return { minutesDiff, hoursDiff, daysDiff, weeksDiff, timeDiffString }
+}
+
+const useTimeDifference = (timestamp: string, isToast?: boolean) => {
+  const { t } = useTranslation()
+  const diff = getTimeDifference(timestamp)
+  const minutes = diff.minutesDiff
+  const days = diff.daysDiff
+  const weeks = diff.weeksDiff
   const createdAtAsTime = DateTime.fromISO(timestamp).toFormat('T')
-  const timeDiffAsString = timeDiff.toFormat('m')
 
-  if (timeDiffInMin < 1) {
-    return ''
-  } else if (timeDiffInMin > 1 && timeDiffInMin < 2) {
+  if (isToast) return ''
+
+  if (minutes < 1) {
     return t('notification.timedifference.now')
-  } else if (timeDiffInMin < 60) {
+  } else if (minutes < 60) {
     return t('notification.timedifference.beforeMinutes', {
-      minutes: timeDiffAsString
+      minutes: diff.timeDiffString
     })
-  } else if (timeDiffInMin > 60) {
-    if (timeDiffInMin > 1440) {
+  } else if (minutes > 60) {
+    if (days > 2) {
+      return t('notification.timedifference.dayBeforeYesterday')
+    }
+    if (days > 1) {
       return t('notification.timedifference.yesterday')
     }
+
     return createdAtAsTime
   }
 }
 
-export { useAllNotifications, useTimeDifference }
+export { useAllNotifications, useTimeDifference, getTimeDifference }
