@@ -1,31 +1,31 @@
 import { Box, HStack, Spacer, Text, VStack } from 'native-base'
 import { getIconForCategory } from '../../helper/notification-helper'
-import { useTimeDifference } from '../../hooks/useNotificationPanel'
 import { UserNotification } from '../../types/lernfair/Notification'
+import TimeAgo from './TimeAgo'
 
 type Props = {
   userNotification: UserNotification
+  isToast?: boolean
+  isRead?: boolean
 }
 
-const MessageBox: React.FC<Props> = ({ userNotification }) => {
-  const { headline, body, notification, sentAt } = userNotification
+const MessageBox: React.FC<Props> = ({ userNotification, isToast, isRead }) => {
+  const { headline, body, notification, createdAt } = userNotification
 
   return (
-    <Box borderRadius={2} bgColor="primary.100" mb={2} h="54px">
-      <HStack alignItems="center" space={2}>
+    <Box borderRadius={2} bgColor={isRead ? '' : 'primary.100'} mb={2} h="54px">
+      <HStack alignItems="center" space={1}>
         <VStack>
-          <Box pl={'8px'}>{getIconForCategory(notification.messageType)}</Box>
+          <Box p={'8px'}>{getIconForCategory(notification.messageType)}</Box>
         </VStack>
         <VStack>
-          <Text bold mt={2}>
+          <Text bold fontSize="14px" mt={2}>
             {headline}
           </Text>
-          <Text>{body.slice(0, 20)}</Text>
+          <Text fontSize="12px">{body.slice(0, 30)}</Text>
         </VStack>
         <Spacer />
-        <VStack>
-          <Text pr={'8px'}>{useTimeDifference(sentAt)}</Text>
-        </VStack>
+        <Box>{!isToast && <TimeAgo createdAt={createdAt} />}</Box>
       </HStack>
     </Box>
   )
