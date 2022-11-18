@@ -1,5 +1,6 @@
 import {
     BrowserRouter,
+    Navigate,
     Outlet,
     Route,
     Routes,
@@ -90,18 +91,6 @@ import {
           />
   
           {/* Private */}
-  
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <SwitchUserType
-                  pupilComponent={<Dashboard />}
-                  studentComponent={<DashboardStudent />}
-                />
-              </RequireAuth>
-            }
-          />
           <Route
             path="/dashboard"
             element={
@@ -399,11 +388,7 @@ import {
           {/* Fallback */}
           <Route
             path="*"
-            element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            }
+            element={<Navigate to="/dashboard" />}
           />
         </Routes>
     )

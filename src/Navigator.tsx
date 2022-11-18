@@ -1,5 +1,6 @@
 import {
   BrowserRouter,
+  Navigate,
   Route,
   Routes,
 } from 'react-router-dom'
@@ -11,6 +12,7 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import Login from './pages/Login'
 import Welcome from './pages/Welcome'
 import LoginToken from './pages/LoginToken'
+import { RequireAuth } from './User'
 
 // All other pages load lazy:
 const NavigatorLazy = lazy(() => import('./NavigatorLazy'));
@@ -26,6 +28,10 @@ export default function Navigator() {
         <Route path="/login-token" element={<LoginToken />} />
 
         <Route path="/welcome" element={<Welcome />} />
+
+        <Route path="/" element={<RequireAuth>
+            <Navigate to="/dashboard" />
+          </RequireAuth>}/>
 
         <Route path="*" element={
           <Suspense fallback={<CenterLoadingSpinner />}>
