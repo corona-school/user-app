@@ -2,7 +2,7 @@ export type UserNotification = {
   id: number
   headline: string
   body: string
-  sentAt: string
+  createdAt: string
   notification: Notification
 }
 
