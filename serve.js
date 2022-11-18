@@ -31,7 +31,7 @@ app.use(compression());
 //  and logos, manifest et. al. also won't change often
 app.use(Express.static(__dirname + '/build', {
     immutable: true,
-    maxAge: '7 days',
+    maxAge: '365 days',
     fallthrough: true
 }));
 
