@@ -25,6 +25,3 @@ export function log(component: string, message: string, ...context: any[]) {
     console.log(line, ...context);
     logBuffer.write(line);
 }
-
-(window as any).log = log;
-(window as any).getLastLogs = getLastLogs;
