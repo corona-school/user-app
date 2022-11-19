@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { AlertDialog, Button } from "native-base";
 import React, { ErrorInfo, useEffect, useRef, useState } from "react";
 import useApollo from "./hooks/useApollo";
-import AlertMessage from "./widgets/AlertMessage";
+import { getLastLogs } from "./log";
 
 // c.f. https://reactjs.org/docs/error-boundaries.html
 type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
@@ -46,7 +46,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
             variables: {
                 issueTag,
                 userAgent: window.navigator.userAgent,
-                logs: [],
+                logs: getLastLogs(),
                 stack: `Error Stack:\n${error.stack}\n\nReact Stack:\n${errorInfo.componentStack}`,
                 message: error.message,
             }
