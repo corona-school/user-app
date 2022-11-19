@@ -21,7 +21,7 @@ import useApollo from '../hooks/useApollo'
 type Props = {}
 
 const ResetPassword: React.FC<Props> = () => {
-  const { createDeviceToken } = useApollo()
+  const { onLogin } = useApollo()
   const [searchParams] = useSearchParams()
   const token = searchParams?.get('secret_token') || ''
   const redirectTo = searchParams?.get('redirectTo')
@@ -35,7 +35,7 @@ const ResetPassword: React.FC<Props> = () => {
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
 
-  const [loginToken] = useMutation(gql`
+  const [loginToken, loginTokenResult] = useMutation(gql`
     mutation ($token: String!) {
       loginToken(token: $token)
     }
@@ -69,10 +69,8 @@ const ResetPassword: React.FC<Props> = () => {
   const login = useCallback(async () => {
     try {
       const res = await loginToken({ variables: { token } })
+      onLogin(res);
       setShowResetPassword(res?.data?.loginToken ? 'success' : 'error')
-      if (res?.data?.loginToken) {
-        createDeviceToken()
-      }
     } catch (e) {
       console.log('ERROR', e)
       setShowResetPassword('error')

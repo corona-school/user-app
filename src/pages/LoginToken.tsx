@@ -9,12 +9,12 @@ type Props = {}
 
 const LoginToken: React.FC<Props> = () => {
   const navigate = useNavigate()
-  const { createDeviceToken } = useApollo()
+  const { onLogin } = useApollo()
   const [searchParams] = useSearchParams()
   const token = searchParams?.get('secret_token')
   const redirectTo = searchParams?.get('redirectTo')
 
-  const [loginToken] = useMutation(gql`
+  const [loginToken, loginTokenResult] = useMutation(gql`
     mutation ($token: String!) {
       loginToken(token: $token)
     }
@@ -22,13 +22,13 @@ const LoginToken: React.FC<Props> = () => {
 
   const login = useCallback(async () => {
     const res = await loginToken({ variables: { token } })
+    onLogin(res);
     if (res.data?.loginToken) {
-      await createDeviceToken()
       navigate(redirectTo || '/dashboard')
     } else {
       navigate('/login')
     }
-  }, [createDeviceToken, loginToken, navigate, redirectTo, token])
+  }, [loginToken, navigate, redirectTo, token])
 
   useEffect(() => {
     login()

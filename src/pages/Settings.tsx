@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import WithNavigation from '../components/WithNavigation'
-import useApollo from '../hooks/useApollo'
+import useApollo, { useUserType } from '../hooks/useApollo'
 import useLernfair from '../hooks/useLernfair'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
@@ -28,7 +28,7 @@ const Settings: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { logout } = useApollo()
   const tabspace = 3
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -126,14 +126,15 @@ const Settings: React.FC<Props> = () => {
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
-                trackEvent({
-                  category: 'profil',
-                  action: 'click-event',
-                  name: 'Abmelden im Account',
-                  documentTitle: 'Logout'
-                })
-                logout()
-                navigate(0)
+                (async function () {
+                  trackEvent({
+                    category: 'profil',
+                    action: 'click-event',
+                    name: 'Abmelden im Account',
+                    documentTitle: 'Logout'
+                  })
+                  await logout()
+                })();
               }}
             />
           </Column>

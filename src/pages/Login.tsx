@@ -26,7 +26,7 @@ import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
-  const { createDeviceToken } = useApollo()
+  const { onLogin, sessionState } = useApollo()
   const { space, sizes } = useTheme()
   const [showNoAccountModal, setShowNoAccountModal] = useState(false)
   const [email, setEmail] = useState<string>()
@@ -38,7 +38,7 @@ export default function Login() {
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
   >()
-  const [login, { error, loading }] = useMutation(gql`
+  const [login, loginResult] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
@@ -54,6 +54,11 @@ export default function Login() {
       }
     `
   )
+
+  useEffect(() => {
+    if (sessionState === "logged-in")
+      navigate('/');
+  }, [navigate, sessionState]);
 
   useEffect(() => {
     trackPageView({
@@ -85,17 +90,14 @@ export default function Login() {
 
   const attemptLogin = useCallback(async () => {
     loginButton()
-    const res = await login({
+    const result = await login({
       variables: {
         email: email,
         password: password
       }
     })
-    if (res?.data && res.data.loginPassword) {
-      await createDeviceToken() // fire and forget
-      navigate('/')
-    }
-  }, [createDeviceToken, email, login, loginButton, navigate, password])
+    onLogin(result);
+  }, [email, login, loginButton, navigate, password])
 
   const handleKeyPress = (
     e: NativeSyntheticEvent<TextInputKeyPressEventData>
@@ -311,7 +313,7 @@ export default function Login() {
               </Row>
             )}
           </Box>
-          {error && (
+          {loginResult.error && (
             <Text
               paddingTop={4}
               color="danger.700"
@@ -347,7 +349,7 @@ export default function Login() {
               onPress={showPasswordField ? attemptLogin : getLoginOption}
               width="100%"
               isDisabled={
-                loading ||
+                loginResult.loading ||
                 !email ||
                 email.length < 6 ||
                 _determineLoginOptions.loading ||

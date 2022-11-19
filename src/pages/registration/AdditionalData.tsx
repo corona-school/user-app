@@ -32,6 +32,7 @@ import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import useLernfair from '../../hooks/useLernfair'
+import { useUserType } from '../../hooks/useApollo'
 
 type Props = {}
 
@@ -62,7 +63,7 @@ const RegistrationData: React.FC<Props> = () => {
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const location = useLocation() as { state: { token: string } }
   const { token } = location.state
 
@@ -181,11 +182,6 @@ const RegistrationData: React.FC<Props> = () => {
 
   const attemptRegistration = async (answers: { [key: string]: Answer }) => {
     let res: any
-
-    if (!userType || userType === 'unknown') {
-      showErrorModal('Unknown User Type')
-      return
-    }
 
     try {
       if (userType === 'pupil') {
