@@ -235,7 +235,7 @@ const useApolloInternal = () => {
   //  so that when the session is invalidated, we can log in
   //  again using the device token
   const createDeviceToken = useCallback(async () => {
-    // if (getDeviceToken()) return;
+    if (getDeviceToken()) return;
 
     log('GraphQL', 'Creating device token with description: ' + describeDevice());
     const result = await client.mutate({
@@ -271,18 +271,20 @@ const useApolloInternal = () => {
 
       if (getDeviceToken()) {
         log('GraphQL', 'device token present, trying to log in')
-        const result = await client.mutate({
-          mutation: gql`
-            mutation LoginWithDeviceToken($deviceToken: String!) {
-              loginToken(token: $deviceToken)
-            }
-          `,
-          variables: { deviceToken: getDeviceToken() }
-        }); 
+        try {
+          const result = await client.mutate({
+            mutation: gql`
+              mutation LoginWithDeviceToken($deviceToken: String!) {
+                loginToken(token: $deviceToken)
+              }
+            `,
+            variables: { deviceToken: getDeviceToken() },
+          }); 
 
-        if (result.errors) {
-          log("GraphQL", "Failed to log in with device token", result.errors);
+        } catch(error) {
+          log("GraphQL", "Failed to log in with device token", error);
           clearDeviceToken()
+          setSessionState('logged-out');
           return;
         }
 
@@ -318,8 +320,21 @@ const useApolloInternal = () => {
   // ------------ Login & Logout --------------------------
 
   const logout = useCallback(async () => {
-    // TODO: Revoke device token in backend?
+    if (getDeviceToken()) {
+      log("GraphQL", "Revoking device token for logout")
+      await client.mutate({
+        mutation: gql`
+          mutation RevokeToken($deviceToken: String!) {
+            tokenRevoke(token: $deviceToken)
+          }
+        `,
+        variables: { deviceToken: getDeviceToken() }
+      });
+      clearDeviceToken()
+      log("GraphQL", "Revoked device token")
+    }
 
+    log("GraphQL", "Logging out")
     await client.mutate({
       mutation: gql`
         mutation Logout {
@@ -327,7 +342,6 @@ const useApolloInternal = () => {
         }
       `
     })
-    clearDeviceToken()
     setSessionState('logged-out')
     log("GraphQL", "Logged out")
   }, [client])
