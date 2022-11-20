@@ -45,13 +45,16 @@ interface UserType {
 }
 
 export type LFApollo = {
+  // The Apollo Client to make requests with to the backend:
   client: ApolloClient<NormalizedCacheObject>
-  
+  // Invalidated the device token, destroys the session and goes back to the start page
   logout: () => Promise<void>
-
+  // Call in case a mutation was run that associates the session with a user
   onLogin: (result: FetchResult) => void;
 
   sessionState: 'unknown' | 'logged-out' | 'logged-in'
+  // Once the session is 'logged-in', a query will be issued to determine the user session
+  // When the query is finished, the user will be available:
   user: UserType | null
 }
 
@@ -257,66 +260,117 @@ const useApolloInternal = () => {
     return deviceToken
   }, [client])
 
-  // ------------ Session Initialization ------------------
-  // When the user opens the app via email,
-  // the URL might contain a query parameter with which
-  // the user can be logged in automatically:
-  //  ?token=... is a legacy token where each user has exactly one
+  const loginWithDeviceToken = useCallback(async (deviceToken: string) => {
+    log('GraphQL', 'device token present, trying to log in')
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation LoginWithDeviceToken($deviceToken: String!) {
+            loginToken(token: $deviceToken)
+          }
+        `,
+        variables: { deviceToken },
+      });
+
+      log('GraphQL', 'successfully logged in with device token')
+      setSessionState('logged-in')
+    } catch(error) {
+      log("GraphQL", "Failed to log in with device token", error);
+      clearDeviceToken()
+      setSessionState('logged-out');
+      return;
+    }
+  }, [client, setSessionState]);
+
+  // ---------- Legacy Token --------------------
+  // In the old frontend, the token is passed to all pages via ?token= query parameter
+  // For backwards compatibility the new user app also supports this for now
+  const loginWithLegacyToken = useCallback(async (legacyToken: string) => {
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation LoginTokenLegacy($legacyToken: String!) {
+            loginLegacy(authToken: $legacyToken)
+          }
+        `,
+        variables: { legacyToken }
+      })
+      log("GraphQL", `Successfully logged in with a legacy token`)
+      await createDeviceToken()
+      setSessionState('logged-in')
+    } catch(error) {
+      log('GraphQL', 'Failed to login with legacy token', error)
+      setSessionState('logged-out')
+    }
+  }, [client, setSessionState, createDeviceToken]);
+
+  // ----------- Determine User --------------------------
+  const determineUser = useCallback(async () => {
+    log('GraphQL', 'Begin Determining User');
+      
+    const { data: { me }, error } = await client.query({
+      query: gql`
+        query {
+          me {
+            userID
+            firstname
+            lastname
+            email
+            pupil { id verifiedAt }
+            student { id verifiedAt }
+          }
+        }
+      `
+    });
+    log('GraphQL', 'Determined User', me);
+
+    if (error) throw new Error(`Failed to determine user: ${error.message}`);
+    setUser(me);
+  }, [client, setUser]);
+
+  // If the session is present and the user is not yet determined
+  // Trigger the user query
+  useEffect(() => {
+    if (sessionState !== "logged-in") return;
+    if (user) return;
+    determineUser(); // fire and forget
+  }, [sessionState, user, determineUser]);
+  
+  // ----------- Session Initialization ------------------
   useEffect(() => {
     log("GraphQL", "Determining Session")
 
     ;(async function () {
       const { searchParams } = new URL(window.location.href)
       const legacyToken = searchParams.get('token')
+      const deviceToken = getDeviceToken()
 
-      if (getDeviceToken()) {
-        log('GraphQL', 'device token present, trying to log in')
-        try {
-          const result = await client.mutate({
-            mutation: gql`
-              mutation LoginWithDeviceToken($deviceToken: String!) {
-                loginToken(token: $deviceToken)
-              }
-            `,
-            variables: { deviceToken: getDeviceToken() },
-          }); 
-
-        } catch(error) {
-          log("GraphQL", "Failed to log in with device token", error);
-          clearDeviceToken()
-          setSessionState('logged-out');
-          return;
-        }
-
-        log('GraphQL', 'successfully logged in with device token')
-        setSessionState('logged-in')
-
-      } else if(legacyToken) {
-        try {
-          await client.mutate({
-            mutation: gql`
-              mutation LoginTokenLegacy($legacyToken: String!) {
-                loginLegacy(authToken: $legacyToken)
-              }
-            `,
-            variables: { legacyToken }
-          })
-          log("GraphQL", `Successfully logged in with a legacy token`)
-          await createDeviceToken()
-          setSessionState('logged-in')
-        } catch(error) {
-          log('GraphQL', 'Failed to login with legacy token', error)
-          setSessionState('logged-out')
-          return // Silently failing, maybe the user knows his password instead?
-        }
-      } else {
-        setSessionState('logged-out');
-        log("GraphQL", "No Device Token present, need to log in again");
+      // Maybe the session already works?
+      try {
+        await determineUser();
+        setSessionState('logged-in');
+        return;
+      } catch(error) {
+        log('GraphQL', 'Could not query user, need to log in')
       }
-    })()
-  }, [client, createDeviceToken])
 
-  // ------------ Login & Logout --------------------------
+      // If not, log in using the various methods
+      if (deviceToken) {
+        await loginWithDeviceToken(deviceToken);
+        return;
+      }
+
+      if(legacyToken) {
+        await loginWithLegacyToken(legacyToken);
+        return;
+      } 
+      
+      setSessionState('logged-out');
+      log("GraphQL", "No Device Token present, need to log in again");
+    })()
+  }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser])
+
+  // ------------ Logout --------------------------
 
   const logout = useCallback(async () => {
     if (getDeviceToken()) {
@@ -345,41 +399,14 @@ const useApolloInternal = () => {
     log("GraphQL", "Logged out")
   }, [client])
 
-  // Determine User
-  useEffect(() => {
-    if (sessionState !== "logged-in") return;
-
-    (async function () {
-      log('GraphQL', 'Begin Determining User');
-      
-      const { data: { me }, error } = await client.query({
-        query: gql`
-          query {
-            me {
-              userID
-              firstname
-              lastname
-              email
-              pupil { id verifiedAt }
-              student { id verifiedAt }
-            }
-          }
-        `
-      });
-      log('GraphQL', 'Determined User', me);
-
-      if (error) throw new Error(`Failed to determine user: ${error.message}`);
-      setUser(me);
-    })();
-  }, [client, sessionState, setUser]);
-
+  // Logins outside this hook can call onLogin to update this state
   const onLogin = useCallback((query: FetchResult) => {
     if (query.data) {
       log('GraphQL', 'Logged in successfully');
       setSessionState("logged-in");
       createDeviceToken(); // fire and forget
     }
-  }, []);
+  }, [createDeviceToken, setSessionState]);
 
   return useMemo(
     () => ({ client, logout, sessionState, user, onLogin }),
