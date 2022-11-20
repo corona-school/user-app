@@ -292,24 +292,23 @@ const useApolloInternal = () => {
         setSessionState('logged-in')
 
       } else if(legacyToken) {
-        const result = await client.mutate({
-          mutation: gql`
-            mutation LoginTokenLegacy($legacyToken: String!) {
-              loginLegacy(authToken: $legacyToken)
-            }
-          `
-        })
-
-        if (result.errors?.length) {
-          console.warn(
-            `Failed to log in with a legacy token, token is probably invalid`
-          )
+        try {
+          await client.mutate({
+            mutation: gql`
+              mutation LoginTokenLegacy($legacyToken: String!) {
+                loginLegacy(authToken: $legacyToken)
+              }
+            `,
+            variables: { legacyToken }
+          })
+          log("GraphQL", `Successfully logged in with a legacy token`)
+          await createDeviceToken()
+          setSessionState('logged-in')
+        } catch(error) {
+          log('GraphQL', 'Failed to login with legacy token', error)
+          setSessionState('logged-out')
           return // Silently failing, maybe the user knows his password instead?
         }
-
-        log("GraphQL", `Successfully logged in with a legacy token`)
-        await createDeviceToken()
-        setSessionState('logged-in')
       } else {
         setSessionState('logged-out');
         log("GraphQL", "No Device Token present, need to log in again");
