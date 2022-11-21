@@ -8,7 +8,8 @@ import {
   Row,
   Button,
   useBreakpointValue,
-  Modal
+  Modal,
+  Text
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,30 +18,24 @@ import PasswordInput from '../components/PasswordInput'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import { gql, useMutation } from '@apollo/client'
 import useApollo from '../hooks/useApollo'
+import AlertMessage from '../widgets/AlertMessage'
 
 type Props = {}
 
 const ResetPassword: React.FC<Props> = () => {
-  const { onLogin } = useApollo()
+  const { onLogin, client, sessionState } = useApollo()
   const [searchParams] = useSearchParams()
-  const token = searchParams?.get('secret_token') || ''
-  const redirectTo = searchParams?.get('redirectTo')
   const { t } = useTranslation()
   const navigate = useNavigate()
-  // const { createToken, clearToken } = useApollo()
-  const [password, setPassword] = useState<string>()
-  const [passwordRepeat, setPasswordRepeat] = useState<string>()
+  const [password, setPassword] = useState<string>('')
+  const [passwordRepeat, setPasswordRepeat] = useState<string>('')
   const { space, sizes } = useTheme()
   const [showResetPassword, setShowResetPassword] = useState<string>()
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
-
-  const [loginToken, loginTokenResult] = useMutation(gql`
-    mutation ($token: String!) {
-      loginToken(token: $token)
-    }
-  `)
-
+  const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false)
+  const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] = useState(false)
+  
   const [changePassword] = useMutation(gql`
     mutation changePassword($password: String!) {
       passwordCreate(password: $password)
@@ -58,34 +53,55 @@ const ResetPassword: React.FC<Props> = () => {
   })
 
   const resetPassword = useCallback(async () => {
+    const passwordLengthCheck = password.length >= 6;
+    const passwordMismatchCheck = password === passwordRepeat;
+    setShowPasswordLength(!passwordLengthCheck);
+    setShowPasswordConfirmNoMatch(!passwordMismatchCheck);
+
+    if (!passwordLengthCheck || !passwordMismatchCheck) return;
+
     const res = await changePassword({ variables: { password } })
     if (res.data.passwordCreate) {
       setShowSuccessModal(true)
     } else {
       setShowErrorModal(true)
     }
-  }, [changePassword, password])
-
-  const login = useCallback(async () => {
-    try {
-      const res = await loginToken({ variables: { token } })
-      onLogin(res);
-      setShowResetPassword(res?.data?.loginToken ? 'success' : 'error')
-    } catch (e) {
-      console.log('ERROR', e)
-      setShowResetPassword('error')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginToken, token])
+  }, [changePassword, password, passwordRepeat])
 
   useEffect(() => {
-    if (token) {
-      login()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [login, loginToken, token])
+    (async function () {
+      // Ensure the user is logged in
+      // Either they already have a session ...
+      if (sessionState === 'logged-in') {
+        setShowResetPassword('success');
+        return;
+      }
+
+      const token = searchParams?.get('secret_token');
+      if (!token) {
+        setShowResetPassword('error');
+        return;
+      }
+
+      try {
+        const loginResult = await client.mutate({ 
+          mutation: gql`
+            mutation LoginToken($token: String!) {
+              loginToken(token: )
+            }
+          `,
+          variables: { token }
+        })
+        onLogin(loginResult);
+        setShowResetPassword('success')
+      } catch (e) {
+        setShowResetPassword('error')
+      }
+    })()
+  }, [searchParams, setShowResetPassword, client, onLogin, sessionState])
 
   const onNext = () => {
+    const redirectTo = searchParams?.get('redirectTo')
     navigate(redirectTo || '/')
   }
 
@@ -131,9 +147,17 @@ const ResetPassword: React.FC<Props> = () => {
                   value={passwordRepeat}
                   onChangeText={setPasswordRepeat}
                 />
-
+                <Text paddingBottom="10px" fontSize="xs" color="primary.grey">
+                            {t('registration.hint.password.length')}
+                          </Text>
+                {showPasswordLength && (
+                  <AlertMessage content={t('registration.hint.password.length')} />
+                )}
+                {showPasswordConfirmNoMatch && (
+                  <AlertMessage content={t('registration.hint.password.nomatch')} />
+                )}
                 <Row justifyContent="center">
-                  <Button width={buttonWidth} onPress={resetPassword}>
+                  <Button width={buttonWidth} onPress={resetPassword} isDisabled={!password.length}>
                     Passwort ändern
                   </Button>
                 </Row>
