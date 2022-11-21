@@ -10,21 +10,25 @@ import './web/scss/index.scss'
 import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
+import { WebsocketClient } from "./components/WebsocketClient"
 
-function App() {
+function App () {
   return (
-    <LernfairProvider>
-      <LFModalProvider>
-        <LFApolloProvider>
-          <NativeBaseProvider theme={Theme}>
-            <MatomoProvider value={matomo}>
-              <Navigator />
-              <FullPageModal />
-            </MatomoProvider>
-          </NativeBaseProvider>
-        </LFApolloProvider>
-      </LFModalProvider>
-    </LernfairProvider>
+    <>
+      <WebsocketClient />
+      <LernfairProvider>
+        <LFModalProvider>
+          <LFApolloProvider>
+            <NativeBaseProvider theme={Theme}>
+              <MatomoProvider value={matomo}>
+                <Navigator/>
+                <FullPageModal/>
+              </MatomoProvider>
+            </NativeBaseProvider>
+          </LFApolloProvider>
+        </LFModalProvider>
+      </LernfairProvider>
+    </>
   )
 }
 
