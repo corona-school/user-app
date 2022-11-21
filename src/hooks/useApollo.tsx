@@ -303,6 +303,7 @@ const useApolloInternal = () => {
 
       log('GraphQL', 'successfully logged in with device token')
       setSessionState('logged-in')
+      setUser(null); // refresh user information
     } catch(error) {
       log("GraphQL", "Failed to log in with device token", error);
       clearDeviceToken()
@@ -328,6 +329,7 @@ const useApolloInternal = () => {
       log("GraphQL", `Successfully logged in with a legacy token`)
       await createDeviceToken()
       setSessionState('logged-in')
+      setUser(null); // refresh user information
     } catch(error) {
       log('GraphQL', 'Failed to login with legacy token', error)
       setSessionState('logged-out')
@@ -372,9 +374,14 @@ const useApolloInternal = () => {
     log("GraphQL", "Determining Session")
 
     ;(async function () {
-      const { searchParams } = new URL(window.location.href)
+      const { searchParams, pathname } = new URL(window.location.href)
       const legacyToken = searchParams.get('token')
       const deviceToken = getDeviceToken()
+
+      if (pathname === '/login-token' || pathname === '/login') {
+        log('GraphQL', 'User opened log in page, do not determine session');
+        return
+      }
 
       // Maybe the session already works?
       try {
@@ -437,6 +444,7 @@ const useApolloInternal = () => {
     if (query.data) {
       log('GraphQL', 'Logged in successfully');
       setSessionState("logged-in");
+      setUser(null); // refresh user information
       createDeviceToken(); // fire and forget
     }
   }, [createDeviceToken, setSessionState]);
