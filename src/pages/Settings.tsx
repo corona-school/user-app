@@ -106,16 +106,13 @@ const Settings: React.FC<Props> = () => {
         <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
           {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
-          </Column>
+          </Column>*/}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.changePassword')}
-              isDisabled
+              onPress={() => navigate('/reset-password')}
             />
-          </Column> */}
-          {/* <Column mb={tabspace}>
-            <EditDataRow label={t('settings.account.changeUser')} isDisabled />
-          </Column> */}
+          </Column>
           {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.deleteAccount')}
