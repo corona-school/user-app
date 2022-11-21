@@ -337,12 +337,12 @@ export default function Login() {
               />
             </Box>
           )}
-          <Button
+          {showPasswordField && <Button
             marginY={4}
             variant="link"
             onPress={() => setShowPasswordModal(true)}>
             {t('login.btn.password')}
-          </Button>
+          </Button>}
 
           <Box paddingTop={4} marginX="90px" display="block">
             <Button
