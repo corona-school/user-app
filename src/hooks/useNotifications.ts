@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react'
 
 const userNotificationQuery = gql`
   query {
@@ -19,15 +20,15 @@ const userNotificationQuery = gql`
 
 const useNotifications = () => {
   const { data, loading, error, refetch } = useQuery(userNotificationQuery)
-  
-  const [notifications, setNotifications] = useState([]);
-  
+
+  const [notifications, setNotifications] = useState([])
+
   useEffect(() => {
-    if(!loading && !error) {
-      setNotifications(data?.me?.concreteNotifications);
+    if (!loading && !error) {
+      setNotifications(data?.me?.concreteNotifications)
     }
-  }, [loading]);
-  
+  }, [loading])
+
   return { notifications, loading, error, refetch }
 }
 

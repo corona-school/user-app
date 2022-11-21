@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   Popover,
   ScrollView,
   Spinner,
@@ -23,7 +22,7 @@ const NotificationPanel: React.FC = () => {
 
   const panelMargin = useBreakpointValue({
     base: 3,
-    lg: -5
+    lg: -10
   })
 
   const panelMaxHeight = useBreakpointValue({
