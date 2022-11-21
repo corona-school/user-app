@@ -27,10 +27,9 @@ const VerifyEmail: React.FC<Props> = () => {
   const token = searchParams?.get('secret_token') || ''
   const redirectTo = searchParams?.get('redirectTo')
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
-  const { createDeviceToken } = useApollo()
-  const { setUserType } = useLernfair()
+  const { onLogin } = useApollo()
 
-  const [loginToken, { loading }] = useMutation(gql`
+  const [loginToken, loginResult] = useMutation(gql`
     mutation ($token: String!) {
       loginToken(token: $token)
     }
@@ -56,13 +55,11 @@ const VerifyEmail: React.FC<Props> = () => {
         loginToken?: boolean
       }
     }
+    onLogin(res);
 
     if (!res.errors) {
       if (res.data?.loginToken) {
-        const token = await createDeviceToken()
-        if (token) {
-          await meQuery()
-        }
+        await meQuery()
         setShowSuccess(true)
       } else {
         navigate('/login')
@@ -89,11 +86,7 @@ const VerifyEmail: React.FC<Props> = () => {
     lg: sizes['formsWidth']
   })
 
-  useEffect(() => {
-    setUserType && setUserType(userType)
-  }, [setUserType, userType])
-
-  if (loading) return <CenterLoadingSpinner />
+  if (loginResult.loading) return <CenterLoadingSpinner />
 
   return (
     <Flex overflowY={'auto'} height="100vh">

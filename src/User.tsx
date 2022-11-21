@@ -1,48 +1,26 @@
-import { useQuery, gql } from "@apollo/client"
-import { useEffect } from "react"
 import { useLocation, Navigate } from "react-router-dom"
 import CenterLoadingSpinner from "./components/CenterLoadingSpinner"
 import useApollo from "./hooks/useApollo"
-import useLernfair from "./hooks/useLernfair"
 import VerifyEmailModal from "./modals/VerifyEmailModal"
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    const { userType } = useLernfair()
     const location = useLocation()
-    const { sessionState } = useApollo()
-  
-    const { data, loading } = useQuery(
-      gql`
-        query {
-          me {
-            email
-            pupil {
-              id
-              verifiedAt
-            }
-            student {
-              id
-              verifiedAt
-            }
-          }
-        }
-      `,
-      { skip: !userType }
-    )
+    
+    const { sessionState, user } = useApollo()
   
     if (sessionState === 'logged-out')
       return <Navigate to="/welcome" state={{ from: location }} replace />
   
+    
+    if (sessionState === "unknown" || !user)
+      return <CenterLoadingSpinner />
+
     if (sessionState === 'logged-in') {
-      if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-        return <VerifyEmailModal email={data.me.email} />
-      if (data && data.me.student && !data.me.student.verifiedAt)
-        return <VerifyEmailModal email={data.me.email} />
+      if (user && !(user.pupil ?? user.student).verifiedAt)
+        return <VerifyEmailModal email={user.email} />
   
       return children
     }
-  
-    if (loading) return <CenterLoadingSpinner />
   
     return <Navigate to="/welcome" state={{ from: location }} replace />
   }
@@ -55,40 +33,16 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
     studentComponent?: JSX.Element
   }) => {
     const location = useLocation()
-    const { userType, setUserType } = useLernfair()
+    const { sessionState, user } = useApollo()
   
-    const { data, error, loading } = useQuery(
-      gql`
-        query {
-          me {
-            pupil {
-              id
-              verifiedAt
-            }
-            student {
-              id
-              verifiedAt
-            }
-          }
-        }
-      `,
-      { skip: !!userType }
-    )
-    const me = data?.me
-  
-    useEffect(() => {
-      !loading &&
-        !userType &&
-        setUserType &&
-        setUserType(!!me?.student ? 'student' : 'pupil')
-    }, [me?.student, setUserType, userType, loading])
-  
-    if (loading || !userType) return <></>
-  
-    if (!userType && !me && error)
+    if (sessionState === "logged-out")
       return <Navigate to="/welcome" state={{ from: location }} replace />
   
-    if (userType === 'student' || !!me?.student) {
+    if (sessionState === "unknown" || !user) 
+      return <CenterLoadingSpinner />
+  
+
+    if (user!.student) {
       if (studentComponent) return studentComponent
       else return <Navigate to="/dashboard" state={{ from: location }} replace />
     } else {

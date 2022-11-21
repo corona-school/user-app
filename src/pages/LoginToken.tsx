@@ -4,31 +4,35 @@ import { useCallback, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import useApollo from '../hooks/useApollo'
+import { log } from '../log'
 
 type Props = {}
 
 const LoginToken: React.FC<Props> = () => {
   const navigate = useNavigate()
-  const { createDeviceToken } = useApollo()
+  const { onLogin } = useApollo()
   const [searchParams] = useSearchParams()
   const token = searchParams?.get('secret_token')
   const redirectTo = searchParams?.get('redirectTo')
 
-  const [loginToken] = useMutation(gql`
+  const [loginToken, loginTokenResult] = useMutation(gql`
     mutation ($token: String!) {
       loginToken(token: $token)
     }
   `)
 
   const login = useCallback(async () => {
-    const res = await loginToken({ variables: { token } })
-    if (res.data?.loginToken) {
-      await createDeviceToken()
+    try {
+      log("LoginToken", "Trying to log in with token");
+      const res = await loginToken({ variables: { token } })
+      log("LoginToken", "Successfully logged in with token");
+      onLogin(res);
       navigate(redirectTo || '/dashboard')
-    } else {
+    } catch(error) {
+      log("LoginToken", "Failed to log in with token ", error);
       navigate('/login')
     }
-  }, [createDeviceToken, loginToken, navigate, redirectTo, token])
+  }, [loginToken, navigate, redirectTo, token])
 
   useEffect(() => {
     login()

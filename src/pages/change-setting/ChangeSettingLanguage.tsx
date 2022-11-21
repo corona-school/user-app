@@ -19,6 +19,7 @@ import { TouchableOpacity } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import { useUserType } from '../../hooks/useApollo'
 import useLernfair from '../../hooks/useLernfair'
 import { languages } from '../../types/lernfair/Language'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -56,7 +57,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string[]>([])
 
   const [showError, setShowError] = useState<boolean>()
-  const { userType = 'pupil' } = useLernfair()
+  const userType = useUserType()
 
   const navigate = useNavigate()
 

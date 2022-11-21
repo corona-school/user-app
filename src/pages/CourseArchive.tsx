@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AlertMessage from '../widgets/AlertMessage'
 import CSSWrapper from '../components/CSSWrapper'
+import { useUserType } from '../hooks/useApollo'
 
 type Props = {}
 
@@ -78,7 +79,7 @@ const pupilQuery = gql`
 const CourseArchive: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
-  const { userType } = useLernfair()
+  const userType = useUserType()
 
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
