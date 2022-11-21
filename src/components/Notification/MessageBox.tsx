@@ -11,25 +11,31 @@ type Props = {
 
 const MessageBox: React.FC<Props> = ({
   userNotification,
-  displayTime,
+  displayTime = true,
   isRead
 }) => {
   const { headline, body, notification, createdAt } = userNotification
 
   return (
-    <Box borderRadius={2} bgColor={isRead ? '' : 'primary.100'} mb={2} h="54px">
+    <Box
+      borderRadius={10}
+      bgColor={isRead ? 'ghost' : 'primary.100'}
+      mb={2}
+      h="54px">
       <HStack alignItems="center" space={1}>
         <VStack>
-          <Box p={'8px'}>{getIcon(notification.messageType)}</Box>
+          <Box px="1.5">{getIcon(notification.messageType)}</Box>
         </VStack>
-        <VStack>
-          <Text bold fontSize="14px" mt={2}>
+        <VStack mt={2}>
+          <Text bold fontSize="md">
             {headline}
           </Text>
-          <Text fontSize="12px">{body.slice(0, 30)}</Text>
+          <Text fontSize="sm">{body.slice(0, 30)}</Text>
         </VStack>
         <Spacer />
-        <Box>{!displayTime && <TimeIndicator createdAt={createdAt} />}</Box>
+        <VStack pr="3">
+          {displayTime && <TimeIndicator createdAt={createdAt} />}
+        </VStack>
       </HStack>
     </Box>
   )

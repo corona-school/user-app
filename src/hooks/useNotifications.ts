@@ -17,7 +17,7 @@ const userNotificationQuery = gql`
   }
 `
 
-const useNotifications = (skip?: number, take?: number) => {
+const useNotifications = () => {
   const { data, loading, error, refetch } = useQuery(userNotificationQuery)
   // TODO: on first request me seems to be empty, not evaluation
   const notifications = data?.me?.concreteNotifications

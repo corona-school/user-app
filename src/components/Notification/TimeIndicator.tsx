@@ -19,13 +19,12 @@ const TimeIndicator: React.FC<TimeIndicatorProps> = ({ createdAt }) => {
   }, 60_000)
 
   return (
-    <Box pr={3} mt={-3}>
+    <Box>
       {typeof time === 'string' ? (
-        <Text fontSize="12px">{time}</Text>
+        <Text fontSize="sm">{time}</Text>
       ) : (
-        <Text fontSize="12px">{t(time.text, time?.options)}</Text>
+        <Text fontSize="sm">{t(time.text, time?.options)}</Text>
       )}
-      {/* {time && <Text fontSize="12px">{t(time.text, time?.options)}</Text>} */}
     </Box>
   )
 }

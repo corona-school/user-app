@@ -1,4 +1,13 @@
-import { Box, Button, Popover, ScrollView, Spinner, Text } from 'native-base'
+import {
+  Box,
+  Button,
+  Center,
+  Popover,
+  ScrollView,
+  Spinner,
+  Text,
+  useBreakpointValue
+} from 'native-base'
 import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
@@ -12,6 +21,15 @@ const NotificationPanel: React.FC = () => {
   const { notifications, loading, refetch } = useNotifications()
   const { t } = useTranslation()
 
+  const panelMargin = useBreakpointValue({
+    base: 3,
+    lg: -5
+  })
+
+  const panelMaxHeight = useBreakpointValue({
+    base: 600,
+    lg: 600
+  })
   const handleClick = () => {
     refetch()
     setShowOldNotifications(!showOldNotifications)
@@ -22,7 +40,7 @@ const NotificationPanel: React.FC = () => {
   })
 
   return (
-    <>
+    <Box mx={panelMargin}>
       <Popover.Content>
         <Popover.Arrow />
         <Popover.CloseButton />
@@ -35,9 +53,9 @@ const NotificationPanel: React.FC = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <Box w="320" maxH="580">
+            <Box maxH={panelMaxHeight}>
               <ScrollView>
-                <Box w="320">
+                <Box>
                   {notifications.map((notification: UserNotification) => (
                     <MessageBox
                       key={notification.id}
@@ -48,7 +66,7 @@ const NotificationPanel: React.FC = () => {
               </ScrollView>
               {!showOldNotifications && (
                 <Button onPress={handleClick} variant={'outline'}>
-                  <Text fontSize="10px">
+                  <Text fontSize="xs">
                     {t('notification.panel.button.text')}
                   </Text>
                 </Button>
@@ -57,7 +75,7 @@ const NotificationPanel: React.FC = () => {
           )}
         </Popover.Body>
       </Popover.Content>
-    </>
+    </Box>
   )
 }
 

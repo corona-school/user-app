@@ -32,6 +32,5 @@ export enum MessageType {
   COURSE = 'course',
   APPOINTMENT = 'appointment',
   SURVEY = 'survey',
-  CONFIRMATION = 'confirmation',
   NEWS = 'news'
 }

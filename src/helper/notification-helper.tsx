@@ -5,7 +5,6 @@ import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg'
 import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'
 import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg'
 import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg'
-import ConfirmationIcon from '../assets/icons/lernfair/notifications/lf_confirmation.svg'
 import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg'
 import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
@@ -24,8 +23,6 @@ function getIcon(messageType: string): ReactElement {
       return <AppointmentIcon />
     case MessageType.SURVEY:
       return <SurveyIcon />
-    case MessageType.CONFIRMATION:
-      return <ConfirmationIcon />
     case MessageType.NEWS:
       return <NewsIcon />
 
@@ -40,7 +37,7 @@ function getIcon(messageType: string): ReactElement {
     case NotiType.TYP5:
       return <SurveyIcon />
     case NotiType.TYP6:
-      return <ConfirmationIcon />
+      return <BellIcon />
     case NotiType.TYP7:
       return <NewsIcon />
     case NotiType.TYP8:
