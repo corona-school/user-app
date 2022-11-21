@@ -25,3 +25,9 @@ export function log(component: string, message: string, ...context: any[]) {
     console.log(line, ...context);
     logBuffer.write(line);
 }
+
+export function debug(component: string, message: string, ...context: any[]) {
+    if (process.env.NODE_ENV !== "production") {
+        console.debug(`[${component}] ${message}`, ...context)
+    }
+}

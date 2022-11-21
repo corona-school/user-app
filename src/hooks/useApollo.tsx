@@ -27,7 +27,7 @@ import { createOperation } from '@apollo/client/link/utils'
 import { SubscriptionObserver } from 'zen-observable-ts'
 import userAgentParser from 'ua-parser-js'
 import { BACKEND_URL } from '../config'
-import { log } from '../log'
+import { debug, log } from '../log'
 
 interface UserType {
   userID: string;
@@ -105,6 +105,19 @@ const setDeviceToken = (token: string) =>
   localStorage.setItem('lernfair:device-token', token)
 const clearDeviceToken = () => localStorage.removeItem('lernfair:device-token')
 
+// ---------------- Custom ApolloLink For Request Logging -------
+class RequestLoggerLink extends ApolloLink {
+  request(operation: Operation, forward?: NextLink | undefined) {
+    log('GraphQL Query', `running operation: ${operation.query.loc?.source.body}`, operation);
+    const chain = forward!(operation);
+
+    return chain.map((response: FetchResult) => {
+        log('GraphQL Query', `operation finished: `, response);
+        return response;
+    });
+  }
+}
+
 // ---------------- Custom ApolloLink Error Handling with Retry -------
 // When a query fails because it is UNAUTHORIZED,
 //  try to log in with the device token, then retry the query
@@ -114,46 +127,70 @@ type SomeFetchResult = FetchResult<
   Record<string, any>
 >
 
+
 class RetryOnUnauthorizedLink extends ApolloLink {
   constructor(public readonly onMissingAuth: () => void) {
     super()
   }
 
   request(operation: Operation, forward?: NextLink | undefined) {
-    console.log('GraphQL', 'Query started', operation);
+    if (operation.getContext().skipAuthRetry) {
+      debug('GraphQL AuthRetry', 'skipped operation', operation);
+      return forward!(operation);
+    }
+
     return new Observable<SomeFetchResult>(observer => {
       const nextChain = forward!(operation)
+      let deferred = false;
 
-      return nextChain.subscribe(it => {
-        log('GraphQL', 'chain event', it);
+      nextChain.subscribe(it => {
         if (it.errors?.length) {
           const isAuthError = it.errors!.some(
             it => it.extensions.code === 'UNAUTHENTICATED'
           )
-          if (isAuthError && !!getDeviceToken()) {
-            log('GraphQL', 'authentication failure and device token present, try to login');
-            // We might recover by starting a new session with the device token?
-            this.loginWithDeviceToken(forward!, observer).then(succeeded => {
-              if (succeeded) {
-                // Retry exactly once, piping in the original request
-                log('GraphQL', 'login with device token succeeded, retrying query', operation);
-                forward!(operation).subscribe(observer)
-                return
-              } else {
-                // Failed to log in the user, redirecting to login:
-                log('GraphQL', 'login with device token failed, going to login page');
-                clearDeviceToken();
-                this.onMissingAuth()
-                return
-              }
-            })
+          if (isAuthError) {
+            if (!getDeviceToken()) {
+              log('GraphQL AuthRetry', 'authentication failure, no device token present')
+              this.onMissingAuth();
+              observer.next(it);
+              return;
+            }
 
+            log('GraphQL AuthRetry', 'authentication failure and device token present, try to login');
+            // We might recover by starting a new session with the device token?
+            const loginObserver = new Observable<SomeFetchResult>(it =>
+              { this.loginWithDeviceToken(forward!, it) });
+
+            loginObserver.subscribe(
+              result => {
+                if (result.errors) {
+                  log('GraphQL AuthRetry', 'Login with device token in retry failed, passing original error', result.errors)
+                  clearDeviceToken();
+                  this.onMissingAuth();
+                  observer.next(it);
+                  return
+                }
+                log('GraphQL AuthRetry', 'Recovered session with device token, retrying query', operation)
+                forward!(operation).subscribe(observer)
+              },
+              error => {
+                log('GraphQL AuthRetry', 'Login with device token in retry failed, passing original error', error)
+                clearDeviceToken();
+                this.onMissingAuth();
+                observer.next(it);
+              }
+            );
+
+            deferred = true;
             return // deferred execution to loginWithDeviceToken
           }
         }
         // By default, pipe back to parent link:
-        log('GraphQL', 'pipe next')
         observer.next(it)
+      }, error => {
+        if (!deferred) observer.error(it);
+      }, () => {
+        if (!deferred) observer.complete();
       })
     })
   }
@@ -161,8 +198,9 @@ class RetryOnUnauthorizedLink extends ApolloLink {
   async loginWithDeviceToken(
     forward: NextLink,
     observer: SubscriptionObserver<SomeFetchResult>
-  ): Promise<boolean> {
-    const login = forward!(
+  ) {
+    debug('GraphQL AuthRetry', 'Login started')
+    forward!(
       createOperation(
         {},
         {
@@ -174,20 +212,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
           variables: { deviceToken: getDeviceToken() }
         }
       )
-    )
-
-    const firstResult = await new Promise<SomeFetchResult>(res =>
-      login.subscribe(res)
-    )
-
-    if (!firstResult.errors?.length) {
-      // Login was successful
-      return true
-    }
-
-    // Pipe the login error back to the original query
-    observer.next(firstResult)
-    return false
+    ).subscribe(observer);
   }
 }
 
@@ -224,10 +249,12 @@ const useApolloInternal = () => {
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: from([
-        // new RetryOnUnauthorizedLink(onMissingAuth),
+        new RequestLoggerLink(),
+        new RetryOnUnauthorizedLink(onMissingAuth),
         tokenLink,
         uriLink
-      ])
+      ]),
+      
     })
   }, [onMissingAuth])
 
@@ -247,7 +274,8 @@ const useApolloInternal = () => {
           tokenCreate(description: $description)
         }
       `,
-      variables: { description: describeDevice() }
+      variables: { description: describeDevice() },
+      context: { skipAuthRetry: true }
     })
 
     if (result.errors?.length) {
@@ -270,6 +298,7 @@ const useApolloInternal = () => {
           }
         `,
         variables: { deviceToken },
+        context: { skipAuthRetry: true }
       });
 
       log('GraphQL', 'successfully logged in with device token')
@@ -293,7 +322,8 @@ const useApolloInternal = () => {
             loginLegacy(authToken: $legacyToken)
           }
         `,
-        variables: { legacyToken }
+        variables: { legacyToken },
+        context: { skipAuthRetry: true }
       })
       log("GraphQL", `Successfully logged in with a legacy token`)
       await createDeviceToken()
@@ -320,7 +350,8 @@ const useApolloInternal = () => {
             student { id verifiedAt }
           }
         }
-      `
+      `,
+      context: { skipAuthRetry: true }
     });
     log('GraphQL', 'Determined User', me);
 
@@ -381,7 +412,8 @@ const useApolloInternal = () => {
             tokenRevoke(token: $deviceToken)
           }
         `,
-        variables: { deviceToken: getDeviceToken() }
+        variables: { deviceToken: getDeviceToken() },
+        context: { skipAuthRetry: true }
       });
       clearDeviceToken()
       log("GraphQL", "Revoked device token")
@@ -393,7 +425,8 @@ const useApolloInternal = () => {
         mutation Logout {
           logout
         }
-      `
+      `,
+       context: { skipAuthRetry: true }
     })
     setSessionState('logged-out')
     log("GraphQL", "Logged out")
