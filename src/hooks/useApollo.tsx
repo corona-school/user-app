@@ -267,6 +267,12 @@ const useApolloInternal = () => {
   const createDeviceToken = useCallback(async () => {
     if (getDeviceToken()) return;
 
+    const { searchParams } = new URL(window.location.href);
+    if (searchParams.has('temporary')) {
+      log('GraphQL', 'Device token was not created as disabled via query parameter')
+      return
+    }
+
     log('GraphQL', 'Creating device token with description: ' + describeDevice());
     const result = await client.mutate({
       mutation: gql`
