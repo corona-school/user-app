@@ -19,6 +19,7 @@ import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import { gql, useMutation } from '@apollo/client'
 import useApollo from '../hooks/useApollo'
 import AlertMessage from '../widgets/AlertMessage'
+import { log } from '../log'
 
 type Props = {}
 
@@ -73,12 +74,14 @@ const ResetPassword: React.FC<Props> = () => {
       // Ensure the user is logged in
       // Either they already have a session ...
       if (sessionState === 'logged-in') {
+        log('PasswordReset', 'Already logged in')
         setShowResetPassword('success');
         return;
       }
 
       const token = searchParams?.get('secret_token');
       if (!token) {
+        log('PasswordReset', 'No token present')
         setShowResetPassword('error');
         return;
       }
@@ -87,14 +90,16 @@ const ResetPassword: React.FC<Props> = () => {
         const loginResult = await client.mutate({ 
           mutation: gql`
             mutation LoginToken($token: String!) {
-              loginToken(token: )
+              loginToken(token: $token)
             }
           `,
           variables: { token }
         })
+        log('PasswordReset', 'Logged in with token')
         onLogin(loginResult);
         setShowResetPassword('success')
-      } catch (e) {
+      } catch (error) {
+        log('Password Reset', 'Failed to log in with token', error)
         setShowResetPassword('error')
       }
     })()
