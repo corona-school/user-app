@@ -19,9 +19,16 @@ const userNotificationQuery = gql`
 
 const useNotifications = () => {
   const { data, loading, error, refetch } = useQuery(userNotificationQuery)
-  // TODO: on first request me seems to be empty, not evaluation
-  const notifications = data?.me?.concreteNotifications
-  return { data, notifications, loading, error, refetch }
+  
+  const [notifications, setNotifications] = useState([]);
+  
+  useEffect(() => {
+    if(!loading && !error) {
+      setNotifications(data?.me?.concreteNotifications);
+    }
+  }, [loading]);
+  
+  return { notifications, loading, error, refetch }
 }
 
 export { useNotifications }
