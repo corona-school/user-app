@@ -23,18 +23,18 @@ const NotificationPanel: React.FC = () => {
 
   return (
     <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <Popover.Content>
-          <Popover.Arrow />
-          <Popover.CloseButton />
-          <Popover.Header>
-            <Box alignSelf="flex-end" mr={10}>
-              <SettingsIcon />
-            </Box>
-          </Popover.Header>
-          <Popover.Body>
+      <Popover.Content>
+        <Popover.Arrow />
+        <Popover.CloseButton />
+        <Popover.Header>
+          <Box alignSelf="flex-end" mr={10}>
+            <SettingsIcon />
+          </Box>
+        </Popover.Header>
+        <Popover.Body>
+          {loading ? (
+            <Spinner />
+          ) : (
             <Box w="320" maxH="580">
               <ScrollView>
                 <Box w="320">
@@ -54,9 +54,9 @@ const NotificationPanel: React.FC = () => {
                 </Button>
               )}
             </Box>
-          </Popover.Body>
-        </Popover.Content>
-      )}
+          )}
+        </Popover.Body>
+      </Popover.Content>
     </>
   )
 }

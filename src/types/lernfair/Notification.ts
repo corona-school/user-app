@@ -10,8 +10,8 @@ export type Notification = {
   messageType: string
 }
 
-//TO DO: adjust notification types
-export enum MessageType {
+// TODO delete NotiType
+export enum NotiType {
   SURVEY = 'survey',
   TRANSACTION = 'transaction',
   TYP1 = 'Type 1',
@@ -24,4 +24,14 @@ export enum MessageType {
   TYP8 = 'Type 8',
   TYP9 = 'Type 9',
   TYP10 = 'Type 10'
+}
+
+export enum MessageType {
+  MESSAGE = 'message',
+  MATCH = 'match',
+  COURSE = 'course',
+  APPOINTMENT = 'appointment',
+  SURVEY = 'survey',
+  CONFIRMATION = 'confirmation',
+  NEWS = 'news'
 }

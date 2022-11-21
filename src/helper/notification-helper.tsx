@@ -1,35 +1,53 @@
-import { MessageType } from '../types/lernfair/Notification'
-import SettingsIcon from '../assets/icons/lernfair/ico-settings.svg'
+import { NotiType, MessageType } from '../types/lernfair/Notification'
 import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
+import MessageIcon from '../assets/icons/lernfair/notifications/lf_message.svg'
+import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg'
+import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'
+import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg'
+import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg'
+import ConfirmationIcon from '../assets/icons/lernfair/notifications/lf_confirmation.svg'
+import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg'
 import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
 
+// TODO delete NotiType Typen
 function getIcon(messageType: string): ReactElement {
   switch (messageType) {
+    case MessageType.MESSAGE:
+      return <MessageIcon />
+    case MessageType.MATCH:
+      return <MatchIcon />
+    case MessageType.COURSE:
+      return <CourseIcon />
+    case MessageType.APPOINTMENT:
+      return <AppointmentIcon />
     case MessageType.SURVEY:
-      return <SettingsIcon />
-    case MessageType.TRANSACTION:
+      return <SurveyIcon />
+    case MessageType.CONFIRMATION:
+      return <ConfirmationIcon />
+    case MessageType.NEWS:
+      return <NewsIcon />
+
+    case NotiType.TYP1:
+      return <MessageIcon />
+    case NotiType.TYP2:
+      return <MatchIcon />
+    case NotiType.TYP3:
+      return <CourseIcon />
+    case NotiType.TYP4:
+      return <AppointmentIcon />
+    case NotiType.TYP5:
+      return <SurveyIcon />
+    case NotiType.TYP6:
+      return <ConfirmationIcon />
+    case NotiType.TYP7:
+      return <NewsIcon />
+    case NotiType.TYP8:
       return <BellIcon />
-    case MessageType.TYP1:
+    case NotiType.TYP9:
       return <BellIcon />
-    case MessageType.TYP2:
-      return <BellIcon />
-    case MessageType.TYP3:
-      return <BellIcon />
-    case MessageType.TYP4:
-      return <BellIcon />
-    case MessageType.TYP5:
-      return <BellIcon />
-    case MessageType.TYP6:
-      return <BellIcon />
-    case MessageType.TYP7:
-      return <BellIcon />
-    case MessageType.TYP8:
-      return <BellIcon />
-    case MessageType.TYP9:
-      return <BellIcon />
-    case MessageType.TYP10:
+    case NotiType.TYP10:
       return <BellIcon />
     default:
       throw new Error(`No Icon for this category ${messageType} found.`)
