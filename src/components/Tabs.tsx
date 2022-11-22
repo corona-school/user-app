@@ -1,9 +1,10 @@
 import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
-import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useMemo, useState } from 'react'
 
 export type Tab = {
   title: string
   content: ReactNode | ReactNode[]
+  hide?: boolean
 }
 type Props = {
   tabs: Tab[]
@@ -50,6 +51,11 @@ const Tabs: React.FC<Props> = ({
     </Pressable>
   )
 
+  const renderableTabs = useMemo(
+    () => tabs.filter((tab: Tab) => !!tab && !tab.hide),
+    [tabs]
+  )
+
   return (
     <VStack>
       <Row
@@ -59,24 +65,20 @@ const Tabs: React.FC<Props> = ({
         paddingX={tabInset}
         borderBottomColor="primary.grey"
         borderBottomWidth={1}>
-        {tabs.map(
-          (tab, i) =>
-            tab && (
-              <Tab
-                key={`tab-${i}`}
-                tab={tab}
-                index={i}
-                active={i === currentIndex}
-              />
-            ),
-          []
-        )}
+        {renderableTabs.map((tab: Tab, i) => (
+          <Tab
+            key={`tab-${i}`}
+            tab={tab}
+            index={i}
+            active={i === currentIndex}
+          />
+        ))}
       </Row>
       <Box
         paddingX={removeSpace === false ? space['1'] : ''}
         paddingY={space['1.5']}>
         {tabs.map(
-          (tab, i) =>
+          (tab: Tab, i) =>
             i === currentIndex && (
               <Fragment key={`tabcontent-${i}`}>{tab.content}</Fragment>
             )

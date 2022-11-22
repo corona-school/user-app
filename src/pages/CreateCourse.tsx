@@ -432,10 +432,11 @@ const CreateCourse: React.FC<Props> = () => {
     lg: sizes['contentContainerWidth']
   })
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
-    <WithNavigation headerTitle={t('course.header')} showBack>
+    <WithNavigation
+      headerTitle={t('course.header')}
+      showBack
+      isLoading={loading}>
       <CreateCourseContext.Provider
         value={{
           courseName,

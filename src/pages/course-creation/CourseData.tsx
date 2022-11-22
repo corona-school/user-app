@@ -30,6 +30,7 @@ import { Slider } from '@miblanchard/react-native-slider'
 import InstructorRow from '../../widgets/InstructorRow'
 import { LFInstructor } from '../../types/lernfair/Course'
 
+const MAX_TITLE = 50
 const MAX_OUTLINE_LENGTH = 140
 
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
@@ -206,11 +207,19 @@ const CourseData: React.FC<Props> = ({
           {t('course.CourseDate.form.courseNameHeadline')}
         </FormControl.Label>
         <Input
+          marginBottom={space['0.5']}
           value={courseName}
           placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
           autoCompleteType={'normal'}
-          onChangeText={setCourseName}
+          onChangeText={text =>
+            setCourseName && setCourseName(text.substring(0, MAX_TITLE))
+          }
         />
+        <Text fontSize="xs" color="primary.grey">
+          {t('characterLimitNotice', {
+            limit: MAX_TITLE
+          })}
+        </Text>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
@@ -301,7 +310,9 @@ const CourseData: React.FC<Props> = ({
           }
         />
         <Text fontSize="xs" color="primary.grey">
-          {t('course.CourseDate.form.shortDescriptionLimitNotice')}
+          {t('characterLimitNotice', {
+            limit: MAX_OUTLINE_LENGTH
+          })}
         </Text>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>

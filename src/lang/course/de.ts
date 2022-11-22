@@ -72,7 +72,6 @@ const course = {
       shortDescriptionLabel: 'Kurzbeschreibung',
       shortDescriptionPlaceholder:
         'Kurzer Satz, um was es in deinem Kurs geht …',
-      shortDescriptionLimitNotice: 'Max. Zeichenanzahl: 140*',
       descriptionLabel: 'Beschreibung',
       descriptionPlaceholder:
         'Präziserer Angaben um was es in deinem Kurs geht …',

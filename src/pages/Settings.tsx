@@ -51,10 +51,12 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
-    <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
+    <WithNavigation
+      headerTitle={t('settings.header')}
+      showBack
+      hideMenu
+      isLoading={loading}>
       <VStack
         paddingBottom={7}
         paddingX={space['1.5']}
