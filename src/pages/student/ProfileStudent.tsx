@@ -1,18 +1,14 @@
 import {
-  Box,
   Heading,
   useTheme,
   VStack,
   Row,
-  Link,
   Column,
   Text,
   Modal,
   FormControl,
   Input,
   Button,
-  Alert,
-  HStack,
   TextArea,
   Container,
   useBreakpointValue,
@@ -21,25 +17,18 @@ import {
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
-import ProfilAvatar from '../../widgets/ProfilAvatar'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
 import UserProgress from '../../widgets/UserProgress'
-import EditIcon from '../../assets/icons/lernfair/lf-edit.svg'
-import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import Tabs from '../../components/Tabs'
-import HSection from '../../widgets/HSection'
-import HelperCardCertificates from '../../widgets/HelperCardCertificates'
-import HelperWizard from '../../widgets/HelperWizard'
-import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
@@ -140,11 +129,6 @@ const ProfileStudent: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
-  const ButtonWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
-
   const HeaderStyle = useBreakpointValue({
     base: {
       isMobile: true,
@@ -158,7 +142,7 @@ const ProfileStudent: React.FC<Props> = () => {
     }
   })
 
-  const { trackPageView, trackEvent } = useMatomo()
+  const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
@@ -189,82 +173,9 @@ const ProfileStudent: React.FC<Props> = () => {
             justifyContent="center"
             paddingY={HeaderStyle.paddingY}
             borderBottomRadius={16}>
-            {/* <Box position="relative">
-              <ProfilAvatar
-                image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                size="xl"
-              />
-              <Box position="absolute" right="-10px" bottom="5px">
-                <Link href="#">
-                  <EditIcon
-                    fill={colors['lightText']}
-                    stroke={colors['lightText']}
-                  />
-                </Link>
-              </Box>
-            </Box> */}
-            <Heading
-              // paddingTop={3}
-              // paddingBottom={9}
-              color={colors.white}
-              bold
-              fontSize="xl">
+            <Heading color={colors.white} bold fontSize="xl">
               {data?.me?.firstname}
             </Heading>
-
-            {/* <Row width="80%" justifyContent="space-between">
-              <Column
-                width="33%"
-                textAlign="center"
-                justifyContent="center"
-                alignItems="center">
-                <Circle
-                  width="45px"
-                  height="45px"
-                  backgroundColor="primary.400">
-                  <Text color="lightText" fontSize="17px" bold>
-                    3
-                  </Text>
-                </Circle>
-                <Text marginY={space['0.5']} fontWeight="600" color="lightText">
-                  Kurse
-                </Text>
-              </Column>
-              <Column
-                width="33%"
-                textAlign="center"
-                justifyContent="center"
-                alignItems="center">
-                <Circle
-                  width="45px"
-                  height="45px"
-                  backgroundColor="primary.400">
-                  <Text color="lightText" fontSize="17px" bold>
-                    5
-                  </Text>
-                </Circle>
-                <Text marginY={space['0.5']} fontWeight="600" color="lightText">
-                  Schüler:innen
-                </Text>
-              </Column>
-              <Column
-                width="33%"
-                textAlign="center"
-                justifyContent="center"
-                alignItems="center">
-                <Circle
-                  width="45px"
-                  height="45px"
-                  backgroundColor="primary.400">
-                  <Text color="lightText" fontSize="17px" bold>
-                    12
-                  </Text>
-                </Circle>
-                <Text marginY={space['0.5']} fontWeight="600" color="lightText">
-                  Bewertungen
-                </Text>
-              </Column>
-            </Row> */}
           </Flex>
         }
         headerLeft={<NotificationAlert />}>
@@ -273,15 +184,6 @@ const ProfileStudent: React.FC<Props> = () => {
             <AlertMessage content={t('profile.successmessage')} />
           </Container>
         )}
-
-        <VStack
-          maxWidth={ContainerWidth}
-          marginX="auto"
-          width="100%"
-          paddingX={space['1']}
-          paddingY={space['1']}>
-          <HelperWizard />
-        </VStack>
 
         <VStack
           space={space['1']}
@@ -362,136 +264,6 @@ const ProfileStudent: React.FC<Props> = () => {
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
-            {/* <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
-              <Container
-                maxWidth="100%"
-                width="100%"
-                marginBottom={space['1']}
-                alignItems="stretch">
-                <Tabs
-                  removeSpace={true}
-                  tabs={[
-                    {
-                      title: t('profile.Helper.certificate.tabbestaetigt'),
-                      content: (
-                        <>
-                          <HSection isNoSpace={true}>
-                            {data?.me?.student?.participationCertificates
-                              ?.filter(
-                                (el: any) =>
-                                  el.state === 'manual' ||
-                                  el.state === 'automatic'
-                              )
-                              .map((el: any) => {
-                                const statusMessage =
-                                  el.state === 'awaiting-approval'
-                                    ? t(
-                                        'profile.Helper.certificate.status.awaiting'
-                                      )
-                                    : el.state === 'manual'
-                                    ? t(
-                                        'profile.Helper.certificate.status.manual'
-                                      )
-                                    : el.state === 'approved'
-                                    ? t(
-                                        'profile.Helper.certificate.status.approved'
-                                      )
-                                    : t(
-                                        'profile.Helper.certificate.status.unknown'
-                                      )
-
-                                return (
-                                  <Column minWidth="220px">
-                                    <HelperCardCertificates
-                                      name={el.pupilId}
-                                      subject={el.subjectsFormatted}
-                                      status={statusMessage}
-                                      createDate={DateTime.fromISO(
-                                        el.startDate
-                                      ).toFormat('dd.MM.yyyy')}
-                                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                      download={() => alert('Hallo')}
-                                    />
-                                  </Column>
-                                )
-                              }) || (
-                              <AlertMessage
-                                content={t('profile.successmessage')}
-                              />
-                            )}
-                          </HSection>
-                        </>
-                      )
-                    },
-                    {
-                      title: t('profile.Helper.certificate.tabausstehend'),
-                      content: (
-                        <>
-                          <HSection>
-                            {data?.me?.student?.participationCertificates
-                              ?.filter(
-                                (el: any) => el.state === 'awaiting-approval'
-                              )
-
-                              .map((el: any) => {
-                                const statusMessage =
-                                  el.state === 'awaiting-approval'
-                                    ? t(
-                                        'profile.Helper.certificate.status.awaiting'
-                                      )
-                                    : el.state === 'manual'
-                                    ? t(
-                                        'profile.Helper.certificate.status.manual'
-                                      )
-                                    : el.state === 'approved'
-                                    ? t(
-                                        'profile.Helper.certificate.status.approved'
-                                      )
-                                    : t(
-                                        'profile.Helper.certificate.status.unknown'
-                                      )
-
-                                return (
-                                  <Column minWidth="220px">
-                                    <HelperCardCertificates
-                                      name={el.pupilId}
-                                      subject={el.subjectsFormatted}
-                                      status={statusMessage}
-                                      createDate={DateTime.fromISO(
-                                        el.startDate
-                                      ).toFormat('dd.MM.yyyy')}
-                                      avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                      download={() => alert('Hallo')}
-                                    />
-                                  </Column>
-                                )
-                              }) || (
-                              <AlertMessage
-                                content={t('profile.successmessage')}
-                              />
-                            )}
-                          </HSection>
-                        </>
-                      )
-                    }
-                  ]}
-                />
-              </Container>
-              <Container maxWidth="100%" width="100%" alignItems="stretch">
-                <Button
-                  width={ButtonWidth}
-                  onPress={() => {
-                    trackEvent({
-                      category: 'profil',
-                      action: 'click-event',
-                      name: 'Helfer Profil – Bescheinigung anfordern Button Klick',
-                      documentTitle: 'Helfer Profil – Bescheinigung anfordern'
-                    })
-                  }}>
-                  {t('profile.Helper.certificate.button')}
-                </Button>
-              </Container>
-            </ProfileSettingRow> */}
           </VStack>
         </VStack>
       </WithNavigation>

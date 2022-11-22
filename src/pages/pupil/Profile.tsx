@@ -10,8 +10,6 @@ import {
   FormControl,
   Input,
   Button,
-  Alert,
-  HStack,
   TextArea,
   useBreakpointValue,
   Flex
@@ -28,7 +26,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -110,7 +107,9 @@ const Profile: React.FC<Props> = () => {
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
     data?.me?.pupil?.aboutMe && (complete += 1)
     data?.me?.pupil?.languages?.length && (complete += 1)
-    data?.me?.pupil?.state && (complete += 1)
+    data?.me?.pupil?.state &&
+      data?.me?.pupil?.state !== 'other' &&
+      (complete += 1)
     data?.me?.pupil?.schooltype && (complete += 1)
     data?.me?.pupil?.gradeAsInt && (complete += 1)
     data?.me?.pupil?.subjectsFormatted?.length && (complete += 1)
@@ -185,20 +184,7 @@ const Profile: React.FC<Props> = () => {
               alignItems="center"
               paddingY={space['2']}
               borderBottomRadius={16}>
-              <Box position="relative">
-                {/* <ProfilAvatar
-                image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                size="xl"
-              /> */}
-                {/* <Box position="absolute" right="-14px" bottom="8px">
-                <Link href="#">
-                  <EditIcon
-                    fill={colors['lightText']}
-                    stroke={colors['lightText']}
-                  />
-                </Link>
-              </Box> */}
-              </Box>
+              <Box position="relative"></Box>
               <Heading
                 // paddingTop={3}
                 // paddingBottom={9}
@@ -207,21 +193,6 @@ const Profile: React.FC<Props> = () => {
                 fontSize="xl">
                 {data?.me?.firstname}
               </Heading>
-
-              {/* <Row width="80%" justifyContent="space-around">
-              <Column
-                textAlign="center"
-                justifyContent="center"
-                alignItems="center">
-                <UserAchievements points={30} icon={<LFIcon Icon={Star} />} />
-              </Column>
-              <Column textAlign="center">
-                <UserAchievements points={4} icon={<LFIcon Icon={Star} />} />
-              </Column>
-              <Column textAlign="center">
-                <UserAchievements points={90} icon={<LFIcon Icon={Star} />} />
-              </Column>
-            </Row> */}
             </Box>
           </Flex>
         }
