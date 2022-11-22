@@ -5,7 +5,6 @@ import {
   Text,
   Row,
   FormControl,
-  Select,
   TextArea,
   Checkbox,
   Button,
@@ -27,6 +26,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
 import Hello from '../widgets/Hello'
 import AlertMessage from '../widgets/AlertMessage'
+import useLernfair from '../hooks/useLernfair'
 
 type Props = {}
 
@@ -39,6 +39,8 @@ type MentorCategory =
   | 'OTHER'
 
 const HelpCenter: React.FC<Props> = () => {
+  const { userType } = useLernfair()
+  console.log(userType)
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -191,6 +193,7 @@ const HelpCenter: React.FC<Props> = () => {
                 )
               },
               {
+                hide: userType !== 'student',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
