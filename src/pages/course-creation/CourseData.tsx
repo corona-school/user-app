@@ -30,6 +30,8 @@ import { Slider } from '@miblanchard/react-native-slider'
 import InstructorRow from '../../widgets/InstructorRow'
 import { LFInstructor } from '../../types/lernfair/Course'
 
+const MAX_OUTLINE_LENGTH = 140
+
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
   const { t } = useTranslation()
 
@@ -56,25 +58,41 @@ const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
 const WidgetUnsplash: React.FC<{
   photo: string | undefined
   onShowUnsplash: () => any
-}> = ({ photo, onShowUnsplash }) => {
+  onDeletePhoto?: () => any
+}> = ({ photo, onShowUnsplash, onDeletePhoto }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
+
   return (
-    <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
-      <Column marginRight={space['1']}>
-        <Image
-          width="90px"
-          height="90px"
-          alt="Image Placeholder"
-          source={{
-            uri: photo || ImagePlaceHolder
-          }}
-        />
-      </Column>
-      <Column>
-        <Link>{t('course.uploadImage')}</Link>
-      </Column>
-    </Pressable>
+    <>
+      <Pressable
+        onPress={onShowUnsplash}
+        flexDirection="row"
+        alignItems="center">
+        <Column marginRight={space['1']}>
+          <Image
+            width="90px"
+            height="90px"
+            alt="Image Placeholder"
+            source={{
+              uri: photo || ImagePlaceHolder
+            }}
+          />
+        </Column>
+        <Column>
+          <Link>{photo ? 'Foto ändern' : t('course.uploadImage')}</Link>
+        </Column>
+      </Pressable>
+      {photo && (
+        <Button
+          variant="link"
+          justifyContent="flex-start"
+          pl="0"
+          onPress={onDeletePhoto}>
+          Bild löschen
+        </Button>
+      )}
+    </>
   )
 }
 
@@ -129,6 +147,7 @@ const CourseData: React.FC<Props> = ({
     allowContact,
     setAllowContact,
     pickedPhoto,
+    setPickedPhoto,
     addedInstructors
   } = useContext(CreateCourseContext)
 
@@ -139,7 +158,7 @@ const CourseData: React.FC<Props> = ({
     if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
-    if (!pickedPhoto) return false
+    // if (!pickedPhoto) return false
     return true
   }, [
     classRange,
@@ -147,7 +166,7 @@ const CourseData: React.FC<Props> = ({
     description,
     maxParticipantCount,
     outline,
-    pickedPhoto,
+    // pickedPhoto,
     subject
   ])
 
@@ -249,7 +268,11 @@ const CourseData: React.FC<Props> = ({
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
         <Box paddingY={space['1']}>
-          <WidgetUnsplash photo={pickedPhoto} onShowUnsplash={onShowUnsplash} />
+          <WidgetUnsplash
+            photo={pickedPhoto}
+            onShowUnsplash={onShowUnsplash}
+            onDeletePhoto={() => setPickedPhoto && setPickedPhoto('')}
+          />
         </Box>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
@@ -273,7 +296,9 @@ const CourseData: React.FC<Props> = ({
           placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
           autoCompleteType={'normal'}
           value={outline}
-          onChangeText={setOutline}
+          onChangeText={text =>
+            setOutline && setOutline(text.substring(0, MAX_OUTLINE_LENGTH))
+          }
         />
         <Text fontSize="xs" color="primary.grey">
           {t('course.CourseDate.form.shortDescriptionLimitNotice')}

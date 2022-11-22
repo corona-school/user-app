@@ -8,9 +8,10 @@ import {
   VStack,
   Select,
   useTheme,
-  useBreakpointValue
+  useBreakpointValue,
+  Link
 } from 'native-base'
-import { useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
 import TextInput from '../../components/TextInput'
@@ -44,13 +45,24 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const deleteAppointment = useCallback(() => {
+    if (!Array.isArray(lectures)) return
+
+    const lecs = [...lectures]
+    lecs.splice(index, 1)
+    setLectures && setLectures(lecs)
+  }, [index, lectures, setLectures])
+
   return (
     <VStack marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
       {(!!index || (lectures && lectures?.length > 1)) && (
-        <Heading marginBottom={space['1']}>
-          {t('course.CourseDate.Wizard.headline')}
-          {`${index + 1}`.padStart(2, ' 0')}
-        </Heading>
+        <Row alignItems={'center'}>
+          <Heading marginBottom={space['1']} flex="1">
+            {t('course.CourseDate.Wizard.headline')}
+            {`${index + 1}`.padStart(2, ' 0')}
+          </Heading>
+          {index > 0 && <Link onPress={deleteAppointment}>Termin löschen</Link>}
+        </Row>
       )}
       <FormControl maxWidth={ContainerWidth}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>

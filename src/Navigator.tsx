@@ -16,9 +16,7 @@ import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
 import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
-import AllFaq from './pages/AllFaq'
-import QuickStart from './pages/QuickStart'
-import DigitaleTools from './pages/DigitaleTools'
+
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/change-setting/ChangeSettingState'
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
@@ -29,7 +27,6 @@ import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
 import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
-import Explore from './pages/Explore'
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
@@ -50,10 +47,7 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
-import MatchingBlocker from './pages/student/MatchingBlocker'
-import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
-import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
@@ -74,6 +68,7 @@ import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 import LoginToken from './pages/LoginToken'
+import IFrame from './components/IFrame'
 
 export default function Navigator() {
   return (
@@ -128,14 +123,6 @@ export default function Navigator() {
         />
 
         <Route
-          path="/explore"
-          element={
-            <RequireAuth>
-              <Explore />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="/single-course"
           element={
             <RequireAuth>
@@ -152,15 +139,6 @@ export default function Navigator() {
                 pupilComponent={<Profile />}
                 studentComponent={<ProfileStudent />}
               />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/profile-helper"
-          element={
-            <RequireAuth>
-              <ProfileHelper />
             </RequireAuth>
           }
         />
@@ -197,30 +175,6 @@ export default function Navigator() {
           }></Route>
 
         <Route
-          path="/alle-faqs"
-          element={
-            <RequireAuth>
-              <AllFaq />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/quick-start"
-          element={
-            <RequireAuth>
-              <QuickStart />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/digitale-tools"
-          element={
-            <RequireAuth>
-              <DigitaleTools />
-            </RequireAuth>
-          }></Route>
-
-        <Route
           path="/onboarding-list"
           element={
             <RequireAuth>
@@ -230,29 +184,11 @@ export default function Navigator() {
         />
 
         <Route
-          path="/matching-1-1"
-          element={
-            <RequireAuth>
-              <MatchingBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/course"
-          element={
-            <RequireAuth>
-              <CourseBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
           path="/request-certificate"
           element={
-            // <RequireAuth>
-            <RequestCertificate />
-            // </RequireAuth>
+            <RequireAuth>
+              <RequestCertificate />
+            </RequireAuth>
           }
         />
 
@@ -408,6 +344,24 @@ export default function Navigator() {
         <Route path="/additional-data" element={<AdditionalData />} />
         <Route path="/email-not-verified" element={<VerifyEmailModal />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/privacy"
+          element={
+            <IFrame
+              title="datenschutz"
+              src="https://www.lern-fair.de/iframe/datenschutz"
+            />
+          }
+        />
+        <Route
+          path="/imprint"
+          element={
+            <IFrame
+              title="impressum"
+              src="https://www.lern-fair.de/iframe/impressum"
+            />
+          }
+        />
 
         {/* Fallback */}
         <Route

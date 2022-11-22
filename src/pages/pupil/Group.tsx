@@ -19,7 +19,7 @@ import SearchBar from '../../components/SearchBar'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
-import { getFirstLectureFromSubcourse } from '../../Utility'
+import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -38,6 +38,8 @@ const query = gql`
         }
         subcoursesJoined {
           id
+          maxParticipants
+          participantsCount
           lectures {
             start
           }
@@ -89,6 +91,8 @@ const PupilGroup: React.FC<Props> = () => {
     query ($name: String) {
       subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
         isParticipant
+        maxParticipants
+        participantsCount
         id
         lectures {
           start
@@ -306,6 +310,11 @@ const PupilGroup: React.FC<Props> = () => {
                             className="course-list__item"
                             key={`subcourse-${index}`}>
                             <AppointmentCard
+                              showTrafficLight={activeTab > 0}
+                              trafficLightStatus={getTrafficStatus(
+                                course.participantsCount || 0,
+                                course.maxParticipants || 0
+                              )}
                               isHorizontalCardCourseChecked={
                                 course.isParticipant
                               }

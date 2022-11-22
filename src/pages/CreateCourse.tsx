@@ -73,6 +73,7 @@ type ICreateCourseContext = {
   lectures?: Lecture[]
   setLectures?: Dispatch<SetStateAction<Lecture[]>>
   pickedPhoto?: string
+  setPickedPhoto?: Dispatch<SetStateAction<string>>
   addedInstructors?: LFInstructor[]
   setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>
 }
@@ -294,7 +295,9 @@ const CreateCourse: React.FC<Props> = () => {
     setImageLoading(true)
     const formData: FormData = new FormData()
 
-    const base64 = await fetch(pickedPhoto)
+    const base64 = pickedPhoto
+      ? await fetch(pickedPhoto)
+      : require('../assets/images/globals/image-placeholder.png')
     const data = await base64.blob()
     formData.append('file', data, 'img_course.jpeg')
 
@@ -456,6 +459,7 @@ const CreateCourse: React.FC<Props> = () => {
           lectures,
           setLectures,
           pickedPhoto,
+          setPickedPhoto,
           addedInstructors
         }}>
         {(studentData?.me?.student?.canCreateCourse?.allowed && (

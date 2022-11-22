@@ -1,5 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
+  Box,
   Button,
   Container,
   Heading,
@@ -14,12 +15,14 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import LFIconBook from '../../assets/icons/lernfair/onboarding/lf-onboarding-group.svg'
 import LFImageLearing from '../../assets/images/course/course-blocker.jpg'
+import BackButton from '../../components/BackButton'
+import WithNavigation from '../../components/WithNavigation'
 import CTACard from '../../widgets/CTACard'
 import HelperWizard from '../../widgets/HelperWizard'
 
 type Props = {}
 
-const CourseBlocker: React.FC<Props> = () => {
+const PupilCourseBlocker: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -29,7 +32,6 @@ const CourseBlocker: React.FC<Props> = () => {
     trackPageView({
       documentTitle: 'Helfer Kurse Blocker'
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const ContainerWidth = useBreakpointValue({
@@ -52,7 +54,7 @@ const CourseBlocker: React.FC<Props> = () => {
         alignItems="stretch"
         marginBottom={space['0.5']}>
         <Heading marginBottom={space['1']}>
-          {t('course.blocker.student.title')}
+          {t('course.blocker.pupil.title')}
         </Heading>
         <Image
           width="100%"
@@ -64,18 +66,18 @@ const CourseBlocker: React.FC<Props> = () => {
           }}
         />
         <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-          {t('course.blocker.student.firstContent')}
+          {t('course.blocker.pupil.firstContent')}
         </Text>
         <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-          {t('course.blocker.student.secContent')}
-          <Link> {t('course.blocker.student.here')} </Link>
-          {t('course.blocker.student.thrContent')}
+          {t('course.blocker.pupil.secContent')}
+          <Link> {t('course.blocker.pupil.here')} </Link>
+          {t('course.blocker.pupil.thrContent')}
         </Text>
         <Text maxWidth={ContentContainerWidth} bold marginBottom="4px">
-          {t('course.blocker.student.contentHeadline')}
+          {t('course.blocker.pupil.contentHeadline')}
         </Text>
         <Text maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-          {t('course.blocker.student.content')}
+          {t('course.blocker.pupil.content')}
         </Text>
       </Container>
       <Container
@@ -88,12 +90,12 @@ const CourseBlocker: React.FC<Props> = () => {
         <CTACard
           width="100%"
           variant="dark"
-          title={t('course.blocker.student.cta.title')}
-          content={t('course.blocker.student.cta.content')}
+          title={t('course.blocker.pupil.cta.title')}
+          content={t('course.blocker.pupil.cta.content')}
           icon={<LFIconBook />}
           button={
             <Button onPress={() => navigate('/onboarding-list')}>
-              {t('course.blocker.student.cta.button')}
+              {t('course.blocker.pupil.cta.button')}
             </Button>
           }
         />
@@ -110,4 +112,4 @@ const CourseBlocker: React.FC<Props> = () => {
     </>
   )
 }
-export default CourseBlocker
+export default PupilCourseBlocker

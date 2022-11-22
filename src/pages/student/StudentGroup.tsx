@@ -15,7 +15,7 @@ import Tabs from '../../components/Tabs'
 import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../../types/lernfair/Course'
-import Utility from '../../Utility'
+import Utility, { getTrafficStatus } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
@@ -46,6 +46,8 @@ const query = gql`
         subcoursesInstructing {
           id
           published
+          participantsCount
+          maxParticipants
           lectures {
             start
             duration
@@ -71,7 +73,7 @@ const StudentGroup: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   const location = useLocation()
-  const locState = location.state as {
+  const locState = location?.state as {
     errors: string[]
   }
 
@@ -170,6 +172,11 @@ const StudentGroup: React.FC<Props> = () => {
     return (
       <CSSWrapper className="course-list__item">
         <AppointmentCard
+          showTrafficLight
+          trafficLightStatus={getTrafficStatus(
+            course.participantsCount || 0,
+            course.maxParticipants || 0
+          )}
           isFullHeight
           isSpaceMarginBottom={false}
           key={index}
@@ -199,7 +206,7 @@ const StudentGroup: React.FC<Props> = () => {
       )
     }
     return false
-  }, [locState.errors])
+  }, [locState?.errors])
 
   if (loading) return <CenterLoadingSpinner />
 
