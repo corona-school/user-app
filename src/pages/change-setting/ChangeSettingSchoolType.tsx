@@ -101,12 +101,11 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
     <WithNavigation
       headerTitle={t('profile.SchoolType.single.header')}
-      showBack>
+      showBack
+      isLoading={loading}>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}

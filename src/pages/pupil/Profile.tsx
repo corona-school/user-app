@@ -165,10 +165,10 @@ const Profile: React.FC<Props> = () => {
     }
   }, [showSuccessfulChangeAlert, userSettingChanged])
 
-  if (loading) return <CenterLoadingSpinner />
   return (
     <>
       <WithNavigation
+        isLoading={loading}
         showBack
         headerTitle={t('profile.title')}
         headerContent={

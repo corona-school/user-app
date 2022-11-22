@@ -162,11 +162,10 @@ const ProfileStudent: React.FC<Props> = () => {
     }
   }, [showSuccessfulChangeAlert, userSettingChanged])
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
     <>
       <WithNavigation
+        isLoading={loading}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
