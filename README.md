@@ -5,7 +5,6 @@ A fix was announced by GeekyAnts [(GitHub issue)](https://github.com/GeekyAnts/N
 
 __NOTE: Due to version conflicts with `@miblanchard/react-native-slider` packages have to be installed with `--force` or `--legacy-peer-deps` in npm__
 
-
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

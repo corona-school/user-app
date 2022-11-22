@@ -12,6 +12,7 @@ import {
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
 
@@ -22,6 +23,7 @@ type Props = {
 const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { data } = useQuery(gql`
     query {
       me {
@@ -81,14 +83,10 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
   const onboardingIndex: number = useMemo(() => {
     if (
       data?.me?.student?.canCreateCourse.reason === 'not-screened' ||
-      data?.me?.student?.canCreateCourse.reason === 'not-instructor'
+      data?.me?.student?.canRequestMatch.reason === 'not-screened'
     )
       return 0
-    if (
-      data?.me?.student?.canRequestMatch?.reason === 'not-screened' ||
-      'not-tutor'
-    )
-      return 1
+    if (data?.me?.student?.canRequestMatch?.reason === 'not-screened') return 1
     if (!data?.me?.student?.firstMatchRequest) return 2
     if (!data?.me?.student?.certificateOfConduct?.id) return 3
     return 0
@@ -130,6 +128,9 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           {t('helperwizard.kennenlernen.content')}
                         </Text>
                         <Button
+                          onPress={() =>
+                            window.open(process.env.REACT_APP_SCREENING_URL)
+                          }
                           width={ButtonContainer}
                           marginRight={ButtonSpace}>
                           {t('helperwizard.kennenlernen.button')}
@@ -203,6 +204,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           </Column>
                           <Column width={ButtonWidthContainer}>
                             <Button
+                              onPress={() => navigate('/matching')}
                               width={ButtonContainer}
                               marginRight={ButtonSpace}>
                               {t('helperwizard.angebot.button')}

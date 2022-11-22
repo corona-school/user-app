@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client'
 import {
   View,
   Text,
@@ -10,7 +11,7 @@ import {
   Pressable
 } from 'native-base'
 import { useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useLernfair from '../hooks/useLernfair'
 import { NavigationItems } from '../types/navigation'
 import CSSWrapper from './CSSWrapper'
@@ -26,11 +27,28 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
   const { rootPath, setRootPath } = useLernfair()
   const navigate = useNavigate()
 
-  // const path = useMemo(() => {
-  //   const p = location.pathname.replace('/', '')
-  //   if (Object.keys(navItems).includes(p)) return p
-  //   return 'dashboard'
-  // }, [location.pathname, navItems])
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        myRoles
+      }
+    `
+  )
+
+  const disableGroup: boolean = useMemo(() => {
+    if (!data) return true
+    return (
+      !data?.myRoles.includes('INSTRUCTOR') &&
+      !data?.myRoles.includes('PARTICIPANT')
+    )
+  }, [data])
+
+  const disableMatching: boolean = useMemo(() => {
+    if (!data) return true
+    return !data?.myRoles.includes('TUTOR') && !data?.myRoles.includes('TUTEE')
+  }, [data])
+
+  if (loading) return <></>
 
   return (
     (show && (
@@ -50,56 +68,63 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
           left="0"
           bottom="0">
           {Object.entries(navItems).map(
-            ([key, { label, icon: Icon, disabled }]) => (
-              <Pressable
-                onPress={
-                  disabled
-                    ? undefined
-                    : () => {
-                        setRootPath && setRootPath(`${key}`)
-                        navigate(`/${key}`)
-                      }
-                }
-                key={key}>
-                <Row
-                  alignItems={'center'}
-                  paddingX={space['1']}
-                  paddingY="15px">
-                  <Center>
-                    <CSSWrapper className="navigation__item">
-                      <CircleIcon
-                        size="35px"
-                        color={
-                          disabled
-                            ? 'transparent'
-                            : key === rootPath
-                            ? 'primary.900'
-                            : 'transparent'
+            ([key, { label, icon: Icon, disabled: _disabled }]) => {
+              const disabled =
+                _disabled ||
+                (key === 'matching' && disableMatching) ||
+                (key === 'group' && disableGroup)
+
+              return (
+                <Pressable
+                  onPress={
+                    disabled
+                      ? undefined
+                      : () => {
+                          setRootPath && setRootPath(`${key}`)
+                          navigate(`/${key}`)
                         }
-                      />
-                      <CSSWrapper className="navigation__item__icon">
-                        <Icon
-                          fill={
+                  }
+                  key={key}>
+                  <Row
+                    alignItems={'center'}
+                    paddingX={space['1']}
+                    paddingY="15px">
+                    <Center>
+                      <CSSWrapper className="navigation__item">
+                        <CircleIcon
+                          size="35px"
+                          color={
                             disabled
-                              ? colors['gray']['300']
+                              ? 'transparent'
                               : key === rootPath
-                              ? colors['lightText']
-                              : colors['primary']['900']
+                              ? 'primary.900'
+                              : 'transparent'
                           }
                         />
+                        <CSSWrapper className="navigation__item__icon">
+                          <Icon
+                            fill={
+                              disabled
+                                ? colors['gray']['300']
+                                : key === rootPath
+                                ? colors['lightText']
+                                : colors['primary']['900']
+                            }
+                          />
+                        </CSSWrapper>
                       </CSSWrapper>
-                    </CSSWrapper>
-                  </Center>
-                  <Text
-                    fontSize="lg"
-                    fontWeight="500"
-                    color={disabled ? colors['gray']['300'] : undefined}
-                    marginLeft={space['0.5']}>
-                    {label}
-                  </Text>
-                </Row>
-              </Pressable>
-            )
+                    </Center>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="500"
+                      color={disabled ? colors['gray']['300'] : undefined}
+                      marginLeft={space['0.5']}>
+                      {label}
+                    </Text>
+                  </Row>
+                </Pressable>
+              )
+            }
           )}
         </VStack>
       </View>

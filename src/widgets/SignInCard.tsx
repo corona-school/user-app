@@ -3,33 +3,33 @@ import { Text, Box, Row, useTheme, Button, Image, Link } from 'native-base'
 import { useCallback, useMemo } from 'react'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
-import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
+import {
+  LFLecture,
+  LFSubCourse,
+  LFTag,
+  TrafficStatus
+} from '../types/lernfair/Course'
 import Utility from '../Utility'
+import CourseTrafficLamp from './CourseTrafficLamp'
 
 type Props = {
   tags?: LFTag[]
-  // date?: Date
-  // numAppointments?: number
-  // title?: string
-  // image?: string
-  // href?: string
   data: LFSubCourse
   onClickSignIn?: () => any
   flexibleWidth?: boolean
   onPress?: () => any
+  showTrafficLight?: boolean
+  trafficLightStatus?: TrafficStatus
 }
 
 const SignInCard: React.FC<Props> = ({
   tags,
-  // date,
-  // numAppointments,
-  // title,
-  // image,
-  // href,
   data,
   onClickSignIn,
   flexibleWidth,
-  onPress
+  onPress,
+  showTrafficLight,
+  trafficLightStatus
 }) => {
   const { space } = useTheme()
 
@@ -52,6 +52,14 @@ const SignInCard: React.FC<Props> = ({
               uri: data?.image
             }}
           />
+          {showTrafficLight && (
+            <CourseTrafficLamp
+              status={trafficLightStatus || 'full'}
+              hideText
+              showBorder
+              paddingY={0}
+            />
+          )}
         </Box>
         <Box paddingX={space['1']} paddingY={space['1']} maxWidth="300px">
           <Row space={1.5}>

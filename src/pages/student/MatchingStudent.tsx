@@ -11,7 +11,8 @@ import {
   Column,
   Modal,
   useToast,
-  Box
+  Box,
+  Row
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +25,8 @@ import { LFMatch } from '../../types/lernfair/Match'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
+import { LFSubject } from '../../types/lernfair/Subject'
+import Tag from '../../components/Tag'
 
 type Props = {}
 const query = gql`
@@ -31,6 +34,9 @@ const query = gql`
     me {
       student {
         id
+        subjectsFormatted {
+          name
+        }
         matches {
           id
           dissolved
@@ -171,6 +177,14 @@ const MatchingStudent: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const mandatorySubjects = useMemo(
+    () =>
+      data?.me?.student?.subjectsFormatted?.filter(
+        (sub: LFSubject) => sub.mandatory
+      ),
+    [data?.me?.student?.subjectsFormatted]
+  )
+
   return (
     <AsNavigationItem path="matching">
       <WithNavigation
@@ -286,6 +300,19 @@ const MatchingStudent: React.FC<Props> = () => {
                                     Anfrage {`${i + 1}`.padStart(2, '0')}
                                   </Heading>
 
+                                  <Row
+                                    mt="3"
+                                    space={space['0.5']}
+                                    alignItems="center">
+                                    <Text mb={space['0.5']}>Fächer:</Text>
+                                    <Row space={space['0.5']}>
+                                      {data?.me?.student?.subjectsFormatted.map(
+                                        (sub: LFSubject) => (
+                                          <Tag text={sub.name} />
+                                        )
+                                      )}
+                                    </Row>
+                                  </Row>
                                   <Button
                                     isDisabled={cancelLoading}
                                     variant="outline"

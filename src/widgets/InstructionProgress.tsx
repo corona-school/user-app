@@ -1,5 +1,4 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base'
-import HSection from './HSection'
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage'
 
 type Instruction = {
@@ -85,9 +84,7 @@ const InstructionProgress: React.FC<Props> = ({
               )}
               {isActive && !isLast && (
                 <View flex="1" px={space['1']}>
-                  <Divider
-                    borderColor={isActive ? 'lightText' : 'primary.grey'}
-                  />
+                  <Divider borderColor={'primary.grey'} />
                 </View>
               )}
             </Row>

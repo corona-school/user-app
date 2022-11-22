@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Modal,
   Text,
   useBreakpointValue,
@@ -11,7 +12,7 @@ import {
   VStack
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Questionnaire, {
   Answer,
   ObjectAnswer,
@@ -23,13 +24,14 @@ import { pupilQuestions, studentQuestions } from './questions'
 import EventIcon from '../../assets/icons/lernfair/ic_event.svg'
 import useModal from '../../hooks/useModal'
 import { gql, useMutation } from '@apollo/client'
-import useRegistration from '../../hooks/useRegistration'
 import { useTranslation } from 'react-i18next'
 import { ISelectionItem } from '../../components/questionnaire/SelectionItem'
 import { LFSubject } from '../../types/lernfair/Subject'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
+import Logo from '../../assets/icons/lernfair/lf-logo.svg'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -38,7 +40,7 @@ const mutPupil = `mutation register(
   $schooltype: SchoolType
   $state: State!
   $gradeAsInt: Int!
-  $subjects: [SubjectInput]
+  $subjects: [SubjectInput!]
   
 ) {
   meUpdate(
@@ -60,6 +62,9 @@ const RegistrationData: React.FC<Props> = () => {
   const { trackPageView, trackEvent } = useMatomo()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { userType } = useLernfair()
+  const location = useLocation() as { state: { token: string } }
+  const { token } = location.state
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [questions, setQuestions] = useState<Question[]>([])
@@ -74,9 +79,6 @@ const RegistrationData: React.FC<Props> = () => {
 
   // show global modal
   const { setShow, setContent, setVariant } = useModal()
-
-  // data provided by previous slides
-  const { userType } = useRegistration()
 
   // focused selection is pressed selectable item
   const [showFocusSelection, setShowFocusSelection] = useState<boolean>(false)
@@ -138,13 +140,15 @@ const RegistrationData: React.FC<Props> = () => {
   // at the end register the student with all data
   const registerStudent = useCallback(async () => {
     const subjects = []
-    for (let [sub, isSelected] of Object.entries(answers.subjects)) {
-      // const grades = Utility.intToClassRange(classes[sub])
-      const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
-      if (isSelected && grades.min > 0 && grades.max > 0) {
-        subjects.push({ name: sub, grade: grades })
+
+    if (answers.subjects)
+      for (let [sub, isSelected] of Object.entries(answers.subjects)) {
+        // const grades = Utility.intToClassRange(classes[sub])
+        const grades: ClassRange = classes[sub] || { min: 1, max: 13 }
+        if (isSelected && grades.min > 0 && grades.max > 0) {
+          subjects.push({ name: sub, grade: grades })
+        }
       }
-    }
 
     const data = {} as {
       subjects: LFSubject[]
@@ -175,8 +179,13 @@ const RegistrationData: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function attemptRegistration(answers: { [key: string]: Answer }) {
+  const attemptRegistration = async (answers: { [key: string]: Answer }) => {
     let res: any
+
+    if (!userType || userType === 'unknown') {
+      showErrorModal('Unknown User Type')
+      return
+    }
 
     try {
       if (userType === 'pupil') {
@@ -422,6 +431,8 @@ const RegistrationData: React.FC<Props> = () => {
     [userType]
   )
 
+  if (!token || !userType) return <AdditionalDataError />
+
   return (
     <QuestionnaireContext.Provider
       value={{
@@ -502,3 +513,46 @@ const RegistrationData: React.FC<Props> = () => {
   )
 }
 export default RegistrationData
+
+const AdditionalDataError = () => {
+  const { space, sizes } = useTheme()
+  const ContainerWidth = useBreakpointValue({
+    base: '90%',
+    lg: sizes['formsWidth']
+  })
+
+  return (
+    <Flex overflowY={'auto'} height="100vh">
+      <>
+        <Box
+          position="relative"
+          paddingY={space['2']}
+          justifyContent="center"
+          alignItems="center">
+          <Image
+            alt="Lernfair"
+            position="absolute"
+            zIndex="-1"
+            borderBottomRadius={15}
+            width="100%"
+            height="100%"
+            source={{
+              uri: require('../../assets/images/globals/lf-bg.png')
+            }}
+          />
+          <Logo />
+          <Heading mt={space['1']}>Weitere Daten</Heading>
+        </Box>
+        <VStack
+          space={space['1']}
+          paddingX={space['1']}
+          mt={space['4']}
+          marginX="auto"
+          width={ContainerWidth}
+          justifyContent="center">
+          <Heading>Token ungültig</Heading>
+        </VStack>
+      </>
+    </Flex>
+  )
+}

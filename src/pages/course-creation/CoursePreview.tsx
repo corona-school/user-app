@@ -9,15 +9,13 @@ import {
   Row,
   Box,
   Image,
-  useBreakpointValue,
-  Alert,
-  HStack
+  useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
-import ToggleButton from '../../components/ToggleButton'
 import Utility from '../../Utility'
+import AlertMessage from '../../widgets/AlertMessage'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 
@@ -25,9 +23,15 @@ type Props = {
   onNext: () => any
   onBack: () => any
   isDisabled?: boolean
+  isError?: boolean
 }
 
-const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
+const CoursePreview: React.FC<Props> = ({
+  onNext,
+  onBack,
+  isDisabled,
+  isError
+}) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const {
@@ -43,16 +47,6 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
     lectures,
     pickedPhoto
   } = useContext(CreateCourseContext)
-
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
-
-  const ContentContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['contentContainerWidth']
-  })
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -218,6 +212,11 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled }) => {
           </VStack>
         ))}
 
+      {isError && (
+        <Box mt={space['1']}>
+          <AlertMessage content={t('course.error.course')} />
+        </Box>
+      )}
       <Row
         space={space['1']}
         alignItems="center"

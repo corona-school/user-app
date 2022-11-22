@@ -16,9 +16,7 @@ import OnboardingTourList from './pages/OnboardingTourList'
 import Welcome from './pages/Welcome'
 import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
-import AllFaq from './pages/AllFaq'
-import QuickStart from './pages/QuickStart'
-import DigitaleTools from './pages/DigitaleTools'
+
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/change-setting/ChangeSettingState'
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
@@ -27,9 +25,8 @@ import SingleCourse from './pages/SingleCourse'
 
 import RegistrationAccount from './pages/registration/RegistrationAccount'
 import RegistrationPersonal from './pages/registration/RegistrationPersonal'
-import RegistrationData from './pages/registration/RegistrationData'
+import AdditionalData from './pages/registration/AdditionalData'
 import { RegistrationProvider } from './hooks/useRegistration'
-import Explore from './pages/Explore'
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
@@ -50,10 +47,7 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 
 import CreateCourse from './pages/CreateCourse'
 import { gql, useQuery } from '@apollo/client'
-import MatchingBlocker from './pages/student/MatchingBlocker'
-import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
-import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
@@ -73,42 +67,17 @@ import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
+import LoginToken from './pages/LoginToken'
+import IFrame from './components/IFrame'
 
 export default function Navigator() {
-  // const { userType } = useLernfair()
-
-  // const { data, loading } = useQuery(
-  //   gql`
-  //     query {
-  //       me {
-  //         email
-  //         pupil {
-  //           id
-  //           verifiedAt
-  //         }
-  //         student {
-  //           id
-  //           verifiedAt
-  //         }
-  //       }
-  //     }
-  //   `,
-  //   { skip: !userType }
-  // )
-
-  // if (loading) return <CenterLoadingSpinner />
-
-  // if (data && data.me.pupil && !data.me.pupil.verifiedAt)
-  //   return <VerifyEmailModal email={data.me.email} />
-  // if (data && data.me.student && !data.me.student.verifiedAt)
-  //   return <VerifyEmailModal email={data.me.email} />
-
   return (
     <BrowserRouter>
       <Routes>
         {/* Public */}
 
         <Route path="/login" element={<Login />} />
+        <Route path="/login-token" element={<LoginToken />} />
         <Route
           path="/registration"
           element={
@@ -118,7 +87,7 @@ export default function Navigator() {
           }>
           <Route path="1" element={<RegistrationAccount />} />
           <Route path="2" element={<RegistrationPersonal />} />
-          <Route path="3" element={<RegistrationData />} />
+          <Route path="3" element={<AdditionalData />} />
         </Route>
 
         <Route path="/welcome" element={<Welcome />} />
@@ -154,14 +123,6 @@ export default function Navigator() {
         />
 
         <Route
-          path="/explore"
-          element={
-            <RequireAuth>
-              <Explore />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="/single-course"
           element={
             <RequireAuth>
@@ -178,15 +139,6 @@ export default function Navigator() {
                 pupilComponent={<Profile />}
                 studentComponent={<ProfileStudent />}
               />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/profile-helper"
-          element={
-            <RequireAuth>
-              <ProfileHelper />
             </RequireAuth>
           }
         />
@@ -223,30 +175,6 @@ export default function Navigator() {
           }></Route>
 
         <Route
-          path="/alle-faqs"
-          element={
-            <RequireAuth>
-              <AllFaq />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/quick-start"
-          element={
-            <RequireAuth>
-              <QuickStart />
-            </RequireAuth>
-          }></Route>
-
-        <Route
-          path="/digitale-tools"
-          element={
-            <RequireAuth>
-              <DigitaleTools />
-            </RequireAuth>
-          }></Route>
-
-        <Route
           path="/onboarding-list"
           element={
             <RequireAuth>
@@ -256,29 +184,11 @@ export default function Navigator() {
         />
 
         <Route
-          path="/matching-1-1"
-          element={
-            <RequireAuth>
-              <MatchingBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path="/course"
-          element={
-            <RequireAuth>
-              <CourseBlocker />
-            </RequireAuth>
-          }
-        />
-
-        <Route
           path="/request-certificate"
           element={
-            // <RequireAuth>
-            <RequestCertificate />
-            // </RequireAuth>
+            <RequireAuth>
+              <RequestCertificate />
+            </RequireAuth>
           }
         />
 
@@ -430,17 +340,28 @@ export default function Navigator() {
           }
         />
 
-        {/* <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/additional-data" element={<AdditionalData />} />
+        <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
-          path="/additional-data"
+          path="/privacy"
           element={
-            <RequireAuth>
-              <RegistrationData />
-            </RequireAuth>
+            <IFrame
+              title="datenschutz"
+              src="https://www.lern-fair.de/iframe/datenschutz"
+            />
           }
         />
-        <Route path="/email-not-verified" element={<VerifyEmailModal />} /> */}
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route
+          path="/imprint"
+          element={
+            <IFrame
+              title="impressum"
+              src="https://www.lern-fair.de/iframe/impressum"
+            />
+          }
+        />
 
         {/* Fallback */}
         <Route
@@ -457,12 +378,44 @@ export default function Navigator() {
 }
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const { token } = useApollo()
+  const { userType } = useLernfair()
   const location = useLocation()
+  const { sessionState } = useApollo()
 
-  if (!token)
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        me {
+          email
+          pupil {
+            id
+            verifiedAt
+          }
+          student {
+            id
+            verifiedAt
+          }
+        }
+      }
+    `,
+    { skip: !userType }
+  )
+
+  if (sessionState === 'logged-out')
     return <Navigate to="/welcome" state={{ from: location }} replace />
-  return children
+
+  if (sessionState === 'logged-in') {
+    if (data && data.me.pupil && !data.me.pupil.verifiedAt)
+      return <VerifyEmailModal email={data.me.email} />
+    if (data && data.me.student && !data.me.student.verifiedAt)
+      return <VerifyEmailModal email={data.me.email} />
+
+    return children
+  }
+
+  if (loading) return <CenterLoadingSpinner />
+
+  return <Navigate to="/welcome" state={{ from: location }} replace />
 }
 
 const SwitchUserType = ({
