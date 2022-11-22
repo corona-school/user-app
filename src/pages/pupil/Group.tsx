@@ -288,16 +288,12 @@ const PupilGroup: React.FC<Props> = () => {
                 }}
                 tabs={[
                   {
-                    title: t('matching.group.pupil.tabs.tab1.title'),
-                    content: <SubcoursesTab />
-                  },
-                  // {
-                  //   title: t('matching.group.pupil.tabs.tab2.title'),
-                  //   content: <RecommendationsTab />
-                  // },
-                  {
                     title: t('matching.group.pupil.tabs.tab3.title'),
                     content: <AllSubcoursesTab />
+                  },
+                  {
+                    title: t('matching.group.pupil.tabs.tab1.title'),
+                    content: <SubcoursesTab />
                   }
                 ]}
               />
