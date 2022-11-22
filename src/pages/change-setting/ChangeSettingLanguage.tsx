@@ -178,7 +178,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                           iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
                           text={subject.label}
                           onPress={() =>
-                            setSelections(prev => [...prev, subject.key])
+                            setSelections(prev => [...prev, subject.label])
                           }
                         />
                       </Column>
@@ -219,22 +219,6 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        {/* {userSettingChanged && (
-          <Alert marginY={3} colorScheme="success" status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )} */}
         {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}

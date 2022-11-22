@@ -32,6 +32,25 @@ import AlertMessage from '../../widgets/AlertMessage'
 
 type Props = {}
 
+const query = gql`
+  query {
+    me {
+      firstname
+      lastname
+      pupil {
+        aboutMe
+        state
+        schooltype
+        languages
+        subjectsFormatted {
+          name
+        }
+        gradeAsInt
+      }
+    }
+  }
+`
+
 const Profile: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
@@ -51,40 +70,27 @@ const Profile: React.FC<Props> = () => {
     showSuccessfulChangeAlert: boolean
   }
 
-  const { data, loading } = useQuery(
+  const { data, loading } = useQuery(query, {
+    fetchPolicy: 'no-cache'
+  })
+
+  const [changeName, _changeName] = useMutation(
     gql`
-      query {
-        me {
-          firstname
-          lastname
-          pupil {
-            aboutMe
-            state
-            schooltype
-            languages
-            subjectsFormatted {
-              name
-            }
-            gradeAsInt
-          }
-        }
+      mutation changeName($firstname: String!, $lastname: String!) {
+        meUpdate(update: { firstname: $firstname, lastname: $lastname })
       }
     `,
-    {
-      fetchPolicy: 'no-cache'
-    }
+    { refetchQueries: [query] }
   )
 
-  const [changeName, _changeName] = useMutation(gql`
-    mutation changeName($firstname: String!, $lastname: String!) {
-      meUpdate(update: { firstname: $firstname, lastname: $lastname })
-    }
-  `)
-  const [changeAboutMe, _changeAboutMe] = useMutation(gql`
-    mutation changeAboutMe($aboutMe: String!) {
-      meUpdate(update: { pupil: { aboutMe: $aboutMe } })
-    }
-  `)
+  const [changeAboutMe, _changeAboutMe] = useMutation(
+    gql`
+      mutation changeAboutMe($aboutMe: String!) {
+        meUpdate(update: { pupil: { aboutMe: $aboutMe } })
+      }
+    `,
+    { refetchQueries: [query] }
+  )
 
   useEffect(() => {
     if (_changeName.data || _changeAboutMe.data) {
@@ -160,7 +166,6 @@ const Profile: React.FC<Props> = () => {
   }, [showSuccessfulChangeAlert, userSettingChanged])
 
   if (loading) return <CenterLoadingSpinner />
-
   return (
     <>
       <WithNavigation
@@ -222,7 +227,8 @@ const Profile: React.FC<Props> = () => {
                   setNameModalVisible(!nameModalVisible)
                 }}>
                 <Text>
-                  {data?.me?.firstname} {data?.me?.lastname}
+                  {_changeName?.data?.me?.firstname || data?.me?.firstname}{' '}
+                  {_changeName?.data?.me?.lastname || data?.me?.lastname}
                 </Text>
               </ProfileSettingItem>
 

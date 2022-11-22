@@ -32,6 +32,28 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
+const query = gql`
+  query {
+    me {
+      firstname
+      lastname
+      student {
+        state
+        aboutMe
+        subjectsFormatted {
+          name
+        }
+        participationCertificates {
+          subjectsFormatted
+          state
+          startDate
+          pupilId
+        }
+      }
+    }
+  }
+`
+
 const ProfileStudent: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
@@ -51,43 +73,26 @@ const ProfileStudent: React.FC<Props> = () => {
     showSuccessfulChangeAlert: boolean
   }
 
-  const { data, loading } = useQuery(
+  const { data, loading } = useQuery(query, {
+    fetchPolicy: 'no-cache'
+  })
+
+  const [changeName, _changeName] = useMutation(
     gql`
-      query {
-        me {
-          firstname
-          lastname
-          student {
-            state
-            aboutMe
-            subjectsFormatted {
-              name
-            }
-            participationCertificates {
-              subjectsFormatted
-              state
-              startDate
-              pupilId
-            }
-          }
-        }
+      mutation changeName($firstname: String!, $lastname: String!) {
+        meUpdate(update: { firstname: $firstname, lastname: $lastname })
       }
     `,
-    {
-      fetchPolicy: 'no-cache'
-    }
+    { refetchQueries: [query] }
   )
-
-  const [changeName, _changeName] = useMutation(gql`
-    mutation changeName($firstname: String!, $lastname: String!) {
-      meUpdate(update: { firstname: $firstname, lastname: $lastname })
-    }
-  `)
-  const [changeAboutMe, _changeAboutMe] = useMutation(gql`
-    mutation changeAboutMe($aboutMe: String!) {
-      meUpdate(update: { student: { aboutMe: $aboutMe } })
-    }
-  `)
+  const [changeAboutMe, _changeAboutMe] = useMutation(
+    gql`
+      mutation changeAboutMe($aboutMe: String!) {
+        meUpdate(update: { student: { aboutMe: $aboutMe } })
+      }
+    `,
+    { refetchQueries: [query] }
+  )
 
   useEffect(() => {
     if (_changeName.data || _changeAboutMe.data) {
@@ -212,9 +217,9 @@ const ProfileStudent: React.FC<Props> = () => {
                 href={() => {
                   setAboutMeModalVisible(!aboutMeModalVisible)
                 }}>
-                {(data?.me?.student?.aboutMe && <Text>{aboutMe}</Text>) || (
-                  <Text>{t('profile.AboutMe.empty')}</Text>
-                )}
+                {(data?.me?.student?.aboutMe && (
+                  <Text>{data?.me?.student?.aboutMe}</Text>
+                )) || <Text>{t('profile.AboutMe.empty')}</Text>}
               </ProfileSettingItem>
 
               <ProfileSettingItem
