@@ -27,7 +27,7 @@ import LearningPartner from '../../widgets/LearningPartner'
 import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
-import { getFirstLectureFromSubcourse } from '../../Utility'
+import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
@@ -66,6 +66,8 @@ const query = gql`
         }
         subcoursesInstructing {
           id
+          participantsCount
+          maxParticipants
           published
           lectures {
             start
@@ -84,6 +86,8 @@ const query = gql`
     }
 
     subcoursesPublic(take: 10, skip: 2) {
+      participantsCount
+      maxParticipants
       course {
         name
         description
@@ -242,7 +246,7 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           called &&
@@ -394,6 +398,11 @@ const DashboardStudent: React.FC<Props> = () => {
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}
+                              showTrafficLight
+                              trafficLightStatus={getTrafficStatus(
+                                sub?.participantsCount || 0,
+                                sub?.maxParticipants || 0
+                              )}
                               onPressToCourse={() => {
                                 trackEvent({
                                   category: 'dashboard',

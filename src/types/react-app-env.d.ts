@@ -14,6 +14,8 @@ declare namespace NodeJS {
     readonly REACT_APP_UNSPLASH: string
     // URL to upload course photos
     readonly REACT_APP_UPLOAD_URL: string
+    // URL for student screenings
+    readonly REACT_APP_SCREENING_URL: string
   }
   interface ProcessEnv extends LernFairEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test'

@@ -26,7 +26,7 @@ const Settings: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { clearToken } = useApollo()
+  const { logout } = useApollo()
   const tabspace = 3
   const { userType } = useLernfair()
   const { trackPageView, trackEvent } = useMatomo()
@@ -132,23 +132,26 @@ const Settings: React.FC<Props> = () => {
                   name: 'Abmelden im Account',
                   documentTitle: 'Logout'
                 })
-                clearToken()
+                logout()
                 navigate(0)
               }}
             />
           </Column>
         </ProfileSettingRow>
-        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.imprint')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.imprint')}
+              onPress={() => navigate('/imprint')}
+            />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.datapolicy')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.datapolicy')}
+              onPress={() => navigate('/privacy')}
+            />
           </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.terms')} isDisabled />
-          </Column>
-        </ProfileSettingRow> */}
+        </ProfileSettingRow>
       </VStack>
     </WithNavigation>
   )

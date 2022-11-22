@@ -12,7 +12,7 @@ import {
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import PasswordInput from '../components/PasswordInput'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import { gql, useMutation } from '@apollo/client'
@@ -21,10 +21,13 @@ import useApollo from '../hooks/useApollo'
 type Props = {}
 
 const ResetPassword: React.FC<Props> = () => {
-  const { token } = useParams() as { token: string }
+  const { createDeviceToken } = useApollo()
+  const [searchParams] = useSearchParams()
+  const token = searchParams?.get('secret_token') || ''
+  const redirectTo = searchParams?.get('redirectTo')
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { createToken, clearToken } = useApollo()
+  // const { createToken, clearToken } = useApollo()
   const [password, setPassword] = useState<string>()
   const [passwordRepeat, setPasswordRepeat] = useState<string>()
   const { space, sizes } = useTheme()
@@ -67,6 +70,9 @@ const ResetPassword: React.FC<Props> = () => {
     try {
       const res = await loginToken({ variables: { token } })
       setShowResetPassword(res?.data?.loginToken ? 'success' : 'error')
+      if (res?.data?.loginToken) {
+        createDeviceToken()
+      }
     } catch (e) {
       console.log('ERROR', e)
       setShowResetPassword('error')
@@ -75,7 +81,6 @@ const ResetPassword: React.FC<Props> = () => {
   }, [loginToken, token])
 
   useEffect(() => {
-    createToken()
     if (token) {
       login()
     }
@@ -83,8 +88,7 @@ const ResetPassword: React.FC<Props> = () => {
   }, [login, loginToken, token])
 
   const onNext = () => {
-    clearToken()
-    navigate('/login')
+    navigate(redirectTo || '/')
   }
 
   return (
@@ -162,7 +166,7 @@ const ResetPassword: React.FC<Props> = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-      <Modal isOpen={showErrorModal} onClose={onNext}>
+      <Modal isOpen={showErrorModal} onClose={() => navigate('/login')}>
         <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>Fehler: Passwort nicht geändert</Modal.Header>
@@ -173,7 +177,7 @@ const ResetPassword: React.FC<Props> = () => {
           </Modal.Body>
           <Modal.Footer>
             <Row space={space['0.5']}>
-              <Button onPress={onNext}>Weiter</Button>
+              <Button onPress={() => navigate('/login')}>Weiter</Button>
             </Row>
           </Modal.Footer>
         </Modal.Content>

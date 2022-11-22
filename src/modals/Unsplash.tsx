@@ -7,16 +7,17 @@ import {
   Box,
   Flex,
   useTheme,
-  Spinner,
   Heading,
   Row,
-  ArrowBackIcon
+  ArrowBackIcon,
+  Column,
+  AspectRatio
 } from 'native-base'
 import { useCallback, useState } from 'react'
-import { Pressable } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native'
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import Pagination from '../components/Pagination'
 import SearchBar from '../components/SearchBar'
-import TwoColGrid from '../widgets/TwoColGrid'
 
 type Props = {
   onPhotoSelected: (photo: string) => any
@@ -54,12 +55,7 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
     setSelectedPhoto('')
   }, [onPhotoSelected, selectedPhoto])
 
-  if (isLoading)
-    return (
-      <Flex flex="1" justifyContent="center" alignItems="center" h="100%">
-        <Spinner />
-      </Flex>
-    )
+  if (isLoading) return <CenterLoadingSpinner />
 
   return (
     <VStack flex="1" overflowY="scroll" h="100%">
@@ -77,30 +73,35 @@ const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
         {(photos.length > 0 && (
           <VStack pb={'72px'} marginX={space['1']}>
             <Heading>Seite {pageIndex}</Heading>
-            <TwoColGrid>
+            <Row flex="1" flexWrap={'wrap'} marginX={-space['0.5']}>
               {photos?.map((photo: any) => (
-                <Pressable
+                <TouchableWithoutFeedback
                   onPress={() =>
                     selectedPhoto === photo.urls.regular
                       ? setSelectedPhoto('')
                       : setSelectedPhoto(photo.urls.regular)
                   }>
-                  <Box>
-                    <Image src={photo.urls.small} width={'100%'} minH={200} />
-                    {selectedPhoto === photo.urls.regular && (
-                      <Box
-                        position={'absolute'}
-                        w="100%"
-                        h="100%"
-                        bgColor="primary.900"
-                        opacity={0.8}>
-                        {' '}
-                      </Box>
-                    )}
-                  </Box>
-                </Pressable>
+                  <Column
+                    flex={{ base: '50%', lg: '25%' }}
+                    padding={space['0.5']}>
+                    <AspectRatio ratio={16 / 9} w="100%">
+                      <>
+                        <Image src={photo.urls.small} height="100%" />
+                        {selectedPhoto === photo.urls.regular && (
+                          <Box
+                            position={'absolute'}
+                            w="100%"
+                            h="100%"
+                            bgColor="primary.900"
+                            opacity={0.8}></Box>
+                        )}
+                      </>
+                    </AspectRatio>
+                  </Column>
+                </TouchableWithoutFeedback>
               ))}
-            </TwoColGrid>
+            </Row>
+
             <Pagination
               currentIndex={pageIndex}
               onPrev={() => {

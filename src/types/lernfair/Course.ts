@@ -34,4 +34,10 @@ export type LFTag = {
   category?: string
 }
 
+export type LFInstructor = {
+  id?: string
+  firstname: string
+  lastname: string
+}
+
 export type TrafficStatus = 'full' | 'last' | 'free'

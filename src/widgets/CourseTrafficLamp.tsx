@@ -25,6 +25,7 @@ type Props = {
   infoPopupLastContent?: string
   hideText?: boolean
   paddingY?: number
+  showBorder?: boolean
 }
 
 const CourseTrafficLamp: React.FC<Props> = ({
@@ -33,17 +34,22 @@ const CourseTrafficLamp: React.FC<Props> = ({
   infoPopupContent,
   infoPopupLastContent,
   hideText,
-  paddingY
+  paddingY,
+  showBorder
 }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setShow, setContent, setVariant } = useContext(ModalContext)
 
+  const padY = typeof paddingY === 'number' ? paddingY : 5
+
   return (
     <View>
-      <Row paddingY={paddingY || 5}>
+      <Row paddingY={padY}>
         <Column flexDirection="row" alignItems="center">
           <Circle
+            borderWidth={showBorder ? 2 : undefined}
+            borderColor="lightText"
             backgroundColor={
               status === 'free'
                 ? 'primary.900'

@@ -21,11 +21,12 @@ import Tag from '../components/Tag'
 import CommunityUser from './CommunityUser'
 import { toTimerString } from '../Utility'
 import useInterval from '../hooks/useInterval'
-import { LFTag } from '../types/lernfair/Course'
+import { LFTag, TrafficStatus } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 
 import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg'
 import CSSWrapper from '../components/CSSWrapper'
+import CourseTrafficLamp from './CourseTrafficLamp'
 
 type Props = {
   tags?: LFTag[]
@@ -46,6 +47,8 @@ type Props = {
   image?: string
   onPressToCourse?: () => any
   countCourse?: number
+  showTrafficLight?: boolean
+  trafficLightStatus?: TrafficStatus
 }
 
 const AppointmentCard: React.FC<Props> = ({
@@ -66,7 +69,9 @@ const AppointmentCard: React.FC<Props> = ({
   isFullHeight = false,
   isHorizontalCardCourseChecked = false,
   image,
-  onPressToCourse
+  onPressToCourse,
+  showTrafficLight,
+  trafficLightStatus
 }) => {
   const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
@@ -131,18 +136,6 @@ const AppointmentCard: React.FC<Props> = ({
     lg: '32px'
   })
 
-  const tagMaxWidth = useBreakpointValue({
-    base: '270px',
-    lg: '240px',
-    xl: '370px'
-  })
-
-  const horizontalCardHeadline = useBreakpointValue({
-    base: '70%',
-    lg: '49%',
-    xl: '92%'
-  })
-
   return (
     <View height={isFullHeight ? '100%' : 'auto'}>
       {variant === 'card' ? (
@@ -170,7 +163,14 @@ const AppointmentCard: React.FC<Props> = ({
                     uri: image
                   }}
                 />
-
+                {showTrafficLight && (
+                  <CourseTrafficLamp
+                    status={trafficLightStatus || 'full'}
+                    hideText
+                    showBorder
+                    paddingY={0}
+                  />
+                )}
                 {isTeaser && (
                   <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
                     {tags?.map((tag, i) => (
@@ -256,6 +256,7 @@ const AppointmentCard: React.FC<Props> = ({
                   </Link>
                 )}
               </Box>
+
               <Box
                 flex="1"
                 alignItems="flex-end"
@@ -283,7 +284,11 @@ const AppointmentCard: React.FC<Props> = ({
             flexDirection="row"
             height="100%"
             marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
-            <Box width="26%" display="block" marginRight="3px">
+            <Box
+              width="26%"
+              display="block"
+              marginRight="3px"
+              position={'relative'}>
               <Image
                 width="120px"
                 height="100%"
@@ -294,17 +299,19 @@ const AppointmentCard: React.FC<Props> = ({
                   uri: image
                 }}
               />
+              {showTrafficLight && (
+                <Box position="absolute" top={space['0.5']} left={space['0.5']}>
+                  <CourseTrafficLamp
+                    status={trafficLightStatus || 'full'}
+                    hideText
+                    showBorder
+                    paddingY={0}
+                  />
+                </Box>
+              )}
             </Box>
 
             <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
-              <CSSWrapper className="course-list__item-tags">
-                <Row space={space['0.5']} flexWrap="wrap">
-                  {tags?.map((tag, i) => (
-                    <Tag key={`tag-${i}`} text={tag.name} />
-                  ))}
-                </Row>
-              </CSSWrapper>
-
               <Row space={1} marginTop={space['0.5']}>
                 {date && (
                   <Text>
@@ -320,9 +327,17 @@ const AppointmentCard: React.FC<Props> = ({
                   </>
                 )}
               </Row>
-              <Text bold fontSize={'md'} mt="4px" mb={space['0.5']}>
+              <Text bold fontSize={'md'} mt="4px" mb={space['1']}>
                 {title}
               </Text>
+
+              <CSSWrapper className="course-list__item-tags">
+                <Row space={space['0.5']} flexWrap="wrap">
+                  {tags?.map((tag, i) => (
+                    <Tag key={`tag-${i}`} text={tag.name} />
+                  ))}
+                </Row>
+              </CSSWrapper>
             </Box>
             {isHorizontalCardCourseChecked && (
               <Box position="absolute" right="20px" bottom="13px">

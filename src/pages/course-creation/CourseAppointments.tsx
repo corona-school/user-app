@@ -1,5 +1,4 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { graphqlSync } from 'graphql'
 import {
   VStack,
   Button,
@@ -9,10 +8,6 @@ import {
   Row,
   Box,
   Pressable,
-  Alert,
-  HStack,
-  IconButton,
-  CloseIcon,
   useBreakpointValue
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
@@ -71,6 +66,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Termine'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

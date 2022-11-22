@@ -19,6 +19,7 @@ import {
   useMemo
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import useLernfair from '../hooks/useLernfair'
 import useRegistration from '../hooks/useRegistration'
 import CenterLoadingSpinner from './CenterLoadingSpinner'
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView'
@@ -96,7 +97,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
 
-  const { userType } = useRegistration()
+  const { userType } = useLernfair()
 
   const { currentIndex, questions, answers, setCurrentIndex, currentQuestion } =
     useContext(QuestionnaireContext)
@@ -108,15 +109,9 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
    * if the prop exists
    */
   const next = useCallback(() => {
-    console.log('before modify')
     modifyAnswerBeforeNext &&
       modifyAnswerBeforeNext(answers[currentQuestion.id], currentQuestion)
-    console.log('after modify')
-    console.log(
-      currentIndex >= questions.length - 1,
-      currentIndex,
-      questions.length - 1
-    )
+
     if (currentIndex >= questions.length - 1) {
       onQuestionnaireFinished && onQuestionnaireFinished(answers)
     } else {
@@ -163,7 +158,6 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
 
   // skip one question
   const skip = useCallback(() => {
-    console.log('skip')
     delete answers[currentQuestion.id]
     next()
   }, [answers, currentQuestion.id, next])
@@ -232,7 +226,7 @@ const Questionnaire: React.FC<IQuestionnaire> = ({
           <QuestionnaireSelectionView
             currentQuestion={currentQuestion as SelectionQuestion}
             prefill={answers[currentQuestion.id]}
-            userType={userType}
+            userType={userType || 'pupil'}
             onPressSelection={onPressItem}
           />
         )}

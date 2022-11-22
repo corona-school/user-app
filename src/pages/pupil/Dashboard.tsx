@@ -37,6 +37,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
+import { getTrafficStatus } from '../../Utility'
 
 type Props = {}
 
@@ -237,7 +238,7 @@ const Dashboard: React.FC<Props> = () => {
   }, [data?.me?.pupil?.matches])
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           !loading && (
@@ -482,6 +483,11 @@ const Dashboard: React.FC<Props> = () => {
                         flex={1}
                         h="100%">
                         <SignInCard
+                          showTrafficLight
+                          trafficLightStatus={getTrafficStatus(
+                            sc?.participantsCount || 0,
+                            sc?.maxParticipants || 0
+                          )}
                           tags={sc.course.tags}
                           data={sc}
                           onClickSignIn={() => {
