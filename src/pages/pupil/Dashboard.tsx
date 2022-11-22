@@ -298,9 +298,7 @@ const Dashboard: React.FC<Props> = () => {
               {/* Appointments */}
               <HSection
                 marginBottom={space['1.5']}
-                title={t('dashboard.myappointments.header')}
-                showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
-                onShowAll={() => navigate('/appointments-archive')}>
+                title={t('dashboard.myappointments.header')}>
                 {(sortedAppointments.length > 1 &&
                   sortedAppointments
                     .slice(1, 5)
