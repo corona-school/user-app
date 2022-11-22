@@ -3,7 +3,6 @@ import {
   Text,
   FormControl,
   Row,
-  Switch,
   Heading,
   VStack,
   Select,
@@ -14,7 +13,6 @@ import {
 import { useCallback, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
-import TextInput from '../../components/TextInput'
 import { CreateCourseContext } from '../CreateCourse'
 
 type Props = {
@@ -120,21 +118,7 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
           <Select.Item value="180" label="3 Stunden" />
           <Select.Item value="240" label="4 Stunden" />
         </Select>
-        {/* <TextInput
-          value={lectures && lectures[index].duration}
-          placeholder={t('course.CourseDate.Wizard.durationPlaceholder')}
-          onChangeText={e => {
-            if (!lectures || !lectures[index]) return
-            const arr = [...lectures]
-            arr[index].duration = e
-            setLectures && setLectures(arr)
-          }} 
-        />*/}
       </FormControl>
-      {/* <Row marginY={space['1.5']}>
-        <Text flex="1">{t('course.CourseDate.Wizard.repeatAppoint')}</Text>
-        <Switch />
-      </Row> */}
     </VStack>
   )
 }
