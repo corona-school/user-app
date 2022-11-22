@@ -54,20 +54,22 @@ const Matching: React.FC<Props> = () => {
     lg: false
   })
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
     <>
       <AsNavigationItem path="matching">
         <WithNavigation showBack={backArrow} headerContent={<Hello />}>
-          {(data?.me?.pupil.openMatchRequestCount === 0 && (
-            <>
-              {currentIndex === 0 && (
-                <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
-              )}
-              {currentIndex === 1 && <MatchingWizard />}
-            </>
-          )) || <MatchingPending refetchQuery={query} />}
+          {loading && <CenterLoadingSpinner />}
+          {!loading &&
+            ((data?.me?.pupil.openMatchRequestCount === 0 && (
+              <>
+                {currentIndex === 0 && (
+                  <MatchingOnboarding
+                    onRequestMatch={() => setShowModal(true)}
+                  />
+                )}
+                {currentIndex === 1 && <MatchingWizard />}
+              </>
+            )) || <MatchingPending refetchQuery={query} />)}
         </WithNavigation>
       </AsNavigationItem>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
