@@ -1,8 +1,16 @@
 const notification = {
   timedifference: {
-    yesterday: 'gestern',
+    yesterday: 'Gestern',
+    dayBeforeYesterday: 'Vorgestern',
+    lastWeek: 'letzte Woche',
+    lastMonth: 'letzten Monat',
     now: 'gerade eben',
-    beforeMinutes: 'vor {{minutes}} min'
+    beforeMinutes: '{{minutes}} Min'
+  },
+  panel: {
+    button: {
+      text: 'Ältere Benachrichtigungen anzeigen'
+    }
   }
 }
 export default notification

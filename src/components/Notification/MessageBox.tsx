@@ -1,30 +1,40 @@
 import { Box, HStack, Spacer, Text, VStack } from 'native-base'
-import { getIconForCategory } from '../../helper/notification-helper'
-import { useTimeDifference } from '../../hooks/useNotificationPanel'
+import { getIcon } from '../../helper/notification-helper'
 import { UserNotification } from '../../types/lernfair/Notification'
+import TimeIndicator from './TimeIndicator'
 
 type Props = {
   userNotification: UserNotification
+  displayTime?: boolean
+  isRead?: boolean
 }
 
-const MessageBox: React.FC<Props> = ({ userNotification }) => {
-  const { headline, body, notification, sentAt } = userNotification
+const MessageBox: React.FC<Props> = ({
+  userNotification,
+  displayTime = true,
+  isRead
+}) => {
+  const { headline, body, notification, createdAt } = userNotification
 
   return (
-    <Box borderRadius={2} bgColor="primary.100" mb={2} h="54px">
-      <HStack alignItems="center" space={2}>
+    <Box
+      borderRadius={10}
+      bgColor={isRead ? 'ghost' : 'primary.100'}
+      mb={2}
+      h="54px">
+      <HStack alignItems="center" space={1}>
         <VStack>
-          <Box pl={'8px'}>{getIconForCategory(notification.messageType)}</Box>
+          <Box px="1.5">{getIcon(notification.messageType)}</Box>
         </VStack>
-        <VStack>
-          <Text bold mt={2}>
+        <VStack mt={2}>
+          <Text bold fontSize="md">
             {headline}
           </Text>
-          <Text>{body.slice(0, 20)}</Text>
+          <Text fontSize="sm">{body.slice(0, 30)}</Text>
         </VStack>
         <Spacer />
-        <VStack>
-          <Text pr={'8px'}>{useTimeDifference(sentAt)}</Text>
+        <VStack pr="3">
+          {displayTime && <TimeIndicator createdAt={createdAt} />}
         </VStack>
       </HStack>
     </Box>

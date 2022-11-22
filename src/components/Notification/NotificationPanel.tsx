@@ -1,69 +1,80 @@
-import { Box, Button, Popover, ScrollView, Spinner } from 'native-base'
-import { useState } from 'react'
+import {
+  Box,
+  Button,
+  Popover,
+  ScrollView,
+  Spinner,
+  Text,
+  useBreakpointValue
+} from 'native-base'
+import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
-import { useAllNotifications } from '../../hooks/useNotificationPanel'
+import { useNotifications } from '../../hooks/useNotifications'
 import MessageBox from './MessageBox'
+import { useTranslation } from 'react-i18next'
 
 const NotificationPanel: React.FC = () => {
-  const [showOldNotifications, setShowOldNotifications] = useState(false)
-  const { data, loading } = useAllNotifications()
+  const [showOldNotifications, setShowOldNotifications] =
+    useState<boolean>(false)
+  const { notifications, loading, refetch } = useNotifications()
+  const { t } = useTranslation()
+
+  const panelMargin = useBreakpointValue({
+    base: 3,
+    lg: -10
+  })
+
+  const panelMaxHeight = useBreakpointValue({
+    base: 600,
+    lg: 600
+  })
+  const handleClick = () => {
+    refetch()
+    setShowOldNotifications(!showOldNotifications)
+  }
+
+  useEffect(() => {
+    // TODO: implementation in the upcoming PR - setNotifications to render based on showOld
+  })
 
   return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <Popover.Content>
-          <Popover.Arrow />
-          <Popover.CloseButton />
-          <Popover.Header>
-            <Box alignSelf="flex-end" mr={10}>
-              <SettingsIcon />
-            </Box>
-          </Popover.Header>
-          <Popover.Body>
-            {!showOldNotifications && (
-              <Box w="320" maxH="580">
-                <ScrollView>
-                  <Box w="320">
-                    {data.me.concreteNotifications
-                      .slice(0, 5)
-                      .map((notification: UserNotification) => (
-                        <MessageBox
-                          key={notification.id}
-                          userNotification={notification}
-                        />
-                      ))}
-                  </Box>
-                </ScrollView>
-                <Button
-                  onPress={() => setShowOldNotifications(!showOldNotifications)}
-                  variant={'outline'}>
-                  Ältere Benachrichtigungen anzeigen
-                </Button>
-              </Box>
-            )}
-            {showOldNotifications && (
-              <ScrollView w="320" maxH="580">
+    <Box mx={panelMargin}>
+      <Popover.Content>
+        <Popover.Arrow />
+        <Popover.CloseButton />
+        <Popover.Header>
+          <Box alignSelf="flex-end" mr={10}>
+            <SettingsIcon />
+          </Box>
+        </Popover.Header>
+        <Popover.Body>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Box maxH={panelMaxHeight}>
+              <ScrollView>
                 <Box>
-                  {data.me.concreteNotifications.map(
-                    (notification: UserNotification) => (
-                      <Box>
-                        <MessageBox
-                          key={notification.id}
-                          userNotification={notification}
-                        />
-                      </Box>
-                    )
-                  )}
+                  {notifications.map((notification: UserNotification) => (
+                    <MessageBox
+                      key={notification.id}
+                      userNotification={notification}
+                    />
+                  ))}
                 </Box>
               </ScrollView>
-            )}
-          </Popover.Body>
-        </Popover.Content>
-      )}
-    </>
+              {!showOldNotifications && (
+                <Button onPress={handleClick} variant={'outline'}>
+                  <Text fontSize="xs">
+                    {t('notification.panel.button.text')}
+                  </Text>
+                </Button>
+              )}
+            </Box>
+          )}
+        </Popover.Body>
+      </Popover.Content>
+    </Box>
   )
 }
 
