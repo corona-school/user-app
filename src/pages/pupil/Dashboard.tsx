@@ -238,7 +238,7 @@ const Dashboard: React.FC<Props> = () => {
   }, [data?.me?.pupil?.matches])
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           !loading && (

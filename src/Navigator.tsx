@@ -111,7 +111,7 @@ export default function Navigator() {
           }
         />
         <Route
-          path="/dashboard"
+          path="/start"
           element={
             <RequireAuth>
               <SwitchUserType
@@ -461,9 +461,9 @@ const SwitchUserType = ({
 
   if (userType === 'student' || !!me?.student) {
     if (studentComponent) return studentComponent
-    else return <Navigate to="/dashboard" state={{ from: location }} replace />
+    else return <Navigate to="/start" state={{ from: location }} replace />
   } else {
     if (pupilComponent) return pupilComponent
-    else return <Navigate to="/dashboard" state={{ from: location }} replace />
+    else return <Navigate to="/start" state={{ from: location }} replace />
   }
 }
