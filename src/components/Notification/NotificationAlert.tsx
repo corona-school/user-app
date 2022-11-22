@@ -14,7 +14,7 @@ const NotificationAlert: React.FC = () => {
   // TODO: the implementation is done in the upcoming PR
   const count: number = 4
 
-  const badgeAlign = useBreakpointValue({
+  const BadgeAlign = useBreakpointValue({
     base: 0,
     lg: 2
   })
@@ -30,7 +30,7 @@ const NotificationAlert: React.FC = () => {
           <Circle
             position="absolute"
             my={3}
-            mx={badgeAlign}
+            mx={BadgeAlign}
             alignSelf="flex-start"
             bgColor="danger.500"
             size="3.5"
