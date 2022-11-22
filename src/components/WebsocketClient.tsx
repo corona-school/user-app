@@ -1,14 +1,19 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useContext} from "react"
+import { NotificationsContext } from "../hooks/NotificationsProvider"
 
 export const WebsocketClient = () => {
-  const [val, setVal] = useState(null);
+  const {dispatchNewNotificationIds} = useContext(NotificationsContext)
   const ws = useRef<WebSocket | null>(null);
+  
 
   useEffect(() => {
+    // only for testing
     const socket = new WebSocket("wss://ws.kraken.com");
 
     socket.onopen = () => {
       console.log("opened");
+
+      // only for testing
       socket.send("{\"event\":\"subscribe\", \"subscription\":{\"name\":\"ticker\"}, \"pair\":[\"BTC/USD\"]}")
     };
 
@@ -18,7 +23,9 @@ export const WebsocketClient = () => {
 
     socket.onmessage = (event) => {
       console.log("got message", event.data);
-      setVal(event.data);
+      
+      // dummy data
+      dispatchNewNotificationIds([Date.now(), Date.now()]);
     };
 
     ws.current = socket;
@@ -28,5 +35,5 @@ export const WebsocketClient = () => {
     };
   }, []);
 
-  return <div>Value: {val}</div>;
+  return null;
 };

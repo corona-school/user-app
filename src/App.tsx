@@ -10,12 +10,14 @@ import './web/scss/index.scss'
 import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
+import { NotificationsProvider } from './hooks/NotificationsProvider'
 import { WebsocketClient } from "./components/WebsocketClient"
 
 function App () {
   return (
     <>
-      <WebsocketClient />
+      <NotificationsProvider><WebsocketClient /></NotificationsProvider>
+      
       <LernfairProvider>
         <LFModalProvider>
           <LFApolloProvider>
