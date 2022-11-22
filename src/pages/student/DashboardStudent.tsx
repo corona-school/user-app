@@ -7,9 +7,7 @@ import {
   VStack,
   useToast,
   useBreakpointValue,
-  Flex,
   Column,
-  Alert,
   Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -158,11 +156,6 @@ const DashboardStudent: React.FC<Props> = () => {
     lg: sizes['containerWidth']
   })
 
-  const CardGrid = useBreakpointValue({
-    base: '100%',
-    lg: '48.3%'
-  })
-
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
@@ -234,6 +227,10 @@ const DashboardStudent: React.FC<Props> = () => {
         firstDate = _firstDate
         firstCourse = sub
       }
+    }
+
+    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
+      return undefined
     }
 
     return [firstLecture, firstCourse]
@@ -314,9 +311,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 )}
               <HSection
                 title={t('dashboard.myappointments.header')}
-                marginBottom={space['1.5']}
-                showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
-                onShowAll={() => navigate('/appointments-archive')}>
+                marginBottom={space['1.5']}>
                 {(sortedPublishedSubcourses?.length > 1 &&
                   sortedPublishedSubcourses
                     ?.slice(0, 4)

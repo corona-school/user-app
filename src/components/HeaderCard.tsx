@@ -65,11 +65,11 @@ const HeaderCard: React.FC<Props> = ({
               <BackButton />
             </Box>
           )}
-          {isMobile && (
-            <Box flex={1} flexGrow={0}>
-              {leftContent}
-            </Box>
-          )}
+
+          <Box flex={1} flexGrow={0} minW="28px">
+            {isMobile && leftContent}
+          </Box>
+
           {(isMobile && (
             <Heading
               fontSize={headerTitleSize}

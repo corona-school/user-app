@@ -4,7 +4,8 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
-  Box
+  Box,
+  Center
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -234,8 +235,6 @@ const PupilGroup: React.FC<Props> = () => {
     // searchRecommendationsQuery
   ])
 
-  if (loading) return <CenterLoadingSpinner />
-
   const SubcoursesTab: React.FC = () => {
     return <></>
   }
@@ -254,101 +253,106 @@ const PupilGroup: React.FC<Props> = () => {
         headerContent={<Hello />}
         headerTitle={t('matching.group.pupil.header')}
         headerLeft={<NotificationAlert />}>
-        <VStack
-          paddingX={space['1']}
-          marginBottom={space['1']}
-          marginX="auto"
-          width="100%"
-          maxWidth={ContainerWidth}>
-          <VStack space={space['1']}>
-            <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
-              <Heading>{t('matching.group.pupil.title')}</Heading>
-              <Text marginBottom={space['0.5']}>
-                {t('matching.group.pupil.content')}
-              </Text>
-            </VStack>
+        {loading && <CenterLoadingSpinner />}
+        {!loading && (
+          <VStack
+            paddingX={space['1']}
+            marginBottom={space['1']}
+            marginX="auto"
+            width="100%"
+            maxWidth={ContainerWidth}>
+            <VStack space={space['1']}>
+              <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                <Heading>{t('matching.group.pupil.title')}</Heading>
+                <Text marginBottom={space['0.5']}>
+                  {t('matching.group.pupil.content')}
+                </Text>
+              </VStack>
 
-            <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-              <SearchBar
-                value={lastSearch}
-                onChangeText={text => setLastSearch(text)}
-                onSearch={s => {
-                  search()
+              <VStack
+                maxWidth={ContentContainerWidth}
+                marginBottom={space['1']}>
+                <SearchBar
+                  value={lastSearch}
+                  onChangeText={text => setLastSearch(text)}
+                  onSearch={s => {
+                    search()
+                  }}
+                />
+              </VStack>
+
+              <Tabs
+                onPressTab={(tab: Tab, index: number) => {
+                  setLastSearch('')
+                  setActiveTab(index)
                 }}
+                tabs={[
+                  {
+                    title: t('matching.group.pupil.tabs.tab1.title'),
+                    content: <SubcoursesTab />
+                  },
+                  // {
+                  //   title: t('matching.group.pupil.tabs.tab2.title'),
+                  //   content: <RecommendationsTab />
+                  // },
+                  {
+                    title: t('matching.group.pupil.tabs.tab3.title'),
+                    content: <AllSubcoursesTab />
+                  }
+                ]}
               />
-            </VStack>
-
-            <Tabs
-              onPressTab={(tab: Tab, index: number) => {
-                setLastSearch('')
-                setActiveTab(index)
-              }}
-              tabs={[
+              <CSSWrapper className="course-list__wrapper">
                 {
-                  title: t('matching.group.pupil.tabs.tab1.title'),
-                  content: <SubcoursesTab />
-                },
-                // {
-                //   title: t('matching.group.pupil.tabs.tab2.title'),
-                //   content: <RecommendationsTab />
-                // },
-                {
-                  title: t('matching.group.pupil.tabs.tab3.title'),
-                  content: <AllSubcoursesTab />
-                }
-              ]}
-            />
-            <CSSWrapper className="course-list__wrapper">
-              {
-                // !recommendationsSearchLoading &&
-                (!allSubcoursesSearchLoading && (
-                  <>
-                    {(sortedSearchResults?.length &&
-                      sortedSearchResults.map(
-                        (course: LFSubCourse, index: number) => (
-                          <CSSWrapper
-                            className="course-list__item"
-                            key={`subcourse-${index}`}>
-                            <AppointmentCard
-                              showTrafficLight={activeTab > 0}
-                              trafficLightStatus={getTrafficStatus(
-                                course.participantsCount || 0,
-                                course.maxParticipants || 0
-                              )}
-                              isHorizontalCardCourseChecked={
-                                course.isParticipant
-                              }
-                              isSpaceMarginBottom={false}
-                              isFullHeight
-                              variant="horizontal"
-                              description={course.course.outline}
-                              tags={course.course.tags}
-                              date={getDateString(course.lectures)}
-                              countCourse={course.lectures?.length}
-                              onPressToCourse={() =>
-                                navigate('/single-course', {
-                                  state: { course: course.id }
-                                })
-                              }
-                              image={course.course.image}
-                              title={course.course.name}
-                            />
-                          </CSSWrapper>
-                        )
-                      )) || (
-                      <Box paddingLeft={space['1']}>
-                        <AlertMessage
-                          content="Es wurden keine Kurse gefunden. Bitte passe deine
+                  // !recommendationsSearchLoading &&
+                  (!allSubcoursesSearchLoading && (
+                    <>
+                      {(sortedSearchResults?.length &&
+                        sortedSearchResults.map(
+                          (course: LFSubCourse, index: number) => (
+                            <CSSWrapper
+                              className="course-list__item"
+                              key={`subcourse-${index}`}>
+                              <AppointmentCard
+                                showTrafficLight={activeTab > 0}
+                                trafficLightStatus={getTrafficStatus(
+                                  course.participantsCount || 0,
+                                  course.maxParticipants || 0
+                                )}
+                                isHorizontalCardCourseChecked={
+                                  course.isParticipant
+                                }
+                                isSpaceMarginBottom={false}
+                                isFullHeight
+                                variant="horizontal"
+                                description={course.course.outline}
+                                tags={course.course.tags}
+                                date={getDateString(course.lectures)}
+                                countCourse={course.lectures?.length}
+                                onPressToCourse={() =>
+                                  navigate('/single-course', {
+                                    state: { course: course.id }
+                                  })
+                                }
+                                image={course.course.image}
+                                title={course.course.name}
+                              />
+                            </CSSWrapper>
+                          )
+                        )) || (
+                        <Box paddingLeft={space['1']}>
+                          <AlertMessage
+                            content="Es wurden keine Kurse gefunden. Bitte passe deine
                           Suche an."
-                        />
-                      </Box>
-                    )}
-                  </>
-                )) || <CenterLoadingSpinner />
-              }
-            </CSSWrapper>
+                          />
+                        </Box>
+                      )}
+                    </>
+                  )) || <CenterLoadingSpinner />
+                }
+              </CSSWrapper>
+            </VStack>
           </VStack>
-        </VStack>
+        )}
       </WithNavigation>
     </AsNavigationItem>
   )

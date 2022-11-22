@@ -19,7 +19,8 @@ const onboarding = {
     coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
     coursesdraft: 'Es wurden keine Kursentwürfe gefunden.',
     matchings: 'Es wurden keine Matchings gefunden.',
-    norequests: 'Es wurden keine Anfragen gefunden.',
-  }
+    norequests: 'Es wurden keine Anfragen gefunden.'
+  },
+  characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}'
 }
 export default onboarding
