@@ -243,7 +243,7 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           called &&

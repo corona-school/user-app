@@ -92,7 +92,7 @@ const HelpCenter: React.FC<Props> = () => {
           defaultButtonText={t('helpcenter.contact.popupBtn')}
           defaultbuttonLink={() => {
             setShow(false)
-            navigate('/dashboard')
+            navigate('/start')
           }}
         />
       )

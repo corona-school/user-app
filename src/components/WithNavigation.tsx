@@ -14,7 +14,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner'
 
 // TODO translations
 const navItems: NavigationItems = {
-  dashboard: { label: 'Dashboard', icon: LFHomeIcon },
+  start: { label: 'Start', icon: LFHomeIcon },
   // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
   group: { label: 'Gruppe', icon: LFGroupIcon },
   matching: { label: 'Einzel', icon: LFMatchingIcon },

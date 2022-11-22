@@ -24,7 +24,7 @@ const LoginToken: React.FC<Props> = () => {
     const res = await loginToken({ variables: { token } })
     if (res.data?.loginToken) {
       await createDeviceToken()
-      navigate(redirectTo || '/dashboard')
+      navigate(redirectTo || '/start')
     } else {
       navigate('/login')
     }
