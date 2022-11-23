@@ -12,12 +12,17 @@ import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
 import { NotificationsProvider } from './hooks/NotificationsProvider'
 import { WebsocketClient } from "./components/WebsocketClient"
+import { ToastNotifications } from "./components/ToastNotifications"
+import { NotificationsData } from "./components/NotificationsData"
 
 function App () {
   return (
     <>
-      <NotificationsProvider><WebsocketClient /></NotificationsProvider>
-      
+      <NotificationsProvider>
+        <WebsocketClient />
+        <ToastNotifications />
+        <NotificationsData />
+      </NotificationsProvider>
       <LernfairProvider>
         <LFModalProvider>
           <LFApolloProvider>

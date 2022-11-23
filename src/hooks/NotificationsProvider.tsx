@@ -1,25 +1,35 @@
 import { createContext, FC, ReactNode, useState } from "react"
 import { UserNotification } from "../types/lernfair/Notification"
 
-type Notification = Partial<UserNotification>
+type Notification = UserNotification
+type State = { notifications: Notification[], notificationIds: number[] }
 
-type NotificationContextValue = {notifications: Notification[], dispatchNewNotificationIds: Function};
-export const NotificationsContext = createContext<NotificationContextValue>({notifications: [], dispatchNewNotificationIds: () => null})
+type NotificationContextValue = {
+  setNotificationIds: Function, setNotifications: Function
+} & State;
 
-type State = { notifications: Notification[] }
+export const NotificationsContext = createContext<NotificationContextValue>(
+  { notifications: [], notificationIds: [], setNotificationIds: () => null, setNotifications: () => null })
 
 export const NotificationsProvider: FC<{ children: ReactNode }> =
-  ({ children })=> {
-    const [{notifications}, setState] = useState<State>({notifications: []})
-    const dispatchNewNotificationIds = async (notificationIds: Array<string | number>) => {
-      // fetch notification from graphql
-      // replace this with real notification
-      const timestamp = Date.now()
-      setState({notifications: [{id: timestamp, headline: `Dummy Notification ${timestamp}`, body: `Dummy Text ${timestamp}`}]})
+  ({ children }) => {
+    const [state, setState] = useState<State>(
+      { notifications: [], notificationIds: [] })
+    const setNotificationIds = (notificationIds: number[]) => {
+      setState({ ...state, notificationIds })
+    }
+    const setNotifications = (notifications: Notification[]) => {
+      setState({ ...state, notifications })
     }
 
+    const { notifications, notificationIds } = state
     return (
-      <NotificationsContext.Provider value={{notifications, dispatchNewNotificationIds}}>
+      <NotificationsContext.Provider value={{
+        notifications,
+        notificationIds,
+        setNotificationIds,
+        setNotifications,
+      }}>
         {children}
       </NotificationsContext.Provider>
     )

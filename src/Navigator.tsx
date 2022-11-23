@@ -74,27 +74,8 @@ import VerifyEmailModal from './modals/VerifyEmailModal'
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 import LoginToken from './pages/LoginToken'
-import { showInAppMessage } from './widgets/InAppMessage'
-import { useBreakpointValue } from 'native-base'
-
-const notification = {
-  id: 1,
-  headline: 'Du hast ein neues Match',
-  body: 'Max freut sich dich kennenzulernen',
-  createdAt: '2022-11-21T14:08:35.539Z',
-  notification: { messageType: 'match' }
-}
 
 export default function Navigator() {
-  const isMobile = useBreakpointValue({
-    base: true,
-    lg: false
-  })
-
-  useEffect(() => {
-    setInterval(showInAppMessage(notification, isMobile), 1500)
-  }, [])
-
   return (
     <BrowserRouter>
       <Routes>

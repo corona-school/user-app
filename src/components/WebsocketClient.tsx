@@ -1,9 +1,16 @@
-import { useEffect, useRef, useContext} from "react"
+import { useEffect, useRef, useContext, FC } from "react"
 import { WSClient, WebSocketClient } from '../types/Websocket'
 import { NotificationsContext } from "../hooks/NotificationsProvider"
 
-export const WebsocketClient = () => {
-  const {dispatchNewNotificationIds} = useContext(NotificationsContext)
+const dummyNotification = {
+  id: 1,
+  headline: 'Du hast ein neues Match',
+  createdAt: '2022-11-21T14:08:35.539Z',
+  notification: { messageType: 'match' }
+}
+
+export const WebsocketClient: FC<{}> = () => {
+  const {setNotificationIds, setNotifications} = useContext(NotificationsContext)
   const ws = useRef<WebSocketClient | null>(null);
   
 
@@ -15,7 +22,7 @@ export const WebsocketClient = () => {
       console.log("got message", event.data);
 
       // dummy data
-      dispatchNewNotificationIds([Date.now(), Date.now()]);
+      setNotifications([{...dummyNotification, body: event.data}]);
     });
     
     ws.current = wsClient;
