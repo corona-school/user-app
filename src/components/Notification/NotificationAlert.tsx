@@ -23,7 +23,6 @@ const NotificationAlert: React.FC = () => {
     onPress,
     ref
   }: IButtonProps): React.ReactElement => {
-    console.log()
     return (
       <VStack>
         {count && (
