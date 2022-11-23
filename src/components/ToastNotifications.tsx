@@ -5,6 +5,7 @@ import { showInAppMessage } from "../widgets/InAppMessage"
   
 export const ToastNotifications: FC<{}> = () => {
   const {notifications} = useContext(NotificationsContext)
+  
   const isMobile = useBreakpointValue({
     base: true,
     lg: false

@@ -17,25 +17,23 @@ import { NotificationsData } from "./components/NotificationsData"
 
 function App () {
   return (
-    <>
-      <NotificationsProvider>
-        <WebsocketClient />
-        <ToastNotifications />
-        <NotificationsData />
-      </NotificationsProvider>
-      <LernfairProvider>
-        <LFModalProvider>
-          <LFApolloProvider>
-            <NativeBaseProvider theme={Theme}>
-              <MatomoProvider value={matomo}>
-                <Navigator/>
-                <FullPageModal/>
-              </MatomoProvider>
-            </NativeBaseProvider>
-          </LFApolloProvider>
-        </LFModalProvider>
-      </LernfairProvider>
-    </>
+    <LernfairProvider>
+      <LFModalProvider>
+        <LFApolloProvider>
+          <NativeBaseProvider theme={Theme}>
+            <MatomoProvider value={matomo}>
+              <Navigator/>
+              <FullPageModal/>
+              <NotificationsProvider>
+                <WebsocketClient/>
+                <ToastNotifications/>
+                <NotificationsData/>
+              </NotificationsProvider>
+            </MatomoProvider>
+          </NativeBaseProvider>
+        </LFApolloProvider>
+      </LFModalProvider>
+    </LernfairProvider>
   )
 }
 
