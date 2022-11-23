@@ -20,15 +20,20 @@ const NotificationPanel: React.FC = () => {
   const { notifications, loading, refetch } = useNotifications()
   const { t } = useTranslation()
 
-  const PanelMarginLeft = useBreakpointValue({
+  const panelMarginLeft = useBreakpointValue({
     base: 3,
     lg: 0
   })
 
-  const PanelMarginRight = useBreakpointValue({
+  const panelMarginRight = useBreakpointValue({
     base: 0,
     lg: 10
   })
+
+  const panelPropsAllDevices = {
+    maxH: 420,
+    minW: 320
+  }
 
   const handleClick = () => {
     refetch()
@@ -41,7 +46,10 @@ const NotificationPanel: React.FC = () => {
 
   return (
     <Box>
-      <Popover.Content ml={PanelMarginLeft} mr={PanelMarginRight} minW={320}>
+      <Popover.Content
+        ml={panelMarginLeft}
+        mr={panelMarginRight}
+        minW={panelPropsAllDevices.minW}>
         <Popover.Arrow />
         <Popover.CloseButton />
         <Popover.Header>
@@ -53,7 +61,7 @@ const NotificationPanel: React.FC = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <Box maxH={420}>
+            <Box maxH={panelPropsAllDevices.maxH}>
               <ScrollView>
                 <Box>
                   {notifications.map((notification: UserNotification) => (

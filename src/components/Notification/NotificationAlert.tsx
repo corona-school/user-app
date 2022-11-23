@@ -14,7 +14,7 @@ const NotificationAlert: React.FC = () => {
   // TODO: the implementation is done in the upcoming PR
   const count: number = 4
 
-  const BadgeAlign = useBreakpointValue({
+  const badgeAlign = useBreakpointValue({
     base: 0,
     lg: 2
   })
@@ -23,14 +23,13 @@ const NotificationAlert: React.FC = () => {
     onPress,
     ref
   }: IButtonProps): React.ReactElement => {
-    console.log()
     return (
       <VStack>
         {count && (
           <Circle
             position="absolute"
             my={3}
-            mx={BadgeAlign}
+            mx={badgeAlign}
             alignSelf="flex-start"
             bgColor="danger.500"
             size="3.5"

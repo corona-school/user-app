@@ -13,7 +13,7 @@ export const showInAppMessage = (
         <Box mr={5}>
           <MessageBox
             key={notification.id}
-            displayTime={false}
+            isStandalone={true}
             userNotification={notification}
           />
         </Box>
