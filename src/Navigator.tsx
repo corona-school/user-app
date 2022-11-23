@@ -30,7 +30,7 @@ export default function Navigator() {
         <Route path="/welcome" element={<Welcome />} />
 
         <Route path="/" element={<RequireAuth>
-            <Navigate to="/dashboard" />
+            <Navigate to="/start" />
           </RequireAuth>}/>
 
         <Route path="*" element={
@@ -41,3 +41,4 @@ export default function Navigator() {
     </BrowserRouter>
   )
 }
+

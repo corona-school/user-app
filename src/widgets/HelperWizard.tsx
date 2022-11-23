@@ -12,6 +12,7 @@ import {
 } from 'native-base'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import Card from '../components/Card'
 import InstructionProgress from './InstructionProgress'
 
@@ -22,6 +23,7 @@ type Props = {
 const HelperWizard: React.FC<Props> = ({ index }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { data } = useQuery(gql`
     query {
       me {
@@ -202,6 +204,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                           </Column>
                           <Column width={ButtonWidthContainer}>
                             <Button
+                              onPress={() => navigate('/matching')}
                               width={ButtonContainer}
                               marginRight={ButtonSpace}>
                               {t('helperwizard.angebot.button')}

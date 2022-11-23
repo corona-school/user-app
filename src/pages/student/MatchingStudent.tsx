@@ -27,6 +27,7 @@ import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
 import { LFSubject } from '../../types/lernfair/Subject'
 import Tag from '../../components/Tag'
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 
 type Props = {}
 const query = gql`
@@ -71,7 +72,7 @@ const MatchingStudent: React.FC<Props> = () => {
   const [showCancelModal, setShowCancelModal] = useState<boolean>()
   const [toastShown, setToastShown] = useState<boolean>()
 
-  const { data } = useQuery(query)
+  const { data, loading } = useQuery(query)
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -190,151 +191,158 @@ const MatchingStudent: React.FC<Props> = () => {
       <WithNavigation
         headerTitle={t('matching.request.check.header')}
         headerContent={<Hello />}>
-        <VStack
-          paddingX={space['1']}
-          maxWidth={ContainerWidth}
-          width="100%"
-          marginX="auto">
-          <Heading paddingBottom={space['0.5']}>
-            {t('matching.request.check.title')}
-          </Heading>
-          <VStack space={space['0.5']}>
-            <Text paddingBottom={space['0.5']}>
-              {t('matching.request.check.content')}
-            </Text>
+        {loading && <CenterLoadingSpinner />}
+        {!loading && (
+          <VStack
+            paddingX={space['1']}
+            maxWidth={ContainerWidth}
+            width="100%"
+            marginX="auto">
+            <Heading paddingBottom={space['0.5']}>
+              {t('matching.request.check.title')}
+            </Heading>
+            <VStack space={space['0.5']}>
+              <Text paddingBottom={space['0.5']}>
+                {t('matching.request.check.content')}
+              </Text>
 
-            <Text mt="1" bold>
-              {t('matching.request.check.contentHeadline')}
-            </Text>
-            <Text paddingBottom={space['1.5']}>
-              {t('matching.request.check.contenHeadlineContent')}
-            </Text>
+              <Text mt="1" bold>
+                {t('matching.request.check.contentHeadline')}
+              </Text>
+              <Text paddingBottom={space['1.5']}>
+                {t('matching.request.check.contenHeadlineContent')}
+              </Text>
 
-            {(data?.me?.student?.canRequestMatch.allowed && (
-              <Button
-                width={ButtonContainer}
-                marginBottom={space['1.5']}
-                onPress={() => navigate('/request-match')}>
-                {t('matching.request.check.requestmatchButton')}
-              </Button>
-            )) || (
-              <AlertMessage
-                content={t(
-                  `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
-                )}
-              />
-            )}
-          </VStack>
+              {(data?.me?.student?.canRequestMatch.allowed && (
+                <Button
+                  width={ButtonContainer}
+                  marginBottom={space['1.5']}
+                  onPress={() => navigate('/request-match')}>
+                  {t('matching.request.check.requestmatchButton')}
+                </Button>
+              )) || (
+                <AlertMessage
+                  content={t(
+                    `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`
+                  )}
+                />
+              )}
+            </VStack>
 
-          <Tabs
-            tabs={[
-              {
-                title: t('matching.request.check.tabs.tab1'),
-                content: (
-                  <VStack>
-                    <Flex direction="row" flexWrap="wrap">
-                      {(activeMatches.length &&
-                        activeMatches?.map((match: LFMatch, index: number) => (
-                          <Column width={CardGrid} marginRight="15px">
-                            <LearningPartner
-                              key={index}
-                              isDark={true}
-                              name={match?.pupil?.firstname}
-                              subjects={match?.pupil?.subjectsFormatted}
-                              schooltype={
-                                match?.pupil?.schooltype || 'Backend Error'
-                              }
-                              schoolclass={match?.pupil?.grade}
-                              avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                              button={
-                                (!match.dissolved && (
-                                  <Button
-                                    variant="outlinelight"
-                                    onPress={() =>
-                                      showDissolveMatchModal(match)
-                                    }>
-                                    {t('dashboard.helpers.buttons.solveMatch')}
-                                  </Button>
-                                )) || (
-                                  <AlertMessage
-                                    content={t(
-                                      'matching.request.check.resoloveMatch'
-                                    )}
-                                  />
-                                )
-                              }
-                            />
-                          </Column>
-                        ))) || (
-                        <AlertMessage
-                          content={t('matching.request.check.noMatches')}
-                        />
-                      )}
-                    </Flex>
-                  </VStack>
-                )
-              },
-              {
-                title: 'Anfragen',
-                content: (
-                  <VStack space={space['1']}>
-                    <Text marginBottom={space['1']}>
-                      Offene Anfragen:{'  '}
-                      {data?.me?.student?.openMatchRequestCount}
-                    </Text>
-                    <VStack space={space['0.5']}>
+            <Tabs
+              tabs={[
+                {
+                  title: t('matching.request.check.tabs.tab1'),
+                  content: (
+                    <VStack>
                       <Flex direction="row" flexWrap="wrap">
-                        {(data?.me?.student?.openMatchRequestCount &&
-                          new Array(data?.me?.student?.openMatchRequestCount)
-                            .fill('')
-                            .map((_, i) => (
-                              <Column
-                                width={CardGrid}
-                                marginRight="15px"
-                                marginBottom="15px">
-                                <Box
-                                  bgColor="primary.100"
-                                  padding={space['1']}
-                                  borderRadius={8}>
-                                  <Heading>
-                                    Anfrage {`${i + 1}`.padStart(2, '0')}
-                                  </Heading>
-
-                                  <Row
-                                    mt="3"
-                                    space={space['0.5']}
-                                    alignItems="center">
-                                    <Text mb={space['0.5']}>Fächer:</Text>
-                                    <Row space={space['0.5']}>
-                                      {data?.me?.student?.subjectsFormatted.map(
-                                        (sub: LFSubject) => (
-                                          <Tag text={sub.name} />
-                                        )
-                                      )}
-                                    </Row>
-                                  </Row>
-                                  <Button
-                                    isDisabled={cancelLoading}
-                                    variant="outline"
-                                    mt="3"
-                                    onPress={showCancelMatchRequestModal}>
-                                    Anfrage zurücknehmen
-                                  </Button>
-                                </Box>
+                        {(activeMatches.length &&
+                          activeMatches?.map(
+                            (match: LFMatch, index: number) => (
+                              <Column width={CardGrid} marginRight="15px">
+                                <LearningPartner
+                                  key={index}
+                                  isDark={true}
+                                  name={match?.pupil?.firstname}
+                                  subjects={match?.pupil?.subjectsFormatted}
+                                  schooltype={
+                                    match?.pupil?.schooltype || 'Backend Error'
+                                  }
+                                  schoolclass={match?.pupil?.grade}
+                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                  button={
+                                    (!match.dissolved && (
+                                      <Button
+                                        variant="outlinelight"
+                                        onPress={() =>
+                                          showDissolveMatchModal(match)
+                                        }>
+                                        {t(
+                                          'dashboard.helpers.buttons.solveMatch'
+                                        )}
+                                      </Button>
+                                    )) || (
+                                      <AlertMessage
+                                        content={t(
+                                          'matching.request.check.resoloveMatch'
+                                        )}
+                                      />
+                                    )
+                                  }
+                                />
                               </Column>
-                            ))) || (
+                            )
+                          )) || (
                           <AlertMessage
                             content={t('matching.request.check.noMatches')}
                           />
                         )}
                       </Flex>
                     </VStack>
-                  </VStack>
-                )
-              }
-            ]}
-          />
-        </VStack>
+                  )
+                },
+                {
+                  title: 'Anfragen',
+                  content: (
+                    <VStack space={space['1']}>
+                      <Text marginBottom={space['1']}>
+                        Offene Anfragen:{'  '}
+                        {data?.me?.student?.openMatchRequestCount}
+                      </Text>
+                      <VStack space={space['0.5']}>
+                        <Flex direction="row" flexWrap="wrap">
+                          {(data?.me?.student?.openMatchRequestCount &&
+                            new Array(data?.me?.student?.openMatchRequestCount)
+                              .fill('')
+                              .map((_, i) => (
+                                <Column
+                                  width={CardGrid}
+                                  marginRight="15px"
+                                  marginBottom="15px">
+                                  <Box
+                                    bgColor="primary.100"
+                                    padding={space['1']}
+                                    borderRadius={8}>
+                                    <Heading>
+                                      Anfrage {`${i + 1}`.padStart(2, '0')}
+                                    </Heading>
+
+                                    <Row
+                                      mt="3"
+                                      space={space['0.5']}
+                                      alignItems="center">
+                                      <Text mb={space['0.5']}>Fächer:</Text>
+                                      <Row space={space['0.5']}>
+                                        {data?.me?.student?.subjectsFormatted.map(
+                                          (sub: LFSubject) => (
+                                            <Tag text={sub.name} />
+                                          )
+                                        )}
+                                      </Row>
+                                    </Row>
+                                    <Button
+                                      isDisabled={cancelLoading}
+                                      variant="outline"
+                                      mt="3"
+                                      onPress={showCancelMatchRequestModal}>
+                                      Anfrage zurücknehmen
+                                    </Button>
+                                  </Box>
+                                </Column>
+                              ))) || (
+                            <AlertMessage
+                              content={t('matching.request.check.noMatches')}
+                            />
+                          )}
+                        </Flex>
+                      </VStack>
+                    </VStack>
+                  )
+                }
+              ]}
+            />
+          </VStack>
+        )}
       </WithNavigation>
 
       <DissolveMatchModal

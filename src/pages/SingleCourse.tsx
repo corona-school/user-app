@@ -296,7 +296,7 @@ const SingleCourse: React.FC<Props> = () => {
           </Row>
           <Text paddingBottom={space['1']}>{course?.course?.outline}</Text>
 
-          <Box>
+          <Box marginBottom={space['1']}>
             <CourseTrafficLamp
               status={getTrafficStatus(
                 course?.participantsCount,
@@ -305,127 +305,8 @@ const SingleCourse: React.FC<Props> = () => {
             />
           </Box>
 
-          <Tabs
-            tabs={[
-              {
-                title: t('single.tabs.description'),
-                content: (
-                  <>
-                    <Text marginBottom={space['1']}>
-                      {course?.course?.description}
-                    </Text>
-                  </>
-                )
-              },
-              {
-                title: t('single.tabs.help'),
-                content: (
-                  <>
-                    <Row flexDirection="row" paddingBottom={space['0.5']}>
-                      <Text bold marginRight={space['0.5']}>
-                        {t('single.global.participating')}:
-                      </Text>
-                      <Text>
-                        {course?.participantsCount}/{course?.maxParticipants}
-                      </Text>
-                    </Row>
-                    <Row flexDirection="row" paddingBottom={space['0.5']}>
-                      <Text bold marginRight={space['0.5']}>
-                        {t('single.global.quantity')}:
-                      </Text>
-                      <Text>
-                        {course?.lectures?.length} {t('single.global.lessons')}:
-                      </Text>
-                    </Row>
-                    <Row flexDirection="row" paddingBottom={space['0.5']}>
-                      <Text bold marginRight={space['0.5']}>
-                        {t('single.global.duration')}:
-                      </Text>
-                      <Text>
-                        {course?.lectures &&
-                          `${course?.lectures[0]?.duration / 60} Stunde(n)`}
-                      </Text>
-                    </Row>
-                    {course?.instructors && (
-                      <VStack>
-                        {course?.instructors[0] && (
-                          <Row flexDirection="row" paddingBottom={space['1.5']}>
-                            <Text bold marginRight={space['0.5']}>
-                              {t('single.global.tutor')}:
-                            </Text>
-
-                            <Text>
-                              {course?.instructors[0].firstname}{' '}
-                              {course?.instructors[0].lastname}
-                            </Text>
-                          </Row>
-                        )}
-                        {course?.instructors.length > 1 && (
-                          <VStack>
-                            <Text bold marginRight={space['0.5']}>
-                              {t('single.global.more_tutors')}:
-                            </Text>
-                            {course?.instructors
-                              .slice(1)
-                              .map(
-                                (instructor: {
-                                  firstname: string
-                                  lastname: string
-                                }) => (
-                                  <Text>
-                                    {instructor.firstname} {instructor.lastname}
-                                  </Text>
-                                )
-                              )}
-                          </VStack>
-                        )}
-                      </VStack>
-                    )}
-                  </>
-                )
-              },
-              {
-                title: t('single.tabs.lessons'),
-                content: (
-                  <>
-                    {(course?.lectures?.length > 0 &&
-                      course.lectures.map((lec: LFLecture, i: number) => (
-                        <Row flexDirection="column" marginBottom={space['1.5']}>
-                          <Heading paddingBottom={space['0.5']} fontSize="md">
-                            {t('single.global.lesson')}{' '}
-                            {`${i + 1}`.padStart(2, '0')}
-                          </Heading>
-                          <Text paddingBottom={space['0.5']}>
-                            {DateTime.fromISO(lec.start).toFormat('dd.MM.yyyy')}
-                            <Text marginX="3px">•</Text>
-                            {DateTime.fromISO(lec.start).toFormat('hh:mm')}{' '}
-                            {t('single.global.clock')}
-                          </Text>
-                          <Text>
-                            <Text bold>{t('single.global.duration')}: </Text>{' '}
-                            {lec?.duration / 60} {t('single.global.hours')}
-                          </Text>
-                        </Row>
-                      ))) || <Text>{t('single.global.noLections')}</Text>}
-                  </>
-                )
-              },
-              course?.isParticipant && {
-                title: t('single.tabs.participant'),
-                content: (
-                  <>
-                    {(participants?.length > 0 &&
-                      participants.map((p: LFParticipant) => (
-                        <Participant pupil={p} />
-                      ))) || <Text>{t('single.global.noMembers')}</Text>}
-                  </>
-                )
-              }
-            ]}
-          />
-
           {userType === 'pupil' && (
-            <Box marginBottom={space['0.5']} paddingLeft={space['1']}>
+            <Box marginBottom={space['0.5']}>
               {!course?.canJoin?.allowed && !course?.isParticipant && (
                 <AlertMessage
                   content={t(
@@ -496,7 +377,7 @@ const SingleCourse: React.FC<Props> = () => {
           )}
 
           {course?.course?.allowContact && (
-            <Box marginBottom={space['1.5']} paddingLeft={space['1']}>
+            <Box marginBottom={space['1.5']}>
               <Button
                 onPress={() => {
                   window.location.href =
@@ -514,6 +395,58 @@ const SingleCourse: React.FC<Props> = () => {
               </Button>
             </Box>
           )}
+
+          <Tabs
+            tabs={[
+              {
+                title: t('single.tabs.description'),
+                content: (
+                  <>
+                    <Text marginBottom={space['1']}>
+                      {course?.course?.description}
+                    </Text>
+                  </>
+                )
+              },
+              {
+                title: t('single.tabs.lessons'),
+                content: (
+                  <>
+                    {(course?.lectures?.length > 0 &&
+                      course.lectures.map((lec: LFLecture, i: number) => (
+                        <Row flexDirection="column" marginBottom={space['1.5']}>
+                          <Heading paddingBottom={space['0.5']} fontSize="md">
+                            {t('single.global.lesson')}{' '}
+                            {`${i + 1}`.padStart(2, '0')}
+                          </Heading>
+                          <Text paddingBottom={space['0.5']}>
+                            {DateTime.fromISO(lec.start).toFormat('dd.MM.yyyy')}
+                            <Text marginX="3px">•</Text>
+                            {DateTime.fromISO(lec.start).toFormat('hh:mm')}{' '}
+                            {t('single.global.clock')}
+                          </Text>
+                          <Text>
+                            <Text bold>{t('single.global.duration')}: </Text>{' '}
+                            {lec?.duration / 60} {t('single.global.hours')}
+                          </Text>
+                        </Row>
+                      ))) || <Text>{t('single.global.noLections')}</Text>}
+                  </>
+                )
+              },
+              course?.isParticipant && {
+                title: t('single.tabs.participant'),
+                content: (
+                  <>
+                    {(participants?.length > 0 &&
+                      participants.map((p: LFParticipant) => (
+                        <Participant pupil={p} />
+                      ))) || <Text>{t('single.global.noMembers')}</Text>}
+                  </>
+                )
+              }
+            ]}
+          />
         </Box>
       </WithNavigation>
       {/* loggin  */}

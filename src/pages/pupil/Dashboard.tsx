@@ -6,13 +6,10 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
-  Pressable,
   Flex,
   useToast,
   Alert,
   Column,
-  Modal,
-  Radio,
   Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -37,6 +34,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
+import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
 
 type Props = {}
 
@@ -179,6 +177,17 @@ const Dashboard: React.FC<Props> = () => {
       })
     }, [data?.me?.pupil?.subcoursesJoined])
 
+  const highlightedAppointment:
+    | { course: LFSubCourse; lecture: LFLecture }
+    | undefined = useMemo(
+    () =>
+      sortedAppointments.find(
+        ({ course, lecture }: { course: LFSubCourse; lecture: LFLecture }) =>
+          DateTime.fromISO(lecture.start).diffNow().as('hours') < 24
+      ),
+    [sortedAppointments]
+  )
+
   const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
     gql`
       mutation cancelMatchRequest {
@@ -237,7 +246,7 @@ const Dashboard: React.FC<Props> = () => {
   }, [data?.me?.pupil?.matches])
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           !loading && (
@@ -247,10 +256,6 @@ const Dashboard: React.FC<Props> = () => {
               alignItems="center"
               bgColor={isMobile ? 'primary.900' : 'transparent'}
               padding={isMobile ? space['1.5'] : space['0.5']}>
-              {/* <ProfilAvatar
-                size="md"
-                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-              /> */}
               <Hello />
             </HStack>
           )
@@ -264,7 +269,7 @@ const Dashboard: React.FC<Props> = () => {
             width="100%"
             maxWidth={ContainerWidth}>
             <VStack>
-              {sortedAppointments[0] && (
+              {highlightedAppointment && (
                 <VStack marginBottom={space['1.5']}>
                   <Heading marginBottom={space['1']}>
                     {t('dashboard.appointmentcard.header')}
@@ -285,11 +290,11 @@ const Dashboard: React.FC<Props> = () => {
                         state: { course: sortedAppointments[0]?.course.id }
                       })
                     }}
-                    tags={sortedAppointments[0]?.course?.course?.tags}
-                    date={sortedAppointments[0]?.lecture.start}
-                    image={sortedAppointments[0]?.course.course?.image}
-                    title={sortedAppointments[0]?.course.course?.name}
-                    description={sortedAppointments[0]?.course.course?.outline}
+                    tags={highlightedAppointment?.course?.course?.tags}
+                    date={highlightedAppointment?.lecture.start}
+                    image={highlightedAppointment?.course.course?.image}
+                    title={highlightedAppointment?.course.course?.name}
+                    description={highlightedAppointment?.course.course?.outline}
                   />
                 </VStack>
               )}
@@ -297,9 +302,7 @@ const Dashboard: React.FC<Props> = () => {
               {/* Appointments */}
               <HSection
                 marginBottom={space['1.5']}
-                title={t('dashboard.myappointments.header')}
-                showAll={data?.me?.pupil?.subcoursesJoined?.length > 4}
-                onShowAll={() => navigate('/appointments-archive')}>
+                title={t('dashboard.myappointments.header')}>
                 {(sortedAppointments.length > 1 &&
                   sortedAppointments
                     .slice(1, 5)
@@ -369,17 +372,7 @@ const Dashboard: React.FC<Props> = () => {
                           <Box
                             width={CardGrid}
                             marginRight="10px"
-                            marginBottom="10px"
-
-                            // onPress={() =>
-                            //   navigate('/user-profile', {
-                            //     state: {
-                            //       userType: 'student',
-                            //       id: match.student.id
-                            //     }
-                            //   })
-                            // }
-                          >
+                            marginBottom="10px">
                             <TeacherCard
                               name={`${match.student?.firstname} ${match.student?.lastname}`}
                               variant="dark"
@@ -482,6 +475,11 @@ const Dashboard: React.FC<Props> = () => {
                         flex={1}
                         h="100%">
                         <SignInCard
+                          showTrafficLight
+                          trafficLightStatus={getTrafficStatus(
+                            sc?.participantsCount || 0,
+                            sc?.maxParticipants || 0
+                          )}
                           tags={sc.course.tags}
                           data={sc}
                           onClickSignIn={() => {
