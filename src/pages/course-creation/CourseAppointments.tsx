@@ -1,5 +1,4 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { graphqlSync } from 'graphql'
 import {
   VStack,
   Button,
@@ -9,13 +8,9 @@ import {
   Row,
   Box,
   Pressable,
-  Alert,
-  HStack,
-  IconButton,
-  CloseIcon,
   useBreakpointValue
 } from 'native-base'
-import { useContext, useEffect, useMemo } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AlertMessage from '../../widgets/AlertMessage'
 
@@ -31,6 +26,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { lectures, setLectures } = useContext(CreateCourseContext)
+  const [showError, setShowError] = useState<boolean>()
 
   const isValidInput = useMemo(() => {
     if (!lectures || !lectures.length) return false
@@ -41,6 +37,14 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     }
     return true
   }, [lectures])
+
+  const tryNext = useCallback(() => {
+    if (isValidInput) {
+      onNext()
+    } else {
+      setShowError(true)
+    }
+  }, [isValidInput, onNext])
 
   useEffect(() => {
     if (lectures?.length === 0) {
@@ -71,6 +75,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
     trackPageView({
       documentTitle: 'Kurs erstellen – Termine'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -119,7 +124,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
           </Text>
         </Pressable>
 
-        {!isValidInput && <AlertMessage content={t('course.noticeDate')} />}
+        {showError && <AlertMessage content={t('course.noticeDate')} />}
       </VStack>
 
       <Row
@@ -129,16 +134,10 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}
-          isDisabled={!isValidInput}
-          onPress={onNext}>
+          onPress={tryNext}>
           {t('course.appointments.check')}
         </Button>
-        {/* <Button
-          marginBottom={space['1']}
-          width={ButtonContainer}
-          variant={'outline'}>
-          {t('course.appointments.saveDraft')}
-        </Button> */}
+
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}

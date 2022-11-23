@@ -7,9 +7,7 @@ import {
   VStack,
   useToast,
   useBreakpointValue,
-  Flex,
   Column,
-  Alert,
   Box
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -27,7 +25,7 @@ import LearningPartner from '../../widgets/LearningPartner'
 import { LFMatch } from '../../types/lernfair/Match'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
 import { DateTime } from 'luxon'
-import { getFirstLectureFromSubcourse } from '../../Utility'
+import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import AsNavigationItem from '../../components/AsNavigationItem'
@@ -66,6 +64,8 @@ const query = gql`
         }
         subcoursesInstructing {
           id
+          participantsCount
+          maxParticipants
           published
           lectures {
             start
@@ -84,6 +84,8 @@ const query = gql`
     }
 
     subcoursesPublic(take: 10, skip: 2) {
+      participantsCount
+      maxParticipants
       course {
         name
         description
@@ -152,11 +154,6 @@ const DashboardStudent: React.FC<Props> = () => {
   const ContainerWidth = useBreakpointValue({
     base: '100%',
     lg: sizes['containerWidth']
-  })
-
-  const CardGrid = useBreakpointValue({
-    base: '100%',
-    lg: '48.3%'
   })
 
   const ButtonContainer = useBreakpointValue({
@@ -232,6 +229,10 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
+    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
+      return undefined
+    }
+
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
 
@@ -242,7 +243,7 @@ const DashboardStudent: React.FC<Props> = () => {
   )
 
   return (
-    <AsNavigationItem path="dashboard">
+    <AsNavigationItem path="start">
       <WithNavigation
         headerContent={
           called &&
@@ -310,9 +311,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 )}
               <HSection
                 title={t('dashboard.myappointments.header')}
-                marginBottom={space['1.5']}
-                showAll={data?.me?.student?.subcoursesInstructing?.length > 4}
-                onShowAll={() => navigate('/appointments-archive')}>
+                marginBottom={space['1.5']}>
                 {(sortedPublishedSubcourses?.length > 1 &&
                   sortedPublishedSubcourses
                     ?.slice(0, 4)
@@ -394,6 +393,11 @@ const DashboardStudent: React.FC<Props> = () => {
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}
+                              showTrafficLight
+                              trafficLightStatus={getTrafficStatus(
+                                sub?.participantsCount || 0,
+                                sub?.maxParticipants || 0
+                              )}
                               onPressToCourse={() => {
                                 trackEvent({
                                   category: 'dashboard',

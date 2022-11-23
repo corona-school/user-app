@@ -2,19 +2,19 @@ import { View, useBreakpointValue, useTheme, Row, Column } from 'native-base'
 import HeaderCard from './HeaderCard'
 import { NavigationItems } from '../types/navigation'
 import BottomNavigationBar from './BottomNavigationBar'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg'
-import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg'
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg'
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg'
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg'
 import SideBarMenu from './SideBarMenu'
 import SettingsButton from './SettingsButton'
+import CenterLoadingSpinner from './CenterLoadingSpinner'
 
 // TODO translations
 const navItems: NavigationItems = {
-  dashboard: { label: 'Dashboard', icon: LFHomeIcon },
+  start: { label: 'Start', icon: LFHomeIcon },
   // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
   group: { label: 'Gruppe', icon: LFGroupIcon },
   matching: { label: 'Einzel', icon: LFMatchingIcon },
@@ -30,6 +30,7 @@ type Props = {
   isSidebarMenu?: boolean
   showBack?: boolean
   hideMenu?: boolean
+  isLoading?: boolean
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -40,7 +41,8 @@ const WithNavigation: React.FC<Props> = ({
   headerTitle,
   isSidebarMenu = true,
   showBack,
-  hideMenu
+  hideMenu,
+  isLoading
 }) => {
   const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
@@ -74,7 +76,7 @@ const WithNavigation: React.FC<Props> = ({
           {!isMobile && headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
-          <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden">
+          <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
             <Column>
               <SideBarMenu
                 show={!isMobile}
@@ -84,14 +86,18 @@ const WithNavigation: React.FC<Props> = ({
             </Column>
 
             <Column flex="1" padding={innerPaddingContent}>
-              {(isMobile && (
+              {(!isLoading && (
                 <>
-                  <View h={`${headerHeight}px`}></View>
-                  {headerContent}
-                  <View h={`${headerHeight}px`}></View>
+                  {(isMobile && (
+                    <>
+                      <View h={`${headerHeight}px`}></View>
+                      {headerContent}
+                      <View h={`${headerHeight}px`}></View>
+                    </>
+                  )) || <View h={`${sizes['headerSizePx']}px`}></View>}
+                  {children}
                 </>
-              )) || <View h={`${sizes['headerSizePx']}px`}></View>}
-              {children}
+              )) || <CenterLoadingSpinner />}
             </Column>
           </Row>
         </View>

@@ -55,6 +55,17 @@ export default function Login() {
     `
   )
 
+  const [resetPW, _resetPW] = useMutation(gql`
+  mutation ($email: String!) {
+    tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
+  }
+`)
+  const [sendToken, _sendToken] = useMutation(gql`
+  mutation ($email: String!) {
+    tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
+  }
+`)
+
   useEffect(() => {
     if (sessionState === "logged-in")
       navigate('/');
@@ -88,6 +99,24 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate])
 
+  const requestToken = useCallback(async () => {
+    const res = await sendToken({
+      variables: {
+        email: email
+      }
+    })
+
+    if (res.data.tokenRequest) {
+      setShowEmailSent(true)
+    } else if (res.errors) {
+      if (res.errors[0].message.includes('Unknown User')) {
+        setShowNoAccountModal(true)
+      } else {
+        setShowEmailSent(true)
+      }
+    }
+  }, [email, sendToken])
+
   const attemptLogin = useCallback(async () => {
     loginButton()
     const result = await login({
@@ -99,29 +128,36 @@ export default function Login() {
     onLogin(result);
   }, [email, login, loginButton, navigate, password])
 
-  const handleKeyPress = (
-    e: NativeSyntheticEvent<TextInputKeyPressEventData>
-  ) => {
-    if (e.nativeEvent.key === 'Enter') {
-      getLoginOption()
+  const getLoginOption = useCallback(async () => {
+    if (!email || email.length < 6) return
+    const res = await determineLoginOptions({ variables: { email } })
+    if (res.data.userDetermineLoginOptions === 'password') {
+      setShowPasswordField(true)
+      setLoginEmail(email)
+    } else if (res.data.userDetermineLoginOptions === 'email') {
+      requestToken()
+    } else {
+      setShowNoAccountModal(true)
     }
-  }
+  }, [determineLoginOptions, email, requestToken])
+
+  const handleKeyPress = useCallback(
+    (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+      if (e.nativeEvent.key === 'Enter') {
+        if (!showPasswordField) {
+          getLoginOption()
+        } else {
+          attemptLogin()
+        }
+      }
+    },
+    [attemptLogin, getLoginOption, showPasswordField]
+  )
 
   const ContainerWidth = useBreakpointValue({
     base: '90%',
     lg: sizes['smallWidth']
   })
-
-  const [resetPW, _resetPW] = useMutation(gql`
-    mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
-    }
-  `)
-  const [sendToken, _sendToken] = useMutation(gql`
-    mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
-    }
-  `)
 
   const resetPassword = async (pw: string) => {
     try {
@@ -215,37 +251,6 @@ export default function Login() {
     )
   }
 
-  const requestToken = useCallback(async () => {
-    const res = await sendToken({
-      variables: {
-        email: email
-      }
-    })
-
-    if (res.data.tokenRequest) {
-      setShowEmailSent(true)
-    } else if (res.errors) {
-      if (res.errors[0].message.includes('Unknown User')) {
-        setShowNoAccountModal(true)
-      } else {
-        setShowEmailSent(true)
-      }
-    }
-  }, [email, sendToken])
-
-  const getLoginOption = useCallback(async () => {
-    if (!email || email.length < 6) return
-    const res = await determineLoginOptions({ variables: { email } })
-    if (res.data.userDetermineLoginOptions === 'password') {
-      setShowPasswordField(true)
-      setLoginEmail(email)
-    } else if (res.data.userDetermineLoginOptions === 'email') {
-      requestToken()
-    } else {
-      setShowNoAccountModal(true)
-    }
-  }, [determineLoginOptions, email, requestToken])
-
   useEffect(() => {
     if (loginEmail) {
       if (loginEmail !== email) {
@@ -300,7 +305,7 @@ export default function Login() {
               />
             </Row>
             {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
-            {showPasswordField && (
+            {(showPasswordField && (
               <Row marginBottom={3}>
                 <PasswordInput
                   width="100%"
@@ -309,9 +314,10 @@ export default function Login() {
                   placeholder={t('password')}
                   onChangeText={setPassword}
                   onKeyPress={handleKeyPress}
+                  autoFocus
                 />
               </Row>
-            )}
+            )) || <input type="password" style={{ display: 'none' }} />}
           </Box>
           {loginResult.error && (
             <Text

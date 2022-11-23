@@ -88,7 +88,7 @@ const OnBoardingHelperMatchingFinisher: React.FC<Props> = () => {
               name: 'Onboarding Helfer Matching – Abgeschlossen',
               documentTitle: 'Onboarding Helfer Matching – Abgeschlossen'
             })
-            navigate('/dashboard')
+            navigate('/start')
           }}
           icon={<MatchingCheck />}
         />

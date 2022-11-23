@@ -27,7 +27,7 @@ const LoginToken: React.FC<Props> = () => {
       const res = await loginToken({ variables: { token } })
       log("LoginToken", "Successfully logged in with token");
       onLogin(res);
-      navigate(redirectTo || '/dashboard')
+      navigate(redirectTo || '/start')
     } catch(error) {
       log("LoginToken", "Failed to log in with token ", error);
       navigate('/login')

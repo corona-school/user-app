@@ -67,6 +67,7 @@ import {
   import CenterLoadingSpinner from './components/CenterLoadingSpinner'
   import ResetPassword from './pages/ResetPassword'
   import { RequireAuth, SwitchUserType } from './User'
+import IFrame from './components/IFrame'
   
   export default function NavigatorLazy() {
     return (
@@ -92,7 +93,7 @@ import {
   
           {/* Private */}
           <Route
-            path="/dashboard"
+            path="/start"
             element={
               <RequireAuth>
                 <SwitchUserType
@@ -103,14 +104,6 @@ import {
             }
           />
   
-          <Route
-            path="/explore"
-            element={
-              <RequireAuth>
-                <Explore />
-              </RequireAuth>
-            }
-          />
           <Route
             path="/single-course"
             element={
@@ -132,14 +125,6 @@ import {
             }
           />
   
-          <Route
-            path="/profile-helper"
-            element={
-              <RequireAuth>
-                <ProfileHelper />
-              </RequireAuth>
-            }
-          />
   
           <Route
             path="/settings"
@@ -173,30 +158,6 @@ import {
             }></Route>
   
           <Route
-            path="/alle-faqs"
-            element={
-              <RequireAuth>
-                <AllFaq />
-              </RequireAuth>
-            }></Route>
-  
-          <Route
-            path="/quick-start"
-            element={
-              <RequireAuth>
-                <QuickStart />
-              </RequireAuth>
-            }></Route>
-  
-          <Route
-            path="/digitale-tools"
-            element={
-              <RequireAuth>
-                <DigitaleTools />
-              </RequireAuth>
-            }></Route>
-  
-          <Route
             path="/onboarding-list"
             element={
               <RequireAuth>
@@ -206,29 +167,11 @@ import {
           />
   
           <Route
-            path="/matching-1-1"
-            element={
-              <RequireAuth>
-                <MatchingBlocker />
-              </RequireAuth>
-            }
-          />
-  
-          <Route
-            path="/course"
-            element={
-              <RequireAuth>
-                <CourseBlocker />
-              </RequireAuth>
-            }
-          />
-  
-          <Route
             path="/request-certificate"
             element={
-              // <RequireAuth>
-              <RequestCertificate />
-              // </RequireAuth>
+              <RequireAuth>
+                <RequestCertificate />
+              </RequireAuth>
             }
           />
   
@@ -345,15 +288,6 @@ import {
           />
   
           <Route
-            path="/appointments-archive"
-            element={
-              <RequireAuth>
-                <AppointmentsArchive />
-              </RequireAuth>
-            }
-          />
-  
-          <Route
             path="/course-archive"
             element={
               <RequireAuth>
@@ -384,11 +318,29 @@ import {
           <Route path="/additional-data" element={<AdditionalData />} />
           <Route path="/email-not-verified" element={<VerifyEmailModal />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-  
+          <Route
+            path="/privacy"
+            element={
+              <IFrame
+                title="datenschutz"
+                src="https://www.lern-fair.de/iframe/datenschutz"
+              />
+            }
+          />
+          <Route
+            path="/imprint"
+            element={
+              <IFrame
+                title="impressum"
+                src="https://www.lern-fair.de/iframe/impressum"
+              />
+            }
+          />
+        
           {/* Fallback */}
           <Route
             path="*"
-            element={<Navigate to="/dashboard" />}
+            element={<Navigate to="/start" />}
           />
         </Routes>
     )

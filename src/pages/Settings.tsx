@@ -51,10 +51,12 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
-    <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
+    <WithNavigation
+      headerTitle={t('settings.header')}
+      showBack
+      hideMenu
+      isLoading={loading}>
       <VStack
         paddingBottom={7}
         paddingX={space['1.5']}
@@ -136,17 +138,20 @@ const Settings: React.FC<Props> = () => {
             />
           </Column>
         </ProfileSettingRow>
-        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.imprint')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.imprint')}
+              onPress={() => navigate('/imprint')}
+            />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.datapolicy')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.datapolicy')}
+              onPress={() => navigate('/privacy')}
+            />
           </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.terms')} isDisabled />
-          </Column>
-        </ProfileSettingRow> */}
+        </ProfileSettingRow>
       </VStack>
     </WithNavigation>
   )

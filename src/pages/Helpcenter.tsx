@@ -5,7 +5,6 @@ import {
   Text,
   Row,
   FormControl,
-  Select,
   TextArea,
   Checkbox,
   Button,
@@ -27,6 +26,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
 import Hello from '../widgets/Hello'
 import AlertMessage from '../widgets/AlertMessage'
+import useLernfair from '../hooks/useLernfair'
 
 type Props = {}
 
@@ -39,6 +39,8 @@ type MentorCategory =
   | 'OTHER'
 
 const HelpCenter: React.FC<Props> = () => {
+  const { userType } = useLernfair()
+  console.log(userType)
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -90,7 +92,7 @@ const HelpCenter: React.FC<Props> = () => {
           defaultButtonText={t('helpcenter.contact.popupBtn')}
           defaultbuttonLink={() => {
             setShow(false)
-            navigate('/dashboard')
+            navigate('/start')
           }}
         />
       )
@@ -191,6 +193,7 @@ const HelpCenter: React.FC<Props> = () => {
                 )
               },
               {
+                hide: userType !== 'student',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
@@ -213,77 +216,6 @@ const HelpCenter: React.FC<Props> = () => {
                     </Text>
 
                     <FormControl maxWidth={ContentContainerWidth}>
-                      <Row flexDirection="column" paddingY={space['0.5']}>
-                        <FormControl.Label>
-                          {t('helpcenter.contact.topic.label')}
-                        </FormControl.Label>
-                        <Select
-                          accessibilityLabel={t(
-                            'helpcenter.contact.topic.options.placeholder'
-                          )}
-                          placeholder={t(
-                            'helpcenter.contact.topic.options.placeholder'
-                          )}
-                          onValueChange={val =>
-                            setMentorCategory(val as MentorCategory)
-                          }
-                          mt="1">
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel1'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel1')
-                              'LANGUAGE'
-                            }
-                          />
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel2'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel2')
-                              'TECH'
-                            }
-                          />
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel3'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel3')
-                              'SUBJECTS'
-                            }
-                          />
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel4'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel4')
-                              'DIDACTIC'
-                            }
-                          />
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel5'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel5')
-                              'SELFORGA'
-                            }
-                          />
-                          <Select.Item
-                            label={t(
-                              'helpcenter.contact.topic.options.optionLabel6'
-                            )}
-                            value={
-                              // t('helpcenter.contact.topic.options.optionLabel6')
-                              'OTHER'
-                            }
-                          />
-                        </Select>
-                      </Row>
                       <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>
                           {t('helpcenter.contact.subject.label')}
