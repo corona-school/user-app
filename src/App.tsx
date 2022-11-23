@@ -15,7 +15,7 @@ import { WebsocketClient } from "./components/WebsocketClient"
 import { ToastNotifications } from "./components/ToastNotifications"
 import { NotificationsData } from "./components/NotificationsData"
 
-function App () {
+function App() {
   return (
     <LernfairProvider>
       <LFModalProvider>
