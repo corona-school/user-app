@@ -27,6 +27,7 @@ import AsNavigationItem from '../components/AsNavigationItem'
 import Hello from '../widgets/Hello'
 import AlertMessage from '../widgets/AlertMessage'
 import useLernfair from '../hooks/useLernfair'
+import { useUserType } from '../hooks/useApollo'
 
 type Props = {}
 
@@ -39,7 +40,7 @@ type MentorCategory =
   | 'OTHER'
 
 const HelpCenter: React.FC<Props> = () => {
-  const { userType } = useLernfair()
+  const userType = useUserType()
   console.log(userType)
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)

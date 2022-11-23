@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import { useUserType } from '../../hooks/useApollo'
 import useLernfair from '../../hooks/useLernfair'
 import { schooltypes } from '../../types/lernfair/SchoolType'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -48,7 +49,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
 
-  const { userType } = useLernfair()
+  const userType = useUserType()
 
   const [showError, setShowError] = useState<boolean>()
 
