@@ -1,37 +1,27 @@
 import { useEffect, useRef, useContext} from "react"
+import { WSClient, WebSocketClient } from '../types/Websocket'
 import { NotificationsContext } from "../hooks/NotificationsProvider"
 
 export const WebsocketClient = () => {
   const {dispatchNewNotificationIds} = useContext(NotificationsContext)
-  const ws = useRef<WebSocket | null>(null);
+  const ws = useRef<WebSocketClient | null>(null);
   
 
   useEffect(() => {
     // only for testing
-    const socket = new WebSocket("wss://ws.kraken.com");
+    const wsClient  = new WSClient("wss://ws.kraken.com");
 
-    socket.onopen = () => {
-      console.log("opened");
-
-      // only for testing
-      socket.send("{\"event\":\"subscribe\", \"subscription\":{\"name\":\"ticker\"}, \"pair\":[\"BTC/USD\"]}")
-    };
-
-    socket.onclose = () => {
-      console.log("closed");
-    };
-
-    socket.onmessage = (event) => {
+    wsClient.onMessage((event) => {
       console.log("got message", event.data);
-      
+
       // dummy data
       dispatchNewNotificationIds([Date.now(), Date.now()]);
-    };
-
-    ws.current = socket;
+    });
+    
+    ws.current = wsClient;
 
     return () => {
-      socket.close();
+      wsClient.close();
     };
   }, []);
 
