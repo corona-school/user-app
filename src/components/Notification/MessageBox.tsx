@@ -1,11 +1,4 @@
-import {
-  Box,
-  HStack,
-  Spacer,
-  Text,
-  useBreakpointValue,
-  VStack
-} from 'native-base'
+import { Box, HStack, Spacer, Text, VStack } from 'native-base'
 import { getIcon } from '../../helper/notification-helper'
 import { UserNotification } from '../../types/lernfair/Notification'
 import TimeIndicator from './TimeIndicator'
