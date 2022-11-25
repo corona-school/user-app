@@ -15,7 +15,7 @@ import Tabs from '../../components/Tabs'
 import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../../types/lernfair/Course'
-import Utility from '../../Utility'
+import Utility, { getTrafficStatus } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
@@ -46,6 +46,8 @@ const query = gql`
         subcoursesInstructing {
           id
           published
+          participantsCount
+          maxParticipants
           lectures {
             start
             duration
@@ -71,7 +73,7 @@ const StudentGroup: React.FC<Props> = () => {
   const { t } = useTranslation()
 
   const location = useLocation()
-  const locState = location.state as {
+  const locState = location?.state as {
     errors: string[]
   }
 
@@ -170,6 +172,11 @@ const StudentGroup: React.FC<Props> = () => {
     return (
       <CSSWrapper className="course-list__item">
         <AppointmentCard
+          showTrafficLight
+          trafficLightStatus={getTrafficStatus(
+            course.participantsCount || 0,
+            course.maxParticipants || 0
+          )}
           isFullHeight
           isSpaceMarginBottom={false}
           key={index}
@@ -199,9 +206,7 @@ const StudentGroup: React.FC<Props> = () => {
       )
     }
     return false
-  }, [locState.errors])
-
-  if (loading) return <CenterLoadingSpinner />
+  }, [locState?.errors])
 
   return (
     <AsNavigationItem path="group">
@@ -215,51 +220,54 @@ const StudentGroup: React.FC<Props> = () => {
           marginBottom={space['1']}
           maxWidth={ContainerWidth}
           width="100%">
-          <VStack space={space['1']}>
-            <VStack space={space['0.5']}>
-              <Heading>{t('matching.group.helper.title')}</Heading>
-              <Text>{t('matching.group.helper.content')}</Text>
-            </VStack>
-            <VStack>
-              <Heading fontSize="sm" marginBottom="5px">
-                {t('matching.group.helper.contentHeadline')}
-              </Heading>
-              <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
-            </VStack>
-            {locState && Object.keys(locState).length > 0 && (
-              <>
-                {showSuccess && (
-                  <AlertMessage
-                    content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
+          {loading && <CenterLoadingSpinner />}
+
+          {!loading && (
+            <VStack space={space['1']}>
+              <VStack space={space['0.5']}>
+                <Heading>{t('matching.group.helper.title')}</Heading>
+                <Text>{t('matching.group.helper.content')}</Text>
+              </VStack>
+              <VStack>
+                <Heading fontSize="sm" marginBottom="5px">
+                  {t('matching.group.helper.contentHeadline')}
+                </Heading>
+                <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
+              </VStack>
+              {locState && Object.keys(locState).length > 0 && (
+                <>
+                  {showSuccess && (
+                    <AlertMessage
+                      content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
                    nun in Prüfung."
-                  />
-                )}
-                {(locState?.errors?.length > 0 && (
-                  <>
-                    {locState.errors.map(e => (
-                      <AlertMessage content={t(`course.error.${e}`)} />
-                    ))}
-                  </>
-                )) || <></>}
-              </>
-            )}
-            <VStack paddingY={space['1']}>
-              <Button
-                width={ButtonContainer}
-                onPress={() => {
-                  trackEvent({
-                    category: 'matching',
-                    action: 'click-event',
-                    name: 'Helfer Matching Gruppen – Kurs erstellen',
-                    documentTitle:
-                      'Matching Gruppen Lernunterstützung Kurs erstellen'
-                  })
-                  navigate('/create-course')
-                }}>
-                {t('matching.group.helper.button')}
-              </Button>
-            </VStack>
-            {/* <HSection
+                    />
+                  )}
+                  {(locState?.errors?.length > 0 && (
+                    <>
+                      {locState.errors.map(e => (
+                        <AlertMessage content={t(`course.error.${e}`)} />
+                      ))}
+                    </>
+                  )) || <></>}
+                </>
+              )}
+              <VStack paddingY={space['1']}>
+                <Button
+                  width={ButtonContainer}
+                  onPress={() => {
+                    trackEvent({
+                      category: 'matching',
+                      action: 'click-event',
+                      name: 'Helfer Matching Gruppen – Kurs erstellen',
+                      documentTitle:
+                        'Matching Gruppen Lernunterstützung Kurs erstellen'
+                    })
+                    navigate('/create-course')
+                  }}>
+                  {t('matching.group.helper.button')}
+                </Button>
+              </VStack>
+              {/* <HSection
             title={t('dashboard.helpers.headlines.course')}
             showAll={false}>
             {new Array(5).fill(0).map(({}, index) => (
@@ -273,75 +281,77 @@ const StudentGroup: React.FC<Props> = () => {
               />
             ))}
           </HSection> */}
-            <VStack>
-              <Heading marginBottom={space['1.5']}>
-                {t('matching.group.helper.course.title')}
-              </Heading>
-              <Tabs
-                tabs={[
-                  {
-                    title: t('matching.group.helper.course.tabs.tab1.title'),
-                    content: (
-                      <>
-                        <CSSWrapper className="course-list__wrapper">
-                          {(publishedSubcourses.length > 0 &&
-                            publishedSubcourses?.map(
-                              (sub: LFSubCourse, index: number) => {
-                                return renderSubcourse(sub, index)
-                              }
-                            )) || <AlertMessage content={t('empty.courses')} />}
-                        </CSSWrapper>
-                      </>
-                    )
-                  },
-                  {
-                    title: t('matching.group.helper.course.tabs.tab2.title'),
-                    content: (
-                      <>
-                        <CSSWrapper className="course-list__wrapper">
-                          {(submittedSubcourses.length > 0 &&
-                            submittedSubcourses?.map(
-                              (sub: LFSubCourse, index: number) =>
-                                renderSubcourse(sub, index)
-                            )) || (
-                            <AlertMessage content={t('empty.coursescheck')} />
-                          )}
-                        </CSSWrapper>
-                      </>
-                    )
-                  },
-                  // {
-                  //   title: t('matching.group.helper.course.tabs.tab3.title'),
-                  //   content: (
-                  //     <>
-                  //       <CSSWrapper className="course-list__wrapper">
-                  //         {(draftedCourses.length > 0 &&
-                  //           draftedCourses?.map(
-                  //             (course: LFCourse, index: number) =>
-                  //               renderCourse(course, index)
-                  //           )) || (
-                  //           <AlertMessage content={t('empty.coursesdraft')} />
-                  //         )}
-                  //       </CSSWrapper>
-                  //     </>
-                  //   )
-                  // },
-                  {
-                    title: t('matching.group.helper.course.tabs.tab4.title'),
-                    content: (
-                      <>
-                        <CSSWrapper className="course-list__wrapper">
-                          {pastCourses.map((course: LFSubCourse, index) =>
-                            renderSubcourse(course, index, false)
-                          ) || <AlertMessage content={t('empty.courses')} />}
-                        </CSSWrapper>
-                      </>
-                    )
-                  }
-                ]}
-              />
-            </VStack>
-            {/* <VStack>
+              <VStack>
+                <Heading marginBottom={space['1.5']}>
+                  {t('matching.group.helper.course.title')}
+                </Heading>
+                <Tabs
+                  tabs={[
+                    {
+                      title: t('matching.group.helper.course.tabs.tab1.title'),
+                      content: (
+                        <>
+                          <CSSWrapper className="course-list__wrapper">
+                            {(publishedSubcourses?.length > 0 &&
+                              publishedSubcourses?.map(
+                                (sub: LFSubCourse, index: number) => {
+                                  return renderSubcourse(sub, index)
+                                }
+                              )) || (
+                              <AlertMessage content={t('empty.courses')} />
+                            )}
+                          </CSSWrapper>
+                        </>
+                      )
+                    },
+                    {
+                      title: t('matching.group.helper.course.tabs.tab2.title'),
+                      content: (
+                        <>
+                          <CSSWrapper className="course-list__wrapper">
+                            {(submittedSubcourses?.length > 0 &&
+                              submittedSubcourses?.map(
+                                (sub: LFSubCourse, index: number) =>
+                                  renderSubcourse(sub, index)
+                              )) || (
+                              <AlertMessage content={t('empty.coursescheck')} />
+                            )}
+                          </CSSWrapper>
+                        </>
+                      )
+                    },
+                    // {
+                    //   title: t('matching.group.helper.course.tabs.tab3.title'),
+                    //   content: (
+                    //     <>
+                    //       <CSSWrapper className="course-list__wrapper">
+                    //         {(draftedCourses.length > 0 &&
+                    //           draftedCourses?.map(
+                    //             (course: LFCourse, index: number) =>
+                    //               renderCourse(course, index)
+                    //           )) || (
+                    //           <AlertMessage content={t('empty.coursesdraft')} />
+                    //         )}
+                    //       </CSSWrapper>
+                    //     </>
+                    //   )
+                    // },
+                    {
+                      title: t('matching.group.helper.course.tabs.tab4.title'),
+                      content: (
+                        <>
+                          <CSSWrapper className="course-list__wrapper">
+                            {pastCourses?.map((course: LFSubCourse, index) =>
+                              renderSubcourse(course, index, false)
+                            ) || <AlertMessage content={t('empty.courses')} />}
+                          </CSSWrapper>
+                        </>
+                      )
+                    }
+                  ]}
+                />
+              </VStack>
+              {/* <VStack>
               <HSection
                 onShowAll={() => navigate('/group/offer')}
                 title={t('matching.group.helper.offers.title')}
@@ -353,7 +363,8 @@ const StudentGroup: React.FC<Props> = () => {
                 )}
               </HSection>
             </VStack> */}
-          </VStack>
+            </VStack>
+          )}
         </VStack>
       </WithNavigation>
     </AsNavigationItem>

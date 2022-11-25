@@ -19,6 +19,7 @@ import { TouchableOpacity } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import { useUserType } from '../../hooks/useApollo'
 import useLernfair from '../../hooks/useLernfair'
 import { languages } from '../../types/lernfair/Language'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -56,7 +57,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string[]>([])
 
   const [showError, setShowError] = useState<boolean>()
-  const { userType = 'pupil' } = useLernfair()
+  const userType = useUserType()
 
   const navigate = useNavigate()
 
@@ -109,12 +110,11 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
     <WithNavigation
       headerTitle={t('profile.FluentLanguagenalData.single.header')}
-      showBack>
+      showBack
+      isLoading={loading}>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
@@ -178,7 +178,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                           iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
                           text={subject.label}
                           onPress={() =>
-                            setSelections(prev => [...prev, subject.key])
+                            setSelections(prev => [...prev, subject.label])
                           }
                         />
                       </Column>
@@ -219,22 +219,6 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        {/* {userSettingChanged && (
-          <Alert marginY={3} colorScheme="success" status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )} */}
         {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}

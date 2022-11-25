@@ -10,10 +10,11 @@ import {
   Flex,
   Image,
   useBreakpointValue,
-  ScrollView
+  ScrollView,
+  Link
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import ToggleButton from '../../components/ToggleButton'
 
@@ -24,7 +25,6 @@ import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import useRegistration from '../../hooks/useRegistration'
 import useModal from '../../hooks/useModal'
-import useApollo from '../../hooks/useApollo'
 import TextInput from '../../components/TextInput'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import PasswordInput from '../../components/PasswordInput'
@@ -301,12 +301,20 @@ const RegistrationAccount: React.FC<Props> = () => {
               onChange={val => {
                 setLegalChecked(val)
               }}>
-              {t('registration.check_legal')}
+              <Trans i18nKey="registration.check_legal">
+                Hiermit stimme ich der
+                <Link href="/privacy">Datenschutzerklärung</Link> zu.
+              </Trans>
             </Checkbox>
             {showLegalNotChecked && (
               <AlertMessage
                 content={
-                  'Bitte akzeptiere unsere Nutzungsbedingungen und Datenschutzerklärung'
+                  <>
+                    <Text>
+                      Bitte akzeptiere unsere{' '}
+                      <Link href="/privacy">Datenschutzerklärung</Link>
+                    </Text>
+                  </>
                 }
               />
             )}

@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import WithNavigation from '../components/WithNavigation'
-import useApollo from '../hooks/useApollo'
+import useApollo, { useUserType } from '../hooks/useApollo'
 import useLernfair from '../hooks/useLernfair'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfilAvatar from '../widgets/ProfilAvatar'
@@ -28,7 +28,7 @@ const Settings: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { logout } = useApollo()
   const tabspace = 3
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -51,10 +51,12 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
-    <WithNavigation headerTitle={t('settings.header')} showBack hideMenu>
+    <WithNavigation
+      headerTitle={t('settings.header')}
+      showBack
+      hideMenu
+      isLoading={loading}>
       <VStack
         paddingBottom={7}
         paddingX={space['1.5']}
@@ -106,16 +108,13 @@ const Settings: React.FC<Props> = () => {
         <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
           {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
-          </Column>
+          </Column>*/}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.changePassword')}
-              isDisabled
+              onPress={() => navigate('/reset-password')}
             />
-          </Column> */}
-          {/* <Column mb={tabspace}>
-            <EditDataRow label={t('settings.account.changeUser')} isDisabled />
-          </Column> */}
+          </Column>
           {/* <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.deleteAccount')}
@@ -126,29 +125,33 @@ const Settings: React.FC<Props> = () => {
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
-                trackEvent({
-                  category: 'profil',
-                  action: 'click-event',
-                  name: 'Abmelden im Account',
-                  documentTitle: 'Logout'
-                })
-                logout()
-                navigate(0)
+                (async function () {
+                  trackEvent({
+                    category: 'profil',
+                    action: 'click-event',
+                    name: 'Abmelden im Account',
+                    documentTitle: 'Logout'
+                  })
+                  await logout()
+                })();
               }}
             />
           </Column>
         </ProfileSettingRow>
-        {/* <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
+        <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.imprint')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.imprint')}
+              onPress={() => navigate('/imprint')}
+            />
           </Column>
           <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.datapolicy')} isDisabled />
+            <EditDataRow
+              label={t('settings.legal.datapolicy')}
+              onPress={() => navigate('/privacy')}
+            />
           </Column>
-          <Column mb={tabspace}>
-            <EditDataRow label={t('settings.legal.terms')} isDisabled />
-          </Column>
-        </ProfileSettingRow> */}
+        </ProfileSettingRow>
       </VStack>
     </WithNavigation>
   )

@@ -196,7 +196,7 @@ const MatchingWizard: React.FC<Props> = () => {
         isOpen={showSuccessModal}
         onClose={() => {
           setShowSuccessModal(false)
-          navigate('/dashboard')
+          navigate('/start')
         }}>
         <Modal.Content>
           <Modal.CloseButton />
@@ -206,7 +206,7 @@ const MatchingWizard: React.FC<Props> = () => {
             <Button
               onPress={() => {
                 setShowSuccessModal(false)
-                navigate('/dashboard')
+                navigate('/start')
               }}>
               Weiter
             </Button>
