@@ -12,15 +12,12 @@ import {
   FormControl,
   Stack,
   Modal,
-  Alert,
-  HStack,
   useBreakpointValue,
   Box
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import BackButton from '../../components/BackButton'
 import WithNavigation from '../../components/WithNavigation'
 import useLernfair from '../../hooks/useLernfair'
 import {
@@ -35,6 +32,7 @@ import { Slider } from '@miblanchard/react-native-slider'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { useNavigate } from 'react-router-dom'
 import AlertMessage from '../../widgets/AlertMessage'
+import { useUserType } from '../../hooks/useApollo'
 
 const queryPupil = `query {
   me {
@@ -70,7 +68,7 @@ type Props = {}
 const ChangeSettingSubject: React.FC<Props> = () => {
   const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
-  const { userType = '' } = useLernfair()
+  const userType = useUserType()
   const { trackPageView } = useMatomo()
   const navigate = useNavigate()
 
@@ -98,7 +96,9 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const cleanupSubjects: (data: LFSubject[]) => LFSubject[] = useCallback(
     (data: LFSubject[]) => {
       const arr: LFSubject[] = []
+      console.log(data)
       for (const sub of data) {
+        console.log(sub)
         delete sub['__typename']
 
         if (sub.grade) {
@@ -150,13 +150,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (loading) return <CenterLoadingSpinner />
-
   return (
     <>
       <WithNavigation
         headerTitle={t('profile.NeedHelpIn.single.header')}
-        showBack>
+        showBack
+        isLoading={loading}>
         <VStack
           paddingX={space['1.5']}
           space={space['1']}
@@ -306,26 +305,12 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           width="100%"
           marginX="auto"
           maxWidth={ContainerWidth}>
-          {/* {userSettingChanged && (
-            <Alert marginY={3} colorScheme="success" status="success">
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack
-                  flexShrink={1}
-                  space={2}
-                  alignItems="center"
-                  justifyContent="space-between">
-                  <HStack space={2} flexShrink={1} alignItems="center">
-                    <Alert.Icon />
-                    <Text>{t('profile.successmessage')}</Text>
-                  </HStack>
-                </HStack>
-              </VStack>
-            </Alert>
-          )} */}
           {showError && <AlertMessage content={t('profile.errormessage')} />}
+
           <Button
             width={ButtonContainer}
             onPress={() => {
+              console.log(selections)
               updateSubjects({
                 variables: {
                   subjects: selections
@@ -347,30 +332,6 @@ const ChangeSettingSubject: React.FC<Props> = () => {
             </Heading>
           </Modal.Header>
           <Modal.Body>
-            {/* <ToggleButton
-              label={t('registration.student.classSelection.range1')}
-              dataKey="1"
-              isActive={focusedSelectionClasses.includes(1)}
-              onPress={key => answerFocusSelection(1)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range2')}
-              dataKey="2"
-              isActive={focusedSelectionClasses.includes(2)}
-              onPress={key => answerFocusSelection(2)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range3')}
-              dataKey="3"
-              isActive={focusedSelectionClasses.includes(3)}
-              onPress={key => answerFocusSelection(3)}
-            />
-            <ToggleButton
-              label={t('registration.student.classSelection.range4')}
-              dataKey="4"
-              isActive={focusedSelectionClasses.includes(4)}
-              onPress={key => answerFocusSelection(4)}
-            /> */}
             <Heading fontSize="md">
               Klassen {selectedClassRange[0] || 1} -{' '}
               {selectedClassRange[1] || 13}

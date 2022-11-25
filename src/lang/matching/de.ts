@@ -160,7 +160,7 @@ const matching = {
             'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
         },
         tab3: {
-          title: 'Alle Angebote',
+          title: 'Alle Kurse',
           content:
             'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
         }

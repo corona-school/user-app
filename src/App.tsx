@@ -10,6 +10,7 @@ import './web/scss/index.scss'
 import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
+import { IssueReporter } from './IssueReporter'
 import { NotificationsProvider } from './hooks/NotificationsProvider'
 import { WebsocketClient } from "./components/WebsocketClient"
 import { ToastNotifications } from "./components/ToastNotifications"
@@ -21,15 +22,17 @@ function App() {
       <LFModalProvider>
         <LFApolloProvider>
           <NativeBaseProvider theme={Theme}>
-            <MatomoProvider value={matomo}>
-              <Navigator/>
-              <FullPageModal/>
-              <NotificationsProvider>
-                <WebsocketClient/>
-                <ToastNotifications/>
-                <NotificationsData/>
-              </NotificationsProvider>
-            </MatomoProvider>
+            <IssueReporter>
+              <MatomoProvider value={matomo}>
+                <Navigator />
+                <FullPageModal />
+                <NotificationsProvider>
+                  <WebsocketClient/>
+                  <ToastNotifications/>
+                  <NotificationsData/>
+                </NotificationsProvider>
+              </MatomoProvider>
+            </IssueReporter>
           </NativeBaseProvider>
         </LFApolloProvider>
       </LFModalProvider>

@@ -8,5 +8,5 @@ export const schooltypes: SchoolType[] = [
   { label: 'Hauptschule', key: 'hauptschule' },
   { label: 'Realschule', key: 'realschule' },
   { label: 'Gymnasium', key: 'gymnasium' },
-  { label: 'Andere', key: 'andere' }
+  { label: 'Andere', key: 'other' }
 ]

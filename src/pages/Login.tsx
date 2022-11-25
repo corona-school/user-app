@@ -26,7 +26,7 @@ import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
-  const { createDeviceToken } = useApollo()
+  const { onLogin, sessionState } = useApollo()
   const { space, sizes } = useTheme()
   const [showNoAccountModal, setShowNoAccountModal] = useState(false)
   const [email, setEmail] = useState<string>()
@@ -38,7 +38,7 @@ export default function Login() {
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
   >()
-  const [login, { error, loading }] = useMutation(gql`
+  const [login, loginResult] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
@@ -54,6 +54,22 @@ export default function Login() {
       }
     `
   )
+
+  const [resetPW, _resetPW] = useMutation(gql`
+  mutation ($email: String!) {
+    tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
+  }
+`)
+  const [sendToken, _sendToken] = useMutation(gql`
+  mutation ($email: String!) {
+    tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
+  }
+`)
+
+  useEffect(() => {
+    if (sessionState === "logged-in")
+      navigate('/');
+  }, [navigate, sessionState]);
 
   useEffect(() => {
     trackPageView({
@@ -83,43 +99,65 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate])
 
+  const requestToken = useCallback(async () => {
+    const res = await sendToken({
+      variables: {
+        email: email
+      }
+    })
+
+    if (res.data.tokenRequest) {
+      setShowEmailSent(true)
+    } else if (res.errors) {
+      if (res.errors[0].message.includes('Unknown User')) {
+        setShowNoAccountModal(true)
+      } else {
+        setShowEmailSent(true)
+      }
+    }
+  }, [email, sendToken])
+
   const attemptLogin = useCallback(async () => {
     loginButton()
-    const res = await login({
+    const result = await login({
       variables: {
         email: email,
         password: password
       }
     })
-    if (res?.data && res.data.loginPassword) {
-      await createDeviceToken() // fire and forget
-      navigate('/')
-    }
-  }, [createDeviceToken, email, login, loginButton, navigate, password])
+    onLogin(result);
+  }, [email, login, loginButton, navigate, password])
 
-  const handleKeyPress = (
-    e: NativeSyntheticEvent<TextInputKeyPressEventData>
-  ) => {
-    if (e.nativeEvent.key === 'Enter') {
-      getLoginOption()
+  const getLoginOption = useCallback(async () => {
+    if (!email || email.length < 6) return
+    const res = await determineLoginOptions({ variables: { email } })
+    if (res.data.userDetermineLoginOptions === 'password') {
+      setShowPasswordField(true)
+      setLoginEmail(email)
+    } else if (res.data.userDetermineLoginOptions === 'email') {
+      requestToken()
+    } else {
+      setShowNoAccountModal(true)
     }
-  }
+  }, [determineLoginOptions, email, requestToken])
+
+  const handleKeyPress = useCallback(
+    (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+      if (e.nativeEvent.key === 'Enter') {
+        if (!showPasswordField) {
+          getLoginOption()
+        } else {
+          attemptLogin()
+        }
+      }
+    },
+    [attemptLogin, getLoginOption, showPasswordField]
+  )
 
   const ContainerWidth = useBreakpointValue({
     base: '90%',
     lg: sizes['smallWidth']
   })
-
-  const [resetPW, _resetPW] = useMutation(gql`
-    mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
-    }
-  `)
-  const [sendToken, _sendToken] = useMutation(gql`
-    mutation ($email: String!) {
-      tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
-    }
-  `)
 
   const resetPassword = async (pw: string) => {
     try {
@@ -213,37 +251,6 @@ export default function Login() {
     )
   }
 
-  const requestToken = useCallback(async () => {
-    const res = await sendToken({
-      variables: {
-        email: email
-      }
-    })
-
-    if (res.data.tokenRequest) {
-      setShowEmailSent(true)
-    } else if (res.errors) {
-      if (res.errors[0].message.includes('Unknown User')) {
-        setShowNoAccountModal(true)
-      } else {
-        setShowEmailSent(true)
-      }
-    }
-  }, [email, sendToken])
-
-  const getLoginOption = useCallback(async () => {
-    if (!email || email.length < 6) return
-    const res = await determineLoginOptions({ variables: { email } })
-    if (res.data.userDetermineLoginOptions === 'password') {
-      setShowPasswordField(true)
-      setLoginEmail(email)
-    } else if (res.data.userDetermineLoginOptions === 'email') {
-      requestToken()
-    } else {
-      setShowNoAccountModal(true)
-    }
-  }, [determineLoginOptions, email, requestToken])
-
   useEffect(() => {
     if (loginEmail) {
       if (loginEmail !== email) {
@@ -298,7 +305,7 @@ export default function Login() {
               />
             </Row>
             {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
-            {showPasswordField && (
+            {(showPasswordField && (
               <Row marginBottom={3}>
                 <PasswordInput
                   width="100%"
@@ -307,11 +314,12 @@ export default function Login() {
                   placeholder={t('password')}
                   onChangeText={setPassword}
                   onKeyPress={handleKeyPress}
+                  autoFocus
                 />
               </Row>
-            )}
+            )) || <input type="password" style={{ display: 'none' }} />}
           </Box>
-          {error && (
+          {loginResult.error && (
             <Text
               paddingTop={4}
               color="danger.700"
@@ -335,19 +343,19 @@ export default function Login() {
               />
             </Box>
           )}
-          <Button
+          {showPasswordField && <Button
             marginY={4}
             variant="link"
             onPress={() => setShowPasswordModal(true)}>
             {t('login.btn.password')}
-          </Button>
+          </Button>}
 
           <Box paddingTop={4} marginX="90px" display="block">
             <Button
               onPress={showPasswordField ? attemptLogin : getLoginOption}
               width="100%"
               isDisabled={
-                loading ||
+                loginResult.loading ||
                 !email ||
                 email.length < 6 ||
                 _determineLoginOptions.loading ||

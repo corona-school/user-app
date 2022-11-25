@@ -27,12 +27,35 @@ import { createOperation } from '@apollo/client/link/utils'
 import { SubscriptionObserver } from 'zen-observable-ts'
 import userAgentParser from 'ua-parser-js'
 import { BACKEND_URL } from '../config'
+import { debug, log } from '../log'
+
+interface UserType {
+  userID: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  pupil: {
+    id: number;
+    verifiedAt: Date | null;
+  },
+  student: {
+    id: number;
+    verifiedAt: Date | null;
+  }
+}
 
 export type LFApollo = {
+  // The Apollo Client to make requests with to the backend:
   client: ApolloClient<NormalizedCacheObject>
+  // Invalidated the device token, destroys the session and goes back to the start page
   logout: () => Promise<void>
-  createDeviceToken: () => Promise<string>
+  // Call in case a mutation was run that associates the session with a user
+  onLogin: (result: FetchResult) => void;
+
   sessionState: 'unknown' | 'logged-out' | 'logged-in'
+  // Once the session is 'logged-in', a query will be issued to determine the user session
+  // When the query is finished, the user will be available:
+  user: UserType | null
 }
 
 // Unlike the standard ApolloProvider, this context carries additional properties
@@ -82,6 +105,19 @@ const setDeviceToken = (token: string) =>
   localStorage.setItem('lernfair:device-token', token)
 const clearDeviceToken = () => localStorage.removeItem('lernfair:device-token')
 
+// ---------------- Custom ApolloLink For Request Logging -------
+class RequestLoggerLink extends ApolloLink {
+  request(operation: Operation, forward?: NextLink | undefined) {
+    log('GraphQL Query', `running operation: ${operation.query.loc?.source.body}`, operation);
+    const chain = forward!(operation);
+
+    return chain.map((response: FetchResult) => {
+        log('GraphQL Query', `operation finished: `, response);
+        return response;
+    });
+  }
+}
+
 // ---------------- Custom ApolloLink Error Handling with Retry -------
 // When a query fails because it is UNAUTHORIZED,
 //  try to log in with the device token, then retry the query
@@ -91,39 +127,70 @@ type SomeFetchResult = FetchResult<
   Record<string, any>
 >
 
+
 class RetryOnUnauthorizedLink extends ApolloLink {
   constructor(public readonly onMissingAuth: () => void) {
     super()
   }
 
   request(operation: Operation, forward?: NextLink | undefined) {
+    if (operation.getContext().skipAuthRetry) {
+      debug('GraphQL AuthRetry', 'skipped operation', operation);
+      return forward!(operation);
+    }
+
     return new Observable<SomeFetchResult>(observer => {
       const nextChain = forward!(operation)
+      let deferred = false;
 
       nextChain.subscribe(it => {
         if (it.errors?.length) {
           const isAuthError = it.errors!.some(
             it => it.extensions.code === 'UNAUTHENTICATED'
           )
-          if (isAuthError && !!getDeviceToken()) {
-            // We might recover by starting a new session with the device token?
-            this.loginWithDeviceToken(forward!, observer).then(succeeded => {
-              if (succeeded) {
-                // Retry exactly once, piping in the original request
-                forward!(operation).subscribe(observer)
-                return
-              } else {
-                // Failed to log in the user, redirecting to login:
-                this.onMissingAuth()
-                return
-              }
-            })
+          if (isAuthError) {
+            if (!getDeviceToken()) {
+              log('GraphQL AuthRetry', 'authentication failure, no device token present')
+              this.onMissingAuth();
+              observer.next(it);
+              return;
+            }
 
+            log('GraphQL AuthRetry', 'authentication failure and device token present, try to login');
+            // We might recover by starting a new session with the device token?
+            const loginObserver = new Observable<SomeFetchResult>(it =>
+              { this.loginWithDeviceToken(forward!, it) });
+
+            loginObserver.subscribe(
+              result => {
+                if (result.errors) {
+                  log('GraphQL AuthRetry', 'Login with device token in retry failed, passing original error', result.errors)
+                  clearDeviceToken();
+                  this.onMissingAuth();
+                  observer.next(it);
+                  return
+                }
+                log('GraphQL AuthRetry', 'Recovered session with device token, retrying query', operation)
+                forward!(operation).subscribe(observer)
+              },
+              error => {
+                log('GraphQL AuthRetry', 'Login with device token in retry failed, passing original error', error)
+                clearDeviceToken();
+                this.onMissingAuth();
+                observer.next(it);
+              }
+            );
+
+            deferred = true;
             return // deferred execution to loginWithDeviceToken
           }
         }
         // By default, pipe back to parent link:
         observer.next(it)
+      }, error => {
+        if (!deferred) observer.error(it);
+      }, () => {
+        if (!deferred) observer.complete();
       })
     })
   }
@@ -131,8 +198,9 @@ class RetryOnUnauthorizedLink extends ApolloLink {
   async loginWithDeviceToken(
     forward: NextLink,
     observer: SubscriptionObserver<SomeFetchResult>
-  ): Promise<boolean> {
-    const login = forward!(
+  ) {
+    debug('GraphQL AuthRetry', 'Login started')
+    forward!(
       createOperation(
         {},
         {
@@ -144,20 +212,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
           variables: { deviceToken: getDeviceToken() }
         }
       )
-    )
-
-    const firstResult = await new Promise<SomeFetchResult>(res =>
-      login.subscribe(res)
-    )
-
-    if (!firstResult.errors?.length) {
-      // Login was successful
-      return true
-    }
-
-    // Pipe the login error back to the original query
-    observer.next(firstResult)
-    return false
+    ).subscribe(observer);
   }
 }
 
@@ -171,6 +226,9 @@ function describeDevice() {
 const useApolloInternal = () => {
   const [sessionState, setSessionState] =
     useState<LFApollo['sessionState']>('unknown')
+  const [user, setUser] = useState<UserType | null>(null);
+
+  log("GraphQL", "Refresh", { sessionState, user });
 
   const onMissingAuth = useCallback(() => setSessionState('logged-out'), [])
 
@@ -191,10 +249,12 @@ const useApolloInternal = () => {
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: from([
+        new RequestLoggerLink(),
         new RetryOnUnauthorizedLink(onMissingAuth),
         tokenLink,
         uriLink
-      ])
+      ]),
+      
     })
   }, [onMissingAuth])
 
@@ -205,13 +265,23 @@ const useApolloInternal = () => {
   //  so that when the session is invalidated, we can log in
   //  again using the device token
   const createDeviceToken = useCallback(async () => {
+    if (getDeviceToken()) return;
+
+    const { searchParams } = new URL(window.location.href);
+    if (searchParams.has('temporary')) {
+      log('GraphQL', 'Device token was not created as disabled via query parameter')
+      return
+    }
+
+    log('GraphQL', 'Creating device token with description: ' + describeDevice());
     const result = await client.mutate({
       mutation: gql`
         mutation CreateDeviceToken($description: String!) {
           tokenCreate(description: $description)
         }
       `,
-      variables: { description: describeDevice() }
+      variables: { description: describeDevice() },
+      context: { skipAuthRetry: true }
     })
 
     if (result.errors?.length) {
@@ -220,99 +290,193 @@ const useApolloInternal = () => {
 
     const deviceToken = result.data.tokenCreate
     setDeviceToken(deviceToken)
-    setSessionState('logged-in')
+    log('GraphQL', 'created device token')
     return deviceToken
   }, [client])
 
-  // ------------ Session Initialization ------------------
-  // When the user opens the app via email,
-  // the URL might contain a query parameter with which
-  // the user can be logged in automatically:
-  //  ?token=... is a legacy token where each user has exactly one
-  //  ?secret_token=... is a new token, based on 'secrets'
+  const loginWithDeviceToken = useCallback(async (deviceToken: string) => {
+    log('GraphQL', 'device token present, trying to log in')
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation LoginWithDeviceToken($deviceToken: String!) {
+            loginToken(token: $deviceToken)
+          }
+        `,
+        variables: { deviceToken },
+        context: { skipAuthRetry: true }
+      });
+
+      log('GraphQL', 'successfully logged in with device token')
+      setSessionState('logged-in')
+      setUser(null); // refresh user information
+    } catch(error) {
+      log("GraphQL", "Failed to log in with device token", error);
+      clearDeviceToken()
+      setSessionState('logged-out');
+      return;
+    }
+  }, [client, setSessionState]);
+
+  // ---------- Legacy Token --------------------
+  // In the old frontend, the token is passed to all pages via ?token= query parameter
+  // For backwards compatibility the new user app also supports this for now
+  const loginWithLegacyToken = useCallback(async (legacyToken: string) => {
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation LoginTokenLegacy($legacyToken: String!) {
+            loginLegacy(authToken: $legacyToken)
+          }
+        `,
+        variables: { legacyToken },
+        context: { skipAuthRetry: true }
+      })
+      log("GraphQL", `Successfully logged in with a legacy token`)
+      await createDeviceToken()
+      setSessionState('logged-in')
+      setUser(null); // refresh user information
+    } catch(error) {
+      log('GraphQL', 'Failed to login with legacy token', error)
+      setSessionState('logged-out')
+    }
+  }, [client, setSessionState, createDeviceToken]);
+
+  // ----------- Determine User --------------------------
+  const determineUser = useCallback(async () => {
+    log('GraphQL', 'Begin Determining User');
+      
+    const { data: { me }, error } = await client.query({
+      query: gql`
+        query {
+          me {
+            userID
+            firstname
+            lastname
+            email
+            pupil { id verifiedAt }
+            student { id verifiedAt }
+          }
+        }
+      `,
+      context: { skipAuthRetry: true }
+    });
+    log('GraphQL', 'Determined User', me);
+
+    if (error) throw new Error(`Failed to determine user: ${error.message}`);
+    setUser(me);
+  }, [client, setUser]);
+
+  // If the session is present and the user is not yet determined
+  // Trigger the user query
   useEffect(() => {
-    (async function () {
-      const { searchParams } = new URL(window.location.href)
+    if (sessionState !== "logged-in") return;
+    if (user) return;
+    determineUser(); // fire and forget
+  }, [sessionState, user, determineUser]);
+  
+  // ----------- Session Initialization ------------------
+  useEffect(() => {
+    log("GraphQL", "Determining Session")
+
+    ;(async function () {
+      const { searchParams, pathname } = new URL(window.location.href)
       const legacyToken = searchParams.get('token')
-      if (legacyToken) {
-        if (getDeviceToken()) {
-          console.log(
-            `Legacy Token present in URL, but as a device token is already present it is not used`
-          )
-          return
-        }
+      const deviceToken = getDeviceToken()
 
-        const result = await client.mutate({
-          mutation: gql`
-            mutation LoginTokenLegacy($legacyToken: String!) {
-              loginLegacy(authToken: $legacyToken)
-            }
-          `
-        })
-
-        if (result.errors?.length) {
-          console.warn(
-            `Failed to log in with a legacy token, token is probably invalid`
-          )
-          return // Silently failing, maybe the user knows his password instead?
-        }
-
-        console.log(`Successfully logged in with a legacy token`)
-        await createDeviceToken()
-        setSessionState('logged-in')
+      if (pathname === '/login-token' || pathname === '/login') {
+        log('GraphQL', 'User opened log in page, do not determine session');
+        return
       }
 
-      const secretToken = searchParams.get('secret_token')
-      if (secretToken) {
-        if (getDeviceToken()) {
-          console.log(
-            `Secret Token present in URL, but as a device token is already present it is not used`
-          )
-          return
-        }
-
-        const result = await client.mutate({
-          mutation: gql`
-            mutation LoginToken($token: String!) {
-              loginToken(token: $token)
-            }
-          `
-        })
-
-        if (result.errors?.length) {
-          console.warn(
-            `Failed to log in with a secret token, token is probably invalid`
-          )
-          return // Silently failing, maybe the user knows his password instead?
-        }
-
-        console.log(`Successfully logged in with a secret token`)
-        await createDeviceToken()
-        setSessionState('logged-in')
+      // Maybe the session already works?
+      try {
+        await determineUser();
+        setSessionState('logged-in');
+        return;
+      } catch(error) {
+        log('GraphQL', 'Could not query user, need to log in')
       }
+
+      // If not, log in using the various methods
+      if (deviceToken) {
+        await loginWithDeviceToken(deviceToken);
+        return;
+      }
+
+      if(legacyToken) {
+        await loginWithLegacyToken(legacyToken);
+        return;
+      } 
+      
+      setSessionState('logged-out');
+      log("GraphQL", "No Device Token present, need to log in again");
     })()
-  }, [client, createDeviceToken])
+  }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser])
 
-  // ------------ Login & Logout --------------------------
+  // ------------ Logout --------------------------
 
   const logout = useCallback(async () => {
-    // TODO: Revoke device token in backend?
+    if (getDeviceToken()) {
+      log("GraphQL", "Revoking device token for logout")
+      try {
+      await client.mutate({
+        mutation: gql`
+          mutation RevokeToken($deviceToken: String!) {
+            tokenRevoke(token: $deviceToken)
+          }
+        `,
+        variables: { deviceToken: getDeviceToken() },
+        context: { skipAuthRetry: true }
+      });
+      } catch(error) {
+        log('GraphQL', 'Failed to revoke device token, probably it was already revoked', error);
+      }
+      clearDeviceToken()
+      log("GraphQL", "Revoked device token")
+    }
 
-    await client.mutate({
-      mutation: gql`
-        mutation Logout {
-          logout
-        }
-      `
-    })
-    clearDeviceToken()
+    log("GraphQL", "Logging out")
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation Logout {
+            logout
+          }
+        `,
+        context: { skipAuthRetry: true }
+      })
+    } catch(error) {
+      log('GraphQL', 'Failed to log out, probably the session already expired', error);
+    }
+    refreshSessionToken();
     setSessionState('logged-out')
+    log("GraphQL", "Logged out")
   }, [client])
+
+  // Logins outside this hook can call onLogin to update this state
+  const onLogin = useCallback((query: FetchResult) => {
+    if (query.data) {
+      log('GraphQL', 'Logged in successfully');
+      setSessionState("logged-in");
+      setUser(null); // refresh user information
+      createDeviceToken(); // fire and forget
+    }
+  }, [createDeviceToken, setSessionState]);
+
   return useMemo(
-    () => ({ client, logout, createDeviceToken, sessionState }),
-    [client, logout, createDeviceToken, sessionState]
+    () => ({ client, logout, sessionState, user, onLogin }),
+    [client, logout, user, sessionState, onLogin]
   )
 }
 
 const useApollo = () => useContext(ExtendedApolloContext)!
+export const useUser = () => useContext(ExtendedApolloContext)!.user!;
+export const useUserType = () => {
+  const { user } = useContext(ExtendedApolloContext)!;
+  if (user?.pupil) return "pupil";
+  if (user?.student) return "student";
+  throw new Error(`useUserType cannot determine user`);
+};
+
 export default useApollo
