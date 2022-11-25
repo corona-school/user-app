@@ -14,11 +14,30 @@ import { useNotifications } from '../../hooks/useNotifications'
 import MessageBox from './MessageBox'
 import { useTranslation } from 'react-i18next'
 
-const NotificationPanel: React.FC = () => {
-  const [showOldNotifications, setShowOldNotifications] =
-    useState<boolean>(false)
-  const { notifications, loading, refetch } = useNotifications()
+type Props = {
+  userNotifications: UserNotification[]
+  lastOpen: string
+}
+
+const NotificationPanel: React.FC<Props> = ({
+  userNotifications,
+  lastOpen
+}) => {
+  const [isShowAll, setIsShowAll] = useState<boolean>(false)
+  const [notificationsToShow, setNotificationsToShow] = useState<
+    UserNotification[]
+  >([])
+
+  const { loading } = useNotifications()
   const { t } = useTranslation()
+
+  const unRead = (createdAt: string, open: string) => {
+    if (createdAt > open) {
+      return false
+    } else if (createdAt < open) {
+      return true
+    }
+  }
 
   const panelMarginLeft = useBreakpointValue({
     base: 3,
@@ -36,13 +55,23 @@ const NotificationPanel: React.FC = () => {
   }
 
   const handleClick = () => {
-    refetch()
-    setShowOldNotifications(!showOldNotifications)
+    setIsShowAll(!isShowAll)
   }
 
   useEffect(() => {
-    // TODO: implementation in the upcoming PR - setNotifications to render based on showOld
-  })
+    if (isShowAll) {
+      return setNotificationsToShow(userNotifications)
+    }
+
+    const notificationsToRender = userNotifications.filter(
+      notification => notification.createdAt > lastOpen
+    )
+
+    for (let i = notificationsToRender.length; i < 6; i++) {
+      notificationsToRender.push(userNotifications[i])
+    }
+    setNotificationsToShow([...notificationsToRender])
+  }, [userNotifications, lastOpen, isShowAll])
 
   return (
     <Box>
@@ -64,15 +93,16 @@ const NotificationPanel: React.FC = () => {
             <Box maxH={panelPropsAllDevices.maxH}>
               <ScrollView>
                 <Box>
-                  {notifications.map((notification: UserNotification) => (
+                  {notificationsToShow.map((notification: UserNotification) => (
                     <MessageBox
                       key={notification.id}
                       userNotification={notification}
+                      isRead={unRead(notification.createdAt, lastOpen)}
                     />
                   ))}
                 </Box>
               </ScrollView>
-              {!showOldNotifications && (
+              {!isShowAll && (
                 <Button onPress={handleClick} variant={'outline'}>
                   <Text fontSize="xs">
                     {t('notification.panel.button.text')}
