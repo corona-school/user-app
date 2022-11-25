@@ -479,4 +479,10 @@ export const useUserType = () => {
   throw new Error(`useUserType cannot determine user`);
 };
 
+export const useUserAuth = () => {
+  const {sessionState, user} = useContext(ExtendedApolloContext)!
+    return { sessionState, userId: user?.userID, getSessionToken }
+  
+}
+
 export default useApollo
