@@ -85,7 +85,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                         Solltest du Fragen haben, kontaktiere den Support
                     </AlertDialog.Body>
                     <AlertDialog.Footer>
-                        <Button.Group space={2}>
+                        <Button.Group direction="column" space={2}>
                             <Button colorScheme="blue" onPress={contactSupport} ref={closeRef}>
                                 Support kontaktieren
                             </Button>
