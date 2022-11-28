@@ -10,7 +10,7 @@ const dummyNotification = {
   notification: { messageType: 'match' }
 }
 
-export const WebsocketClient: FC<{}> = () => {
+export const WebsocketClient: FC = () => {
   const {setNotificationIds, setNotifications} = useContext(NotificationsContext)
   const {sessionState, userId, getSessionToken} = useUserAuth()
   const ws = useRef<WebSocketClient | null>(null);
@@ -18,17 +18,14 @@ export const WebsocketClient: FC<{}> = () => {
   const wsClient = new WSClient()
 
   useEffect(() => {
-    if (sessionState !== 'logged-in') {
+    if (sessionState !== 'logged-in' || !userId) {
       wsClient.close()
       
       return
     }
     
-    // only for testing
-    //wsClient.connect("wss://ws.kraken.com");
-    
-    const host = 'wss://ws.localhost:5000'
-    const url = `${host}?id="${userId}"&token="${getSessionToken()}"`
+    const host = 'ws://ws.localhost:5000'
+    const url = encodeURI(`${host}?id=${userId}&token=${getSessionToken()}`)
     wsClient.connect(url);
 
     wsClient.onMessage((event) => {
@@ -42,7 +39,7 @@ export const WebsocketClient: FC<{}> = () => {
     return () => {
       wsClient.close();
     };
-  }, [sessionState]);
+  }, [sessionState, userId]);
 
   return null;
 };

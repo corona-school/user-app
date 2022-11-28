@@ -19,7 +19,6 @@ class BrowserWebsocketClient implements WebSocketClient {
       
       // only for testing
       console.log("websocket opened");
-      this.socket?.send("{\"event\":\"subscribe\", \"subscription\":{\"name\":\"ticker\"}, \"pair\":[\"BTC/USD\"]}")
     };
 
     this.socket.onclose = () => {
