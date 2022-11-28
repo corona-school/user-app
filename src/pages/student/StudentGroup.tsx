@@ -229,7 +229,7 @@ const StudentGroup: React.FC<Props> = () => {
                 <Text>{t('matching.group.helper.content')}</Text>
               </VStack>
               <VStack>
-                <Heading fontSize="sm" marginBottom="5px">
+                <Heading fontSize="md" marginBottom="5px">
                   {t('matching.group.helper.contentHeadline')}
                 </Heading>
                 <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>

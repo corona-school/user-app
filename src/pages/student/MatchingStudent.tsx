@@ -301,14 +301,17 @@ const MatchingStudent: React.FC<Props> = () => {
                                   marginBottom="15px">
                                   <Box
                                     bgColor="primary.900"
-                                    padding={space['1']}
+                                    padding={space['1.5']}
                                     borderRadius={8}>
-                                    <Heading color="lightText">
+                                    <Heading
+                                      color="lightText"
+                                      paddingLeft={space['1']}>
                                       Anfrage {`${i + 1}`.padStart(2, '0')}
                                     </Heading>
 
                                     <Row
                                       mt="3"
+                                      paddingLeft={space['1']}
                                       space={space['0.5']}
                                       alignItems="center">
                                       <Text color="lightText" mb={space['0.5']}>
