@@ -13,23 +13,31 @@ import { useNotifications } from '../../hooks/useNotifications'
 import NotificationPanel from './NotificationPanel'
 
 const User = {
-  last_open: '2022-11-25T08:00:00.070Z'
+  lastTimeCheckedNotifications: '2022-11-28T08:00:00.070Z'
 }
 
 const NotificationAlert: React.FC = () => {
-  const { notifications, refetch } = useNotifications()
   const [count, setCount] = useState<number>(0)
+  const [lastOpen, setLastOpen] = useState<string>('')
+  const { notifications, refetch } = useNotifications()
 
   const badgeAlign = useBreakpointValue({
     base: 0,
     lg: 2
   })
 
+  const handleClose = () => {
+    const now = new Date().toISOString()
+    setCount(0)
+    setLastOpen(now)
+  }
+
   useEffect(() => {
     const unreadNotifications = notifications.filter(
-      noti => noti.createdAt > User.last_open
+      notification => notification.sentAt > lastOpen
     )
     setCount(unreadNotifications.length)
+    setLastOpen(User.lastTimeCheckedNotifications)
     refetch()
     // TODO change notifications to contextNotifications
   }, [notifications, refetch])
@@ -64,10 +72,11 @@ const NotificationAlert: React.FC = () => {
   return (
     <Popover
       placement="bottom"
-      trigger={triggerprops => handleTrigger(triggerprops)}>
+      trigger={triggerprops => handleTrigger(triggerprops)}
+      onClose={() => handleClose()}>
       <NotificationPanel
         userNotifications={notifications}
-        lastOpen={User.last_open}
+        lastOpen={lastOpen}
       />
     </Popover>
   )
