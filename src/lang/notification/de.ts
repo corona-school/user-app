@@ -12,6 +12,18 @@ const notification = {
     button: {
       text: 'Ältere Benachrichtigungen anzeigen'
     }
+  },
+  controlPanel: {
+    tabs: {
+      tab1: {
+        title: 'System',
+        description:
+          'Systembenachrichtigungen werden dir jeweils innerhalb der App (an der Glocke im Header) angezeigt. Hier kannst du einstellen, ob du zusätzlich per Mail benachrichtigt werden möchtest.'
+      },
+      tab2: {
+        title: 'Marketing'
+      }
+    }
   }
 }
 export default notification
