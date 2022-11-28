@@ -13,7 +13,7 @@ const userNotificationQuery = gql`
         notification {
           messageType
         }
-        createdAt
+        sentAt
       }
     }
   }
