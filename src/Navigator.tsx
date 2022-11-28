@@ -11,10 +11,10 @@ import { RequireAuth } from './User';
 import FullPageModal from './widgets/FullPageModal';
 
 // All other pages load lazy:
-const NavigatorLazy = lazy(() => import('./NavigatorLazy'));
+const NavigatorLazy = lazy(() => import('./NavigatorLazy'))
 
 // But as after login the user will visit the dashboard anyways, let's start loading it already
-import('./NavigatorLazy');
+import('./NavigatorLazy')
 
 export default function Navigator() {
     return (
