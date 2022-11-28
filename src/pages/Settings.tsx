@@ -89,13 +89,13 @@ const Settings: React.FC<Props> = () => {
               label={t('settings.general.languageVersion')}
               isDisabled
             />
-          </Column>
+          </Column> */}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.general.notifications')}
-              isDisabled
+              onPress={() => navigate('/notifications')}
             />
-          </Column> */}
+          </Column>
           {userType === 'student' && (
             <Column mb={tabspace}>
               <EditDataRow
@@ -125,7 +125,7 @@ const Settings: React.FC<Props> = () => {
             <EditDataRow
               label={t('settings.account.logout')}
               onPress={() => {
-                (async function () {
+                ;(async function () {
                   trackEvent({
                     category: 'profil',
                     action: 'click-event',
@@ -133,7 +133,7 @@ const Settings: React.FC<Props> = () => {
                     documentTitle: 'Logout'
                   })
                   await logout()
-                })();
+                })()
               }}
             />
           </Column>
