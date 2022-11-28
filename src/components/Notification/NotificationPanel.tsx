@@ -31,10 +31,10 @@ const NotificationPanel: React.FC<Props> = ({
   const { loading } = useNotifications()
   const { t } = useTranslation()
 
-  const unRead = (createdAt: string, open: string) => {
-    if (createdAt > open) {
+  const unRead = (sentAt: string, open: string) => {
+    if (sentAt > open) {
       return false
-    } else if (createdAt < open) {
+    } else if (sentAt < open) {
       return true
     }
   }
@@ -64,10 +64,10 @@ const NotificationPanel: React.FC<Props> = ({
     }
 
     const notificationsToRender = userNotifications.filter(
-      notification => notification.createdAt > lastOpen
+      notification => notification.sentAt > lastOpen
     )
 
-    for (let i = notificationsToRender.length; i < 6; i++) {
+    for (let i = notificationsToRender.length; i < 5; i++) {
       notificationsToRender.push(userNotifications[i])
     }
     setNotificationsToShow([...notificationsToRender])
@@ -97,7 +97,7 @@ const NotificationPanel: React.FC<Props> = ({
                     <MessageBox
                       key={notification.id}
                       userNotification={notification}
-                      isRead={unRead(notification.createdAt, lastOpen)}
+                      isRead={unRead(notification.sentAt, lastOpen)}
                     />
                   ))}
                 </Box>

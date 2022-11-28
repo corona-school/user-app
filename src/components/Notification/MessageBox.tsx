@@ -14,7 +14,7 @@ const MessageBox: React.FC<Props> = ({
   isStandalone,
   isRead
 }) => {
-  const { headline, body, notification, createdAt } = userNotification
+  const { headline, body, notification, sentAt } = userNotification
 
   const boxProps = {
     mb: 2,
@@ -51,7 +51,7 @@ const MessageBox: React.FC<Props> = ({
         <Spacer />
         {!isStandalone && (
           <VStack>
-            <TimeIndicator createdAt={createdAt} />
+            <TimeIndicator sentAt={sentAt} />
           </VStack>
         )}
       </HStack>
