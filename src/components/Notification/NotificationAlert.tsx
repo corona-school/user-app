@@ -10,35 +10,19 @@ import {
 import { IButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types'
 import { useEffect, useState } from 'react'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
+import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 import { useNotifications } from '../../hooks/useNotifications'
 import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
-  const [lastOpen, setLastOpen] = useState<string>('')
   const { notifications, refetch } = useNotifications()
-
-  const { data } = useQuery(gql`
-    query {
-      me {
-        pupil {
-          lastTimeCheckedNotifications
-        }
-      }
-    }
-  `)
-
-  const [updateLastTimeCheckedNotifications] = useMutation(gql`
-    mutation updateLastTimeCheckedNotifications(
-      $lastTimeCheckedNotifications: DateTime
-    ) {
-      meUpdate(
-        update: {
-          pupil: { lastTimeCheckedNotifications: $lastTimeCheckedNotifications }
-        }
-      )
-    }
-  `)
+  const {
+    lastTimeChecked,
+    lastTimeCheckedLoading,
+    lastTimeCheckedError,
+    updateLastTimeCheckedNotifications
+  } = useLastTimeCheckedNotifications()
 
   const badgeAlign = useBreakpointValue({
     base: 0,
@@ -48,28 +32,24 @@ const NotificationAlert: React.FC = () => {
   const handleClose = () => {
     const now = new Date().toISOString()
     setCount(0)
-    setLastOpen(now)
     updateLastTimeCheckedNotifications({
       variables: { lastTimeCheckedNotifications: now }
     })
   }
 
   useEffect(() => {
-    // setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
-    console.log('last open', lastOpen)
     const unreadNotifications = notifications.filter(
-      notification => notification.sentAt > lastOpen
+      notification => notification.sentAt > lastTimeChecked
+    )
+    notifications.map(noti =>
+      console.log('sent', noti.sentAt, 'last opened', lastTimeChecked)
     )
     setCount(unreadNotifications.length)
     refetch()
+
     // TODO change notifications to contextNotifications
   }, [notifications, refetch])
 
-  useEffect(() => {
-    setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
-  }, [])
-
-  console.log('last-open', lastOpen)
   const handleTrigger = ({
     onPress,
     ref
@@ -102,10 +82,7 @@ const NotificationAlert: React.FC = () => {
       placement="bottom"
       trigger={triggerprops => handleTrigger(triggerprops)}
       onClose={() => handleClose()}>
-      <NotificationPanel
-        userNotifications={notifications}
-        lastOpen={lastOpen}
-      />
+      <NotificationPanel userNotifications={notifications} />
     </Popover>
   )
 }

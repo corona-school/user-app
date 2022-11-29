@@ -94,4 +94,15 @@ const getTimeText = (timestamp: string): TimeText | string => {
   }
   return timeAsString
 }
-export { getIcon, getTimeText }
+
+const setReadOrUnread = (sentAt: string, lastOpen: string) => {
+  // unread
+  if (sentAt > lastOpen) {
+    return false
+    // read
+  } else if (sentAt < lastOpen) {
+    return true
+  }
+}
+
+export { getIcon, getTimeText, setReadOrUnread }
