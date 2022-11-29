@@ -89,7 +89,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack }) => {
 
       {lectures?.map((lec, i) => (
         <Row maxWidth={ContainerWidth}>
-          <CourseDateWizard index={i} />
+          <CourseDateWizard index={i} prefill={lec} />
         </Row>
       ))}
 

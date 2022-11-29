@@ -78,6 +78,7 @@ const SingleCourse: React.FC<Props> = () => {
       }
       ${userQuery}
       course {
+        name
         image
         outline
         category
@@ -88,15 +89,9 @@ const SingleCourse: React.FC<Props> = () => {
         }
         allowContact
       }
-
-     
       lectures{
         start
         duration
-
-      }
-      course {
-        name
       }
     }
   }`
@@ -378,7 +373,7 @@ const SingleCourse: React.FC<Props> = () => {
               <Button
                 onPress={() => {
                   navigate('/edit-course', {
-                    state: { course: courseData.subcourse }
+                    state: { courseId: courseData.subcourse.id }
                   })
                 }}
                 width={ButtonContainer}
@@ -439,7 +434,10 @@ const SingleCourse: React.FC<Props> = () => {
                           </Text>
                           <Text>
                             <Text bold>{t('single.global.duration')}: </Text>{' '}
-                            {lec?.duration / 60} {t('single.global.hours')}
+                            {(typeof lec?.duration !== 'number'
+                              ? parseInt(lec?.duration)
+                              : lec?.duration) / 60}{' '}
+                            {t('single.global.hours')}
                           </Text>
                         </Row>
                       ))) || <Text>{t('single.global.noLections')}</Text>}

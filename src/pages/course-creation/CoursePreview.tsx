@@ -24,13 +24,15 @@ type Props = {
   onBack: () => any
   isDisabled?: boolean
   isError?: boolean
+  prefillCourseId?: number | string
 }
 
 const CoursePreview: React.FC<Props> = ({
   onNext,
   onBack,
   isDisabled,
-  isError
+  isError,
+  prefillCourseId
 }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
@@ -234,7 +236,8 @@ const CoursePreview: React.FC<Props> = ({
             onNext()
           }}
           isDisabled={isDisabled}>
-          {t('course.CourseDate.Preview.publishCourse')}
+          {(!!prefillCourseId && 'Änderungen speichern') ||
+            t('course.CourseDate.Preview.publishCourse')}
         </Button>
         <Button
           marginBottom={space['1']}

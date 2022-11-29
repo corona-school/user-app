@@ -17,9 +17,10 @@ import { CreateCourseContext } from '../CreateCourse'
 
 type Props = {
   index: number
+  prefill?: any
 }
 
-const CourseDateWizard: React.FC<Props> = ({ index }) => {
+const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
   const { lectures, setLectures } = useContext(CreateCourseContext)
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
@@ -100,8 +101,9 @@ const CourseDateWizard: React.FC<Props> = ({ index }) => {
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.Wizard.duration')}
         </FormControl.Label>
+
         <Select
-          selectedValue={lectures && lectures[index].duration}
+          selectedValue={lectures && lectures[index].duration.toString()}
           placeholder={t('course.selectPlaceHolderDuration')}
           onValueChange={e => {
             if (!lectures || !lectures[index]) return
