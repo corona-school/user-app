@@ -200,9 +200,9 @@ const DashboardStudent: React.FC<Props> = () => {
     | undefined = useMemo(() => {
     if (!data?.me?.student) return undefined
 
-    let firstCourse: LFSubCourse = null!
+    let firstCourse: LFSubCourse | null = null
     let firstDate: DateTime = DateTime.now()
-    let firstLecture: LFLecture = null!
+    let firstLecture: LFLecture | null = null
 
     for (const sub of sortedPublishedSubcourses) {
       if (!firstCourse) {
@@ -227,6 +227,10 @@ const DashboardStudent: React.FC<Props> = () => {
         firstDate = _firstDate
         firstCourse = sub
       }
+    }
+
+    if (!firstLecture || !firstCourse) {
+      return undefined
     }
 
     if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
