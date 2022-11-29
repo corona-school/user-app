@@ -28,12 +28,13 @@ const NotificationAlert: React.FC = () => {
     }
   `)
 
-  // TODO with variables
-  const [changeLastTimeCheckedNotifications] = useMutation(gql`
-    mutation changeLastTimeCheckedNotifications {
+  const [updateLastTimeCheckedNotifications] = useMutation(gql`
+    mutation updateLastTimeCheckedNotifications(
+      $lastTimeCheckedNotifications: DateTime
+    ) {
       meUpdate(
         update: {
-          pupil: { lastTimeCheckedNotifications: "2022-11-28T08:00:00.070Z" }
+          pupil: { lastTimeCheckedNotifications: $lastTimeCheckedNotifications }
         }
       )
     }
@@ -45,23 +46,30 @@ const NotificationAlert: React.FC = () => {
   })
 
   const handleClose = () => {
-    const now = new Date()
-    const nowString = now.toISOString()
+    const now = new Date().toISOString()
     setCount(0)
-    setLastOpen(nowString)
-    changeLastTimeCheckedNotifications()
+    setLastOpen(now)
+    updateLastTimeCheckedNotifications({
+      variables: { lastTimeCheckedNotifications: now }
+    })
   }
 
   useEffect(() => {
+    // setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
+    console.log('last open', lastOpen)
     const unreadNotifications = notifications.filter(
       notification => notification.sentAt > lastOpen
     )
     setCount(unreadNotifications.length)
-    setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
     refetch()
     // TODO change notifications to contextNotifications
   }, [notifications, refetch])
 
+  useEffect(() => {
+    setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
+  }, [])
+
+  console.log('last-open', lastOpen)
   const handleTrigger = ({
     onPress,
     ref
