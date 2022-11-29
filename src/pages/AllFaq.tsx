@@ -3,7 +3,6 @@ import { Box, Heading, useTheme, Text } from 'native-base'
 import { useEffect } from 'react'
 import Accordion from '../components/Accordion'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/Notification/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 
 type Props = {}
