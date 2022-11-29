@@ -439,7 +439,10 @@ const SingleCourse: React.FC<Props> = () => {
                           </Text>
                           <Text>
                             <Text bold>{t('single.global.duration')}: </Text>{' '}
-                            {lec?.duration / 60} {t('single.global.hours')}
+                            {(typeof lec?.duration === 'number'
+                              ? lec?.duration
+                              : parseInt(lec?.duration)) / 60}{' '}
+                            {t('single.global.hours')}
                           </Text>
                         </Row>
                       ))) || <Text>{t('single.global.noLections')}</Text>}
