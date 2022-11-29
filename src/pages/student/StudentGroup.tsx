@@ -181,7 +181,7 @@ const StudentGroup: React.FC<Props> = () => {
           isSpaceMarginBottom={false}
           key={index}
           variant="horizontal"
-          description={course.outline}
+          description={course.course.outline}
           tags={course.course.tags}
           date={(showDate && firstLecture?.start) || ''}
           countCourse={course.lectures.length}

@@ -34,7 +34,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
+import { getTrafficStatus } from '../../Utility'
 
 type Props = {}
 
