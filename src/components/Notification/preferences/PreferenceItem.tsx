@@ -57,22 +57,24 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
               ellipsizeMode="tail"
               numberOfLines={2}>
               {title}
+              <>
+                {isMobile ? (
+                  <Pressable
+                    ml={1}
+                    onPress={() => console.log('open info modal')}>
+                    <Circle rounded="full" bg="amber.700" size={4}>
+                      <Box _text={{ color: 'white' }}>i</Box>
+                    </Circle>
+                  </Pressable>
+                ) : (
+                  <Tooltip label="Testlabel">
+                    <Circle rounded="full" bg="amber.700" size={4} ml={1}>
+                      <Box _text={{ color: 'white' }}>i</Box>
+                    </Circle>
+                  </Tooltip>
+                )}
+              </>
             </Text>
-          </VStack>
-          <VStack>
-            {isMobile ? (
-              <Pressable onPress={() => console.log('open info modal')}>
-                <Circle rounded="full" bg="amber.700" size={4}>
-                  <Box _text={{ color: 'white' }}>i</Box>
-                </Circle>
-              </Pressable>
-            ) : (
-              <Tooltip label="Testlabel">
-                <Circle rounded="full" bg="amber.700" size={4}>
-                  <Box _text={{ color: 'white' }}>i</Box>
-                </Circle>
-              </Tooltip>
-            )}
           </VStack>
           <Spacer />
           <VStack>
