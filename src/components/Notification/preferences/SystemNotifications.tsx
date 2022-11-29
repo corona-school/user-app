@@ -1,4 +1,4 @@
-import { Box, Text } from 'native-base'
+import { Box, Text, useBreakpointValue } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { preferencesData } from './PreferencesData'
 import PreferenceItem from './PreferenceItem'
@@ -6,10 +6,19 @@ import PreferenceItem from './PreferenceItem'
 const SystemNotifications = () => {
   const { t } = useTranslation()
 
+  const marginLeft = useBreakpointValue({
+    base: 0,
+    lg: 5
+  })
+
+  const marginBottom = useBreakpointValue({
+    base: 5,
+    lg: 3
+  })
   return (
     <>
-      <Box ml={5}>
-        <Text mb={3}>
+      <Box ml={marginLeft}>
+        <Text mb={marginBottom}>
           {t('notification.controlPanel.tabs.tab1.description')}
         </Text>
         <Box>

@@ -14,21 +14,28 @@ import SystemNotifications from '../../components/notification/preferences/Syste
 
 const NotficationControlPanel = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
-  const { space } = useTheme()
+  const { sizes, space } = useTheme()
+
+  const isMobile = useBreakpointValue({
+    base: true,
+    lg: false
+  })
 
   const width = useBreakpointValue({
-    base: 600,
-    lg: 1150
+    base: '90%',
+    lg: '100%'
   })
 
   return (
     <>
-      <WithNavigation>
-        <View py={3} width={600}>
-          <Row marginBottom={space['2']}>
-            <Heading>E-Mail-Benachrichtigungen</Heading>
-          </Row>
-          <VStack>
+      <WithNavigation showBack headerTitle={'E-Mail-Benachrichtigungen'}>
+        <View py={5} width={width}>
+          {!isMobile && (
+            <Row marginBottom={space['2']} ml={3}>
+              <Heading>E-Mail-Benachrichtigungen</Heading>
+            </Row>
+          )}
+          <VStack ml={3}>
             <Tabs
               onPressTab={(tab: Tab, index: number) => {
                 setActiveTab(index)
