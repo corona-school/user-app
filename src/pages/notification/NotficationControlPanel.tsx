@@ -11,10 +11,12 @@ import { useState } from 'react'
 import Tabs, { Tab } from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
 import SystemNotifications from '../../components/notification/preferences/SystemNotifications'
+import { useTranslation } from 'react-i18next'
 
 const NotficationControlPanel = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
-  const { sizes, space } = useTheme()
+  const { space } = useTheme()
+  const { t } = useTranslation()
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -28,11 +30,13 @@ const NotficationControlPanel = () => {
 
   return (
     <>
-      <WithNavigation showBack headerTitle={'E-Mail-Benachrichtigungen'}>
+      <WithNavigation
+        showBack
+        headerTitle={t('notification.controlPanel.title')}>
         <View py={5} width={width}>
           {!isMobile && (
             <Row marginBottom={space['2']} ml={3}>
-              <Heading>E-Mail-Benachrichtigungen</Heading>
+              <Heading>{t('notification.controlPanel.title')}</Heading>
             </Row>
           )}
           <VStack ml={3}>

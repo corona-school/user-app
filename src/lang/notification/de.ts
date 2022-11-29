@@ -13,6 +13,7 @@ const notification = {
     }
   },
   controlPanel: {
+    title: 'E-Mail-Benachrichtigungen',
     tabs: {
       tab1: {
         title: 'System',
