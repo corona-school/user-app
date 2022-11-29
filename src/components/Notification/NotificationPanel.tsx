@@ -13,31 +13,23 @@ import { UserNotification } from '../../types/lernfair/Notification'
 import { useNotifications } from '../../hooks/useNotifications'
 import MessageBox from './MessageBox'
 import { useTranslation } from 'react-i18next'
+import { setReadOrUnread } from '../../helper/notification-helper'
+import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 
 type Props = {
   userNotifications: UserNotification[]
-  lastOpen: string
 }
 
-const NotificationPanel: React.FC<Props> = ({
-  userNotifications,
-  lastOpen
-}) => {
+const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
   const [notificationsToShow, setNotificationsToShow] = useState<
     UserNotification[]
   >([])
 
+  const { lastTimeChecked } = useLastTimeCheckedNotifications()
+
   const { loading } = useNotifications()
   const { t } = useTranslation()
-
-  const unRead = (sentAt: string, open: string) => {
-    if (sentAt > open) {
-      return false
-    } else if (sentAt < open) {
-      return true
-    }
-  }
 
   const panelMarginLeft = useBreakpointValue({
     base: 3,
@@ -62,16 +54,14 @@ const NotificationPanel: React.FC<Props> = ({
     if (isShowAll) {
       return setNotificationsToShow(userNotifications)
     }
-
     const notificationsToRender = userNotifications.filter(
-      notification => notification.sentAt > lastOpen
+      notification => notification.sentAt > lastTimeChecked
     )
-
     for (let i = notificationsToRender.length; i < 5; i++) {
       notificationsToRender.push(userNotifications[i])
     }
     setNotificationsToShow([...notificationsToRender])
-  }, [userNotifications, lastOpen, isShowAll])
+  }, [userNotifications, lastTimeChecked, isShowAll])
 
   return (
     <Box>
@@ -97,7 +87,10 @@ const NotificationPanel: React.FC<Props> = ({
                     <MessageBox
                       key={notification.id}
                       userNotification={notification}
-                      isRead={unRead(notification.sentAt, lastOpen)}
+                      isRead={setReadOrUnread(
+                        notification.sentAt,
+                        lastTimeChecked
+                      )}
                     />
                   ))}
                 </Box>
