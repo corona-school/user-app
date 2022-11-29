@@ -115,6 +115,8 @@ const MatchingWizard: React.FC<Props> = () => {
     lg: 0
   })
 
+  const SelectedSchoolType = data?.me?.pupil?.schooltype
+
   if (loading) return <CenterLoadingSpinner />
 
   return (
@@ -134,7 +136,25 @@ const MatchingWizard: React.FC<Props> = () => {
         <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
           <Text>
             <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-            {data?.me?.pupil?.schooltype}
+            <Text>
+              {SelectedSchoolType === 'other'
+                ? 'Andere'
+                : SelectedSchoolType === 'grundschule'
+                ? 'Grundschule'
+                : SelectedSchoolType === 'gesamtschule'
+                ? 'Gesamtschule'
+                : SelectedSchoolType === 'hauptschule'
+                ? 'Hauptschule'
+                : SelectedSchoolType === 'realschule'
+                ? 'Realschule'
+                : SelectedSchoolType === 'gymnasium'
+                ? 'Gymnasium'
+                : SelectedSchoolType === 'f_rderschule'
+                ? 'Förderschule'
+                : SelectedSchoolType === 'berufsschule'
+                ? 'Berufsschule'
+                : SelectedSchoolType}
+            </Text>
           </Text>
           <Text>
             <Text bold>{t('matching.request.grade')}</Text>{' '}

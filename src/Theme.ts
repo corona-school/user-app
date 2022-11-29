@@ -97,6 +97,7 @@ const Theme = extendTheme({
   sizes: {
     headerSizePx: 56,
     headerPaddingYPx: 8,
+    imageHeaderWidth: '960px',
     contentContainerWidth: '680px',
     containerWidth: '1500px',
     desktopbuttonWidth: 'max-content',
