@@ -19,6 +19,7 @@ import useModal from '../../hooks/useModal'
 import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
+import { getSchoolTypeKey } from '../../types/lernfair/SchoolType'
 
 type Props = {}
 
@@ -136,25 +137,7 @@ const MatchingWizard: React.FC<Props> = () => {
         <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
           <Text>
             <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-            <Text>
-              {SelectedSchoolType === 'other'
-                ? 'Andere'
-                : SelectedSchoolType === 'grundschule'
-                ? 'Grundschule'
-                : SelectedSchoolType === 'gesamtschule'
-                ? 'Gesamtschule'
-                : SelectedSchoolType === 'hauptschule'
-                ? 'Hauptschule'
-                : SelectedSchoolType === 'realschule'
-                ? 'Realschule'
-                : SelectedSchoolType === 'gymnasium'
-                ? 'Gymnasium'
-                : SelectedSchoolType === 'f_rderschule'
-                ? 'Förderschule'
-                : SelectedSchoolType === 'berufsschule'
-                ? 'Berufsschule'
-                : SelectedSchoolType}
-            </Text>
+            <Text>{getSchoolTypeKey(SelectedSchoolType)}</Text>
           </Text>
           <Text>
             <Text bold>{t('matching.request.grade')}</Text>{' '}

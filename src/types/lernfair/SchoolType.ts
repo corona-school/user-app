@@ -13,3 +13,13 @@ export const schooltypes: SchoolType[] = [
   { label: 'Förderschule', key: 'f_rderschule' },
   { label: 'Sonstige', key: 'other' }
 ]
+
+
+export const getSchoolTypeKey: (name: string) => string = name => {
+  for (let schooltype of schooltypes) {
+    if (schooltype.key === name) {
+      return schooltype.label
+    }
+  }
+  return 'other'
+}
