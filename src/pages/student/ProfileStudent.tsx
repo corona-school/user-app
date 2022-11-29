@@ -165,6 +165,7 @@ const ProfileStudent: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation
+        showBack
         isLoading={loading}
         headerTitle={t('profile.title')}
         headerContent={

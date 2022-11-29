@@ -86,32 +86,46 @@ const CoursePreview: React.FC<Props> = ({
         {t('course.CourseDate.Preview.courseSubject')}
       </Heading>
 
-      {subject && (
-        <>
-          <IconTagList
-            iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
-            isDisabled
-            text={subject.name || ''}
-          />
-        </>
-      )}
-
-      <Heading fontSize="md">
-        Klassen {courseClasses && courseClasses[0]} -{' '}
-        {courseClasses && courseClasses[1]}
-      </Heading>
-
-      <Box bg="gray.500" h="180">
-        <Image src={pickedPhoto} h="100%" />
+      <Box paddingBottom={space['0.5']}>
+        {subject && (
+          <>
+            <IconTagList
+              iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+              isDisabled
+              text={subject.name || ''}
+            />
+          </>
+        )}
       </Box>
+
+      <Row flexDirection="column" paddingBottom={space['0.5']}>
+        <Heading fontSize="md" paddingBottom={space['0.5']}>
+          Jahrgangsstufe
+        </Heading>
+
+        <Text>
+          Klassen {courseClasses && courseClasses[0]} -{' '}
+          {courseClasses && courseClasses[1]}
+        </Text>
+      </Row>
+
+      <Row flexDirection="column" paddingBottom={space['0.5']}>
+        <Heading fontSize="md" paddingBottom={space['0.5']}>
+          Bild
+        </Heading>
+
+        <Box bg="gray.500" h="180">
+          <Image src={pickedPhoto} h="100%" />
+        </Box>
+      </Row>
 
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.shortDesc')}
       </Heading>
-      <Text>{outline}</Text>
+      <Text paddingBottom={space['0.5']}>{outline}</Text>
 
       <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
-      <Text>{description}</Text>
+      <Text paddingBottom={space['0.5']}>{description}</Text>
 
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.tagHeadline')}
@@ -123,11 +137,6 @@ const CoursePreview: React.FC<Props> = ({
           <Text>Es wurden keine Tags angegeben.</Text>
         )}
       </Row>
-
-      <Heading fontSize="md">
-        {t('course.CourseDate.Preview.classHeadline')}
-      </Heading>
-
       <VStack>
         <Row>
           <Text fontSize="md" bold>
@@ -161,13 +170,13 @@ const CoursePreview: React.FC<Props> = ({
           </Text>
         </Row>
       </VStack>
-      <Heading fontSize="lg" marginBottom={space['1']}>
+      <Heading fontSize="xl" marginBottom={space['1']}>
         {t('course.CourseDate.Preview.appointmentHeadline')}
       </Heading>
       {lectures &&
         lectures.map((lec, i) => (
           <VStack marginBottom={space['1']}>
-            <Heading mb={space['0.5']}>
+            <Heading mb={space['0.5']} fontSize="lg">
               {t('course.CourseDate.Preview.appointmentLabel')}{' '}
               {`${i + 1}`.padStart(2, '0')}
             </Heading>

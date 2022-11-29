@@ -303,7 +303,10 @@ const RegistrationAccount: React.FC<Props> = () => {
               }}>
               <Trans i18nKey="registration.check_legal">
                 Hiermit stimme ich der
-                <Link href="/privacy">Datenschutzerklärung</Link> zu.
+                <Link paddingX={space['0.5']} href="/privacy">
+                  Datenschutzerklärung
+                </Link>
+                zu.
               </Trans>
             </Checkbox>
             {showLegalNotChecked && (

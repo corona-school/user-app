@@ -95,9 +95,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const cleanupSubjects: (data: LFSubject[]) => LFSubject[] = useCallback(
     (data: LFSubject[]) => {
       const arr: LFSubject[] = []
-      console.log(data)
       for (const sub of data) {
-        console.log(sub)
         delete sub['__typename']
 
         if (sub.grade) {
