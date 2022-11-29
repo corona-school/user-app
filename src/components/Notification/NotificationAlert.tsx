@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -12,14 +13,31 @@ import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
 import { useNotifications } from '../../hooks/useNotifications'
 import NotificationPanel from './NotificationPanel'
 
-const User = {
-  lastTimeCheckedNotifications: '2022-11-28T08:00:00.070Z'
-}
-
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
   const [lastOpen, setLastOpen] = useState<string>('')
   const { notifications, refetch } = useNotifications()
+
+  const { data } = useQuery(gql`
+    query {
+      me {
+        pupil {
+          lastTimeCheckedNotifications
+        }
+      }
+    }
+  `)
+
+  // TODO with variables
+  const [changeLastTimeCheckedNotifications] = useMutation(gql`
+    mutation changeLastTimeCheckedNotifications {
+      meUpdate(
+        update: {
+          pupil: { lastTimeCheckedNotifications: "2022-11-28T08:00:00.070Z" }
+        }
+      )
+    }
+  `)
 
   const badgeAlign = useBreakpointValue({
     base: 0,
@@ -27,9 +45,11 @@ const NotificationAlert: React.FC = () => {
   })
 
   const handleClose = () => {
-    const now = new Date().toISOString()
+    const now = new Date()
+    const nowString = now.toISOString()
     setCount(0)
-    setLastOpen(now)
+    setLastOpen(nowString)
+    changeLastTimeCheckedNotifications()
   }
 
   useEffect(() => {
@@ -37,7 +57,7 @@ const NotificationAlert: React.FC = () => {
       notification => notification.sentAt > lastOpen
     )
     setCount(unreadNotifications.length)
-    setLastOpen(User.lastTimeCheckedNotifications)
+    setLastOpen(data?.me?.pupil?.lastTimeCheckedNotifications)
     refetch()
     // TODO change notifications to contextNotifications
   }, [notifications, refetch])
