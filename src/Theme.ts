@@ -84,7 +84,7 @@ const Theme = extendTheme({
   },
   fontSizes: {
     xs: '0.714rem',
-    sm: '0.857rem',
+    sm: '0.957rem',
     md: '1rem',
     lg: '1.214rem',
     xl: '1.357rem'

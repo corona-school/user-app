@@ -112,7 +112,7 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const MatchingButtonSpacing = useBreakpointValue({
     base: space['1'],
-    lg: space['0.5']
+    lg: 0
   })
 
   if (loading) return <CenterLoadingSpinner />

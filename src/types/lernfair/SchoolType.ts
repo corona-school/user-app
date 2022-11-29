@@ -6,7 +6,10 @@ export type SchoolType = {
 export const schooltypes: SchoolType[] = [
   { label: 'Grundschule', key: 'grundschule' },
   { label: 'Hauptschule', key: 'hauptschule' },
+  { label: 'Gesamtschule', key: 'gesamtschule' },
   { label: 'Realschule', key: 'realschule' },
   { label: 'Gymnasium', key: 'gymnasium' },
-  { label: 'Andere', key: 'other' }
+  { label: 'Berufsschule', key: 'berufsschule' },
+  { label: 'Förderschule', key: 'f_rderschule' },
+  { label: 'Sonstige', key: 'other' }
 ]
