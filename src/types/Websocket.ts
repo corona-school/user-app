@@ -1,23 +1,18 @@
 export type WebSocketClient = {
   isConnected: boolean
-  connect: (url: string) => void
   onMessage: (callback: (this: WebSocket, ev: MessageEvent) => any) => void
   close: () => void
 }
 
 class BrowserWebsocketClient implements WebSocketClient {
-  private socket: WebSocket | undefined
+  private readonly socket: WebSocket
   public isConnected: boolean = false
-
-  // maybe in async connect function
-  connect(url: string) {
-    if (this.isConnected) this.close()
-    
+  
+  constructor(url: string) {
     this.socket = new WebSocket(url)
     this.socket.onopen = () => {
       this.isConnected = true
-      
-      // only for testing
+
       console.log("websocket opened");
     };
 
@@ -36,8 +31,7 @@ class BrowserWebsocketClient implements WebSocketClient {
   }
   
   close() {
-    this.socket?.close()
-    this.socket = undefined
+    this.socket.close()
   }
 }
 
