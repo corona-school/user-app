@@ -8,6 +8,8 @@ declare namespace NodeJS {
     readonly REACT_APP_VERSION: string
     // Pointing to a running instance of corona-school/backend
     readonly REACT_APP_BACKEND_URL: string
+    // Websocket Server URL
+    readonly REACT_APP_WEBSOCKET_URL: string
     // Matomo API Key
     readonly REACT_APP_MATOMO_URL: string
     readonly REACT_APP_DISABLE_MATOMO?: "true"

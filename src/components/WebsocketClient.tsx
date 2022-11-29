@@ -24,7 +24,7 @@ export const WebsocketClient: FC = () => {
       return
     }
     
-    const host = 'ws://ws.localhost:5000'
+    const host = process.env.REACT_APP_WEBSOCKET_URL
     const url = encodeURI(`${host}?id=${userId}&token=${getSessionToken()}`)
     wsClient.connect(url);
 
