@@ -95,9 +95,8 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   const cleanupSubjects: (data: LFSubject[]) => LFSubject[] = useCallback(
     (data: LFSubject[]) => {
       const arr: LFSubject[] = []
-      console.log(data)
+
       for (const sub of data) {
-        console.log(sub)
         delete sub['__typename']
 
         if (sub.grade) {
@@ -254,6 +253,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                           marginBottom={3}
                           key={`offers-${index}`}>
                           <IconTagList
+                            initial={false}
                             iconPath={`subjects/icon_${subject.key}.svg`}
                             text={t(`lernfair.subjects.${subject.key}`)}
                             onPress={() => {
@@ -261,10 +261,16 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                                 setFocusedSelection({ name: subject.label })
                                 setShowFocusSelection(true)
                               } else {
-                                setSelections(prev => [
-                                  ...prev,
-                                  { name: subject.label }
-                                ])
+                                if (
+                                  !selections.find(
+                                    s => s.name === subject.label
+                                  )
+                                ) {
+                                  setSelections(prev => [
+                                    ...prev,
+                                    { name: subject.label }
+                                  ])
+                                }
                               }
                             }}
                           />
@@ -309,7 +315,6 @@ const ChangeSettingSubject: React.FC<Props> = () => {
           <Button
             width={ButtonContainer}
             onPress={() => {
-              console.log(selections)
               updateSubjects({
                 variables: {
                   subjects: selections
