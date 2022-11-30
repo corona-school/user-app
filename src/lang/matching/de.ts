@@ -52,6 +52,7 @@ const matching = {
         other: 'Sonstiges'
       },
       buttons: {
+        dissolve: 'Anfrage zurücknehmen',
         shareFeedback: 'Feedback teilen',
         nothing: 'Keine Angabe machen'
       }
