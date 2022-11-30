@@ -203,15 +203,17 @@ const MatchingWizard: React.FC<Props> = () => {
         }}>
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Anfrage erstellt</Modal.Header>
-          <Modal.Body>Deine Anfrage wurde erfolgreich erstellt!</Modal.Body>
+          <Modal.Header>
+            {t('matching.request.modalSuccess.title')}
+          </Modal.Header>
+          <Modal.Body>{t('matching.request.modalSuccess.content')}</Modal.Body>
           <Modal.Footer>
             <Button
               onPress={() => {
                 setShowSuccessModal(false)
                 navigate('/start')
               }}>
-              Weiter
+              {t('matching.request.modalSuccess.button')}
             </Button>
           </Modal.Footer>
         </Modal.Content>

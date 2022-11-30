@@ -473,7 +473,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     {t('dashboard.helpers.headlines.myLearningPartner')}
                   </Heading>
                   <Text marginTop={space['0.5']} marginBottom={space['1']}>
-                    Offene Anfragen:{' '}
+                    {t('dashboard.helpers.headlines.openedRequests')}{' '}
                     {`${data?.me?.student?.openMatchRequestCount}`}
                   </Text>
                   <CSSWrapper className="course-list__wrapper">

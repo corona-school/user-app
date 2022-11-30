@@ -307,11 +307,11 @@ const RegistrationAccount: React.FC<Props> = () => {
                 setLegalChecked(val)
               }}>
               <Trans i18nKey="registration.check_legal">
-                Hiermit stimme ich der
+                {t('registration.dsgvo.accept')}
                 <Link paddingX={space['0.5']} href="/privacy">
-                  Datenschutzerklärung
+                  {t('registration.dsgvo.datapolicy')}
                 </Link>
-                zu.
+                {t('registration.dsgvo.lastword')}
               </Trans>
             </Checkbox>
             {showLegalNotChecked && (
@@ -319,8 +319,10 @@ const RegistrationAccount: React.FC<Props> = () => {
                 content={
                   <>
                     <Text>
-                      Bitte akzeptiere unsere{' '}
-                      <Link href="/privacy">Datenschutzerklärung</Link>
+                      {t('registration.dsgvo.pleaseaccept')}{' '}
+                      <Link href="/privacy">
+                        {t('registration.dsgvo.datapolicy')}
+                      </Link>
                     </Text>
                   </>
                 }

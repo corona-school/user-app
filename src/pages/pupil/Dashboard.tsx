@@ -424,11 +424,11 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack space={2} flexShrink={1} maxWidth="700px">
                       {data?.me?.pupil?.firstMatchRequest && (
                         <Text>
-                          Anfrage erstellt am:{' '}
+                          {t('dashboard.offers.requestCreated')}{' '}
                           {DateTime.fromISO(
                             data?.me?.pupil?.firstMatchRequest
                           ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                          Uhr
+                          {t('dashboard.offers.clock')}
                         </Text>
                       )}
                       <Alert
@@ -438,11 +438,7 @@ const Dashboard: React.FC<Props> = () => {
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
                           <Alert.Icon color="danger.100" />
-                          <Text>
-                            Bitte beachte dass die Suche nach einer/einem
-                            Lernpartner:in zu Wartezeiten von 3 - 6 Monaten
-                            kommen kann
-                          </Text>
+                          <Text>{t('dashboard.offers.waitingTimeInfo')}</Text>
                         </HStack>
                       </Alert>
 
@@ -450,7 +446,7 @@ const Dashboard: React.FC<Props> = () => {
                         width={ButtonContainer}
                         isDisabled={_cancelMatchRequest?.loading}
                         onPress={() => setShowCancelModal(true)}>
-                        Anfrage zurücknehmen
+                        {t('dashboard.offers.removeRequest')}
                       </Button>
                     </VStack>
                     //   )}

@@ -73,6 +73,11 @@ const matching = {
       header: 'Für welche Klassen bietest du deine Unterstützung an?',
       save: 'speichern'
     },
+    modalSuccess: {
+      title: 'Anfrage erstellt',
+      content: 'Deine Anfrage wurde erfolgreich erstellt!',
+      button: 'weiter'
+    },
     status: {
       dissolved: 'Das Match wurde aufgelöst'
     },
@@ -103,8 +108,16 @@ const matching = {
         button2: 'Abbrechen'
       },
       tabs: {
-        tab1: 'Matches'
+        tab1: 'Matches',
+        tab2: 'Anfragen'
       },
+      openedRequests: 'Offene Anfragen:',
+      request: 'Anfrage',
+      removeRequest: 'Anfrage zurücknehmen',
+      deleteRequest: 'Anfrage löschen',
+      areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
+      cancel: 'Abbrechen',
+      subjects: 'Fächer:',
       noMatches: 'Du hast keine Matches',
       resoloveMatch: 'Das Match wurde aufgelöst',
       preview: {
@@ -141,6 +154,9 @@ const matching = {
         content:
           'Unsere Empfehlungen basieren auf den Angaben in deinem Profil.'
       }
+    },
+    error: {
+      nofound: 'Es wurden keine Kurse gefunden. Bitte passe deine Suche an.'
     },
     pupil: {
       header: 'Gruppen-Lernunterstützung',

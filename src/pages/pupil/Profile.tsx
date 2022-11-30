@@ -270,7 +270,7 @@ const Profile: React.FC<Props> = () => {
                           iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
                           text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
                         />
-                      )) || <Text>Keine Angabe</Text>}
+                      )) || <Text>{t('profile.noInfo')}</Text>}
                     </Column>
                   )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>

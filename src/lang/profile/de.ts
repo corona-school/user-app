@@ -6,6 +6,7 @@ const profile = {
   birthday: 'Geburtsdatum ändern',
   type: 'Art der Unterstützung:',
   availability: 'Verfügbarkeit verwalten',
+  noInfo: 'Keine Angabe',
   ProfileCompletion: {
     name: 'Profilvollständigkeit'
   },
