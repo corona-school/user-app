@@ -42,6 +42,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import AddCourseInstructor from '../modals/AddCourseInstructor'
 import { GraphQLError } from 'graphql'
+import AsNavigationItem from '../components/AsNavigationItem'
 
 type Props = {}
 
@@ -433,127 +434,133 @@ const CreateCourse: React.FC<Props> = () => {
   })
 
   return (
-    <WithNavigation
-      headerTitle={t('course.header')}
-      showBack
-      isLoading={loading}>
-      <CreateCourseContext.Provider
-        value={{
-          courseName,
-          setCourseName,
-          classRange: courseClasses,
-          setClassRange: setCourseClasses,
-          subject,
-          setSubject,
-          outline,
-          setOutline,
-          description,
-          setDescription,
-          tags,
-          setTags,
-          maxParticipantCount,
-          setMaxParticipantCount,
-          joinAfterStart,
-          setJoinAfterStart,
-          allowContact,
-          setAllowContact,
-          lectures,
-          setLectures,
-          pickedPhoto,
-          setPickedPhoto,
-          addedInstructors
-        }}>
-        {(studentData?.me?.student?.canCreateCourse?.allowed && (
-          <VStack
-            space={space['1']}
-            padding={space['1']}
-            marginX="auto"
-            width="100%"
-            maxWidth={ContentContainerWidth}>
-            <InstructionProgress
-              isDark={false}
-              currentIndex={currentIndex}
-              instructions={[
-                {
-                  label: t('course.CourseDate.tabs.course')
-                },
-                {
-                  label: t('course.CourseDate.tabs.appointments')
-                },
-                {
-                  label: t('course.CourseDate.tabs.checker')
-                }
-              ]}
-            />
-            {currentIndex === 0 && (
-              <CourseData
-                onNext={onNext}
-                onCancel={onCancel}
-                onShowUnsplash={showUnsplash}
-                onShowAddInstructor={showAddInstructor}
+    <AsNavigationItem path="group">
+      <WithNavigation
+        headerTitle={t('course.header')}
+        showBack
+        isLoading={loading}>
+        <CreateCourseContext.Provider
+          value={{
+            courseName,
+            setCourseName,
+            classRange: courseClasses,
+            setClassRange: setCourseClasses,
+            subject,
+            setSubject,
+            outline,
+            setOutline,
+            description,
+            setDescription,
+            tags,
+            setTags,
+            maxParticipantCount,
+            setMaxParticipantCount,
+            joinAfterStart,
+            setJoinAfterStart,
+            allowContact,
+            setAllowContact,
+            lectures,
+            setLectures,
+            pickedPhoto,
+            setPickedPhoto,
+            addedInstructors
+          }}>
+          {(studentData?.me?.student?.canCreateCourse?.allowed && (
+            <VStack
+              space={space['1']}
+              padding={space['1']}
+              marginX="auto"
+              width="100%"
+              maxWidth={ContentContainerWidth}>
+              <InstructionProgress
+                isDark={false}
+                currentIndex={currentIndex}
+                instructions={[
+                  {
+                    label: t('course.CourseDate.tabs.course')
+                  },
+                  {
+                    label: t('course.CourseDate.tabs.appointments')
+                  },
+                  {
+                    label: t('course.CourseDate.tabs.checker')
+                  }
+                ]}
               />
-            )}
-            {currentIndex === 1 && (
-              <CourseAppointments onNext={onNext} onBack={onBack} />
-            )}
-            {currentIndex === 2 && (
-              <>
-                <CoursePreview
+              {currentIndex === 0 && (
+                <CourseData
                   onNext={onNext}
-                  onBack={onBack}
-                  isError={showCourseError}
-                  isDisabled={loading || isLoading || imageLoading}
+                  onCancel={onCancel}
+                  onShowUnsplash={showUnsplash}
+                  onShowAddInstructor={showAddInstructor}
                 />
-                <Modal
-                  isOpen={showModal}
-                  onClose={() => setShowModal(false)}
-                  background="modalbg">
-                  <Modal.Content
-                    width="307px"
-                    marginX="auto"
-                    backgroundColor="transparent">
-                    <Box position="absolute" zIndex="1" right="20px" top="14px">
-                      <Pressable onPress={() => setShowModal(false)}>
-                        <CloseIcon color="white" />
-                      </Pressable>
-                    </Box>
-                    <Modal.Body background="primary.900" padding={space['1']}>
-                      <Box alignItems="center" marginY={space['1']}>
-                        <LFParty />
+              )}
+              {currentIndex === 1 && (
+                <CourseAppointments onNext={onNext} onBack={onBack} />
+              )}
+              {currentIndex === 2 && (
+                <>
+                  <CoursePreview
+                    onNext={onNext}
+                    onBack={onBack}
+                    isError={showCourseError}
+                    isDisabled={loading || isLoading || imageLoading}
+                  />
+                  <Modal
+                    isOpen={showModal}
+                    onClose={() => setShowModal(false)}
+                    background="modalbg">
+                    <Modal.Content
+                      width="307px"
+                      marginX="auto"
+                      backgroundColor="transparent">
+                      <Box
+                        position="absolute"
+                        zIndex="1"
+                        right="20px"
+                        top="14px">
+                        <Pressable onPress={() => setShowModal(false)}>
+                          <CloseIcon color="white" />
+                        </Pressable>
                       </Box>
-                      <Box paddingY={space['1']}>
-                        <Heading
-                          maxWidth="330px"
-                          marginX="auto"
-                          textAlign="center"
-                          color="lightText"
-                          marginBottom={space['0.5']}>
-                          {t('course.modal.headline')}
-                        </Heading>
-                        <Text
-                          textAlign="center"
-                          color="lightText"
-                          maxWidth="330px"
-                          marginX="auto">
-                          {t('course.modal.content')}
-                        </Text>
-                      </Box>
-                      <Box paddingY={space['1']}>
-                        <Row marginBottom={space['0.5']}>
-                          <Button onPress={() => navigate('/')} width="100%">
-                            {t('course.modal.button')}
-                          </Button>
-                        </Row>
-                      </Box>
-                    </Modal.Body>
-                  </Modal.Content>
-                </Modal>
-              </>
-            )}
-          </VStack>
-        )) || <CourseBlocker />}
-      </CreateCourseContext.Provider>
-    </WithNavigation>
+                      <Modal.Body background="primary.900" padding={space['1']}>
+                        <Box alignItems="center" marginY={space['1']}>
+                          <LFParty />
+                        </Box>
+                        <Box paddingY={space['1']}>
+                          <Heading
+                            maxWidth="330px"
+                            marginX="auto"
+                            textAlign="center"
+                            color="lightText"
+                            marginBottom={space['0.5']}>
+                            {t('course.modal.headline')}
+                          </Heading>
+                          <Text
+                            textAlign="center"
+                            color="lightText"
+                            maxWidth="330px"
+                            marginX="auto">
+                            {t('course.modal.content')}
+                          </Text>
+                        </Box>
+                        <Box paddingY={space['1']}>
+                          <Row marginBottom={space['0.5']}>
+                            <Button onPress={() => navigate('/')} width="100%">
+                              {t('course.modal.button')}
+                            </Button>
+                          </Row>
+                        </Box>
+                      </Modal.Body>
+                    </Modal.Content>
+                  </Modal>
+                </>
+              )}
+            </VStack>
+          )) || <CourseBlocker />}
+        </CreateCourseContext.Provider>
+      </WithNavigation>
+    </AsNavigationItem>
   )
 }
 export default CreateCourse
