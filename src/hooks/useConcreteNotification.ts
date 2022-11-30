@@ -15,11 +15,12 @@ const concreteNotificationQuery = gql`
   }
 `
 
-const useConcreteNotification = (id: number) => {
+const useConcreteNotification = (id?: number) => {
   const { data, loading, error, refetch } = useQuery(
     concreteNotificationQuery,
     {
-      variables: { id }
+      variables: { id },
+      skip: typeof id !== 'number'
     }
   )
   const [notification, setNotification] = useState()

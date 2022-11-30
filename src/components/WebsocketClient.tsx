@@ -4,7 +4,7 @@ import { NotificationsContext } from "../hooks/NotificationsProvider"
 import { getSessionToken, useUserAuth } from "../hooks/useApollo"
 
 export const WebsocketClient: FC = () => {
-  const {setNotificationIds} = useContext(NotificationsContext)
+  const {setConcreteNotificationId} = useContext(NotificationsContext)
   const {sessionState, userId} = useUserAuth()
   const wsClient = useRef<WebSocketClient | null>(null);
   const close = () => {
@@ -22,7 +22,7 @@ export const WebsocketClient: FC = () => {
       const propagateMessage = ({ data }: MessageEvent) => {
         const id = JSON.parse(data).concreteNotificationId
         if (typeof id === "number") {
-          setNotificationIds([id])
+          setConcreteNotificationId(id)
         }
       }
       
@@ -32,7 +32,7 @@ export const WebsocketClient: FC = () => {
       
     }
     return close
-  }, [sessionState, userId, setNotificationIds]);
+  }, [sessionState, userId, setConcreteNotificationId]);
 
   return null;
 };

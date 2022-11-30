@@ -1,34 +1,49 @@
 import { createContext, FC, ReactNode, useState } from "react"
 import { UserNotification } from "../types/lernfair/Notification"
 
-type Notification = UserNotification
-type State = { notifications: Notification[], notificationIds: number[] }
+type State = { message?: UserNotification, concreteNotificationId?: number }
 
-type NotificationContextValue = {
-  setNotificationIds: Function, setNotifications: Function
+type NotificationsContextValue = {
+  setConcreteNotificationId: (arg0: number) => void, setMessage: (arg0: UserNotification) => void
 } & State;
 
-export const NotificationsContext = createContext<NotificationContextValue>(
-  { notifications: [], notificationIds: [], setNotificationIds: () => null, setNotifications: () => null })
+export const NotificationsContext = createContext<NotificationsContextValue>(
+  { setConcreteNotificationId: () => null, setMessage: () => null })
 
 export const NotificationsProvider: FC<{ children: ReactNode }> =
   ({ children }) => {
     const [state, setState] = useState<State>(
-      { notifications: [], notificationIds: [] })
-    const setNotificationIds = (notificationIds: number[]) => {
-      setState({ ...state, notificationIds })
-    }
-    const setNotifications = (notifications: Notification[]) => {
-      setState({ ...state, notifications })
+      {})
+    const setConcreteNotificationId = (id: number) => {
+      setState({ ...state, concreteNotificationId: id })
     }
 
-    const { notifications, notificationIds } = state
+    const isMessageValid = (message: UserNotification | unknown): boolean => {
+      if (typeof message !== 'object') return false
+      
+      const requiredFields = ["id", "headline", "body", "notification"]
+      const fields = Object.keys(message as UserNotification)
+
+      for (const requiredField in requiredFields) {
+        if (!fields.includes(requiredField)) return false
+      }
+
+      return true
+    }
+
+    const setMessage = (message: UserNotification | unknown) => {
+      if (isMessageValid(message)) {
+        setState({ ...state, message: message as UserNotification })
+      }
+    }
+
+    const { message, concreteNotificationId } = state
     return (
       <NotificationsContext.Provider value={{
-        notifications,
-        notificationIds,
-        setNotificationIds,
-        setNotifications,
+        message,
+        concreteNotificationId,
+        setConcreteNotificationId,
+        setMessage,
       }}>
         {children}
       </NotificationsContext.Provider>

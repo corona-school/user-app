@@ -1,13 +1,17 @@
 import { useEffect, useContext, FC } from "react"
 import { NotificationsContext } from "../hooks/NotificationsProvider"
+import { useConcreteNotification } from "../hooks/useConcreteNotification"
+
   
-export const NotificationsData: FC<{}> = () => {
-  const {notificationIds, setNotifications} = useContext(NotificationsContext)
+export const NotificationsData: FC = () => {
+  const {concreteNotificationId, setMessage} = useContext(NotificationsContext)
+  const {data, error} = useConcreteNotification(concreteNotificationId)
 
   useEffect(() => {
-    // fetch notifications from backend
-    // setNotifications(fetchedData)
-  }, [notificationIds])
+    if (!error) {
+      setMessage(data)
+    }
+  }, [data, error])
   
   return null
 }
