@@ -10,18 +10,18 @@ import {
   useBreakpointValue,
   Link
 } from 'native-base'
-import { useCallback, useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
 import { CreateCourseContext } from '../CreateCourse'
 
 type Props = {
   index: number
-  prefill?: any
+  onPressDelete?: () => any
 }
 
-const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
-  const { lectures, setLectures } = useContext(CreateCourseContext)
+const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete }) => {
+  const { newLectures, setNewLectures } = useContext(CreateCourseContext)
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
 
@@ -44,23 +44,15 @@ const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const deleteAppointment = useCallback(() => {
-    if (!Array.isArray(lectures)) return
-
-    const lecs = [...lectures]
-    lecs.splice(index, 1)
-    setLectures && setLectures(lecs)
-  }, [index, lectures, setLectures])
-
   return (
     <VStack marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-      {(!!index || (lectures && lectures?.length > 1)) && (
+      {(!!index || (newLectures && newLectures?.length > 1)) && (
         <Row alignItems={'center'}>
           <Heading marginBottom={space['1']} flex="1">
             {t('course.CourseDate.Wizard.headline')}
             {`${index + 1}`.padStart(2, ' 0')}
           </Heading>
-          {index > 0 && <Link onPress={deleteAppointment}>Termin löschen</Link>}
+          {index > 0 && <Link onPress={onPressDelete}>Termin löschen</Link>}
         </Row>
       )}
       <FormControl maxWidth={ContainerWidth}>
@@ -73,12 +65,12 @@ const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
         </Text>
 
         <DatePicker
-          value={lectures && lectures[index].date}
+          value={newLectures && newLectures[index].date}
           onChange={e => {
-            if (!lectures || !lectures[index]) return
-            const arr = [...lectures]
+            if (!newLectures || !newLectures[index]) return
+            const arr = [...newLectures]
             arr[index].date = e.target.value
-            setLectures && setLectures(arr)
+            setNewLectures && setNewLectures(arr)
           }}
         />
       </FormControl>
@@ -88,12 +80,12 @@ const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
         </FormControl.Label>
         <DatePicker
           type="time"
-          value={lectures && lectures[index].time}
+          value={newLectures && newLectures[index].time}
           onChange={e => {
-            if (!lectures || !lectures[index]) return
-            const arr = [...lectures]
+            if (!newLectures || !newLectures[index]) return
+            const arr = [...newLectures]
             arr[index].time = e.target.value
-            setLectures && setLectures(arr)
+            setNewLectures && setNewLectures(arr)
           }}
         />
       </FormControl>
@@ -103,13 +95,13 @@ const CourseDateWizard: React.FC<Props> = ({ index, prefill }) => {
         </FormControl.Label>
 
         <Select
-          selectedValue={lectures && lectures[index].duration.toString()}
+          selectedValue={newLectures && newLectures[index].duration.toString()}
           placeholder={t('course.selectPlaceHolderDuration')}
           onValueChange={e => {
-            if (!lectures || !lectures[index]) return
-            const arr = [...lectures]
+            if (!newLectures || !newLectures[index]) return
+            const arr = [...newLectures]
             arr[index].duration = e
-            setLectures && setLectures(arr)
+            setNewLectures && setNewLectures(arr)
           }}>
           <Select.Item value="15" label="15 Minuten" />
           <Select.Item value="30" label="30 Minuten" />
