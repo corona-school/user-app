@@ -1,4 +1,3 @@
-import { gql, useQuery } from '@apollo/client'
 import {
   Text,
   VStack,
@@ -21,7 +20,7 @@ import {
 } from 'native-base'
 import { useContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
+import { subjects } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
@@ -102,29 +101,31 @@ type Props = {
   onCancel: () => any
   onShowUnsplash: () => any
   onShowAddInstructor: () => any
+  onRemoveInstructor?: (index: number, isSubmitted: boolean) => any
 }
 
 const CourseData: React.FC<Props> = ({
   onNext,
   onCancel,
   onShowUnsplash,
-  onShowAddInstructor
+  onShowAddInstructor,
+  onRemoveInstructor
 }) => {
-  const { data } = useQuery(gql`
-    query {
-      me {
-        student {
-          subjectsFormatted {
-            name
-            grade {
-              min
-              max
-            }
-          }
-        }
-      }
-    }
-  `)
+  // const { data } = useQuery(gql`
+  //   query {
+  //     me {
+  //       student {
+  //         subjectsFormatted {
+  //           name
+  //           grade {
+  //             min
+  //             max
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // `)
 
   const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
@@ -149,7 +150,8 @@ const CourseData: React.FC<Props> = ({
     setAllowContact,
     pickedPhoto,
     setPickedPhoto,
-    addedInstructors
+    addedInstructors,
+    newInstructors
   } = useContext(CreateCourseContext)
 
   const isValidInput: boolean = useMemo(() => {
@@ -222,58 +224,59 @@ const CourseData: React.FC<Props> = ({
         </Text>
       </FormControl>
       <FormControl marginBottom={space['0.5']}>
-        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
+        <FormControl.Label _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.courseSubjectLabel')}
         </FormControl.Label>
-        <Row space={space['1']}>
-          {data?.me?.student?.subjectsFormatted.map((sub: LFSubject) => (
-            <IconTagList
-              initial={subject?.name === sub.name}
-              text={sub.name}
-              onPress={() => {
-                setSubject && setSubject({ ...sub })
-                setClassRange &&
-                  setClassRange([sub.grade?.min || 1, sub.grade?.max || 13])
-              }}
-              iconPath={`subjects/icon_${getSubjectKey(sub.name)}.svg`}
-            />
+        <Row flexWrap={'wrap'}>
+          {subjects.map((sub: { key: string; label: string }) => (
+            <Column marginRight={space['1']} marginBottom={space['0.5']}>
+              <IconTagList
+                initial={subject?.name === sub.label}
+                text={sub.label}
+                onPress={() => {
+                  setSubject && setSubject({ name: sub.label })
+                  // setClassRange &&
+                  //   setClassRange([sub.grade?.min || 1, sub.grade?.max || 13])
+                }}
+                iconPath={`subjects/icon_${sub.key}.svg`}
+              />
+            </Column>
           ))}
         </Row>
       </FormControl>
 
-      {subject?.name && (
-        <FormControl>
-          <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
-            {t('course.CourseDate.form.detailsContent')}
-          </FormControl.Label>
+      <FormControl>
+        <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
+          {t('course.CourseDate.form.detailsContent')}
+        </FormControl.Label>
 
-          <Text>
-            {t(
-              `Klassen ${(classRange && classRange[0]) || 1} - ${
-                (classRange && classRange[1]) || 13
-              }`
-            )}
-          </Text>
-          <Box>
-            <Slider
-              animateTransitions
-              minimumValue={1}
-              maximumValue={13}
-              minimumTrackTintColor={colors['primary']['500']}
-              thumbTintColor={colors['primary']['900']}
-              value={classRange || [1, 13]}
-              step={1}
-              onValueChange={(value: number | number[]) => {
-                Array.isArray(value) &&
-                  setClassRange &&
-                  setClassRange([value[0], value[1]])
-              }}
-            />
-          </Box>
-        </FormControl>
-      )}
+        <Text>
+          {t(
+            `Klassen ${(classRange && classRange[0]) || 1} - ${
+              (classRange && classRange[1]) || 13
+            }`
+          )}
+        </Text>
+        <Box>
+          <Slider
+            animateTransitions
+            minimumValue={1}
+            maximumValue={13}
+            minimumTrackTintColor={colors['primary']['500']}
+            thumbTintColor={colors['primary']['900']}
+            value={classRange || [1, 13]}
+            step={1}
+            onValueChange={(value: number | number[]) => {
+              Array.isArray(value) &&
+                setClassRange &&
+                setClassRange([value[0], value[1]])
+            }}
+          />
+        </Box>
+      </FormControl>
+
       <FormControl marginBottom={space['0.5']}>
-        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
+        <FormControl.Label _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.coursePhotoLabel')}
         </FormControl.Label>
         <Box paddingY={space['1']}>
@@ -288,8 +291,22 @@ const CourseData: React.FC<Props> = ({
         <Heading>Weitere Kursleiter</Heading>
         <VStack mt={space['1']}>
           {addedInstructors &&
-            addedInstructors.map((instructor: LFInstructor) => (
-              <InstructorRow instructor={instructor} />
+            addedInstructors.map((instructor: LFInstructor, index: number) => (
+              <InstructorRow
+                instructor={instructor}
+                onPressDelete={() =>
+                  onRemoveInstructor && onRemoveInstructor(index, true)
+                }
+              />
+            ))}
+          {newInstructors &&
+            newInstructors.map((instructor: LFInstructor, index: number) => (
+              <InstructorRow
+                instructor={instructor}
+                onPressDelete={() =>
+                  onRemoveInstructor && onRemoveInstructor(index, false)
+                }
+              />
             ))}
         </VStack>
         <Row space={space['0.5']} mt={space['1']}>

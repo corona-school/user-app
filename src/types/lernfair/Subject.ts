@@ -10,7 +10,7 @@ export type LFSubject = {
 }
 
 export const subjects: { key: string; label: string }[] = [
-  { key: 'arbeitslehre', label: 'Arbeitslehre' },
+  // { key: 'arbeitslehre', label: 'Arbeitslehre' },
   { key: 'biologie', label: 'Biologie' },
   { key: 'chemie', label: 'Chemie' },
   { key: 'deutsch', label: 'Deutsch' },
@@ -32,9 +32,8 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'russisch', label: 'Russisch' },
   { key: 'sachkunde', label: 'Sachkunde' },
   { key: 'spanisch', label: 'Spanisch' },
-  { key: 'tuerkisch', label: 'Türkisch' },
-  { key: 'wirtschaft', label: 'Wirtschaft' },
-  { key: 'other', label: 'Andere' }
+  // { key: 'tuerkisch', label: 'Türkisch' },
+  { key: 'wirtschaft', label: 'Wirtschaft' }
 ]
 
 export const getSubjectKey: (name: string) => string = name => {

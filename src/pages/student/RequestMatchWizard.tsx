@@ -150,15 +150,16 @@ const RequestMatchWizard: React.FC<Props> = ({
       <Row
         marginY={space['1.5']}
         space={space['1']}
-        alignItems="center"
         flexDirection={ButtonContainerDirection}>
         <Button
+          marginBottom={space['0.5']}
           isDisabled={!isValidInput}
           onPress={() => setCurrentIndex(1)}
           width={ButtonContainer}>
           Angaben prüfen
         </Button>
         <Button
+          marginBottom={space['0.5']}
           variant="outline"
           onPress={() => {
             trackEvent({

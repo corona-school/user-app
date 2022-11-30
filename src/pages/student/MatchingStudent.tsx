@@ -300,29 +300,37 @@ const MatchingStudent: React.FC<Props> = () => {
                                   marginRight="15px"
                                   marginBottom="15px">
                                   <Box
-                                    bgColor="primary.100"
-                                    padding={space['1']}
+                                    bgColor="primary.900"
+                                    padding={space['1.5']}
                                     borderRadius={8}>
-                                    <Heading>
+                                    <Heading
+                                      color="lightText"
+                                      paddingLeft={space['1']}>
                                       Anfrage {`${i + 1}`.padStart(2, '0')}
                                     </Heading>
 
                                     <Row
                                       mt="3"
+                                      paddingLeft={space['1']}
                                       space={space['0.5']}
                                       alignItems="center">
-                                      <Text mb={space['0.5']}>Fächer:</Text>
+                                      <Text color="lightText" mb={space['0.5']}>
+                                        Fächer:
+                                      </Text>
                                       <Row space={space['0.5']}>
                                         {data?.me?.student?.subjectsFormatted.map(
                                           (sub: LFSubject) => (
-                                            <Tag text={sub.name} />
+                                            <Tag
+                                              variant="secondary"
+                                              text={sub.name}
+                                            />
                                           )
                                         )}
                                       </Row>
                                     </Row>
                                     <Button
                                       isDisabled={cancelLoading}
-                                      variant="outline"
+                                      variant="outlinelight"
                                       mt="3"
                                       onPress={showCancelMatchRequestModal}>
                                       Anfrage zurücknehmen
