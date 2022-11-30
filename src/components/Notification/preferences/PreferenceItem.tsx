@@ -36,7 +36,7 @@ const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
   })
 
   const width = useBreakpointValue({
-    base: 300,
+    base: 340,
     lg: '100%'
   })
 
@@ -60,12 +60,7 @@ const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
         <HStack alignItems="center" space={1}>
           <VStack>{preference?.icon}</VStack>
           <VStack maxW={maxW}>
-            <Text
-              bold
-              fontSize="md"
-              mr="3"
-              ellipsizeMode="tail"
-              numberOfLines={2}>
+            <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
               {t(preference.title)}
               <>
                 {isMobile ? (

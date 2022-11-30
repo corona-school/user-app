@@ -25,7 +25,7 @@ const NotficationControlPanel = () => {
 
   const width = useBreakpointValue({
     base: '90%',
-    lg: '100%'
+    lg: '90%'
   })
 
   return (
