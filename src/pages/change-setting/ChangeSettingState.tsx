@@ -118,14 +118,14 @@ const ChangeSettingState: React.FC<Props> = () => {
   if (loading) <CenterLoadingSpinner />
 
   return (
-    <WithNavigation headerTitle="Bundesland ändern" showBack>
+    <WithNavigation headerTitle={t('profile.State.header')} showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        <Heading>Gewähltes Bundesland</Heading>
+        <Heading>{t('profile.State.single.selectedStates')}</Heading>
         <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
           <Row flexWrap="wrap" width="100%">
             <Column
@@ -148,7 +148,7 @@ const ChangeSettingState: React.FC<Props> = () => {
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        <ProfileSettingRow title="weitere Bundesländer">
+        <ProfileSettingRow title={t('profile.State.single.otherStates')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}

@@ -51,6 +51,8 @@ const profile = {
     empty: 'Keine Angabe',
     label: 'Bundesland',
     single: {
+      selectedStates: 'Mein Bundesland',
+      otherStates: 'Weitere Bundesländer',
       header: 'Bundesland ändern',
       title: 'Mein Bundesland',
       others: 'Bundesland wählen',

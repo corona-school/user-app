@@ -48,6 +48,7 @@ const RegistrationAccount: React.FC<Props> = () => {
   const [showEmailNotAvailable, setShowEmailNotAvailable] =
     useState<boolean>(false)
   const [showEmailLength, setShowEmailLength] = useState<boolean>(false)
+  const [showEmailValidate, setEmailValidate] = useState<boolean>(false)
   const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false)
   const [showUserTypeMissing, setShowUserTypeMissing] = useState<boolean>(false)
   const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] =
@@ -173,6 +174,7 @@ const RegistrationAccount: React.FC<Props> = () => {
     setShowPasswordLength(password.length < 6)
     setShowPasswordConfirmNoMatch(password !== passwordConfirm)
     setShowEmailLength(email.length < 6)
+    setEmailValidate(!/\S+@\S+\.\S+/.test(email))
     setShowLegalNotChecked(!legalChecked)
     return (
       legalChecked &&
@@ -181,7 +183,7 @@ const RegistrationAccount: React.FC<Props> = () => {
       password === passwordConfirm &&
       email.length >= 6
     )
-  }, [email.length, legalChecked, password, passwordConfirm, userType])
+  }, [email, email.length, legalChecked, password, passwordConfirm, userType])
 
   const checkEmail = useCallback(async () => {
     if (!isInputValid()) return
@@ -245,6 +247,9 @@ const RegistrationAccount: React.FC<Props> = () => {
               <AlertMessage
                 content={t('registration.hint.email.unavailable')}
               />
+            )}
+            {showEmailValidate && (
+              <AlertMessage content="E-Mail ist nicht richtig angegeben worden." />
             )}
 
             <PasswordInput
