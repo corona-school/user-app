@@ -429,7 +429,7 @@ const SingleCourse: React.FC<Props> = () => {
                           <Text paddingBottom={space['0.5']}>
                             {DateTime.fromISO(lec.start).toFormat('dd.MM.yyyy')}
                             <Text marginX="3px">•</Text>
-                            {DateTime.fromISO(lec.start).toFormat('hh:mm')}{' '}
+                            {DateTime.fromISO(lec.start).toFormat('HH:mm')}{' '}
                             {t('single.global.clock')}
                           </Text>
                           <Text>

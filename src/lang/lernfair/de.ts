@@ -17,13 +17,13 @@ const lernfair = {
     portugiesisch: 'Portugiesisch',
     russisch: 'Russisch',
     spanisch: 'Spanisch',
-    t_rkisch: 'Türkisch',
+    // t_rkisch: 'Türkisch',
     ukrainisch: 'Ukrainisch',
     vietnamesisch: 'Vietnamesisch',
     other: 'Andere'
   },
   subjects: {
-    arbeitslehre: 'Arbeitslehre',
+    // arbeitslehre: 'Arbeitslehre',
     biologie: 'Biologie',
     chemie: 'Chemie',
     deutsch: 'Deutsch',
@@ -45,7 +45,7 @@ const lernfair = {
     russisch: 'Russisch',
     sachkunde: 'Sachkunde',
     spanisch: 'Spanisch',
-    tuerkisch: 'Türkisch',
+    // tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',
     other: 'Andere'
   },

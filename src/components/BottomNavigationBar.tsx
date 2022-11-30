@@ -51,8 +51,14 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
   return (
     (show && (
       <>
+        <Row paddingTop="65px" />
         <Row
+          w="100%"
           h={'54px'}
+          position="fixed"
+          left="0"
+          right="0"
+          bottom="0"
           bgColor="lightText"
           justifyContent={'space-between'}
           alignItems={'center'}
