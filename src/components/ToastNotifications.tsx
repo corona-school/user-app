@@ -1,6 +1,6 @@
 import { useEffect, useContext, FC } from "react"
 import { useBreakpointValue } from "native-base"
-import { NotificationsContext } from "../hooks/NotificationsProvider"
+import { NotificationsContext } from "./NotificationsProvider"
 import { showInAppMessage } from "../widgets/InAppMessage"
 
 export const ToastNotifications: FC = () => {

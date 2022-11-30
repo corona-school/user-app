@@ -1,6 +1,6 @@
 import { useEffect, useRef, useContext, FC } from "react"
-import { WSClient, WebSocketClient } from '../types/Websocket'
-import { NotificationsContext } from "../hooks/NotificationsProvider"
+import { WSClient, WebSocketClient } from '../lib/Websocket'
+import { NotificationsContext } from "./NotificationsProvider"
 import { getSessionToken, useUserAuth } from "../hooks/useApollo"
 
 export const WebsocketClient: FC = () => {

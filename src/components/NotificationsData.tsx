@@ -1,5 +1,5 @@
 import { useEffect, useContext, FC } from "react"
-import { NotificationsContext } from "../hooks/NotificationsProvider"
+import { NotificationsContext } from "./NotificationsProvider"
 import { useConcreteNotification } from "../hooks/useConcreteNotification"
 
   
