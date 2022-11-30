@@ -9,19 +9,15 @@ import {
   Button,
   useBreakpointValue,
   VStack,
-  Alert,
-  HStack,
   Modal
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
-import BackButton from '../components/BackButton'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
 import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
-import ProfilAvatar from '../widgets/ProfilAvatar'
 
 import Utility, { getTrafficStatus } from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -45,13 +41,16 @@ const SingleCourse: React.FC<Props> = () => {
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
 
+  const navigate = useNavigate()
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const { userType } = useLernfair()
 
   const userQuery =
     userType === 'student'
-      ? `participants{
+      ? `
+      isInstructor
+      participants{
     firstname
     grade
   }`
@@ -234,8 +233,6 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }, [course, loading])
 
-  if (loading) return <></>
-
   return (
     <>
       <WithNavigation
@@ -244,7 +241,8 @@ const SingleCourse: React.FC<Props> = () => {
             ? course?.course?.name.substring(0, 20)
             : course?.course?.name
         }
-        showBack>
+        showBack
+        isLoading={loading}>
         <Box
           paddingX={space['1.5']}
           maxWidth={ContainerWidth}
@@ -375,6 +373,21 @@ const SingleCourse: React.FC<Props> = () => {
             </Box>
           )}
 
+          {userType === 'student' && course?.isInstructor && (
+            <Box marginBottom={space['1.5']}>
+              <Button
+                onPress={() => {
+                  navigate('/edit-course', {
+                    state: { course: courseData.subcourse }
+                  })
+                }}
+                width={ButtonContainer}
+                variant="outline">
+                Kurs editieren
+              </Button>
+            </Box>
+          )}
+
           {course?.course?.allowContact && (
             <Box marginBottom={space['1.5']}>
               <Button
@@ -426,7 +439,10 @@ const SingleCourse: React.FC<Props> = () => {
                           </Text>
                           <Text>
                             <Text bold>{t('single.global.duration')}: </Text>{' '}
-                            {lec?.duration / 60} {t('single.global.hours')}
+                            {(typeof lec?.duration === 'number'
+                              ? lec?.duration
+                              : parseInt(lec?.duration)) / 60}{' '}
+                            {t('single.global.hours')}
                           </Text>
                         </Row>
                       ))) || <Text>{t('single.global.noLections')}</Text>}

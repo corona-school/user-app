@@ -146,7 +146,7 @@ export const getTrafficStatus: (
 ) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
   return participants === maxParticipants
     ? 'full'
-    : maxParticipants - participants < 5
+    : maxParticipants - participants <= 5
     ? 'last'
     : 'free'
 }

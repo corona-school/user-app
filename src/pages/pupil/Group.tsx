@@ -4,8 +4,7 @@ import {
   useTheme,
   VStack,
   useBreakpointValue,
-  Box,
-  Center
+  Box
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -71,11 +70,6 @@ const PupilGroup: React.FC<Props> = () => {
     lg: sizes['contentContainerWidth']
   })
 
-  // const CardGrid = useBreakpointValue({
-  //   base: '100%',
-  //   lg: '48%'
-  // })
-
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { trackPageView } = useMatomo()
@@ -110,34 +104,11 @@ const PupilGroup: React.FC<Props> = () => {
     }
   `)
 
-  // const [
-  //   searchRecommendationsQuery,
-  //   { loading: recommendationsSearchLoading, data: recommendationsData }
-  // ] = useLazyQuery(gql`
-  //   query ($name: String) {
-  //     subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
-  //       isParticipant
-  //       id
-  //       lectures {
-  //         start
-  //       }
-  //       course {
-  //         name
-  //         outline
-  //         image
-  //         tags {
-  //           name
-  //         }
-  //       }
-  //     }
-  //   }
-  // `)
-
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler Gruppe'
     })
-    // searchRecommendationsQuery({ variables: {} })
+
     searchAllSubcoursesQuery({ variables: {} })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -145,24 +116,16 @@ const PupilGroup: React.FC<Props> = () => {
   const courses: LFSubCourse[] = useMemo(() => {
     let arr
     switch (activeTab) {
-      case 0:
       default:
-        arr = data?.me?.pupil?.subcoursesJoined || []
-        break
-      // case 1:
-      //   arr = recommendationsData?.subcoursesPublic || []
-      //   break
-      case 1:
+      case 0:
         arr = allSubcoursesData?.subcoursesPublic || []
+        break
+      case 1:
+        arr = data?.me?.pupil?.subcoursesJoined || []
         break
     }
     return arr
-  }, [
-    activeTab,
-    allSubcoursesData,
-    data?.me?.pupil?.subcoursesJoined
-    // recommendationsData
-  ])
+  }, [activeTab, allSubcoursesData, data?.me?.pupil?.subcoursesJoined])
 
   const activeCourses: LFSubCourse[] = useMemo(
     () =>
@@ -204,7 +167,7 @@ const PupilGroup: React.FC<Props> = () => {
   const searchResults: LFSubCourse[] = useMemo(() => {
     if (lastSearch.length === 0) return activeCourses
     return (
-      (lastSearch.length > 0 && activeTab !== 0 && activeCourses) ||
+      (lastSearch.length > 0 && activeTab !== 1 && activeCourses) ||
       activeCourses?.filter((sub: LFSubCourse) =>
         sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())
       ) ||
@@ -219,29 +182,17 @@ const PupilGroup: React.FC<Props> = () => {
   const search = useCallback(async () => {
     switch (activeTab) {
       case 0:
-      default:
-        break
-      // case 1:
-      //   searchRecommendationsQuery({ variables: { name: lastSearch } })
-      //   break
-      case 1:
         searchAllSubcoursesQuery({ variables: { name: lastSearch } })
         break
+      case 1:
+      default:
+        break
     }
-  }, [
-    activeTab,
-    lastSearch,
-    searchAllSubcoursesQuery
-    // searchRecommendationsQuery
-  ])
+  }, [activeTab, lastSearch, searchAllSubcoursesQuery])
 
   const SubcoursesTab: React.FC = () => {
     return <></>
   }
-
-  // const RecommendationsTab: React.FC = () => {
-  //   return <></>
-  // }
 
   const AllSubcoursesTab: React.FC = () => {
     return <></>
@@ -298,53 +249,50 @@ const PupilGroup: React.FC<Props> = () => {
                 ]}
               />
               <CSSWrapper className="course-list__wrapper">
-                {
-                  // !recommendationsSearchLoading &&
-                  (!allSubcoursesSearchLoading && (
-                    <>
-                      {(sortedSearchResults?.length &&
-                        sortedSearchResults.map(
-                          (course: LFSubCourse, index: number) => (
-                            <CSSWrapper
-                              className="course-list__item"
-                              key={`subcourse-${index}`}>
-                              <AppointmentCard
-                                showTrafficLight={activeTab > 0}
-                                trafficLightStatus={getTrafficStatus(
-                                  course.participantsCount || 0,
-                                  course.maxParticipants || 0
-                                )}
-                                isHorizontalCardCourseChecked={
-                                  course.isParticipant
-                                }
-                                isSpaceMarginBottom={false}
-                                isFullHeight
-                                variant="horizontal"
-                                description={course.course.outline}
-                                tags={course.course.tags}
-                                date={getDateString(course.lectures)}
-                                countCourse={course.lectures?.length}
-                                onPressToCourse={() =>
-                                  navigate('/single-course', {
-                                    state: { course: course.id }
-                                  })
-                                }
-                                image={course.course.image}
-                                title={course.course.name}
-                              />
-                            </CSSWrapper>
-                          )
-                        )) || (
-                        <Box paddingLeft={space['1']}>
-                          <AlertMessage
-                            content="Es wurden keine Kurse gefunden. Bitte passe deine
+                {(!allSubcoursesSearchLoading && (
+                  <>
+                    {(sortedSearchResults?.length &&
+                      sortedSearchResults.map(
+                        (course: LFSubCourse, index: number) => (
+                          <CSSWrapper
+                            className="course-list__item"
+                            key={`subcourse-${index}`}>
+                            <AppointmentCard
+                              showTrafficLight={activeTab > 0}
+                              trafficLightStatus={getTrafficStatus(
+                                course.participantsCount || 0,
+                                course.maxParticipants || 0
+                              )}
+                              isHorizontalCardCourseChecked={
+                                course.isParticipant
+                              }
+                              isSpaceMarginBottom={false}
+                              isFullHeight
+                              variant="horizontal"
+                              description={course.course.outline}
+                              tags={course.course.tags}
+                              date={getDateString(course.lectures)}
+                              countCourse={course.lectures?.length}
+                              onPressToCourse={() =>
+                                navigate('/single-course', {
+                                  state: { course: course.id }
+                                })
+                              }
+                              image={course.course.image}
+                              title={course.course.name}
+                            />
+                          </CSSWrapper>
+                        )
+                      )) || (
+                      <Box paddingLeft={space['1']}>
+                        <AlertMessage
+                          content="Es wurden keine Kurse gefunden. Bitte passe deine
                           Suche an."
-                          />
-                        </Box>
-                      )}
-                    </>
-                  )) || <CenterLoadingSpinner />
-                }
+                        />
+                      </Box>
+                    )}
+                  </>
+                )) || <CenterLoadingSpinner />}
               </CSSWrapper>
             </VStack>
           </VStack>

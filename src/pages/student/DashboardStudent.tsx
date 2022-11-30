@@ -389,7 +389,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
-                              description={sub.outline}
+                              description={sub.course.outline}
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}
