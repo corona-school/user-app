@@ -24,6 +24,7 @@ const notification = {
         title: 'Marketing'
       }
     }
-  }
+  },
+  closeButton: 'Schließen'
 }
 export default notification

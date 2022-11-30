@@ -8,18 +8,18 @@ import {
   Spacer,
   Switch,
   useBreakpointValue,
-  Tooltip
+  Tooltip,
+  Modal,
+  useTheme
 } from 'native-base'
 import { useState } from 'react'
+import InformationModal from './InformationModal'
+import { Preferences } from './PreferencesData'
 
-type Props = {
-  id: number
-  title: string
-  icon: JSX.Element
-}
-
-const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
-  const [checked, setChecked] = useState(true)
+const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
+  const [checked, setChecked] = useState<boolean>(true)
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const { colors } = useTheme()
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -59,17 +59,33 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
               {title}
               <>
                 {isMobile ? (
-                  <Pressable
-                    ml={1}
-                    onPress={() => console.log('open info modal')}>
-                    <Circle rounded="full" bg="amber.700" size={4}>
-                      <Box _text={{ color: 'white' }}>i</Box>
-                    </Circle>
-                  </Pressable>
+                  <Box>
+                    <Pressable ml={1} onPress={() => setOpenModal(true)}>
+                      <Circle rounded="full" bg="amber.700" size={4}>
+                        <Text color={'white'}>i</Text>
+                      </Circle>
+                    </Pressable>
+                    <Modal
+                      bg="modalbg"
+                      isOpen={openModal}
+                      onClose={() => setOpenModal(false)}>
+                      <InformationModal
+                        onPressClose={() => setOpenModal(false)}
+                        header={title}
+                        body={modal.body}
+                        icon={modal.icon}
+                      />
+                    </Modal>
+                  </Box>
                 ) : (
-                  <Tooltip label="Testlabel">
+                  <Tooltip
+                    maxWidth={270}
+                    label={modal.body}
+                    bg={colors['primary']['900']}
+                    _text={{ textAlign: 'center' }}
+                    hasArrow>
                     <Circle rounded="full" bg="amber.700" size={4} ml={1}>
-                      <Box _text={{ color: 'white' }}>i</Box>
+                      <Text color={'white'}>i</Text>
                     </Circle>
                   </Tooltip>
                 )}

@@ -23,7 +23,12 @@ const SystemNotifications = () => {
         </Text>
         <Box>
           {preferencesData.map(data => (
-            <PreferenceItem {...data} />
+            <PreferenceItem
+              id={data.id}
+              title={data.title}
+              icon={data.icon}
+              modal={data.modal}
+            />
           ))}
         </Box>
       </Box>
