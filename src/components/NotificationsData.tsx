@@ -8,8 +8,8 @@ export const NotificationsData: FC = () => {
   const {data, error} = useConcreteNotification(concreteNotificationId)
 
   useEffect(() => {
-    if (!error) {
-      setMessage(data)
+    if (!error && data) {
+      setMessage(data.concrete_notification)
     }
   }, [data, error])
   

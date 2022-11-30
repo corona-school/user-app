@@ -16,7 +16,7 @@ const isMessageValid = (message: UserNotification | unknown): boolean => {
   const requiredFields = ["id", "headline", "body", "notification"]
   const fields = Object.keys(message as UserNotification)
 
-  for (const requiredField in requiredFields) {
+  for (const requiredField of requiredFields) {
     if (!fields.includes(requiredField)) return false
   }
 
