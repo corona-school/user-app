@@ -1,5 +1,5 @@
 import { Box, Toast } from 'native-base'
-import MessageBox from '../components/Notification/MessageBox'
+import MessageBox from '../components/notification/MessageBox'
 import { UserNotification } from '../types/lernfair/Notification'
 
 export const showInAppMessage = (
