@@ -35,4 +35,4 @@ export const WebsocketClient: FC = () => {
   }, [sessionState, userId, setConcreteNotificationId]);
 
   return null;
-};
+}
