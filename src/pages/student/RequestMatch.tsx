@@ -14,6 +14,7 @@ import RequestMatchWizard from './RequestMatchWizard'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
 import { Navigate, useNavigate } from 'react-router-dom'
+import AsNavigationItem from '../../components/AsNavigationItem'
 
 type Props = {}
 
@@ -86,39 +87,40 @@ const RequestMatch: React.FC<Props> = () => {
 
   return (
     <>
-      <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>
-        {(data?.me?.student?.canRequestMatch?.allowed && (
-          <VStack paddingX={space['1']}>
-            {currentIndex === 0 && (
-              <RequestMatchWizard
-                data={data}
-                selectedClasses={selectedClasses}
-                // setSelectedClasses={setSelectedClasses}
-                selectedSubjects={selectedSubjects}
-                setSelectedSubjects={setSelectedSubjects}
-                setCurrentIndex={setCurrentIndex}
-                setFocusedSubject={setFocusedSubject}
-                setShowModal={setShowModal}
-              />
-            )}
-            {currentIndex === 1 && (
-              <RequestMatchPreview
-                subjects={Object.entries(selectedSubjects)
-                  .filter(s => s[1])
-                  .map(([key, val]) => ({
-                    name: key
-                  }))}
-                classes={selectedClasses}
-                onRequestMatch={requestMatch}
-                onBack={() => setCurrentIndex(0)}
-                disableButton={!data?.me?.student?.canRequestMatch?.allowed}
-                disableReason={data?.me?.student?.canRequestMatch?.reason}
-              />
-            )}
-          </VStack>
-        )) || <MatchingBlocker />}
-      </WithNavigation>
-
+      <AsNavigationItem path="matching">
+        <WithNavigation headerTitle={t('')} headerLeft={<NotificationAlert />}>
+          {(data?.me?.student?.canRequestMatch?.allowed && (
+            <VStack paddingX={space['1']}>
+              {currentIndex === 0 && (
+                <RequestMatchWizard
+                  data={data}
+                  selectedClasses={selectedClasses}
+                  // setSelectedClasses={setSelectedClasses}
+                  selectedSubjects={selectedSubjects}
+                  setSelectedSubjects={setSelectedSubjects}
+                  setCurrentIndex={setCurrentIndex}
+                  setFocusedSubject={setFocusedSubject}
+                  setShowModal={setShowModal}
+                />
+              )}
+              {currentIndex === 1 && (
+                <RequestMatchPreview
+                  subjects={Object.entries(selectedSubjects)
+                    .filter(s => s[1])
+                    .map(([key, val]) => ({
+                      name: key
+                    }))}
+                  classes={selectedClasses}
+                  onRequestMatch={requestMatch}
+                  onBack={() => setCurrentIndex(0)}
+                  disableButton={!data?.me?.student?.canRequestMatch?.allowed}
+                  disableReason={data?.me?.student?.canRequestMatch?.reason}
+                />
+              )}
+            </VStack>
+          )) || <MatchingBlocker />}
+        </WithNavigation>
+      </AsNavigationItem>
       <Modal isOpen={showModal}>
         <Modal.Content>
           <Modal.Header>{t('matching.request.modal.header')}</Modal.Header>
