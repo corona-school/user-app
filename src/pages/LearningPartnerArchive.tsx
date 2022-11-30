@@ -14,7 +14,7 @@ import {
 
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../components/WithNavigation'
-import NotificationAlert from '../components/Notification/NotificationAlert'
+import NotificationAlert from '../components/notification/NotificationAlert'
 import { gql, useQuery } from '@apollo/client'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

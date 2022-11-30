@@ -3,7 +3,7 @@ import { Box, Heading, useTheme, Text, Column, Stagger } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../components/BackButton'
-import NotificationAlert from '../components/Notification/NotificationAlert'
+import NotificationAlert from '../components/notification/NotificationAlert'
 import WithNavigation from '../components/WithNavigation'
 import QuickStartCard from '../widgets/QuickStartCard'
 
