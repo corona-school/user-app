@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 
 const concreteNotificationQuery = gql`
-  query ConcreteNotification($id: ID!) {
+  query ConcreteNotification($id: Int!) {
     concrete_notification(concreteNotificationId: $id) {
       id
       headline
