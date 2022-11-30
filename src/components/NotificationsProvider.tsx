@@ -10,40 +10,36 @@ type NotificationsContextValue = {
 export const NotificationsContext = createContext<NotificationsContextValue>(
   { setConcreteNotificationId: () => null, setMessage: () => null })
 
+const isMessageValid = (message: UserNotification | unknown): boolean => {
+  if (typeof message !== 'object') return false
+
+  const requiredFields = ["id", "headline", "body", "notification"]
+  const fields = Object.keys(message as UserNotification)
+
+  for (const requiredField in requiredFields) {
+    if (!fields.includes(requiredField)) return false
+  }
+
+  return true
+}
+
 export const NotificationsProvider: FC<{ children: ReactNode }> =
   ({ children }) => {
-    const [state, setState] = useState<State>(
-      {})
-    const setConcreteNotificationId = (id: number) => {
-      setState({ ...state, concreteNotificationId: id })
-    }
+    const [concreteNotificationId, setConcreteNotificationId] = useState<number>()
+    const [message, setMessage] = useState<UserNotification>()
 
-    const isMessageValid = (message: UserNotification | unknown): boolean => {
-      if (typeof message !== 'object') return false
-      
-      const requiredFields = ["id", "headline", "body", "notification"]
-      const fields = Object.keys(message as UserNotification)
-
-      for (const requiredField in requiredFields) {
-        if (!fields.includes(requiredField)) return false
-      }
-
-      return true
-    }
-
-    const setMessage = (message: UserNotification | unknown) => {
+    const setValidatedMessage = (message: UserNotification | unknown) => {
       if (isMessageValid(message)) {
-        setState({ ...state, message: message as UserNotification })
+        setMessage(message as UserNotification)
       }
     }
-
-    const { message, concreteNotificationId } = state
+    
     return (
       <NotificationsContext.Provider value={{
         message,
         concreteNotificationId,
         setConcreteNotificationId,
-        setMessage,
+        setMessage: setValidatedMessage,
       }}>
         {children}
       </NotificationsContext.Provider>
