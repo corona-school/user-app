@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Text, useBreakpointValue } from 'native-base'
+import { Box, Text } from 'native-base'
 import useInterval from '../../hooks/useInterval'
 import { useTranslation } from 'react-i18next'
 import { getTimeText } from '../../helper/notification-helper'

@@ -6,12 +6,19 @@ import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'
 import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg'
 import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg'
 import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg'
+
+import IconMessage from '../assets/icons/lernfair/notifications/Icon_Message.svg'
+import IconMatch from '../assets/icons/lernfair/notifications/Icon_Match.svg'
+import IconAppointment from '../assets/icons/lernfair/notifications/Icon_Appointment.svg'
+import IconCourse from '../assets/icons/lernfair/notifications/Icon_Course.svg'
+import IconNews from '../assets/icons/lernfair/notifications/Icon_News.svg'
+import IconSurvey from '../assets/icons/lernfair/notifications/Icon_Survey.svg'
+
 import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
-
 // TODO delete NotiType Typen
-function getIcon(messageType: string): ReactElement {
+function getIconForMessageType(messageType: string): ReactElement {
   switch (messageType) {
     case MessageType.MESSAGE:
       return <MessageIcon />
@@ -48,6 +55,50 @@ function getIcon(messageType: string): ReactElement {
       return <BellIcon />
     default:
       throw new Error(`No Icon for this category ${messageType} found.`)
+  }
+}
+
+type NotificationPreference = { title: string; icon: JSX.Element }
+
+const getDataForNotificationPreference = (
+  notificationPreference: string
+): NotificationPreference => {
+  switch (notificationPreference) {
+    case MessageType.CHAT:
+      return {
+        title: 'notification.controlPanel.preference.chat.title',
+        icon: <IconMessage />
+      }
+    case MessageType.MATCH:
+      return {
+        title: 'notification.controlPanel.preference.match.title',
+        icon: <IconMatch />
+      }
+    case MessageType.COURSE:
+      return {
+        title: 'notification.controlPanel.preference.course.title',
+        icon: <IconCourse />
+      }
+    case MessageType.APPOINTMENT:
+      return {
+        title: 'notification.controlPanel.preference.appointment.title',
+        icon: <IconAppointment />
+      }
+    case MessageType.SURVEY:
+      return {
+        title: 'notification.controlPanel.preference.survey.title',
+        icon: <IconSurvey />
+      }
+    case MessageType.NEWS:
+      return {
+        title: 'notification.controlPanel.preference.news.title',
+        icon: <IconNews />
+      }
+    default:
+      return {
+        title: 'notification.preference.chat.title',
+        icon: <IconMessage />
+      }
   }
 }
 
@@ -94,4 +145,4 @@ const getTimeText = (timestamp: string): TimeText | string => {
   }
   return timeAsString
 }
-export { getIcon, getTimeText }
+export { getIconForMessageType, getDataForNotificationPreference, getTimeText }

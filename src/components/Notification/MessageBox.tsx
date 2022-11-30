@@ -6,7 +6,7 @@ import {
   useBreakpointValue,
   VStack
 } from 'native-base'
-import { getIcon } from '../../helper/notification-helper'
+import { getIconForMessageType } from '../../helper/notification-helper'
 import { UserNotification } from '../../types/lernfair/Notification'
 import TimeIndicator from './TimeIndicator'
 
@@ -45,7 +45,7 @@ const MessageBox: React.FC<Props> = ({
       w={!isStandalone ? boxProps.fullWidth : boxProps.width}>
       <HStack alignItems="center" space={1}>
         <VStack>
-          <Box px="1.5">{getIcon(notification.messageType)}</Box>
+          <Box px="1.5">{getIconForMessageType(notification.messageType)}</Box>
         </VStack>
         <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
           <Text bold fontSize="md">

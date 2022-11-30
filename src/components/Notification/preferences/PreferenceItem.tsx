@@ -10,16 +10,20 @@ import {
   useBreakpointValue,
   Tooltip
 } from 'native-base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { getDataForNotificationPreference } from '../../../helper/notification-helper'
 
 type Props = {
-  id: number
-  title: string
-  icon: JSX.Element
+  id: string
+  activatedChannels: string[]
 }
 
-const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
-  const [checked, setChecked] = useState(true)
+const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
+  const [emailActivated, setEmailActivated] = useState(true)
+  const { t } = useTranslation()
+
+  const preference = getDataForNotificationPreference(id)
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -35,10 +39,16 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
     base: 300,
     lg: '100%'
   })
-  // TODO check enabled preferences => setChecked
+
+  // TODO mutate preferences
   const handleToggle = () => {
-    setChecked(!checked)
+    setEmailActivated(!emailActivated)
   }
+
+  useEffect(() => {
+    const emailActive = activatedChannels.includes('email')
+    emailActive ? setEmailActivated(true) : setEmailActivated(false)
+  }, [])
 
   return (
     <>
@@ -48,7 +58,7 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
         py={3}
         width={width}>
         <HStack alignItems="center" space={1}>
-          <VStack>{icon}</VStack>
+          <VStack>{preference?.icon}</VStack>
           <VStack maxW={maxW}>
             <Text
               bold
@@ -56,7 +66,7 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
               mr="3"
               ellipsizeMode="tail"
               numberOfLines={2}>
-              {title}
+              {t(preference.title)}
               <>
                 {isMobile ? (
                   <Pressable
@@ -78,7 +88,7 @@ const PreferenceItem: React.FC<Props> = ({ id, title, icon }) => {
           </VStack>
           <Spacer />
           <VStack>
-            <Switch isChecked={checked} onToggle={handleToggle} />
+            <Switch isChecked={emailActivated} onToggle={handleToggle} />
           </VStack>
         </HStack>
       </Box>
