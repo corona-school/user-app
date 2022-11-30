@@ -25,28 +25,22 @@ const CancelMatchRequestModal: React.FC<Props> = ({
         <Modal.CloseButton />
         <Modal.Header>Anfrage zurücknehmen</Modal.Header>
         <Modal.Body>
-          <Radio.Group name="feedback" value={feedback} onChange={setFeedback}>
-            <Radio value="grade" my={1}>
-              {t('matching.pending.modal.radiobuttons.mark')}
-            </Radio>
-            <Radio value="group" my={1}>
-              {t('matching.pending.modal.radiobuttons.groupCourse')}
-            </Radio>
-            <Radio value="other" my={1}>
-              {t('matching.pending.modal.radiobuttons.other')}
-            </Radio>
-          </Radio.Group>
+          <Text>
+            Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen
+            Platz in der Warteschlange und wir werden deinen Platz an andere
+            Schüler:innen vergeben.
+          </Text>
         </Modal.Body>
         <Modal.Footer>
           <Row space={space['1']}>
             <Button
-              isDisabled={!feedback}
+              // isDisabled={!feedback}
               onPress={() => onShareFeedback(feedback!)}>
-              {t('matching.pending.modal.buttons.shareFeedback')}
+              {t('matching.pending.modal.buttons.dissolve')}
             </Button>
-            <Button variant={'outline'} onPress={onSkipShareFeedback}>
+            {/* <Button variant={'outline'} onPress={onSkipShareFeedback}>
               {t('matching.pending.modal.buttons.nothing')}
-            </Button>
+            </Button> */}
           </Row>
         </Modal.Footer>
       </Modal.Content>

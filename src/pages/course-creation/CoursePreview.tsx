@@ -14,8 +14,10 @@ import {
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
+import { LFLecture } from '../../types/lernfair/Course'
 import Utility from '../../Utility'
 import AlertMessage from '../../widgets/AlertMessage'
+import AppointmentInfoRow from '../../widgets/AppointmentInfoRow'
 import IconTagList from '../../widgets/IconTagList'
 import { CreateCourseContext } from '../CreateCourse'
 
@@ -24,13 +26,15 @@ type Props = {
   onBack: () => any
   isDisabled?: boolean
   isError?: boolean
+  prefillCourseId?: number | string
 }
 
 const CoursePreview: React.FC<Props> = ({
   onNext,
   onBack,
   isDisabled,
-  isError
+  isError,
+  prefillCourseId
 }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
@@ -45,6 +49,7 @@ const CoursePreview: React.FC<Props> = ({
     joinAfterStart,
     allowContact,
     lectures,
+    newLectures,
     pickedPhoto
   } = useContext(CreateCourseContext)
 
@@ -82,21 +87,24 @@ const CoursePreview: React.FC<Props> = ({
         <Text fontSize="md">{courseName}</Text>
       </Row>
 
-      <Heading fontSize="md">
-        {t('course.CourseDate.Preview.courseSubject')}
-      </Heading>
-
-      <Box paddingBottom={space['0.5']}>
-        {subject && (
-          <>
-            <IconTagList
-              iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
-              isDisabled
-              text={subject.name || ''}
-            />
-          </>
-        )}
-      </Box>
+      {subject?.name && (
+        <>
+          <Heading fontSize="md">
+            {t('course.CourseDate.Preview.courseSubject')}
+          </Heading>
+          <Box paddingBottom={space['0.5']}>
+            {subject && (
+              <>
+                <IconTagList
+                  iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+                  isDisabled
+                  text={subject.name || ''}
+                />
+              </>
+            )}
+          </Box>
+        </>
+      )}
 
       <Row flexDirection="column" paddingBottom={space['0.5']}>
         <Heading fontSize="md" paddingBottom={space['0.5']}>
@@ -174,7 +182,11 @@ const CoursePreview: React.FC<Props> = ({
         {t('course.CourseDate.Preview.appointmentHeadline')}
       </Heading>
       {lectures &&
-        lectures.map((lec, i) => (
+        lectures.map((lecture: LFLecture, index: number) => (
+          <AppointmentInfoRow index={index} lecture={lecture} />
+        ))}
+      {newLectures &&
+        newLectures.map((lec, i) => (
           <VStack marginBottom={space['1']}>
             <Heading mb={space['0.5']} fontSize="lg">
               {t('course.CourseDate.Preview.appointmentLabel')}{' '}
@@ -243,7 +255,8 @@ const CoursePreview: React.FC<Props> = ({
             onNext()
           }}
           isDisabled={isDisabled}>
-          {t('course.CourseDate.Preview.publishCourse')}
+          {(!!prefillCourseId && 'Änderungen speichern') ||
+            t('course.CourseDate.Preview.publishCourse')}
         </Button>
         <Button
           marginBottom={space['1']}

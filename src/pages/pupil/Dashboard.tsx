@@ -179,14 +179,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const highlightedAppointment:
     | { course: LFSubCourse; lecture: LFLecture }
-    | undefined = useMemo(
-    () =>
-      sortedAppointments.find(
-        ({ course, lecture }: { course: LFSubCourse; lecture: LFLecture }) =>
-          DateTime.fromISO(lecture.start).diffNow().as('hours') < 24
-      ),
-    [sortedAppointments]
-  )
+    | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments])
 
   const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
     gql`
