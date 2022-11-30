@@ -12,14 +12,24 @@ import {
   Modal,
   useTheme
 } from 'native-base'
-import { useState } from 'react'
-import InformationModal from './InformationModal'
-import { Preferences } from './PreferencesData'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
-  const [checked, setChecked] = useState<boolean>(true)
+import InformationModal from './InformationModal'
+import { getDataForNotificationPreference } from '../../../helper/notification-helper'
+
+type Props = {
+  id: string
+  activatedChannels: string[]
+}
+
+const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
+  const [emailActivated, setEmailActivated] = useState(true)
   const [openModal, setOpenModal] = useState<boolean>(false)
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const preference = getDataForNotificationPreference(id)
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -35,10 +45,16 @@ const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
     base: 300,
     lg: '100%'
   })
-  // TODO check enabled preferences => setChecked
+
+  // TODO mutate preferences
   const handleToggle = () => {
-    setChecked(!checked)
+    setEmailActivated(!emailActivated)
   }
+
+  useEffect(() => {
+    const emailActive = activatedChannels.includes('email')
+    emailActive ? setEmailActivated(true) : setEmailActivated(false)
+  }, [])
 
   return (
     <>
@@ -48,7 +64,7 @@ const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
         py={3}
         width={width}>
         <HStack alignItems="center" space={1}>
-          <VStack>{icon}</VStack>
+          <VStack>{preference?.icon}</VStack>
           <VStack maxW={maxW}>
             <Text
               bold
@@ -56,7 +72,7 @@ const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
               mr="3"
               ellipsizeMode="tail"
               numberOfLines={2}>
-              {title}
+              {t(preference.title)}
               <>
                 {isMobile ? (
                   <Box>
@@ -71,16 +87,16 @@ const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
                       onClose={() => setOpenModal(false)}>
                       <InformationModal
                         onPressClose={() => setOpenModal(false)}
-                        header={title}
-                        body={modal.body}
-                        icon={modal.icon}
+                        header={'title'}
+                        body={'modal.body'}
+                        icon={preference.icon}
                       />
                     </Modal>
                   </Box>
                 ) : (
                   <Tooltip
                     maxWidth={270}
-                    label={modal.body}
+                    label={'modal.body'}
                     bg={colors['primary']['900']}
                     _text={{ textAlign: 'center' }}
                     hasArrow>
@@ -94,7 +110,7 @@ const PreferenceItem: React.FC<Preferences> = ({ id, title, icon, modal }) => {
           </VStack>
           <Spacer />
           <VStack>
-            <Switch isChecked={checked} onToggle={handleToggle} />
+            <Switch isChecked={emailActivated} onToggle={handleToggle} />
           </VStack>
         </HStack>
       </Box>

@@ -14,6 +14,14 @@ const notification = {
   },
   controlPanel: {
     title: 'E-Mail-Benachrichtigungen',
+    preference: {
+      chat: { title: 'Chat-Nachrichten' },
+      match: { title: 'Matches & Informationen zur Zordnung' },
+      course: { title: 'Lehrinformationen & Zertifikate' },
+      appointment: { title: 'Terminhinweise' },
+      survey: { title: 'Feedback & Befragungen' },
+      news: { title: 'Neue Funktionen & Features' }
+    },
     tabs: {
       tab1: {
         title: 'System',
