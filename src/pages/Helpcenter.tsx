@@ -10,7 +10,8 @@ import {
   Button,
   InfoIcon,
   useBreakpointValue,
-  View
+  View,
+  Input
 } from 'native-base'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
@@ -192,8 +193,8 @@ const HelpCenter: React.FC<Props> = () => {
                   />
                 )
               },
+
               {
-                hide: userType !== 'student',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
@@ -220,12 +221,7 @@ const HelpCenter: React.FC<Props> = () => {
                         <FormControl.Label>
                           {t('helpcenter.contact.subject.label')}
                         </FormControl.Label>
-                        <TextInput
-                          onChangeText={setSubject}
-                          placeholder={t(
-                            'helpcenter.contact.subject.placeholder'
-                          )}
-                        />
+                        <Input onChangeText={setSubject} />
                       </Row>
                       <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>
