@@ -154,7 +154,7 @@ const CourseData: React.FC<Props> = ({
 
   const isValidInput: boolean = useMemo(() => {
     if (!courseName || courseName?.length < 3) return false
-    if (!subject) return false
+    // if (!subject) return false
     if (!classRange || !classRange.length) return false
     if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
@@ -166,9 +166,9 @@ const CourseData: React.FC<Props> = ({
     courseName,
     description,
     maxParticipantCount,
-    outline,
+    outline
     // pickedPhoto,
-    subject
+    // subject
   ])
 
   const ButtonContainer = useBreakpointValue({
