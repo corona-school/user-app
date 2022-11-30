@@ -87,18 +87,17 @@ const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
                       onClose={() => setOpenModal(false)}>
                       <InformationModal
                         onPressClose={() => setOpenModal(false)}
-                        header={'title'}
-                        body={'modal.body'}
-                        icon={preference.icon}
+                        id={id}
                       />
                     </Modal>
                   </Box>
                 ) : (
                   <Tooltip
                     maxWidth={270}
-                    label={'modal.body'}
+                    label={t(preference.modal.body)}
                     bg={colors['primary']['900']}
                     _text={{ textAlign: 'center' }}
+                    p={3}
                     hasArrow>
                     <Circle rounded="full" bg="amber.700" size={4} ml={1}>
                       <Text color={'white'}>i</Text>

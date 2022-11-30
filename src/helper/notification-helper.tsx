@@ -14,6 +14,13 @@ import IconCourse from '../assets/icons/lernfair/notifications/Icon_Course.svg'
 import IconNews from '../assets/icons/lernfair/notifications/Icon_News.svg'
 import IconSurvey from '../assets/icons/lernfair/notifications/Icon_Survey.svg'
 
+import IconMessageModal from '../assets/icons/lernfair/notifications/Ic_Message.svg'
+import IconMatchModal from '../assets/icons/lernfair/notifications/Ic_Match.svg'
+import IconCourseModal from '../assets/icons/lernfair/notifications/Ic_Course.svg'
+import IconAppointmentModal from '../assets/icons/lernfair/notifications/Ic_Appointment.svg'
+import IconSurveyModal from '../assets/icons/lernfair/notifications/Ic_Survey.svg'
+import IconNewsModal from '../assets/icons/lernfair/notifications/Ic_News.svg'
+
 import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
@@ -58,7 +65,8 @@ function getIconForMessageType(messageType: string): ReactElement {
   }
 }
 
-type NotificationPreference = { title: string; icon: JSX.Element }
+type NotificationPreference = { title: string; icon: JSX.Element; modal: Modal }
+type Modal = { body: string; icon: JSX.Element }
 
 const getDataForNotificationPreference = (
   notificationPreference: string
@@ -67,37 +75,65 @@ const getDataForNotificationPreference = (
     case MessageType.CHAT:
       return {
         title: 'notification.controlPanel.preference.chat.title',
-        icon: <IconMessage />
+        icon: <IconMessage />,
+        modal: {
+          body: 'notification.controlPanel.preference.chat.modalBody',
+          icon: <IconMessageModal />
+        }
       }
     case MessageType.MATCH:
       return {
         title: 'notification.controlPanel.preference.match.title',
-        icon: <IconMatch />
+        icon: <IconMatch />,
+        modal: {
+          body: 'notification.controlPanel.preference.match.modalBody',
+          icon: <IconMatchModal />
+        }
       }
     case MessageType.COURSE:
       return {
         title: 'notification.controlPanel.preference.course.title',
-        icon: <IconCourse />
+        icon: <IconCourse />,
+        modal: {
+          body: 'notification.controlPanel.preference.course.modalBody',
+          icon: <IconCourseModal />
+        }
       }
     case MessageType.APPOINTMENT:
       return {
         title: 'notification.controlPanel.preference.appointment.title',
-        icon: <IconAppointment />
+        icon: <IconAppointment />,
+        modal: {
+          body: 'notification.controlPanel.preference.chat.modalBody',
+          icon: <IconAppointmentModal />
+        }
       }
     case MessageType.SURVEY:
       return {
         title: 'notification.controlPanel.preference.survey.title',
-        icon: <IconSurvey />
+        icon: <IconSurvey />,
+        modal: {
+          body: 'notification.controlPanel.preference.chat.modalBody',
+          icon: <IconSurveyModal />
+        }
       }
     case MessageType.NEWS:
       return {
         title: 'notification.controlPanel.preference.news.title',
-        icon: <IconNews />
+        icon: <IconNews />,
+        modal: {
+          body: 'notification.controlPanel.preference.chat.modalBody',
+          icon: <IconNewsModal />
+        }
       }
     default:
       return {
         title: 'notification.preference.chat.title',
-        icon: <IconMessage />
+        icon: <IconMessage />,
+        modal: {
+          body: 'notification.controlPanel.preference.chat.modalBody',
+          icon: <IconMessageModal />
+        }
       }
   }
 }

@@ -1,6 +1,6 @@
 import { Box, Text, useBreakpointValue } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { newPreferencesData } from './PreferencesData'
+import { preferencesData } from './PreferencesData'
 import PreferenceItem from './PreferenceItem'
 
 const SystemNotifications = () => {
@@ -23,7 +23,7 @@ const SystemNotifications = () => {
           {t('notification.controlPanel.tabs.tab1.description')}
         </Text>
         <Box>
-          {newPreferencesData.map(data => (
+          {preferencesData.map(data => (
             <PreferenceItem
               id={data.id}
               activatedChannels={data.activatedChannels}
