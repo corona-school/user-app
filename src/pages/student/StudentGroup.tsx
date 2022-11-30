@@ -12,10 +12,10 @@ import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../../types/lernfair/Course'
-import Utility, { getTrafficStatus } from '../../Utility'
+import Utility, { getTrafficStatus, sortByDate } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
@@ -48,6 +48,10 @@ const query = gql`
           published
           participantsCount
           maxParticipants
+          firstLecture {
+            start
+            duration
+          }
           lectures {
             start
             duration
@@ -92,18 +96,12 @@ const StudentGroup: React.FC<Props> = () => {
   //   lg: '47%'
   // })
 
-  const publishedSubcourses: LFSubCourse[] = useMemo(
-    () =>
-      data?.me?.student?.subcoursesInstructing.filter(
-        (sub: LFSubCourse) => sub.published
-      ),
-    [data?.me?.student?.subcoursesInstructing]
-  )
-
   const submittedSubcourses: LFSubCourse[] = useMemo(
     () =>
-      data?.me?.student?.subcoursesInstructing.filter(
-        (sub: LFSubCourse) => !sub.published
+      sortByDate(
+        data?.me?.student?.subcoursesInstructing.filter(
+          (sub: LFSubCourse) => !sub.published
+        )
       ),
     [data?.me?.student?.subcoursesInstructing]
   )
@@ -115,23 +113,37 @@ const StudentGroup: React.FC<Props> = () => {
 
   const pastCourses: LFSubCourse[] = useMemo(
     () =>
-      data?.me?.student?.subcoursesInstructing.filter((course: LFSubCourse) => {
-        let ok = true
-        if (!course.lectures) return false
-        for (const lecture of course.lectures) {
-          if (
-            DateTime.fromISO(lecture.start).toMillis() <
-            DateTime.now().toMillis()
-          ) {
-            continue
-          } else {
-            ok = false
-            break
+      sortByDate(
+        data?.me?.student?.subcoursesInstructing.filter(
+          (course: LFSubCourse) => {
+            let ok = true
+            if (!course.lectures) return false
+            for (const lecture of course.lectures) {
+              if (
+                DateTime.fromISO(lecture.start).toMillis() <
+                DateTime.now().toMillis()
+              ) {
+                continue
+              } else {
+                ok = false
+                break
+              }
+            }
+            return ok
           }
-        }
-        return ok
-      }),
+        )
+      ),
     [data?.me?.student?.subcoursesInstructing]
+  )
+
+  const publishedSubcourses: LFSubCourse[] = useMemo(
+    () =>
+      sortByDate(
+        data?.me?.student?.subcoursesInstructing.filter(
+          (sub: LFSubCourse) => sub.published && !pastCourses.includes(sub)
+        )
+      ),
+    [data?.me?.student?.subcoursesInstructing, pastCourses]
   )
 
   const { trackPageView, trackEvent } = useMatomo()
@@ -168,7 +180,6 @@ const StudentGroup: React.FC<Props> = () => {
     index: number,
     showDate: boolean = true
   ) => {
-    const firstLecture = Utility.getFirstLectureFromSubcourse(course.lectures)
     return (
       <CSSWrapper className="course-list__item">
         <AppointmentCard
@@ -183,7 +194,7 @@ const StudentGroup: React.FC<Props> = () => {
           variant="horizontal"
           description={course.course.outline}
           tags={course.course.tags}
-          date={(showDate && firstLecture?.start) || ''}
+          date={(showDate && course.firstLecture?.start) || ''}
           countCourse={course.lectures.length}
           onPressToCourse={() =>
             navigate('/single-course', {
