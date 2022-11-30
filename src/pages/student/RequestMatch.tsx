@@ -14,6 +14,7 @@ import RequestMatchWizard from './RequestMatchWizard'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { LFSubject } from '../../types/lernfair/Subject'
 
 type Props = {}
 
@@ -66,8 +67,24 @@ const RequestMatch: React.FC<Props> = () => {
   `)
 
   const requestMatch = useCallback(() => {
+    // const subjects: LFSubject[] = [...data.me.student.subjectsFormatted]
+    // for (const subject of subjects) {
+    //   delete subject.__typename
+    //   delete subject.grade?.__typename
+    //   if (selectedSubjects[subject.name]) {
+    //     subject.grade = selectedClasses[subject.name]
+    //     // subject.mandatory = true
+    //   } else {
+    //     // subject.mandatory = false
+    //   }
+    // }
     createMatchRequest()
-  }, [createMatchRequest])
+  }, [
+    createMatchRequest
+    // data?.me.student.subjectsFormatted,
+    // selectedClasses,
+    // selectedSubjects
+  ])
 
   useEffect(() => {
     if (matchRequest?.data?.studentCreateMatchRequest) {
@@ -93,7 +110,7 @@ const RequestMatch: React.FC<Props> = () => {
               <RequestMatchWizard
                 data={data}
                 selectedClasses={selectedClasses}
-                // setSelectedClasses={setSelectedClasses}
+                setSelectedClasses={setSelectedClasses}
                 selectedSubjects={selectedSubjects}
                 setSelectedSubjects={setSelectedSubjects}
                 setCurrentIndex={setCurrentIndex}

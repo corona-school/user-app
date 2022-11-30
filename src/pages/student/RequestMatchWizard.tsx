@@ -6,8 +6,7 @@ import {
   Button,
   useTheme,
   useBreakpointValue,
-  Row,
-  Link
+  Row
 } from 'native-base'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +19,7 @@ type Props = {
   selectedSubjects: any
   selectedClasses: any
   setSelectedSubjects: any
+  setSelectedClasses: any
   setFocusedSubject: any
   setShowModal: any
   setCurrentIndex: any
@@ -30,6 +30,7 @@ const RequestMatchWizard: React.FC<Props> = ({
   selectedSubjects,
   selectedClasses,
   setSelectedSubjects,
+  setSelectedClasses,
   setFocusedSubject,
   setShowModal,
   setCurrentIndex,
@@ -104,6 +105,7 @@ const RequestMatchWizard: React.FC<Props> = ({
       <Text paddingBottom={space['1']}>
         {t('matching.student.personalData.hint')}
       </Text>
+
       <TwoColGrid>
         {data?.me?.student?.subjectsFormatted.map((sub: any) => {
           return (
@@ -122,7 +124,12 @@ const RequestMatchWizard: React.FC<Props> = ({
                 }
 
                 setSelectedSubjects((prev: any) => ({
+                  ...prev,
                   [sub.name]: !prev[sub.name]
+                }))
+                setSelectedClasses((prev: any) => ({
+                  ...prev,
+                  [sub.name]: { min: 1, max: 13 }
                 }))
                 setFocusedSubject(sub)
                 setShowModal(true)
