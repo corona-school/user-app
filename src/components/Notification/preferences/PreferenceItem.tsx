@@ -14,13 +14,14 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getDataForNotificationPreference } from '../../../helper/notification-helper'
 
-type Props = {
+type PrefProps = {
   id: string
-  activatedChannels: string[]
+  channel: { [channel: string]: boolean }
 }
 
-const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
-  const [emailActivated, setEmailActivated] = useState(true)
+const PreferenceItem: React.FC<PrefProps> = ({ id, channel }) => {
+  const [emailActivated, setEmailActivated] = useState<boolean>(true)
+  const [channels, setChannels] = useState<string[]>([])
   const { t } = useTranslation()
 
   const preference = getDataForNotificationPreference(id)
@@ -46,8 +47,12 @@ const PreferenceItem: React.FC<Props> = ({ id, activatedChannels }) => {
   }
 
   useEffect(() => {
-    const emailActive = activatedChannels.includes('email')
-    emailActive ? setEmailActivated(true) : setEmailActivated(false)
+    const activeChannels = Object.keys(channel).filter(
+      key => channel[key] === true
+    )
+    const email = activeChannels.includes('email')
+    setEmailActivated(email)
+    setChannels(activeChannels)
   }, [])
 
   return (
