@@ -26,6 +26,7 @@ export interface LFSubCourse {
   published?: boolean
   joinAfterStart?: boolean
   instructors?: LFInstructor[]
+  firstLecture?: LFLecture
 }
 
 export type LFLecture = {

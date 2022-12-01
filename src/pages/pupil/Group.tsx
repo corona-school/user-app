@@ -19,7 +19,11 @@ import SearchBar from '../../components/SearchBar'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course'
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
+import {
+  getFirstLectureFromSubcourse,
+  getTrafficStatus,
+  sortByDate
+} from '../../Utility'
 import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -40,6 +44,10 @@ const query = gql`
           id
           maxParticipants
           participantsCount
+          firstLecture {
+            start
+            duration
+          }
           lectures {
             start
           }
@@ -89,6 +97,9 @@ const PupilGroup: React.FC<Props> = () => {
         maxParticipants
         participantsCount
         id
+        firstLecture {
+          start
+        }
         lectures {
           start
         }
@@ -129,40 +140,21 @@ const PupilGroup: React.FC<Props> = () => {
 
   const activeCourses: LFSubCourse[] = useMemo(
     () =>
-      courses.filter((course: LFSubCourse) => {
-        let ok = false
-        for (const lecture of course.lectures) {
-          const date = DateTime.fromISO(lecture.start).toMillis()
-          const now = DateTime.now().toMillis()
-          if (date > now) {
-            ok = true
+      sortByDate(
+        courses.filter((course: LFSubCourse) => {
+          let ok = false
+          for (const lecture of course.lectures) {
+            const date = DateTime.fromISO(lecture.start).toMillis()
+            const now = DateTime.now().toMillis()
+            if (date > now) {
+              ok = true
+            }
           }
-        }
-        return ok
-      }),
+          return ok
+        })
+      ),
     [courses]
   )
-
-  const getLecture: (lectures: LFLecture[]) => LFLecture | null = useCallback(
-    (lectures: LFLecture[]) => {
-      const lec =
-        (lectures?.length && getFirstLectureFromSubcourse(lectures, true)) ||
-        null
-      return lec
-    },
-    []
-  )
-
-  const getDateString: (lectures: LFLecture[]) => string | undefined =
-    useCallback(
-      (lectures: LFLecture[]) => {
-        const lec = getLecture(lectures)
-        if (lec) {
-          return lec.start
-        }
-      },
-      [getLecture]
-    )
 
   const searchResults: LFSubCourse[] = useMemo(() => {
     if (lastSearch.length === 0) return activeCourses
@@ -271,7 +263,7 @@ const PupilGroup: React.FC<Props> = () => {
                               variant="horizontal"
                               description={course.course.outline}
                               tags={course.course.tags}
-                              date={getDateString(course.lectures)}
+                              date={course.firstLecture?.start}
                               countCourse={course.lectures?.length}
                               onPressToCourse={() =>
                                 navigate('/single-course', {

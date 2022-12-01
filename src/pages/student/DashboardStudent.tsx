@@ -229,9 +229,9 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
-    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-      return undefined
-    }
+    // if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
+    //   return undefined
+    // }
 
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
@@ -314,7 +314,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 marginBottom={space['1.5']}>
                 {(sortedPublishedSubcourses?.length > 1 &&
                   sortedPublishedSubcourses
-                    ?.slice(0, 4)
+                    ?.slice(1, 5)
                     .map((el: LFSubCourse, i: number) => {
                       const course = el.course
                       if (!course) return <></>
