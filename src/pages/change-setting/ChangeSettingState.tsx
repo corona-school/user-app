@@ -123,7 +123,7 @@ const ChangeSettingState: React.FC<Props> = () => {
   if (loading) <CenterLoadingSpinner />
 
   return (
-    <WithNavigation headerTitle={t('profile.State.header')} showBack>
+    <WithNavigation headerTitle={t('profile.State.single.header')} showBack>
       <VStack
         paddingX={space['1.5']}
         space={space['1']}
