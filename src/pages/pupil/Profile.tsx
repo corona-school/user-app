@@ -113,9 +113,7 @@ const Profile: React.FC<Props> = () => {
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
     data?.me?.pupil?.aboutMe && (complete += 1)
     data?.me?.pupil?.languages?.length && (complete += 1)
-    data?.me?.pupil?.state &&
-      data?.me?.pupil?.state !== 'other' &&
-      (complete += 1)
+    data?.me?.pupil?.state && (complete += 1)
     data?.me?.pupil?.schooltype && (complete += 1)
     data?.me?.pupil?.gradeAsInt && (complete += 1)
     data?.me?.pupil?.subjectsFormatted?.length && (complete += 1)
