@@ -12,10 +12,10 @@ import WithNavigation from '../../components/WithNavigation'
 import NotificationAlert from '../../components/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { LFSubCourse } from '../../types/lernfair/Course'
-import Utility, { getTrafficStatus, sortByDate } from '../../Utility'
+import { getTrafficStatus, sortByDate } from '../../Utility'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
@@ -23,8 +23,7 @@ import { DateTime } from 'luxon'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CSSWrapper from '../../components/CSSWrapper'
-
-type Props = {}
+import { CreateCourseError } from '../CreateCourse'
 
 const query = gql`
   query {
@@ -70,7 +69,7 @@ const query = gql`
   }
 `
 
-const StudentGroup: React.FC<Props> = () => {
+const StudentGroup: React.FC = () => {
   const { data, loading } = useQuery(query)
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
@@ -78,7 +77,7 @@ const StudentGroup: React.FC<Props> = () => {
 
   const location = useLocation()
   const locState = location?.state as {
-    errors: string[]
+    errors: CreateCourseError[]
   }
 
   const ContainerWidth = useBreakpointValue({
@@ -91,11 +90,6 @@ const StudentGroup: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  // const CardGrid = useBreakpointValue({
-  //   base: '100%',
-  //   lg: '47%'
-  // })
-
   const submittedSubcourses: LFSubCourse[] = useMemo(
     () =>
       sortByDate(
@@ -105,11 +99,6 @@ const StudentGroup: React.FC<Props> = () => {
       ),
     [data?.me?.student?.subcoursesInstructing]
   )
-
-  // const draftedCourses: LFCourse[] = useMemo(
-  //   () => data?.me?.student?.coursesInstructing,
-  //   [data?.me?.student?.coursesInstructing]
-  // )
 
   const pastCourses: LFSubCourse[] = useMemo(
     () =>
@@ -155,26 +144,6 @@ const StudentGroup: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // const renderCourse = (course: LFCourse, index: number) => (
-  //   <CSSWrapper className="course-list__item">
-  //     <AppointmentCard
-  //       isFullHeight
-  //       isSpaceMarginBottom={false}
-  //       key={index}
-  //       variant="horizontal"
-  //       description={course.outline}
-  //       tags={course.tags}
-  //       image={course.image}
-  //       title={course.name}
-  //       onPressToCourse={() =>
-  //         navigate('/single-course', {
-  //           state: { course: course.id }
-  //         })
-  //       }
-  //     />
-  //   </CSSWrapper>
-  // )
-
   const renderSubcourse = (
     course: LFSubCourse,
     index: number,
@@ -212,7 +181,8 @@ const StudentGroup: React.FC<Props> = () => {
     if (locState?.errors) {
       return (
         locState.errors.filter(
-          error => error === 'course' || error === 'subcourse'
+          (error: CreateCourseError) =>
+            error === 'course' || error === 'subcourse'
         ).length === 0
       )
     }
@@ -278,20 +248,7 @@ const StudentGroup: React.FC<Props> = () => {
                   {t('matching.group.helper.button')}
                 </Button>
               </VStack>
-              {/* <HSection
-            title={t('dashboard.helpers.headlines.course')}
-            showAll={false}>
-            {new Array(5).fill(0).map(({}, index) => (
-              <AppointmentCard
-                key={index}
-                description="Lorem Ipsum"
-                date={futureDate.toString()}
-                tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
-                image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                title="Diskussionen in Mathe!? – Die Kurvendiskussion"
-              />
-            ))}
-          </HSection> */}
+
               <VStack>
                 <Heading marginBottom={space['1.5']}>
                   {t('matching.group.helper.course.title')}
@@ -331,22 +288,7 @@ const StudentGroup: React.FC<Props> = () => {
                         </>
                       )
                     },
-                    // {
-                    //   title: t('matching.group.helper.course.tabs.tab3.title'),
-                    //   content: (
-                    //     <>
-                    //       <CSSWrapper className="course-list__wrapper">
-                    //         {(draftedCourses.length > 0 &&
-                    //           draftedCourses?.map(
-                    //             (course: LFCourse, index: number) =>
-                    //               renderCourse(course, index)
-                    //           )) || (
-                    //           <AlertMessage content={t('empty.coursesdraft')} />
-                    //         )}
-                    //       </CSSWrapper>
-                    //     </>
-                    //   )
-                    // },
+
                     {
                       title: t('matching.group.helper.course.tabs.tab4.title'),
                       content: (
@@ -362,18 +304,6 @@ const StudentGroup: React.FC<Props> = () => {
                   ]}
                 />
               </VStack>
-              {/* <VStack>
-              <HSection
-                onShowAll={() => navigate('/group/offer')}
-                title={t('matching.group.helper.offers.title')}
-                showAll={true}>
-                {new Array(0)
-                  .fill(0)
-                  .map((course: LFCourse, index) => <></>) || (
-                  <AlertMessage content={t('empty.offers')} />
-                )}
-              </HSection>
-            </VStack> */}
             </VStack>
           )}
         </VStack>

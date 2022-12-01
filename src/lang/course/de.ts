@@ -62,8 +62,13 @@ const course = {
   error: {
     course:
       'Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.',
+    subcourse:
+      'Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.',
     upload_image: 'Dein Bild konnte leider nicht hochgeladen werden.',
-    set_image: 'Dein Bild konnte leider nicht als Kursbild gesetzt werden.'
+    set_image: 'Dein Bild konnte leider nicht als Kursbild gesetzt werden.',
+    instructors:
+      'Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.',
+    lectures: 'Ein oder mehrere Termine konnten nicht hinzugefügt werden.'
   },
   CourseDate: {
     tabs: {

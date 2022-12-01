@@ -1,4 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { DateTime } from 'luxon'
 import {
   VStack,
   Button,
@@ -85,6 +86,15 @@ const CourseAppointments: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const futureLectures = useMemo(
+    () =>
+      lectures?.filter(lec => {
+        const date = DateTime.fromISO(lec.start)
+        return date.toMillis() > DateTime.now().toMillis()
+      }),
+    [lectures]
+  )
+
   return (
     <VStack space={space['1']}>
       <Heading marginBottom={space['1.5']}>
@@ -92,7 +102,7 @@ const CourseAppointments: React.FC<Props> = ({
       </Heading>
 
       <Heading fontSize="lg">Bestehende Termine</Heading>
-      {lectures?.map((lec, index) => (
+      {futureLectures?.map((lec, index) => (
         <AppointmentInfoRow
           lecture={lec}
           index={index}
