@@ -25,7 +25,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -113,18 +112,17 @@ const ProfileStudent: React.FC<Props> = () => {
     let complete = 0.0
 
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
-    data?.me?.aboutMe && (complete += 1)
+    data?.me?.student?.aboutMe?.length > 0 && (complete += 1)
     // data?.me?.student?.languages?.length && (complete += 1)
     data?.me?.student?.state && (complete += 1)
     // data?.me?.student?.schooltype && (complete += 1)
     // data?.me?.student?.gradeAsInt && (complete += 1)
-    data?.me?.student?.subjectsFormatted?.length && (complete += 1)
-
+    data?.me?.student?.subjectsFormatted?.length > 0 && (complete += 1)
     return Math.floor((complete / max) * 100)
   }, [
-    data?.me?.aboutMe,
     data?.me?.firstname,
     data?.me?.lastname,
+    data?.me?.student?.aboutMe?.length,
     data?.me?.student?.state,
     data?.me?.student?.subjectsFormatted?.length
   ])
