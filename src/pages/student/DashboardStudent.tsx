@@ -369,7 +369,6 @@ const DashboardStudent: React.FC<Props> = () => {
               <HSection
                 title={t('dashboard.helpers.headlines.course')}
                 showAll={data?.me?.student?.canCreateCourse?.allowed}
-                onShowAll={() => navigate('/course-archive')}
                 wrap
                 marginBottom={space['1.5']}
                 scrollable={false}>
