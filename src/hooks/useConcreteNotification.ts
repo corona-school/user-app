@@ -34,13 +34,13 @@ export const useConcreteNotification = (id: number | null) => {
     concreteNotificationQuery,
     {
       variables: { id },
-      skip: typeof id !== 'number'
+      skip: id == null
     }
   )
   const [concreteNotification, setConcreteNotification] = useState(null)
 
   useEffect(() => {
-    if (!loading && !error && isMessageValid(data?.concrete_notification)) {
+    if (!loading && !error && data && isMessageValid(data?.concrete_notification)) {
       setConcreteNotification(data?.concrete_notification)
     }
   }, [loading, data, error])
