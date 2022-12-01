@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { WSClient, WebSocketClient } from '../lib/Websocket'
 import { getSessionToken, useUserAuth } from "./useApollo"
+import { WEBSOCKET_URL } from "../config"
 
 type State = number | null
 
@@ -19,7 +20,7 @@ export const useIncomingWSConcreteNotificationId = (): State  => {
       return
     }
     if (!wsClient.current) {      
-      const url = encodeURI(`${process.env.REACT_APP_WEBSOCKET_URL}?id=${userId}&token=${getSessionToken()}`)
+      const url = encodeURI(`${WEBSOCKET_URL}?id=${userId}&token=${getSessionToken()}`)
       wsClient.current = new WSClient(url);
       wsClient.current.onMessage(({ data }: MessageEvent) => {
         const id = JSON.parse(data).concreteNotificationId

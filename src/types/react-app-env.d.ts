@@ -27,6 +27,7 @@ declare namespace NodeJS {
 declare interface Window {
   readonly liveConfig: {
     readonly RUNTIME_BACKEND_URL: string
+    readonly RUNTIME_WEBSOCKET_URL: string
     readonly RUNTIME_DISABLE_MATOMO?: "true" | "false"
   }
 }
