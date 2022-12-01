@@ -52,6 +52,14 @@ import AsNavigationItem from '../components/AsNavigationItem'
 
 type Props = {}
 
+export type CreateCourseError =
+  | 'course'
+  | 'subcourse'
+  | 'set_image'
+  | 'upload_image'
+  | 'instructors'
+  | 'lectures'
+
 export type Lecture = {
   id?: string | number
   date: string
@@ -362,7 +370,7 @@ const CreateCourse: React.FC<Props> = () => {
   const submitCourse = useCallback(async () => {
     setIsLoading(true)
 
-    const errors = []
+    const errors: CreateCourseError[] = []
 
     /**
      * Course Creation
@@ -433,7 +441,6 @@ const CreateCourse: React.FC<Props> = () => {
      * Image upload
      */
     if (!pickedPhoto) {
-      errors.push('missing_image')
       finishCourseCreation(errors)
       return
     }
@@ -499,7 +506,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const editCourse = useCallback(async () => {
     setIsLoading(true)
-    const errors: string[] = []
+    const errors: CreateCourseError[] = []
 
     const course = _getCourseData()
     const courseData = (await updateCourse({
