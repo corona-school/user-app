@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode } from "react"
 import { UserNotification } from "../types/lernfair/Notification"
-import { useIncomingWSConcreteNotificationId } from "./useIncomingWSConcreteNotificationId"
+import { useIncomingWSConcreteNotificationId } from "../hooks/useIncomingWSConcreteNotificationId"
 import { useConcreteNotification } from "../hooks/useConcreteNotification"
 
 export const NotificationsContext = createContext<UserNotification | null>(null)

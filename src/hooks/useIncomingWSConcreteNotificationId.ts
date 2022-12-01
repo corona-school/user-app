@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { WSClient, WebSocketClient } from '../lib/Websocket'
-import { getSessionToken, useUserAuth } from "../hooks/useApollo"
+import { getSessionToken, useUserAuth } from "./useApollo"
 
 type State = number | null
 

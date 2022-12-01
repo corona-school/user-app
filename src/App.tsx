@@ -12,9 +12,7 @@ import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
 import { IssueReporter } from './IssueReporter'
 import { NotificationsProvider } from './components/NotificationsProvider'
-import { useIncomingWSConcreteNotificationId } from "./components/useIncomingWSConcreteNotificationId"
 import { ToastNotifications } from "./components/ToastNotifications"
-import { useConcreteNotificationMessage } from "./hooks/useConcreteNotificationMessage"
 
 function App() {
   return (
