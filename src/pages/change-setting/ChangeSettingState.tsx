@@ -60,9 +60,14 @@ const ChangeSettingState: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const { userType } = useLernfair()
-  const { data, loading } = useQuery(gql`
-    ${userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateState, _updateState] = useMutation(gql`
     ${userType === 'student' ? mutStudent : mutPupil}

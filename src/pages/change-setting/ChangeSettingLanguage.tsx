@@ -60,9 +60,14 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
 
   const navigate = useNavigate()
 
-  const { data, loading } = useQuery(gql`
-    ${userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateLanguage, _updateLanguage] = useMutation(gql`
     ${userType === 'student' ? mutStudent : mutPupil}
