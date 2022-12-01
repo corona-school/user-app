@@ -1,23 +1,17 @@
-import { createContext, FC, ReactNode, useState } from "react"
+import { createContext, FC, ReactNode } from "react"
 import { UserNotification } from "../types/lernfair/Notification"
+import { useIncomingWSConcreteNotificationId } from "./useIncomingWSConcreteNotificationId"
+import { useConcreteNotificationMessage } from "../hooks/useConcreteNotificationMessage"
 
-type NotificationsContextValue = {
-  setMessage: (arg0: UserNotification) => void
-  message: UserNotification | null
-}
-
-export const NotificationsContext = createContext<NotificationsContextValue>(
-  { setMessage: () => null, message: null })
+export const NotificationsContext = createContext<UserNotification | null>(null)
 
 export const NotificationsProvider: FC<{ children: ReactNode }> =
   ({ children }) => {
-    const [message, setMessage] = useState<UserNotification|null>(null)
+    const concreteNotificationId = useIncomingWSConcreteNotificationId()
+    const message = useConcreteNotificationMessage(concreteNotificationId)
     
     return (
-      <NotificationsContext.Provider value={{
-        message,
-        setMessage,
-      }}>
+      <NotificationsContext.Provider value={message}>
         {children}
       </NotificationsContext.Provider>
     )
