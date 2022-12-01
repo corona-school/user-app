@@ -137,7 +137,7 @@ const course = {
       appointmentDate: 'Datum:',
       appointmentTime: 'Uhrzeit:',
       appointmentDuration: 'Dauer:',
-      publishCourse: 'Kurs veröffentlichen',
+      publishCourse: 'Zur Prüfung freigeben',
       editCourse: 'Daten bearbeiten'
     },
     modal: {
