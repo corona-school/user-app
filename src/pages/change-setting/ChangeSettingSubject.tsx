@@ -80,9 +80,14 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     1, 13
   ])
 
-  const { data, loading } = useQuery(gql`
-    ${userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateSubjects, _updateSubjects] = useMutation(gql`
     ${userType === 'student' ? mutStudent : mutPupil}

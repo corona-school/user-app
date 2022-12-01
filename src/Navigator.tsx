@@ -315,15 +315,6 @@ export default function Navigator() {
         />
 
         <Route
-          path="/course-archive"
-          element={
-            <RequireAuth>
-              <CourseArchive />
-            </RequireAuth>
-          }
-        />
-
-        <Route
           path="/learningpartner-archive"
           element={
             <RequireAuth>
