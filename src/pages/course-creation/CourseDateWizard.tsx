@@ -103,14 +103,26 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete }) => {
             arr[index].duration = e
             setNewLectures && setNewLectures(arr)
           }}>
-          <Select.Item value="15" label="15 Minuten" />
-          <Select.Item value="30" label="30 Minuten" />
-          <Select.Item value="45" label="45 Minuten" />
-          <Select.Item value="60" label="1 Stunde" />
-          <Select.Item value="90" label="90 Minuten" />
-          <Select.Item value="120" label="2 Stunden" />
-          <Select.Item value="180" label="3 Stunden" />
-          <Select.Item value="240" label="4 Stunden" />
+          <Select.Item
+            value="15"
+            label={t('course.selectOptions._15minutes')}
+          />
+          <Select.Item
+            value="30"
+            label={t('course.selectOptions._30minutes')}
+          />
+          <Select.Item
+            value="45"
+            label={t('course.selectOptions._45minutes')}
+          />
+          <Select.Item value="60" label={t('course.selectOptions._1hour')} />
+          <Select.Item
+            value="90"
+            label={t('course.selectOptions._90minutes')}
+          />
+          <Select.Item value="120" label={t('course.selectOptions._2hour')} />
+          <Select.Item value="180" label={t('course.selectOptions._3hour')} />
+          <Select.Item value="240" label={t('course.selectOptions._4hour')} />
         </Select>
       </FormControl>
     </VStack>

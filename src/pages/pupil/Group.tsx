@@ -278,8 +278,7 @@ const PupilGroup: React.FC<Props> = () => {
                       )) || (
                       <Box paddingLeft={space['1']}>
                         <AlertMessage
-                          content="Es wurden keine Kurse gefunden. Bitte passe deine
-                          Suche an."
+                          content={t('matching.group.error.nofound')}
                         />
                       </Box>
                     )}

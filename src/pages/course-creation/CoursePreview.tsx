@@ -108,18 +108,19 @@ const CoursePreview: React.FC<Props> = ({
 
       <Row flexDirection="column" paddingBottom={space['0.5']}>
         <Heading fontSize="md" paddingBottom={space['0.5']}>
-          Jahrgangsstufe
+          {t('course.CourseDate.Preview.jahrgangsstufe')}
         </Heading>
 
         <Text>
-          Klassen {courseClasses && courseClasses[0]} -{' '}
+          {t('course.CourseDate.Preview.classHeadline')}{' '}
+          {courseClasses && courseClasses[0]} -{' '}
           {courseClasses && courseClasses[1]}
         </Text>
       </Row>
 
       <Row flexDirection="column" paddingBottom={space['0.5']}>
         <Heading fontSize="md" paddingBottom={space['0.5']}>
-          Bild
+          {t('course.CourseDate.Preview.image')}
         </Heading>
 
         <Box bg="gray.500" h="180">
@@ -142,7 +143,7 @@ const CoursePreview: React.FC<Props> = ({
         {(tags &&
           tags.split(',').length &&
           tags.split(',').map(t => <Tag text={t} />)) || (
-          <Text>Es wurden keine Tags angegeben.</Text>
+          <Text>{t('course.CourseDate.Preview.notags')}</Text>
         )}
       </Row>
       <VStack>

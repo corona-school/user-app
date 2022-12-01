@@ -3,6 +3,16 @@ const course = {
   uploadImage: 'Foto hochladen',
   noticeDate: 'Bitte fülle alle Felder korrekt aus',
   selectPlaceHolderDuration: 'Dauer auswählen',
+  selectOptions: {
+    _15minutes: '15 Minuten',
+    _30minutes: '30 Minuten',
+    _45minutes: '45 Minuten',
+    _1hour: '1 Stunde',
+    _90minutes: '90 Minuten',
+    _2hour: '2 Stunden',
+    _3hour: '3 Stunden',
+    _4hour: '4 Stunden'
+  },
   blocker: {
     student: {
       header: 'Kurs erstellen',
@@ -115,6 +125,9 @@ const course = {
       desc: 'Beschreibung',
       tagHeadline: 'Tags',
       classHeadline: 'Klassen',
+      image: 'Bild',
+      notags: 'Es wurden keine Tags angegeben.',
+      jahrgangsstufe: 'Jahrgangsstufe',
       membersCountLabel: 'Teilnehmerzahl:',
       membersCountMaxLabel: 'Max',
       startDateLabel: 'Beitreten nach Kursbeginn:',

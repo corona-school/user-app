@@ -243,7 +243,10 @@ const SingleCourse: React.FC<Props> = () => {
           maxWidth={ContainerWidth}
           marginX="auto"
           width="100%">
-          <Box height={imageHeight} marginBottom={space['1.5']}>
+          <Box
+            maxWidth={sizes['imageHeaderWidth']}
+            height={imageHeight}
+            marginBottom={space['1.5']}>
             <Image
               alt={course?.course?.name}
               borderRadius="8px"
@@ -256,7 +259,9 @@ const SingleCourse: React.FC<Props> = () => {
               }}
             />
           </Box>
-          <Box paddingBottom={space['0.5']}>
+          <Box
+            paddingBottom={space['0.5']}
+            maxWidth={sizes['imageHeaderWidth']}>
             <Row>
               {course?.course?.tags?.map((tag: LFTag) => (
                 <Column marginRight={space['0.5']}>
@@ -266,7 +271,9 @@ const SingleCourse: React.FC<Props> = () => {
             </Row>
           </Box>
           {course?.lectures.length > 0 && (
-            <Text paddingBottom={space['0.5']}>
+            <Text
+              paddingBottom={space['0.5']}
+              maxWidth={sizes['imageHeaderWidth']}>
               {t('single.global.clockFrom')}{' '}
               {Utility.formatDate(course?.lectures[0].start)}{' '}
               {t('single.global.clock')}
@@ -286,7 +293,9 @@ const SingleCourse: React.FC<Props> = () => {
               </Heading>
             )}
           </Row>
-          <Text paddingBottom={space['1']}>{course?.course?.outline}</Text>
+          <Text maxWidth={sizes['imageHeaderWidth']} paddingBottom={space['1']}>
+            {course?.course?.outline}
+          </Text>
 
           <Box marginBottom={space['1']}>
             <CourseTrafficLamp
@@ -298,7 +307,9 @@ const SingleCourse: React.FC<Props> = () => {
           </Box>
 
           {userType === 'pupil' && (
-            <Box marginBottom={space['0.5']}>
+            <Box
+              marginBottom={space['0.5']}
+              maxWidth={sizes['imageHeaderWidth']}>
               {!course?.canJoin?.allowed && !course?.isParticipant && (
                 <AlertMessage
                   content={t(
@@ -409,7 +420,9 @@ const SingleCourse: React.FC<Props> = () => {
                 title: t('single.tabs.description'),
                 content: (
                   <>
-                    <Text marginBottom={space['1']}>
+                    <Text
+                      maxWidth={sizes['imageHeaderWidth']}
+                      marginBottom={space['1']}>
                       {course?.course?.description}
                     </Text>
                   </>
@@ -421,7 +434,10 @@ const SingleCourse: React.FC<Props> = () => {
                   <>
                     {(course?.lectures?.length > 0 &&
                       course.lectures.map((lec: LFLecture, i: number) => (
-                        <Row flexDirection="column" marginBottom={space['1.5']}>
+                        <Row
+                          maxWidth={sizes['imageHeaderWidth']}
+                          flexDirection="column"
+                          marginBottom={space['1.5']}>
                           <Heading paddingBottom={space['0.5']} fontSize="md">
                             {t('single.global.lesson')}{' '}
                             {`${i + 1}`.padStart(2, '0')}

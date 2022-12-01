@@ -10,6 +10,7 @@ const lernfair = {
     deutsch: 'Deutsch',
     englisch: 'Englisch',
     franz_sisch: 'Französisch',
+    französisch: 'Französisch',
     italienisch: 'Italienisch',
     kasachisch: 'Kasachisch',
     kurdisch: 'Kurdisch',
@@ -20,7 +21,8 @@ const lernfair = {
     // t_rkisch: 'Türkisch',
     ukrainisch: 'Ukrainisch',
     vietnamesisch: 'Vietnamesisch',
-    other: 'Andere'
+    other: 'Andere',
+    andere: 'Andere'
   },
   subjects: {
     // arbeitslehre: 'Arbeitslehre',
@@ -65,7 +67,8 @@ const lernfair = {
     sn: 'Sachsen',
     st: 'Sachsen-Anhalt',
     sh: 'Schleswig-Holstein',
-    th: 'Thüringen'
+    th: 'Thüringen',
+    other: 'Andere'
   },
   schooltypes: {
     grundschule: 'Grundschule',

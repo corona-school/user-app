@@ -10,7 +10,8 @@ import {
   Button,
   InfoIcon,
   useBreakpointValue,
-  View
+  View,
+  Input
 } from 'native-base'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
@@ -40,7 +41,6 @@ type MentorCategory =
 
 const HelpCenter: React.FC<Props> = () => {
   const { userType } = useLernfair()
-  console.log(userType)
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -192,8 +192,9 @@ const HelpCenter: React.FC<Props> = () => {
                   />
                 )
               },
+
               {
-                hide: userType !== 'student',
+                hide: userType !== 'pupil',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
@@ -220,12 +221,7 @@ const HelpCenter: React.FC<Props> = () => {
                         <FormControl.Label>
                           {t('helpcenter.contact.subject.label')}
                         </FormControl.Label>
-                        <TextInput
-                          onChangeText={setSubject}
-                          placeholder={t(
-                            'helpcenter.contact.subject.placeholder'
-                          )}
-                        />
+                        <Input onChangeText={setSubject} />
                       </Row>
                       <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>
@@ -260,10 +256,7 @@ const HelpCenter: React.FC<Props> = () => {
                           marginX="auto"
                           width={buttonWidth}
                           isDisabled={
-                            !dsgvo ||
-                            message?.length < 5 ||
-                            subject?.length < 5 ||
-                            !mentorCategory
+                            !dsgvo || message?.length < 5 || subject?.length < 5
                           }
                           onPress={sendContactMessage}>
                           {t('helpcenter.btn.formsubmit')}

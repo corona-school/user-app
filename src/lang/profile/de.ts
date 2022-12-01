@@ -6,6 +6,7 @@ const profile = {
   birthday: 'Geburtsdatum ändern',
   type: 'Art der Unterstützung:',
   availability: 'Verfügbarkeit verwalten',
+  noInfo: 'Keine Angabe',
   ProfileCompletion: {
     name: 'Profilvollständigkeit'
   },
@@ -51,6 +52,8 @@ const profile = {
     empty: 'Keine Angabe',
     label: 'Bundesland',
     single: {
+      selectedStates: 'Mein Bundesland',
+      otherStates: 'Weitere Bundesländer',
       header: 'Bundesland ändern',
       title: 'Mein Bundesland',
       others: 'Bundesland wählen',

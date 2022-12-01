@@ -146,7 +146,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
                 setShow(false)
                 attemptRegister()
               }}>
-              Erneut versuchen
+              {t('registration.result.error.tryagain')}
             </Button>
             <Button onPress={() => setShow(false)}>
               {t('registration.result.error.btn')}
@@ -167,7 +167,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
               setShow(false)
               attemptRegister()
             }}>
-            Erneut versuchen
+            {t('registration.result.error.tryagain')}
           </Button>
           <Button onPress={() => setShow(false)}>
             {t('registration.result.error.btn')}

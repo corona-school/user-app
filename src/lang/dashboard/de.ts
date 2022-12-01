@@ -29,7 +29,11 @@ const dashboard = {
     header: 'Angebote',
     match: 'Match auflösen',
     noMatching: 'Du hast noch keine Matches',
-    requestMatching: 'Match anfordern'
+    requestMatching: 'Match anfordern',
+    requestCreated: 'Anfrage erstellt am:',
+    clock: 'Uhr',
+    waitingTimeInfo: 'Bitte beachte dass die Suche nach einer/einem Lernpartner:in zu Wartezeiten von 3 - 6 Monaten kommen kann',
+    removeRequest: 'Anfrage zurücknehmen'
   },
   helpers: {
     headlines: {
@@ -37,6 +41,7 @@ const dashboard = {
       course: 'Meine Kurse',
       importantNews: 'Wichtige Meldungen',
       myLearningPartner: 'Meine Lernpartner:innen',
+      openedRequests: 'Offene Anfragen:',
       recommend: 'Empfehle uns weiter',
       recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
     },
