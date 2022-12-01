@@ -1,10 +1,12 @@
-import { useEffect, useContext, FC } from "react"
+import { useEffect, FC } from "react"
 import { useBreakpointValue } from "native-base"
-import { NotificationsContext } from "./NotificationsProvider"
 import { showInAppMessage } from "../widgets/InAppMessage"
+import { useConcreteNotificationMessage } from "../hooks/useConcreteNotificationMessage"
+import { useIncomingWSConcreteNotificationId } from "./useIncomingWSConcreteNotificationId"
 
 export const ToastNotifications: FC = () => {
-  const {message} = useContext(NotificationsContext)
+  const concreteNotificationId = useIncomingWSConcreteNotificationId()
+  const message = useConcreteNotificationMessage(concreteNotificationId)
   
   const isMobile = useBreakpointValue({
     base: true,
@@ -12,7 +14,7 @@ export const ToastNotifications: FC = () => {
   })
 
   useEffect(() => {
-    if (typeof message === 'object') showInAppMessage(message, isMobile)
+    if (message !== null) showInAppMessage(message, isMobile)
   }, [message, isMobile])
   
   return null

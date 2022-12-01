@@ -12,9 +12,9 @@ import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
 import { IssueReporter } from './IssueReporter'
 import { NotificationsProvider } from './components/NotificationsProvider'
-import { WebsocketClient } from "./components/WebsocketClient"
+import { useIncomingWSConcreteNotificationId } from "./components/useIncomingWSConcreteNotificationId"
 import { ToastNotifications } from "./components/ToastNotifications"
-import { NotificationsData } from "./components/NotificationsData"
+import { useConcreteNotificationMessage } from "./hooks/useConcreteNotificationMessage"
 
 function App() {
   return (
@@ -27,9 +27,7 @@ function App() {
                 <Navigator />
                 <FullPageModal />
                 <NotificationsProvider>
-                  <WebsocketClient/>
                   <ToastNotifications/>
-                  <NotificationsData/>
                 </NotificationsProvider>
               </MatomoProvider>
             </IssueReporter>

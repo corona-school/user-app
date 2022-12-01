@@ -15,7 +15,7 @@ const concreteNotificationQuery = gql`
   }
 `
 
-const useConcreteNotification = (id?: number) => {
+const useConcreteNotification = (id: number | null) => {
   const { data, loading, error, refetch } = useQuery(
     concreteNotificationQuery,
     {
@@ -29,7 +29,7 @@ const useConcreteNotification = (id?: number) => {
     if (!loading && !error) {
       setNotification(data?.concrete_notification)
     }
-  }, [loading])
+  }, [loading, data, error])
 
   return { data, notification, loading, error, refetch }
 }
