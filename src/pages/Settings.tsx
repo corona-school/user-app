@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import {
   Heading,
@@ -6,23 +6,20 @@ import {
   VStack,
   Column,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  useToast
 } from 'native-base'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import BackButton from '../components/BackButton'
-import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
 import WithNavigation from '../components/WithNavigation'
 import useApollo from '../hooks/useApollo'
 import useLernfair from '../hooks/useLernfair'
 import EditDataRow from '../widgets/EditDataRow'
-import ProfilAvatar from '../widgets/ProfilAvatar'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
 
-type Props = {}
-
-const Settings: React.FC<Props> = () => {
+const Settings: React.FC = () => {
+  const toast = useToast()
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -30,6 +27,12 @@ const Settings: React.FC<Props> = () => {
   const tabspace = 3
   const { userType } = useLernfair()
   const { trackPageView, trackEvent } = useMatomo()
+
+  const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(gql`
+    mutation {
+      meDeactivate
+    }
+  `)
 
   useEffect(() => {
     trackPageView({
@@ -51,6 +54,25 @@ const Settings: React.FC<Props> = () => {
     }
   `)
 
+  const deactivate = useCallback(async () => {
+    const res = await deactivateAccount()
+
+    if (res.data.meDeactivate) {
+      trackEvent({
+        category: 'profil',
+        action: 'click-event',
+        name: 'Account deaktivieren',
+        documentTitle: 'Deactivate'
+      })
+      logout()
+      navigate('/welcome', { state: { deactivated: true } })
+    } else {
+      toast.show({
+        description: 'Dein Account konnte nicht deaktiviert werden.'
+      })
+    }
+  }, [deactivateAccount, logout, navigate, toast, trackEvent])
+
   return (
     <WithNavigation
       headerTitle={t('settings.header')}
@@ -64,10 +86,6 @@ const Settings: React.FC<Props> = () => {
         width="100%"
         maxWidth={ContainerWidth}>
         <HStack space={space['1']} alignItems="center">
-          {/* <ProfilAvatar
-            size="md"
-            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          /> */}
           <Heading>{data?.me?.firstname}</Heading>
         </HStack>
       </VStack>
@@ -154,6 +172,16 @@ const Settings: React.FC<Props> = () => {
             />
           </Column>
         </ProfileSettingRow>
+
+        {userType === 'pupil' && (
+          <Column mt={tabspace}>
+            <EditDataRow
+              isDisabled={loadingDeactivate}
+              label={t('settings.account.deactivateAccount')}
+              onPress={deactivate}
+            />
+          </Column>
+        )}
       </VStack>
     </WithNavigation>
   )
