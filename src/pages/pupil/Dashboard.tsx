@@ -308,10 +308,8 @@ const Dashboard: React.FC<Props> = () => {
                       <VStack w="100%" space={space['0.5']}>
                         <Tooltip
                           isDisabled={!disableMeetingButton}
-                          maxWidth={500}
-                          label={t(
-                            'course.CourseDate.form.otherOptionContactToolTip'
-                          )}>
+                          maxWidth={300}
+                          label={t('dashboard.appointmentcard.videotooltip')}>
                           <Button
                             width="100%"
                             marginTop={space['1']}
@@ -319,12 +317,12 @@ const Dashboard: React.FC<Props> = () => {
                             isDisabled={
                               disableMeetingButton || _joinMeeting.loading
                             }>
-                            Videochat beitreten
+                            {t('dashboard.appointmentcard.videobutton')}
                           </Button>
                         </Tooltip>
                         {showMeetingNotStarted && (
                           <Text color="lightText">
-                            Videochat noch nicht gestartet.
+                            {t('dashboard.appointmentcard.videotext')}
                           </Text>
                         )}
                       </VStack>
