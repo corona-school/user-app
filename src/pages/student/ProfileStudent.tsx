@@ -28,6 +28,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
+import CSSWrapper from '../../components/CSSWrapper'
 
 type Props = {}
 
@@ -231,11 +232,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   {(data?.me?.student.state && (
                     <Column marginRight={3}>
                       {(data?.me?.student?.state !== 'other' && (
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.student.state}`)}
-                        />
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                            text={t(
+                              `lernfair.states.${data?.me?.student.state}`
+                            )}
+                          />
+                        </CSSWrapper>
                       )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.State.empty')}</Text>}
@@ -254,13 +259,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   {data?.me?.student?.subjectsFormatted?.map(
                     (sub: { name: string }) => (
                       <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`subjects/icon_${getSubjectKey(
-                            sub.name
-                          )}.svg`}
-                          text={sub.name}
-                        />
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`subjects/icon_${getSubjectKey(
+                              sub.name
+                            )}.svg`}
+                            text={sub.name}
+                          />
+                        </CSSWrapper>
                       </Column>
                     )
                   ) || <Text>{t('profile.subjects.empty')}</Text>}
