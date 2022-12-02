@@ -9,7 +9,8 @@ import {
   Button,
   useBreakpointValue,
   VStack,
-  Modal
+  Modal,
+  Link
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -19,11 +20,14 @@ import WithNavigation from '../components/WithNavigation'
 import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 
-import Utility, { getTrafficStatus } from '../Utility'
+import Utility, {
+  getFirstLectureFromSubcourse,
+  getTrafficStatus
+} from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
 import AlertMessage from '../widgets/AlertMessage'
@@ -40,6 +44,9 @@ const SingleCourse: React.FC<Props> = () => {
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
+
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
+  const [showMeetingButton, setShowMeetingButton] = useState<boolean>()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -111,6 +118,10 @@ const SingleCourse: React.FC<Props> = () => {
   const { data: participantData } = useQuery(participantQuery, {
     skip: !loadParticipants
   })
+
+  const [joinMeeting, _joinMeeting] = useMutation(gql`mutation{
+    subcourseJoinMeeting(subcourseId: ${courseId})
+  }`)
 
   const [joinSubcourse, _joinSubcourse] = useMutation(
     gql`
@@ -228,6 +239,29 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }, [course, loading])
 
+  const getMeetingLink = useCallback(async () => {
+    try {
+      const res = await joinMeeting({ variables: { subcourseId: courseId } })
+
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [courseId, joinMeeting])
+
+  useEffect(() => {
+    if (!courseId || !course?.lectures) return
+    const lec = getFirstLectureFromSubcourse(course?.lectures, false)
+
+    if (DateTime.fromISO(lec.start).diffNow().minutes <= 15) {
+      setShowMeetingButton(true)
+    }
+  }, [course?.lectures, courseId, getMeetingLink])
+
   return (
     <>
       <WithNavigation
@@ -306,6 +340,19 @@ const SingleCourse: React.FC<Props> = () => {
             />
           </Box>
 
+          <VStack space={space['0.5']} py={space['1']}>
+            {course?.isParticipant && showMeetingButton && (
+              <Button
+                onPress={getMeetingLink}
+                isDisabled={_joinMeeting.loading}>
+                Videochat beitreten
+              </Button>
+            )}
+            {showMeetingNotStarted && (
+              <Text>Der Videochat wurde noch nicht gestartet.</Text>
+            )}
+          </VStack>
+
           {userType === 'pupil' && (
             <Box
               marginBottom={space['0.5']}
@@ -361,10 +408,6 @@ const SingleCourse: React.FC<Props> = () => {
               )}
               {course?.isParticipant && (
                 <VStack space={space['0.5']}>
-                  <AlertMessage
-                    content={t('single.buttoninfo.successMember')}
-                  />
-
                   <Button
                     onPress={() => {
                       leaveSubcourse({ variables: { courseId: courseId } })
@@ -374,6 +417,10 @@ const SingleCourse: React.FC<Props> = () => {
                     isDisabled={loading}>
                     Kurs verlassen
                   </Button>
+
+                  <AlertMessage
+                    content={t('single.buttoninfo.successMember')}
+                  />
                 </VStack>
               )}
             </Box>
