@@ -16,7 +16,7 @@ const Explore: React.FC<Props> = () => {
       subcoursesPublic(take: 10, skip: 0) {
         course {
           name
-          descriptionoutline
+          description
         }
       }
     }

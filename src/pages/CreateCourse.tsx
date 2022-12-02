@@ -162,7 +162,6 @@ const CreateCourse: React.FC<Props> = () => {
           id
           name
           image
-          outline
           category
           description
           subject

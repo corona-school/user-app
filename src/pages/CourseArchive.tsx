@@ -42,7 +42,6 @@ const studentQuery = gql`
           course {
             name
             image
-            outline
             tags {
               name
             }
@@ -64,7 +63,6 @@ const pupilQuery = gql`
           course {
             name
             image
-            outline
             tags {
               name
             }
@@ -199,7 +197,7 @@ const CourseArchive: React.FC<Props> = () => {
                             isFullHeight
                             isSpaceMarginBottom={false}
                             variant="horizontal"
-                            description={sub.course.outline}
+                            description={sub.course.description}
                             tags={sub.course.tags}
                             date={firstDate?.toString()}
                             countCourse={sub.lectures.length}
