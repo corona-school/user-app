@@ -293,7 +293,11 @@ const CreateCourse: React.FC<Props> = () => {
     prefillCourse.course.image && setImage(prefillCourse.course.image)
 
     if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-      setAddedInstructors(prefillCourse.instructors)
+      const arr = prefillCourse.instructors.filter(
+        (instructor: LFInstructor) =>
+          instructor.id !== studentData.me.student.id
+      )
+      setAddedInstructors(arr)
     }
 
     if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
