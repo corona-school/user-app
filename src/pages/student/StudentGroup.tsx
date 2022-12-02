@@ -9,7 +9,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WithNavigation from '../../components/WithNavigation'
-import NotificationAlert from '../../components/notification/NotificationAlert'
+import NotificationAlert from '../../components/notifications/NotificationAlert'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import Tabs from '../../components/Tabs'
 import { useEffect, useMemo } from 'react'

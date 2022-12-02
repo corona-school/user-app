@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Box, Text } from 'native-base'
 import useInterval from '../../hooks/useInterval'
 import { useTranslation } from 'react-i18next'
-import { getTimeText } from '../../helper/notification-helper'
+import { getTimeTextByTimestamp } from '../../helper/notification-helper'
 
 type TimeIndicatorProps = {
   sentAt: string
@@ -11,7 +11,7 @@ type TimeIndicatorProps = {
 const TimeIndicator: React.FC<TimeIndicatorProps> = ({ sentAt }) => {
   const { t } = useTranslation()
   const [toggleRerender, setToggleRerender] = useState<boolean>(false)
-  const time = getTimeText(sentAt)
+  const time = getTimeTextByTimestamp(sentAt)
 
   const boxPropsAllDevices = {
     maxW: 80,
