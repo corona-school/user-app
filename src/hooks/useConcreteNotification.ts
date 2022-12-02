@@ -34,7 +34,7 @@ export const useConcreteNotification = (id: number | null) => {
     concreteNotificationQuery,
     {
       variables: { id },
-      skip: id == null
+      skip: !id
     }
   )
   const [concreteNotification, setConcreteNotification] = useState(null)
