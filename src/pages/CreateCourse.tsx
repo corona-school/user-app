@@ -572,25 +572,27 @@ const CreateCourse: React.FC<Props> = () => {
       }
     }
 
-    for await (const lecture of newLectures) {
-      const l: LFLecture = {
-        start: new Date().toLocaleString(),
-        duration: parseInt(lecture.duration)
-      }
-      const dt = DateTime.fromISO(lecture.date)
-      const t = DateTime.fromISO(lecture.time)
-
-      dt.set({ hour: t.hour, minute: t.minute, second: t.second })
-      l.start = dt.toISO()
-
-      let res = await addLecture({
-        variables: {
-          courseId: prefillCourseId,
-          lecture: l
+    if (newLectures.length > 0 && newLectures[0].date) {
+      for await (const lecture of newLectures) {
+        const l: LFLecture = {
+          start: new Date().toLocaleString(),
+          duration: parseInt(lecture.duration)
         }
-      })
-      if (!res.data.lectureDelete && res.errors) {
-        errors.push('lectures')
+        const dt = DateTime.fromISO(lecture.date)
+        const t = DateTime.fromISO(lecture.time)
+
+        dt.set({ hour: t.hour, minute: t.minute, second: t.second })
+        l.start = dt.toISO()
+
+        let res = await addLecture({
+          variables: {
+            courseId: prefillCourseId,
+            lecture: l
+          }
+        })
+        if (!res.data.lectureDelete && res.errors) {
+          errors.push('lectures')
+        }
       }
     }
 
