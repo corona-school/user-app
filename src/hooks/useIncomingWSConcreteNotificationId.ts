@@ -3,11 +3,9 @@ import { WSClient, WebSocketClient } from '../lib/Websocket'
 import { getSessionToken, useUserAuth } from "./useApollo"
 import { WEBSOCKET_URL } from "../config"
 
-type State = number | null
-
-export const useIncomingWSConcreteNotificationId = (): State  => {
+export const useIncomingWSConcreteNotificationId = (): number | null  => {
   const {sessionState, userId} = useUserAuth()
-  const [concreteNotificationId, setConcreteNotificationId] = useState<State>(null)
+  const [concreteNotificationId, setConcreteNotificationId] = useState<number | null>(null)
   const wsClient = useRef<WebSocketClient | null>(null);
   const close = () => {
     wsClient.current?.close()
