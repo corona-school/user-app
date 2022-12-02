@@ -69,6 +69,7 @@ const query = gql`
         }
         subcoursesJoined {
           id
+          isParticipant
           lectures {
             start
           }
@@ -124,6 +125,8 @@ const Dashboard: React.FC<Props> = () => {
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
   const [dissolveData, setDissolveData] = useState<LFMatch>()
   const [toastShown, setToastShown] = useState<boolean>()
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
+  const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
 
   useEffect(() => {
     trackPageView({
@@ -218,6 +221,10 @@ const Dashboard: React.FC<Props> = () => {
     }
   )
 
+  // const [joinMeeting, _joinMeeting] = useMutation(gql`mutation{
+  //   subcourseJoinMeeting(subcourseId: ${courseId})
+  // }`)
+
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
     setShowDissolveModal(true)
@@ -237,6 +244,28 @@ const Dashboard: React.FC<Props> = () => {
       (match: LFMatch) => !match.dissolved
     )
   }, [data?.me?.pupil?.matches])
+
+  // const getMeetingLink = useCallback(async () => {
+  //   try {
+  //     const res = await joinMeeting({ variables: { subcourseId: courseId } })
+
+  //     if (res.data.subcourseJoinMeeting) {
+  //       window.open(res.data.subcourseJoinMeeting, '_blank')
+  //     } else {
+  //       setShowMeetingNotStarted(true)
+  //     }
+  //   } catch (e) {
+  //     setShowMeetingNotStarted(true)
+  //   }
+  // }, [courseId, joinMeeting])
+
+  // useEffect(() => {
+  //   if (!courseId || !course?.lectures) return
+  //   const lec = getFirstLectureFromSubcourse(course?.lectures, false)
+  //   if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 15) {
+  //     setShowMeetingButton(true)
+  //   }
+  // }, [course?.lectures, courseId, getMeetingLink])
 
   return (
     <AsNavigationItem path="start">
@@ -269,6 +298,19 @@ const Dashboard: React.FC<Props> = () => {
                   </Heading>
 
                   <AppointmentCard
+                    videoButton={
+                      highlightedAppointment?.course?.isParticipant &&
+                      showMeetingButton && (
+                        <Button
+                          width="100%"
+                          marginTop={space['1']}
+                          // onPress={getMeetingLink}
+                          // isDisabled={_joinMeeting.loading}
+                        >
+                          Videochat beitreten
+                        </Button>
+                      )
+                    }
                     isTeaser={true}
                     onPressToCourse={() => {
                       trackEvent({
