@@ -31,9 +31,9 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
 import AlertMessage from '../widgets/AlertMessage'
 
-type Props = {}
+import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 
-const SingleCourse: React.FC<Props> = () => {
+const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
@@ -58,7 +58,9 @@ const SingleCourse: React.FC<Props> = () => {
       isInstructor
       participants{
     firstname
+    lastname
     grade
+    schooltype
   }`
       : `
   isOnWaitingList
@@ -71,7 +73,7 @@ const SingleCourse: React.FC<Props> = () => {
 
   const query = gql`query{
     me {
-      pupil{id}
+      pupil{id firstname grade}
       student{id}
     }
     subcourse(subcourseId: ${courseId}){
@@ -504,10 +506,13 @@ const SingleCourse: React.FC<Props> = () => {
                   </>
                 )
               },
-              course?.isParticipant && {
+              {
                 title: t('single.tabs.participant'),
                 content: (
                   <>
+                    {course?.isParticipant && (
+                      <Participant pupil={courseData.me.pupil} />
+                    )}
                     {(participants?.length > 0 &&
                       participants.map((p: LFParticipant) => (
                         <Participant pupil={p} />
@@ -647,15 +652,15 @@ const Participant: React.FC<ParticipantProps> = ({ pupil }) => {
   const { space } = useTheme()
   return (
     <Row marginBottom={space['1.5']} alignItems="center">
-      <Column marginRight={space['1']}>
-        {/* <ProfilAvatar
-      size="md"
-      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-    /> */}
-      </Column>
+      <Column marginRight={space['1']}></Column>
       <Column>
-        <Heading fontSize="md">{pupil.firstname}</Heading>
-        <Text>{pupil.grade}</Text>
+        <Heading fontSize="md">
+          {pupil.firstname} {pupil.lastname}
+        </Heading>
+        <Text>
+          {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
+          {pupil.grade}
+        </Text>
       </Column>
     </Row>
   )
