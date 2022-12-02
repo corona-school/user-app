@@ -6,7 +6,9 @@ import {
   VStack,
   Column,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  CloseIcon,
+  Pressable
 } from 'native-base'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -54,8 +56,12 @@ const Settings: React.FC<Props> = () => {
   return (
     <WithNavigation
       headerTitle={t('settings.header')}
-      showBack
       hideMenu
+      headerRight={
+        <Pressable onPress={() => navigate(-1)}>
+          <CloseIcon color="lightText" />
+        </Pressable>
+      }
       isLoading={loading}>
       <VStack
         paddingBottom={7}
