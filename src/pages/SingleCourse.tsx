@@ -9,8 +9,7 @@ import {
   Button,
   useBreakpointValue,
   VStack,
-  Modal,
-  Link
+  Modal
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -46,7 +45,7 @@ const SingleCourse: React.FC<Props> = () => {
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
 
   const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
-  const [showMeetingButton, setShowMeetingButton] = useState<boolean>()
+  const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -113,7 +112,7 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`
 
-  const { data: courseData, loading, error } = useQuery(query)
+  const { data: courseData, loading } = useQuery(query)
 
   const { data: participantData } = useQuery(participantQuery, {
     skip: !loadParticipants
@@ -256,8 +255,7 @@ const SingleCourse: React.FC<Props> = () => {
   useEffect(() => {
     if (!courseId || !course?.lectures) return
     const lec = getFirstLectureFromSubcourse(course?.lectures, false)
-
-    if (DateTime.fromISO(lec.start).diffNow().minutes <= 15) {
+    if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 15) {
       setShowMeetingButton(true)
     }
   }, [course?.lectures, courseId, getMeetingLink])
@@ -339,20 +337,19 @@ const SingleCourse: React.FC<Props> = () => {
               )}
             />
           </Box>
-
-          <VStack space={space['0.5']} py={space['1']}>
-            {course?.isParticipant && showMeetingButton && (
+          {course?.isParticipant && showMeetingButton && (
+            <VStack space={space['0.5']} py={space['1']}>
               <Button
                 onPress={getMeetingLink}
                 isDisabled={_joinMeeting.loading}>
                 Videochat beitreten
               </Button>
-            )}
-            {showMeetingNotStarted && (
-              <Text>Der Videochat wurde noch nicht gestartet.</Text>
-            )}
-          </VStack>
 
+              {showMeetingNotStarted && (
+                <Text>Der Videochat wurde noch nicht gestartet.</Text>
+              )}
+            </VStack>
+          )}
           {userType === 'pupil' && (
             <Box
               marginBottom={space['0.5']}
