@@ -318,7 +318,7 @@ const CreateCourse: React.FC<Props> = () => {
     }
 
     setIsLoading(false)
-  }, [courseQuery, prefillCourseId])
+  }, [courseQuery, prefillCourseId, studentData.me.student.id])
 
   useEffect(() => {
     if (prefillCourseId !== null) queryCourse()
@@ -333,12 +333,13 @@ const CreateCourse: React.FC<Props> = () => {
       } else {
         navigate('/group', {
           state: {
+            wasEdited: isEditing,
             errors
           }
         })
       }
     },
-    [navigate]
+    [isEditing, navigate]
   )
 
   const _getCourseData = useCallback(

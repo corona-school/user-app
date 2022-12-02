@@ -78,6 +78,7 @@ const StudentGroup: React.FC = () => {
   const location = useLocation()
   const locState = location?.state as {
     errors: CreateCourseError[]
+    wasEdited: boolean
   }
 
   const ContainerWidth = useBreakpointValue({
@@ -219,8 +220,11 @@ const StudentGroup: React.FC = () => {
                 <>
                   {showSuccess && (
                     <AlertMessage
-                      content="Dein Kurs wurde erfolgreich erstellt. Er befindet sich
-                   nun in Prüfung."
+                      content={
+                        locState.wasEdited
+                          ? 'Dein Kurs wurde erfolgreich bearbeitet.'
+                          : 'Dein Kurs wurde erfolgreich erstellt. Er befindet sich nun in Prüfung.'
+                      }
                     />
                   )}
                   {(locState?.errors?.length > 0 && (
