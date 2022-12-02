@@ -1,6 +1,7 @@
 import { t } from 'i18next'
 import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import useLernfair from '../hooks/useLernfair'
 
 type DissolveModalProps = {
@@ -10,14 +11,16 @@ type DissolveModalProps = {
 }
 
 // corresponding dissolve reason ids in translation file
-export const studentReasonOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-export const pupilReasonOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+// for now just loop through 1-9 (+1 in loop)
+export const studentReasonOptions = new Array(9).fill(0)
+export const pupilReasonOptions = new Array(9).fill(0)
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({
   showDissolveModal,
   onPressDissolve,
   onPressBack
 }) => {
+  const { t } = useTranslation()
   const { space } = useTheme()
   const { userType } = useLernfair()
   const [reason, setReason] = useState<string>('')
@@ -31,16 +34,16 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({
     <Modal isOpen={showDissolveModal} onClose={onPressBack}>
       <Modal.Content>
         <Modal.CloseButton />
-        <Modal.Header>Warum möchtest du das Match auflösen?</Modal.Header>
+        <Modal.Header>{t('matching.dissolveModal.title')}</Modal.Header>
         <Modal.Body>
           <Radio.Group
             name="dissolve-reason"
             value={reason}
             onChange={setReason}>
             <VStack space={space['1']}>
-              {reasons.map((reason: number) => (
-                <Radio value={`${reason}`}>
-                  {t(`matching.dissolveReasons.${userType}.${reason}`)}
+              {reasons.map((_: number, index: number) => (
+                <Radio value={`${index + 1}`}>
+                  {t(`matching.dissolveReasons.${userType}.${index + 1}`)}
                 </Radio>
               ))}
             </VStack>
@@ -51,10 +54,10 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({
             <Button
               isDisabled={!reason}
               onPress={() => onPressDissolve(reason)}>
-              Match auflösen
+              {t('matching.dissolveModal.btn')}
             </Button>
             <Button onPress={onPressBack} variant="ghost">
-              Zurück
+              {t('back')}
             </Button>
           </Row>
         </Modal.Footer>

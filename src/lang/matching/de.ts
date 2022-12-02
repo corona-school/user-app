@@ -241,6 +241,10 @@ const matching = {
       hint: 'Solltest du meherere Fächer anbieten wollen, ist eine Mehrfachauswahl möglich.'
     }
   },
+  dissolveModal: {
+    title: 'Match auflösen',
+    btn: 'Match auflösen'
+  },
   dissolveReasons: {
     student: {
       1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',

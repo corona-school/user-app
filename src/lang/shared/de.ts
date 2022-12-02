@@ -11,6 +11,8 @@ const onboarding = {
   firstname: 'Vorname',
   lastname: 'Nachname',
   skip: 'Überspringen',
+  next: 'Weiter',
+  back: 'Zurück',
   important: 'Wichtig',
   empty: {
     appointments: 'Du hast momentan keine Termine.',
