@@ -187,8 +187,8 @@ const RegistrationAccount: React.FC<Props> = () => {
 
   const checkEmail = useCallback(async () => {
     if (!isInputValid()) return
-
-    const res = await isEmailAvailable({ variables: { email: email } })
+    const validMail = email.toLowerCase()
+    const res = await isEmailAvailable({ variables: { email: validMail } })
 
     if (res.data?.isEmailAvailable) {
       trackEvent({
