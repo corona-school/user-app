@@ -37,7 +37,6 @@ const query = gql`
           id
           name
           description
-          outline
           tags {
             name
           }
@@ -58,7 +57,6 @@ const query = gql`
           course {
             name
             description
-            outline
             tags {
               name
             }
@@ -161,7 +159,7 @@ const StudentGroup: React.FC = () => {
           isSpaceMarginBottom={false}
           key={index}
           variant="horizontal"
-          description={course.course.outline}
+          description={course.course.description}
           tags={course.course.tags}
           date={(showDate && course.firstLecture?.start) || ''}
           countCourse={course.lectures.length}

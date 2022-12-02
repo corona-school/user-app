@@ -30,7 +30,6 @@ import InstructorRow from '../../widgets/InstructorRow'
 import { LFInstructor } from '../../types/lernfair/Course'
 
 const MAX_TITLE = 50
-const MAX_OUTLINE_LENGTH = 140
 
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
   const { t } = useTranslation()
@@ -136,8 +135,6 @@ const CourseData: React.FC<Props> = ({
     setSubject,
     classRange,
     setClassRange,
-    outline,
-    setOutline,
     description,
     setDescription,
     tags,
@@ -156,22 +153,11 @@ const CourseData: React.FC<Props> = ({
 
   const isValidInput: boolean = useMemo(() => {
     if (!courseName || courseName?.length < 3) return false
-    // if (!subject) return false
     if (!classRange || !classRange.length) return false
-    if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
-    // if (!pickedPhoto) return false
     return true
-  }, [
-    classRange,
-    courseName,
-    description,
-    maxParticipantCount,
-    outline
-    // pickedPhoto,
-    // subject
-  ])
+  }, [classRange, courseName, description, maxParticipantCount])
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -313,25 +299,7 @@ const CourseData: React.FC<Props> = ({
           <WidgetAddInstructor onPress={onShowAddInstructor} />
         </Row>
       </FormControl>
-      <FormControl marginBottom={space['0.5']}>
-        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
-          {t('course.CourseDate.form.shortDescriptionLabel')}
-        </FormControl.Label>
-        <TextArea
-          marginBottom={space['0.5']}
-          placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
-          autoCompleteType={'normal'}
-          value={outline}
-          onChangeText={text =>
-            setOutline && setOutline(text.substring(0, MAX_OUTLINE_LENGTH))
-          }
-        />
-        <Text fontSize="xs" color="primary.grey">
-          {t('characterLimitNotice', {
-            limit: MAX_OUTLINE_LENGTH
-          })}
-        </Text>
-      </FormControl>
+
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.descriptionLabel')}

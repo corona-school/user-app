@@ -88,7 +88,6 @@ const SingleCourse: React.FC = () => {
       course {
         name
         image
-        outline
         category
         description
         subject
@@ -327,9 +326,6 @@ const SingleCourse: React.FC = () => {
               </Heading>
             )}
           </Row>
-          <Text maxWidth={sizes['imageHeaderWidth']} paddingBottom={space['1']}>
-            {course?.course?.outline}
-          </Text>
 
           <Box marginBottom={space['1']}>
             <CourseTrafficLamp

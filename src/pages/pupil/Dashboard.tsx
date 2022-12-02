@@ -76,7 +76,6 @@ const query = gql`
           }
           course {
             name
-            outline
             image
             tags {
               name
@@ -98,7 +97,6 @@ const query = gql`
       course {
         name
         description
-        outline
         image
         tags {
           name
@@ -345,7 +343,10 @@ const Dashboard: React.FC<Props> = () => {
                     date={highlightedAppointment?.lecture.start}
                     image={highlightedAppointment?.course.course?.image}
                     title={highlightedAppointment?.course.course?.name}
-                    description={highlightedAppointment?.course.course?.outline}
+                    description={highlightedAppointment?.course.course?.description.substring(
+                      0,
+                      64
+                    )}
                   />
                 </VStack>
               )}
@@ -391,7 +392,7 @@ const Dashboard: React.FC<Props> = () => {
                                 })
                               }}
                               key={`appointment-${course.id}`}
-                              description={course.course.outline}
+                              description={course.course.description}
                               tags={course.course.tags}
                               date={lecture.start}
                               image={course.course.image}
