@@ -100,6 +100,7 @@ const course = {
         'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
       otherHeadline: 'Sonstiges',
       otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+      otherOptionStartToolTip: 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
       otherOptionContact: 'Kontaktaufnahme erlauben',
       otherOptionContactToolTip:
         'Wenn du die Kontaktaufnahme erlaubst können dich die Schüler:innen die Interesse am Kurs haben oder bereits angemeldet sind Kontakt per E-Mail mit dir aufnehmen',
