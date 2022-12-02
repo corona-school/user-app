@@ -313,7 +313,7 @@ const CreateCourse: React.FC<Props> = () => {
     }
 
     setIsLoading(false)
-  }, [courseQuery, prefillCourseId, studentData.me.student.id])
+  }, [courseQuery, prefillCourseId, studentData?.me.student.id])
 
   useEffect(() => {
     if (prefillCourseId !== null) queryCourse()
