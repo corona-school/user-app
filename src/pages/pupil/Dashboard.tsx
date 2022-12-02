@@ -10,7 +10,8 @@ import {
   useToast,
   Alert,
   Column,
-  Box
+  Box,
+  Tooltip
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -69,6 +70,7 @@ const query = gql`
         }
         subcoursesJoined {
           id
+          isParticipant
           lectures {
             start
           }
@@ -124,6 +126,7 @@ const Dashboard: React.FC<Props> = () => {
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
   const [dissolveData, setDissolveData] = useState<LFMatch>()
   const [toastShown, setToastShown] = useState<boolean>()
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
 
   useEffect(() => {
     trackPageView({
@@ -218,6 +221,12 @@ const Dashboard: React.FC<Props> = () => {
     }
   )
 
+  const [joinMeeting, _joinMeeting] = useMutation(gql`
+    mutation joinMeeting($courseId: Float!) {
+      subcourseJoinMeeting(subcourseId: $courseId)
+    }
+  `)
+
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
     setShowDissolveModal(true)
@@ -237,6 +246,32 @@ const Dashboard: React.FC<Props> = () => {
       (match: LFMatch) => !match.dissolved
     )
   }, [data?.me?.pupil?.matches])
+
+  const getMeetingLink = useCallback(async () => {
+    const courseId = highlightedAppointment?.course.id
+    if (!courseId) return
+
+    try {
+      const res = await joinMeeting({ variables: { courseId } })
+
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [highlightedAppointment?.course.id, joinMeeting])
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    if (!highlightedAppointment) return true
+    return (
+      DateTime.fromISO(highlightedAppointment?.lecture?.start).diffNow(
+        'minutes'
+      ).minutes > 5
+    )
+  }, [highlightedAppointment])
 
   return (
     <AsNavigationItem path="start">
@@ -269,6 +304,29 @@ const Dashboard: React.FC<Props> = () => {
                   </Heading>
 
                   <AppointmentCard
+                    videoButton={
+                      <VStack w="100%" space={space['0.5']}>
+                        <Tooltip
+                          isDisabled={!disableMeetingButton}
+                          maxWidth={300}
+                          label={t('dashboard.appointmentcard.videotooltip')}>
+                          <Button
+                            width="100%"
+                            marginTop={space['1']}
+                            onPress={getMeetingLink}
+                            isDisabled={
+                              disableMeetingButton || _joinMeeting.loading
+                            }>
+                            {t('dashboard.appointmentcard.videobutton')}
+                          </Button>
+                        </Tooltip>
+                        {showMeetingNotStarted && (
+                          <Text color="lightText">
+                            {t('dashboard.appointmentcard.videotext')}
+                          </Text>
+                        )}
+                      </VStack>
+                    }
                     isTeaser={true}
                     onPressToCourse={() => {
                       trackEvent({
