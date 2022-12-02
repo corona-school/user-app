@@ -11,6 +11,8 @@ import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
 import { IssueReporter } from './IssueReporter'
+import { NotificationsProvider } from './components/NotificationsProvider'
+import { ToastNotifications } from "./components/ToastNotifications"
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
               <MatomoProvider value={matomo}>
                 <Navigator />
                 <FullPageModal />
+                <NotificationsProvider>
+                  <ToastNotifications/>
+                </NotificationsProvider>
               </MatomoProvider>
             </IssueReporter>
           </NativeBaseProvider>

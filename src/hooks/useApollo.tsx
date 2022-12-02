@@ -77,7 +77,7 @@ export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({
 // -------------- Global User State -------------------
 // ----- Session Token ---------------------
 //  Authenticates the user during a session
-const getSessionToken = () => {
+export const getSessionToken = () => {
   const token = localStorage.getItem('lernfair:token')
   if (token) return token
 
@@ -478,5 +478,11 @@ export const useUserType = () => {
   if (user?.student) return "student";
   throw new Error(`useUserType cannot determine user`);
 };
+
+export const useUserAuth = () => {
+  const {sessionState, user} = useContext(ExtendedApolloContext)!
+    return { sessionState, userId: user?.userID }
+  
+}
 
 export default useApollo
