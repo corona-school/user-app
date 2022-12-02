@@ -255,7 +255,7 @@ const SingleCourse: React.FC<Props> = () => {
   useEffect(() => {
     if (!courseId || !course?.lectures) return
     const lec = getFirstLectureFromSubcourse(course?.lectures, false)
-    if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 15) {
+    if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 5) {
       setShowMeetingButton(true)
     }
   }, [course?.lectures, courseId, getMeetingLink])
