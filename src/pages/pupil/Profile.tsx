@@ -262,7 +262,7 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      {(data?.me?.pupil?.state !== 'other' && (
+                      {(data?.me?.pupil?.state && (
                         <IconTagList
                           isDisabled
                           iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}

@@ -230,7 +230,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 <Row>
                   {(data?.me?.student.state && (
                     <Column marginRight={3}>
-                      {(data?.me?.student?.state !== 'other' && (
+                      {(data?.me?.student?.state && (
                         <IconTagList
                           isDisabled
                           iconPath={`states/icon_${data?.me?.student.state}.svg`}
