@@ -52,9 +52,10 @@ const useLastTimeCheckedNotifications = () => {
     userType === 'student' ? studentQuery : pupilQuery
   )
 
-  const lastTimeChecked = data?.me?.pupil?.lastTimeCheckedNotifications
-  const lastTimeCheckedLoading = loading
-  const lastTimeCheckedError = error
+  const lastTimeChecked =
+    userType === 'student'
+      ? data?.me?.student?.lastTimeCheckedNotifications
+      : data?.me?.pupil?.lastTimeCheckedNotifications
 
   const [updateLastTimeCheckedNotifications] = useMutation(
     userType === 'student' ? studentMutation : pupilMutation
@@ -62,8 +63,8 @@ const useLastTimeCheckedNotifications = () => {
 
   return {
     lastTimeChecked,
-    lastTimeCheckedLoading,
-    lastTimeCheckedError,
+    loading,
+    error,
     updateLastTimeCheckedNotifications
   }
 }

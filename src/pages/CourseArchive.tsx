@@ -2,7 +2,7 @@ import { Text, Heading, useTheme, VStack, Input, useBreakpointValue, Flex, Colum
 
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../components/WithNavigation';
-import NotificationAlert from '../components/Notification/NotificationAlert';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import AppointmentCard from '../widgets/AppointmentCard';
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useMemo, useState } from 'react';

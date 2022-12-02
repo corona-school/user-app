@@ -10,25 +10,29 @@ import {
 import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
-import { useNotifications } from '../../hooks/useNotifications'
 import MessageBox from './MessageBox'
 import { useTranslation } from 'react-i18next'
-import { setReadOrUnread } from '../../helper/notification-helper'
+import {
+  getAllNewUserNotificationsButMinimumFiveNotifications,
+  isNewNotification
+} from '../../helper/notification-helper'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 
 type Props = {
   userNotifications: UserNotification[]
+  loadingUserNotifications: boolean
 }
 
-const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
-  const [isShowAll, setIsShowAll] = useState<boolean>(false)
+const NotificationPanel: React.FC<Props> = ({
+  userNotifications,
+  loadingUserNotifications
+}) => {
+  const [shouldShowAll, setShouldShowAll] = useState<boolean>(false)
   const [notificationsToShow, setNotificationsToShow] = useState<
     UserNotification[]
   >([])
 
   const { lastTimeChecked } = useLastTimeCheckedNotifications()
-
-  const { loading } = useNotifications()
   const { t } = useTranslation()
 
   const panelMarginLeft = useBreakpointValue({
@@ -47,21 +51,20 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
   }
 
   const handleClick = () => {
-    setIsShowAll(!isShowAll)
+    setShouldShowAll(!shouldShowAll)
   }
 
   useEffect(() => {
-    if (isShowAll) {
+    if (shouldShowAll) {
       return setNotificationsToShow(userNotifications)
     }
-    const notificationsToRender = userNotifications.filter(
-      notification => notification.sentAt > lastTimeChecked
-    )
-    for (let i = notificationsToRender.length; i < 5; i++) {
-      notificationsToRender.push(userNotifications[i])
-    }
+    const notificationsToRender =
+      getAllNewUserNotificationsButMinimumFiveNotifications(
+        userNotifications,
+        lastTimeChecked
+      )
     setNotificationsToShow([...notificationsToRender])
-  }, [userNotifications, lastTimeChecked, isShowAll])
+  }, [userNotifications, lastTimeChecked, shouldShowAll])
 
   return (
     <Box>
@@ -77,7 +80,7 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
           </Box>
         </Popover.Header>
         <Popover.Body>
-          {loading ? (
+          {loadingUserNotifications ? (
             <Spinner />
           ) : (
             <Box maxH={panelPropsAllDevices.maxH}>
@@ -87,7 +90,7 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
                     <MessageBox
                       key={notification.id}
                       userNotification={notification}
-                      isRead={setReadOrUnread(
+                      isRead={isNewNotification(
                         notification.sentAt,
                         lastTimeChecked
                       )}
@@ -95,7 +98,7 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications }) => {
                   ))}
                 </Box>
               </ScrollView>
-              {!isShowAll && (
+              {!shouldShowAll && (
                 <Button onPress={handleClick} variant={'outline'}>
                   <Text fontSize="xs">
                     {t('notification.panel.button.text')}

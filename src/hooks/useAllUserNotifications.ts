@@ -19,18 +19,20 @@ const userNotificationQuery = gql`
   }
 `
 
-const useNotifications = () => {
+const useAllUserNotifications = () => {
   const { data, loading, error, refetch } = useQuery(userNotificationQuery)
 
-  const [notifications, setNotifications] = useState<UserNotification[]>([])
+  const [userNotifications, setUserNotifications] = useState<
+    UserNotification[]
+  >([])
 
   useEffect(() => {
     if (!loading && !error) {
-      setNotifications(data?.me?.concreteNotifications)
+      setUserNotifications(data?.me?.concreteNotifications)
     }
-  }, [loading])
+  }, [loading, error])
 
-  return { notifications, loading, error, refetch }
+  return { userNotifications, loading, error, refetch }
 }
 
-export { useNotifications }
+export { useAllUserNotifications }

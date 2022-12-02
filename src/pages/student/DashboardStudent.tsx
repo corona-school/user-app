@@ -5,7 +5,7 @@ import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
-import NotificationAlert from '../../components/Notification/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
