@@ -74,8 +74,6 @@ type ICreateCourseContext = {
   setSubject?: Dispatch<SetStateAction<LFSubject>>
   classRange?: [number, number]
   setClassRange?: Dispatch<SetStateAction<[number, number]>>
-  outline?: string
-  setOutline?: Dispatch<SetStateAction<string>>
   description?: string
   setDescription?: Dispatch<SetStateAction<string>>
   tags?: string
@@ -110,7 +108,6 @@ const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [subject, setSubject] = useState<LFSubject>({ name: '' })
   const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13])
-  const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
   const [maxParticipantCount, setMaxParticipantCount] = useState<string>('')
@@ -277,7 +274,6 @@ const CreateCourse: React.FC<Props> = () => {
     setCourseId(prefillCourse.course.id || '')
     setCourseName(prefillCourse.course.name)
     setSubject({ name: prefillCourse.course.subject })
-    setOutline(prefillCourse.course.outline)
     setDescription(prefillCourse.course.description)
     setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0')
     setJoinAfterStart(!!prefillCourse.joinAfterStart)
@@ -335,7 +331,6 @@ const CreateCourse: React.FC<Props> = () => {
 
   const _getCourseData = useCallback(
     () => ({
-      outline,
       description,
       subject: subject.name,
       schooltype: studentData?.me?.student?.schooltype || 'other',
@@ -347,7 +342,6 @@ const CreateCourse: React.FC<Props> = () => {
       allowContact,
       courseName,
       description,
-      outline,
       studentData?.me?.student?.schooltype,
       subject.name
     ]
@@ -809,8 +803,6 @@ const CreateCourse: React.FC<Props> = () => {
             setClassRange: setCourseClasses,
             subject,
             setSubject,
-            outline,
-            setOutline,
             description,
             setDescription,
             tags,

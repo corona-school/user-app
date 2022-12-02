@@ -74,7 +74,6 @@ const query = gql`
           course {
             name
             description
-            outline
             tags {
               name
             }
@@ -89,7 +88,6 @@ const query = gql`
       course {
         name
         description
-        outline
         tags {
           name
         }
@@ -305,7 +303,7 @@ const DashboardStudent: React.FC<Props> = () => {
                       isTeaser={true}
                       image={nextAppointment[1].course?.image}
                       title={nextAppointment[1].course?.name || ''}
-                      description={nextAppointment[1].course?.outline || ''}
+                      description={nextAppointment[1].course?.description || ''}
                     />
                   </VStack>
                 )}
@@ -352,7 +350,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               })
                             }}
                             key={`appointment-${el.id}`}
-                            description={course.outline}
+                            description={course.description}
                             tags={course.tags}
                             date={firstLecture.start}
                             image={course.image}
@@ -388,7 +386,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
-                              description={sub.course.outline}
+                              description={sub.course.description}
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}

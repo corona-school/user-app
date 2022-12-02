@@ -6,7 +6,6 @@ export type LFCourse = {
   id?: string
   name: string
   description: string
-  outline: string
   tags?: LFTag[]
   image?: string
   allowContact?: boolean

@@ -41,7 +41,6 @@ const CoursePreview: React.FC<Props> = ({
   const {
     courseName,
     subject,
-    outline,
     description,
     maxParticipantCount,
     tags,
@@ -131,7 +130,6 @@ const CoursePreview: React.FC<Props> = ({
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.shortDesc')}
       </Heading>
-      <Text paddingBottom={space['0.5']}>{outline}</Text>
 
       <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
       <Text paddingBottom={space['0.5']}>{description}</Text>
