@@ -11,16 +11,16 @@ import { IButtonProps } from 'native-base/lib/typescript/components/primitives/B
 import { useEffect, useState } from 'react'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
-import { useNotifications } from '../../hooks/useNotifications'
+import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
 import NotificationPanel from './NotificationPanel'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
-  const { notifications, refetch } = useNotifications()
+  const { userNotifications, refetch } = useAllUserNotifications()
   const {
     lastTimeChecked,
-    lastTimeCheckedLoading,
-    lastTimeCheckedError,
+    loading,
+    error,
     updateLastTimeCheckedNotifications
   } = useLastTimeCheckedNotifications()
 
@@ -38,17 +38,13 @@ const NotificationAlert: React.FC = () => {
   }
 
   useEffect(() => {
-    const unreadNotifications = notifications.filter(
+    const unreadNotifications = userNotifications.filter(
       notification => notification.sentAt > lastTimeChecked
-    )
-    notifications.map(noti =>
-      console.log('sent', noti.sentAt, 'last opened', lastTimeChecked)
     )
     setCount(unreadNotifications.length)
     refetch()
-
     // TODO change notifications to contextNotifications
-  }, [notifications, refetch])
+  }, [userNotifications, refetch])
 
   const handleTrigger = ({
     onPress,
@@ -82,7 +78,10 @@ const NotificationAlert: React.FC = () => {
       placement="bottom"
       trigger={triggerprops => handleTrigger(triggerprops)}
       onClose={() => handleClose()}>
-      <NotificationPanel userNotifications={notifications} />
+      <NotificationPanel
+        userNotifications={userNotifications}
+        loadingUserNotifications={loading}
+      />
     </Popover>
   )
 }
