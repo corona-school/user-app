@@ -99,3 +99,12 @@ html {
 div[role="button"] {
   transition: all 0.3s ease;
 }
+
+// Tags 
+
+.profil-tab-link {
+  [role="link"] {
+    cursor: default;
+    pointer-events: none;
+  }
+}
