@@ -32,19 +32,25 @@ const CourseAppointments: React.FC<Props> = ({
 }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
-  const { newLectures, lectures, setNewLectures } =
-    useContext(CreateCourseContext)
+  const {
+    newLectures = [],
+    lectures = [],
+    setNewLectures
+  } = useContext(CreateCourseContext)
   const [showError, setShowError] = useState<boolean>()
 
   const isValidInput = useMemo(() => {
-    if (!newLectures || !newLectures.length) return false
-    for (const lec of newLectures) {
-      if (!lec.date) return false
-      if (!lec.time) return false
-      if (!lec.duration) return false
+    if ([...lectures, ...newLectures].length === 0) return false
+
+    if (lectures.length === 0) {
+      for (const lec of newLectures) {
+        if (!lec.date) return false
+        if (!lec.time) return false
+        if (!lec.duration) return false
+      }
     }
     return true
-  }, [newLectures])
+  }, [lectures, newLectures])
 
   const tryNext = useCallback(() => {
     if (isValidInput) {

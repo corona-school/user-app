@@ -58,7 +58,8 @@ const WidgetUnsplash: React.FC<{
   photo: string | undefined
   onShowUnsplash: () => any
   onDeletePhoto?: () => any
-}> = ({ photo, onShowUnsplash, onDeletePhoto }) => {
+  prefill?: string
+}> = ({ photo, onShowUnsplash, onDeletePhoto, prefill }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
@@ -74,12 +75,12 @@ const WidgetUnsplash: React.FC<{
             height="90px"
             alt="Image Placeholder"
             source={{
-              uri: photo || ImagePlaceHolder
+              uri: photo || prefill || ImagePlaceHolder
             }}
           />
         </Column>
         <Column>
-          <Link>{photo ? 'Foto ändern' : t('course.uploadImage')}</Link>
+          <Link>Bild ändern</Link>
         </Column>
       </Pressable>
       {photo && (
@@ -88,7 +89,7 @@ const WidgetUnsplash: React.FC<{
           justifyContent="flex-start"
           pl="0"
           onPress={onDeletePhoto}>
-          Bild löschen
+          {prefill ? 'Bild zurücksetzen' : 'Bild löschen'}
         </Button>
       )}
     </>
@@ -148,7 +149,8 @@ const CourseData: React.FC<Props> = ({
     pickedPhoto,
     setPickedPhoto,
     addedInstructors,
-    newInstructors
+    newInstructors,
+    image
   } = useContext(CreateCourseContext)
 
   const isValidInput: boolean = useMemo(() => {
@@ -182,6 +184,12 @@ const CourseData: React.FC<Props> = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const deletePhoto = () => {
+    if (pickedPhoto) {
+      setPickedPhoto && setPickedPhoto('')
+    }
+  }
 
   return (
     <VStack
@@ -268,8 +276,9 @@ const CourseData: React.FC<Props> = ({
         <Box paddingY={space['1']}>
           <WidgetUnsplash
             photo={pickedPhoto}
+            prefill={image}
             onShowUnsplash={onShowUnsplash}
-            onDeletePhoto={() => setPickedPhoto && setPickedPhoto('')}
+            onDeletePhoto={deletePhoto}
           />
         </Box>
       </FormControl>

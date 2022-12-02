@@ -185,11 +185,13 @@ const CoursePreview: React.FC<Props> = ({
           <AppointmentInfoRow index={index} lecture={lecture} />
         ))}
       {newLectures &&
+        newLectures.length > 0 &&
+        newLectures[0].date &&
         newLectures.map((lec, i) => (
           <VStack marginBottom={space['1']}>
             <Heading mb={space['0.5']} fontSize="lg">
               {t('course.CourseDate.Preview.appointmentLabel')}{' '}
-              {`${i + 1}`.padStart(2, '0')}
+              {`${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
             </Heading>
             <VStack>
               <Row>
