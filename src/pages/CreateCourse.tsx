@@ -104,7 +104,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const location = useLocation()
   const state = location.state as { courseId?: number }
-  const prefillCourseId = state.courseId
+  const prefillCourseId = state?.courseId
 
   const [courseId, setCourseId] = useState<string>('')
   const [courseName, setCourseName] = useState<string>('')
@@ -265,6 +265,8 @@ const CreateCourse: React.FC<Props> = () => {
   })
 
   const queryCourse = useCallback(async () => {
+    if (!prefillCourseId) return
+
     setIsLoading(true)
     const {
       data: { subcourse: prefillCourse }
