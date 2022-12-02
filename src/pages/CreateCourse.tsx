@@ -95,6 +95,7 @@ type ICreateCourseContext = {
   addedInstructors?: LFInstructor[]
   setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>
   newInstructors?: LFInstructor[]
+  image?: string
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({})
@@ -121,6 +122,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [pickedPhoto, setPickedPhoto] = useState<string>('')
   const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([])
   const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([])
+  const [image, setImage] = useState<string>('')
 
   const [isLoading, setIsLoading] = useState<boolean>()
   const [showCourseError, setShowCourseError] = useState<boolean>()
@@ -150,6 +152,8 @@ const CreateCourse: React.FC<Props> = () => {
         id
         participantsCount
         maxParticipants
+        minGrade
+        maxGrade
         instructors {
           id
           firstname
@@ -282,6 +286,11 @@ const CreateCourse: React.FC<Props> = () => {
     setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0')
     setJoinAfterStart(!!prefillCourse.joinAfterStart)
     setAllowContact(!!prefillCourse.course.allowContact)
+    setCourseClasses([
+      prefillCourse.minGrade || 1,
+      prefillCourse.maxGrade || 13
+    ])
+    prefillCourse.course.image && setImage(prefillCourse.course.image)
 
     if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
       setAddedInstructors(prefillCourse.instructors)
@@ -303,11 +312,6 @@ const CreateCourse: React.FC<Props> = () => {
       )
       setLectures(editLectures)
     }
-
-    // TODO
-    // setCourseClasses([prefillCourse.])
-    //TODo
-    // const [pickedPhoto, setPickedPhoto] = useState<string>('')
 
     setIsLoading(false)
   }, [courseQuery, prefillCourseId])
@@ -828,7 +832,8 @@ const CreateCourse: React.FC<Props> = () => {
             pickedPhoto,
             setPickedPhoto,
             addedInstructors,
-            newInstructors
+            newInstructors,
+            image
           }}>
           {(studentData?.me?.student?.canCreateCourse?.allowed && (
             <VStack
