@@ -162,7 +162,7 @@ const HelpCenter: React.FC<Props> = () => {
             <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
             <Text>{t('helpcenter.subtitle')}</Text>
           </Box>
-          <Box
+          {/* <Box
             maxWidth={ContentContainerWidth}
             paddingBottom={space['2.5']}
             paddingX={space['1.5']}>
@@ -175,7 +175,7 @@ const HelpCenter: React.FC<Props> = () => {
             <Button width={buttonWidth} onPress={() => onboardingCheck()}>
               {t('helpcenter.onboarding.button')}
             </Button>
-          </Box>
+          </Box> */}
         </Box>
         <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
           <Tabs

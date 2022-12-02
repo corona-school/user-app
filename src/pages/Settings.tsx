@@ -96,14 +96,14 @@ const Settings: React.FC<Props> = () => {
               isDisabled
             />
           </Column> */}
-          {userType === 'student' && (
+          {/* {userType === 'student' && (
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.general.onboarding')}
                 onPress={() => navigate('/onboarding-list')}
               />
             </Column>
-          )}
+          )} */}
         </ProfileSettingRow>
         <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
           {/* <Column mb={tabspace}>

@@ -172,14 +172,14 @@ export default function Navigator() {
             </RequireAuth>
           }></Route>
 
-        <Route
+        {/* <Route
           path="/onboarding-list"
           element={
             <RequireAuth>
               <OnboardingTourList />
             </RequireAuth>
           }
-        />
+        /> */}
 
         <Route
           path="/request-certificate"
