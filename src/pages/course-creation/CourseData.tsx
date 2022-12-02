@@ -367,8 +367,8 @@ const CourseData: React.FC<Props> = ({
             maxWidth={500}
             label={t('course.CourseDate.form.otherOptionStartToolTip')}>
             <InfoIcon
-              position="absolute"
-              top="1px"
+              position="relative"
+              top="3px"
               paddingLeft="5px"
               color="danger.100"
             />
@@ -383,9 +383,9 @@ const CourseData: React.FC<Props> = ({
             maxWidth={500}
             label={t('course.CourseDate.form.otherOptionContactToolTip')}>
             <InfoIcon
-              position="absolute"
-              top="1px"
               paddingLeft="5px"
+              position="relative"
+              top="3px"
               color="danger.100"
             />
           </Tooltip>
