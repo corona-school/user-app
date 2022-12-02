@@ -231,7 +231,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 <Row>
                   {(data?.me?.student.state && (
                     <Column marginRight={3}>
-                      {(data?.me?.student?.state !== 'other' && (
+                      {(data?.me?.student?.state && (
                         <CSSWrapper className="profil-tab-link">
                           <IconTagList
                             isDisabled
