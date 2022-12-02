@@ -57,8 +57,6 @@ import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
-import AppointmentsArchive from './pages/AppointmentsArchive'
-import CourseArchive from './pages/CourseArchive'
 import { useEffect } from 'react'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
@@ -174,14 +172,14 @@ export default function Navigator() {
             </RequireAuth>
           }></Route>
 
-        <Route
+        {/* <Route
           path="/onboarding-list"
           element={
             <RequireAuth>
               <OnboardingTourList />
             </RequireAuth>
           }
-        />
+        /> */}
 
         <Route
           path="/request-certificate"

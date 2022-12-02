@@ -53,7 +53,6 @@ const query = gql`
           }
           course {
             name
-            outline
             image
             tags {
               name
@@ -105,7 +104,6 @@ const PupilGroup: React.FC<Props> = () => {
         }
         course {
           name
-          outline
           image
           tags {
             name
@@ -261,7 +259,7 @@ const PupilGroup: React.FC<Props> = () => {
                               isSpaceMarginBottom={false}
                               isFullHeight
                               variant="horizontal"
-                              description={course.course.outline}
+                              description={course.course.description}
                               tags={course.course.tags}
                               date={course.firstLecture?.start}
                               countCourse={course.lectures?.length}

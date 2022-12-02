@@ -41,7 +41,6 @@ const CoursePreview: React.FC<Props> = ({
   const {
     courseName,
     subject,
-    outline,
     description,
     maxParticipantCount,
     tags,
@@ -131,7 +130,6 @@ const CoursePreview: React.FC<Props> = ({
       <Heading fontSize="md">
         {t('course.CourseDate.Preview.shortDesc')}
       </Heading>
-      <Text paddingBottom={space['0.5']}>{outline}</Text>
 
       <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
       <Text paddingBottom={space['0.5']}>{description}</Text>
@@ -187,11 +185,13 @@ const CoursePreview: React.FC<Props> = ({
           <AppointmentInfoRow index={index} lecture={lecture} />
         ))}
       {newLectures &&
+        newLectures.length > 0 &&
+        newLectures[0].date &&
         newLectures.map((lec, i) => (
           <VStack marginBottom={space['1']}>
             <Heading mb={space['0.5']} fontSize="lg">
               {t('course.CourseDate.Preview.appointmentLabel')}{' '}
-              {`${i + 1}`.padStart(2, '0')}
+              {`${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
             </Heading>
             <VStack>
               <Row>

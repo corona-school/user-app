@@ -8,7 +8,8 @@ import {
   useToast,
   useBreakpointValue,
   Column,
-  Box
+  Box,
+  Tooltip
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -74,7 +75,6 @@ const query = gql`
           course {
             name
             description
-            outline
             tags {
               name
             }
@@ -89,7 +89,6 @@ const query = gql`
       course {
         name
         description
-        outline
         tags {
           name
         }
@@ -111,6 +110,7 @@ const DashboardStudent: React.FC<Props> = () => {
   const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -229,10 +229,6 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
-    // if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-    //   return undefined
-    // }
-
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
 
@@ -241,6 +237,35 @@ const DashboardStudent: React.FC<Props> = () => {
       data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved),
     [data?.me?.student?.matches]
   )
+
+  const [joinMeeting, _joinMeeting] = useMutation(gql`
+    mutation joinMeeting($courseId: Float!) {
+      subcourseJoinMeeting(subcourseId: $courseId)
+    }
+  `)
+
+  const getMeetingLink = useCallback(async () => {
+    const courseId = 4
+    if (!courseId) return
+    try {
+      const res = await joinMeeting({ variables: { courseId } })
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [joinMeeting])
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    if (!nextAppointment) return true
+    return (
+      DateTime.fromISO(nextAppointment[0]?.start).diffNow('minutes').minutes >
+      60
+    )
+  }, [nextAppointment])
 
   return (
     <AsNavigationItem path="start">
@@ -285,6 +310,29 @@ const DashboardStudent: React.FC<Props> = () => {
                     </Heading>
 
                     <AppointmentCard
+                      videoButton={
+                        <VStack w="100%" space={space['0.5']}>
+                          <Tooltip
+                            isDisabled={!disableMeetingButton}
+                            maxWidth={300}
+                            label={t('dashboard.appointmentcard.videotooltip')}>
+                            <Button
+                              width="100%"
+                              marginTop={space['1']}
+                              onPress={getMeetingLink}
+                              isDisabled={
+                                disableMeetingButton || _joinMeeting.loading
+                              }>
+                              {t('dashboard.appointmentcard.videobutton')}
+                            </Button>
+                          </Tooltip>
+                          {showMeetingNotStarted && (
+                            <Text color="lightText">
+                              {t('dashboard.appointmentcard.videotext')}
+                            </Text>
+                          )}
+                        </VStack>
+                      }
                       onPressToCourse={() => {
                         trackEvent({
                           category: 'dashboard',
@@ -305,7 +353,7 @@ const DashboardStudent: React.FC<Props> = () => {
                       isTeaser={true}
                       image={nextAppointment[1].course?.image}
                       title={nextAppointment[1].course?.name || ''}
-                      description={nextAppointment[1].course?.outline || ''}
+                      description={nextAppointment[1].course?.description || ''}
                     />
                   </VStack>
                 )}
@@ -352,7 +400,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               })
                             }}
                             key={`appointment-${el.id}`}
-                            description={course.outline}
+                            description={course.description}
                             tags={course.tags}
                             date={firstLecture.start}
                             image={course.image}
@@ -368,7 +416,8 @@ const DashboardStudent: React.FC<Props> = () => {
               </HSection>
               <HSection
                 title={t('dashboard.helpers.headlines.course')}
-                showAll={data?.me?.student?.canCreateCourse?.allowed}
+                showAll
+                onShowAll={() => navigate('/group')}
                 wrap
                 marginBottom={space['1.5']}
                 scrollable={false}>
@@ -388,7 +437,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
-                              description={sub.course.outline}
+                              description={sub.course.description}
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}

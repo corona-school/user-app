@@ -1,6 +1,9 @@
 const dashboard = {
   appointmentcard: {
     header: 'Nächster Termin', 
+    videobutton: 'Videochat beitreten',
+    videotext: 'Videochat noch nicht gestartet.',
+    videotooltip: 'Der Videochat noch nicht gestartet oder du hast keine Berechtigung diesen aufzurufen.',
     card: {
       title: 'Mathe Grundlagen Klasse 6',
       content: 'In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch.',

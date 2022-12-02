@@ -19,18 +19,21 @@ import WithNavigation from '../components/WithNavigation'
 import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
 
-import Utility, { getTrafficStatus } from '../Utility'
+import Utility, {
+  getFirstLectureFromSubcourse,
+  getTrafficStatus
+} from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import useLernfair from '../hooks/useLernfair'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
 import AlertMessage from '../widgets/AlertMessage'
 
-type Props = {}
+import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 
-const SingleCourse: React.FC<Props> = () => {
+const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
@@ -40,6 +43,9 @@ const SingleCourse: React.FC<Props> = () => {
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
+
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
+  const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -52,7 +58,9 @@ const SingleCourse: React.FC<Props> = () => {
       isInstructor
       participants{
     firstname
+    lastname
     grade
+    schooltype
   }`
       : `
   isOnWaitingList
@@ -65,7 +73,7 @@ const SingleCourse: React.FC<Props> = () => {
 
   const query = gql`query{
     me {
-      pupil{id}
+      pupil{id firstname grade}
       student{id}
     }
     subcourse(subcourseId: ${courseId}){
@@ -80,7 +88,6 @@ const SingleCourse: React.FC<Props> = () => {
       course {
         name
         image
-        outline
         category
         description
         subject
@@ -106,11 +113,15 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`
 
-  const { data: courseData, loading, error } = useQuery(query)
+  const { data: courseData, loading } = useQuery(query)
 
   const { data: participantData } = useQuery(participantQuery, {
     skip: !loadParticipants
   })
+
+  const [joinMeeting, _joinMeeting] = useMutation(gql`mutation{
+    subcourseJoinMeeting(subcourseId: ${courseId})
+  }`)
 
   const [joinSubcourse, _joinSubcourse] = useMutation(
     gql`
@@ -228,6 +239,28 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }, [course, loading])
 
+  const getMeetingLink = useCallback(async () => {
+    try {
+      const res = await joinMeeting({ variables: { subcourseId: courseId } })
+
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [courseId, joinMeeting])
+
+  useEffect(() => {
+    if (!courseId || !course?.lectures) return
+    const lec = getFirstLectureFromSubcourse(course?.lectures, false)
+    if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 5) {
+      setShowMeetingButton(true)
+    }
+  }, [course?.lectures, courseId, getMeetingLink])
+
   return (
     <>
       <WithNavigation
@@ -293,9 +326,6 @@ const SingleCourse: React.FC<Props> = () => {
               </Heading>
             )}
           </Row>
-          <Text maxWidth={sizes['imageHeaderWidth']} paddingBottom={space['1']}>
-            {course?.course?.outline}
-          </Text>
 
           <Box marginBottom={space['1']}>
             <CourseTrafficLamp
@@ -305,7 +335,19 @@ const SingleCourse: React.FC<Props> = () => {
               )}
             />
           </Box>
+          {course?.isParticipant && showMeetingButton && (
+            <VStack space={space['0.5']} py={space['1']}>
+              <Button
+                onPress={getMeetingLink}
+                isDisabled={_joinMeeting.loading}>
+                Videochat beitreten
+              </Button>
 
+              {showMeetingNotStarted && (
+                <Text>Der Videochat wurde noch nicht gestartet.</Text>
+              )}
+            </VStack>
+          )}
           {userType === 'pupil' && (
             <Box
               marginBottom={space['0.5']}
@@ -361,10 +403,6 @@ const SingleCourse: React.FC<Props> = () => {
               )}
               {course?.isParticipant && (
                 <VStack space={space['0.5']}>
-                  <AlertMessage
-                    content={t('single.buttoninfo.successMember')}
-                  />
-
                   <Button
                     onPress={() => {
                       leaveSubcourse({ variables: { courseId: courseId } })
@@ -374,6 +412,10 @@ const SingleCourse: React.FC<Props> = () => {
                     isDisabled={loading}>
                     Kurs verlassen
                   </Button>
+
+                  <AlertMessage
+                    content={t('single.buttoninfo.successMember')}
+                  />
                 </VStack>
               )}
             </Box>
@@ -460,10 +502,13 @@ const SingleCourse: React.FC<Props> = () => {
                   </>
                 )
               },
-              course?.isParticipant && {
+              {
                 title: t('single.tabs.participant'),
                 content: (
                   <>
+                    {course?.isParticipant && (
+                      <Participant pupil={courseData.me.pupil} />
+                    )}
                     {(participants?.length > 0 &&
                       participants.map((p: LFParticipant) => (
                         <Participant pupil={p} />
@@ -603,15 +648,15 @@ const Participant: React.FC<ParticipantProps> = ({ pupil }) => {
   const { space } = useTheme()
   return (
     <Row marginBottom={space['1.5']} alignItems="center">
-      <Column marginRight={space['1']}>
-        {/* <ProfilAvatar
-      size="md"
-      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-    /> */}
-      </Column>
+      <Column marginRight={space['1']}></Column>
       <Column>
-        <Heading fontSize="md">{pupil.firstname}</Heading>
-        <Text>{pupil.grade}</Text>
+        <Heading fontSize="md">
+          {pupil.firstname} {pupil.lastname}
+        </Heading>
+        <Text>
+          {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
+          {pupil.grade}
+        </Text>
       </Column>
     </Row>
   )

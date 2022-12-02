@@ -6,7 +6,6 @@ export type LFCourse = {
   id?: string
   name: string
   description: string
-  outline: string
   tags?: LFTag[]
   image?: string
   allowContact?: boolean
@@ -27,6 +26,8 @@ export interface LFSubCourse {
   joinAfterStart?: boolean
   instructors?: LFInstructor[]
   firstLecture?: LFLecture
+  minGrade?: number
+  maxGrade?: number
 }
 
 export type LFLecture = {

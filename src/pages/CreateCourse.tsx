@@ -74,8 +74,6 @@ type ICreateCourseContext = {
   setSubject?: Dispatch<SetStateAction<LFSubject>>
   classRange?: [number, number]
   setClassRange?: Dispatch<SetStateAction<[number, number]>>
-  outline?: string
-  setOutline?: Dispatch<SetStateAction<string>>
   description?: string
   setDescription?: Dispatch<SetStateAction<string>>
   tags?: string
@@ -95,6 +93,7 @@ type ICreateCourseContext = {
   addedInstructors?: LFInstructor[]
   setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>
   newInstructors?: LFInstructor[]
+  image?: string
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({})
@@ -110,7 +109,6 @@ const CreateCourse: React.FC<Props> = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [subject, setSubject] = useState<LFSubject>({ name: '' })
   const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13])
-  const [outline, setOutline] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
   const [maxParticipantCount, setMaxParticipantCount] = useState<string>('')
@@ -121,6 +119,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [pickedPhoto, setPickedPhoto] = useState<string>('')
   const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([])
   const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([])
+  const [image, setImage] = useState<string>('')
 
   const [isLoading, setIsLoading] = useState<boolean>()
   const [showCourseError, setShowCourseError] = useState<boolean>()
@@ -150,6 +149,8 @@ const CreateCourse: React.FC<Props> = () => {
         id
         participantsCount
         maxParticipants
+        minGrade
+        maxGrade
         instructors {
           id
           firstname
@@ -161,7 +162,6 @@ const CreateCourse: React.FC<Props> = () => {
           id
           name
           image
-          outline
           category
           description
           subject
@@ -277,14 +277,22 @@ const CreateCourse: React.FC<Props> = () => {
     setCourseId(prefillCourse.course.id || '')
     setCourseName(prefillCourse.course.name)
     setSubject({ name: prefillCourse.course.subject })
-    setOutline(prefillCourse.course.outline)
     setDescription(prefillCourse.course.description)
     setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0')
     setJoinAfterStart(!!prefillCourse.joinAfterStart)
     setAllowContact(!!prefillCourse.course.allowContact)
+    setCourseClasses([
+      prefillCourse.minGrade || 1,
+      prefillCourse.maxGrade || 13
+    ])
+    prefillCourse.course.image && setImage(prefillCourse.course.image)
 
     if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-      setAddedInstructors(prefillCourse.instructors)
+      const arr = prefillCourse.instructors.filter(
+        (instructor: LFInstructor) =>
+          instructor.id !== studentData.me.student.id
+      )
+      setAddedInstructors(arr)
     }
 
     if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
@@ -304,13 +312,8 @@ const CreateCourse: React.FC<Props> = () => {
       setLectures(editLectures)
     }
 
-    // TODO
-    // setCourseClasses([prefillCourse.])
-    //TODo
-    // const [pickedPhoto, setPickedPhoto] = useState<string>('')
-
     setIsLoading(false)
-  }, [courseQuery, prefillCourseId])
+  }, [courseQuery, prefillCourseId, studentData?.me.student.id])
 
   useEffect(() => {
     if (prefillCourseId !== null) queryCourse()
@@ -325,17 +328,17 @@ const CreateCourse: React.FC<Props> = () => {
       } else {
         navigate('/group', {
           state: {
+            wasEdited: isEditing,
             errors
           }
         })
       }
     },
-    [navigate]
+    [isEditing, navigate]
   )
 
   const _getCourseData = useCallback(
     () => ({
-      outline,
       description,
       subject: subject.name,
       schooltype: studentData?.me?.student?.schooltype || 'other',
@@ -347,7 +350,6 @@ const CreateCourse: React.FC<Props> = () => {
       allowContact,
       courseName,
       description,
-      outline,
       studentData?.me?.student?.schooltype,
       subject.name
     ]
@@ -564,25 +566,27 @@ const CreateCourse: React.FC<Props> = () => {
       }
     }
 
-    for await (const lecture of newLectures) {
-      const l: LFLecture = {
-        start: new Date().toLocaleString(),
-        duration: parseInt(lecture.duration)
-      }
-      const dt = DateTime.fromISO(lecture.date)
-      const t = DateTime.fromISO(lecture.time)
-
-      dt.set({ hour: t.hour, minute: t.minute, second: t.second })
-      l.start = dt.toISO()
-
-      let res = await addLecture({
-        variables: {
-          courseId: prefillCourseId,
-          lecture: l
+    if (newLectures.length > 0 && newLectures[0].date) {
+      for await (const lecture of newLectures) {
+        const l: LFLecture = {
+          start: new Date().toLocaleString(),
+          duration: parseInt(lecture.duration)
         }
-      })
-      if (!res.data.lectureDelete && res.errors) {
-        errors.push('lectures')
+        const dt = DateTime.fromISO(lecture.date)
+        const t = DateTime.fromISO(lecture.time)
+
+        dt.set({ hour: t.hour, minute: t.minute, second: t.second })
+        l.start = dt.toISO()
+
+        let res = await addLecture({
+          variables: {
+            courseId: prefillCourseId,
+            lecture: l
+          }
+        })
+        if (!res.data.lectureDelete && res.errors) {
+          errors.push('lectures')
+        }
       }
     }
 
@@ -809,8 +813,6 @@ const CreateCourse: React.FC<Props> = () => {
             setClassRange: setCourseClasses,
             subject,
             setSubject,
-            outline,
-            setOutline,
             description,
             setDescription,
             tags,
@@ -828,7 +830,8 @@ const CreateCourse: React.FC<Props> = () => {
             pickedPhoto,
             setPickedPhoto,
             addedInstructors,
-            newInstructors
+            newInstructors,
+            image
           }}>
           {(studentData?.me?.student?.canCreateCourse?.allowed && (
             <VStack

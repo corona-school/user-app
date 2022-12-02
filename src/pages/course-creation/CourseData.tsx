@@ -30,7 +30,6 @@ import InstructorRow from '../../widgets/InstructorRow'
 import { LFInstructor } from '../../types/lernfair/Course'
 
 const MAX_TITLE = 50
-const MAX_OUTLINE_LENGTH = 140
 
 const WidgetAddInstructor: React.FC<{ onPress: () => any }> = ({ onPress }) => {
   const { t } = useTranslation()
@@ -59,7 +58,8 @@ const WidgetUnsplash: React.FC<{
   photo: string | undefined
   onShowUnsplash: () => any
   onDeletePhoto?: () => any
-}> = ({ photo, onShowUnsplash, onDeletePhoto }) => {
+  prefill?: string
+}> = ({ photo, onShowUnsplash, onDeletePhoto, prefill }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
 
@@ -75,12 +75,12 @@ const WidgetUnsplash: React.FC<{
             height="90px"
             alt="Image Placeholder"
             source={{
-              uri: photo || ImagePlaceHolder
+              uri: photo || prefill || ImagePlaceHolder
             }}
           />
         </Column>
         <Column>
-          <Link>{photo ? 'Foto ändern' : t('course.uploadImage')}</Link>
+          <Link>Bild ändern</Link>
         </Column>
       </Pressable>
       {photo && (
@@ -89,7 +89,7 @@ const WidgetUnsplash: React.FC<{
           justifyContent="flex-start"
           pl="0"
           onPress={onDeletePhoto}>
-          Bild löschen
+          {prefill ? 'Bild zurücksetzen' : 'Bild löschen'}
         </Button>
       )}
     </>
@@ -136,8 +136,6 @@ const CourseData: React.FC<Props> = ({
     setSubject,
     classRange,
     setClassRange,
-    outline,
-    setOutline,
     description,
     setDescription,
     tags,
@@ -151,27 +149,17 @@ const CourseData: React.FC<Props> = ({
     pickedPhoto,
     setPickedPhoto,
     addedInstructors,
-    newInstructors
+    newInstructors,
+    image
   } = useContext(CreateCourseContext)
 
   const isValidInput: boolean = useMemo(() => {
     if (!courseName || courseName?.length < 3) return false
-    // if (!subject) return false
     if (!classRange || !classRange.length) return false
-    if (!outline || outline.length < 5) return false
     if (!description || description.length < 5) return false
     if (!maxParticipantCount) return false
-    // if (!pickedPhoto) return false
     return true
-  }, [
-    classRange,
-    courseName,
-    description,
-    maxParticipantCount,
-    outline
-    // pickedPhoto,
-    // subject
-  ])
+  }, [classRange, courseName, description, maxParticipantCount])
 
   const ButtonContainer = useBreakpointValue({
     base: '100%',
@@ -196,6 +184,12 @@ const CourseData: React.FC<Props> = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const deletePhoto = () => {
+    if (pickedPhoto) {
+      setPickedPhoto && setPickedPhoto('')
+    }
+  }
 
   return (
     <VStack
@@ -282,8 +276,9 @@ const CourseData: React.FC<Props> = ({
         <Box paddingY={space['1']}>
           <WidgetUnsplash
             photo={pickedPhoto}
+            prefill={image}
             onShowUnsplash={onShowUnsplash}
-            onDeletePhoto={() => setPickedPhoto && setPickedPhoto('')}
+            onDeletePhoto={deletePhoto}
           />
         </Box>
       </FormControl>
@@ -313,25 +308,7 @@ const CourseData: React.FC<Props> = ({
           <WidgetAddInstructor onPress={onShowAddInstructor} />
         </Row>
       </FormControl>
-      <FormControl marginBottom={space['0.5']}>
-        <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
-          {t('course.CourseDate.form.shortDescriptionLabel')}
-        </FormControl.Label>
-        <TextArea
-          marginBottom={space['0.5']}
-          placeholder={t('course.CourseDate.form.shortDescriptionPlaceholder')}
-          autoCompleteType={'normal'}
-          value={outline}
-          onChangeText={text =>
-            setOutline && setOutline(text.substring(0, MAX_OUTLINE_LENGTH))
-          }
-        />
-        <Text fontSize="xs" color="primary.grey">
-          {t('characterLimitNotice', {
-            limit: MAX_OUTLINE_LENGTH
-          })}
-        </Text>
-      </FormControl>
+
       <FormControl marginBottom={space['0.5']}>
         <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
           {t('course.CourseDate.form.descriptionLabel')}
@@ -384,7 +361,19 @@ const CourseData: React.FC<Props> = ({
         {t('course.CourseDate.form.otherHeadline')}
       </Heading>
       <Row>
-        <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
+        <Text flex="1">
+          {t('course.CourseDate.form.otherOptionStart')}
+          <Tooltip
+            maxWidth={500}
+            label={t('course.CourseDate.form.otherOptionStartToolTip')}>
+            <InfoIcon
+              position="absolute"
+              top="1px"
+              paddingLeft="5px"
+              color="danger.100"
+            />
+          </Tooltip>
+        </Text>
         <Switch value={joinAfterStart} onValueChange={setJoinAfterStart} />
       </Row>
       <Row marginBottom={space['2']}>

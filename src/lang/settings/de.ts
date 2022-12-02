@@ -10,16 +10,16 @@ const settings = {
   account: {
     title: 'Konto',
     changeEmail: 'E-Mail ändern',
-    changePassword: 'Passwort ändern', 
-    changeUser: 'Benutzer wechseln', 
-    deleteAccount: 'Konto löschen', 
+    changePassword: 'Passwort ändern',
+    changeUser: 'Benutzer wechseln',
+    deactivateAccount: 'Konto deaktivieren',
     logout: 'Abmelden'
-  }, 
+  },
   legal: {
     title: 'Rechtliches',
     imprint: 'Impressum',
-    datapolicy: 'Datenschutz', 
-    terms: 'Nutzungsbedingungen', 
+    datapolicy: 'Datenschutz',
+    terms: 'Nutzungsbedingungen'
   }
 }
 export default settings
