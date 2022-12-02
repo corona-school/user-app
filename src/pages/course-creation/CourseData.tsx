@@ -384,7 +384,19 @@ const CourseData: React.FC<Props> = ({
         {t('course.CourseDate.form.otherHeadline')}
       </Heading>
       <Row>
-        <Text flex="1">{t('course.CourseDate.form.otherOptionStart')}</Text>
+        <Text flex="1">
+          {t('course.CourseDate.form.otherOptionStart')}
+          <Tooltip
+            maxWidth={500}
+            label={t('course.CourseDate.form.otherOptionStartToolTip')}>
+            <InfoIcon
+              position="absolute"
+              top="1px"
+              paddingLeft="5px"
+              color="danger.100"
+            />
+          </Tooltip>
+        </Text>
         <Switch value={joinAfterStart} onValueChange={setJoinAfterStart} />
       </Row>
       <Row marginBottom={space['2']}>
