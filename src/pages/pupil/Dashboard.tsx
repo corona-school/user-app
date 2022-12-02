@@ -343,7 +343,7 @@ const Dashboard: React.FC<Props> = () => {
                     date={highlightedAppointment?.lecture.start}
                     image={highlightedAppointment?.course.course?.image}
                     title={highlightedAppointment?.course.course?.name}
-                    description={highlightedAppointment?.course.course?.description.substring(
+                    description={highlightedAppointment?.course.course?.description?.substring(
                       0,
                       64
                     )}

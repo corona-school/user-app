@@ -229,10 +229,6 @@ const DashboardStudent: React.FC<Props> = () => {
       }
     }
 
-    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-      return undefined
-    }
-
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
 
