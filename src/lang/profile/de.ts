@@ -129,6 +129,41 @@ const profile = {
     noSchoolType: 'Es wurde keine Schulform angegeben',
     noSchoolGrade: 'Es wurde keine Klasse angegeben',
     noSchoolSubject: 'Es wurde keine Fächer angegeben'
+  },
+  Deactivate: {
+    error: 'Dein Account konnte nicht deaktiviert werden.',
+    modal: {
+      title: 'Account deaktivieren',
+      btn: 'Account deaktivieren',
+      other: {
+        placeholder: 'Deaktivierungsgrund'
+      },
+      description: {
+        pupil:
+          'Sobald du deinen Account deaktivierst, werden deine Zuordnungen  aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.',
+        student:
+          'Sobald du deinen Account deaktivierst, werden deine Zuordnungen  aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.'
+      }
+    },
+    pupil: {
+      0: 'Ich habe keine Zeit mehr.',
+      1: 'Ich habe kein Interesse mehr.',
+      2: 'Ich habe mich nur zu Testzwecken angemeldet.',
+      3: 'Ich habe eine andere Möglichkeit gefunden, Unterstützung zu erhalten.',
+      4: 'Ich habe mir das Programm anders vorgestellt.',
+      5: 'Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.',
+      6: 'Sonstiges'
+    },
+    student: {
+      0: 'Ich habe keine Zeit mehr mich zu engagieren.',
+      1: 'Ich konnte/wollte das Kennenlerngespräch nicht wahrnehmen.',
+      2: 'Ich habe kein Interesse mehr.',
+      3: 'Ich habe mich nur zu Testzwecken angemeldet.',
+      4: 'Ich habe eine andere Möglichkeit gefunden mich zu engagieren.',
+      5: 'Ich habe mir das Programm anders vorgestellt.',
+      6: 'Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.',
+      7: 'Sonstiges'
+    }
   }
 }
 
