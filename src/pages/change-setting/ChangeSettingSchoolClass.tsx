@@ -61,9 +61,14 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
 
   const navigate = useNavigate()
 
-  const { data, loading } = useQuery(gql`
-    ${state?.userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${state?.userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
     ${state?.userType === 'student' ? mutStudent : mutPupil}

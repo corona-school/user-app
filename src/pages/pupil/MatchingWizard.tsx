@@ -19,6 +19,7 @@ import useModal from '../../hooks/useModal'
 import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject'
 import IconTagList from '../../widgets/IconTagList'
 import TwoColGrid from '../../widgets/TwoColGrid'
+import { getSchoolTypeKey } from '../../types/lernfair/SchoolType'
 
 type Props = {}
 
@@ -112,8 +113,10 @@ const MatchingWizard: React.FC<Props> = () => {
 
   const MatchingButtonSpacing = useBreakpointValue({
     base: space['1'],
-    lg: space['0.5']
+    lg: 0
   })
+
+  const SelectedSchoolType = data?.me?.pupil?.schooltype
 
   if (loading) return <CenterLoadingSpinner />
 
@@ -134,7 +137,7 @@ const MatchingWizard: React.FC<Props> = () => {
         <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
           <Text>
             <Text bold>{t('matching.request.schoolType')}</Text>{' '}
-            {data?.me?.pupil?.schooltype}
+            <Text>{getSchoolTypeKey(SelectedSchoolType)}</Text>
           </Text>
           <Text>
             <Text bold>{t('matching.request.grade')}</Text>{' '}
@@ -200,15 +203,17 @@ const MatchingWizard: React.FC<Props> = () => {
         }}>
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Anfrage erstellt</Modal.Header>
-          <Modal.Body>Deine Anfrage wurde erfolgreich erstellt!</Modal.Body>
+          <Modal.Header>
+            {t('matching.request.modalSuccess.title')}
+          </Modal.Header>
+          <Modal.Body>{t('matching.request.modalSuccess.content')}</Modal.Body>
           <Modal.Footer>
             <Button
               onPress={() => {
                 setShowSuccessModal(false)
                 navigate('/start')
               }}>
-              Weiter
+              {t('matching.request.modalSuccess.button')}
             </Button>
           </Modal.Footer>
         </Modal.Content>

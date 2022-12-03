@@ -32,10 +32,6 @@ body {
 
 html {
   font-size: 14px;
-  
-  @media screen and (max-width: 992px ) {
-    font-size: 13px;
-  }
 }
 
 #root {
@@ -111,4 +107,13 @@ html {
 
 div[role="button"] {
   transition: all 0.3s ease;
+}
+
+// Tags 
+
+.profil-tab-link {
+  [role="link"] {
+    cursor: default;
+    pointer-events: none;
+  }
 }

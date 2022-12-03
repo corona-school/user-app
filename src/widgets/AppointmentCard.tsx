@@ -14,7 +14,8 @@ import {
   Pressable,
   Heading,
   CheckCircleIcon,
-  Tooltip
+  Tooltip,
+  Container
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
@@ -46,6 +47,7 @@ type Props = {
   isHorizontalCardCourseChecked?: boolean
   image?: string
   onPressToCourse?: () => any
+  videoButton?: ReactNode | ReactNode[]
   countCourse?: number
   showTrafficLight?: boolean
   trafficLightStatus?: TrafficStatus
@@ -71,7 +73,8 @@ const AppointmentCard: React.FC<Props> = ({
   image,
   onPressToCourse,
   showTrafficLight,
-  trafficLightStatus
+  trafficLightStatus,
+  videoButton
 }) => {
   const { space, sizes } = useTheme()
   const [remainingTime, setRemainingTime] = useState<string>('00:00')
@@ -109,6 +112,16 @@ const AppointmentCard: React.FC<Props> = ({
   const ButtonContainer = useBreakpointValue({
     base: '100%',
     lg: sizes['desktopbuttonWidth']
+  })
+
+  const ButtonVideoContainer = useBreakpointValue({
+    base: '100%',
+    lg: '250px'
+  })
+
+  const ButtonVideoContainerMargin = useBreakpointValue({
+    base: '0',
+    lg: 'auto'
   })
 
   const teaserHeadline = useBreakpointValue({
@@ -259,16 +272,20 @@ const AppointmentCard: React.FC<Props> = ({
 
               <Box
                 flex="1"
+                maxWidth={ButtonVideoContainer}
+                marginLeft={ButtonVideoContainerMargin}
                 alignItems="flex-end"
                 justifyContent="center"
                 paddingX={space['1']}
                 paddingRight={buttonteaserSpace}
                 marginBottom={buttonteaser}>
                 {isTeaser && (
-                  <Button width={ButtonContainer} onPress={onPressToCourse}>
+                  <Button width="100%" onPress={onPressToCourse}>
                     Zum Kurs
                   </Button>
                 )}
+
+                {isTeaser && videoButton}
               </Box>
             </Column>
           </Pressable>
