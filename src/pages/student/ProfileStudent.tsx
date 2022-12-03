@@ -25,10 +25,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
+import CSSWrapper from '../../components/CSSWrapper'
 
 type Props = {}
 
@@ -113,18 +113,17 @@ const ProfileStudent: React.FC<Props> = () => {
     let complete = 0.0
 
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
-    data?.me?.aboutMe && (complete += 1)
+    data?.me?.student?.aboutMe?.length > 0 && (complete += 1)
     // data?.me?.student?.languages?.length && (complete += 1)
     data?.me?.student?.state && (complete += 1)
     // data?.me?.student?.schooltype && (complete += 1)
     // data?.me?.student?.gradeAsInt && (complete += 1)
-    data?.me?.student?.subjectsFormatted?.length && (complete += 1)
-
+    data?.me?.student?.subjectsFormatted?.length > 0 && (complete += 1)
     return Math.floor((complete / max) * 100)
   }, [
-    data?.me?.aboutMe,
     data?.me?.firstname,
     data?.me?.lastname,
+    data?.me?.student?.aboutMe?.length,
     data?.me?.student?.state,
     data?.me?.student?.subjectsFormatted?.length
   ])
@@ -165,6 +164,7 @@ const ProfileStudent: React.FC<Props> = () => {
   return (
     <>
       <WithNavigation
+        showBack
         isLoading={loading}
         headerTitle={t('profile.title')}
         headerContent={
@@ -231,12 +231,16 @@ const ProfileStudent: React.FC<Props> = () => {
                 <Row>
                   {(data?.me?.student.state && (
                     <Column marginRight={3}>
-                      {(data?.me?.student?.state !== 'other' && (
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.student.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.student.state}`)}
-                        />
+                      {(data?.me?.student?.state && (
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`states/icon_${data?.me?.student.state}.svg`}
+                            text={t(
+                              `lernfair.states.${data?.me?.student.state}`
+                            )}
+                          />
+                        </CSSWrapper>
                       )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.State.empty')}</Text>}
@@ -255,13 +259,15 @@ const ProfileStudent: React.FC<Props> = () => {
                   {data?.me?.student?.subjectsFormatted?.map(
                     (sub: { name: string }) => (
                       <Column marginRight={3}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`subjects/icon_${getSubjectKey(
-                            sub.name
-                          )}.svg`}
-                          text={sub.name}
-                        />
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`subjects/icon_${getSubjectKey(
+                              sub.name
+                            )}.svg`}
+                            text={sub.name}
+                          />
+                        </CSSWrapper>
                       </Column>
                     )
                   ) || <Text>{t('profile.subjects.empty')}</Text>}

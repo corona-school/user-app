@@ -26,6 +26,8 @@ type Props = {
   isdefaultButtonFirst?: boolean
   defaultButtonText?: string
   defaultbuttonLink?: () => any | any
+
+  extraContent?: ReactNode | ReactNode[]
 }
 
 const InfoScreen: React.FC<Props> = ({
@@ -38,7 +40,8 @@ const InfoScreen: React.FC<Props> = ({
   outlineButtonText,
   outlinebuttonLink,
   defaultButtonText,
-  defaultbuttonLink
+  defaultbuttonLink,
+  extraContent
 }) => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
@@ -92,6 +95,7 @@ const InfoScreen: React.FC<Props> = ({
               {content}
             </Text>
           )}
+          {extraContent}
           {outlineButtonText && isOutlineButtonLink === false && (
             <Box alignItems="center" marginBottom={3} width={buttonWidth}>
               <Button
