@@ -267,6 +267,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const queryCourse = useCallback(async () => {
     if (!prefillCourseId) return
+    if (!studentData?.me.student.id) return;
 
     setIsLoading(true)
     const {
