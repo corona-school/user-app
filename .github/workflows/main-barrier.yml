@@ -29,7 +29,8 @@ jobs:
         continue-on-error: true 
         env:
           CI: false
-          run: GRAPHQL_SCHEMA_URL=https://api.corona-school.de/apollo npm run build
+          GRAPHQL_SCHEMA_URL: https://api.corona-school.de/apollo
+        run: npm run build
 
       # - name: Run Unit Tests
       #   run: npm run test
