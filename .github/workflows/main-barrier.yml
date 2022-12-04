@@ -25,5 +25,11 @@ jobs:
           CI: false # TODO: Remove once all build warnings were fixed
         run: npm run build
 
+      - name: Build App against productive GraphQL
+        continue-on-error: true 
+        env:
+          CI: false
+          run: GRAPHQL_SCHEMA_URL=https://api.corona-school.de/apollo npm run build
+
       # - name: Run Unit Tests
       #   run: npm run test
