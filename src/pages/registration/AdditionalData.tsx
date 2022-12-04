@@ -216,7 +216,7 @@ const RegistrationData: React.FC<Props> = () => {
               registerError()
               attemptRegistration(answers)
             }}>
-            Erneut versuchen
+            {t('registration.result.error.tryagain')}
           </Button>
           <Button onPress={() => registerError()}>
             {t('registration.result.error.btn')}
@@ -463,7 +463,7 @@ const RegistrationData: React.FC<Props> = () => {
           </Modal.Header>
           <Modal.Body>
             <Heading fontSize="md">
-              Klassen{' '}
+              {t('registration.student.classSelection.classes')}{' '}
               {(classes[focusedSelection.key] &&
                 classes[focusedSelection.key].min) ||
                 1}{' '}
@@ -517,6 +517,8 @@ const AdditionalDataError = () => {
     lg: sizes['formsWidth']
   })
 
+  const { t } = useTranslation()
+
   return (
     <Flex overflowY={'auto'} height="100vh">
       <>
@@ -537,7 +539,9 @@ const AdditionalDataError = () => {
             }}
           />
           <Logo />
-          <Heading mt={space['1']}>Weitere Daten</Heading>
+          <Heading mt={space['1']}>
+            {t('registration.student.classSelection.moreData')}
+          </Heading>
         </Box>
         <VStack
           space={space['1']}
@@ -546,7 +550,9 @@ const AdditionalDataError = () => {
           marginX="auto"
           width={ContainerWidth}
           justifyContent="center">
-          <Heading>Token ungültig</Heading>
+          <Heading>
+            {t('registration.student.classSelection.tokenError')}
+          </Heading>
         </VStack>
       </>
     </Flex>

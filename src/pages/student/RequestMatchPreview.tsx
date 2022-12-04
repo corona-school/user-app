@@ -97,10 +97,7 @@ const RequestMatchPreview: React.FC<Props> = ({
         )
       })}
 
-      <Row
-        space={space['1']}
-        alignItems="center"
-        flexDirection={ButtonContainerDirection}>
+      <Row space={space['1']} flexDirection={ButtonContainerDirection}>
         <Button
           marginBottom={space['1']}
           width={ButtonContainer}

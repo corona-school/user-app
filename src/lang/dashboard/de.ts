@@ -1,6 +1,9 @@
 const dashboard = {
   appointmentcard: {
     header: 'Nächster Termin', 
+    videobutton: 'Videochat beitreten',
+    videotext: 'Videochat noch nicht gestartet.',
+    videotooltip: 'Der Videochat noch nicht gestartet oder du hast keine Berechtigung diesen aufzurufen.',
     card: {
       title: 'Mathe Grundlagen Klasse 6',
       content: 'In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch.',
@@ -29,7 +32,11 @@ const dashboard = {
     header: 'Angebote',
     match: 'Match auflösen',
     noMatching: 'Du hast noch keine Matches',
-    requestMatching: 'Match anfordern'
+    requestMatching: 'Match anfordern',
+    requestCreated: 'Anfrage erstellt am:',
+    clock: 'Uhr',
+    waitingTimeInfo: 'Bitte beachte dass die Suche nach einer/einem Lernpartner:in zu Wartezeiten von 3 - 6 Monaten kommen kann',
+    removeRequest: 'Anfrage zurücknehmen'
   },
   helpers: {
     headlines: {
@@ -37,6 +44,7 @@ const dashboard = {
       course: 'Meine Kurse',
       importantNews: 'Wichtige Meldungen',
       myLearningPartner: 'Meine Lernpartner:innen',
+      openedRequests: 'Offene Anfragen:',
       recommend: 'Empfehle uns weiter',
       recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
     },

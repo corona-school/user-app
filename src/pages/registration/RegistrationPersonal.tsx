@@ -124,9 +124,11 @@ const RegistrationPersonal: React.FC<Props> = () => {
   const attemptRegister = useCallback(async () => {
     setVariant('dark')
     try {
+      const validMail = email.toLowerCase()
       const res = await register({
-        variables: { firstname, lastname, email, password, aboutMe }
+        variables: { firstname, lastname, validMail, password, aboutMe }
       })
+
       if (!res.errors) {
         setContent(<VerifyEmailModal email={email} />)
       } else {
@@ -146,7 +148,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
                 setShow(false)
                 attemptRegister()
               }}>
-              Erneut versuchen
+              {t('registration.result.error.tryagain')}
             </Button>
             <Button onPress={() => setShow(false)}>
               {t('registration.result.error.btn')}
@@ -167,7 +169,7 @@ const RegistrationPersonal: React.FC<Props> = () => {
               setShow(false)
               attemptRegister()
             }}>
-            Erneut versuchen
+            {t('registration.result.error.tryagain')}
           </Button>
           <Button onPress={() => setShow(false)}>
             {t('registration.result.error.btn')}

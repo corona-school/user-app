@@ -8,6 +8,12 @@ const registration = {
   btn: {
     next: 'Weiter'
   },
+  dsgvo: {
+    accept: 'Hiermit stimme ich der',
+    datapolicy: 'Datenschutzerklärung',
+    lastword: 'zu.',
+    pleaseaccept: 'Bitte akzeptiere unsere'
+  },
   check_legal: 'Hiermit stimme ich der <1>Datenschutzerklärung</1> zu.',
   barrier: {
     title: 'Wichtig',
@@ -60,6 +66,7 @@ const registration = {
     },
     error: {
       btn: 'Zurück',
+      tryagain: 'Erneut versuchen',
       message: {
         'Email is already used by another account':
           'Diese Email ist bereits in Verwendung',
@@ -123,10 +130,13 @@ const registration = {
     classSelection: {
       btn: 'Speichern',
       title: 'In welchen Klassen kannst du unterstützen?',
+      classes: 'Klassen',
       range1: '1. - 4. Klasse',
       range2: '5. - 8. Klasse',
       range3: '9. - 10. Klasse',
-      range4: '11. - 13. Klasse'
+      range4: '11. - 13. Klasse',
+      moreData: 'Weitere Daten',
+      tokenError: 'Token ungültig',
     }
   }
 }
