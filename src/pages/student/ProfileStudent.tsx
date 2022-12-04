@@ -87,7 +87,7 @@ const ProfileStudent: React.FC<Props> = () => {
   )
   const [changeAboutMe, _changeAboutMe] = useMutation(
     gql`
-      mutation changeAboutMe($aboutMe: String!) {
+      mutation changeAboutMeStudent($aboutMe: String!) {
         meUpdate(update: { student: { aboutMe: $aboutMe } })
       }
     `,
