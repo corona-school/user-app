@@ -1,4 +1,4 @@
-name: User-App Main-Barrier
+name: Verify against productive GraphQL
 
 on:
   pull_request:
