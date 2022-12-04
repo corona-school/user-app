@@ -89,7 +89,8 @@
     "serve": "node serve.js",
     "update-backend": "graphql-codegen init",
     "analyze-bundle": "npm run build --profile && npx source-map-explorer ./build/static/js/main.*.js --html ./build/source-map.html",
-    "fetch-api": "graphql-codegen --config codegen.ts"
+    "fetch-api": "graphql-codegen --config codegen.ts",
+    "check-types": "tsc"
   },
   "eslintConfig": {
     "extends": [

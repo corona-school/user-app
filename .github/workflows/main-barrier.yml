@@ -30,7 +30,7 @@ jobs:
         env:
           CI: false
           GRAPHQL_SCHEMA_URL: https://api.corona-school.de/apollo
-        run: npm run build
+        run: npm run fetch-api && npm run check-types
 
       # - name: Run Unit Tests
       #   run: npm run test
