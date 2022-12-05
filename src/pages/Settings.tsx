@@ -164,14 +164,12 @@ const Settings: React.FC = () => {
             </Column>
           </ProfileSettingRow>
 
-          {userType === 'pupil' && (
-            <Column mt={tabspace}>
-              <EditDataRow
-                label={t('settings.account.deactivateAccount')}
-                onPress={() => setShowDeactivate(true)}
-              />
-            </Column>
-          )}
+          <Column mt={tabspace}>
+            <EditDataRow
+              label={t('settings.account.deactivateAccount')}
+              onPress={() => setShowDeactivate(true)}
+            />
+          </Column>
         </VStack>
       </WithNavigation>
       <DeactivateAccountModal
