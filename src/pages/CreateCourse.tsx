@@ -344,6 +344,7 @@ const CreateCourse: React.FC<Props> = () => {
       description,
       subject: subject.name,
       schooltype: studentData?.me?.student?.schooltype || 'other',
+      outline: '', // keep empty for now, unused
       name: courseName,
       category: 'revision',
       allowContact
