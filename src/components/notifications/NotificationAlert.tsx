@@ -1,4 +1,3 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Button,
   Text,
@@ -13,10 +12,14 @@ import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
 import NotificationPanel from './NotificationPanel'
+import { useIncomingWSConcreteNotificationId } from '../../hooks/useIncomingWSConcreteNotificationId'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
+  const id = useIncomingWSConcreteNotificationId()
+
   const { userNotifications, refetch } = useAllUserNotifications()
+
   const {
     lastTimeChecked,
     loading,
@@ -43,8 +46,7 @@ const NotificationAlert: React.FC = () => {
     )
     setCount(unreadNotifications.length)
     refetch()
-    // TODO change notifications to contextNotifications
-  }, [userNotifications, refetch])
+  }, [id, refetch])
 
   const handleTrigger = ({
     onPress,
