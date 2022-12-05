@@ -188,7 +188,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
         // By default, pipe back to parent link:
         observer.next(it)
       }, error => {
-        if (!deferred) observer.error(it);
+        if (!deferred) observer.error(error);
       }, () => {
         if (!deferred) observer.complete();
       })

@@ -10,6 +10,7 @@ import {
   Box
 } from 'native-base'
 import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Icon from '../assets/icons/lernfair/ic_email.svg'
 import AlertMessage from '../widgets/AlertMessage'
 import { REDIRECT_OPTIN } from '../Utility'
@@ -20,6 +21,12 @@ type Props = {
 
 const VerifyEmailModal: React.FC<Props> = ({ email }) => {
   const { space, sizes } = useTheme()
+  const navigate = useNavigate()
+
+  const goToWelcome = useCallback(() => {
+    navigate('/welcome')
+  }, [navigate])
+
   const [showSendEmailResult, setShowSendEmailResult] = useState<
     'success' | 'error' | undefined
   >()
@@ -75,6 +82,7 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
         <Text bold color="lightText">
           Keine E-Mail erhalten?
         </Text>
+        <Button onPress={goToWelcome}>Fenster schließen</Button>
         <Button
           isDisabled={_sendVerification?.loading}
           onPress={requestEmailVerification}

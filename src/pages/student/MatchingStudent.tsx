@@ -282,11 +282,12 @@ const MatchingStudent: React.FC<Props> = () => {
                   )
                 },
                 {
-                  title: 'Anfragen',
+                  title: t('matching.request.check.tabs.tab2'),
                   content: (
                     <VStack space={space['1']}>
                       <Text marginBottom={space['1']}>
-                        Offene Anfragen:{'  '}
+                        {t('matching.request.check.openedRequests')}
+                        {'  '}
                         {data?.me?.student?.openMatchRequestCount}
                       </Text>
                       <VStack space={space['0.5']}>
@@ -300,32 +301,43 @@ const MatchingStudent: React.FC<Props> = () => {
                                   marginRight="15px"
                                   marginBottom="15px">
                                   <Box
-                                    bgColor="primary.100"
-                                    padding={space['1']}
+                                    bgColor="primary.900"
+                                    padding={space['1.5']}
                                     borderRadius={8}>
-                                    <Heading>
-                                      Anfrage {`${i + 1}`.padStart(2, '0')}
+                                    <Heading
+                                      color="lightText"
+                                      paddingLeft={space['1']}>
+                                      {t('matching.request.check.request')}{' '}
+                                      {`${i + 1}`.padStart(2, '0')}
                                     </Heading>
 
                                     <Row
                                       mt="3"
+                                      paddingLeft={space['1']}
                                       space={space['0.5']}
                                       alignItems="center">
-                                      <Text mb={space['0.5']}>Fächer:</Text>
+                                      <Text color="lightText" mb={space['0.5']}>
+                                        {t('matching.request.check.subjects')}
+                                      </Text>
                                       <Row space={space['0.5']}>
                                         {data?.me?.student?.subjectsFormatted.map(
                                           (sub: LFSubject) => (
-                                            <Tag text={sub.name} />
+                                            <Tag
+                                              variant="secondary"
+                                              text={sub.name}
+                                            />
                                           )
                                         )}
                                       </Row>
                                     </Row>
                                     <Button
                                       isDisabled={cancelLoading}
-                                      variant="outline"
+                                      variant="outlinelight"
                                       mt="3"
                                       onPress={showCancelMatchRequestModal}>
-                                      Anfrage zurücknehmen
+                                      {t(
+                                        'matching.request.check.removeRequest'
+                                      )}
                                     </Button>
                                   </Box>
                                 </Column>
@@ -354,14 +366,20 @@ const MatchingStudent: React.FC<Props> = () => {
       />
       <Modal isOpen={showCancelModal}>
         <Modal.Content>
-          <Modal.Header>Anfrage löschen</Modal.Header>
+          <Modal.Header>
+            {t('matching.request.check.deleteRequest')}
+          </Modal.Header>
           <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
-          <Modal.Body>Möchtest du die Anfrage wirklich löschen?</Modal.Body>
+          <Modal.Body>
+            {t('matching.request.check.areyousuretodelete')}
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-              Abbrechen
+              {t('matching.request.check.cancel')}
             </Button>
-            <Button onPress={cancelRequest}>Anfrage löschen</Button>
+            <Button onPress={cancelRequest}>
+              {t('matching.request.check.deleteRequest')}
+            </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>

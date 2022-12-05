@@ -84,7 +84,7 @@ const Theme = extendTheme({
   },
   fontSizes: {
     xs: '0.714rem',
-    sm: '0.857rem',
+    sm: '0.957rem',
     md: '1rem',
     lg: '1.214rem',
     xl: '1.357rem'
@@ -97,6 +97,7 @@ const Theme = extendTheme({
   sizes: {
     headerSizePx: 56,
     headerPaddingYPx: 8,
+    imageHeaderWidth: '960px',
     contentContainerWidth: '680px',
     containerWidth: '1500px',
     desktopbuttonWidth: 'max-content',

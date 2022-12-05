@@ -9,7 +9,8 @@ import {
   Column,
   Alert,
   HStack,
-  useBreakpointValue
+  useBreakpointValue,
+  Heading
 } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -60,9 +61,14 @@ const ChangeSettingState: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const userType = useUserType()
-  const { data, loading } = useQuery(gql`
-    ${userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateState, _updateState] = useMutation(gql`
     ${userType === 'student' ? mutStudent : mutPupil}
@@ -125,7 +131,30 @@ const ChangeSettingState: React.FC<Props> = () => {
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        <ProfileSettingRow title={t('profile.State.single.others')}>
+        <Heading>{t('profile.State.single.selectedStates')}</Heading>
+        <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
+          <Row flexWrap="wrap" width="100%">
+            <Column
+              marginRight={3}
+              marginBottom={3}
+              key={`selection-${userState}`}>
+              <IconTagList
+                isDisabled
+                textIcon={`${userState}`}
+                iconPath={`states/icon_${userState}.svg`}
+                text={t(`lernfair.states.${userState}`)}
+              />
+            </Column>
+          </Row>
+        </ProfileSettingItem>
+      </VStack>
+      <VStack
+        paddingX={space['1.5']}
+        space={space['1']}
+        marginX="auto"
+        width="100%"
+        maxWidth={ContainerWidth}>
+        <ProfileSettingRow title={t('profile.State.single.otherStates')}>
           <ProfileSettingItem
             border={false}
             isIcon={false}
@@ -156,22 +185,6 @@ const ChangeSettingState: React.FC<Props> = () => {
         marginX="auto"
         width="100%"
         maxWidth={ContainerWidth}>
-        {/* {userSettingChanged && (
-          <Alert marginY={3} colorScheme="success" status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )} */}
         {showError && <AlertMessage content={t('profile.errormessage')} />}
         <Button
           width={ButtonContainer}

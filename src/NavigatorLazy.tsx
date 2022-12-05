@@ -244,6 +244,16 @@ import IFrame from './components/IFrame'
             }
           />
   
+          {/* Edit Course */}
+          <Route
+          path="/edit-course"
+          element={
+            <RequireAuth>
+              <CreateCourse />
+            </RequireAuth>
+          }
+          />
+
           {/* Group */}
           <Route
             path="/group"
