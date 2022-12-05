@@ -194,7 +194,7 @@ const HelpCenter: React.FC<Props> = () => {
               },
 
               {
-                hide: userType !== 'pupil',
+                hide: userType === 'pupil',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
