@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
+import { useUserType } from '../../hooks/useApollo'
 import useLernfair from '../../hooks/useLernfair'
 import { states } from '../../types/lernfair/State'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -59,7 +60,7 @@ const ChangeSettingState: React.FC<Props> = () => {
 
   const navigate = useNavigate()
 
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const { data, loading } = useQuery(
     gql`
       ${userType === 'student' ? queryStudent : queryPupil}

@@ -30,6 +30,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
 import AlertMessage from '../widgets/AlertMessage'
+import { useUserType } from '../hooks/useApollo'
 
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 
@@ -50,7 +51,7 @@ const SingleCourse: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
-  const { userType } = useLernfair()
+  const userType = useUserType()
 
   const userQuery =
     userType === 'student'

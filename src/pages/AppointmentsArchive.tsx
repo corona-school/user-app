@@ -25,6 +25,7 @@ import { LFLecture, LFSubCourse } from '../types/lernfair/Course'
 import { DateTime } from 'luxon'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CSSWrapper from '../components/CSSWrapper'
+import { useUserType } from '../hooks/useApollo'
 
 type Props = {}
 
@@ -75,7 +76,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const { trackPageView } = useMatomo()
   const [searchString, setSearchString] = useState<string>('')
 

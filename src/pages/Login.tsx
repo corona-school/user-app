@@ -26,7 +26,7 @@ import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility'
 
 export default function Login() {
   const { t } = useTranslation()
-  const { createDeviceToken } = useApollo()
+  const { onLogin, sessionState } = useApollo()
   const { space, sizes } = useTheme()
   const [showNoAccountModal, setShowNoAccountModal] = useState(false)
   const [email, setEmail] = useState<string>()
@@ -38,7 +38,7 @@ export default function Login() {
   const [showPasswordResetResult, setShowPasswordResetResult] = useState<
     'success' | 'error' | 'unknown' | undefined
   >()
-  const [login, { error, loading }] = useMutation(gql`
+  const [login, loginResult] = useMutation(gql`
     mutation login($password: String!, $email: String!) {
       loginPassword(password: $password, email: $email)
     }
@@ -65,6 +65,11 @@ export default function Login() {
     tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
   }
 `)
+
+  useEffect(() => {
+    if (sessionState === "logged-in")
+      navigate('/');
+  }, [navigate, sessionState]);
 
   useEffect(() => {
     trackPageView({
@@ -114,17 +119,14 @@ export default function Login() {
 
   const attemptLogin = useCallback(async () => {
     loginButton()
-    const res = await login({
+    const result = await login({
       variables: {
         email: email,
         password: password
       }
     })
-    if (res?.data && res.data.loginPassword) {
-      await createDeviceToken() // fire and forget
-      navigate('/')
-    }
-  }, [createDeviceToken, email, login, loginButton, navigate, password])
+    onLogin(result);
+  }, [email, login, loginButton, navigate, password])
 
   const getLoginOption = useCallback(async () => {
     if (!email || email.length < 6) return
@@ -317,7 +319,7 @@ export default function Login() {
               </Row>
             )) || <input type="password" style={{ display: 'none' }} />}
           </Box>
-          {error && (
+          {loginResult.error && (
             <Text
               paddingTop={4}
               color="danger.700"
@@ -341,19 +343,19 @@ export default function Login() {
               />
             </Box>
           )}
-          <Button
+          {showPasswordField && <Button
             marginY={4}
             variant="link"
             onPress={() => setShowPasswordModal(true)}>
             {t('login.btn.password')}
-          </Button>
+          </Button>}
 
           <Box paddingTop={4} marginX="90px" display="block">
             <Button
               onPress={showPasswordField ? attemptLogin : getLoginOption}
               width="100%"
               isDisabled={
-                loading ||
+                loginResult.loading ||
                 !email ||
                 email.length < 6 ||
                 _determineLoginOptions.loading ||
