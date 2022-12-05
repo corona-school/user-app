@@ -14,7 +14,6 @@ import SystemNotifications from '../../components/notification/preferences/Syste
 import { useTranslation } from 'react-i18next'
 
 const NotficationControlPanel = () => {
-  const [activeTab, setActiveTab] = useState<number>(0)
   const { space } = useTheme()
   const { t } = useTranslation()
 
@@ -41,9 +40,6 @@ const NotficationControlPanel = () => {
           )}
           <VStack ml={3}>
             <Tabs
-              onPressTab={(tab: Tab, index: number) => {
-                setActiveTab(index)
-              }}
               tabs={[
                 {
                   title: t('notification.controlPanel.tabs.tab1.title'),
