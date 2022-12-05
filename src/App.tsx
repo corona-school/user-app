@@ -22,9 +22,9 @@ function App() {
                     <NativeBaseProvider theme={Theme}>
                         <IssueReporter>
                             <MatomoProvider value={matomo}>
-                                <Navigator />
-                                <FullPageModal />
                                 <NotificationsProvider>
+                                    <Navigator />
+                                    <FullPageModal />
                                     <ToastNotifications />
                                 </NotificationsProvider>
                             </MatomoProvider>
