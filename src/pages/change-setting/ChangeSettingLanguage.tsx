@@ -173,46 +173,27 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
               <Row flexWrap="wrap" width="100%">
                 {languages.map(
                   (subject, index) =>
-                    !selections.find(sel => sel === subject.key) && (
+                    !selections.find(sel => sel === subject.label) && (
                       <Column
                         marginRight={3}
                         marginBottom={3}
                         key={`offers-${index}`}>
                         <IconTagList
+                          initial={false}
                           iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
                           text={subject.label}
-                          onPress={() =>
+                          onPress={() => {
                             setSelections(prev => [...prev, subject.label])
-                          }
+                            if (
+                              !selections.find(sel => sel === subject.label)
+                            ) {
+                            }
+                          }}
                         />
                       </Column>
                     )
                 )}
               </Row>
-              {selections.find(sel => sel === 'andere') && (
-                <Row>
-                  <FormControl>
-                    <Stack>
-                      <FormControl.Label>
-                        <Text bold>
-                          {t(
-                            'profile.FluentLanguagenalData.single.optional.label'
-                          )}
-                        </Text>
-                      </FormControl.Label>
-                      <Input
-                        type="text"
-                        multiline
-                        numberOfLines={3}
-                        h={70}
-                        placeholder={t(
-                          'profile.FluentLanguagenalData.single.optional.placeholder'
-                        )}
-                      />
-                    </Stack>
-                  </FormControl>
-                </Row>
-              )}
             </VStack>
           </ProfileSettingItem>
         </ProfileSettingRow>
