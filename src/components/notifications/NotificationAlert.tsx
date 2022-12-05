@@ -7,17 +7,16 @@ import {
   useBreakpointValue
 } from 'native-base'
 import { IButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
 import NotificationPanel from './NotificationPanel'
-import { useIncomingWSConcreteNotificationId } from '../../hooks/useIncomingWSConcreteNotificationId'
+import { NotificationsContext } from '../NotificationsProvider'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
-  const id = useIncomingWSConcreteNotificationId()
-
+  const message = useContext(NotificationsContext)
   const { userNotifications, refetch } = useAllUserNotifications()
 
   const {
@@ -46,7 +45,7 @@ const NotificationAlert: React.FC = () => {
     )
     setCount(unreadNotifications.length)
     refetch()
-  }, [id, refetch])
+  }, [message, refetch])
 
   const handleTrigger = ({
     onPress,
