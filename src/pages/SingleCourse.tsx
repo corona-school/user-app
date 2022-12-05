@@ -502,7 +502,7 @@ const SingleCourse: React.FC = () => {
                   </>
                 )
               },
-              {
+              (course?.isParticipant || course?.isInstructor) && {
                 title: t('single.tabs.participant'),
                 content: (
                   <>
