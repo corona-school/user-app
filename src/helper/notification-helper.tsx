@@ -60,10 +60,10 @@ function getIconForMessageType(messageType: string): ReactElement {
 
 type NotificationPreference = { title: string; icon: JSX.Element }
 
-const getDataForNotificationPreference = (
-  notificationPreference: string
+const getInformationsForMessageTypeNotificationPreference = (
+  messageType: string
 ): NotificationPreference => {
-  switch (notificationPreference) {
+  switch (messageType) {
     case MessageType.CHAT:
       return {
         title: 'notification.controlPanel.preference.chat.title',
@@ -145,4 +145,8 @@ const getTimeText = (timestamp: string): TimeText | string => {
   }
   return timeAsString
 }
-export { getIconForMessageType, getDataForNotificationPreference, getTimeText }
+export {
+  getIconForMessageType,
+  getInformationsForMessageTypeNotificationPreference,
+  getTimeText
+}

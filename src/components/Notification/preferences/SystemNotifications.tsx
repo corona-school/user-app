@@ -1,10 +1,13 @@
 import { Box, Text, useBreakpointValue } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { notificationPreferences, preferencesData } from './PreferencesData'
+import { NotificationPreference } from './PreferencesData'
 import PreferenceItem from './PreferenceItem'
+import { useUserPreferences } from '../../../hooks/useUserNotificationPreferences'
 
 const SystemNotifications = () => {
   const { t } = useTranslation()
+
+  const { userPreferences } = useUserPreferences()
 
   const marginLeft = useBreakpointValue({
     base: 0,
@@ -15,6 +18,7 @@ const SystemNotifications = () => {
     base: 5,
     lg: 3
   })
+
   return (
     <>
       <Box ml={marginLeft}>
@@ -22,9 +26,11 @@ const SystemNotifications = () => {
           {t('notification.controlPanel.tabs.tab1.description')}
         </Text>
         <Box>
-          {Object.keys(notificationPreferences).map((key: string) => (
-            <PreferenceItem id={key} channel={notificationPreferences[key]} />
-          ))}
+          {userPreferences.map((pref: NotificationPreference) =>
+            Object.keys(pref).map((key: string) => (
+              <PreferenceItem id={key} channel={pref[key]} />
+            ))
+          )}
         </Box>
       </Box>
     </>
