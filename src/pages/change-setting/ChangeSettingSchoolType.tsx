@@ -155,7 +155,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                           initial={false}
                           iconPath={`schooltypes/icon_${schooltype.key}.svg`}
                           text={schooltype.label}
-                          onPress={() => setSelections(schooltype.label)}
+                          onPress={() => setSelections(schooltype.key)}
                         />
                       </Column>
                     )
