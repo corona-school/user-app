@@ -17,7 +17,7 @@ import { NotificationsContext } from '../NotificationsProvider'
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
   const message = useContext(NotificationsContext)
-  const { userNotifications, refetch } = useAllUserNotifications()
+  const { userNotifications } = useAllUserNotifications()
 
   const {
     lastTimeChecked,
@@ -44,8 +44,7 @@ const NotificationAlert: React.FC = () => {
       notification => notification.sentAt > lastTimeChecked
     )
     setCount(unreadNotifications.length)
-    refetch()
-  }, [message, refetch])
+  }, [message])
 
   const handleTrigger = ({
     onPress,

@@ -20,7 +20,7 @@ const userNotificationQuery = gql`
 `
 
 const useAllUserNotifications = () => {
-  const { data, loading, error, refetch } = useQuery(userNotificationQuery)
+  const { data, loading, error } = useQuery(userNotificationQuery)
 
   const [userNotifications, setUserNotifications] = useState<
     UserNotification[]
@@ -32,7 +32,7 @@ const useAllUserNotifications = () => {
     }
   }, [loading, error])
 
-  return { userNotifications, loading, error, refetch }
+  return { userNotifications, loading, error }
 }
 
 export { useAllUserNotifications }
