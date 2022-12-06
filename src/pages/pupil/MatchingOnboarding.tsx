@@ -94,7 +94,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
       <Heading paddingBottom={space['0.5']}>
         {t('matching.blocker.title')}
       </Heading>
-      <AspectRatio
+      {/* <AspectRatio
         ratio={{
           base: 16 / 9,
           md: 16 / 6
@@ -112,7 +112,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
             uri: require('../../assets/images/matching/1-1-matching.jpg')
           }}
         />
-      </AspectRatio>
+      </AspectRatio> */}
       <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
         {t('matching.blocker.firstContent')}
       </Text>
