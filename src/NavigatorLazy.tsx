@@ -333,13 +333,49 @@ export default function NavigatorLazy() {
           />
         }
       />
+
+      {/* Edit Course */}
       <Route
-        path="/imprint"
+        path="/edit-course"
         element={
-          <IFrame
-            title="impressum"
-            src="https://www.lern-fair.de/iframe/impressum"
-          />
+          <RequireAuth>
+            <CreateCourse />
+          </RequireAuth>
+        }
+      />
+
+      {/* Group */}
+      <Route
+        path="/group"
+        element={
+          <RequireAuth>
+            <SwitchUserType
+              pupilComponent={<PupilGroup />}
+              studentComponent={<StudentGroup />}
+            />
+          </RequireAuth>
+        }></Route>
+
+      <Route
+        path="/group/offer"
+        element={
+          <RequireAuth>
+            <SwitchUserType
+              pupilComponent={<PupilGroup />}
+              studentComponent={<StudentGroupSupport />}
+            />
+          </RequireAuth>
+        }></Route>
+
+      <Route
+        path="/matching"
+        element={
+          <RequireAuth>
+            <SwitchUserType
+              pupilComponent={<Matching />}
+              studentComponent={<MatchingStudent />}
+            />
+          </RequireAuth>
         }
       />
 

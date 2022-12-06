@@ -77,7 +77,7 @@ const Tabs: React.FC<Props> = ({
       <Box
         paddingX={removeSpace === false ? space['1'] : ''}
         paddingY={space['1.5']}>
-        {tabs.map(
+        {renderableTabs.map(
           (tab: Tab, i) =>
             i === currentIndex && (
               <Fragment key={`tabcontent-${i}`}>{tab.content}</Fragment>

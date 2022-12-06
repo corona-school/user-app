@@ -1,21 +1,25 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import InfoScreen from '../widgets/InfoScreen'
 import Logo from '../assets/icons/lernfair/lf-party.svg'
 import React, { useEffect } from 'react'
-import useApollo from '../hooks/useApollo'
 import { useTranslation } from 'react-i18next'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-type Props = {}
+import AlertMessage from '../widgets/AlertMessage'
 
-const Welcome: React.FC<Props> = () => {
+const Welcome: React.FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { trackPageView } = useMatomo()
+
+  const location = useLocation()
+  const locState = location.state as { deactivated?: boolean }
+  const deactivated = locState?.deactivated
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Welcome Page'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -28,6 +32,11 @@ const Welcome: React.FC<Props> = () => {
       defaultButtonText={t('welcome.btn.signup')}
       defaultbuttonLink={() => navigate('/registration/1')}
       icon={<Logo />}
+      extraContent={
+        deactivated && (
+          <AlertMessage content={'Dein Account wurde deaktiviert'} />
+        )
+      }
     />
   )
 }

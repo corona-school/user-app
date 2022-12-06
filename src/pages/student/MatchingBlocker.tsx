@@ -73,6 +73,7 @@ const MatchingBlocker: React.FC<Props> = () => {
           {t('matching.blocker.title')}
         </Heading>
         <Image
+          maxWidth={sizes['imageHeaderWidth']}
           width="100%"
           height="500px"
           borderRadius="15px"

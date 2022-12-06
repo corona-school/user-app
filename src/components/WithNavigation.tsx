@@ -71,7 +71,10 @@ const WithNavigation: React.FC<Props> = ({
         <HeaderCard
           showBack={showBack}
           leftContent={headerLeft}
-          rightContent={isSidebarMenu && !hideMenu ? <SettingsButton /> : ''}
+          rightContent={
+            headerRight ||
+            (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')
+          }
           title={headerTitle}>
           {!isMobile && headerContent}
         </HeaderCard>

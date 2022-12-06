@@ -61,7 +61,7 @@ function getIconForMessageType(messageType: string): ReactElement {
     case NotiType.TYP10:
       return <BellIcon />
     default:
-      throw new Error(`No Icon for this category ${messageType} found.`)
+      return <MatchIcon />
   }
 }
 

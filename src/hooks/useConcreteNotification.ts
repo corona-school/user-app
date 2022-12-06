@@ -1,8 +1,9 @@
 import { gql, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
+import { UserNotification } from "../types/lernfair/Notification"
 
 const concreteNotificationQuery = gql`
-  query ConcreteNotification($id: ID!) {
+  query ConcreteNotification($id: Int!) {
     concrete_notification(concreteNotificationId: $id) {
       id
       headline
@@ -15,22 +16,34 @@ const concreteNotificationQuery = gql`
   }
 `
 
-const useConcreteNotification = (id: number) => {
-  const { data, loading, error, refetch } = useQuery(
-    concreteNotificationQuery,
-    {
-      variables: { id }
-    }
-  )
-  const [notification, setNotification] = useState()
+const isMessageValid = (message: UserNotification | null): boolean => {
+  if (!message) return false
 
-  useEffect(() => {
-    if (!loading && !error) {
-      setNotification(data?.concrete_notification)
-    }
-  }, [loading])
+  const requiredFields = ["id", "headline", "body", "notification"]
+  const fields = Object.keys(message)
 
-  return { data, notification, loading, error, refetch }
+  for (const requiredField of requiredFields) {
+    if (!fields.includes(requiredField)) return false
+  }
+
+  return true
 }
 
-export { useConcreteNotification }
+export const useConcreteNotification = (id: number | null) => {
+  const { data, loading, error } = useQuery(
+    concreteNotificationQuery,
+    {
+      variables: { id },
+      skip: !id
+    }
+  )
+  const [concreteNotification, setConcreteNotification] = useState(null)
+
+  useEffect(() => {
+    if (!loading && !error && isMessageValid(data?.concrete_notification)) {
+      setConcreteNotification(data?.concrete_notification)
+    }
+  }, [loading, data, error])
+
+  return concreteNotification
+}

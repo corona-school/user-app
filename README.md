@@ -20,6 +20,7 @@ Most configuration is done via `REACT_APP_` environment variables, which are inl
 
 A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts). 
 
+In local development environment you can use [`.env.template`](.env.template) as template for in your own .env file.
 
 ## Further Resources
 

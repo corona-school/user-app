@@ -45,9 +45,11 @@ export type Pupil = {
   state?: State
 }
 
-export interface Participant extends Partial<Pupil> {
+export type Participant = {
   firstname: string
+  lastname: string
   grade: number
+  schooltype: string
 }
 
 export type Student = {
