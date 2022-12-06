@@ -1,4 +1,4 @@
-import { LFLecture, TrafficStatus } from './types/lernfair/Course'
+import { LFLecture, LFSubCourse, TrafficStatus } from './types/lernfair/Course'
 import { ClassRange } from './types/lernfair/SchoolClass'
 import { DateTime } from 'luxon'
 
@@ -146,9 +146,22 @@ export const getTrafficStatus: (
 ) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
   return participants === maxParticipants
     ? 'full'
-    : maxParticipants - participants < 5
+    : maxParticipants - participants <= 5
     ? 'last'
     : 'free'
+}
+
+export const sortByDate = (arr: LFSubCourse[]) => {
+  if (!arr) return []
+  return arr.sort((a: LFSubCourse, b: LFSubCourse) => {
+    const aLecture = a.firstLecture
+    const bLecture = b.firstLecture
+
+    const aDate = aLecture?.start || 0
+    const bDate = bLecture?.start || 0
+
+    return aDate > bDate ? 1 : -1
+  })
 }
 
 const Utility = {
@@ -160,6 +173,7 @@ const Utility = {
   formatDate,
   handleDateString,
   getFirstLectureFromSubcourse,
-  getTrafficStatus
+  getTrafficStatus,
+  sortByDate
 }
 export default Utility

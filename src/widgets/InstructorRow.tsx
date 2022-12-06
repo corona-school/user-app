@@ -1,4 +1,4 @@
-import { Text, useTheme, Pressable, Row, Column } from 'native-base'
+import { Text, useTheme, Pressable, Column, Button, Row } from 'native-base'
 
 import { LFInstructor } from '../types/lernfair/Course'
 
@@ -6,9 +6,15 @@ type Props = {
   isAdded?: boolean
   instructor: LFInstructor
   onPress?: () => any
+  onPressDelete?: () => any
 }
 
-const InstructorRow: React.FC<Props> = ({ instructor, onPress, isAdded }) => {
+const InstructorRow: React.FC<Props> = ({
+  instructor,
+  onPress,
+  isAdded,
+  onPressDelete
+}) => {
   const { space } = useTheme()
   return (
     <Pressable
@@ -24,9 +30,12 @@ const InstructorRow: React.FC<Props> = ({ instructor, onPress, isAdded }) => {
       borderBottomWidth="1"
       borderBottomColor={'gray.300'}>
       <Column marginLeft={space['1']}>
-        <Text color={isAdded ? 'gray.500' : 'darkText'}>
-          {instructor.firstname} {instructor.lastname}
-        </Text>
+        <Row alignItems="center">
+          <Text color={isAdded ? 'gray.500' : 'darkText'} flex="1">
+            {instructor.firstname} {instructor.lastname}
+          </Text>
+          {onPressDelete && <Button onPress={onPressDelete}>löschen</Button>}
+        </Row>
 
         {isAdded && (
           <Text fontSize="sm" opacity={isAdded ? 1 : 0}>

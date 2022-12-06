@@ -96,7 +96,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
       </Heading>
       <AspectRatio
         ratio={{
-          base: 4 / 3,
+          base: 16 / 9,
           md: 16 / 6
         }}
         height={{
@@ -104,6 +104,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
           md: 1
         }}>
         <Image
+          maxWidth={sizes['imageHeaderWidth']}
           borderRadius="10px"
           marginBottom={space['1']}
           resizeMode="cover"

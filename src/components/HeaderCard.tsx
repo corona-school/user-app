@@ -61,7 +61,7 @@ const HeaderCard: React.FC<Props> = ({
         zIndex="1">
         <Row alignItems="center" justifyContent={'center'} h="100%">
           {showBack && (
-            <Box mr={space['1']}>
+            <Box mr={space['1']} position="absolute" left="0">
               <BackButton />
             </Box>
           )}

@@ -17,7 +17,6 @@ const Explore: React.FC<Props> = () => {
         course {
           name
           description
-          outline
         }
       }
     }
