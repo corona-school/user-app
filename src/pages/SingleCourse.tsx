@@ -9,7 +9,9 @@ import {
   Button,
   useBreakpointValue,
   VStack,
-  Modal
+  Modal,
+  useToast,
+  Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -25,7 +27,6 @@ import Utility, {
 } from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
-import useLernfair from '../hooks/useLernfair'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
@@ -33,18 +34,20 @@ import AlertMessage from '../widgets/AlertMessage'
 import { useUserType } from '../hooks/useApollo'
 
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
+import SetMeetingLinkModal from '../modals/SetMeetingLinkModal'
 
 const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
+  const toast = useToast()
 
   const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const [isSignedInModal, setSignedInModal] = useState(false)
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
-
+  const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
   const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
   const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
 
@@ -81,6 +84,10 @@ const SingleCourse: React.FC = () => {
       id
       participantsCount
       maxParticipants
+      nextLecture{
+        start
+        duration
+      }
       instructors{
         firstname
         lastname
@@ -262,6 +269,48 @@ const SingleCourse: React.FC = () => {
     }
   }, [course?.lectures, courseId, getMeetingLink])
 
+  const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
+    mutation joinMeeting($courseId: Float!, $meetingUrl: String!) {
+      subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
+    }
+  `)
+
+  const _setMeetingLink = useCallback(
+    async (link: string) => {
+      try {
+        const res = await setMeetingUrl({
+          variables: {
+            courseId: courseData.subcourse.id,
+            meetingUrl: link
+          }
+        })
+
+        setShowMeetingUrlModal(false)
+        if (res.data.subcourseSetMeetingURL && !res.errors) {
+          toast.show({
+            description: t('course.meeting.result.success')
+          })
+        } else {
+          toast.show({
+            description: t('course.meeting.result.error')
+          })
+        }
+      } catch (e) {
+        toast.show({
+          description: t('course.meeting.result.error')
+        })
+      }
+    },
+    [courseData?.subcourse?.id, setMeetingUrl, t, toast]
+  )
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    return (
+      DateTime.fromISO(course?.nextLecture?.start).diffNow('minutes').minutes >
+      60
+    )
+  }, [course])
+
   return (
     <>
       <WithNavigation
@@ -315,11 +364,6 @@ const SingleCourse: React.FC = () => {
           )}
           <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
           <Row alignItems="center" paddingBottom={space['1']}>
-            {/* <ProfilAvatar
-            size="sm"
-            marginRight={space['0.5']} 
-            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          /> */}
             {course?.instructors && course?.instructors[0] && (
               <Heading fontSize="md">
                 {course?.instructors[0].firstname}{' '}
@@ -336,17 +380,38 @@ const SingleCourse: React.FC = () => {
               )}
             />
           </Box>
-          {course?.isParticipant && showMeetingButton && (
+          {userType === 'pupil' && course?.isParticipant && (
             <VStack space={space['0.5']} py={space['1']}>
-              <Button
-                onPress={getMeetingLink}
-                isDisabled={_joinMeeting.loading}>
-                Videochat beitreten
-              </Button>
-
+              <Tooltip
+                isDisabled={!disableMeetingButton}
+                maxWidth={300}
+                label={t('dashboard.appointmentcard.videotooltip.pupil')}>
+                <Button
+                  onPress={getMeetingLink}
+                  isDisabled={showMeetingButton || _joinMeeting.loading}>
+                  Videochat beitreten
+                </Button>
+              </Tooltip>
               {showMeetingNotStarted && (
-                <Text>Der Videochat wurde noch nicht gestartet.</Text>
+                <AlertMessage content="Der Videochat wurde noch nicht gestartet." />
               )}
+
+              <Text>{t('course.meeting.hint.pupil')}</Text>
+            </VStack>
+          )}
+          {userType === 'student' && course?.isInstructor && (
+            <VStack space={space['0.5']} py={space['1']}>
+              <Tooltip
+                isDisabled={!disableMeetingButton}
+                maxWidth={300}
+                label={t('dashboard.appointmentcard.videotooltip.student')}>
+                <Button
+                  onPress={() => setShowMeetingUrlModal(true)}
+                  isDisabled={disableMeetingButton || _setMeetingUrl.loading}>
+                  Videochat starten
+                </Button>
+              </Tooltip>
+              <Text>{t('course.meeting.hint.student')}</Text>
             </VStack>
           )}
           {userType === 'pupil' && (
@@ -637,6 +702,12 @@ const SingleCourse: React.FC = () => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
+      <SetMeetingLinkModal
+        isOpen={showMeetingUrlModal}
+        onClose={() => setShowMeetingUrlModal(false)}
+        disableButtons={_setMeetingUrl.loading}
+        onPressStartMeeting={link => _setMeetingLink(link)}
+      />
     </>
   )
 }
