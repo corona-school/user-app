@@ -49,6 +49,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AddCourseInstructor from '../modals/AddCourseInstructor'
 import { GraphQLError } from 'graphql'
 import AsNavigationItem from '../components/AsNavigationItem'
+import { BACKEND_URL } from '../config'
 
 type Props = {}
 
@@ -266,6 +267,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const queryCourse = useCallback(async () => {
     if (!prefillCourseId) return
+    if (!studentData?.me.student.id) return;
 
     setIsLoading(true)
     const {
@@ -342,6 +344,7 @@ const CreateCourse: React.FC<Props> = () => {
       description,
       subject: subject.name,
       schooltype: studentData?.me?.student?.schooltype || 'other',
+      outline: '', // keep empty for now, unused
       name: courseName,
       category: 'revision',
       allowContact
@@ -459,7 +462,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     let uploadFileId
     try {
-      uploadFileId = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+      uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
         method: 'POST',
         body: formData
       })
@@ -608,7 +611,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     let uploadFileId
     try {
-      uploadFileId = await fetch(process.env.REACT_APP_UPLOAD_URL, {
+      uploadFileId = await fetch(BACKEND_URL + '/api/files/upload', {
         method: 'POST',
         body: formData
       })

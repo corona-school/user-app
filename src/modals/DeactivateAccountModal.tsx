@@ -13,7 +13,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import useApollo from '../hooks/useApollo'
+import useApollo, { useUserType } from '../hooks/useApollo'
 import useLernfair from '../hooks/useLernfair'
 
 // corresponding dissolve reason ids in translation file
@@ -35,12 +35,12 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
   const { logout } = useApollo()
   const { t } = useTranslation()
 
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const toast = useToast()
 
   const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(gql`
-    mutation {
-      meDeactivate
+    mutation deactiveAccount($reason: String) {
+      meDeactivate(reason: $reason)
     }
   `)
 
@@ -66,24 +66,52 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     !isOther && setOther('')
   }, [isOther, reason, reasons.length])
 
+  const showError = useCallback(() => {
+    toast.show({
+      description: t('profile.Deactivate.error')
+    })
+  }, [t, toast])
+
   const deactivate = useCallback(async () => {
-    const res = await deactivateAccount()
-    onCloseModal && onCloseModal()
-    if (res.data.meDeactivate) {
-      trackEvent({
-        category: 'profil',
-        action: 'click-event',
-        name: 'Account deaktivieren',
-        documentTitle: 'Deactivate'
+    if (reason === undefined) return
+    try {
+      const res = await deactivateAccount({
+        variables: {
+          reason: !isOther
+            ? `${t(`profile.Deactivate.${userType}.${parseInt(reason)}`)}`
+            : other
+        }
       })
-      logout()
-      navigate('/welcome', { state: { deactivated: true } })
-    } else {
-      toast.show({
-        description: t('profile.Deactivate.error')
-      })
+
+      onCloseModal && onCloseModal()
+      if (res.data.meDeactivate) {
+        trackEvent({
+          category: 'profil',
+          action: 'click-event',
+          name: 'Account deaktivieren',
+          documentTitle: 'Deactivate'
+        })
+        logout()
+        navigate('/welcome', { state: { deactivated: true } })
+      } else {
+        showError()
+      }
+    } catch (e) {
+      showError()
     }
-  }, [deactivateAccount, logout, navigate, onCloseModal, t, toast, trackEvent])
+  }, [
+    reason,
+    deactivateAccount,
+    isOther,
+    t,
+    userType,
+    other,
+    onCloseModal,
+    trackEvent,
+    logout,
+    navigate,
+    toast
+  ])
 
   const isValidInput = useMemo(() => {
     if (!reason) return false

@@ -10,6 +10,7 @@ import './web/scss/index.scss'
 import FullPageModal from './widgets/FullPageModal'
 import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
+import { IssueReporter } from './IssueReporter'
 
 function App() {
   return (
@@ -17,10 +18,12 @@ function App() {
       <LFModalProvider>
         <LFApolloProvider>
           <NativeBaseProvider theme={Theme}>
-            <MatomoProvider value={matomo}>
-              <Navigator />
-              <FullPageModal />
-            </MatomoProvider>
+            <IssueReporter>
+              <MatomoProvider value={matomo}>
+                <Navigator />
+                <FullPageModal />
+              </MatomoProvider>
+            </IssueReporter>
           </NativeBaseProvider>
         </LFApolloProvider>
       </LFModalProvider>

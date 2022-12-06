@@ -32,6 +32,7 @@ import { Slider } from '@miblanchard/react-native-slider'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { useNavigate } from 'react-router-dom'
 import AlertMessage from '../../widgets/AlertMessage'
+import { useUserType } from '../../hooks/useApollo'
 
 const queryPupil = `query {
   me {
@@ -67,7 +68,7 @@ type Props = {}
 const ChangeSettingSubject: React.FC<Props> = () => {
   const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
-  const { userType = '' } = useLernfair()
+  const userType = useUserType()
   const { trackPageView } = useMatomo()
   const navigate = useNavigate()
 

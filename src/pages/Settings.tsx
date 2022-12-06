@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../components/WithNavigation'
-import useApollo from '../hooks/useApollo'
+import useApollo, { useUserType } from '../hooks/useApollo'
 import useLernfair from '../hooks/useLernfair'
 import DeactivateAccountModal from '../modals/DeactivateAccountModal'
 import EditDataRow from '../widgets/EditDataRow'
@@ -26,7 +26,7 @@ const Settings: React.FC = () => {
   const navigate = useNavigate()
   const { logout } = useApollo()
   const tabspace = 3
-  const { userType } = useLernfair()
+  const userType = useUserType()
   const { trackPageView, trackEvent } = useMatomo()
 
   const [showDeactivate, setShowDeactivate] = useState<boolean>(false)
@@ -117,13 +117,13 @@ const Settings: React.FC = () => {
             isSpace={false}>
             {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
-          </Column>
+          </Column>*/}
           <Column mb={tabspace}>
             <EditDataRow
               label={t('settings.account.changePassword')}
-              isDisabled
+              onPress={() => navigate('/reset-password')}
             />
-          </Column> */}
+          </Column>
             {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeUser')} isDisabled />
           </Column> */}
@@ -144,7 +144,6 @@ const Settings: React.FC = () => {
                     documentTitle: 'Logout'
                   })
                   logout()
-                  navigate(0)
                 }}
               />
             </Column>
@@ -164,14 +163,12 @@ const Settings: React.FC = () => {
             </Column>
           </ProfileSettingRow>
 
-          {userType === 'pupil' && (
-            <Column mt={tabspace}>
-              <EditDataRow
-                label={t('settings.account.deactivateAccount')}
-                onPress={() => setShowDeactivate(true)}
-              />
-            </Column>
-          )}
+          <Column mt={tabspace}>
+            <EditDataRow
+              label={t('settings.account.deactivateAccount')}
+              onPress={() => setShowDeactivate(true)}
+            />
+          </Column>
         </VStack>
       </WithNavigation>
       <DeactivateAccountModal
