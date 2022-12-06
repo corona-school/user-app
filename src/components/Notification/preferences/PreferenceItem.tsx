@@ -10,24 +10,26 @@ import {
   useBreakpointValue,
   Tooltip
 } from 'native-base'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getInformationsForMessageTypeNotificationPreference } from '../../../helper/notification-helper'
-import { useUserPreferences } from '../../../hooks/useUserNotificationPreferences'
-import { NotificationPreference } from './PreferencesData'
 
 type PrefProps = {
-  id: string
-  channel: { [channel: string]: boolean }
+  category: string
+  channel: string
+  value: boolean
+  onUpdate: (value: boolean) => void
 }
 
-const PreferenceItem: React.FC<PrefProps> = ({ id, channel }) => {
-  const [emailActivated, setEmailActivated] = useState<boolean>(true)
+const PreferenceItem: React.FC<PrefProps> = ({
+  category,
+  channel,
+  value,
+  onUpdate
+}) => {
   const { t } = useTranslation()
-  const { userPreferences } = useUserPreferences()
 
   const preferenceInformation =
-    getInformationsForMessageTypeNotificationPreference(id)
+    getInformationsForMessageTypeNotificationPreference(category)
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -44,31 +46,9 @@ const PreferenceItem: React.FC<PrefProps> = ({ id, channel }) => {
     lg: '100%'
   })
 
-  const handleToggle = (event: any) => {
-    console.log(event)
-    userPreferences.map((pref: NotificationPreference) =>
-      Object.keys(pref).map((key: string) => console.log(pref[key]))
-    )
-
-    // TODO change value of one channel (reduce?)
-    const newPreferences = Object.keys(channel).map(key => {
-      if (key === 'email') return { ...channel, email: event }
-    })
-
-    setEmailActivated(event)
+  const handleToggle = (preferenceValue: boolean) => {
+    onUpdate(preferenceValue)
   }
-
-  const filterActiveNotificationPreferncesAndCheckForActiveEmail = () => {
-    const activeChannels = Object.keys(channel).filter(
-      key => channel[key] === true
-    )
-    const email = activeChannels.includes('email')
-    setEmailActivated(email)
-  }
-
-  useEffect(() => {
-    filterActiveNotificationPreferncesAndCheckForActiveEmail()
-  }, [])
 
   return (
     <>
@@ -86,6 +66,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ id, channel }) => {
                 {isMobile ? (
                   <Pressable
                     ml={1}
+                    // TODO treated in another PR
                     onPress={() => console.log('open info modal')}>
                     <Circle rounded="full" bg="amber.700" size={4}>
                       <Box _text={{ color: 'white' }}>i</Box>
@@ -103,10 +84,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ id, channel }) => {
           </VStack>
           <Spacer />
           <VStack>
-            <Switch
-              value={emailActivated}
-              onValueChange={event => handleToggle(event)}
-            />
+            <Switch value={value} onToggle={() => handleToggle(!value)} />
           </VStack>
         </HStack>
       </Box>
