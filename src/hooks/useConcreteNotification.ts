@@ -42,6 +42,5 @@ export const useConcreteNotification = (id: number | null) => {
     }
   }, [loading, data, error])
 
-  console.log('[uCN] concrete notification', concreteNotification)
   return concreteNotification
 }
