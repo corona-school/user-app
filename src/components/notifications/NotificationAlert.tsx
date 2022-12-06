@@ -53,7 +53,7 @@ const NotificationAlert: React.FC = () => {
   }: IButtonProps): React.ReactElement => {
     return (
       <VStack>
-        {count > 0 && (
+        {!loading && !error && count > 0 && (
           <Circle
             position="absolute"
             my={3}

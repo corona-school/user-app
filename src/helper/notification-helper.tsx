@@ -55,9 +55,9 @@ function getIconForMessageType(messageType: string): ReactElement {
   }
 }
 
-const getTimeDifferenceByTimestamp = (timestamp: string) => {
+const getTimeDifference = (timestring: string) => {
   const now = DateTime.now()
-  const createdAt = DateTime.fromISO(timestamp)
+  const createdAt = DateTime.fromISO(timestring)
   const timeDiff = now.diff(createdAt, 'minutes')
   const minutesDiff = now.diff(createdAt, 'minutes').minutes
   const hoursDiff = now.diff(createdAt, 'hours').hours
@@ -70,11 +70,11 @@ const getTimeDifferenceByTimestamp = (timestamp: string) => {
 
 type TimeText = { text: string; options?: TOptions }
 
-const getTimeTextByTimestamp = (timestamp: string): TimeText | string => {
-  const diff = getTimeDifferenceByTimestamp(timestamp)
+const getTimeText = (timestring: string): TimeText | string => {
+  const diff = getTimeDifference(timestring)
   const minutes = diff.minutesDiff
   const days = diff.daysDiff
-  const timeAsString = DateTime.fromISO(timestamp).toFormat('T')
+  const timeAsString = DateTime.fromISO(timestring).toFormat('T')
 
   if (minutes < 1) {
     return { text: 'notification.timedifference.now' }
@@ -100,10 +100,8 @@ const getTimeTextByTimestamp = (timestamp: string): TimeText | string => {
 }
 
 const isNewNotification = (sentAt: string, lastOpen: string) => {
-  // unread
   if (sentAt > lastOpen) {
     return false
-    // read
   } else if (sentAt < lastOpen) {
     return true
   }
@@ -125,7 +123,7 @@ const getAllNewUserNotificationsButMinimumFiveNotifications = (
 
 export {
   getIconForMessageType,
-  getTimeTextByTimestamp,
+  getTimeText,
   isNewNotification,
   getAllNewUserNotificationsButMinimumFiveNotifications
 }
