@@ -385,7 +385,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('dashboard.appointmentcard.videotooltip.pupil')}>
+                label={t('course.meeting.videotooltip.pupil')}>
                 <Button
                   onPress={getMeetingLink}
                   isDisabled={showMeetingButton || _joinMeeting.loading}>
@@ -404,7 +404,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('dashboard.appointmentcard.videotooltip.student')}>
+                label={t('course.meeting.videotooltip.student')}>
                 <Button
                   onPress={() => setShowMeetingUrlModal(true)}
                   isDisabled={disableMeetingButton || _setMeetingUrl.loading}>
