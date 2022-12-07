@@ -114,8 +114,11 @@ const getAllNewUserNotificationsButMinimumFiveNotifications = (
   const userNotificationsToRender = userNotifications.filter(
     notification => notification.sentAt > lastTimeChecked
   )
-  for (let i = userNotificationsToRender.length; i < 5; i++) {
-    userNotificationsToRender.push(userNotifications[i])
+  // TODO revise
+  if (userNotificationsToRender.length > 5) {
+    for (let i = userNotificationsToRender.length; i < 5; i++) {
+      userNotificationsToRender.push(userNotifications[i])
+    }
   }
 
   return userNotificationsToRender

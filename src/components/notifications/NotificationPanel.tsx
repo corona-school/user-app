@@ -80,32 +80,45 @@ const NotificationPanel: React.FC<Props> = ({
           </Box>
         </Popover.Header>
         <Popover.Body>
-          {loadingUserNotifications ? (
-            <Spinner />
+          // TODO revise
+          {notificationsToShow.length === 0 && shouldShowAll ? (
+            loadingUserNotifications ? (
+              <Spinner />
+            ) : (
+              <Box maxH={panelPropsAllDevices.maxH}>
+                <ScrollView>
+                  <Box>
+                    {notificationsToShow.map(
+                      (notification: UserNotification) => (
+                        <MessageBox
+                          key={notification.id}
+                          userNotification={notification}
+                          isRead={isNewNotification(
+                            notification.sentAt,
+                            lastTimeChecked
+                          )}
+                        />
+                      )
+                    )}
+                  </Box>
+                </ScrollView>
+                {!shouldShowAll && (
+                  <Button onPress={handleClick} variant={'outline'}>
+                    <Text fontSize="xs">
+                      {t('notification.panel.button.text')}
+                    </Text>
+                  </Button>
+                )}
+              </Box>
+            )
           ) : (
-            <Box maxH={panelPropsAllDevices.maxH}>
-              <ScrollView>
-                <Box>
-                  {notificationsToShow.map((notification: UserNotification) => (
-                    <MessageBox
-                      key={notification.id}
-                      userNotification={notification}
-                      isRead={isNewNotification(
-                        notification.sentAt,
-                        lastTimeChecked
-                      )}
-                    />
-                  ))}
-                </Box>
-              </ScrollView>
-              {!shouldShowAll && (
-                <Button onPress={handleClick} variant={'outline'}>
-                  <Text fontSize="xs">
-                    {t('notification.panel.button.text')}
-                  </Text>
-                </Button>
-              )}
-            </Box>
+            userNotifications.map((notification: UserNotification) => (
+              <MessageBox
+                key={notification.id}
+                userNotification={notification}
+                isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
+              />
+            ))
           )}
         </Popover.Body>
       </Popover.Content>
