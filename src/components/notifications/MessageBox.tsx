@@ -14,7 +14,8 @@ const MessageBox: React.FC<Props> = ({
   isStandalone,
   isRead
 }) => {
-  const { headline, body, notification, sentAt } = userNotification
+  const { sentAt } = userNotification
+  const { headline, body, messageType } = userNotification.message
 
   const boxProps = {
     mb: 2,
@@ -38,7 +39,7 @@ const MessageBox: React.FC<Props> = ({
       w={!isStandalone ? boxProps.fullWidth : boxProps.width}>
       <HStack alignItems="center" space={1}>
         <VStack>
-          <Box px="1.5">{getIconForMessageType(notification.messageType)}</Box>
+          <Box px="1.5">{getIconForMessageType(messageType)}</Box>
         </VStack>
         <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
           <Text bold fontSize="md">

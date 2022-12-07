@@ -6,12 +6,8 @@ const concreteNotificationQuery = gql`
   query ConcreteNotification($id: Int!) {
     concrete_notification(concreteNotificationId: $id) {
       id
-      headline
-      body
-      notification {
-        messageType
-      }
-      sentAt
+        message
+        sentAt
     }
   }
 `
@@ -37,7 +33,7 @@ export const useConcreteNotification = (id: number | null) => {
   const [concreteNotification, setConcreteNotification] = useState(null)
 
   useEffect(() => {
-    if (!loading && !error && isMessageValid(data?.concrete_notification)) {
+    if (!loading && !error && isMessageValid(data?.concrete_notification?.message)) {
       setConcreteNotification(data?.concrete_notification)
     }
   }, [loading, data, error])

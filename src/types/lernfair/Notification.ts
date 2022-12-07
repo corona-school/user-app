@@ -1,16 +1,5 @@
 export type UserNotification = {
   id: number
-  headline: string
-  body: string
-  sentAt: string
-  notification: Notification
-}
-
-export type Notification = {
-  messageType: string
-}
-
-type NewUserNotification = {
   message: Message
   sentAt: string
 }
@@ -18,7 +7,10 @@ type NewUserNotification = {
 type Message = {
   headline: string
   body: string
-  messageType: string
+  messageType: MessageType
+  navigateTo?: string
+  isUrlExternal?: boolean
+  error?: string
 }
 
 // TODO delete NotiType
