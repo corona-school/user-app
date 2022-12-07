@@ -11,7 +11,7 @@ import {
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
@@ -42,12 +42,23 @@ const Matching: React.FC<Props> = () => {
 
   const { data, loading } = useQuery(query)
 
+  const location = useLocation()
+  const { skipOnboarding } = (location.state || {}) as {
+    skipOnboarding: boolean
+  }
+
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler Matching'
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (skipOnboarding) {
+      setCurrentIndex(1)
+    }
+  }, [skipOnboarding, setCurrentIndex])
 
   const backArrow = useBreakpointValue({
     base: true,
