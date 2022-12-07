@@ -271,7 +271,7 @@ const SingleCourse: React.FC = () => {
   }, [course?.lectures, courseId, getMeetingLink])
 
   const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!, $meetingUrl: String!) {
+    mutation setMeetingUrl($courseId: Float!, $meetingUrl: String!) {
       subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
     }
   `)

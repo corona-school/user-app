@@ -220,7 +220,7 @@ const Dashboard: React.FC<Props> = () => {
   )
 
   const [joinMeeting, _joinMeeting] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!) {
+    mutation joinMeetingPupil($courseId: Float!) {
       subcourseJoinMeeting(subcourseId: $courseId)
     }
   `)
