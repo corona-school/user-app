@@ -41,6 +41,7 @@ const SingleCourse: React.FC = () => {
 
   const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const [isSignedInModal, setSignedInModal] = useState(false)
+  const [isSignedOutSureModal, setSignedOutSureModal] = useState(false)
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
@@ -406,7 +407,7 @@ const SingleCourse: React.FC = () => {
                 <VStack space={space['0.5']}>
                   <Button
                     onPress={() => {
-                      leaveSubcourse({ variables: { courseId: courseId } })
+                      setSignedOutSureModal(true)
                     }}
                     width={ButtonContainer}
                     marginBottom={space['0.5']}
@@ -537,6 +538,43 @@ const SingleCourse: React.FC = () => {
                     setSignedInModal(false)
                   }}>
                   Fenster schließen
+                </Button>
+              </Column>
+            </Row>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+      {/* loggout sure  */}
+      <Modal
+        isOpen={isSignedOutSureModal}
+        onClose={() => setSignedOutSureModal(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Kurseinformationen</Modal.Header>
+          <Modal.Body>
+            <Text marginBottom={space['1']}>
+              Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
+              kannst anschließend nicht mehr am Kurs teilnehmen.
+            </Text>
+            <Row space="3">
+              <Column>
+                <Button
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                    leaveSubcourse({ variables: { courseId: courseId } })
+                    setSignedOutModal(true)
+                  }}>
+                  Vom Kurs abmelden
+                </Button>
+              </Column>
+              <Column>
+                <Button
+                  height="100%"
+                  variant="outline"
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                  }}>
+                  Abbrechen
                 </Button>
               </Column>
             </Row>
