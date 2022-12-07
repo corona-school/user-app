@@ -381,12 +381,16 @@ const SingleCourse: React.FC = () => {
             />
           </Box>
           {userType === 'pupil' && course?.isParticipant && (
-            <VStack space={space['0.5']} py={space['1']}>
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
                 label={t('course.meeting.videotooltip.pupil')}>
                 <Button
+                  width={ButtonContainer}
                   onPress={getMeetingLink}
                   isDisabled={!showMeetingButton || _joinMeeting.loading}>
                   Videochat beitreten
@@ -400,12 +404,16 @@ const SingleCourse: React.FC = () => {
             </VStack>
           )}
           {userType === 'student' && course?.isInstructor && (
-            <VStack space={space['0.5']} py={space['1']}>
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
                 label={t('course.meeting.videotooltip.student')}>
                 <Button
+                  width={ButtonContainer}
                   onPress={() => setShowMeetingUrlModal(true)}
                   isDisabled={disableMeetingButton || _setMeetingUrl.loading}>
                   Videochat starten
