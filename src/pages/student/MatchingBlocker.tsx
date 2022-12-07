@@ -75,7 +75,7 @@ const MatchingBlocker: React.FC<Props> = () => {
         <Image
           maxWidth={sizes['imageHeaderWidth']}
           width="100%"
-          height="500px"
+          height="350px"
           borderRadius="15px"
           marginBottom={space['1']}
           source={{

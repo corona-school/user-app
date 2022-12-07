@@ -11,10 +11,11 @@ import {
   Image,
   useBreakpointValue
 } from 'native-base'
-import { useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
 import { LFLecture } from '../../types/lernfair/Course'
+import { getSubjectKey } from '../../types/lernfair/Subject'
 import Utility from '../../Utility'
 import AlertMessage from '../../widgets/AlertMessage'
 import AppointmentInfoRow from '../../widgets/AppointmentInfoRow'
@@ -71,6 +72,12 @@ const CoursePreview: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const convertTime = useCallback((_time: string) => {
+    let time = parseInt(_time)
+
+    return time >= 60 ? time / 60 + ' Stunden' : time + ' Minuten'
+  }, [])
+
   return (
     <VStack space={space['1']}>
       <Heading paddingTop={space['1']}>
@@ -95,7 +102,7 @@ const CoursePreview: React.FC<Props> = ({
             {subject && (
               <>
                 <IconTagList
-                  iconPath={`subjects/icon_${subject.name.toLowerCase()}.svg`}
+                  iconPath={`subjects/icon_${getSubjectKey(subject.name)}.svg`}
                   isDisabled
                   text={subject.name || ''}
                 />
@@ -126,10 +133,6 @@ const CoursePreview: React.FC<Props> = ({
           <Image src={pickedPhoto} h="100%" />
         </Box>
       </Row>
-
-      <Heading fontSize="md">
-        {t('course.CourseDate.Preview.shortDesc')}
-      </Heading>
 
       <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
       <Text paddingBottom={space['0.5']}>{description}</Text>
@@ -226,9 +229,7 @@ const CoursePreview: React.FC<Props> = ({
                 <Text bold minW="100px" fontSize="md">
                   {t('course.CourseDate.Preview.appointmentDuration')}
                 </Text>
-                <Text fontSize="md">{`${
-                  parseInt(lec.duration) / 60
-                } Stunden`}</Text>
+                <Text fontSize="md">{convertTime(lec.duration)}</Text>
               </Row>
             </VStack>
           </VStack>
