@@ -209,16 +209,19 @@ const Profile: React.FC<Props> = () => {
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <AlertMessage content={t('profile.successmessage')} />
         )}
+
         <VStack
           space={space['1']}
           width="100%"
           marginX="auto"
           maxWidth={ContainerWidth}>
-          <VStack paddingX={space['1.5']} space={space['1']}>
-            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={profileCompleteness} />
-            </ProfileSettingRow>
-          </VStack>
+          {profileCompleteness !== 100 && (
+            <VStack paddingX={space['1.5']} space={space['1']}>
+              <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                <UserProgress percent={profileCompleteness} />
+              </ProfileSettingRow>
+            </VStack>
+          )}
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem
