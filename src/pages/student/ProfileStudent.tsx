@@ -194,11 +194,13 @@ const ProfileStudent: React.FC<Props> = () => {
           maxWidth={ContainerWidth}
           marginX="auto"
           width="100%">
-          <VStack paddingX={space['1.5']} space={space['1']}>
-            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={profileCompleteness} />
-            </ProfileSettingRow>
-          </VStack>
+          {profileCompleteness !== 100 && (
+            <VStack paddingX={space['1.5']} space={space['1']}>
+              <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                <UserProgress percent={profileCompleteness} />
+              </ProfileSettingRow>
+            </VStack>
+          )}
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem

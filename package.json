@@ -1,6 +1,6 @@
 {
   "name": "lernfair",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "devDependencies": {
     "@apollo/client": "^3.6.9",
@@ -83,7 +83,7 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "npm run fetch-api && node scripts/start.js",
     "build": "npm run fetch-api && node scripts/build.js",
     "test": "node scripts/test.js",
     "serve": "node serve.js",

@@ -220,7 +220,7 @@ const Dashboard: React.FC<Props> = () => {
   )
 
   const [joinMeeting, _joinMeeting] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!) {
+    mutation joinMeetingPupil($courseId: Float!) {
       subcourseJoinMeeting(subcourseId: $courseId)
     }
   `)
@@ -466,7 +466,9 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching')
+                        navigate('/matching', {
+                          state: { skipOnboarding: true }
+                        })
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
