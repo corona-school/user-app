@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes
-} from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/pupil/Dashboard'
 import Profile from './pages/pupil/Profile'
 
@@ -12,20 +6,11 @@ import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
 import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
-import AllFaq from './pages/AllFaq'
-import QuickStart from './pages/QuickStart'
-import DigitaleTools from './pages/DigitaleTools'
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/change-setting/ChangeSettingState'
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
 import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass'
 import SingleCourse from './pages/SingleCourse'
-
-import RegistrationAccount from './pages/registration/RegistrationAccount'
-import RegistrationPersonal from './pages/registration/RegistrationPersonal'
-import AdditionalData from './pages/registration/AdditionalData'
-import { RegistrationProvider } from './hooks/useRegistration'
-import Explore from './pages/Explore'
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
@@ -45,10 +30,7 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 // Profile
 
 import CreateCourse from './pages/CreateCourse'
-import MatchingBlocker from './pages/student/MatchingBlocker'
-import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
-import ProfileHelper from './pages/student/ProfileStudent'
 import Matching from './pages/pupil/Matching'
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
@@ -57,37 +39,25 @@ import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
-import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
 import NoAcceptRegistration from './pages/NoAcceptRegistration'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailModal from './modals/VerifyEmailModal'
-import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
-import { Text } from 'react-native'
 import AsNavigationItem from './components/AsNavigationItem'
 import WithNavigation from './components/WithNavigation'
+import NewRegistration from './pages/Registration'
 
 export default function NavigatorLazy() {
   return (
     <Routes>
       {/* Public */}
 
-      <Route
-        path="/registration"
-        element={
-          <RegistrationProvider>
-            <Outlet />
-          </RegistrationProvider>
-        }>
-        <Route path="1" element={<RegistrationAccount />} />
-        <Route path="2" element={<RegistrationPersonal />} />
-        <Route path="3" element={<AdditionalData />} />
-      </Route>
+      <Route path="/registration" element={<NewRegistration />} />
 
       <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
 
@@ -324,7 +294,6 @@ export default function NavigatorLazy() {
       />
 
       <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/additional-data" element={<AdditionalData />} />
       <Route path="/email-not-verified" element={<VerifyEmailModal />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route
