@@ -11,7 +11,10 @@ import {
   Image,
   useBreakpointValue,
   ScrollView,
-  Link
+  Link,
+  ArrowBackIcon,
+  Container,
+  Pressable
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -225,8 +228,21 @@ const RegistrationAccount: React.FC<Props> = () => {
               uri: require('../../assets/images/globals/lf-bg.png')
             }}
           />
-          <Logo />
-          <Heading mt={space['1']}>{t('registration.new')}</Heading>
+          <Container
+            width="100%"
+            maxWidth="100%"
+            alignItems="center"
+            justifyContent="center">
+            <Box position="absolute" left="20px">
+              <Pressable onPress={() => navigate('/welcome')}>
+                <ArrowBackIcon color="primary.900" size="25px" />
+              </Pressable>
+            </Box>
+            <Box alignItems="center">
+              <Logo />
+              <Heading mt={space['1']}>{t('registration.new')}</Heading>
+            </Box>
+          </Container>
         </Box>
         <VStack
           flex="1"

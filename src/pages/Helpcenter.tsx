@@ -151,10 +151,7 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="hilfebereich">
-      <WithNavigation
-        showBack={backArrow}
-        headerTitle="Hilfebereich"
-        headerContent={<Hello />}>
+      <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
         <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
           <Box
             maxWidth={ContentContainerWidth}
