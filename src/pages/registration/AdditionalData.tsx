@@ -37,7 +37,7 @@ import { useUserType } from '../../hooks/useApollo'
 type Props = {}
 
 // GraqhQL pupil mutation
-const mutPupil = `mutation register(
+const mutPupil = `mutation registerPupil(
   $schooltype: SchoolType
   $state: State!
   $gradeAsInt: Int!
@@ -51,7 +51,7 @@ const mutPupil = `mutation register(
 `
 
 // GraphQL student mutation
-const mutStudent = `mutation register(
+const mutStudent = `mutation registerStudent(
   $subjects: [SubjectInput!]
 ) {
   meUpdate(update: {student:{subjects: $subjects}})

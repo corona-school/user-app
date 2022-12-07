@@ -28,7 +28,7 @@ import { REDIRECT_OPTIN } from '../../Utility'
 type Props = {}
 
 const mutPupil = gql`
-  mutation register(
+  mutation registerPupil(
     $firstname: String!
     $lastname: String!
     $email: String!
@@ -54,7 +54,7 @@ const mutPupil = gql`
   }
 `
 const mutStudent = gql`
-  mutation register(
+  mutation registerStudent(
     $firstname: String!
     $lastname: String!
     $email: String!
