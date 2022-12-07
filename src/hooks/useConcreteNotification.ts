@@ -6,8 +6,12 @@ const concreteNotificationQuery = gql`
   query ConcreteNotification($id: Int!) {
     concrete_notification(concreteNotificationId: $id) {
       id
-        message
-        sentAt
+      message {
+          headline
+          body
+          notification
+      }
+      sentAt
     }
   }
 `
@@ -15,7 +19,7 @@ const concreteNotificationQuery = gql`
 const isMessageValid = (message: UserNotification | null): boolean => {
   if (!message) return false
 
-  const requiredFields = ['id', 'headline', 'body', 'notification']
+  const requiredFields = ['headline', 'body', 'notification']
   const fields = Object.keys(message)
 
   for (const requiredField of requiredFields) {
