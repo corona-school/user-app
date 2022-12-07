@@ -374,6 +374,26 @@ const CreateCourse: React.FC<Props> = () => {
     return subcourse
   }, [courseClasses, joinAfterStart, maxParticipantCount])
 
+  const _convertLecture: (lecture: Lecture) => LFLecture = useCallback(
+    lecture => {
+      const l: LFLecture = {
+        start: new Date().toLocaleString(),
+        duration: parseInt(lecture.duration)
+      }
+      const dt = DateTime.fromISO(lecture.date)
+      const t = DateTime.fromISO(lecture.time)
+
+      const newDate = dt.set({
+        hour: t.hour,
+        minute: t.minute,
+        second: t.second
+      })
+      l.start = newDate.toISO()
+      return l
+    },
+    []
+  )
+
   const submitCourse = useCallback(async () => {
     setIsLoading(true)
 
@@ -428,6 +448,19 @@ const CreateCourse: React.FC<Props> = () => {
     }
 
     if (subRes.data.subcourseCreate && !subRes.errors) {
+      for await (const lecture of newLectures) {
+        const l = _convertLecture(lecture)
+        let res = await addLecture({
+          variables: {
+            courseId: subRes.data.subcourseCreate.id,
+            lecture: l
+          }
+        })
+        if (!res.data.lectureDelete && res.errors) {
+          errors.push('lectures')
+        }
+      }
+
       for await (const instructor of addedInstructors) {
         let res = await addCourseInstructor({
           variables: {
@@ -498,13 +531,16 @@ const CreateCourse: React.FC<Props> = () => {
 
     finishCourseCreation(errors)
   }, [
+    _convertLecture,
     _getCourseData,
     _getSubcourseData,
     addCourseInstructor,
+    addLecture,
     addedInstructors,
     createCourse,
     createSubcourse,
     finishCourseCreation,
+    newLectures,
     pickedPhoto,
     resetCourse,
     resetSubcourse,
@@ -571,16 +607,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     if (newLectures.length > 0 && newLectures[0].date) {
       for await (const lecture of newLectures) {
-        const l: LFLecture = {
-          start: new Date().toLocaleString(),
-          duration: parseInt(lecture.duration)
-        }
-        const dt = DateTime.fromISO(lecture.date)
-        const t = DateTime.fromISO(lecture.time)
-
-        dt.set({ hour: t.hour, minute: t.minute, second: t.second })
-        l.start = dt.toISO()
-
+        const l = _convertLecture(lecture)
         let res = await addLecture({
           variables: {
             courseId: prefillCourseId,
@@ -652,6 +679,7 @@ const CreateCourse: React.FC<Props> = () => {
     _getSubcourseData,
     updateSubcourse,
     prefillCourseId,
+    newLectures,
     pickedPhoto,
     setCourseImage,
     finishCourseCreation,
@@ -659,7 +687,7 @@ const CreateCourse: React.FC<Props> = () => {
     resetEditSubcourse,
     newInstructors,
     addCourseInstructor,
-    newLectures,
+    _convertLecture,
     addLecture
   ])
 
