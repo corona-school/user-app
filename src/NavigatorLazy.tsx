@@ -57,7 +57,7 @@ export default function NavigatorLazy() {
     <Routes>
       {/* Public */}
 
-      <Route path="/registration" element={<NewRegistration />} />
+      <Route path="/registration/:type" element={<NewRegistration />} />
 
       <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
 
