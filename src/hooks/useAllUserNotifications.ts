@@ -6,12 +6,11 @@ const userNotificationQuery = gql`
   query {
     me {
       userID
-      concreteNotifications {
+      concreteNotifications(take: 100) {
         id
         message {
           headline
           body
-          notification
         }
         sentAt
       }
