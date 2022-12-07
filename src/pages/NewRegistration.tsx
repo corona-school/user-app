@@ -25,7 +25,7 @@ import {
   useState
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import useModal from '../hooks/useModal'
 import IconTagList from '../widgets/IconTagList'
@@ -40,6 +40,7 @@ import VerifyEmailModal from '../modals/VerifyEmailModal'
 import { REDIRECT_OPTIN } from '../Utility'
 import { schooltypes } from '../types/lernfair/SchoolType'
 import { states } from '../types/lernfair/State'
+import BackButton from '../components/BackButton'
 
 type RegistrationContextType = {
   currentIndex: number
@@ -78,6 +79,8 @@ const mutPupil = gql`
     $password: String!
     $newsletter: Boolean!
     $state: State!
+    $grade: Int!
+    $schoolType: SchoolType!
   ) {
     meRegisterPupil(
       noEmail: true,
@@ -93,6 +96,7 @@ const mutPupil = gql`
       id
     }
     passwordCreate(password: $password)
+    meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType }})
     tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
   }
 `
@@ -102,7 +106,7 @@ const mutStudent = gql`
     $lastname: String!
     $email: String!
     $password: String!
-    $newsletter: Boolean
+    $newsletter: Boolean!
   ) {
     meRegisterStudent(
       noEmail: true,
@@ -125,6 +129,7 @@ const NewRegistration: React.FC = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
   const { setVariant, setShow, setContent } = useModal()
+  const navigate = useNavigate()
 
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [userType, setUserType] = useState<'pupil' | 'student'>('pupil')
@@ -133,9 +138,9 @@ const NewRegistration: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordRepeat, setPasswordRepeat] = useState<string>('')
-  const [schoolType, setSchoolType] = useState<string>('')
+  const [schoolType, setSchoolType] = useState<string>('grundschule')
   const [schoolClass, setSchoolClass] = useState<number>(1)
-  const [userState, setUserState] = useState<string>('')
+  const [userState, setUserState] = useState<string>('bw')
   const [newsletter, setNewsletter] = useState<boolean>(true)
 
   const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent)
@@ -160,14 +165,14 @@ const NewRegistration: React.FC = () => {
           password: string
           newsletter: boolean
           schoolType?: string
-          schoolClass?: number
+          grade?: number
           state?: string
         }
       }
 
       if (userType === 'pupil') {
         data.variables.schoolType = schoolType
-        data.variables.schoolClass = schoolClass
+        data.variables.grade = schoolClass
         data.variables.state = userState
       }
 
@@ -221,16 +226,6 @@ const NewRegistration: React.FC = () => {
         </VStack>
       )
     }
-
-    // if (!res.errors) {
-    //   if (res.data?.meRegisterPupil?.id) {
-    //     // navigate('/registration/3')
-    //     // show success message
-
-    //   }
-    // } else {
-    //   // show error message
-    // }
     setShow(true)
   }, [
     setVariant,
@@ -249,6 +244,22 @@ const NewRegistration: React.FC = () => {
     space,
     t
   ])
+
+  const goBack = useCallback(() => {
+    if (currentIndex === 0) {
+      navigate(-1)
+    } else {
+      if (userType === 'pupil') {
+        setCurrentIndex(currentIndex - 1)
+      } else {
+        if (currentIndex === 5) {
+          setCurrentIndex(1)
+        } else {
+          setCurrentIndex(currentIndex - 1)
+        }
+      }
+    }
+  }, [currentIndex, navigate, userType])
 
   return (
     <Flex alignItems="center" w="100%" h="100vh">
@@ -269,6 +280,9 @@ const NewRegistration: React.FC = () => {
             uri: require('../assets/images/globals/lf-bg.png')
           }}
         />
+        <Box position="absolute" left={space['1']} top={space['1']}>
+          <BackButton onPress={goBack} />
+        </Box>
         <Logo />
         <Heading mt={space['1']}>{t('registration.register')}</Heading>
       </Box>
@@ -418,14 +432,16 @@ const UserType: React.FC = () => {
           <IconTagList
             initial={userType === 'pupil'}
             variant="selection"
-            text="Schüler:in"
+            text={t('registration.pupil.label')}
             onPress={() => setUserType('pupil')}
+            iconPath={'ic_student.svg'}
           />
           <IconTagList
             initial={userType === 'student'}
             variant="selection"
             text="Helfer:in"
             onPress={() => setUserType('student')}
+            iconPath={'ic_tutor.svg'}
           />
         </TwoColGrid>
         <Button
@@ -526,6 +542,7 @@ const PersonalData: React.FC = () => {
         keyboardType="email-address"
         placeholder={t('email')}
         onChangeText={setEmail}
+        value={email}
       />
       {showEmailNotAvailable && (
         <AlertMessage content={t('registration.hint.email.unavailable')} />
@@ -533,13 +550,18 @@ const PersonalData: React.FC = () => {
       {showEmailValidate && (
         <AlertMessage content={t('registration.hint.email.invalid')} />
       )}
-      <PasswordInput placeholder={t('password')} onChangeText={setPassword} />
+      <PasswordInput
+        placeholder={t('password')}
+        onChangeText={setPassword}
+        value={password}
+      />
       {showPasswordLength && (
         <AlertMessage content={t('registration.hint.password.length')} />
       )}
       <PasswordInput
         placeholder={t('registration.password_repeat')}
         onChangeText={setPasswordRepeat}
+        value={passwordRepeat}
       />
 
       {showPasswordConfirmNoMatch && (
@@ -554,6 +576,8 @@ const SchoolClass: React.FC = () => {
   const { schoolClass, setSchoolClass, setCurrentIndex } =
     useContext(RegistrationContext)
   const { space } = useTheme()
+  const { t } = useTranslation()
+
   return (
     <VStack flex="1">
       <Heading>In welcher Klasse bist du?</Heading>
@@ -562,7 +586,10 @@ const SchoolClass: React.FC = () => {
           <Column mb={space['0.5']} mr={space['0.5']}>
             <IconTagList
               initial={schoolClass === i + 1}
-              text={`${i + 1}`}
+              textIcon={`${i + 1}`}
+              text={t('lernfair.schoolclass', {
+                class: i + 1
+              })}
               onPress={() => setSchoolClass(i + 1)}
             />
           </Column>
@@ -586,6 +613,7 @@ const SchoolType: React.FC = () => {
               initial={schoolType === type.key}
               text={type.label}
               onPress={() => setSchoolType(type.key)}
+              iconPath={`schooltypes/icon_${type.key}.svg`}
             />
           </Column>
         ))}
@@ -608,6 +636,7 @@ const State: React.FC = () => {
               initial={userState === state.key}
               text={state.label}
               onPress={() => setUserState(state.key)}
+              iconPath={`states/icon_${state.key}.svg`}
             />
           </Column>
         ))}
@@ -660,7 +689,7 @@ const Legal: React.FC<{ onRegister: () => any }> = ({ onRegister }) => {
       }
       onRegister()
     }
-  }, [isInputValid, onRegister])
+  }, [checks, isInputValid, onRegister, setNewsletter])
 
   return (
     <Checkbox.Group onChange={setChecks} value={checks}>
