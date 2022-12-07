@@ -10,6 +10,17 @@ export type Notification = {
   messageType: string
 }
 
+type NewUserNotification = {
+  message: Message
+  sentAt: string
+}
+
+type Message = {
+  headline: string
+  body: string
+  messageType: string
+}
+
 // TODO delete NotiType
 export enum NotiType {
   SURVEY = 'survey',

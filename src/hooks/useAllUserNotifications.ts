@@ -19,6 +19,15 @@ const userNotificationQuery = gql`
   }
 `
 
+const userNotificationsQuery = gql`
+  query {
+    me {
+      message
+      sentAt
+    }
+  }
+`
+
 const useAllUserNotifications = () => {
   const { data, loading, error } = useQuery(userNotificationQuery)
 
