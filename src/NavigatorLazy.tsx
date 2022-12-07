@@ -71,12 +71,14 @@ import IFrame from './components/IFrame'
 import { Text } from 'react-native'
 import AsNavigationItem from './components/AsNavigationItem'
 import WithNavigation from './components/WithNavigation'
+import NewRegistration from './pages/NewRegistration'
 
 export default function NavigatorLazy() {
   return (
     <Routes>
       {/* Public */}
 
+      <Route path="/new-registration" element={<NewRegistration />} />
       <Route
         path="/registration"
         element={

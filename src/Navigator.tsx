@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
@@ -13,12 +8,13 @@ import Login from './pages/Login'
 import Welcome from './pages/Welcome'
 import LoginToken from './pages/LoginToken'
 import { RequireAuth } from './User'
+import FullPageModal from './widgets/FullPageModal'
 
 // All other pages load lazy:
-const NavigatorLazy = lazy(() => import('./NavigatorLazy'));
+const NavigatorLazy = lazy(() => import('./NavigatorLazy'))
 
 // But as after login the user will visit the dashboard anyways, let's start loading it already
-import('./NavigatorLazy');
+import('./NavigatorLazy')
 
 export default function Navigator() {
   return (
@@ -29,16 +25,25 @@ export default function Navigator() {
 
         <Route path="/welcome" element={<Welcome />} />
 
-        <Route path="/" element={<RequireAuth>
-            <Navigate to="/start" />
-          </RequireAuth>}/>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Navigate to="/start" />
+            </RequireAuth>
+          }
+        />
 
-        <Route path="*" element={
-          <Suspense fallback={<CenterLoadingSpinner />}>
-            <NavigatorLazy />
-          </Suspense>} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<CenterLoadingSpinner />}>
+              <NavigatorLazy />
+            </Suspense>
+          }
+        />
       </Routes>
+      <FullPageModal />
     </BrowserRouter>
   )
 }
-

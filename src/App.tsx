@@ -21,7 +21,6 @@ function App() {
             <IssueReporter>
               <MatomoProvider value={matomo}>
                 <Navigator />
-                <FullPageModal />
               </MatomoProvider>
             </IssueReporter>
           </NativeBaseProvider>
