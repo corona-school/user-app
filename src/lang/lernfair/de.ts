@@ -85,6 +85,9 @@ const lernfair = {
     'subcourse-full': {
       coursetext: 'Dieser Kurs ist leider grade ausgebucht.'
     },
+    'grade-to-high': {
+      coursetext: 'Anmeldung derzeit nicht möglich.'
+    },
     proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {
       course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
