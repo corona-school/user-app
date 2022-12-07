@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import {
+  ArrowBackIcon,
   Box,
   Button,
+  Container,
   Flex,
   Heading,
   Image,
@@ -33,6 +35,7 @@ import { ClassRange } from '../../types/lernfair/SchoolClass'
 import Logo from '../../assets/icons/lernfair/lf-logo.svg'
 import useLernfair from '../../hooks/useLernfair'
 import { useUserType } from '../../hooks/useApollo'
+import { Pressable } from 'react-native'
 
 type Props = {}
 
@@ -518,6 +521,7 @@ const AdditionalDataError = () => {
   })
 
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   return (
     <Flex overflowY={'auto'} height="100vh">
@@ -538,10 +542,21 @@ const AdditionalDataError = () => {
               uri: require('../../assets/images/globals/lf-bg.png')
             }}
           />
-          <Logo />
-          <Heading mt={space['1']}>
-            {t('registration.student.classSelection.moreData')}
-          </Heading>
+          <Container
+            width="100%"
+            maxWidth="100%"
+            alignItems="center"
+            justifyContent="center">
+            <Box position="absolute" left="20px">
+              <Pressable onPress={() => navigate('/registration/1')}>
+                <ArrowBackIcon color="primary.900" size="25px" />
+              </Pressable>
+            </Box>
+            <Box alignItems="center">
+              <Logo />
+              <Heading mt={space['1']}>{t('registration.new')}</Heading>
+            </Box>
+          </Container>
         </Box>
         <VStack
           space={space['1']}

@@ -11,7 +11,10 @@ import {
   Image,
   useBreakpointValue,
   Row,
-  Text
+  Text,
+  Container,
+  Pressable,
+  ArrowBackIcon
 } from 'native-base'
 import { useCallback, useEffect, useMemo } from 'react'
 
@@ -224,8 +227,24 @@ const RegistrationPersonal: React.FC<Props> = () => {
             uri: require('../../assets/images/globals/lf-bg.png')
           }}
         />
-        <Logo />
-        <Heading mt={space['1']}>{t('registration.personal.title')}</Heading>
+
+        <Container
+          width="100%"
+          maxWidth="100%"
+          alignItems="center"
+          justifyContent="center">
+          <Box position="absolute" left="20px">
+            <Pressable onPress={() => navigate('/registration/1')}>
+              <ArrowBackIcon color="primary.900" size="25px" />
+            </Pressable>
+          </Box>
+          <Box alignItems="center">
+            <Logo />
+            <Heading mt={space['1']}>
+              {t('registration.personal.title')}
+            </Heading>
+          </Box>
+        </Container>
       </Box>
       <VStack
         space={space['1']}

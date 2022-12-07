@@ -68,6 +68,9 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner'
 import ResetPassword from './pages/ResetPassword'
 import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
+import { Text } from 'react-native'
+import AsNavigationItem from './components/AsNavigationItem'
+import WithNavigation from './components/WithNavigation'
 import NewRegistration from './pages/NewRegistration'
 
 export default function NavigatorLazy() {
@@ -329,19 +332,27 @@ export default function NavigatorLazy() {
       <Route
         path="/privacy"
         element={
-          <IFrame
-            title="datenschutz"
-            src="https://www.lern-fair.de/iframe/datenschutz"
-          />
+          <AsNavigationItem path="matching">
+            <WithNavigation showBack={true} headerTitle="Datenschutz">
+              <IFrame
+                title="datenschutz"
+                src="https://www.lern-fair.de/iframe/datenschutz"
+              />
+            </WithNavigation>
+          </AsNavigationItem>
         }
       />
       <Route
         path="/imprint"
         element={
-          <IFrame
-            title="impressum"
-            src="https://www.lern-fair.de/iframe/impressum"
-          />
+          <AsNavigationItem path="matching">
+            <WithNavigation showBack={true} headerTitle="Impressum">
+              <IFrame
+                title="impressum"
+                src="https://www.lern-fair.de/iframe/impressum"
+              />
+            </WithNavigation>
+          </AsNavigationItem>
         }
       />
 
