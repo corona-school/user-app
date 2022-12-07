@@ -388,7 +388,7 @@ const SingleCourse: React.FC = () => {
                 label={t('course.meeting.videotooltip.pupil')}>
                 <Button
                   onPress={getMeetingLink}
-                  isDisabled={showMeetingButton || _joinMeeting.loading}>
+                  isDisabled={!showMeetingButton || _joinMeeting.loading}>
                   Videochat beitreten
                 </Button>
               </Tooltip>
