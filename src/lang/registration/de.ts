@@ -39,6 +39,7 @@ const registration = {
     }
   },
   hint: {
+    name: 'Bitte gebe deinen vollen Namen an',
     password: {
       length: 'Das Passwort muss mindestens 6 Zeichen enthalten.',
       nomatch: 'Die Passwörter stimmen nicht überein'
@@ -136,7 +137,7 @@ const registration = {
       range3: '9. - 10. Klasse',
       range4: '11. - 13. Klasse',
       moreData: 'Weitere Daten',
-      tokenError: 'Token ungültig',
+      tokenError: 'Token ungültig'
     }
   }
 }
