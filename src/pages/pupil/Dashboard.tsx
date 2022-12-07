@@ -307,7 +307,7 @@ const Dashboard: React.FC<Props> = () => {
                         <Tooltip
                           isDisabled={!disableMeetingButton}
                           maxWidth={300}
-                          label={t('dashboard.appointmentcard.videotooltip')}>
+                          label={t('course.meeting.videotooltip.pupil')}>
                           <Button
                             width="100%"
                             marginTop={space['1']}
@@ -315,12 +315,12 @@ const Dashboard: React.FC<Props> = () => {
                             isDisabled={
                               disableMeetingButton || _joinMeeting.loading
                             }>
-                            {t('dashboard.appointmentcard.videobutton')}
+                            {t('course.meeting.videobutton.pupil')}
                           </Button>
                         </Tooltip>
                         {showMeetingNotStarted && (
                           <Text color="lightText">
-                            {t('dashboard.appointmentcard.videotext')}
+                            {t('course.meeting.videotext')}
                           </Text>
                         )}
                       </VStack>
@@ -348,6 +348,8 @@ const Dashboard: React.FC<Props> = () => {
                       64
                     )}
                   />
+
+                  <Text mt={space['1']}>{t('course.meeting.hint.pupil')}</Text>
                 </VStack>
               )}
 
@@ -454,9 +456,6 @@ const Dashboard: React.FC<Props> = () => {
                         )
                     )}
                   </Flex>
-                  {/* {(data?.me?.pupil?.canRequestMatch?.allowed ||
-                    data?.me?.pupil?.openMatchRequestCount > 0) && (
-                    <VStack> */}
                   {data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       width={ButtonContainer}
@@ -501,8 +500,6 @@ const Dashboard: React.FC<Props> = () => {
                         {t('dashboard.offers.removeRequest')}
                       </Button>
                     </VStack>
-                    //   )}
-                    // </VStack>
                   )}
                 </HSection>
               )}
