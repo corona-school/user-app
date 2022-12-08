@@ -4,7 +4,13 @@ The user app provides a user interface for pupils and helpers and talks with the
 
 To develop locally, install all dependencies with `npm ci`, then use `npm start` to start a development server on port 3000 that talks to the "dev backend" (our staging landscape). Unit tests can be run with `npm run test`. To test out the productive deployment build the app with `npm run build`, then run `PORT=3000 npm run serve` to start the server on the specified port.
 
+## Development Tools
+
 To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
+
+To open the Storybook with documentation about components, install optional dependencies with `npm run dev-install`, 
+ then storybook can be started with `npm run dev-storybook`. To add documentation, add [MDX Files](https://storybook.js.org/docs/react/api/mdx) into the source folder (named .stories.mdx!). In case a story shows a white screen, check the browser debug logs like in any other React app.
+
 
 ## Structure
 
