@@ -14,6 +14,7 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState
 } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -286,7 +287,9 @@ const Registration: React.FC = () => {
           <BackButton onPress={goBack} />
         </Box>
         <Logo />
-        <Heading mt={space['1']}>{t('registration.register')}</Heading>
+        <Heading mt={space['1']}>
+          {t(`registration.steps.${currentIndex}.title`)}
+        </Heading>
       </Box>
       <Flex
         flex="1"
