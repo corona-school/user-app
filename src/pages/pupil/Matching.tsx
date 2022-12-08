@@ -36,6 +36,7 @@ const Matching: React.FC<Props> = () => {
   const { space } = useTheme()
   const [showModal, setShowModal] = useState<boolean>(false)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { trackPageView, trackEvent } = useMatomo()
@@ -58,6 +59,8 @@ const Matching: React.FC<Props> = () => {
     if (skipOnboarding) {
       setCurrentIndex(1)
     }
+
+    setIsLoading(false)
   }, [skipOnboarding, setCurrentIndex])
 
   const backArrow = useBreakpointValue({
@@ -68,9 +71,12 @@ const Matching: React.FC<Props> = () => {
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation showBack={backArrow} headerContent={<Hello />}>
-          {loading && <CenterLoadingSpinner />}
+        <WithNavigation
+          showBack={backArrow}
+          headerContent={<Hello />}
+          isLoading={loading || isLoading}>
           {!loading &&
+            !isLoading &&
             ((data?.me?.pupil.openMatchRequestCount === 0 && (
               <>
                 {currentIndex === 0 && (
