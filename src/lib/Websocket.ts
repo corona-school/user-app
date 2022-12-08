@@ -12,12 +12,9 @@ class BrowserWebsocketClient implements WebSocketClient {
     this.socket = new WebSocket(url)
     this.socket.onopen = () => {
       this.isConnected = true
-
-      console.log('websocket opened')
     }
 
     this.socket.onclose = () => {
-      console.log('websocket closed')
       this.isConnected = false
     }
   }
@@ -27,7 +24,6 @@ class BrowserWebsocketClient implements WebSocketClient {
       // Throw error
       throw new Error('No connection established.')
     }
-    console.log('new message')
     this.socket.addEventListener('message', callback)
   }
 

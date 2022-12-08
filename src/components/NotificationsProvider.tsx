@@ -10,8 +10,7 @@ export const NotificationsProvider: FC<{ children: ReactNode }> = ({
 }) => {
   const concreteNotificationId = useIncomingWSConcreteNotificationId()
   const message = useConcreteNotification(concreteNotificationId)
-  console.log('Provider id', concreteNotificationId)
-  console.log('Provider message', message)
+
   return (
     <NotificationsContext.Provider value={message}>
       {children}

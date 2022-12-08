@@ -6,7 +6,6 @@ export const showInAppMessage = (
   notification: UserNotification,
   isMobile: boolean
 ) => {
-  console.log('Toast', notification)
   return Toast.show({
     placement: isMobile ? 'top' : 'top-right',
     render: () => {
