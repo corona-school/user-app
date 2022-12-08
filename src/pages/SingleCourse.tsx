@@ -389,7 +389,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('course.meeting.videotooltip.pupil')}>
+                label={t('course.meeting.hint.pupil')}>
                 <Button
                   width={ButtonContainer}
                   onPress={getMeetingLink}
@@ -400,8 +400,6 @@ const SingleCourse: React.FC = () => {
               {showMeetingNotStarted && (
                 <AlertMessage content="Der Videochat wurde noch nicht gestartet." />
               )}
-
-              <Text>{t('course.meeting.hint.pupil')}</Text>
             </VStack>
           )}
           {userType === 'student' && course?.isInstructor && (
@@ -412,7 +410,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('course.meeting.videotooltip.student')}>
+                label={t('course.meeting.hint.student')}>
                 <Button
                   width={ButtonContainer}
                   onPress={() => setShowMeetingUrlModal(true)}
@@ -420,7 +418,6 @@ const SingleCourse: React.FC = () => {
                   Videochat starten
                 </Button>
               </Tooltip>
-              <Text>{t('course.meeting.hint.student')}</Text>
             </VStack>
           )}
           {userType === 'pupil' && (
