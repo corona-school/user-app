@@ -62,7 +62,7 @@ export const RegistrationContext = createContext<RegistrationContextType>(
 )
 
 const mutPupil = gql`
-  mutation register(
+  mutation registerPupil(
     $firstname: String!
     $lastname: String!
     $email: String!
@@ -91,7 +91,7 @@ const mutPupil = gql`
   }
 `
 const mutStudent = gql`
-  mutation register(
+  mutation registerStudent(
     $firstname: String!
     $lastname: String!
     $email: String!
