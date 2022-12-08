@@ -180,11 +180,11 @@ const SingleCourse: React.FC = () => {
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
 
-  useEffect(() => {
-    if (_leaveSubcourse?.data?.subcourseLeave) {
-      setSignedOutModal(true)
-    }
-  }, [_leaveSubcourse?.data?.subcourseLeave])
+  // useEffect(() => {
+  //   if (_leaveSubcourse?.data?.subcourseLeave) {
+  //     setSignedOutModal(true)
+  //   }
+  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -629,25 +629,26 @@ const SingleCourse: React.FC = () => {
               Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
               kannst anschließend nicht mehr am Kurs teilnehmen.
             </Text>
-            <Row space="3">
+            <Row space="3" justifyContent="flex-end">
+              <Column>
+                <Button
+                  height="100%"
+                  colorScheme="blueGray"
+                  variant="ghost"
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                  }}>
+                  Abbrechen
+                </Button>
+              </Column>
               <Column>
                 <Button
                   onPress={() => {
                     setSignedOutSureModal(false)
                     leaveSubcourse({ variables: { courseId: courseId } })
-                    setSignedOutModal(true)
+                    setSignedOutModal(false)
                   }}>
                   Vom Kurs abmelden
-                </Button>
-              </Column>
-              <Column>
-                <Button
-                  height="100%"
-                  variant="outline"
-                  onPress={() => {
-                    setSignedOutSureModal(false)
-                  }}>
-                  Abbrechen
                 </Button>
               </Column>
             </Row>
