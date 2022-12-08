@@ -31,6 +31,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import CSSWrapper from '../../components/CSSWrapper'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -57,7 +58,7 @@ const Profile: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const { rootPath } = useLernfair()
   const [firstName, setFirstName] = useState<string>()
   const [lastName, setLastName] = useState<string>()
 
@@ -170,6 +171,7 @@ const Profile: React.FC<Props> = () => {
       <WithNavigation
         isLoading={loading}
         showBack
+        onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex

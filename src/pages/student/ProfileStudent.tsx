@@ -29,6 +29,7 @@ import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CSSWrapper from '../../components/CSSWrapper'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -58,7 +59,7 @@ const ProfileStudent: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const { rootPath } = useLernfair()
   const [firstName, setFirstName] = useState<string>()
   const [lastName, setLastName] = useState<string>()
 
@@ -160,12 +161,12 @@ const ProfileStudent: React.FC<Props> = () => {
       window.scrollTo({ top: 0 })
     }
   }, [showSuccessfulChangeAlert, userSettingChanged])
-
   return (
     <>
       <WithNavigation
         showBack
         isLoading={loading}
+        onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex

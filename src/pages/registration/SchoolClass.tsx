@@ -12,7 +12,7 @@ const SchoolClass: React.FC = () => {
 
   return (
     <VStack flex="1">
-      <Heading>In welcher Klasse bist du?</Heading>
+      <Heading>{t(`registration.steps.2.subtitle`)}</Heading>
       <Row flexWrap="wrap" w="100%" mt={space['1']}>
         {new Array(13).fill(0).map((_, i) => (
           <Column mb={space['0.5']} mr={space['0.5']}>

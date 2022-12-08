@@ -13,10 +13,12 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
+  useMemo,
   useState
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../assets/icons/lernfair/lf-logo.svg'
 import useModal from '../hooks/useModal'
 import VerifyEmailModal from '../modals/VerifyEmailModal'
@@ -119,6 +121,8 @@ const Registration: React.FC = () => {
   const { setVariant, setShow, setContent } = useModal()
   const navigate = useNavigate()
 
+  const location = useLocation()
+
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [userType, setUserType] = useState<'pupil' | 'student'>('pupil')
   const [firstname, setFirstname] = useState<string>('')
@@ -132,6 +136,17 @@ const Registration: React.FC = () => {
   const [newsletter, setNewsletter] = useState<boolean>(true)
 
   const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent)
+
+  useEffect(() => {
+    if (location?.pathname === '/registration/pupil') {
+      setUserType('pupil')
+      setCurrentIndex(1)
+    } else if (location?.pathname === '/registration/student') {
+      setUserType('student')
+      setCurrentIndex(1)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const attemptRegister = useCallback(async () => {
     setVariant('dark')
@@ -272,7 +287,9 @@ const Registration: React.FC = () => {
           <BackButton onPress={goBack} />
         </Box>
         <Logo />
-        <Heading mt={space['1']}>{t('registration.register')}</Heading>
+        <Heading mt={space['1']}>
+          {t(`registration.steps.${currentIndex}.title`)}
+        </Heading>
       </Box>
       <Flex
         flex="1"

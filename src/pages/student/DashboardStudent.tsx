@@ -337,7 +337,7 @@ const DashboardStudent: React.FC<Props> = () => {
                           <Tooltip
                             isDisabled={!disableMeetingButton}
                             maxWidth={300}
-                            label={t('course.meeting.videotooltip.student')}>
+                            label={t('course.meeting.hint.student')}>
                             <Button
                               width="100%"
                               marginTop={space['1']}
@@ -376,9 +376,6 @@ const DashboardStudent: React.FC<Props> = () => {
                       title={nextAppointment[1].course?.name || ''}
                       description={nextAppointment[1].course?.description || ''}
                     />
-                    <Text mt={space['1']}>
-                      {t('course.meeting.hint.student')}
-                    </Text>
                   </VStack>
                 )}
               <HSection

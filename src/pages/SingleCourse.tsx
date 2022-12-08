@@ -180,11 +180,11 @@ const SingleCourse: React.FC = () => {
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
 
-  useEffect(() => {
-    if (_leaveSubcourse?.data?.subcourseLeave) {
-      setSignedOutModal(true)
-    }
-  }, [_leaveSubcourse?.data?.subcourseLeave])
+  // useEffect(() => {
+  //   if (_leaveSubcourse?.data?.subcourseLeave) {
+  //     setSignedOutModal(true)
+  //   }
+  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -389,7 +389,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('course.meeting.videotooltip.pupil')}>
+                label={t('course.meeting.hint.pupil')}>
                 <Button
                   width={ButtonContainer}
                   onPress={getMeetingLink}
@@ -400,8 +400,6 @@ const SingleCourse: React.FC = () => {
               {showMeetingNotStarted && (
                 <AlertMessage content="Der Videochat wurde noch nicht gestartet." />
               )}
-
-              <Text>{t('course.meeting.hint.pupil')}</Text>
             </VStack>
           )}
           {userType === 'student' && course?.isInstructor && (
@@ -412,7 +410,7 @@ const SingleCourse: React.FC = () => {
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('course.meeting.videotooltip.student')}>
+                label={t('course.meeting.hint.student')}>
                 <Button
                   width={ButtonContainer}
                   onPress={() => setShowMeetingUrlModal(true)}
@@ -420,7 +418,6 @@ const SingleCourse: React.FC = () => {
                   Videochat starten
                 </Button>
               </Tooltip>
-              <Text>{t('course.meeting.hint.student')}</Text>
             </VStack>
           )}
           {userType === 'pupil' && (
@@ -629,25 +626,26 @@ const SingleCourse: React.FC = () => {
               Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
               kannst anschließend nicht mehr am Kurs teilnehmen.
             </Text>
-            <Row space="3">
+            <Row space="3" justifyContent="flex-end">
+              <Column>
+                <Button
+                  height="100%"
+                  colorScheme="blueGray"
+                  variant="ghost"
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                  }}>
+                  Abbrechen
+                </Button>
+              </Column>
               <Column>
                 <Button
                   onPress={() => {
                     setSignedOutSureModal(false)
                     leaveSubcourse({ variables: { courseId: courseId } })
-                    setSignedOutModal(true)
+                    setSignedOutModal(false)
                   }}>
                   Vom Kurs abmelden
-                </Button>
-              </Column>
-              <Column>
-                <Button
-                  height="100%"
-                  variant="outline"
-                  onPress={() => {
-                    setSignedOutSureModal(false)
-                  }}>
-                  Abbrechen
                 </Button>
               </Column>
             </Row>

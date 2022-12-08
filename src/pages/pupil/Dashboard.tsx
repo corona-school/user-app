@@ -307,7 +307,7 @@ const Dashboard: React.FC<Props> = () => {
                         <Tooltip
                           isDisabled={!disableMeetingButton}
                           maxWidth={300}
-                          label={t('course.meeting.videotooltip.pupil')}>
+                          label={t('course.meeting.hint.pupil')}>
                           <Button
                             width="100%"
                             marginTop={space['1']}
@@ -348,8 +348,6 @@ const Dashboard: React.FC<Props> = () => {
                       64
                     )}
                   />
-
-                  <Text mt={space['1']}>{t('course.meeting.hint.pupil')}</Text>
                 </VStack>
               )}
 
