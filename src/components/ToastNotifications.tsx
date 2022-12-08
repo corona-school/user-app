@@ -12,7 +12,6 @@ export const ToastNotifications: FC = () => {
   })
 
   useEffect(() => {
-    console.log('message for toast', message)
     if (message !== null) showInAppMessage(message, isMobile)
   }, [message, isMobile])
 
