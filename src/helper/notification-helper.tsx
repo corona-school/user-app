@@ -1,8 +1,4 @@
-import {
-  NotiType,
-  MessageType,
-  UserNotification
-} from '../types/lernfair/Notification'
+import { MessageType, UserNotification } from '../types/lernfair/Notification'
 import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
 import MessageIcon from '../assets/icons/lernfair/notifications/lf_message.svg'
 import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg'
@@ -14,7 +10,6 @@ import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
 
-// TODO delete NotiType Typen
 function getIconForMessageType(messageType: string): ReactElement {
   switch (messageType) {
     case MessageType.MESSAGE:
@@ -29,27 +24,6 @@ function getIconForMessageType(messageType: string): ReactElement {
       return <SurveyIcon />
     case MessageType.NEWS:
       return <NewsIcon />
-
-    case NotiType.TYP1:
-      return <MessageIcon />
-    case NotiType.TYP2:
-      return <MatchIcon />
-    case NotiType.TYP3:
-      return <CourseIcon />
-    case NotiType.TYP4:
-      return <AppointmentIcon />
-    case NotiType.TYP5:
-      return <SurveyIcon />
-    case NotiType.TYP6:
-      return <BellIcon />
-    case NotiType.TYP7:
-      return <NewsIcon />
-    case NotiType.TYP8:
-      return <BellIcon />
-    case NotiType.TYP9:
-      return <BellIcon />
-    case NotiType.TYP10:
-      return <BellIcon />
     default:
       return <MatchIcon />
   }
@@ -107,12 +81,14 @@ const isNewNotification = (sentAt: string, lastOpen: string) => {
   }
 }
 
-const getAllNewNotifications = (
+const getNewNotifications = (
   userNotifications: UserNotification[],
   lastTimeChecked: string
 ) => {
   const newNotifications = userNotifications.filter(
-    notification => notification.sentAt > lastTimeChecked
+    notification =>
+      new Date(notification.sentAt).getTime() >
+      new Date(lastTimeChecked).getTime()
   )
   return newNotifications
 }
@@ -121,16 +97,15 @@ const getAllNewUserNotificationsButMinimumFiveNotifications = (
   userNotifications: UserNotification[],
   lastTimeChecked: string
 ) => {
-  const userNotificationsToRender = getAllNewNotifications(
+  const userNotificationsToRender = getNewNotifications(
     userNotifications,
     lastTimeChecked
   )
 
-  if (userNotificationsToRender.length > 5) {
-    for (let i = userNotificationsToRender.length; i < 5; i++) {
-      userNotificationsToRender.push(userNotifications[i])
-    }
+  for (let i = userNotificationsToRender.length; i < 5; i++) {
+    userNotificationsToRender.push(userNotifications[i])
   }
+
   return userNotificationsToRender
 }
 
@@ -138,6 +113,6 @@ export {
   getIconForMessageType,
   getTimeText,
   isNewNotification,
-  getAllNewNotifications,
+  getNewNotifications,
   getAllNewUserNotificationsButMinimumFiveNotifications
 }
