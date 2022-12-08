@@ -107,20 +107,30 @@ const isNewNotification = (sentAt: string, lastOpen: string) => {
   }
 }
 
+const getAllNewNotifications = (
+  userNotifications: UserNotification[],
+  lastTimeChecked: string
+) => {
+  const newNotifications = userNotifications.filter(
+    notification => notification.sentAt > lastTimeChecked
+  )
+  return newNotifications
+}
+
 const getAllNewUserNotificationsButMinimumFiveNotifications = (
   userNotifications: UserNotification[],
   lastTimeChecked: string
 ) => {
-  const userNotificationsToRender = userNotifications.filter(
-    notification => notification.sentAt > lastTimeChecked
+  const userNotificationsToRender = getAllNewNotifications(
+    userNotifications,
+    lastTimeChecked
   )
-  // TODO revise
+
   if (userNotificationsToRender.length > 5) {
     for (let i = userNotificationsToRender.length; i < 5; i++) {
       userNotificationsToRender.push(userNotifications[i])
     }
   }
-
   return userNotificationsToRender
 }
 
@@ -128,5 +138,6 @@ export {
   getIconForMessageType,
   getTimeText,
   isNewNotification,
+  getAllNewNotifications,
   getAllNewUserNotificationsButMinimumFiveNotifications
 }

@@ -8,6 +8,7 @@ const notification = {
     beforeMinutes: '{{minutes}} Min'
   },
   panel: {
+    noNotifications: 'Keine Nachrichten vorhanden.',
     button: {
       text: 'Ältere Benachrichtigungen anzeigen'
     }

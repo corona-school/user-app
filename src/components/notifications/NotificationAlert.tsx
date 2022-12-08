@@ -13,6 +13,7 @@ import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedN
 import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
 import NotificationPanel from './NotificationPanel'
 import { NotificationsContext } from '../NotificationsProvider'
+import { getAllNewNotifications } from '../../helper/notification-helper'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
@@ -40,9 +41,13 @@ const NotificationAlert: React.FC = () => {
   }
 
   useEffect(() => {
-    const unreadNotifications = userNotifications.filter(
-      notification => notification.sentAt > lastTimeChecked
+    console.log('last time checked', lastTimeChecked)
+    const unreadNotifications = getAllNewNotifications(
+      userNotifications,
+      lastTimeChecked
     )
+
+    console.log('unread messages', unreadNotifications)
     setCount(unreadNotifications.length)
   }, [message])
 

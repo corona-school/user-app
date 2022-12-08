@@ -7,17 +7,17 @@ export type WebSocketClient = {
 class BrowserWebsocketClient implements WebSocketClient {
   private readonly socket: WebSocket
   public isConnected: boolean = false
-  
+
   constructor(url: string) {
     this.socket = new WebSocket(url)
     this.socket.onopen = () => {
       this.isConnected = true
 
-      console.log("websocket opened");
-    };
+      console.log('websocket opened')
+    }
 
     this.socket.onclose = () => {
-      console.log("websocket closed");
+      console.log('websocket closed')
       this.isConnected = false
     }
   }
@@ -27,9 +27,10 @@ class BrowserWebsocketClient implements WebSocketClient {
       // Throw error
       throw new Error('No connection established.')
     }
+    console.log('new message')
     this.socket.addEventListener('message', callback)
   }
-  
+
   close() {
     this.socket.close()
   }
