@@ -12,6 +12,7 @@ export const parameters = {
   },
 }
 
+// TODO: Unfortunately the following does not work for MDX files?
 export const decorators = [
   (Story) => (
     <NativeBaseProvider theme={Theme}>
