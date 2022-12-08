@@ -50,14 +50,17 @@ import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
 import AsNavigationItem from './components/AsNavigationItem'
 import WithNavigation from './components/WithNavigation'
-import NewRegistration from './pages/Registration'
+import Registration from './pages/Registration'
 
 export default function NavigatorLazy() {
   return (
     <Routes>
       {/* Public */}
 
-      <Route path="/registration/:type" element={<NewRegistration />} />
+      <Route path="/registration/" element={<Registration />} />
+      <Route path="/registration" element={<Outlet />}>
+        <Route path="*" element={<Registration />} />
+      </Route>
 
       <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
 
