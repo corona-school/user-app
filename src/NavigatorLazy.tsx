@@ -48,16 +48,18 @@ import VerifyEmailModal from './modals/VerifyEmailModal'
 import ResetPassword from './pages/ResetPassword'
 import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
-import AsNavigationItem from './components/AsNavigationItem'
 import WithNavigation from './components/WithNavigation'
-import NewRegistration from './pages/Registration'
+import Registration from './pages/Registration'
 
 export default function NavigatorLazy() {
   return (
     <Routes>
       {/* Public */}
 
-      <Route path="/registration/:type" element={<NewRegistration />} />
+      <Route path="/registration/" element={<Registration />} />
+      <Route path="/registration" element={<Outlet />}>
+        <Route path="*" element={<Registration />} />
+      </Route>
 
       <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
 
@@ -297,29 +299,39 @@ export default function NavigatorLazy() {
       <Route path="/email-not-verified" element={<VerifyEmailModal />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route
-        path="/privacy"
+        path="/datenschutz"
         element={
-          <AsNavigationItem path="matching">
-            <WithNavigation showBack={true} headerTitle="Datenschutz">
-              <IFrame
-                title="datenschutz"
-                src="https://www.lern-fair.de/iframe/datenschutz"
-              />
-            </WithNavigation>
-          </AsNavigationItem>
+          <WithNavigation showBack headerTitle="Datenschutz" hideMenu>
+            <IFrame
+              title="datenschutz"
+              src="https://www.lern-fair.de/iframe/datenschutz"
+            />
+          </WithNavigation>
         }
       />
       <Route
-        path="/imprint"
+        path="/selbstverpflichtungserklaerung"
         element={
-          <AsNavigationItem path="matching">
-            <WithNavigation showBack={true} headerTitle="Impressum">
-              <IFrame
-                title="impressum"
-                src="https://www.lern-fair.de/iframe/impressum"
-              />
-            </WithNavigation>
-          </AsNavigationItem>
+          <WithNavigation
+            showBack
+            headerTitle="Selbstverpflichtungserklärung"
+            hideMenu>
+            <IFrame
+              title="selbstverpflichtungserklärung"
+              src="https://lern-fair.de/iframe/straftaten"
+            />
+          </WithNavigation>
+        }
+      />
+      <Route
+        path="/impressum"
+        element={
+          <WithNavigation showBack headerTitle="Impressum" hideMenu>
+            <IFrame
+              title="impressum"
+              src="https://www.lern-fair.de/iframe/impressum"
+            />
+          </WithNavigation>
         }
       />
 

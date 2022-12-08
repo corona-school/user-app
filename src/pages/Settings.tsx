@@ -158,13 +158,13 @@ const Settings: React.FC = () => {
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.imprint')}
-                onPress={() => navigate('/imprint')}
+                onPress={() => navigate('/impressum')}
               />
             </Column>
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.datapolicy')}
-                onPress={() => navigate('/privacy')}
+                onPress={() => navigate('/datenschutz')}
               />
             </Column>
           </ProfileSettingRow>
