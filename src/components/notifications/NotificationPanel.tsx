@@ -1,22 +1,14 @@
-import {
-  Box,
-  Button,
-  Popover,
-  ScrollView,
-  Spinner,
-  Text,
-  useBreakpointValue
-} from 'native-base'
+import { Box, Popover, Spinner, useBreakpointValue } from 'native-base'
 import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
-import MessageBox from './MessageBox'
-import { useTranslation } from 'react-i18next'
-import {
-  getAllNewUserNotificationsButMinimumFiveNotifications,
-  isNewNotification
-} from '../../helper/notification-helper'
+import { getAllNewUserNotificationsButMinimumFiveNotifications } from '../../helper/notification-helper'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
+import {
+  AllNotifications,
+  NewNotifications,
+  NoNotifications
+} from './PanelContent'
 
 type Props = {
   userNotifications: UserNotification[]
@@ -33,7 +25,6 @@ const NotificationPanel: React.FC<Props> = ({
   >([])
 
   const { lastTimeChecked } = useLastTimeCheckedNotifications()
-  const { t } = useTranslation()
 
   const panelMarginLeft = useBreakpointValue({
     base: 3,
@@ -80,45 +71,23 @@ const NotificationPanel: React.FC<Props> = ({
           </Box>
         </Popover.Header>
         <Popover.Body>
-          {notificationsToShow.length === 0 && shouldShowAll ? (
-            loadingUserNotifications ? (
-              <Spinner />
-            ) : (
-              <Box maxH={panelPropsAllDevices.maxH}>
-                <ScrollView>
-                  <Box>
-                    {notificationsToShow.map(
-                      (notification: UserNotification) => (
-                        <MessageBox
-                          key={notification.id}
-                          userNotification={notification}
-                          isRead={isNewNotification(
-                            notification.sentAt,
-                            lastTimeChecked
-                          )}
-                        />
-                      )
-                    )}
-                  </Box>
-                </ScrollView>
-                {!shouldShowAll && (
-                  <Button onPress={handleClick} variant={'outline'}>
-                    <Text fontSize="xs">
-                      {t('notification.panel.button.text')}
-                    </Text>
-                  </Button>
-                )}
-              </Box>
-            )
-          ) : (
-            userNotifications.map((notification: UserNotification) => (
-              <MessageBox
-                key={notification.id}
-                userNotification={notification}
-                isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
+          {loadingUserNotifications && <Spinner />}
+          <Box maxH={panelPropsAllDevices.maxH}>
+            {!shouldShowAll && (
+              <NewNotifications
+                notificationsToShow={notificationsToShow}
+                lastTimeChecked={lastTimeChecked}
+                handleClick={handleClick}
               />
-            ))
-          )}
+            )}
+            {shouldShowAll && (
+              <AllNotifications
+                userNotifications={notificationsToShow}
+                lastTimeChecked={lastTimeChecked}
+              />
+            )}
+            {userNotifications.length === 0 && <NoNotifications />}
+          </Box>
         </Popover.Body>
       </Popover.Content>
     </Box>
