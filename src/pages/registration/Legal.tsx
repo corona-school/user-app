@@ -11,7 +11,8 @@ import {
   VStack
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
-import { Pressable } from 'react-native'
+import { Pressable, useWindowDimensions } from 'react-native'
+import { useNavigate } from 'react-router-dom'
 import AlertMessage from '../../widgets/AlertMessage'
 import { RegistrationContext } from '../Registration'
 
@@ -20,6 +21,7 @@ type Props = {
 }
 
 const Legal: React.FC<Props> = ({ onRegister }) => {
+  const navigate = useNavigate()
   const { space } = useTheme()
   const { userType, setNewsletter } = useContext(RegistrationContext)
   const [checks, setChecks] = useState<string[]>([])
@@ -67,31 +69,26 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
   return (
     <Checkbox.Group onChange={setChecks} value={checks}>
       <VStack>
-        <Row>
-          <Checkbox value={'dsgvo'} alignItems="flex-start" mr={space['0.5']} />
+        <Checkbox value={'dsgvo'} alignItems="flex-start">
           <Text>
-            Ich habe die <Link>Datenschutzbestimmungen</Link> zur Kenntnis
-            genommen und bin damit einverstanden, dass der Lern-Fair e.V. meine
-            persönlichen Daten entsprechend des Zwecks, Umfangs und der Dauer
-            wie in der Datenschutzerklärung angegeben, verarbeitet und
-            gespeichert werden. Mir ist insbesondere bewusst, dass die von mir
-            angegebenen Daten zur Durchführung der Angebote an zugeteilte
-            Nutzer:innen weitergegeben werden und deren Mailadressen ggf. von
-            Anbietern außerhalb der EU zur Verfügung gestellt werden, die die
-            Einhaltung des europäischen Datenschutzniveaus nicht gewährleisten
-            können. <Required />
+            Ich habe die{' '}
+            <Link onPress={() => window.open('/datenschutz', '_blank')}>
+              Datenschutzbestimmungen
+            </Link>{' '}
+            zur Kenntnis genommen und bin damit einverstanden, dass der
+            Lern-Fair e.V. meine persönlichen Daten entsprechend des Zwecks,
+            Umfangs und der Dauer wie in der Datenschutzerklärung angegeben,
+            verarbeitet und gespeichert werden. Mir ist insbesondere bewusst,
+            dass die von mir angegebenen Daten zur Durchführung der Angebote an
+            zugeteilte Nutzer:innen weitergegeben werden und deren Mailadressen
+            ggf. von Anbietern außerhalb der EU zur Verfügung gestellt werden,
+            die die Einhaltung des europäischen Datenschutzniveaus nicht
+            gewährleisten können. <Required />
           </Text>
-        </Row>
+        </Checkbox>
 
-        {errors['dsgvo'] && (
-          <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />
-        )}
-
-        <Row alignItems="flex-start" mt={space['1']}>
-          <Checkbox value="usa" alignItems="flex-start" mr={space['0.5']} />
-          <Accordion
-            title="Datenverarbeitung durch Auftragsverarbeiter in den USA"
-            required>
+        <Row alignItems="flex-start" mt={space['1']} ml="28px">
+          <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA">
             <Text>
               Ich stimme ferner ausdrücklich der Verarbeitung meiner
               personenbezogenen Daten über unsere in den USA sitzenden
@@ -105,8 +102,8 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
           </Accordion>
         </Row>
 
-        {errors['usa'] && (
-          <AlertMessage content="Bitte bestätige die Datenverarbeitung durch Auftragsverarbeiter in den USA." />
+        {errors['dsgvo'] && (
+          <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />
         )}
 
         {userType === 'student' && (
@@ -117,10 +114,15 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
               mt={space['1']}>
               <Text>
                 Ich versichere, nicht wegen einer in{' '}
-                <Link>§ 72a Abs. 1 Satz 1 SGB VIII</Link> bezeichneten Straftat
-                rechtskräftig verurteilt worden zu sein und dass derzeit kein
-                Ermittlungsverfahren wegen einer solchen Straftat gegen mich
-                läuft. <Required />
+                <Link
+                  onPress={() =>
+                    window.open('/selbstverpflichtungserklaerung', '_blank')
+                  }>
+                  § 72a Abs. 1 Satz 1 SGB VIII
+                </Link>
+                 bezeichneten Straftat rechtskräftig verurteilt worden zu sein
+                und dass derzeit kein Ermittlungsverfahren wegen einer solchen
+                Straftat gegen mich läuft. <Required />
               </Text>
             </Checkbox>
             {errors['straftaten'] && (
@@ -129,17 +131,16 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
           </>
         )}
 
-        <Row mt={space['1']}>
-          <Checkbox
-            value="newsletter"
-            alignItems="flex-start"
-            mr={space['0.5']}
-          />
+        <Checkbox
+          mt={space['2']}
+          value="newsletter"
+          alignItems="flex-start"
+          mr={space['0.5']}>
           <Text>
             Ich möchte von Lern-Fair über Angebote, Aktionen und weitere
             Unterstützungsmöglichkeiten per E-Mail informiert werden.
           </Text>
-        </Row>
+        </Checkbox>
 
         <Text my={space['1']}>
           Hinweis: Für den Fall, dass die einwilligende Person das 18.

@@ -144,7 +144,8 @@ const Registration: React.FC = () => {
       setUserType('student')
       setCurrentIndex(1)
     }
-  }, [location?.pathname])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const attemptRegister = useCallback(async () => {
     setVariant('dark')
