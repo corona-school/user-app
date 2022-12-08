@@ -40,6 +40,7 @@ const query = gql`
       student {
         state
         aboutMe
+        languages
         subjectsFormatted {
           name
         }
@@ -114,7 +115,7 @@ const ProfileStudent: React.FC<Props> = () => {
 
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
     data?.me?.student?.aboutMe?.length > 0 && (complete += 1)
-    // data?.me?.student?.languages?.length && (complete += 1)
+    data?.me?.student?.languages?.length && (complete += 1)
     data?.me?.student?.state && (complete += 1)
     // data?.me?.student?.schooltype && (complete += 1)
     // data?.me?.student?.gradeAsInt && (complete += 1)
@@ -221,6 +222,26 @@ const ProfileStudent: React.FC<Props> = () => {
                 {(data?.me?.student?.aboutMe && (
                   <Text>{data?.me?.student?.aboutMe}</Text>
                 )) || <Text>{t('profile.AboutMe.empty')}</Text>}
+              </ProfileSettingItem>
+
+              <ProfileSettingItem
+                title={t('profile.FluentLanguagenalData.label')}
+                href={() => navigate('/change-setting/language')}>
+                {(data?.me?.student?.languages?.length && (
+                  <Row flexWrap="wrap" w="100%">
+                    {data?.me?.student?.languages.map((lang: string) => (
+                      <Column marginRight={3} mb={space['0.5']}>
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                            text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                          />
+                        </CSSWrapper>
+                      </Column>
+                    ))}
+                  </Row>
+                )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
               </ProfileSettingItem>
 
               <ProfileSettingItem
