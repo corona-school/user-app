@@ -11,8 +11,7 @@ import {
   VStack
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
-import { Pressable, useWindowDimensions } from 'react-native'
-import { useNavigate } from 'react-router-dom'
+import { Pressable } from 'react-native'
 import AlertMessage from '../../widgets/AlertMessage'
 import { RegistrationContext } from '../Registration'
 
@@ -21,7 +20,6 @@ type Props = {
 }
 
 const Legal: React.FC<Props> = ({ onRegister }) => {
-  const navigate = useNavigate()
   const { space } = useTheme()
   const { userType, setNewsletter } = useContext(RegistrationContext)
   const [checks, setChecks] = useState<string[]>([])
