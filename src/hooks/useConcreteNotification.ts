@@ -7,9 +7,8 @@ const concreteNotificationQuery = gql`
     concrete_notification(concreteNotificationId: $id) {
       id
       message {
-          headline
-          body
-          notification
+        headline
+        body
       }
       sentAt
     }
@@ -19,7 +18,7 @@ const concreteNotificationQuery = gql`
 const isMessageValid = (message: UserNotification | null): boolean => {
   if (!message) return false
 
-  const requiredFields = ['headline', 'body', 'notification']
+  const requiredFields = ['headline', 'body']
   const fields = Object.keys(message)
 
   for (const requiredField of requiredFields) {
@@ -37,7 +36,11 @@ export const useConcreteNotification = (id: number | null) => {
   const [concreteNotification, setConcreteNotification] = useState(null)
 
   useEffect(() => {
-    if (!loading && !error && isMessageValid(data?.concrete_notification?.message)) {
+    if (
+      !loading &&
+      !error &&
+      isMessageValid(data?.concrete_notification?.message)
+    ) {
       setConcreteNotification(data?.concrete_notification)
     }
   }, [loading, data, error])

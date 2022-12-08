@@ -18,7 +18,7 @@ const meLastTimeCheckedNotifications = gql`
 const useLastTimeCheckedNotifications = () => {
   const { data, loading, error } = useQuery(getLastTimeCheckedQuery)
 
-  const lastTimeChecked = data?.me?.lastTimeCheckedNotifications
+  const lastTimeChecked: string = data?.me?.lastTimeCheckedNotifications
 
   const [updateLastTimeCheckedNotifications] = useMutation(
     meLastTimeCheckedNotifications

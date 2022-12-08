@@ -80,7 +80,6 @@ const NotificationPanel: React.FC<Props> = ({
           </Box>
         </Popover.Header>
         <Popover.Body>
-          // TODO revise
           {notificationsToShow.length === 0 && shouldShowAll ? (
             loadingUserNotifications ? (
               <Spinner />
