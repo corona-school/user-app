@@ -13,7 +13,7 @@ import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedN
 import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
 import NotificationPanel from './NotificationPanel'
 import { NotificationsContext } from '../NotificationsProvider'
-import { getAllNewNotifications } from '../../helper/notification-helper'
+import { getNewNotifications } from '../../helper/notification-helper'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
@@ -41,15 +41,16 @@ const NotificationAlert: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log('last time checked', lastTimeChecked)
-    const unreadNotifications = getAllNewNotifications(
+    if (!userNotifications) {
+      return
+    }
+
+    const unreadNotifications = getNewNotifications(
       userNotifications,
       lastTimeChecked
     )
-
-    console.log('unread messages', unreadNotifications)
     setCount(unreadNotifications.length)
-  }, [message])
+  }, [message?.id, lastTimeChecked, userNotifications])
 
   const handleTrigger = ({
     onPress,
@@ -79,15 +80,17 @@ const NotificationAlert: React.FC = () => {
   }
 
   return (
-    <Popover
-      placement="bottom"
-      trigger={triggerprops => handleTrigger(triggerprops)}
-      onClose={() => handleClose()}>
-      <NotificationPanel
-        userNotifications={userNotifications}
-        loadingUserNotifications={loading}
-      />
-    </Popover>
+    <>
+      <Popover
+        placement="bottom"
+        trigger={triggerprops => handleTrigger(triggerprops)}
+        onClose={() => handleClose()}>
+        <NotificationPanel
+          userNotifications={userNotifications || []}
+          loadingUserNotifications={loading}
+        />
+      </Popover>
+    </>
   )
 }
 export default NotificationAlert
