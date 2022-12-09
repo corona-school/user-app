@@ -46,15 +46,17 @@ const NotificationPanel: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    if (shouldShowAll) {
-      return setNotificationsToShow(userNotifications)
+    if (userNotifications.length !== 0) {
+      if (shouldShowAll) {
+        return setNotificationsToShow(userNotifications)
+      }
+      const notificationsToRender =
+        getAllNewUserNotificationsButMinimumFiveNotifications(
+          userNotifications,
+          lastTimeChecked
+        )
+      setNotificationsToShow([...notificationsToRender])
     }
-    const notificationsToRender =
-      getAllNewUserNotificationsButMinimumFiveNotifications(
-        userNotifications,
-        lastTimeChecked
-      )
-    setNotificationsToShow([...notificationsToRender])
   }, [userNotifications, lastTimeChecked, shouldShowAll])
 
   return (
@@ -73,7 +75,7 @@ const NotificationPanel: React.FC<Props> = ({
         <Popover.Body>
           {loadingUserNotifications && <Spinner />}
           <Box maxH={panelPropsAllDevices.maxH}>
-            {!shouldShowAll && (
+            {!shouldShowAll && notificationsToShow.length !== 0 && (
               <NewNotifications
                 notificationsToShow={notificationsToShow}
                 lastTimeChecked={lastTimeChecked}
@@ -86,7 +88,7 @@ const NotificationPanel: React.FC<Props> = ({
                 lastTimeChecked={lastTimeChecked}
               />
             )}
-            {userNotifications.length === 0 && <NoNotifications />}
+            {!notificationsToShow.length && <NoNotifications />}
           </Box>
         </Popover.Body>
       </Popover.Content>
