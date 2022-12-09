@@ -41,7 +41,7 @@ const queryPupil = `query {
     }
   }
 }`
-const mutStudent = `mutation updateLanguage($languages: [Language!]) {
+const mutStudent = `mutation updateLanguage($languages: [StudentLanguage!]) {
   meUpdate(update: { student: { languages: $languages } })
 }`
 const mutPupil = `mutation updateLanguage($languages: [Language!]) {
