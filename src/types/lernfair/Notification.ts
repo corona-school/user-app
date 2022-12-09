@@ -22,3 +22,14 @@ export enum MessageType {
   NEWS = 'news',
   CHAT = 'chat'
 }
+
+export enum MarketingMessageType {
+  NEWSLETTER = 'newsletter',
+  TRAINING = 'training',
+  EVENTS = 'events',
+  NEWSOFFER = 'newsoffer',
+  REQUEST = 'request',
+  LEARNOFFER = 'learnoffer',
+  ALTERNATIVEOFFER = 'alternativeoffer',
+  FEEDBACK = 'feedback'
+}
