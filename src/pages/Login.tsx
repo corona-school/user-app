@@ -67,9 +67,8 @@ export default function Login() {
 `)
 
   useEffect(() => {
-    if (sessionState === "logged-in")
-      navigate('/');
-  }, [navigate, sessionState]);
+    if (sessionState === 'logged-in') navigate('/')
+  }, [navigate, sessionState])
 
   useEffect(() => {
     trackPageView({
@@ -95,7 +94,7 @@ export default function Login() {
       name: 'Registrierung auf Login Page',
       documentTitle: 'Login Page – Registrierung Link'
     })
-    navigate('/registration/1')
+    navigate('/registration')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate])
 
@@ -125,7 +124,7 @@ export default function Login() {
         password: password
       }
     })
-    onLogin(result);
+    onLogin(result)
   }, [email, login, loginButton, navigate, password])
 
   const getLoginOption = useCallback(async () => {
@@ -343,12 +342,14 @@ export default function Login() {
               />
             </Box>
           )}
-          {showPasswordField && <Button
-            marginY={4}
-            variant="link"
-            onPress={() => setShowPasswordModal(true)}>
-            {t('login.btn.password')}
-          </Button>}
+          {showPasswordField && (
+            <Button
+              marginY={4}
+              variant="link"
+              onPress={() => setShowPasswordModal(true)}>
+              {t('login.btn.password')}
+            </Button>
+          )}
 
           <Box paddingTop={4} marginX="90px" display="block">
             <Button

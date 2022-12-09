@@ -118,12 +118,12 @@ const Settings: React.FC = () => {
             {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
           </Column>*/}
-          <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.account.changePassword')}
-              onPress={() => navigate('/reset-password')}
-            />
-          </Column>
+            <Column mb={tabspace}>
+              <EditDataRow
+                label={t('settings.account.changePassword')}
+                onPress={() => navigate('/reset-password')}
+              />
+            </Column>
             {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeUser')} isDisabled />
           </Column> */}
@@ -133,6 +133,12 @@ const Settings: React.FC = () => {
               isDisabled
             />
           </Column> */}
+            <Column mb={tabspace}>
+              <EditDataRow
+                label={t('settings.account.deactivateAccount')}
+                onPress={() => setShowDeactivate(true)}
+              />
+            </Column>
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.account.logout')}
@@ -152,23 +158,16 @@ const Settings: React.FC = () => {
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.imprint')}
-                onPress={() => navigate('/imprint')}
+                onPress={() => navigate('/impressum')}
               />
             </Column>
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.datapolicy')}
-                onPress={() => navigate('/privacy')}
+                onPress={() => navigate('/datenschutz')}
               />
             </Column>
           </ProfileSettingRow>
-
-          <Column mt={tabspace}>
-            <EditDataRow
-              label={t('settings.account.deactivateAccount')}
-              onPress={() => setShowDeactivate(true)}
-            />
-          </Column>
         </VStack>
       </WithNavigation>
       <DeactivateAccountModal

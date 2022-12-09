@@ -44,6 +44,7 @@ const SingleCourse: React.FC = () => {
 
   const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const [isSignedInModal, setSignedInModal] = useState(false)
+  const [isSignedOutSureModal, setSignedOutSureModal] = useState(false)
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
@@ -179,11 +180,11 @@ const SingleCourse: React.FC = () => {
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
 
-  useEffect(() => {
-    if (_leaveSubcourse?.data?.subcourseLeave) {
-      setSignedOutModal(true)
-    }
-  }, [_leaveSubcourse?.data?.subcourseLeave])
+  // useEffect(() => {
+  //   if (_leaveSubcourse?.data?.subcourseLeave) {
+  //     setSignedOutModal(true)
+  //   }
+  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -270,7 +271,7 @@ const SingleCourse: React.FC = () => {
   }, [course?.lectures, courseId, getMeetingLink])
 
   const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!, $meetingUrl: String!) {
+    mutation setMeetingUrl($courseId: Float!, $meetingUrl: String!) {
       subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
     }
   `)
@@ -381,37 +382,42 @@ const SingleCourse: React.FC = () => {
             />
           </Box>
           {userType === 'pupil' && course?.isParticipant && (
-            <VStack space={space['0.5']} py={space['1']}>
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('dashboard.appointmentcard.videotooltip.pupil')}>
+                label={t('course.meeting.hint.pupil')}>
                 <Button
+                  width={ButtonContainer}
                   onPress={getMeetingLink}
-                  isDisabled={showMeetingButton || _joinMeeting.loading}>
+                  isDisabled={!showMeetingButton || _joinMeeting.loading}>
                   Videochat beitreten
                 </Button>
               </Tooltip>
               {showMeetingNotStarted && (
                 <AlertMessage content="Der Videochat wurde noch nicht gestartet." />
               )}
-
-              <Text>{t('course.meeting.hint.pupil')}</Text>
             </VStack>
           )}
           {userType === 'student' && course?.isInstructor && (
-            <VStack space={space['0.5']} py={space['1']}>
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
               <Tooltip
                 isDisabled={!disableMeetingButton}
                 maxWidth={300}
-                label={t('dashboard.appointmentcard.videotooltip.student')}>
+                label={t('course.meeting.hint.student')}>
                 <Button
+                  width={ButtonContainer}
                   onPress={() => setShowMeetingUrlModal(true)}
                   isDisabled={disableMeetingButton || _setMeetingUrl.loading}>
                   Videochat starten
                 </Button>
               </Tooltip>
-              <Text>{t('course.meeting.hint.student')}</Text>
             </VStack>
           )}
           {userType === 'pupil' && (
@@ -471,7 +477,7 @@ const SingleCourse: React.FC = () => {
                 <VStack space={space['0.5']}>
                   <Button
                     onPress={() => {
-                      leaveSubcourse({ variables: { courseId: courseId } })
+                      setSignedOutSureModal(true)
                     }}
                     width={ButtonContainer}
                     marginBottom={space['0.5']}
@@ -602,6 +608,44 @@ const SingleCourse: React.FC = () => {
                     setSignedInModal(false)
                   }}>
                   Fenster schließen
+                </Button>
+              </Column>
+            </Row>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+      {/* loggout sure  */}
+      <Modal
+        isOpen={isSignedOutSureModal}
+        onClose={() => setSignedOutSureModal(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Kurseinformationen</Modal.Header>
+          <Modal.Body>
+            <Text marginBottom={space['1']}>
+              Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
+              kannst anschließend nicht mehr am Kurs teilnehmen.
+            </Text>
+            <Row space="3" justifyContent="flex-end">
+              <Column>
+                <Button
+                  height="100%"
+                  colorScheme="blueGray"
+                  variant="ghost"
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                  }}>
+                  Abbrechen
+                </Button>
+              </Column>
+              <Column>
+                <Button
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                    leaveSubcourse({ variables: { courseId: courseId } })
+                    setSignedOutModal(false)
+                  }}>
+                  Vom Kurs abmelden
                 </Button>
               </Column>
             </Row>

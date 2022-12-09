@@ -125,7 +125,14 @@ const CourseAppointments: React.FC<Props> = ({
 
       {newLectures?.map((lec, i) => (
         <Row maxWidth={ContainerWidth}>
-          <CourseDateWizard index={i} />
+          <CourseDateWizard
+            index={i}
+            onPressDelete={() => {
+              const arr = [...newLectures]
+              arr.splice(i, 1)
+              setNewLectures && setNewLectures(arr)
+            }}
+          />
         </Row>
       ))}
 

@@ -4,7 +4,6 @@ import {
   ApolloProvider,
   FetchResult,
   from,
-  gql,
   HttpLink,
   InMemoryCache,
   NextLink,
@@ -28,6 +27,8 @@ import { SubscriptionObserver } from 'zen-observable-ts'
 import userAgentParser from 'ua-parser-js'
 import { BACKEND_URL } from '../config'
 import { debug, log } from '../log'
+import { gql } from '../gql';
+
 
 interface UserType {
   userID: string;
@@ -37,11 +38,11 @@ interface UserType {
   pupil: {
     id: number;
     verifiedAt: Date | null;
-  },
+  } | null,
   student: {
     id: number;
     verifiedAt: Date | null;
-  }
+  } | null
 }
 
 export type LFApollo = {
@@ -204,11 +205,11 @@ class RetryOnUnauthorizedLink extends ApolloLink {
       createOperation(
         {},
         {
-          query: gql`
+          query: gql(`
             mutation LoginWithDeviceToken($deviceToken: String!) {
               loginToken(token: $deviceToken)
             }
-          `,
+          `),
           variables: { deviceToken: getDeviceToken() }
         }
       )
@@ -275,11 +276,11 @@ const useApolloInternal = () => {
 
     log('GraphQL', 'Creating device token with description: ' + describeDevice());
     const result = await client.mutate({
-      mutation: gql`
+      mutation: gql(`
         mutation CreateDeviceToken($description: String!) {
           tokenCreate(description: $description)
         }
-      `,
+      `),
       variables: { description: describeDevice() },
       context: { skipAuthRetry: true }
     })
@@ -288,7 +289,7 @@ const useApolloInternal = () => {
       throw new Error(`Errors during device token creation`)
     }
 
-    const deviceToken = result.data.tokenCreate
+    const deviceToken = result.data!.tokenCreate
     setDeviceToken(deviceToken)
     log('GraphQL', 'created device token')
     return deviceToken
@@ -298,11 +299,11 @@ const useApolloInternal = () => {
     log('GraphQL', 'device token present, trying to log in')
     try {
       await client.mutate({
-        mutation: gql`
+        mutation: gql(`
           mutation LoginWithDeviceToken($deviceToken: String!) {
             loginToken(token: $deviceToken)
           }
-        `,
+        `),
         variables: { deviceToken },
         context: { skipAuthRetry: true }
       });
@@ -324,11 +325,11 @@ const useApolloInternal = () => {
   const loginWithLegacyToken = useCallback(async (legacyToken: string) => {
     try {
       await client.mutate({
-        mutation: gql`
+        mutation: gql(`
           mutation LoginTokenLegacy($legacyToken: String!) {
             loginLegacy(authToken: $legacyToken)
           }
-        `,
+        `),
         variables: { legacyToken },
         context: { skipAuthRetry: true }
       })
@@ -347,8 +348,8 @@ const useApolloInternal = () => {
     log('GraphQL', 'Begin Determining User');
       
     const { data: { me }, error } = await client.query({
-      query: gql`
-        query {
+      query: gql(`
+        query GetUser {
           me {
             userID
             firstname
@@ -358,13 +359,13 @@ const useApolloInternal = () => {
             student { id verifiedAt }
           }
         }
-      `,
+      `),
       context: { skipAuthRetry: true }
     });
     log('GraphQL', 'Determined User', me);
 
     if (error) throw new Error(`Failed to determine user: ${error.message}`);
-    setUser(me);
+    setUser(me as UserType);
   }, [client, setUser]);
 
   // If the session is present and the user is not yet determined
@@ -421,12 +422,12 @@ const useApolloInternal = () => {
       log("GraphQL", "Revoking device token for logout")
       try {
       await client.mutate({
-        mutation: gql`
+        mutation: gql(`
           mutation RevokeToken($deviceToken: String!) {
             tokenRevoke(token: $deviceToken)
           }
-        `,
-        variables: { deviceToken: getDeviceToken() },
+        `),
+        variables: { deviceToken: getDeviceToken()! },
         context: { skipAuthRetry: true }
       });
       } catch(error) {
@@ -439,11 +440,11 @@ const useApolloInternal = () => {
     log("GraphQL", "Logging out")
     try {
       await client.mutate({
-        mutation: gql`
+        mutation: gql(`
           mutation Logout {
             logout
           }
-        `,
+        `),
         context: { skipAuthRetry: true }
       })
     } catch(error) {

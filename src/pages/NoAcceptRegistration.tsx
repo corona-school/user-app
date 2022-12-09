@@ -46,7 +46,7 @@ const NoAcceptRegistration: React.FC<Props> = () => {
         }
         outlineButtonText="Registrierung erneut beginnen"
         outlinebuttonLink={() => {
-          navigate('/registration/1')
+          navigate('/registration')
         }}
         defaultButtonText="Weitere Infos erhalten"
         defaultbuttonLink={() => {

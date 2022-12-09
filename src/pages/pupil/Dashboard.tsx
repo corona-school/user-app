@@ -210,7 +210,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+      mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
         matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
@@ -220,7 +220,7 @@ const Dashboard: React.FC<Props> = () => {
   )
 
   const [joinMeeting, _joinMeeting] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!) {
+    mutation joinMeetingPupil($courseId: Float!) {
       subcourseJoinMeeting(subcourseId: $courseId)
     }
   `)
@@ -307,7 +307,7 @@ const Dashboard: React.FC<Props> = () => {
                         <Tooltip
                           isDisabled={!disableMeetingButton}
                           maxWidth={300}
-                          label={t('course.meeting.videotooltip.pupil')}>
+                          label={t('course.meeting.hint.pupil')}>
                           <Button
                             width="100%"
                             marginTop={space['1']}
@@ -348,8 +348,6 @@ const Dashboard: React.FC<Props> = () => {
                       64
                     )}
                   />
-
-                  <Text mt={space['1']}>{t('course.meeting.hint.pupil')}</Text>
                 </VStack>
               )}
 
@@ -466,7 +464,9 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching')
+                        navigate('/matching', {
+                          state: { skipOnboarding: true }
+                        })
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>

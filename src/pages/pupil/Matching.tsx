@@ -11,7 +11,7 @@ import {
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
@@ -36,11 +36,17 @@ const Matching: React.FC<Props> = () => {
   const { space } = useTheme()
   const [showModal, setShowModal] = useState<boolean>(false)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { trackPageView, trackEvent } = useMatomo()
 
   const { data, loading } = useQuery(query)
+
+  const location = useLocation()
+  const { skipOnboarding } = (location.state || {}) as {
+    skipOnboarding: boolean
+  }
 
   useEffect(() => {
     trackPageView({
@@ -48,6 +54,14 @@ const Matching: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (skipOnboarding) {
+      setCurrentIndex(1)
+    }
+
+    setIsLoading(false)
+  }, [skipOnboarding, setCurrentIndex])
 
   const backArrow = useBreakpointValue({
     base: true,
@@ -57,9 +71,12 @@ const Matching: React.FC<Props> = () => {
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation showBack={backArrow} headerContent={<Hello />}>
-          {loading && <CenterLoadingSpinner />}
+        <WithNavigation
+          showBack={backArrow}
+          headerContent={<Hello />}
+          isLoading={loading || isLoading}>
           {!loading &&
+            !isLoading &&
             ((data?.me?.pupil.openMatchRequestCount === 0 && (
               <>
                 {currentIndex === 0 && (
