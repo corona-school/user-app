@@ -11,7 +11,7 @@ import {
   Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { getInformationsForMessageTypeNotificationPreference } from '../../../helper/notification-helper'
+import { getNotificationPreferencesData } from '../../../helper/notification-helper'
 
 type PrefProps = {
   category: string
@@ -28,8 +28,7 @@ const PreferenceItem: React.FC<PrefProps> = ({
 }) => {
   const { t } = useTranslation()
 
-  const preferenceInformation =
-    getInformationsForMessageTypeNotificationPreference(category)
+  const { systemPreferences } = getNotificationPreferencesData(category)
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -58,15 +57,16 @@ const PreferenceItem: React.FC<PrefProps> = ({
         py={3}
         width={width}>
         <HStack alignItems="center" space={1}>
-          <VStack>{preferenceInformation?.icon}</VStack>
+          {systemPreferences?.icon && (
+            <VStack>{systemPreferences?.icon}</VStack>
+          )}
           <VStack maxW={maxW}>
             <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
-              {t(preferenceInformation.title)}
+              {t(systemPreferences.title)}
               <>
                 {isMobile ? (
                   <Pressable
                     ml={1}
-                    // TODO treated in another PR
                     onPress={() => console.log('open info modal')}>
                     <Circle rounded="full" bg="amber.700" size={4}>
                       <Box _text={{ color: 'white' }}>i</Box>
