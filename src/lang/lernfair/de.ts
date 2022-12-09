@@ -75,6 +75,7 @@ const lernfair = {
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
+    gesamtschule: 'Gesamtschule',
     other: 'Andere',
     berufsschule: 'Berufsschule',
     f_rderschule: 'Förderschule'
