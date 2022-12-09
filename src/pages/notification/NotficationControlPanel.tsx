@@ -7,11 +7,11 @@ import {
   View,
   VStack
 } from 'native-base'
-import { useState } from 'react'
-import Tabs, { Tab } from '../../components/Tabs'
+import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
 import SystemNotifications from '../../components/notification/preferences/SystemNotifications'
 import { useTranslation } from 'react-i18next'
+import MarketingNotifications from '../../components/notification/preferences/MarketingNotifications'
 
 const NotficationControlPanel = () => {
   const { space } = useTheme()
@@ -47,7 +47,7 @@ const NotficationControlPanel = () => {
                 },
                 {
                   title: t('notification.controlPanel.tabs.tab2.title'),
-                  content: 'Coming soon.'
+                  content: <MarketingNotifications />
                 }
               ]}
             />
