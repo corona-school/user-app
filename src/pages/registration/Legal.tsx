@@ -4,6 +4,7 @@ import {
   Checkbox,
   ChevronDownIcon,
   ChevronUpIcon,
+  Column,
   Heading,
   Link,
   Row,
@@ -14,6 +15,7 @@ import {
 import { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Pressable } from 'react-native'
+import { useNavigate } from 'react-router-dom'
 import AlertMessage from '../../widgets/AlertMessage'
 import { RegistrationContext } from '../Registration'
 
@@ -24,7 +26,9 @@ type Props = {
 const Legal: React.FC<Props> = ({ onRegister }) => {
   const { space } = useTheme()
   const { t } = useTranslation()
-  const { userType, setNewsletter } = useContext(RegistrationContext)
+  const navigate = useNavigate()
+  const { userType, setNewsletter, setCurrentIndex } =
+    useContext(RegistrationContext)
   const [checks, setChecks] = useState<string[]>([])
   const [errors, setErrors] = useState<{
     dsgvo: boolean
@@ -68,7 +72,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
   }, [checks, isInputValid, onRegister, setNewsletter])
 
   return (
-    <VStack>
+    <VStack marginTop="10px">
       <Heading>{t(`registration.steps.5.subtitle`)}</Heading>
 
       <Checkbox.Group onChange={setChecks} value={checks} mt={space['1']}>
@@ -153,7 +157,27 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
             Verantwortung für die Person die Einwilligung zu erklären.
           </Text>
 
-          <Button onPress={next}>Jetzt registrieren</Button>
+          <Box alignItems="center" marginTop={space['2']}>
+            <Row space={space['1']} justifyContent="center">
+              <Column width="100%">
+                <Button
+                  width="100%"
+                  height="100%"
+                  variant="ghost"
+                  colorScheme="blueGray"
+                  onPress={() => {
+                    setCurrentIndex(3)
+                  }}>
+                  {t('lernfair.buttons.prev')}
+                </Button>
+              </Column>
+              <Column width="100%">
+                <Button width="100%" onPress={next}>
+                  {t('lernfair.buttons.register')}
+                </Button>
+              </Column>
+            </Row>
+          </Box>
         </VStack>
       </Checkbox.Group>
     </VStack>

@@ -1,4 +1,4 @@
-import { Button, useTheme, VStack } from 'native-base'
+import { Box, Button, Column, Row, useTheme, VStack } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TextInput from '../../components/TextInput'
@@ -7,6 +7,7 @@ import AlertMessage from '../../widgets/AlertMessage'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { gql, useMutation } from '@apollo/client'
 import { RegistrationContext } from '../Registration'
+import { useNavigate } from 'react-router-dom'
 
 const PersonalData: React.FC = () => {
   const {
@@ -25,6 +26,7 @@ const PersonalData: React.FC = () => {
   } = useContext(RegistrationContext)
 
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { space } = useTheme()
   const { trackEvent } = useMatomo()
 
@@ -77,7 +79,7 @@ const PersonalData: React.FC = () => {
   }, [email, isEmailAvailable, isInputValid])
 
   return (
-    <VStack w="100%" space={space['1']}>
+    <VStack w="100%" space={space['1']} marginTop={space['1']}>
       <TextInput
         value={firstname}
         placeholder={t('firstname')}
@@ -120,7 +122,28 @@ const PersonalData: React.FC = () => {
       {showPasswordConfirmNoMatch && (
         <AlertMessage content={t('registration.hint.password.nomatch')} />
       )}
-      <Button onPress={checkEmail}>Weiter</Button>
+
+      <Box alignItems="center" marginTop={space['2']}>
+        <Row space={space['1']} justifyContent="center">
+          <Column width="100%">
+            <Button
+              width="100%"
+              height="100%"
+              variant="ghost"
+              colorScheme="blueGray"
+              onPress={() => {
+                setCurrentIndex(0)
+              }}>
+              {t('lernfair.buttons.prev')}
+            </Button>
+          </Column>
+          <Column width="100%">
+            <Button width="100%" onPress={checkEmail}>
+              {t('lernfair.buttons.next')}
+            </Button>
+          </Column>
+        </Row>
+      </Box>
     </VStack>
   )
 }

@@ -1,4 +1,9 @@
 const lernfair = {
+  buttons: {
+    prev: 'zurück',
+    next: 'weiter', 
+    register: 'Registrieren'
+  },
   languages: {
     albanisch: 'Albanisch',
     arabisch: 'Arabisch',
