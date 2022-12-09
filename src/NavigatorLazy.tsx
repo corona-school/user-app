@@ -31,7 +31,7 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 
 import CreateCourse from './pages/CreateCourse'
 import DashboardStudent from './pages/student/DashboardStudent'
-import Matching from './pages/pupil/Matching'
+
 import RequestMatch from './pages/student/RequestMatch'
 import ProfileStudent from './pages/student/ProfileStudent'
 import MatchingStudent from './pages/student/MatchingStudent'
@@ -50,6 +50,7 @@ import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
 import WithNavigation from './components/WithNavigation'
 import Registration from './pages/Registration'
+import Matching from './pages/pupil/matching_new/Matching'
 
 export default function NavigatorLazy() {
   return (
