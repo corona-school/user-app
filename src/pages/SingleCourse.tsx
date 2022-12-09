@@ -9,52 +9,63 @@ import {
   Button,
   useBreakpointValue,
   VStack,
-  Alert,
-  HStack,
-  Modal
+  Modal,
+  useToast,
+  Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
-import BackButton from '../components/BackButton'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
 import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course'
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp'
-import ProfilAvatar from '../widgets/ProfilAvatar'
 
-import Utility, { getTrafficStatus } from '../Utility'
+import Utility, {
+  getFirstLectureFromSubcourse,
+  getTrafficStatus
+} from '../Utility'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
-import useLernfair from '../hooks/useLernfair'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { Participant as LFParticipant } from '../types/lernfair/User'
 import AlertMessage from '../widgets/AlertMessage'
 import { useUserType } from '../hooks/useApollo'
 
-type Props = {}
+import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
+import SetMeetingLinkModal from '../modals/SetMeetingLinkModal'
 
-const SingleCourse: React.FC<Props> = () => {
+const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
   const { t } = useTranslation()
   const { trackPageView, trackEvent } = useMatomo()
+  const toast = useToast()
 
   const [loadParticipants, setLoadParticipants] = useState<boolean>()
   const [isSignedInModal, setSignedInModal] = useState(false)
+  const [isSignedOutSureModal, setSignedOutSureModal] = useState(false)
   const [isSignedOutModal, setSignedOutModal] = useState(false)
   const [isOnWaitingListModal, setOnWaitingListModal] = useState(false)
   const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false)
+  const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
+  const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
 
+  const navigate = useNavigate()
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const userType = useUserType()
 
   const userQuery =
     userType === 'student'
-      ? `participants{
+      ? `
+      isInstructor
+      participants{
     firstname
+    lastname
     grade
+    schooltype
   }`
       : `
   isOnWaitingList
@@ -67,21 +78,25 @@ const SingleCourse: React.FC<Props> = () => {
 
   const query = gql`query{
     me {
-      pupil{id}
+      pupil{id firstname grade}
       student{id}
     }
     subcourse(subcourseId: ${courseId}){
       id
       participantsCount
       maxParticipants
+      nextLecture{
+        start
+        duration
+      }
       instructors{
         firstname
         lastname
       }
       ${userQuery}
       course {
+        name
         image
-        outline
         category
         description
         subject
@@ -90,15 +105,9 @@ const SingleCourse: React.FC<Props> = () => {
         }
         allowContact
       }
-
-     
       lectures{
         start
         duration
-
-      }
-      course {
-        name
       }
     }
   }`
@@ -113,11 +122,15 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }`
 
-  const { data: courseData, loading, error } = useQuery(query)
+  const { data: courseData, loading } = useQuery(query)
 
   const { data: participantData } = useQuery(participantQuery, {
     skip: !loadParticipants
   })
+
+  const [joinMeeting, _joinMeeting] = useMutation(gql`mutation{
+    subcourseJoinMeeting(subcourseId: ${courseId})
+  }`)
 
   const [joinSubcourse, _joinSubcourse] = useMutation(
     gql`
@@ -167,11 +180,11 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
 
-  useEffect(() => {
-    if (_leaveSubcourse?.data?.subcourseLeave) {
-      setSignedOutModal(true)
-    }
-  }, [_leaveSubcourse?.data?.subcourseLeave])
+  // useEffect(() => {
+  //   if (_leaveSubcourse?.data?.subcourseLeave) {
+  //     setSignedOutModal(true)
+  //   }
+  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -235,7 +248,69 @@ const SingleCourse: React.FC<Props> = () => {
     }
   }, [course, loading])
 
-  if (loading) return <></>
+  const getMeetingLink = useCallback(async () => {
+    try {
+      const res = await joinMeeting({ variables: { subcourseId: courseId } })
+
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [courseId, joinMeeting])
+
+  useEffect(() => {
+    if (!courseId || !course?.lectures) return
+    const lec = getFirstLectureFromSubcourse(course?.lectures, false)
+    if (DateTime.fromISO(lec.start).diffNow('minutes').minutes <= 5) {
+      setShowMeetingButton(true)
+    }
+  }, [course?.lectures, courseId, getMeetingLink])
+
+  const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
+    mutation setMeetingUrl($courseId: Float!, $meetingUrl: String!) {
+      subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
+    }
+  `)
+
+  const _setMeetingLink = useCallback(
+    async (link: string) => {
+      try {
+        const res = await setMeetingUrl({
+          variables: {
+            courseId: courseData.subcourse.id,
+            meetingUrl: link
+          }
+        })
+
+        setShowMeetingUrlModal(false)
+        if (res.data.subcourseSetMeetingURL && !res.errors) {
+          toast.show({
+            description: t('course.meeting.result.success')
+          })
+        } else {
+          toast.show({
+            description: t('course.meeting.result.error')
+          })
+        }
+      } catch (e) {
+        toast.show({
+          description: t('course.meeting.result.error')
+        })
+      }
+    },
+    [courseData?.subcourse?.id, setMeetingUrl, t, toast]
+  )
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    return (
+      DateTime.fromISO(course?.nextLecture?.start).diffNow('minutes').minutes >
+      60
+    )
+  }, [course])
 
   return (
     <>
@@ -245,13 +320,17 @@ const SingleCourse: React.FC<Props> = () => {
             ? course?.course?.name.substring(0, 20)
             : course?.course?.name
         }
-        showBack>
+        showBack
+        isLoading={loading}>
         <Box
           paddingX={space['1.5']}
           maxWidth={ContainerWidth}
           marginX="auto"
           width="100%">
-          <Box height={imageHeight} marginBottom={space['1.5']}>
+          <Box
+            maxWidth={sizes['imageHeaderWidth']}
+            height={imageHeight}
+            marginBottom={space['1.5']}>
             <Image
               alt={course?.course?.name}
               borderRadius="8px"
@@ -264,7 +343,9 @@ const SingleCourse: React.FC<Props> = () => {
               }}
             />
           </Box>
-          <Box paddingBottom={space['0.5']}>
+          <Box
+            paddingBottom={space['0.5']}
+            maxWidth={sizes['imageHeaderWidth']}>
             <Row>
               {course?.course?.tags?.map((tag: LFTag) => (
                 <Column marginRight={space['0.5']}>
@@ -274,7 +355,9 @@ const SingleCourse: React.FC<Props> = () => {
             </Row>
           </Box>
           {course?.lectures.length > 0 && (
-            <Text paddingBottom={space['0.5']}>
+            <Text
+              paddingBottom={space['0.5']}
+              maxWidth={sizes['imageHeaderWidth']}>
               {t('single.global.clockFrom')}{' '}
               {Utility.formatDate(course?.lectures[0].start)}{' '}
               {t('single.global.clock')}
@@ -282,11 +365,6 @@ const SingleCourse: React.FC<Props> = () => {
           )}
           <Heading paddingBottom={space['1']}>{course?.course?.name}</Heading>
           <Row alignItems="center" paddingBottom={space['1']}>
-            {/* <ProfilAvatar
-            size="sm"
-            marginRight={space['0.5']} 
-            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          /> */}
             {course?.instructors && course?.instructors[0] && (
               <Heading fontSize="md">
                 {course?.instructors[0].firstname}{' '}
@@ -294,7 +372,6 @@ const SingleCourse: React.FC<Props> = () => {
               </Heading>
             )}
           </Row>
-          <Text paddingBottom={space['1']}>{course?.course?.outline}</Text>
 
           <Box marginBottom={space['1']}>
             <CourseTrafficLamp
@@ -304,9 +381,49 @@ const SingleCourse: React.FC<Props> = () => {
               )}
             />
           </Box>
-
+          {userType === 'pupil' && course?.isParticipant && (
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
+              <Tooltip
+                isDisabled={!disableMeetingButton}
+                maxWidth={300}
+                label={t('course.meeting.hint.pupil')}>
+                <Button
+                  width={ButtonContainer}
+                  onPress={getMeetingLink}
+                  isDisabled={!showMeetingButton || _joinMeeting.loading}>
+                  Videochat beitreten
+                </Button>
+              </Tooltip>
+              {showMeetingNotStarted && (
+                <AlertMessage content="Der Videochat wurde noch nicht gestartet." />
+              )}
+            </VStack>
+          )}
+          {userType === 'student' && course?.isInstructor && (
+            <VStack
+              space={space['0.5']}
+              py={space['1']}
+              maxWidth={ContainerWidth}>
+              <Tooltip
+                isDisabled={!disableMeetingButton}
+                maxWidth={300}
+                label={t('course.meeting.hint.student')}>
+                <Button
+                  width={ButtonContainer}
+                  onPress={() => setShowMeetingUrlModal(true)}
+                  isDisabled={disableMeetingButton || _setMeetingUrl.loading}>
+                  Videochat starten
+                </Button>
+              </Tooltip>
+            </VStack>
+          )}
           {userType === 'pupil' && (
-            <Box marginBottom={space['0.5']}>
+            <Box
+              marginBottom={space['0.5']}
+              maxWidth={sizes['imageHeaderWidth']}>
               {!course?.canJoin?.allowed && !course?.isParticipant && (
                 <AlertMessage
                   content={t(
@@ -358,21 +475,36 @@ const SingleCourse: React.FC<Props> = () => {
               )}
               {course?.isParticipant && (
                 <VStack space={space['0.5']}>
-                  <AlertMessage
-                    content={t('single.buttoninfo.successMember')}
-                  />
-
                   <Button
                     onPress={() => {
-                      leaveSubcourse({ variables: { courseId: courseId } })
+                      setSignedOutSureModal(true)
                     }}
                     width={ButtonContainer}
                     marginBottom={space['0.5']}
                     isDisabled={loading}>
                     Kurs verlassen
                   </Button>
+
+                  <AlertMessage
+                    content={t('single.buttoninfo.successMember')}
+                  />
                 </VStack>
               )}
+            </Box>
+          )}
+
+          {userType === 'student' && course?.isInstructor && (
+            <Box marginBottom={space['1.5']}>
+              <Button
+                onPress={() => {
+                  navigate('/edit-course', {
+                    state: { courseId: courseData.subcourse.id }
+                  })
+                }}
+                width={ButtonContainer}
+                variant="outline">
+                Kurs editieren
+              </Button>
             </Box>
           )}
 
@@ -402,7 +534,9 @@ const SingleCourse: React.FC<Props> = () => {
                 title: t('single.tabs.description'),
                 content: (
                   <>
-                    <Text marginBottom={space['1']}>
+                    <Text
+                      maxWidth={sizes['imageHeaderWidth']}
+                      marginBottom={space['1']}>
                       {course?.course?.description}
                     </Text>
                   </>
@@ -414,7 +548,10 @@ const SingleCourse: React.FC<Props> = () => {
                   <>
                     {(course?.lectures?.length > 0 &&
                       course.lectures.map((lec: LFLecture, i: number) => (
-                        <Row flexDirection="column" marginBottom={space['1.5']}>
+                        <Row
+                          maxWidth={sizes['imageHeaderWidth']}
+                          flexDirection="column"
+                          marginBottom={space['1.5']}>
                           <Heading paddingBottom={space['0.5']} fontSize="md">
                             {t('single.global.lesson')}{' '}
                             {`${i + 1}`.padStart(2, '0')}
@@ -422,22 +559,28 @@ const SingleCourse: React.FC<Props> = () => {
                           <Text paddingBottom={space['0.5']}>
                             {DateTime.fromISO(lec.start).toFormat('dd.MM.yyyy')}
                             <Text marginX="3px">•</Text>
-                            {DateTime.fromISO(lec.start).toFormat('hh:mm')}{' '}
+                            {DateTime.fromISO(lec.start).toFormat('HH:mm')}{' '}
                             {t('single.global.clock')}
                           </Text>
                           <Text>
                             <Text bold>{t('single.global.duration')}: </Text>{' '}
-                            {lec?.duration / 60} {t('single.global.hours')}
+                            {(typeof lec?.duration !== 'number'
+                              ? parseInt(lec?.duration)
+                              : lec?.duration) / 60}{' '}
+                            {t('single.global.hours')}
                           </Text>
                         </Row>
                       ))) || <Text>{t('single.global.noLections')}</Text>}
                   </>
                 )
               },
-              course?.isParticipant && {
+              (course?.isParticipant || course?.isInstructor) && {
                 title: t('single.tabs.participant'),
                 content: (
                   <>
+                    {course?.isParticipant && (
+                      <Participant pupil={courseData.me.pupil} />
+                    )}
                     {(participants?.length > 0 &&
                       participants.map((p: LFParticipant) => (
                         <Participant pupil={p} />
@@ -465,6 +608,44 @@ const SingleCourse: React.FC<Props> = () => {
                     setSignedInModal(false)
                   }}>
                   Fenster schließen
+                </Button>
+              </Column>
+            </Row>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+      {/* loggout sure  */}
+      <Modal
+        isOpen={isSignedOutSureModal}
+        onClose={() => setSignedOutSureModal(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Kurseinformationen</Modal.Header>
+          <Modal.Body>
+            <Text marginBottom={space['1']}>
+              Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
+              kannst anschließend nicht mehr am Kurs teilnehmen.
+            </Text>
+            <Row space="3" justifyContent="flex-end">
+              <Column>
+                <Button
+                  height="100%"
+                  colorScheme="blueGray"
+                  variant="ghost"
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                  }}>
+                  Abbrechen
+                </Button>
+              </Column>
+              <Column>
+                <Button
+                  onPress={() => {
+                    setSignedOutSureModal(false)
+                    leaveSubcourse({ variables: { courseId: courseId } })
+                    setSignedOutModal(false)
+                  }}>
+                  Vom Kurs abmelden
                 </Button>
               </Column>
             </Row>
@@ -565,6 +746,12 @@ const SingleCourse: React.FC<Props> = () => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
+      <SetMeetingLinkModal
+        isOpen={showMeetingUrlModal}
+        onClose={() => setShowMeetingUrlModal(false)}
+        disableButtons={_setMeetingUrl.loading}
+        onPressStartMeeting={link => _setMeetingLink(link)}
+      />
     </>
   )
 }
@@ -577,15 +764,15 @@ const Participant: React.FC<ParticipantProps> = ({ pupil }) => {
   const { space } = useTheme()
   return (
     <Row marginBottom={space['1.5']} alignItems="center">
-      <Column marginRight={space['1']}>
-        {/* <ProfilAvatar
-      size="md"
-      image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-    /> */}
-      </Column>
+      <Column marginRight={space['1']}></Column>
       <Column>
-        <Heading fontSize="md">{pupil.firstname}</Heading>
-        <Text>{pupil.grade}</Text>
+        <Heading fontSize="md">
+          {pupil.firstname} {pupil.lastname}
+        </Heading>
+        <Text>
+          {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
+          {pupil.grade}
+        </Text>
       </Column>
     </Row>
   )

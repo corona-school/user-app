@@ -25,7 +25,8 @@ const AlertMessage: React.FC<Props> = ({ content }) => {
       <Alert
         alignItems="start"
         marginY={space['0.5']}
-        width={backgroundWidth}
+        width="100%"
+        maxWidth={backgroundWidth}
         colorScheme="info">
         <HStack space={2} flexShrink={1} alignItems="center">
           <Alert.Icon color="danger.100" />

@@ -10,7 +10,8 @@ import {
   useToast,
   Alert,
   Column,
-  Box
+  Box,
+  Tooltip
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -34,7 +35,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility'
+import { getTrafficStatus } from '../../Utility'
 
 type Props = {}
 
@@ -69,12 +70,12 @@ const query = gql`
         }
         subcoursesJoined {
           id
+          isParticipant
           lectures {
             start
           }
           course {
             name
-            outline
             image
             tags {
               name
@@ -96,7 +97,6 @@ const query = gql`
       course {
         name
         description
-        outline
         image
         tags {
           name
@@ -124,6 +124,7 @@ const Dashboard: React.FC<Props> = () => {
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
   const [dissolveData, setDissolveData] = useState<LFMatch>()
   const [toastShown, setToastShown] = useState<boolean>()
+  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
 
   useEffect(() => {
     trackPageView({
@@ -179,14 +180,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const highlightedAppointment:
     | { course: LFSubCourse; lecture: LFLecture }
-    | undefined = useMemo(
-    () =>
-      sortedAppointments.find(
-        ({ course, lecture }: { course: LFSubCourse; lecture: LFLecture }) =>
-          DateTime.fromISO(lecture.start).diffNow().as('hours') < 24
-      ),
-    [sortedAppointments]
-  )
+    | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments])
 
   const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
     gql`
@@ -216,7 +210,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+      mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
         matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
@@ -224,6 +218,12 @@ const Dashboard: React.FC<Props> = () => {
       refetchQueries: [query]
     }
   )
+
+  const [joinMeeting, _joinMeeting] = useMutation(gql`
+    mutation joinMeetingPupil($courseId: Float!) {
+      subcourseJoinMeeting(subcourseId: $courseId)
+    }
+  `)
 
   const dissolveMatch = useCallback((match: LFMatch) => {
     setDissolveData(match)
@@ -244,6 +244,32 @@ const Dashboard: React.FC<Props> = () => {
       (match: LFMatch) => !match.dissolved
     )
   }, [data?.me?.pupil?.matches])
+
+  const getMeetingLink = useCallback(async () => {
+    const courseId = highlightedAppointment?.course.id
+    if (!courseId) return
+
+    try {
+      const res = await joinMeeting({ variables: { courseId } })
+
+      if (res.data.subcourseJoinMeeting) {
+        window.open(res.data.subcourseJoinMeeting, '_blank')
+      } else {
+        setShowMeetingNotStarted(true)
+      }
+    } catch (e) {
+      setShowMeetingNotStarted(true)
+    }
+  }, [highlightedAppointment?.course.id, joinMeeting])
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    if (!highlightedAppointment) return true
+    return (
+      DateTime.fromISO(highlightedAppointment?.lecture?.start).diffNow(
+        'minutes'
+      ).minutes > 5
+    )
+  }, [highlightedAppointment])
 
   return (
     <AsNavigationItem path="start">
@@ -276,6 +302,29 @@ const Dashboard: React.FC<Props> = () => {
                   </Heading>
 
                   <AppointmentCard
+                    videoButton={
+                      <VStack w="100%" space={space['0.5']}>
+                        <Tooltip
+                          isDisabled={!disableMeetingButton}
+                          maxWidth={300}
+                          label={t('course.meeting.hint.pupil')}>
+                          <Button
+                            width="100%"
+                            marginTop={space['1']}
+                            onPress={getMeetingLink}
+                            isDisabled={
+                              disableMeetingButton || _joinMeeting.loading
+                            }>
+                            {t('course.meeting.videobutton.pupil')}
+                          </Button>
+                        </Tooltip>
+                        {showMeetingNotStarted && (
+                          <Text color="lightText">
+                            {t('course.meeting.videotext')}
+                          </Text>
+                        )}
+                      </VStack>
+                    }
                     isTeaser={true}
                     onPressToCourse={() => {
                       trackEvent({
@@ -294,7 +343,10 @@ const Dashboard: React.FC<Props> = () => {
                     date={highlightedAppointment?.lecture.start}
                     image={highlightedAppointment?.course.course?.image}
                     title={highlightedAppointment?.course.course?.name}
-                    description={highlightedAppointment?.course.course?.outline}
+                    description={highlightedAppointment?.course.course?.description?.substring(
+                      0,
+                      64
+                    )}
                   />
                 </VStack>
               )}
@@ -340,7 +392,7 @@ const Dashboard: React.FC<Props> = () => {
                                 })
                               }}
                               key={`appointment-${course.id}`}
-                              description={course.course.outline}
+                              description={course.course.description}
                               tags={course.course.tags}
                               date={lecture.start}
                               image={course.course.image}
@@ -402,9 +454,6 @@ const Dashboard: React.FC<Props> = () => {
                         )
                     )}
                   </Flex>
-                  {/* {(data?.me?.pupil?.canRequestMatch?.allowed ||
-                    data?.me?.pupil?.openMatchRequestCount > 0) && (
-                    <VStack> */}
                   {data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       width={ButtonContainer}
@@ -415,7 +464,9 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching')
+                        navigate('/matching', {
+                          state: { skipOnboarding: true }
+                        })
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
@@ -424,11 +475,11 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack space={2} flexShrink={1} maxWidth="700px">
                       {data?.me?.pupil?.firstMatchRequest && (
                         <Text>
-                          Anfrage erstellt am:{' '}
+                          {t('dashboard.offers.requestCreated')}{' '}
                           {DateTime.fromISO(
                             data?.me?.pupil?.firstMatchRequest
                           ).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                          Uhr
+                          {t('dashboard.offers.clock')}
                         </Text>
                       )}
                       <Alert
@@ -438,11 +489,7 @@ const Dashboard: React.FC<Props> = () => {
                         colorScheme="info">
                         <HStack space={2} flexShrink={1} alignItems="center">
                           <Alert.Icon color="danger.100" />
-                          <Text>
-                            Bitte beachte dass die Suche nach einer/einem
-                            Lernpartner:in zu Wartezeiten von 3 - 6 Monaten
-                            kommen kann
-                          </Text>
+                          <Text>{t('dashboard.offers.waitingTimeInfo')}</Text>
                         </HStack>
                       </Alert>
 
@@ -450,11 +497,9 @@ const Dashboard: React.FC<Props> = () => {
                         width={ButtonContainer}
                         isDisabled={_cancelMatchRequest?.loading}
                         onPress={() => setShowCancelModal(true)}>
-                        Anfrage zurücknehmen
+                        {t('dashboard.offers.removeRequest')}
                       </Button>
                     </VStack>
-                    //   )}
-                    // </VStack>
                   )}
                 </HSection>
               )}

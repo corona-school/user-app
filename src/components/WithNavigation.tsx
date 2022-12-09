@@ -31,6 +31,7 @@ type Props = {
   showBack?: boolean
   hideMenu?: boolean
   isLoading?: boolean
+  onBack?: () => any
 }
 
 const WithNavigation: React.FC<Props> = ({
@@ -42,7 +43,8 @@ const WithNavigation: React.FC<Props> = ({
   isSidebarMenu = true,
   showBack,
   hideMenu,
-  isLoading
+  isLoading,
+  onBack
 }) => {
   const { sizes, space } = useTheme()
   const isMobile = useBreakpointValue({
@@ -69,22 +71,27 @@ const WithNavigation: React.FC<Props> = ({
         w="100vw"
         h="100%">
         <HeaderCard
+          onBack={onBack}
           showBack={showBack}
           leftContent={headerLeft}
-          rightContent={isSidebarMenu && !hideMenu ? <SettingsButton /> : ''}
+          rightContent={
+            headerRight ||
+            (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')
+          }
           title={headerTitle}>
           {!isMobile && headerContent}
         </HeaderCard>
         <View flex="1" overflowY={'scroll'}>
           <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
-            <Column>
-              <SideBarMenu
-                show={!isMobile}
-                navItems={navItems}
-                paddingTop={'72px'}
-              />
-            </Column>
-
+            {!hideMenu && (
+              <Column>
+                <SideBarMenu
+                  show={!isMobile}
+                  navItems={navItems}
+                  paddingTop={'72px'}
+                />
+              </Column>
+            )}
             <Column flex="1" padding={innerPaddingContent}>
               {(!isLoading && (
                 <>
@@ -102,7 +109,7 @@ const WithNavigation: React.FC<Props> = ({
           </Row>
         </View>
       </View>
-      <BottomNavigationBar show={isMobile} navItems={navItems} />
+      {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} />}
     </View>
   )
 }

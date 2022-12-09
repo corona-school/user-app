@@ -10,7 +10,8 @@ import {
   Button,
   InfoIcon,
   useBreakpointValue,
-  View
+  View,
+  Input
 } from 'native-base'
 import Tabs from '../components/Tabs'
 import WithNavigation from '../components/WithNavigation'
@@ -26,7 +27,6 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
 import Hello from '../widgets/Hello'
 import AlertMessage from '../widgets/AlertMessage'
-import useLernfair from '../hooks/useLernfair'
 import { useUserType } from '../hooks/useApollo'
 
 type Props = {}
@@ -41,7 +41,6 @@ type MentorCategory =
 
 const HelpCenter: React.FC<Props> = () => {
   const userType = useUserType()
-  console.log(userType)
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -151,10 +150,7 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="hilfebereich">
-      <WithNavigation
-        showBack={backArrow}
-        headerTitle="Hilfebereich"
-        headerContent={<Hello />}>
+      <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
         <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
           <Box
             maxWidth={ContentContainerWidth}
@@ -163,7 +159,7 @@ const HelpCenter: React.FC<Props> = () => {
             <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
             <Text>{t('helpcenter.subtitle')}</Text>
           </Box>
-          <Box
+          {/* <Box
             maxWidth={ContentContainerWidth}
             paddingBottom={space['2.5']}
             paddingX={space['1.5']}>
@@ -176,7 +172,7 @@ const HelpCenter: React.FC<Props> = () => {
             <Button width={buttonWidth} onPress={() => onboardingCheck()}>
               {t('helpcenter.onboarding.button')}
             </Button>
-          </Box>
+          </Box> */}
         </Box>
         <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
           <Tabs
@@ -193,8 +189,9 @@ const HelpCenter: React.FC<Props> = () => {
                   />
                 )
               },
+
               {
-                hide: userType !== 'student',
+                hide: userType === 'pupil',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame
@@ -221,12 +218,7 @@ const HelpCenter: React.FC<Props> = () => {
                         <FormControl.Label>
                           {t('helpcenter.contact.subject.label')}
                         </FormControl.Label>
-                        <TextInput
-                          onChangeText={setSubject}
-                          placeholder={t(
-                            'helpcenter.contact.subject.placeholder'
-                          )}
-                        />
+                        <Input onChangeText={setSubject} />
                       </Row>
                       <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>
@@ -261,10 +253,7 @@ const HelpCenter: React.FC<Props> = () => {
                           marginX="auto"
                           width={buttonWidth}
                           isDisabled={
-                            !dsgvo ||
-                            message?.length < 5 ||
-                            subject?.length < 5 ||
-                            !mentorCategory
+                            !dsgvo || message?.length < 5 || subject?.length < 5
                           }
                           onPress={sendContactMessage}>
                           {t('helpcenter.btn.formsubmit')}

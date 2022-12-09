@@ -12,7 +12,8 @@ import {
   Button,
   TextArea,
   useBreakpointValue,
-  Flex
+  Flex,
+  Pressable
 } from 'native-base'
 import WithNavigation from '../../components/WithNavigation'
 import IconTagList from '../../widgets/IconTagList'
@@ -28,6 +29,8 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
+import CSSWrapper from '../../components/CSSWrapper'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -54,7 +57,7 @@ const Profile: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const { rootPath } = useLernfair()
   const [firstName, setFirstName] = useState<string>()
   const [lastName, setLastName] = useState<string>()
 
@@ -84,7 +87,7 @@ const Profile: React.FC<Props> = () => {
 
   const [changeAboutMe, _changeAboutMe] = useMutation(
     gql`
-      mutation changeAboutMe($aboutMe: String!) {
+      mutation changeAboutMePupil($aboutMe: String!) {
         meUpdate(update: { pupil: { aboutMe: $aboutMe } })
       }
     `,
@@ -112,9 +115,7 @@ const Profile: React.FC<Props> = () => {
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
     data?.me?.pupil?.aboutMe && (complete += 1)
     data?.me?.pupil?.languages?.length && (complete += 1)
-    data?.me?.pupil?.state &&
-      data?.me?.pupil?.state !== 'other' &&
-      (complete += 1)
+    data?.me?.pupil?.state && (complete += 1)
     data?.me?.pupil?.schooltype && (complete += 1)
     data?.me?.pupil?.gradeAsInt && (complete += 1)
     data?.me?.pupil?.subjectsFormatted?.length && (complete += 1)
@@ -169,6 +170,7 @@ const Profile: React.FC<Props> = () => {
       <WithNavigation
         isLoading={loading}
         showBack
+        onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
@@ -203,16 +205,19 @@ const Profile: React.FC<Props> = () => {
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <AlertMessage content={t('profile.successmessage')} />
         )}
+
         <VStack
           space={space['1']}
           width="100%"
           marginX="auto"
           maxWidth={ContainerWidth}>
-          <VStack paddingX={space['1.5']} space={space['1']}>
-            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={profileCompleteness} />
-            </ProfileSettingRow>
-          </VStack>
+          {profileCompleteness !== 100 && (
+            <VStack paddingX={space['1.5']} space={space['1']}>
+              <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                <UserProgress percent={profileCompleteness} />
+              </ProfileSettingRow>
+            </VStack>
+          )}
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem
@@ -241,11 +246,13 @@ const Profile: React.FC<Props> = () => {
                   <Row flexWrap="wrap" w="100%">
                     {data?.me?.pupil?.languages.map((lang: string) => (
                       <Column marginRight={3} mb={space['0.5']}>
-                        <IconTagList
-                          isDisabled
-                          iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
-                          text={t(`lernfair.languages.${lang.toLowerCase()}`)}
-                        />
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                            text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                          />
+                        </CSSWrapper>
                       </Column>
                     ))}
                   </Row>
@@ -258,13 +265,17 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.state && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      {(data?.me?.pupil?.state !== 'other' && (
-                        <IconTagList
-                          isDisabled
-                          iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
-                          text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
-                        />
-                      )) || <Text>Keine Angabe</Text>}
+                      {(data?.me?.pupil?.state && (
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                            text={t(
+                              `lernfair.states.${data?.me?.pupil?.state}`
+                            )}
+                          />
+                        </CSSWrapper>
+                      )) || <Text>{t('profile.noInfo')}</Text>}
                     </Column>
                   )) || <Text>{t('profile.Notice.noState')}</Text>}
                 </Row>
@@ -276,13 +287,15 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.schooltype && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      <IconTagList
-                        isDisabled
-                        iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
-                        text={t(
-                          `lernfair.schooltypes.${data?.me?.pupil?.schooltype}`
-                        )}
-                      />
+                      <CSSWrapper className="profil-tab-link">
+                        <IconTagList
+                          isDisabled
+                          iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
+                          text={t(
+                            `lernfair.schooltypes.${data?.me?.pupil?.schooltype}`
+                          )}
+                        />
+                      </CSSWrapper>
                     </Column>
                   )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
                 </Row>
@@ -294,13 +307,15 @@ const Profile: React.FC<Props> = () => {
                 <Row flexWrap="wrap" w="100%">
                   {(data?.me?.pupil?.gradeAsInt && (
                     <Column marginRight={3} mb={space['0.5']}>
-                      <IconTagList
-                        isDisabled
-                        textIcon={data?.me?.pupil?.gradeAsInt}
-                        text={t('lernfair.schoolclass', {
-                          class: data?.me?.pupil?.gradeAsInt
-                        })}
-                      />
+                      <CSSWrapper className="profil-tab-link">
+                        <IconTagList
+                          isDisabled
+                          textIcon={data?.me?.pupil?.gradeAsInt}
+                          text={t('lernfair.schoolclass', {
+                            class: data?.me?.pupil?.gradeAsInt
+                          })}
+                        />
+                      </CSSWrapper>
                     </Column>
                   )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
                 </Row>
@@ -315,13 +330,15 @@ const Profile: React.FC<Props> = () => {
                     data?.me?.pupil?.subjectsFormatted?.map(
                       (sub: { name: string; __typename: string }) => (
                         <Column marginRight={3} mb={space['0.5']}>
-                          <IconTagList
-                            isDisabled
-                            iconPath={`subjects/icon_${getSubjectKey(
-                              sub.name
-                            )}.svg`}
-                            text={sub.name}
-                          />
+                          <CSSWrapper className="profil-tab-link">
+                            <IconTagList
+                              isDisabled
+                              iconPath={`subjects/icon_${getSubjectKey(
+                                sub.name
+                              )}.svg`}
+                              text={sub.name}
+                            />
+                          </CSSWrapper>
                         </Column>
                       )
                     )) || <Text>{t('profile.Notice.noSchoolSubject')}</Text>}

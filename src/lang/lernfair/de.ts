@@ -10,6 +10,7 @@ const lernfair = {
     deutsch: 'Deutsch',
     englisch: 'Englisch',
     franz_sisch: 'Französisch',
+    französisch: 'Französisch',
     italienisch: 'Italienisch',
     kasachisch: 'Kasachisch',
     kurdisch: 'Kurdisch',
@@ -17,13 +18,14 @@ const lernfair = {
     portugiesisch: 'Portugiesisch',
     russisch: 'Russisch',
     spanisch: 'Spanisch',
-    t_rkisch: 'Türkisch',
+    // t_rkisch: 'Türkisch',
     ukrainisch: 'Ukrainisch',
     vietnamesisch: 'Vietnamesisch',
-    other: 'Andere'
+    other: 'Andere',
+    andere: 'Andere'
   },
   subjects: {
-    arbeitslehre: 'Arbeitslehre',
+    // arbeitslehre: 'Arbeitslehre',
     biologie: 'Biologie',
     chemie: 'Chemie',
     deutsch: 'Deutsch',
@@ -45,7 +47,7 @@ const lernfair = {
     russisch: 'Russisch',
     sachkunde: 'Sachkunde',
     spanisch: 'Spanisch',
-    tuerkisch: 'Türkisch',
+    // tuerkisch: 'Türkisch',
     wirtschaft: 'Wirtschaft',
     other: 'Andere'
   },
@@ -65,20 +67,26 @@ const lernfair = {
     sn: 'Sachsen',
     st: 'Sachsen-Anhalt',
     sh: 'Schleswig-Holstein',
-    th: 'Thüringen'
+    th: 'Thüringen',
+    other: 'Andere'
   },
   schooltypes: {
     grundschule: 'Grundschule',
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
-    other: 'Andere'
+    other: 'Andere',
+    berufsschule: 'Berufsschule',
+    f_rderschule: 'Förderschule'
   },
   schoolclass: '{{class}}. Klasse',
 
   reason: {
     'subcourse-full': {
       coursetext: 'Dieser Kurs ist leider grade ausgebucht.'
+    },
+    'grade-to-high': {
+      coursetext: 'Anmeldung derzeit nicht möglich.'
     },
     proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {

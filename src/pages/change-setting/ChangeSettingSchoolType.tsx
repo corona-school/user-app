@@ -55,9 +55,14 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
 
   const navigate = useNavigate()
 
-  const { data, loading } = useQuery(gql`
-    ${userType === 'student' ? queryStudent : queryPupil}
-  `)
+  const { data, loading } = useQuery(
+    gql`
+      ${userType === 'student' ? queryStudent : queryPupil}
+    `,
+    {
+      fetchPolicy: 'no-cache'
+    }
+  )
 
   const [updateSchooltype, _updateSchooltype] = useMutation(gql`
     ${userType === 'student' ? mutStudent : mutPupil}
@@ -66,9 +71,9 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
   const [selections, setSelections] = useState<string>('')
 
   useEffect(() => {
-    if (!userType) return
+    if (loading || !userType) return
     setSelections(data?.me[userType].schooltype)
-  }, [data?.me, userType])
+  }, [loading, data?.me, userType])
 
   useEffect(() => {
     if (_updateSchooltype.data && !_updateSchooltype.error) {
@@ -151,7 +156,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                           initial={false}
                           iconPath={`schooltypes/icon_${schooltype.key}.svg`}
                           text={schooltype.label}
-                          onPress={() => setSelections(schooltype.label)}
+                          onPress={() => setSelections(schooltype.key)}
                         />
                       </Column>
                     )

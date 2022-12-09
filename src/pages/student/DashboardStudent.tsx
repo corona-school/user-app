@@ -8,7 +8,9 @@ import {
   useToast,
   useBreakpointValue,
   Column,
-  Box
+  Box,
+  Tooltip,
+  Modal
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -33,6 +35,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import CSSWrapper from '../../components/CSSWrapper'
 import AlertMessage from '../../widgets/AlertMessage'
+import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal'
 
 type Props = {}
 
@@ -74,7 +77,6 @@ const query = gql`
           course {
             name
             description
-            outline
             tags {
               name
             }
@@ -89,7 +91,6 @@ const query = gql`
       course {
         name
         description
-        outline
         tags {
           name
         }
@@ -108,9 +109,11 @@ const DashboardStudent: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [toastShown, setToastShown] = useState<boolean>()
-  const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
+
+  const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -122,8 +125,8 @@ const DashboardStudent: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
-        matchDissolve(dissolveReason: $dissaolveReason, matchId: $matchId)
+      mutation dissolveMatchStudent($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
     {
@@ -233,9 +236,9 @@ const DashboardStudent: React.FC<Props> = () => {
       return undefined
     }
 
-    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-      return undefined
-    }
+    // if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
+    //   return undefined
+    // }
 
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
@@ -244,6 +247,51 @@ const DashboardStudent: React.FC<Props> = () => {
     () =>
       data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved),
     [data?.me?.student?.matches]
+  )
+
+  const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
+    mutation joinMeetingStudent($courseId: Float!, $meetingUrl: String!) {
+      subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
+    }
+  `)
+
+  const disableMeetingButton: boolean = useMemo(() => {
+    if (!nextAppointment) return true
+    return (
+      DateTime.fromISO(nextAppointment[0]?.start).diffNow('minutes').minutes >
+      60
+    )
+  }, [nextAppointment])
+
+  const _setMeetingLink = useCallback(
+    async (link: string) => {
+      if (!nextAppointment || !nextAppointment[1]) return
+
+      try {
+        const res = await setMeetingUrl({
+          variables: {
+            courseId: nextAppointment[1].id,
+            meetingUrl: link
+          }
+        })
+
+        setShowMeetingUrlModal(false)
+        if (res.data.subcourseSetMeetingURL && !res.errors) {
+          toast.show({
+            description: t('course.meeting.result.success')
+          })
+        } else {
+          toast.show({
+            description: t('course.meeting.result.error')
+          })
+        }
+      } catch (e) {
+        toast.show({
+          description: t('course.meeting.result.error')
+        })
+      }
+    },
+    [nextAppointment, setMeetingUrl, t, toast]
   )
 
   return (
@@ -257,10 +305,6 @@ const DashboardStudent: React.FC<Props> = () => {
               alignItems="center"
               bgColor={isMobile ? 'primary.900' : 'transparent'}
               paddingX={space['1']}>
-              {/* <ProfilAvatar
-              size="md"
-              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            /> */}
               <Box paddingY={space['1.5']}>
                 <Hello />
               </Box>
@@ -279,7 +323,6 @@ const DashboardStudent: React.FC<Props> = () => {
               <VStack marginBottom={space['1.5']}>
                 <HelperWizard />
               </VStack>
-
               {/* Next Appointment */}
               {data?.me?.student?.subcoursesInstructing?.length > 0 &&
                 nextAppointment && (
@@ -289,6 +332,28 @@ const DashboardStudent: React.FC<Props> = () => {
                     </Heading>
 
                     <AppointmentCard
+                      videoButton={
+                        <VStack w="100%" space={space['0.5']}>
+                          <Tooltip
+                            isDisabled={!disableMeetingButton}
+                            maxWidth={300}
+                            label={t('course.meeting.hint.student')}>
+                            <Button
+                              width="100%"
+                              marginTop={space['1']}
+                              onPress={() => {
+                                setShowMeetingUrlModal(true)
+                              }}
+                              isDisabled={
+                                disableMeetingButton ||
+                                _setMeetingUrl.loading ||
+                                (_setMeetingUrl.called && !_setMeetingUrl.data)
+                              }>
+                              {t('course.meeting.videobutton.student')}
+                            </Button>
+                          </Tooltip>
+                        </VStack>
+                      }
                       onPressToCourse={() => {
                         trackEvent({
                           category: 'dashboard',
@@ -309,7 +374,7 @@ const DashboardStudent: React.FC<Props> = () => {
                       isTeaser={true}
                       image={nextAppointment[1].course?.image}
                       title={nextAppointment[1].course?.name || ''}
-                      description={nextAppointment[1].course?.outline || ''}
+                      description={nextAppointment[1].course?.description || ''}
                     />
                   </VStack>
                 )}
@@ -318,7 +383,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 marginBottom={space['1.5']}>
                 {(sortedPublishedSubcourses?.length > 1 &&
                   sortedPublishedSubcourses
-                    ?.slice(0, 4)
+                    ?.slice(1, 5)
                     .map((el: LFSubCourse, i: number) => {
                       const course = el.course
                       if (!course) return <></>
@@ -356,7 +421,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               })
                             }}
                             key={`appointment-${el.id}`}
-                            description={course.outline}
+                            description={course.description}
                             tags={course.tags}
                             date={firstLecture.start}
                             image={course.image}
@@ -372,8 +437,8 @@ const DashboardStudent: React.FC<Props> = () => {
               </HSection>
               <HSection
                 title={t('dashboard.helpers.headlines.course')}
-                showAll={data?.me?.student?.canCreateCourse?.allowed}
-                onShowAll={() => navigate('/course-archive')}
+                showAll
+                onShowAll={() => navigate('/group')}
                 wrap
                 marginBottom={space['1.5']}
                 scrollable={false}>
@@ -393,7 +458,7 @@ const DashboardStudent: React.FC<Props> = () => {
                               isSpaceMarginBottom={false}
                               variant="horizontal"
                               key={index}
-                              description={sub.outline}
+                              description={sub.course.description}
                               tags={sub.course.tags}
                               date={firstLecture.start}
                               countCourse={sub.lectures.length}
@@ -454,30 +519,13 @@ const DashboardStudent: React.FC<Props> = () => {
                   />
                 )}
               </HSection>
-
-              {/* <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.helpers.headlines.importantNews')}
-            </Heading>
-            <CTACard
-              title={t('dashboard.helpers.headlines.newOffer')}
-              closeable={false}
-              content={<Text>{t('dashboard.helpers.contents.newOffer')}</Text>}
-              button={
-                <Button variant="outline">
-                  {t('dashboard.helpers.buttons.offer')}
-                </Button>
-              }
-              icon={<PartyIcon />}
-            />
-          </VStack> */}
               {
                 <VStack marginBottom={space['1.5']}>
                   <Heading>
                     {t('dashboard.helpers.headlines.myLearningPartner')}
                   </Heading>
                   <Text marginTop={space['0.5']} marginBottom={space['1']}>
-                    Offene Anfragen:{' '}
+                    {t('dashboard.helpers.headlines.openedRequests')}{' '}
                     {`${data?.me?.student?.openMatchRequestCount}`}
                   </Text>
                   <CSSWrapper className="course-list__wrapper">
@@ -521,7 +569,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         <Button
                           marginTop={space['1']}
                           width={ButtonContainer}
-                          isDisabled={isMatchRequested}
+                          isDisabled={_dissolve.loading}
                           marginY={space['1']}
                           onPress={requestMatch}>
                           {t('dashboard.helpers.buttons.requestMatch')}
@@ -572,6 +620,12 @@ const DashboardStudent: React.FC<Props> = () => {
           setShowDissolveModal(false)
         }}
         onPressBack={() => setShowDissolveModal(false)}
+      />
+      <SetMeetingLinkModal
+        isOpen={showMeetingUrlModal}
+        onClose={() => setShowMeetingUrlModal(false)}
+        disableButtons={_setMeetingUrl.loading}
+        onPressStartMeeting={link => _setMeetingLink(link)}
       />
     </AsNavigationItem>
   )

@@ -72,10 +72,10 @@ export const languages: Language[] = [
     key: 'spanisch',
     label: 'Spanisch'
   },
-  {
-    key: 't_rkisch',
-    label: 'Türkisch'
-  },
+  // {
+  //   key: 't_rkisch',
+  //   label: 'Türkisch'
+  // },
   {
     key: 'ukrainisch',
     label: 'Ukrainisch'

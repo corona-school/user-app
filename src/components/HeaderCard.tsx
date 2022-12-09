@@ -15,7 +15,7 @@ type Props = {
   title?: string
   leftContent?: ReactNode | ReactNode[]
   rightContent?: ReactNode | ReactNode[]
-  portal?: any
+  onBack?: () => any
   showBack?: boolean
 }
 
@@ -24,7 +24,7 @@ const HeaderCard: React.FC<Props> = ({
   title,
   leftContent,
   rightContent,
-  portal,
+  onBack,
   showBack
 }) => {
   const { space, sizes } = useTheme()
@@ -61,8 +61,8 @@ const HeaderCard: React.FC<Props> = ({
         zIndex="1">
         <Row alignItems="center" justifyContent={'center'} h="100%">
           {showBack && (
-            <Box mr={space['1']}>
-              <BackButton />
+            <Box mr={space['1']} position="absolute" left="0">
+              <BackButton onPress={onBack} />
             </Box>
           )}
 
