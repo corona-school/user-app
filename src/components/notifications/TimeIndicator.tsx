@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { getTimeText } from '../../helper/notification-helper'
 
 type TimeIndicatorProps = {
-  createdAt: string
+  sentAt: string
 }
 
-const TimeIndicator: React.FC<TimeIndicatorProps> = ({ createdAt }) => {
+const TimeIndicator: React.FC<TimeIndicatorProps> = ({ sentAt }) => {
   const { t } = useTranslation()
   const [toggleRerender, setToggleRerender] = useState<boolean>(false)
-  const time = getTimeText(createdAt)
+  const time = getTimeText(sentAt)
 
   const boxPropsAllDevices = {
     maxW: 80,

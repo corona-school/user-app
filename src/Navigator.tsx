@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 
 import CenterLoadingSpinner from './components/CenterLoadingSpinner'
@@ -15,10 +10,10 @@ import LoginToken from './pages/LoginToken'
 import { RequireAuth } from './User'
 
 // All other pages load lazy:
-const NavigatorLazy = lazy(() => import('./NavigatorLazy'));
+const NavigatorLazy = lazy(() => import('./NavigatorLazy'))
 
 // But as after login the user will visit the dashboard anyways, let's start loading it already
-import('./NavigatorLazy');
+import('./NavigatorLazy')
 
 export default function Navigator() {
   return (
@@ -29,16 +24,24 @@ export default function Navigator() {
 
         <Route path="/welcome" element={<Welcome />} />
 
-        <Route path="/" element={<RequireAuth>
-            <Navigate to="/start" />
-          </RequireAuth>}/>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Navigate to="/start" />
+            </RequireAuth>
+          }
+        />
 
-        <Route path="*" element={
-          <Suspense fallback={<CenterLoadingSpinner />}>
-            <NavigatorLazy />
-          </Suspense>} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<CenterLoadingSpinner />}>
+              <NavigatorLazy />
+            </Suspense>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
 }
-

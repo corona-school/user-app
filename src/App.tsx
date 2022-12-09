@@ -12,7 +12,7 @@ import { LFModalProvider } from './hooks/useModal'
 import { LernfairProvider } from './hooks/useLernfair'
 import { IssueReporter } from './IssueReporter'
 import { NotificationsProvider } from './components/NotificationsProvider'
-import { ToastNotifications } from "./components/ToastNotifications"
+import { ToastNotifications } from './components/ToastNotifications'
 
 function App() {
   return (
@@ -22,10 +22,10 @@ function App() {
           <NativeBaseProvider theme={Theme}>
             <IssueReporter>
               <MatomoProvider value={matomo}>
-                <Navigator />
-                <FullPageModal />
                 <NotificationsProvider>
-                  <ToastNotifications/>
+                  <Navigator />
+                  <FullPageModal />
+                  <ToastNotifications />
                 </NotificationsProvider>
               </MatomoProvider>
             </IssueReporter>

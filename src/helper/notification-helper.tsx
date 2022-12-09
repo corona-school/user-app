@@ -6,6 +6,7 @@ import {
   messageIcons,
   systemNotificationPreference
 } from './notification-preferences'
+import { MessageType, UserNotification } from '../types/lernfair/Notification'
 
 function getIconForMessageType(messageType: string): ReactElement {
   const messageIcon: JSX.Element = messageIcons[messageType]
@@ -18,9 +19,9 @@ const getNotificationPreferencesData = (category: string) => {
   return { systemPreferences, marketingPreferences }
 }
 
-const getTimeDifference = (timestamp: string) => {
+const getTimeDifference = (timestring: string) => {
   const now = DateTime.now()
-  const createdAt = DateTime.fromISO(timestamp)
+  const createdAt = DateTime.fromISO(timestring)
   const timeDiff = now.diff(createdAt, 'minutes')
   const minutesDiff = now.diff(createdAt, 'minutes').minutes
   const hoursDiff = now.diff(createdAt, 'hours').hours
@@ -33,11 +34,11 @@ const getTimeDifference = (timestamp: string) => {
 
 type TimeText = { text: string; options?: TOptions }
 
-const getTimeText = (timestamp: string): TimeText | string => {
-  const diff = getTimeDifference(timestamp)
+const getTimeText = (timestring: string): TimeText | string => {
+  const diff = getTimeDifference(timestring)
   const minutes = diff.minutesDiff
   const days = diff.daysDiff
-  const timeAsString = DateTime.fromISO(timestamp).toFormat('T')
+  const timeAsString = DateTime.fromISO(timestring).toFormat('T')
 
   if (minutes < 1) {
     return { text: 'notification.timedifference.now' }
@@ -61,4 +62,52 @@ const getTimeText = (timestamp: string): TimeText | string => {
   }
   return timeAsString
 }
-export { getIconForMessageType, getNotificationPreferencesData, getTimeText }
+
+const isNewNotification = (sentAt: string, lastOpen: string) => {
+  if (sentAt > lastOpen) {
+    return false
+  } else if (sentAt < lastOpen) {
+    return true
+  }
+}
+
+const getNewNotifications = (
+  userNotifications: UserNotification[],
+  lastTimeChecked: string
+) => {
+  const newNotifications = userNotifications.filter(
+    notification =>
+      new Date(notification.sentAt).getTime() >
+      new Date(lastTimeChecked).getTime()
+  )
+  return newNotifications
+}
+
+const getAllNewUserNotificationsButMinimumFiveNotifications = (
+  userNotifications: UserNotification[],
+  lastTimeChecked: string
+) => {
+  const userNotificationsToRender = getNewNotifications(
+    userNotifications,
+    lastTimeChecked
+  )
+
+  if (userNotifications.length < 5) {
+    return userNotifications
+  } else {
+    for (let i = userNotificationsToRender.length; i < 5; i++) {
+      userNotificationsToRender.push(userNotifications[i])
+    }
+  }
+
+  return userNotificationsToRender
+}
+
+export {
+  getIconForMessageType,
+  getNotificationPreferencesData,
+  getTimeText,
+  isNewNotification,
+  getNewNotifications,
+  getAllNewUserNotificationsButMinimumFiveNotifications
+}

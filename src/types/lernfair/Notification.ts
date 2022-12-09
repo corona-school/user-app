@@ -1,13 +1,16 @@
 export type UserNotification = {
   id: number
-  headline: string
-  body: string
-  createdAt: string
-  notification: Notification
+  message: Message
+  sentAt: string
 }
 
-export type Notification = {
-  messageType: string
+type Message = {
+  headline: string
+  body: string
+  messageType: MessageType
+  navigateTo?: string
+  isUrlExternal?: boolean
+  error?: string
 }
 
 export enum MessageType {
