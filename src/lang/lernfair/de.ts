@@ -1,4 +1,9 @@
 const lernfair = {
+  buttons: {
+    prev: 'zurück',
+    next: 'weiter', 
+    register: 'Registrieren'
+  },
   languages: {
     albanisch: 'Albanisch',
     arabisch: 'Arabisch',
@@ -75,6 +80,7 @@ const lernfair = {
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
+    gesamtschule: 'Gesamtschule',
     other: 'Andere',
     berufsschule: 'Berufsschule',
     f_rderschule: 'Förderschule'

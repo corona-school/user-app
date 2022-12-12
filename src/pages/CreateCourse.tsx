@@ -267,7 +267,7 @@ const CreateCourse: React.FC<Props> = () => {
 
   const queryCourse = useCallback(async () => {
     if (!prefillCourseId) return
-    if (!studentData?.me.student.id) return;
+    if (!studentData?.me.student.id) return
 
     setIsLoading(true)
     const {
@@ -364,11 +364,13 @@ const CreateCourse: React.FC<Props> = () => {
       maxGrade: number
       maxParticipants: number
       joinAfterStart: boolean
+      lectures: LFLecture[]
     } = {
       minGrade: courseClasses[0],
       maxGrade: courseClasses[1],
       maxParticipants: parseInt(maxParticipantCount),
-      joinAfterStart
+      joinAfterStart,
+      lectures: []
     }
 
     return subcourse

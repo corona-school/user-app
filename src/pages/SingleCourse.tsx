@@ -235,6 +235,11 @@ const SingleCourse: React.FC = () => {
     lg: '260px'
   })
 
+  const buttonWrap = useBreakpointValue({
+    base: 'column',
+    lg: 'row'
+  })
+
   useEffect(() => {
     trackPageView({
       documentTitle: course?.course?.name
@@ -626,7 +631,7 @@ const SingleCourse: React.FC = () => {
               Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du
               kannst anschließend nicht mehr am Kurs teilnehmen.
             </Text>
-            <Row space="3" justifyContent="flex-end">
+            <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
               <Column>
                 <Button
                   height="100%"

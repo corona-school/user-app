@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  Column,
   Heading,
+  Row,
   Text,
   useBreakpointValue,
   useTheme,
@@ -128,12 +130,31 @@ const UserType: React.FC = () => {
             iconPath={'ic_tutor.svg'}
           />
         </TwoColGrid>
-        <Button
-          onPress={() => {
-            userType === 'pupil' ? showBarrier() : setCurrentIndex(1)
-          }}>
-          Weiter
-        </Button>
+        <Box alignItems="center" marginTop={space['2']}>
+          <Row space={space['1']} justifyContent="center">
+            <Column width="100%">
+              <Button
+                width="100%"
+                height="100%"
+                variant="ghost"
+                colorScheme="blueGray"
+                onPress={() => {
+                  navigate('/welcome')
+                }}>
+                {t('lernfair.buttons.prev')}
+              </Button>
+            </Column>
+            <Column width="100%">
+              <Button
+                width="100%"
+                onPress={() => {
+                  userType === 'pupil' ? showBarrier() : setCurrentIndex(1)
+                }}>
+                {t('lernfair.buttons.next')}
+              </Button>
+            </Column>
+          </Row>
+        </Box>
       </Box>
     </VStack>
   )
