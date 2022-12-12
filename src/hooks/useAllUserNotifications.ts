@@ -1,11 +1,10 @@
-import { ApolloError, gql, useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import { gql, useQuery } from '@apollo/client'
 import { UserNotification } from '../types/lernfair/Notification'
+import { useEffect, useState } from "react"
 
 const userNotificationQuery = gql`
   query {
     me {
-      userID
       concreteNotifications(take: 100) {
         id
         message {
@@ -18,16 +17,20 @@ const userNotificationQuery = gql`
   }
 `
 
-const useAllUserNotifications = (): {
-  userNotifications: UserNotification[] | undefined
-  loading: boolean
-  error: ApolloError | undefined
-} => {
+const useAllUserNotifications = (): UserNotification[] | undefined => {
   const { data, loading, error } = useQuery(userNotificationQuery)
+  const [userNotifications, setUserNotifications] = useState()
 
-  const userNotifications = data?.me.concreteNotifications
+  useEffect(() => {
+    if (
+      !loading &&
+      !error
+    ) {
+      setUserNotifications(data?.me?.concreteNotifications)
+    }
+  }, [loading, data, error])
 
-  return { userNotifications, loading, error }
+  return userNotifications
 }
 
 export { useAllUserNotifications }
