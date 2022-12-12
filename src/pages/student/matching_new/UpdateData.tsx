@@ -1,5 +1,5 @@
-import { FetchResult, gql, useMutation } from '@apollo/client'
-import { DocumentNode, GraphQLError } from 'graphql'
+import { gql, useMutation } from '@apollo/client'
+import { DocumentNode } from 'graphql'
 import {
   Text,
   VStack,
@@ -14,25 +14,17 @@ import {
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CSSWrapper from '../../../components/CSSWrapper'
-import { schooltypes } from '../../../types/lernfair/SchoolType'
 import { states } from '../../../types/lernfair/State'
 import IconTagList from '../../../widgets/IconTagList'
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem'
 import { RequestMatchContext } from './RequestMatch'
 
 type Props = {
-  schooltype: string
-  gradeAsInt: number
   state: string
   refetchQuery: DocumentNode
 }
 
-const UpdateData: React.FC<Props> = ({
-  schooltype,
-  gradeAsInt,
-  state,
-  refetchQuery
-}) => {
+const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
   const { setCurrentIndex } = useContext(RequestMatchContext)
   const { space } = useTheme()
   const { t } = useTranslation()
@@ -40,31 +32,13 @@ const UpdateData: React.FC<Props> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [showModal, setShowModal] = useState<boolean>()
-  const [modalType, setModalType] = useState<
-    'schooltype' | 'schoolclass' | 'state'
-  >()
+  const [modalType, setModalType] = useState<'state'>()
   const [modalSelection, setModalSelection] = useState<string>()
 
-  const [meUpdateSchooltype] = useMutation(
-    gql`
-      mutation changeSchooltypeData($data: SchoolType!) {
-        meUpdate(update: { pupil: { schooltype: $data } })
-      }
-    `,
-    { refetchQueries: [refetchQuery] }
-  )
-  const [meUpdateSchoolClass] = useMutation(
-    gql`
-      mutation changeSchoolClassData($data: Int!) {
-        meUpdate(update: { pupil: { gradeAsInt: $data } })
-      }
-    `,
-    { refetchQueries: [refetchQuery] }
-  )
   const [meUpdateState] = useMutation(
     gql`
-      mutation changePupilStateData($data: State!) {
-        meUpdate(update: { pupil: { state: $data } })
+      mutation changeStudentStateData($data: StudentState!) {
+        meUpdate(update: { student: { state: $data } })
       }
     `,
     { refetchQueries: [refetchQuery] }
@@ -72,13 +46,6 @@ const UpdateData: React.FC<Props> = ({
 
   const listItems = useMemo(() => {
     switch (modalType) {
-      case 'schooltype':
-        return schooltypes
-      case 'schoolclass':
-        return Array.from({ length: 13 }, (_, i) => ({
-          label: `${i + 1}. Klasse`,
-          key: `${i + 1}`
-        }))
       case 'state':
         return states
       default:
@@ -88,17 +55,10 @@ const UpdateData: React.FC<Props> = ({
 
   const data = useMemo(() => {
     switch (modalType) {
-      case 'schooltype':
-        return schooltype
-
-      case 'schoolclass':
-        return `${gradeAsInt}`
       case 'state':
         return state
-      default:
-        return schooltype
     }
-  }, [modalType, gradeAsInt, schooltype, state])
+  }, [modalType, state])
 
   useEffect(() => {
     setModalSelection(data)
@@ -110,16 +70,6 @@ const UpdateData: React.FC<Props> = ({
     setIsLoading(true)
     try {
       switch (modalType) {
-        case 'schooltype':
-          await meUpdateSchooltype({
-            variables: { data: modalSelection }
-          })
-          break
-        case 'schoolclass':
-          await meUpdateSchoolClass({
-            variables: { data: parseInt(modalSelection) }
-          })
-          break
         case 'state':
           await meUpdateState({ variables: { data: modalSelection } })
           break
@@ -132,15 +82,7 @@ const UpdateData: React.FC<Props> = ({
     }
     setShowModal(false)
     setIsLoading(false)
-  }, [
-    meUpdateSchoolClass,
-    meUpdateSchooltype,
-    meUpdateState,
-    modalSelection,
-    modalType,
-    t,
-    toast
-  ])
+  }, [meUpdateState, modalSelection, modalType, t, toast])
 
   return (
     <>
@@ -152,49 +94,6 @@ const UpdateData: React.FC<Props> = ({
           und zu vervollständigen.
         </Text>
         <Heading>Persönliche Daten</Heading>
-
-        <ProfileSettingItem
-          title={t('profile.SchoolType.label')}
-          href={() => {
-            setModalType('schooltype')
-            setShowModal(true)
-          }}>
-          <Row flexWrap="wrap" w="100%">
-            {(schooltype && (
-              <Column marginRight={3} mb={space['0.5']}>
-                <CSSWrapper className="profil-tab-link">
-                  <IconTagList
-                    isDisabled
-                    iconPath={`schooltypes/icon_${schooltype}.svg`}
-                    text={t(`lernfair.schooltypes.${schooltype}`)}
-                  />
-                </CSSWrapper>
-              </Column>
-            )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
-          </Row>
-        </ProfileSettingItem>
-        <ProfileSettingItem
-          title={t('profile.SchoolClass.label')}
-          href={() => {
-            setModalType('schoolclass')
-            setShowModal(true)
-          }}>
-          <Row flexWrap="wrap" w="100%">
-            {(gradeAsInt && (
-              <Column marginRight={3} mb={space['0.5']}>
-                <CSSWrapper className="profil-tab-link">
-                  <IconTagList
-                    isDisabled
-                    textIcon={`${gradeAsInt}`}
-                    text={t('lernfair.schoolclass', {
-                      class: gradeAsInt
-                    })}
-                  />
-                </CSSWrapper>
-              </Column>
-            )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
-          </Row>
-        </ProfileSettingItem>
 
         <ProfileSettingItem
           title={t('profile.State.label')}
@@ -219,7 +118,8 @@ const UpdateData: React.FC<Props> = ({
           </Row>
         </ProfileSettingItem>
 
-        <Button onPress={() => setCurrentIndex(2)} isDisabled={isLoading}>
+        {/*                      1 = subjects */}
+        <Button onPress={() => setCurrentIndex(1)} isDisabled={isLoading}>
           Weiter
         </Button>
       </VStack>

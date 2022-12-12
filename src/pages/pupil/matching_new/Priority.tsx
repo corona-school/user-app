@@ -4,7 +4,7 @@ import { View, Text, VStack, Heading, Column } from 'native-base'
 import { useContext } from 'react'
 import IconTagList from '../../../widgets/IconTagList'
 import TwoColGrid from '../../../widgets/TwoColGrid'
-import { RequestMatchContext } from './Matching'
+import { RequestMatchContext } from './RequestMatch'
 
 const Priority: React.FC = () => {
   const { space } = useTheme()
@@ -40,7 +40,7 @@ const Priority: React.FC = () => {
       </TwoColGrid>
       <Button
         isDisabled={!matching.priority.key}
-        onPress={() => setCurrentIndex(6)} // 6 = details
+        onPress={() => setCurrentIndex(5)} // 5 = details
       >
         Weiter
       </Button>

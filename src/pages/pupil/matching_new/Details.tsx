@@ -12,7 +12,7 @@ import { useCallback, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../../hooks/useModal'
 import { LFSubject } from '../../../types/lernfair/Subject'
-import { RequestMatchContext } from './Matching'
+import { RequestMatchContext } from './RequestMatch'
 
 type Props = {}
 
@@ -24,7 +24,7 @@ const Details: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const [update, _update] = useMutation(gql`
-    mutation update($subjects: [SubjectInput!]) {
+    mutation updatePupil($subjects: [SubjectInput!]) {
       meUpdate(update: { pupil: { subjects: $subjects } })
       pupilCreateMatchRequest
     }
@@ -34,14 +34,14 @@ const Details: React.FC<Props> = () => {
     setVariant('dark')
 
     setContent(
-      <VStack>
-        <Heading fontSize={'2xl'}>
+      <VStack paddingTop={space['2']} space={space['1']}>
+        <Heading fontSize={'2xl'} color="lightText">
           Geschafft, du bist auf der Warteliste!
         </Heading>
 
         <Button>Zu den Gruppenkursen</Button>
         <Button
-          variant={'outline'}
+          variant={'outlinelight'}
           onPress={() => {
             navigate('/start')
             setShow(false)
@@ -51,7 +51,7 @@ const Details: React.FC<Props> = () => {
       </VStack>
     )
     setShow(true)
-  }, [navigate, setContent, setShow, setVariant])
+  }, [navigate, setContent, setShow, setVariant, space])
 
   const requestMatch = useCallback(async () => {
     const subs: LFSubject[] = []

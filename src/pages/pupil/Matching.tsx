@@ -6,14 +6,12 @@ import {
   Button,
   Modal,
   useTheme,
-  Heading,
   useBreakpointValue
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import WithNavigation from '../../components/WithNavigation'
 import Hello from '../../widgets/Hello'
 import MatchingOnboarding from './MatchingOnboarding'
@@ -75,18 +73,15 @@ const Matching: React.FC<Props> = () => {
           showBack={backArrow}
           headerContent={<Hello />}
           isLoading={loading || isLoading}>
-          {!loading &&
-            !isLoading &&
-            ((data?.me?.pupil.openMatchRequestCount === 0 && (
+          {
+            !loading && !isLoading && (
+              // (data?.me?.pupil.openMatchRequestCount === 0 && (
               <>
-                {currentIndex === 0 && (
-                  <MatchingOnboarding
-                    onRequestMatch={() => setShowModal(true)}
-                  />
-                )}
-                {currentIndex === 1 && <MatchingWizard />}
+                <MatchingOnboarding onRequestMatch={() => setShowModal(true)} />
               </>
-            )) || <MatchingPending refetchQuery={query} />)}
+            )
+            // )|| <MatchingPending refetchQuery={query} />)
+          }
         </WithNavigation>
       </AsNavigationItem>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -106,7 +101,6 @@ const Matching: React.FC<Props> = () => {
 
               <Button
                 onPress={() => {
-                  setCurrentIndex(1)
                   setShowModal(false)
                   trackEvent({
                     category: 'matching',
@@ -114,6 +108,7 @@ const Matching: React.FC<Props> = () => {
                     name: 'Schüler Matching – Klick auf weiter im Fenster',
                     documentTitle: 'Schüler Matching'
                   })
+                  navigate('/request-match')
                 }}>
                 {t('matching.modal.buttons.continue')}
               </Button>

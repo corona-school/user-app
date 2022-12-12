@@ -3,7 +3,7 @@ import { useCallback, useContext, useState } from 'react'
 import AlertMessage from '../../../widgets/AlertMessage'
 import IconTagList from '../../../widgets/IconTagList'
 import TwoColGrid from '../../../widgets/TwoColGrid'
-import { RequestMatchContext } from './Matching'
+import { RequestMatchContext } from './RequestMatch'
 
 const German: React.FC = () => {
   const { space } = useTheme()
@@ -18,7 +18,7 @@ const German: React.FC = () => {
     if (isNativeLanguage === 'no') {
       setShowSecond(true)
     } else {
-      setCurrentIndex(4)
+      setCurrentIndex(3)
     }
   }, [isNativeLanguage, setCurrentIndex])
 
@@ -27,15 +27,15 @@ const German: React.FC = () => {
       case '<1':
       case '1-2':
         setMatching(prev => ({ ...prev, setDazPriority: true }))
-        setCurrentIndex(6) // 6 = details, skip subjects, priorities
+        setCurrentIndex(5) // 5 = details, skip subjects, priorities
         break
       case '2-4':
         setMatching(prev => ({ ...prev, setDazPriority: true }))
-        setCurrentIndex(4) // 4 = subjects
+        setCurrentIndex(3) // 3 = subjects
         break
       case '>4':
       default:
-        setCurrentIndex(4)
+        setCurrentIndex(3)
         break
     }
   }, [learningSince, setCurrentIndex, setMatching])

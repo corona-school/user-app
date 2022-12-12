@@ -13,10 +13,8 @@ const Subjects: React.FC = () => {
   return (
     <VStack paddingX={space['1']} space={space['0.5']}>
       <Heading fontSize="2xl">Fachauswahl</Heading>
-      <Heading>In welchen Fächern brauchst du Hilfe?</Heading>
-      {matching.setDazPriority && (
-        <Text>Du kannst maximal 1 Fach auswählen.</Text>
-      )}
+      <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
+
       <TwoColGrid>
         {subjects.map((subject: { label: string; key: string }) => (
           <Column>
@@ -24,6 +22,7 @@ const Subjects: React.FC = () => {
               initial={matching.subjects.includes(subject)}
               variant="selection"
               text={subject.label}
+              iconPath={`subjects/icon_${subject.key}.svg`}
               onPress={() => {
                 if (!matching.subjects.includes(subject)) {
                   setMatching(prev => ({
@@ -42,7 +41,7 @@ const Subjects: React.FC = () => {
       </TwoColGrid>
       <Button
         isDisabled={matching.subjects.length === 0}
-        onPress={() => setCurrentIndex(4)} // 4 = priorities
+        onPress={() => setCurrentIndex(2)} // 2 = german
       >
         Weiter
       </Button>
