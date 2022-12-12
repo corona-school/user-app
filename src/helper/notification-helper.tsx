@@ -1,5 +1,4 @@
 import { MessageType, UserNotification } from '../types/lernfair/Notification'
-import BellIcon from '../assets/icons/lernfair/lf-bell.svg'
 import MessageIcon from '../assets/icons/lernfair/notifications/lf_message.svg'
 import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg'
 import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'

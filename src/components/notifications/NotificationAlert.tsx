@@ -18,7 +18,7 @@ import { getNewNotifications } from '../../helper/notification-helper'
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
   const message = useContext(NotificationsContext)
-  const { userNotifications } = useAllUserNotifications()
+  const userNotifications = useAllUserNotifications()
 
   const {
     lastTimeChecked,
