@@ -26,6 +26,7 @@ const Details: React.FC<Props> = () => {
   const [update, _update] = useMutation(gql`
     mutation update($subjects: [SubjectInput!]) {
       meUpdate(update: { pupil: { subjects: $subjects } })
+      pupilCreateMatchRequest
     }
   `)
 
