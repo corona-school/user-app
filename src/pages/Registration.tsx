@@ -283,9 +283,9 @@ const Registration: React.FC = () => {
             uri: require('../assets/images/globals/lf-bg.png')
           }}
         />
-        <Box position="absolute" left={space['1']} top={space['1']}>
+        {/* <Box position="absolute" left={space['1']} top={space['1']}>
           <BackButton onPress={goBack} />
-        </Box>
+        </Box> */}
         <Logo />
         <Heading mt={space['1']}>
           {t(`registration.steps.${currentIndex}.title`)}
