@@ -47,7 +47,7 @@ const UpdateData: React.FC<Props> = ({
 
   const [meUpdateSchooltype] = useMutation(
     gql`
-      mutation changeData($data: SchoolType!) {
+      mutation changeSchooltypeData($data: SchoolType!) {
         meUpdate(update: { pupil: { schooltype: $data } })
       }
     `,
@@ -55,7 +55,7 @@ const UpdateData: React.FC<Props> = ({
   )
   const [meUpdateSchoolClass] = useMutation(
     gql`
-      mutation changeData($data: Int!) {
+      mutation changeSchoolClassData($data: Int!) {
         meUpdate(update: { pupil: { gradeAsInt: $data } })
       }
     `,
@@ -63,7 +63,7 @@ const UpdateData: React.FC<Props> = ({
   )
   const [meUpdateState] = useMutation(
     gql`
-      mutation changeData($data: State!) {
+      mutation changeStateData($data: State!) {
         meUpdate(update: { pupil: { state: $data } })
       }
     `,
