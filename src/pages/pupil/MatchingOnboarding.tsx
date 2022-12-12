@@ -1,21 +1,6 @@
-import {
-  Text,
-  VStack,
-  Box,
-  Button,
-  useTheme,
-  useBreakpointValue,
-  Heading,
-  Image,
-  Alert,
-  HStack,
-  AspectRatio
-} from 'native-base'
+import { Text, VStack, Button, useTheme, useBreakpointValue } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import CTACard from '../../widgets/CTACard'
 
-import Icon from '../../assets/icons/lernfair/lf-books.svg'
-import { useNavigate } from 'react-router-dom'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
@@ -26,7 +11,7 @@ type Props = {
 }
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
-  const { data, error, loading } = useQuery(gql`
+  const { data } = useQuery(gql`
     query {
       me {
         pupil {
@@ -49,7 +34,6 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
 
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
-  const navigate = useNavigate()
 
   const ContainerWidth = useBreakpointValue({
     base: '100%',
@@ -66,22 +50,13 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const CardGrid = useBreakpointValue({
-    base: '100%',
-    lg: '48%'
-  })
-
-  const ImageHeader = useBreakpointValue({
-    base: '20px',
-    lg: '500px'
-  })
-
   const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Schüler Matching'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -91,28 +66,6 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
       width="100%"
       marginX="auto"
       maxWidth={ContainerWidth}>
-      <Heading paddingBottom={space['0.5']}>
-        {t('matching.blocker.title')}
-      </Heading>
-      {/* <AspectRatio
-        ratio={{
-          base: 16 / 9,
-          md: 16 / 6
-        }}
-        height={{
-          base: 1,
-          md: 1
-        }}>
-        <Image
-          maxWidth={sizes['imageHeaderWidth']}
-          borderRadius="10px"
-          marginBottom={space['1']}
-          resizeMode="cover"
-          source={{
-            uri: require('../../assets/images/matching/1-1-matching.jpg')
-          }}
-        />
-      </AspectRatio> */}
       <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
         {t('matching.blocker.firstContent')}
       </Text>
@@ -129,9 +82,8 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
         <Button
           isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed}
           width={ButtonContainer}
-          variant="outline"
           onPress={onRequestMatch}>
-          {t('matching.blocker.button')}
+          Match anfordern
         </Button>
         {!data?.me?.pupil?.canRequestMatch?.allowed && (
           <AlertMessage
@@ -141,19 +93,6 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
           />
         )}
       </VStack>
-      <Box paddingBottom={space['3']}>
-        <CTACard
-          variant="dark"
-          icon={<Icon />}
-          title={t('matching.blocker.ctaCardHeader')}
-          content={<Text>{t('matching.blocker.ctaCardContent')}</Text>}
-          button={
-            <Button onPress={() => navigate('/group')}>
-              {t('matching.blocker.ctaCardButton')}
-            </Button>
-          }
-        />
-      </Box>
     </VStack>
   )
 }
