@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useEffect, useState } from "react"
 
 const getLastTimeCheckedQuery = gql`
   query {
@@ -15,21 +16,34 @@ const meLastTimeCheckedNotifications = gql`
   }
 `
 
-const useLastTimeCheckedNotifications = () => {
-  const { data, loading, error } = useQuery(getLastTimeCheckedQuery)
-
-  const lastTimeChecked: string = data?.me?.lastTimeCheckedNotifications
+export const useLastTimeCheckedNotifications = () => {
+  const defaultDate = new Date(0).toISOString()
+  const [lastTimeCheckedNotifications, setLastTimeCheckedNotifications] = useState(defaultDate)
+  const { data, loading, error } = useQuery(getLastTimeCheckedQuery, {skip: lastTimeCheckedNotifications !== defaultDate})
 
   const [updateLastTimeCheckedNotifications] = useMutation(
     meLastTimeCheckedNotifications
   )
 
+  const updateLastTimeChecked = () => {
+    const now = new Date().toISOString()
+    updateLastTimeCheckedNotifications({
+      variables: { lastTimeCheckedNotifications: now }
+    }).then(() => setLastTimeCheckedNotifications(now))
+  }
+
+  useEffect(() => {
+    if (
+      !loading &&
+      !error && data?.me?.lastTimeCheckedNotifications
+    ) {
+      setLastTimeCheckedNotifications(data?.me?.lastTimeCheckedNotifications)
+    }
+  }, [loading, data?.me?.lastTimeCheckedNotifications, error])
+
   return {
-    lastTimeChecked,
-    loading,
-    error,
-    updateLastTimeCheckedNotifications
+    lastTimeCheckedNotifications,
+    updateLastTimeChecked
   }
 }
 
-export { useLastTimeCheckedNotifications }

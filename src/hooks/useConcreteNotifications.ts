@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client'
-import { UserNotification } from '../types/lernfair/Notification'
 import { useEffect, useState } from "react"
 
 const userNotificationQuery = gql`
@@ -17,8 +16,8 @@ const userNotificationQuery = gql`
   }
 `
 
-const useAllUserNotifications = (): UserNotification[] | undefined => {
-  const { data, loading, error } = useQuery(userNotificationQuery)
+export const useConcreteNotifications = () => {
+  const { data, loading, error, refetch } = useQuery(userNotificationQuery)
   const [userNotifications, setUserNotifications] = useState()
 
   useEffect(() => {
@@ -30,7 +29,5 @@ const useAllUserNotifications = (): UserNotification[] | undefined => {
     }
   }, [loading, data, error])
 
-  return userNotifications
+  return { userNotifications, refetch, loading }
 }
-
-export { useAllUserNotifications }
