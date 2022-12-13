@@ -259,14 +259,15 @@ const Matching: React.FC<Props> = () => {
                                         {t('matching.request.check.subjects')}
                                       </Text>
                                       <Row space={space['0.5']}>
-                                        {data?.me?.pupil?.subjectsFormatted.map(
-                                          (sub: LFSubject) => (
-                                            <Tag
-                                              variant="secondary"
-                                              text={sub.name}
-                                            />
-                                          )
-                                        )}
+                                        {data?.me?.pupil?.subjectsFormatted &&
+                                          data?.me?.pupil?.subjectsFormatted.map(
+                                            (sub: LFSubject) => (
+                                              <Tag
+                                                variant="secondary"
+                                                text={sub.name}
+                                              />
+                                            )
+                                          )}
                                       </Row>
                                     </Row>
                                     <Button

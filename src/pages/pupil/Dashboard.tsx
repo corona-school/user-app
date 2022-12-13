@@ -466,9 +466,7 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching', {
-                          state: { skipOnboarding: true }
-                        })
+                        navigate('/request-match')
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
