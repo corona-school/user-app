@@ -1,4 +1,11 @@
-import { Text, VStack, Button, useTheme, useBreakpointValue } from 'native-base'
+import {
+  Text,
+  VStack,
+  Button,
+  useTheme,
+  useBreakpointValue,
+  Heading
+} from 'native-base'
 import { useTranslation } from 'react-i18next'
 
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
@@ -66,6 +73,9 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
       width="100%"
       marginX="auto"
       maxWidth={ContainerWidth}>
+      <Heading paddingBottom={space['0.5']}>
+        {t('matching.request.check.title')}
+      </Heading>
       <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
         {t('matching.blocker.firstContent')}
       </Text>

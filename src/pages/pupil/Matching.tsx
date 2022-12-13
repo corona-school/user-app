@@ -170,9 +170,7 @@ const Matching: React.FC<Props> = () => {
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation
-          showBack={backArrow}
-          headerTitle={t('matching.request.check.header')}>
+        <WithNavigation headerTitle={t('matching.request.check.header')}>
           <MatchingOnboarding
             onRequestMatch={() => navigate('/request-match')}
           />
