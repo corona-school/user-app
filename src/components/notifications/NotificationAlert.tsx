@@ -10,7 +10,7 @@ import { IButtonProps } from 'native-base/lib/typescript/components/primitives/B
 import { useContext, useEffect, useState } from 'react'
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg'
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
-import { useAllUserNotifications } from '../../hooks/useAllUserNotifications'
+import { useConcreteNotifications } from '../../hooks/useConcreteNotifications'
 import NotificationPanel from './NotificationPanel'
 import { NotificationsContext } from '../NotificationsProvider'
 import { getNewNotifications } from '../../helper/notification-helper'
@@ -18,13 +18,11 @@ import { getNewNotifications } from '../../helper/notification-helper'
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
   const message = useContext(NotificationsContext)
-  const userNotifications = useAllUserNotifications()
+  const { userNotifications, refetch, loading } = useConcreteNotifications()
 
   const {
-    lastTimeChecked,
-    loading,
-    error,
-    updateLastTimeCheckedNotifications
+    lastTimeCheckedNotifications,
+    updateLastTimeChecked
   } = useLastTimeCheckedNotifications()
 
   const badgeAlign = useBreakpointValue({
@@ -32,13 +30,11 @@ const NotificationAlert: React.FC = () => {
     lg: 2
   })
 
-  const handleClose = () => {
-    const now = new Date().toISOString()
-    setCount(0)
-    updateLastTimeCheckedNotifications({
-      variables: { lastTimeCheckedNotifications: now }
-    })
-  }
+  useEffect(() => {
+    if (message?.id) {
+      setCount((count + 1))
+    }
+  },[message?.id])
 
   useEffect(() => {
     if (!userNotifications) {
@@ -47,10 +43,10 @@ const NotificationAlert: React.FC = () => {
 
     const unreadNotifications = getNewNotifications(
       userNotifications,
-      lastTimeChecked
+      lastTimeCheckedNotifications
     )
     setCount(unreadNotifications.length)
-  }, [message?.id, lastTimeChecked, userNotifications])
+  }, [ lastTimeCheckedNotifications, userNotifications])
 
   const handleTrigger = ({
     onPress,
@@ -58,7 +54,7 @@ const NotificationAlert: React.FC = () => {
   }: IButtonProps): React.ReactElement => {
     return (
       <VStack>
-        {!loading && !error && count > 0 && (
+        { count && (
           <Circle
             position="absolute"
             my={3}
@@ -84,10 +80,11 @@ const NotificationAlert: React.FC = () => {
       <Popover
         placement="bottom"
         trigger={triggerprops => handleTrigger(triggerprops)}
-        onClose={() => handleClose()}>
+        onClose={updateLastTimeChecked} onOpen={refetch}>
         <NotificationPanel
+          loading={loading}
           userNotifications={userNotifications || []}
-          loadingUserNotifications={loading}
+          lastTimeCheckedNotifications={lastTimeCheckedNotifications}
         />
       </Popover>
     </>

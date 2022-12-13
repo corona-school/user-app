@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import SettingsIcon from '../../assets/icons/lernfair/ico-settings.svg'
 import { UserNotification } from '../../types/lernfair/Notification'
 import { getAllNewUserNotificationsButMinimumFiveNotifications } from '../../helper/notification-helper'
-import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications'
 import {
   AllNotifications,
   NewNotifications,
@@ -12,19 +11,19 @@ import {
 
 type Props = {
   userNotifications: UserNotification[]
-  loadingUserNotifications: boolean
+  loading: boolean
+  lastTimeCheckedNotifications: string
 }
 
 const NotificationPanel: React.FC<Props> = ({
   userNotifications,
-  loadingUserNotifications
+  lastTimeCheckedNotifications,
+  loading
 }) => {
   const [shouldShowAll, setShouldShowAll] = useState<boolean>(false)
   const [notificationsToShow, setNotificationsToShow] = useState<
     UserNotification[]
   >([])
-
-  const { lastTimeChecked } = useLastTimeCheckedNotifications()
 
   const panelMarginLeft = useBreakpointValue({
     base: 3,
@@ -50,14 +49,13 @@ const NotificationPanel: React.FC<Props> = ({
       if (shouldShowAll) {
         return setNotificationsToShow(userNotifications)
       }
-      const notificationsToRender =
+      setNotificationsToShow(
         getAllNewUserNotificationsButMinimumFiveNotifications(
           userNotifications,
-          lastTimeChecked
-        )
-      setNotificationsToShow([...notificationsToRender])
+          lastTimeCheckedNotifications
+        ))
     }
-  }, [userNotifications, lastTimeChecked, shouldShowAll])
+  }, [userNotifications, lastTimeCheckedNotifications, shouldShowAll])
 
   return (
     <Box>
@@ -73,19 +71,19 @@ const NotificationPanel: React.FC<Props> = ({
           </Box>
         </Popover.Header>
         <Popover.Body>
-          {loadingUserNotifications && <Spinner />}
+          {loading && <Spinner />}
           <Box maxH={panelPropsAllDevices.maxH}>
             {!shouldShowAll && notificationsToShow.length !== 0 && (
               <NewNotifications
                 notificationsToShow={notificationsToShow}
-                lastTimeChecked={lastTimeChecked}
+                lastTimeChecked={lastTimeCheckedNotifications}
                 handleClick={handleClick}
               />
             )}
             {shouldShowAll && (
               <AllNotifications
                 userNotifications={notificationsToShow}
-                lastTimeChecked={lastTimeChecked}
+                lastTimeChecked={lastTimeCheckedNotifications}
               />
             )}
             {!notificationsToShow.length && <NoNotifications />}
