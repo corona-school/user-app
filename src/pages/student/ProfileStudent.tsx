@@ -25,7 +25,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CSSWrapper from '../../components/CSSWrapper'
@@ -126,6 +125,7 @@ const ProfileStudent: React.FC<Props> = () => {
     data?.me?.firstname,
     data?.me?.lastname,
     data?.me?.student?.aboutMe?.length,
+    data?.me?.student?.languages?.length,
     data?.me?.student?.state,
     data?.me?.student?.subjectsFormatted?.length
   ])
@@ -268,33 +268,6 @@ const ProfileStudent: React.FC<Props> = () => {
                       )) || <Text>Keine Angabe</Text>}
                     </Column>
                   )) || <Text>{t('profile.State.empty')}</Text>}
-                </Row>
-              </ProfileSettingItem>
-
-              <ProfileSettingItem
-                border={false}
-                title={t('profile.subjects.label')}
-                href={() =>
-                  navigate('/change-setting/subjects', {
-                    state: { userType: 'student' }
-                  })
-                }>
-                <Row>
-                  {data?.me?.student?.subjectsFormatted?.map(
-                    (sub: { name: string }) => (
-                      <Column marginRight={3}>
-                        <CSSWrapper className="profil-tab-link">
-                          <IconTagList
-                            isDisabled
-                            iconPath={`subjects/icon_${getSubjectKey(
-                              sub.name
-                            )}.svg`}
-                            text={sub.name}
-                          />
-                        </CSSWrapper>
-                      </Column>
-                    )
-                  ) || <Text>{t('profile.subjects.empty')}</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>
