@@ -160,7 +160,7 @@ export const sortByDate = (arr: LFSubCourse[]) => {
     const aDate = aLecture?.start || 0
     const bDate = bLecture?.start || 0
 
-    return aDate > bDate ? 1 : -1
+    return aDate < bDate ? 1 : -1
   })
 }
 

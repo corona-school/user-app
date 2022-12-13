@@ -36,6 +36,7 @@ import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
 import { getTrafficStatus } from '../../Utility'
+import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
 
@@ -210,7 +211,7 @@ const Dashboard: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
+      mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
         matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
@@ -220,7 +221,7 @@ const Dashboard: React.FC<Props> = () => {
   )
 
   const [joinMeeting, _joinMeeting] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!) {
+    mutation joinMeetingPupil($courseId: Float!) {
       subcourseJoinMeeting(subcourseId: $courseId)
     }
   `)
@@ -307,7 +308,7 @@ const Dashboard: React.FC<Props> = () => {
                         <Tooltip
                           isDisabled={!disableMeetingButton}
                           maxWidth={300}
-                          label={t('dashboard.appointmentcard.videotooltip')}>
+                          label={t('course.meeting.hint.pupil')}>
                           <Button
                             width="100%"
                             marginTop={space['1']}
@@ -315,12 +316,12 @@ const Dashboard: React.FC<Props> = () => {
                             isDisabled={
                               disableMeetingButton || _joinMeeting.loading
                             }>
-                            {t('dashboard.appointmentcard.videobutton')}
+                            {t('course.meeting.videobutton.pupil')}
                           </Button>
                         </Tooltip>
                         {showMeetingNotStarted && (
                           <Text color="lightText">
-                            {t('dashboard.appointmentcard.videotext')}
+                            {t('course.meeting.videotext')}
                           </Text>
                         )}
                       </VStack>
@@ -419,30 +420,31 @@ const Dashboard: React.FC<Props> = () => {
                   wrap>
                   <Flex direction="row" flexWrap="wrap" marginRight="-10px">
                     {activeMatches.map(
-                      (match: LFMatch) =>
+                      (match: LFMatch, index: number) =>
                         (
                           <Box
                             width={CardGrid}
                             marginRight="10px"
                             marginBottom="10px">
-                            <TeacherCard
-                              name={`${match.student?.firstname} ${match.student?.lastname}`}
-                              variant="dark"
-                              tags={
-                                match.subjectsFormatted?.map(s => s.name) || []
-                              }
-                              avatar=""
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                              subjects={match?.subjectsFormatted}
+                              status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
                               button={
                                 (!match.dissolved && (
                                   <Button
                                     variant="outlinelight"
                                     onPress={() => dissolveMatch(match)}>
-                                    {t('dashboard.offers.match')}
+                                    {t('dashboard.helpers.buttons.solveMatch')}
                                   </Button>
                                 )) || (
-                                  <Text color="lightText">
-                                    {t('matching.status.dissolved')}
-                                  </Text>
+                                  <AlertMessage
+                                    content={t(
+                                      'matching.request.check.resoloveMatch'
+                                    )}
+                                  />
                                 )
                               }
                             />
@@ -454,9 +456,6 @@ const Dashboard: React.FC<Props> = () => {
                         )
                     )}
                   </Flex>
-                  {/* {(data?.me?.pupil?.canRequestMatch?.allowed ||
-                    data?.me?.pupil?.openMatchRequestCount > 0) && (
-                    <VStack> */}
                   {data?.me?.pupil?.canRequestMatch?.allowed && (
                     <Button
                       width={ButtonContainer}
@@ -467,7 +466,7 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching')
+                        navigate('/request-match')
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
@@ -501,8 +500,6 @@ const Dashboard: React.FC<Props> = () => {
                         {t('dashboard.offers.removeRequest')}
                       </Button>
                     </VStack>
-                    //   )}
-                    // </VStack>
                   )}
                 </HSection>
               )}

@@ -30,6 +30,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import CSSWrapper from '../../components/CSSWrapper'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -56,7 +57,7 @@ const Profile: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const { rootPath } = useLernfair()
   const [firstName, setFirstName] = useState<string>()
   const [lastName, setLastName] = useState<string>()
 
@@ -86,7 +87,7 @@ const Profile: React.FC<Props> = () => {
 
   const [changeAboutMe, _changeAboutMe] = useMutation(
     gql`
-      mutation changeAboutMe($aboutMe: String!) {
+      mutation changeAboutMePupil($aboutMe: String!) {
         meUpdate(update: { pupil: { aboutMe: $aboutMe } })
       }
     `,
@@ -169,6 +170,7 @@ const Profile: React.FC<Props> = () => {
       <WithNavigation
         isLoading={loading}
         showBack
+        onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
@@ -203,16 +205,19 @@ const Profile: React.FC<Props> = () => {
         {(showSuccessfulChangeAlert || userSettingChanged) && (
           <AlertMessage content={t('profile.successmessage')} />
         )}
+
         <VStack
           space={space['1']}
           width="100%"
           marginX="auto"
           maxWidth={ContainerWidth}>
-          <VStack paddingX={space['1.5']} space={space['1']}>
-            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={profileCompleteness} />
-            </ProfileSettingRow>
-          </VStack>
+          {profileCompleteness !== 100 && (
+            <VStack paddingX={space['1.5']} space={space['1']}>
+              <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                <UserProgress percent={profileCompleteness} />
+              </ProfileSettingRow>
+            </VStack>
+          )}
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem

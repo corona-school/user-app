@@ -39,6 +39,7 @@ const registration = {
     }
   },
   hint: {
+    name: 'Bitte gebe deinen vollen Namen an',
     password: {
       length: 'Das Passwort muss mindestens 6 Zeichen enthalten.',
       nomatch: 'Die Passwörter stimmen nicht überein'
@@ -79,51 +80,33 @@ const registration = {
       }
     }
   },
-  questions: {
-    pupil: {
-      schooltype: {
-        label: 'Schulform',
-        question: 'Auf welche Schule gehst du?'
-      },
-      schoolclass: {
-        label: 'Klasse',
-        question: 'In welcher Klasse bist du?'
-      },
-      languages: {
-        label: 'Sprache',
-        question: 'Welche Sprache(n) sprichst du zu Hause?'
-      },
-      subjects: {
-        label: 'Fächer',
-        question: 'In welchen Fächern benötigst du Unterstützung?',
-        text: 'Du kannst mehrere Fächer auswählen'
-      },
-      state: {
-        label: 'Bundesland',
-        question: 'Aus welchem Bundesland kommst du?'
-      },
-      deutsch: {
-        label: 'Deutsch',
-        question: 'Seit wann lernst du Deutsch?'
-      },
-      deutsch2: {
-        lower: 'weniger als 1 Jahr',
-        higher: 'mehr als 1 Jahr'
-      }
+  steps: {
+    0: {
+      title: 'Deine Rolle',
+      subtitle: 'Ich bin'
     },
-    student: {
-      offers: {
-        label: 'Unterstützung',
-        question: 'Welche Art der Unterstützung möchtest du anbieten?',
-        text: 'Eine Mehrfachauswahl ist möglich'
-      },
-      subjects: {
-        label: 'Fächer',
-        question: 'In welchen Fächern kannst du unterstützen?',
-        text: ''
-      }
+    1: {
+      title: 'Persönliche Daten',
+      subtitle: 'Persönliche Daten'
+    },
+    2: {
+      title: 'Klasse',
+      subtitle: 'In welcher Klasse bist du?'
+    },
+    3: {
+      title: 'Schulform',
+      subtitle: 'Auf welche Schulform gehst du?'
+    },
+    4: {
+      title: 'Bundesland',
+      subtitle: 'Aus welchem Bundesland kommst du?'
+    },
+    5: {
+      title: 'Einwilligungen',
+      subtitle: 'Einwilligungen'
     }
   },
+
   pupil: { label: 'Schüler:in' },
   student: {
     label: 'Helfer:in',
@@ -136,7 +119,7 @@ const registration = {
       range3: '9. - 10. Klasse',
       range4: '11. - 13. Klasse',
       moreData: 'Weitere Daten',
-      tokenError: 'Token ungültig',
+      tokenError: 'Token ungültig'
     }
   }
 }
