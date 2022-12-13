@@ -17,6 +17,7 @@ import { getNewNotifications } from '../../helper/notification-helper'
 
 const NotificationAlert: React.FC = () => {
   const [count, setCount] = useState<number>(0)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const message = useContext(NotificationsContext)
   const { userNotifications, refetch, loading } = useConcreteNotifications()
 
@@ -34,6 +35,7 @@ const NotificationAlert: React.FC = () => {
     if (message?.id) {
       setCount((count + 1))
     }
+    if (isOpen) refetch()
   },[message?.id])
 
   useEffect(() => {
@@ -75,12 +77,22 @@ const NotificationAlert: React.FC = () => {
     )
   }
 
+  const onOpen = () => {
+    refetch()
+    setIsOpen(true)
+  }
+
+  const onClose = () => {
+    updateLastTimeChecked();
+    setIsOpen(false)
+  }
+
   return (
     <>
       <Popover
         placement="bottom"
         trigger={triggerprops => handleTrigger(triggerprops)}
-        onClose={updateLastTimeChecked} onOpen={refetch}>
+        onClose={onClose} onOpen={onOpen}>
         <NotificationPanel
           loading={loading}
           userNotifications={userNotifications || []}

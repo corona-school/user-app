@@ -17,9 +17,9 @@ const meLastTimeCheckedNotifications = gql`
 `
 
 export const useLastTimeCheckedNotifications = () => {
-  const defaultDate = new Date(0).toISOString()
-  const [lastTimeCheckedNotifications, setLastTimeCheckedNotifications] = useState(defaultDate)
-  const { data, loading, error } = useQuery(getLastTimeCheckedQuery, {skip: lastTimeCheckedNotifications !== defaultDate})
+  const [lastTimeCheckedNotifications, setLastTimeCheckedNotifications] = useState('')
+  // query only executes once when lastTimeCheckedNotifications is empty
+  const { data, loading, error } = useQuery(getLastTimeCheckedQuery, {skip: lastTimeCheckedNotifications !== ''})
 
   const [updateLastTimeCheckedNotifications] = useMutation(
     meLastTimeCheckedNotifications
