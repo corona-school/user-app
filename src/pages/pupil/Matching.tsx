@@ -20,6 +20,7 @@ import AsNavigationItem from '../../components/AsNavigationItem'
 import Tabs from '../../components/Tabs'
 import Tag from '../../components/Tag'
 import WithNavigation from '../../components/WithNavigation'
+import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
 import { LFSubject } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
@@ -292,6 +293,13 @@ const Matching: React.FC<Props> = () => {
               ]}
             />
           </Box>
+          <DissolveMatchModal
+            showDissolveModal={showDissolveModal}
+            onPressDissolve={(reason: string) => {
+              dissolve(reason)
+            }}
+            onPressBack={() => setShowDissolveModal(false)}
+          />
         </WithNavigation>
       </AsNavigationItem>
     </>
