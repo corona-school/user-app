@@ -31,10 +31,8 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 
 import CreateCourse from './pages/CreateCourse'
 import DashboardStudent from './pages/student/DashboardStudent'
-import Matching from './pages/pupil/Matching'
-import RequestMatch from './pages/student/RequestMatch'
+
 import ProfileStudent from './pages/student/ProfileStudent'
-import MatchingStudent from './pages/student/MatchingStudent'
 import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
@@ -50,6 +48,11 @@ import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
 import WithNavigation from './components/WithNavigation'
 import Registration from './pages/Registration'
+
+import RequestMatchStudent from './pages/student/matching_new/RequestMatch'
+import MatchingStudent from './pages/student/MatchingStudent'
+import RequestMatch from './pages/pupil/matching_new/RequestMatch'
+import Matching from './pages/pupil/Matching'
 
 export default function NavigatorLazy() {
   return (
@@ -263,7 +266,10 @@ export default function NavigatorLazy() {
         path="/request-match"
         element={
           <RequireAuth>
-            <SwitchUserType studentComponent={<RequestMatch />} />
+            <SwitchUserType
+              pupilComponent={<RequestMatch />}
+              studentComponent={<RequestMatchStudent />}
+            />
           </RequireAuth>
         }
       />
