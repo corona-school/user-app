@@ -1,4 +1,4 @@
-import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base'
+import { VStack, useTheme, Heading, Column, Button } from 'native-base'
 import { useContext } from 'react'
 import { subjects } from '../../../types/lernfair/Subject'
 import IconTagList from '../../../widgets/IconTagList'
