@@ -34,14 +34,15 @@ const query: DocumentNode = gql`
       pupil {
         openMatchRequestCount
         id
-        subjectsFormatted {
-          name
-        }
         matches {
           id
           dissolved
+          subjectsFormatted {
+            name
+          }
           student {
             firstname
+            lastname
           }
         }
         canRequestMatch {
@@ -106,7 +107,7 @@ const Matching: React.FC<Props> = () => {
   const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
     gql`
       mutation {
-        studentDeleteMatchRequest
+        pupilDeleteMatchRequest
       }
     `,
     { refetchQueries: [{ query }] }
@@ -150,14 +151,14 @@ const Matching: React.FC<Props> = () => {
       documentTitle: 'Helfer Matching'
     })
     const res = (await cancelMatchRequest()) as {
-      studentDeleteMatchRequest: boolean
+      pupilDeleteMatchRequest: boolean
     }
 
-    if (res.studentDeleteMatchRequest) {
+    if (res.pupilDeleteMatchRequest) {
       toast.show({ description: 'Die Anfrage wurde gelöscht' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.me?.student?.id])
+  }, [data?.me?.pupil?.id])
 
   useEffect(() => {
     if (dissolveData?.matchDissolve && !toastShown) {
@@ -166,18 +167,12 @@ const Matching: React.FC<Props> = () => {
     }
   }, [dissolveData?.matchDissolve, toast, toastShown])
 
-  const activeMatches = useMemo(
-    () =>
-      data?.me?.student?.matches?.filter(
-        (match: LFMatch) => !match.dissolved
-      ) || [],
-    [data?.me?.student?.matches]
-  )
-
   return (
     <>
       <AsNavigationItem path="matching">
-        <WithNavigation showBack={backArrow}>
+        <WithNavigation
+          showBack={backArrow}
+          headerTitle={t('matching.request.check.header')}>
           <MatchingOnboarding
             onRequestMatch={() => navigate('/request-match')}
           />
@@ -189,22 +184,20 @@ const Matching: React.FC<Props> = () => {
                   content: (
                     <VStack>
                       <Flex direction="row" flexWrap="wrap">
-                        {(activeMatches.length &&
-                          activeMatches?.map(
+                        {(data?.me?.pupil?.matches.length &&
+                          data?.me?.pupil?.matches?.map(
                             (match: LFMatch, index: number) => (
                               <Column width={CardGrid} marginRight="15px">
                                 <LearningPartner
                                   key={index}
                                   isDark={true}
-                                  name={match?.pupil?.firstname}
-                                  subjects={match?.pupil?.subjectsFormatted}
-                                  schooltype={
-                                    match?.pupil?.schooltype || 'Backend Error'
+                                  name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                                  subjects={match?.subjectsFormatted}
+                                  status={
+                                    match?.dissolved ? 'aufgelöst' : 'aktiv'
                                   }
-                                  schoolclass={match?.pupil?.grade}
-                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                                   button={
-                                    (!match.dissolved && (
+                                    !match.dissolved && (
                                       <Button
                                         variant="outlinelight"
                                         onPress={() =>
@@ -214,12 +207,6 @@ const Matching: React.FC<Props> = () => {
                                           'dashboard.helpers.buttons.solveMatch'
                                         )}
                                       </Button>
-                                    )) || (
-                                      <AlertMessage
-                                        content={t(
-                                          'matching.request.check.resoloveMatch'
-                                        )}
-                                      />
                                     )
                                   }
                                 />
@@ -241,12 +228,12 @@ const Matching: React.FC<Props> = () => {
                       <Text marginBottom={space['1']}>
                         {t('matching.request.check.openedRequests')}
                         {'  '}
-                        {data?.me?.student?.openMatchRequestCount}
+                        {data?.me?.pupil?.openMatchRequestCount}
                       </Text>
                       <VStack space={space['0.5']}>
                         <Flex direction="row" flexWrap="wrap">
-                          {(data?.me?.student?.openMatchRequestCount &&
-                            new Array(data?.me?.student?.openMatchRequestCount)
+                          {(data?.me?.pupil?.openMatchRequestCount &&
+                            new Array(data?.me?.pupil?.openMatchRequestCount)
                               .fill('')
                               .map((_, i) => (
                                 <Column
@@ -273,7 +260,7 @@ const Matching: React.FC<Props> = () => {
                                         {t('matching.request.check.subjects')}
                                       </Text>
                                       <Row space={space['0.5']}>
-                                        {data?.me?.student?.subjectsFormatted.map(
+                                        {data?.me?.pupil?.subjectsFormatted.map(
                                           (sub: LFSubject) => (
                                             <Tag
                                               variant="secondary"
