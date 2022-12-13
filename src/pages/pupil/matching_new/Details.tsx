@@ -67,7 +67,7 @@ const Details: React.FC<Props> = () => {
       </VStack>
     )
     setShow(true)
-  }, [navigate, setContent, setShow, setVariant, space])
+  }, [buttonWidth, navigate, setContent, setShow, setVariant, space])
 
   const requestMatch = useCallback(async () => {
     const subs: LFSubject[] = []
@@ -79,6 +79,10 @@ const Details: React.FC<Props> = () => {
       subs.push(data)
     }
 
+    if (matching.setDazPriority) {
+      subs.push({ name: 'Deutsch als Zweitsprache', mandatory: true })
+    }
+
     const res = await update({ variables: { subjects: subs } })
 
     if (res.data && !res.errors) {
@@ -86,7 +90,14 @@ const Details: React.FC<Props> = () => {
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
-  }, [matching.priority, matching.subjects, showModal, toast, update])
+  }, [
+    matching.priority,
+    matching.setDazPriority,
+    matching.subjects,
+    showModal,
+    toast,
+    update
+  ])
 
   return (
     <VStack paddingX={space['1']} space={space['0.5']}>

@@ -16,6 +16,7 @@ import { ClassRange } from '../../../types/lernfair/SchoolClass'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../../hooks/useModal'
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg'
+import { getSubjectLabel } from '../../../types/lernfair/Subject'
 
 type Props = {}
 
@@ -32,7 +33,7 @@ const SchoolClasses: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const [update, _update] = useMutation(gql`
+  const [update] = useMutation(gql`
     mutation updateStudent($subjects: [SubjectInput!]) {
       meUpdate(update: { student: { subjects: $subjects } })
       studentCreateMatchRequest
@@ -102,16 +103,16 @@ const SchoolClasses: React.FC<Props> = () => {
       }
     }
 
-    const subjects: { key: string; classRange: ClassRange }[] = []
+    const subjects: { name: string; grade: ClassRange }[] = []
 
     for (const [subjectKey, selectedClasses] of Object.entries(classes)) {
       subjects.push({
-        key: subjectKey,
-        classRange: { min: selectedClasses[0], max: selectedClasses[1] }
+        name: getSubjectLabel(subjectKey),
+        grade: { min: selectedClasses[0], max: selectedClasses[1] }
       })
     }
 
-    const res = await update({ variables: subjects })
+    const res = await update({ variables: { subjects: subjects } })
 
     if (res.data && !res.errors) {
       showModal()

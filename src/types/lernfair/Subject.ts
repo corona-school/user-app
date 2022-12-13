@@ -41,3 +41,13 @@ export const getSubjectKey: (name: string) => string = name => {
   }
   return 'other'
 }
+
+export const getSubjectLabel: (key: string) => string = key => {
+  for (let subject of subjects) {
+    if (subject.key === key) {
+      return subject.label
+    }
+  }
+  if (key === 'daz') return 'Deutsch als Zweitsprache'
+  return 'Andere'
+}
