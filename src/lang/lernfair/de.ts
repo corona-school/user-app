@@ -1,4 +1,9 @@
 const lernfair = {
+  buttons: {
+    prev: 'zurück',
+    next: 'weiter', 
+    register: 'Registrieren'
+  },
   languages: {
     albanisch: 'Albanisch',
     arabisch: 'Arabisch',
@@ -75,13 +80,19 @@ const lernfair = {
     hauptschule: 'Hauptschule',
     realschule: 'Realschule',
     gymnasium: 'Gymnasium',
-    other: 'Andere'
+    gesamtschule: 'Gesamtschule',
+    other: 'Andere',
+    berufsschule: 'Berufsschule',
+    f_rderschule: 'Förderschule'
   },
   schoolclass: '{{class}}. Klasse',
 
   reason: {
     'subcourse-full': {
       coursetext: 'Dieser Kurs ist leider grade ausgebucht.'
+    },
+    'grade-to-high': {
+      coursetext: 'Anmeldung derzeit nicht möglich.'
     },
     proposals: 'Es wurden keine Vorschläge für dich gefunden.',
     'max-requests': {

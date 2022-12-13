@@ -29,6 +29,7 @@ import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CSSWrapper from '../../components/CSSWrapper'
+import useLernfair from '../../hooks/useLernfair'
 
 type Props = {}
 
@@ -40,6 +41,7 @@ const query = gql`
       student {
         state
         aboutMe
+        languages
         subjectsFormatted {
           name
         }
@@ -58,7 +60,7 @@ const ProfileStudent: React.FC<Props> = () => {
   const { colors, space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const { rootPath } = useLernfair()
   const [firstName, setFirstName] = useState<string>()
   const [lastName, setLastName] = useState<string>()
 
@@ -87,7 +89,7 @@ const ProfileStudent: React.FC<Props> = () => {
   )
   const [changeAboutMe, _changeAboutMe] = useMutation(
     gql`
-      mutation changeAboutMe($aboutMe: String!) {
+      mutation changeAboutMeStudent($aboutMe: String!) {
         meUpdate(update: { student: { aboutMe: $aboutMe } })
       }
     `,
@@ -114,7 +116,7 @@ const ProfileStudent: React.FC<Props> = () => {
 
     data?.me?.firstname && data?.me?.lastname && (complete += 1)
     data?.me?.student?.aboutMe?.length > 0 && (complete += 1)
-    // data?.me?.student?.languages?.length && (complete += 1)
+    data?.me?.student?.languages?.length && (complete += 1)
     data?.me?.student?.state && (complete += 1)
     // data?.me?.student?.schooltype && (complete += 1)
     // data?.me?.student?.gradeAsInt && (complete += 1)
@@ -160,12 +162,12 @@ const ProfileStudent: React.FC<Props> = () => {
       window.scrollTo({ top: 0 })
     }
   }, [showSuccessfulChangeAlert, userSettingChanged])
-
   return (
     <>
       <WithNavigation
         showBack
         isLoading={loading}
+        onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
         headerTitle={t('profile.title')}
         headerContent={
           <Flex
@@ -194,11 +196,13 @@ const ProfileStudent: React.FC<Props> = () => {
           maxWidth={ContainerWidth}
           marginX="auto"
           width="100%">
-          <VStack paddingX={space['1.5']} space={space['1']}>
-            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-              <UserProgress percent={profileCompleteness} />
-            </ProfileSettingRow>
-          </VStack>
+          {profileCompleteness !== 100 && (
+            <VStack paddingX={space['1.5']} space={space['1']}>
+              <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                <UserProgress percent={profileCompleteness} />
+              </ProfileSettingRow>
+            </VStack>
+          )}
           <VStack paddingX={space['1.5']} space={space['1']}>
             <ProfileSettingRow title={t('profile.PersonalData')}>
               <ProfileSettingItem
@@ -219,6 +223,26 @@ const ProfileStudent: React.FC<Props> = () => {
                 {(data?.me?.student?.aboutMe && (
                   <Text>{data?.me?.student?.aboutMe}</Text>
                 )) || <Text>{t('profile.AboutMe.empty')}</Text>}
+              </ProfileSettingItem>
+
+              <ProfileSettingItem
+                title={t('profile.FluentLanguagenalData.label')}
+                href={() => navigate('/change-setting/language')}>
+                {(data?.me?.student?.languages?.length && (
+                  <Row flexWrap="wrap" w="100%">
+                    {data?.me?.student?.languages.map((lang: string) => (
+                      <Column marginRight={3} mb={space['0.5']}>
+                        <CSSWrapper className="profil-tab-link">
+                          <IconTagList
+                            isDisabled
+                            iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                            text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                          />
+                        </CSSWrapper>
+                      </Column>
+                    ))}
+                  </Row>
+                )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
               </ProfileSettingItem>
 
               <ProfileSettingItem

@@ -9,7 +9,8 @@ import {
   useBreakpointValue,
   Column,
   Box,
-  Tooltip
+  Tooltip,
+  Modal
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
@@ -34,6 +35,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import Hello from '../../widgets/Hello'
 import CSSWrapper from '../../components/CSSWrapper'
 import AlertMessage from '../../widgets/AlertMessage'
+import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal'
 
 type Props = {}
 
@@ -107,10 +109,11 @@ const DashboardStudent: React.FC<Props> = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [toastShown, setToastShown] = useState<boolean>()
-  const [isMatchRequested, setIsMatchRequested] = useState<boolean>()
+
+  const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [dissolveData, setDissolveData] = useState<LFMatch>()
-  const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -122,8 +125,8 @@ const DashboardStudent: React.FC<Props> = () => {
 
   const [dissolve, _dissolve] = useMutation(
     gql`
-      mutation dissolve($matchId: Float!, $dissolveReason: Float!) {
-        matchDissolve(dissolveReason: $dissaolveReason, matchId: $matchId)
+      mutation dissolveMatchStudent($matchId: Float!, $dissolveReason: Float!) {
+        matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
       }
     `,
     {
@@ -233,9 +236,9 @@ const DashboardStudent: React.FC<Props> = () => {
       return undefined
     }
 
-    if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-      return undefined
-    }
+    // if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
+    //   return undefined
+    // }
 
     return [firstLecture, firstCourse]
   }, [data?.me?.student, sortedPublishedSubcourses])
@@ -246,26 +249,11 @@ const DashboardStudent: React.FC<Props> = () => {
     [data?.me?.student?.matches]
   )
 
-  const [joinMeeting, _joinMeeting] = useMutation(gql`
-    mutation joinMeeting($courseId: Float!) {
-      subcourseJoinMeeting(subcourseId: $courseId)
+  const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
+    mutation joinMeetingStudent($courseId: Float!, $meetingUrl: String!) {
+      subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
     }
   `)
-
-  const getMeetingLink = useCallback(async () => {
-    const courseId = 4
-    if (!courseId) return
-    try {
-      const res = await joinMeeting({ variables: { courseId } })
-      if (res.data.subcourseJoinMeeting) {
-        window.open(res.data.subcourseJoinMeeting, '_blank')
-      } else {
-        setShowMeetingNotStarted(true)
-      }
-    } catch (e) {
-      setShowMeetingNotStarted(true)
-    }
-  }, [joinMeeting])
 
   const disableMeetingButton: boolean = useMemo(() => {
     if (!nextAppointment) return true
@@ -274,6 +262,37 @@ const DashboardStudent: React.FC<Props> = () => {
       60
     )
   }, [nextAppointment])
+
+  const _setMeetingLink = useCallback(
+    async (link: string) => {
+      if (!nextAppointment || !nextAppointment[1]) return
+
+      try {
+        const res = await setMeetingUrl({
+          variables: {
+            courseId: nextAppointment[1].id,
+            meetingUrl: link
+          }
+        })
+
+        setShowMeetingUrlModal(false)
+        if (res.data.subcourseSetMeetingURL && !res.errors) {
+          toast.show({
+            description: t('course.meeting.result.success')
+          })
+        } else {
+          toast.show({
+            description: t('course.meeting.result.error')
+          })
+        }
+      } catch (e) {
+        toast.show({
+          description: t('course.meeting.result.error')
+        })
+      }
+    },
+    [nextAppointment, setMeetingUrl, t, toast]
+  )
 
   return (
     <AsNavigationItem path="start">
@@ -286,10 +305,6 @@ const DashboardStudent: React.FC<Props> = () => {
               alignItems="center"
               bgColor={isMobile ? 'primary.900' : 'transparent'}
               paddingX={space['1']}>
-              {/* <ProfilAvatar
-              size="md"
-              image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            /> */}
               <Box paddingY={space['1.5']}>
                 <Hello />
               </Box>
@@ -308,7 +323,6 @@ const DashboardStudent: React.FC<Props> = () => {
               <VStack marginBottom={space['1.5']}>
                 <HelperWizard />
               </VStack>
-
               {/* Next Appointment */}
               {data?.me?.student?.subcoursesInstructing?.length > 0 &&
                 nextAppointment && (
@@ -323,22 +337,21 @@ const DashboardStudent: React.FC<Props> = () => {
                           <Tooltip
                             isDisabled={!disableMeetingButton}
                             maxWidth={300}
-                            label={t('dashboard.appointmentcard.videotooltip')}>
+                            label={t('course.meeting.hint.student')}>
                             <Button
                               width="100%"
                               marginTop={space['1']}
-                              onPress={getMeetingLink}
+                              onPress={() => {
+                                setShowMeetingUrlModal(true)
+                              }}
                               isDisabled={
-                                disableMeetingButton || _joinMeeting.loading
+                                disableMeetingButton ||
+                                _setMeetingUrl.loading ||
+                                (_setMeetingUrl.called && !_setMeetingUrl.data)
                               }>
-                              {t('dashboard.appointmentcard.videobutton')}
+                              {t('course.meeting.videobutton.student')}
                             </Button>
                           </Tooltip>
-                          {showMeetingNotStarted && (
-                            <Text color="lightText">
-                              {t('dashboard.appointmentcard.videotext')}
-                            </Text>
-                          )}
                         </VStack>
                       }
                       onPressToCourse={() => {
@@ -506,23 +519,6 @@ const DashboardStudent: React.FC<Props> = () => {
                   />
                 )}
               </HSection>
-
-              {/* <VStack space={space['0.5']}>
-            <Heading marginY={space['1']}>
-              {t('dashboard.helpers.headlines.importantNews')}
-            </Heading>
-            <CTACard
-              title={t('dashboard.helpers.headlines.newOffer')}
-              closeable={false}
-              content={<Text>{t('dashboard.helpers.contents.newOffer')}</Text>}
-              button={
-                <Button variant="outline">
-                  {t('dashboard.helpers.buttons.offer')}
-                </Button>
-              }
-              icon={<PartyIcon />}
-            />
-          </VStack> */}
               {
                 <VStack marginBottom={space['1.5']}>
                   <Heading>
@@ -573,7 +569,7 @@ const DashboardStudent: React.FC<Props> = () => {
                         <Button
                           marginTop={space['1']}
                           width={ButtonContainer}
-                          isDisabled={isMatchRequested}
+                          isDisabled={_dissolve.loading}
                           marginY={space['1']}
                           onPress={requestMatch}>
                           {t('dashboard.helpers.buttons.requestMatch')}
@@ -624,6 +620,12 @@ const DashboardStudent: React.FC<Props> = () => {
           setShowDissolveModal(false)
         }}
         onPressBack={() => setShowDissolveModal(false)}
+      />
+      <SetMeetingLinkModal
+        isOpen={showMeetingUrlModal}
+        onClose={() => setShowMeetingUrlModal(false)}
+        disableButtons={_setMeetingUrl.loading}
+        onPressStartMeeting={link => _setMeetingLink(link)}
       />
     </AsNavigationItem>
   )

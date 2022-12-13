@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes
-} from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/pupil/Dashboard'
 import Profile from './pages/pupil/Profile'
 
@@ -12,20 +6,11 @@ import Settings from './pages/Settings'
 import OnboardingTourList from './pages/OnboardingTourList'
 import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject'
 import HelpCenter from './pages/Helpcenter'
-import AllFaq from './pages/AllFaq'
-import QuickStart from './pages/QuickStart'
-import DigitaleTools from './pages/DigitaleTools'
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType'
 import ChangeSettingState from './pages/change-setting/ChangeSettingState'
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage'
 import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass'
 import SingleCourse from './pages/SingleCourse'
-
-import RegistrationAccount from './pages/registration/RegistrationAccount'
-import RegistrationPersonal from './pages/registration/RegistrationPersonal'
-import AdditionalData from './pages/registration/AdditionalData'
-import { RegistrationProvider } from './hooks/useRegistration'
-import Explore from './pages/Explore'
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome'
@@ -45,46 +30,39 @@ import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching
 // Profile
 
 import CreateCourse from './pages/CreateCourse'
-import MatchingBlocker from './pages/student/MatchingBlocker'
-import CourseBlocker from './pages/student/CourseBlocker'
 import DashboardStudent from './pages/student/DashboardStudent'
-import ProfileHelper from './pages/student/ProfileStudent'
-import Matching from './pages/pupil/Matching'
-import RequestMatch from './pages/student/RequestMatch'
+
 import ProfileStudent from './pages/student/ProfileStudent'
-import MatchingStudent from './pages/student/MatchingStudent'
 import RequestCertificate from './pages/RequestCertificate'
 import PupilGroup from './pages/pupil/Group'
 import StudentGroup from './pages/student/StudentGroup'
 import StudentGroupSupport from './pages/student/StudentGroupSupport'
-import AppointmentsArchive from './pages/AppointmentsArchive'
 import CourseArchive from './pages/CourseArchive'
 import LearningPartnerArchive from './pages/LearningPartnerArchive'
 import UserProfile from './pages/UserProfile'
 import NoAcceptRegistration from './pages/NoAcceptRegistration'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailModal from './modals/VerifyEmailModal'
-import CenterLoadingSpinner from './components/CenterLoadingSpinner'
+import NotficationControlPanel from './pages/notification/NotficationControlPanel'
 import ResetPassword from './pages/ResetPassword'
 import { RequireAuth, SwitchUserType } from './User'
 import IFrame from './components/IFrame'
-import NotficationControlPanel from './pages/notification/NotficationControlPanel'
+import WithNavigation from './components/WithNavigation'
+import Registration from './pages/Registration'
+
+import RequestMatchStudent from './pages/student/matching_new/RequestMatch'
+import MatchingStudent from './pages/student/MatchingStudent'
+import RequestMatch from './pages/pupil/matching_new/RequestMatch'
+import Matching from './pages/pupil/Matching'
 
 export default function NavigatorLazy() {
   return (
     <Routes>
       {/* Public */}
 
-      <Route
-        path="/registration"
-        element={
-          <RegistrationProvider>
-            <Outlet />
-          </RegistrationProvider>
-        }>
-        <Route path="1" element={<RegistrationAccount />} />
-        <Route path="2" element={<RegistrationPersonal />} />
-        <Route path="3" element={<AdditionalData />} />
+      <Route path="/registration/" element={<Registration />} />
+      <Route path="/registration" element={<Outlet />}>
+        <Route path="*" element={<Registration />} />
       </Route>
 
       <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
@@ -250,90 +228,6 @@ export default function NavigatorLazy() {
         }
       />
 
-      {/* Group */}
-      <Route
-        path="/group"
-        element={
-          <RequireAuth>
-            <SwitchUserType
-              pupilComponent={<PupilGroup />}
-              studentComponent={<StudentGroup />}
-            />
-          </RequireAuth>
-        }></Route>
-
-      <Route
-        path="/group/offer"
-        element={
-          <RequireAuth>
-            <SwitchUserType
-              pupilComponent={<PupilGroup />}
-              studentComponent={<StudentGroupSupport />}
-            />
-          </RequireAuth>
-        }></Route>
-
-      <Route
-        path="/matching"
-        element={
-          <RequireAuth>
-            <SwitchUserType
-              pupilComponent={<Matching />}
-              studentComponent={<MatchingStudent />}
-            />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/request-match"
-        element={
-          <RequireAuth>
-            <SwitchUserType studentComponent={<RequestMatch />} />
-          </RequireAuth>
-        }
-      />
-
-      <Route
-        path="/course-archive"
-        element={
-          <RequireAuth>
-            <CourseArchive />
-          </RequireAuth>
-        }
-      />
-
-      <Route
-        path="/learningpartner-archive"
-        element={
-          <RequireAuth>
-            <LearningPartnerArchive />
-          </RequireAuth>
-        }
-      />
-
-      <Route
-        path="/user-profile"
-        element={
-          <RequireAuth>
-            <UserProfile />
-          </RequireAuth>
-        }
-      />
-
-      <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/additional-data" element={<AdditionalData />} />
-      <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route
-        path="/privacy"
-        element={
-          <IFrame
-            title="datenschutz"
-            src="https://www.lern-fair.de/iframe/datenschutz"
-          />
-        }
-      />
-
       {/* Edit Course */}
       <Route
         path="/edit-course"
@@ -376,6 +270,84 @@ export default function NavigatorLazy() {
               studentComponent={<MatchingStudent />}
             />
           </RequireAuth>
+        }
+      />
+      <Route
+        path="/request-match"
+        element={
+          <RequireAuth>
+            <SwitchUserType
+              pupilComponent={<RequestMatch />}
+              studentComponent={<RequestMatchStudent />}
+            />
+          </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/course-archive"
+        element={
+          <RequireAuth>
+            <CourseArchive />
+          </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/learningpartner-archive"
+        element={
+          <RequireAuth>
+            <LearningPartnerArchive />
+          </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/user-profile"
+        element={
+          <RequireAuth>
+            <UserProfile />
+          </RequireAuth>
+        }
+      />
+
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route
+        path="/datenschutz"
+        element={
+          <WithNavigation showBack headerTitle="Datenschutz" hideMenu>
+            <IFrame
+              title="datenschutz"
+              src="https://www.lern-fair.de/iframe/datenschutz"
+            />
+          </WithNavigation>
+        }
+      />
+      <Route
+        path="/selbstverpflichtungserklaerung"
+        element={
+          <WithNavigation
+            showBack
+            headerTitle="Selbstverpflichtungserklärung"
+            hideMenu>
+            <IFrame
+              title="selbstverpflichtungserklärung"
+              src="https://lern-fair.de/iframe/straftaten"
+            />
+          </WithNavigation>
+        }
+      />
+      <Route
+        path="/impressum"
+        element={
+          <WithNavigation showBack headerTitle="Impressum" hideMenu>
+            <IFrame
+              title="impressum"
+              src="https://www.lern-fair.de/iframe/impressum"
+            />
+          </WithNavigation>
         }
       />
 
