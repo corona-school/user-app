@@ -22,7 +22,8 @@ type Props = {}
 const SchoolClasses: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching } = useContext(RequestMatchContext)
+  const { matching, setMatching, setCurrentIndex } =
+    useContext(RequestMatchContext)
   const navigate = useNavigate()
   const { setShow, setContent, setVariant } = useModal()
 
@@ -147,6 +148,9 @@ const SchoolClasses: React.FC<Props> = () => {
       </VStack>
 
       <Button onPress={submit}>Weiter</Button>
+      <Button variant="outline" onPress={() => setCurrentIndex(2)}>
+        Zurück
+      </Button>
     </VStack>
   )
 }

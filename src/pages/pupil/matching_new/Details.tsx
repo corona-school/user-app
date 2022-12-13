@@ -6,21 +6,24 @@ import {
   Button,
   useTheme,
   TextArea,
-  useToast
+  useToast,
+  useBreakpointValue
 } from 'native-base'
 import { useCallback, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../../hooks/useModal'
 import { LFSubject } from '../../../types/lernfair/Subject'
 import { RequestMatchContext } from './RequestMatch'
+import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg'
 
 type Props = {}
 
 const Details: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
-  const { space } = useTheme()
+  const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching } = useContext(RequestMatchContext)
+  const { matching, setMatching, setCurrentIndex } =
+    useContext(RequestMatchContext)
   const navigate = useNavigate()
 
   const [update, _update] = useMutation(gql`
@@ -30,17 +33,30 @@ const Details: React.FC<Props> = () => {
     }
   `)
 
+  const buttonWidth = useBreakpointValue({
+    base: '100%',
+    lg: sizes['desktopbuttonWidth']
+  })
+
   const showModal = useCallback(() => {
     setVariant('dark')
 
     setContent(
-      <VStack paddingTop={space['2']} space={space['1']}>
-        <Heading fontSize={'2xl'} color="lightText">
+      <VStack
+        paddingX={space['2']}
+        paddingTop={space['2']}
+        space={space['1']}
+        alignItems="center">
+        <PartyIcon />
+        <Heading fontSize={'2xl'} color="lightText" textAlign="center">
           Geschafft, du bist auf der Warteliste!
         </Heading>
 
-        <Button>Zu den Gruppenkursen</Button>
+        <Button onPress={() => navigate('/group')} w={buttonWidth}>
+          Zu den Gruppenkursen
+        </Button>
         <Button
+          w={buttonWidth}
           variant={'outlinelight'}
           onPress={() => {
             navigate('/start')
@@ -95,8 +111,18 @@ const Details: React.FC<Props> = () => {
         value={matching.message}
         onChangeText={text => setMatching(prev => ({ ...prev, message: text }))}
       />
-      <Button isDisabled={_update.loading} onPress={requestMatch}>
+      <Button
+        isDisabled={_update.loading}
+        onPress={requestMatch}
+        w={buttonWidth}>
         Weiter
+      </Button>
+
+      <Button
+        variant="outline"
+        onPress={() => setCurrentIndex(4)}
+        w={buttonWidth}>
+        Zurück
       </Button>
     </VStack>
   )

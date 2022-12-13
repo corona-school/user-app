@@ -67,6 +67,9 @@ const German: React.FC = () => {
           <Button onPress={onGoNext} isDisabled={!isNativeLanguage}>
             Weiter
           </Button>
+          <Button variant="outline" onPress={() => setCurrentIndex(1)}>
+            Zurück
+          </Button>
         </>
       )}
       {showSecond && (
@@ -117,6 +120,9 @@ const German: React.FC = () => {
 
           <Button onPress={onSecondNext} isDisabled={!learningSince}>
             Weiter
+          </Button>
+          <Button variant="outline" onPress={() => setShowSecond(false)}>
+            Zurück
           </Button>
         </>
       )}

@@ -25,6 +25,7 @@ const Priority: React.FC = () => {
         {matching.subjects.map((subject: { label: string; key: string }) => (
           <Column>
             <IconTagList
+              iconPath={`subjects/icon_${subject.key}.svg`}
               initial={matching.priority === subject}
               variant="selection"
               text={subject.label}
@@ -43,6 +44,9 @@ const Priority: React.FC = () => {
         onPress={() => setCurrentIndex(5)} // 5 = details
       >
         Weiter
+      </Button>
+      <Button variant="outline" onPress={() => setCurrentIndex(3)}>
+        Zurück
       </Button>
     </VStack>
   )

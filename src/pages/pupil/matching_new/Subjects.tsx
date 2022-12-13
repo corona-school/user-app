@@ -21,15 +21,23 @@ const Subjects: React.FC = () => {
         {subjects.map((subject: { label: string; key: string }) => (
           <Column>
             <IconTagList
+              iconPath={`subjects/icon_${subject.key}.svg`}
               initial={matching.subjects.includes(subject)}
               variant="selection"
               text={subject.label}
               onPress={() => {
                 if (!matching.subjects.includes(subject)) {
-                  setMatching(prev => ({
-                    ...prev,
-                    subjects: [...prev.subjects, subject]
-                  }))
+                  if (matching.setDazPriority) {
+                    setMatching(prev => ({
+                      ...prev,
+                      subjects: [subject]
+                    }))
+                  } else {
+                    setMatching(prev => ({
+                      ...prev,
+                      subjects: [...prev.subjects, subject]
+                    }))
+                  }
                 } else {
                   var subs = [...matching.subjects]
                   subs.splice(subs.indexOf(subject), 1)
@@ -45,6 +53,12 @@ const Subjects: React.FC = () => {
         onPress={() => setCurrentIndex(4)} // 4 = priorities
       >
         Weiter
+      </Button>
+      <Button
+        variant="outline"
+        onPress={() => setCurrentIndex(2)} // 4 = priorities
+      >
+        Zurück
       </Button>
     </VStack>
   )

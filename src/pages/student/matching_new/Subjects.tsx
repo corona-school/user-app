@@ -45,6 +45,12 @@ const Subjects: React.FC = () => {
       >
         Weiter
       </Button>
+      <Button
+        variant="outline"
+        onPress={() => setCurrentIndex(1)} // 2 = german
+      >
+        Zurück
+      </Button>
     </VStack>
   )
 }

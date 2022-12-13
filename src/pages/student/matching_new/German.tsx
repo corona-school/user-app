@@ -42,6 +42,9 @@ const German: React.FC = () => {
       <Button onPress={onGoNext} isDisabled={!supportDaz}>
         Weiter
       </Button>
+      <Button variant="outline" onPress={() => setCurrentIndex(1)}>
+        Zurück
+      </Button>
     </VStack>
   )
 }

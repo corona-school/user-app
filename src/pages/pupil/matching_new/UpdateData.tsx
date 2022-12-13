@@ -222,6 +222,12 @@ const UpdateData: React.FC<Props> = ({
         <Button onPress={() => setCurrentIndex(2)} isDisabled={isLoading}>
           Weiter
         </Button>
+        <Button
+          variant="outline"
+          onPress={() => setCurrentIndex(0)}
+          isDisabled={isLoading}>
+          Zurück
+        </Button>
       </VStack>
       <Modal
         isOpen={showModal}
