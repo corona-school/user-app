@@ -52,6 +52,7 @@ const German: React.FC = () => {
                 initial={isNativeLanguage === 'yes'}
                 variant="selection"
                 text="Ja"
+                iconPath={`lf-yes.svg`}
                 onPress={() => setIsNativeLanguage('yes')}
               />
             </Column>
@@ -60,6 +61,7 @@ const German: React.FC = () => {
                 initial={isNativeLanguage === 'no'}
                 variant="selection"
                 text="Nein"
+                iconPath={`lf-no.svg`}
                 onPress={() => setIsNativeLanguage('no')}
               />
             </Column>
