@@ -28,6 +28,7 @@ import LearningPartner from '../../widgets/LearningPartner'
 import { LFSubject } from '../../types/lernfair/Subject'
 import Tag from '../../components/Tag'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
+import OpenMatchRequest from '../../widgets/OpenMatchRequest'
 
 type Props = {}
 const query = gql`
@@ -277,51 +278,21 @@ const MatchingStudent: React.FC<Props> = () => {
                             new Array(data?.me?.student?.openMatchRequestCount)
                               .fill('')
                               .map((_, i) => (
-                                <Column
-                                  width={CardGrid}
-                                  marginRight="15px"
-                                  marginBottom="15px">
-                                  <Box
-                                    bgColor="primary.900"
-                                    padding={space['1.5']}
-                                    borderRadius={8}>
-                                    <Heading
-                                      color="lightText"
-                                      paddingLeft={space['1']}>
-                                      {t('matching.request.check.request')}{' '}
-                                      {`${i + 1}`.padStart(2, '0')}
-                                    </Heading>
-
-                                    <Row
-                                      mt="3"
-                                      paddingLeft={space['1']}
-                                      space={space['0.5']}
-                                      alignItems="center">
-                                      <Text color="lightText" mb={space['0.5']}>
-                                        {t('matching.request.check.subjects')}
-                                      </Text>
-                                      <Row space={space['0.5']}>
-                                        {data?.me?.student?.subjectsFormatted.map(
-                                          (sub: LFSubject) => (
-                                            <Tag
-                                              variant="secondary"
-                                              text={sub.name}
-                                            />
-                                          )
-                                        )}
-                                      </Row>
-                                    </Row>
-                                    <Button
-                                      isDisabled={cancelLoading}
-                                      variant="outlinelight"
-                                      mt="3"
-                                      onPress={showCancelMatchRequestModal}>
-                                      {t(
-                                        'matching.request.check.removeRequest'
-                                      )}
-                                    </Button>
-                                  </Box>
-                                </Column>
+                                <OpenMatchRequest
+                                  cancelLoading={cancelLoading}
+                                  index={i}
+                                  showCancelMatchRequestModal={
+                                    showCancelMatchRequestModal
+                                  }
+                                  subjects={
+                                    data?.me?.student?.subjectsFormatted
+                                  }
+                                  onEditRequest={() =>
+                                    navigate('/request-match', {
+                                      state: { edit: true }
+                                    })
+                                  }
+                                />
                               ))) || (
                             <AlertMessage
                               content={t('matching.request.check.noMatches')}

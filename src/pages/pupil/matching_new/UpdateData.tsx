@@ -13,6 +13,7 @@ import {
 } from 'native-base'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Navigate, useNavigate } from 'react-router-dom'
 import CSSWrapper from '../../../components/CSSWrapper'
 import { schooltypes } from '../../../types/lernfair/SchoolType'
 import { states } from '../../../types/lernfair/State'
@@ -33,7 +34,8 @@ const UpdateData: React.FC<Props> = ({
   state,
   refetchQuery
 }) => {
-  const { setCurrentIndex } = useContext(RequestMatchContext)
+  const navigate = useNavigate()
+  const { setCurrentIndex, isEdit } = useContext(RequestMatchContext)
   const { space } = useTheme()
   const { t } = useTranslation()
   const toast = useToast()
@@ -219,15 +221,27 @@ const UpdateData: React.FC<Props> = ({
           </Row>
         </ProfileSettingItem>
 
-        <Button onPress={() => setCurrentIndex(2)} isDisabled={isLoading}>
+        <Button
+          onPress={() => {
+            if (!isEdit) {
+              setCurrentIndex(2)
+            } else {
+              navigate('/matching', { state: { tabID: 1 } })
+            }
+          }}
+          isDisabled={isLoading}>
           Weiter
         </Button>
-        <Button
-          variant="outline"
-          onPress={() => setCurrentIndex(0)}
-          isDisabled={isLoading}>
-          Zurück
-        </Button>
+        {!isEdit && (
+          <Button
+            variant="outline"
+            onPress={() => {
+              setCurrentIndex(0)
+            }}
+            isDisabled={isLoading}>
+            Zurück
+          </Button>
+        )}
       </VStack>
       <Modal
         isOpen={showModal}

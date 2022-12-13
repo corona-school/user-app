@@ -232,6 +232,11 @@ const Matching: React.FC<Props> = () => {
                                     showCancelMatchRequestModal
                                   }
                                   subjects={data?.me?.pupil?.subjectsFormatted}
+                                  onEditRequest={() =>
+                                    navigate('/request-match', {
+                                      state: { edit: true }
+                                    })
+                                  }
                                 />
                               ))) || (
                             <AlertMessage
