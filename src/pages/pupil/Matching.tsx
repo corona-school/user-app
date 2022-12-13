@@ -238,11 +238,6 @@ const Matching: React.FC<Props> = () => {
                   title: t('matching.request.check.tabs.tab2'),
                   content: (
                     <VStack space={space['1']}>
-                      <Text marginBottom={space['1']}>
-                        {t('matching.request.check.openedRequests')}
-                        {'  '}
-                        {data?.me?.student?.openMatchRequestCount}
-                      </Text>
                       <VStack space={space['0.5']}>
                         <Flex direction="row" flexWrap="wrap">
                           {(data?.me?.student?.openMatchRequestCount &&
