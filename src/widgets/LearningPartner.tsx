@@ -1,28 +1,27 @@
-import { View, Text, Row, Box, Avatar, useTheme } from 'native-base'
+import { View, Text, Row, Box, useTheme, VStack } from 'native-base'
 import { ReactNode } from 'react'
 import Card from '../components/Card'
 import Tag from '../components/Tag'
 import { LFSubject } from '../types/lernfair/Subject'
-import ProfilAvatar from './ProfilAvatar'
 
 type Props = {
-  avatar?: string
   name: string
   subjects: LFSubject[]
-  schooltype: string
-  schoolclass: number
+  schooltype?: string
+  schoolclass?: number
   isDark?: boolean
   button?: ReactNode
+  status?: string
 }
 
 const LearningPartner: React.FC<Props> = ({
-  avatar,
   name,
   subjects,
   schooltype,
   schoolclass,
   isDark = false,
-  button
+  button,
+  status
 }) => {
   const { space } = useTheme()
 
@@ -31,52 +30,63 @@ const LearningPartner: React.FC<Props> = ({
       <Card
         flexibleWidth
         variant={isDark ? 'dark' : 'normal'}
-        padding={space['0.5']}>
-        <Row padding={space['1']}>
-          {avatar && (
-            <Box marginRight={space['1.5']}>
-              {/* <ProfilAvatar image={avatar} size="lg" /> */}
-            </Box>
+        padding={space['1.5']}>
+        <VStack space={space['0.5']}>
+          {name && (
+            <Text
+              bold
+              fontSize={'md'}
+              mb={space['0.5']}
+              color={isDark ? 'lightText' : 'primary.900'}>
+              {name}
+            </Text>
           )}
-          <Box flex="1">
-            {name && (
-              <Text
-                bold
-                fontSize={'md'}
-                color={isDark ? 'lightText' : 'primary.900'}>
-                {name}
+
+          {subjects && (
+            <Row flexWrap={'wrap'} space="5px" alignItems="center">
+              <Text color="lightText">
+                <Text bold>Fächer:</Text>
               </Text>
-            )}
+              {subjects.map((sub: LFSubject) => (
+                <Tag
+                  text={sub.name}
+                  variant="secondary-light"
+                  marginBottom={0}
+                />
+              ))}
+            </Row>
+          )}
 
-            {subjects && (
-              <Row flexWrap={'wrap'} space="5px" alignItems="center">
-                <Text color="lightText" marginBottom={space['0.5']}>
-                  Fächer:
-                </Text>
-                {subjects.map((sub: LFSubject) => (
-                  <Tag text={sub.name} variant="secondary" />
-                ))}
-              </Row>
-            )}
-
-            {schooltype && (
+          {schooltype && (
+            <Row flexWrap={'wrap'} space="5px" alignItems="center">
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Schulform: {schooltype}
+                <Text bold>Schulform:</Text> {schooltype}
               </Text>
-            )}
+            </Row>
+          )}
 
-            {schoolclass && (
+          {schoolclass && (
+            <Row flexWrap={'wrap'} space="5px" alignItems="center">
               <Text color={isDark ? 'lightText' : 'primary.900'}>
-                Klasse: {schoolclass}
+                <Text bold>Klasse:</Text> {schoolclass}
               </Text>
-            )}
-          </Box>
-        </Row>
-        {button && (
-          <Row flexDirection="column" padding={space['1']}>
-            {button}
-          </Row>
-        )}
+            </Row>
+          )}
+
+          {status && (
+            <Row flexWrap={'wrap'} space="5px" alignItems="center">
+              <Text color={isDark ? 'lightText' : 'primary.900'}>
+                <Text bold>Status:</Text> {status}
+              </Text>
+            </Row>
+          )}
+
+          {button && (
+            <Row flexDirection="column" mt={space['1']}>
+              {button}
+            </Row>
+          )}
+        </VStack>
       </Card>
     </View>
   )
