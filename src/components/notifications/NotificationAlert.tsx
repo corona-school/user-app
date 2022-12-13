@@ -56,7 +56,7 @@ const NotificationAlert: React.FC = () => {
   }: IButtonProps): React.ReactElement => {
     return (
       <VStack>
-        { count && (
+        { !!count && (
           <Circle
             position="absolute"
             my={3}
