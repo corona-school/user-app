@@ -14,7 +14,7 @@ import {
   Row,
   Modal
 } from 'native-base'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
@@ -26,6 +26,7 @@ import { LFMatch } from '../../types/lernfair/Match'
 import { LFSubject } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
+import OpenMatchRequest from '../../widgets/OpenMatchRequest'
 import MatchingOnboarding from './MatchingOnboarding'
 
 type Props = {}
@@ -34,6 +35,9 @@ const query: DocumentNode = gql`
   query {
     me {
       pupil {
+        subjectsFormatted {
+          name
+        }
         openMatchRequestCount
         id
         matches {
@@ -59,11 +63,11 @@ const query: DocumentNode = gql`
 
 const Matching: React.FC<Props> = () => {
   const { trackPageView, trackEvent } = useMatomo()
-  const { space, sizes } = useTheme()
+  const { space } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const toast = useToast()
-  const { data, loading } = useQuery(query)
+  const { data } = useQuery(query)
 
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [focusedMatch, setFocusedMatch] = useState<LFMatch>()
@@ -76,21 +80,6 @@ const Matching: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const backArrow = useBreakpointValue({
-    base: true,
-    lg: false
-  })
-
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
-
-  const ButtonContainer = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
 
   const CardGrid = useBreakpointValue({
     base: '100%',
@@ -236,52 +225,14 @@ const Matching: React.FC<Props> = () => {
                             new Array(data?.me?.pupil?.openMatchRequestCount)
                               .fill('')
                               .map((_, i) => (
-                                <Column
-                                  width={CardGrid}
-                                  marginRight="15px"
-                                  marginBottom="15px">
-                                  <Box
-                                    bgColor="primary.900"
-                                    padding={space['1.5']}
-                                    borderRadius={8}>
-                                    <Heading
-                                      color="lightText"
-                                      paddingLeft={space['1']}>
-                                      {t('matching.request.check.request')}{' '}
-                                      {`${i + 1}`.padStart(2, '0')}
-                                    </Heading>
-
-                                    <Row
-                                      mt="3"
-                                      paddingLeft={space['1']}
-                                      space={space['0.5']}
-                                      alignItems="center">
-                                      <Text color="lightText" mb={space['0.5']}>
-                                        {t('matching.request.check.subjects')}
-                                      </Text>
-                                      <Row space={space['0.5']}>
-                                        {data?.me?.pupil?.subjectsFormatted &&
-                                          data?.me?.pupil?.subjectsFormatted.map(
-                                            (sub: LFSubject) => (
-                                              <Tag
-                                                variant="secondary"
-                                                text={sub.name}
-                                              />
-                                            )
-                                          )}
-                                      </Row>
-                                    </Row>
-                                    <Button
-                                      isDisabled={cancelLoading}
-                                      variant="outlinelight"
-                                      mt="3"
-                                      onPress={showCancelMatchRequestModal}>
-                                      {t(
-                                        'matching.request.check.removeRequest'
-                                      )}
-                                    </Button>
-                                  </Box>
-                                </Column>
+                                <OpenMatchRequest
+                                  cancelLoading={cancelLoading}
+                                  index={i}
+                                  showCancelMatchRequestModal={
+                                    showCancelMatchRequestModal
+                                  }
+                                  subjects={data?.me?.pupil?.subjectsFormatted}
+                                />
                               ))) || (
                             <AlertMessage
                               content={t('matching.request.check.noMatches')}
