@@ -36,6 +36,7 @@ import Hello from '../../widgets/Hello'
 import AlertMessage from '../../widgets/AlertMessage'
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal'
 import { getTrafficStatus } from '../../Utility'
+import LearningPartner from '../../widgets/LearningPartner'
 
 type Props = {}
 
@@ -419,30 +420,31 @@ const Dashboard: React.FC<Props> = () => {
                   wrap>
                   <Flex direction="row" flexWrap="wrap" marginRight="-10px">
                     {activeMatches.map(
-                      (match: LFMatch) =>
+                      (match: LFMatch, index: number) =>
                         (
                           <Box
                             width={CardGrid}
                             marginRight="10px"
                             marginBottom="10px">
-                            <TeacherCard
-                              name={`${match.student?.firstname} ${match.student?.lastname}`}
-                              variant="dark"
-                              tags={
-                                match.subjectsFormatted?.map(s => s.name) || []
-                              }
-                              avatar=""
+                            <LearningPartner
+                              key={index}
+                              isDark={true}
+                              name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                              subjects={match?.subjectsFormatted}
+                              status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
                               button={
                                 (!match.dissolved && (
                                   <Button
                                     variant="outlinelight"
                                     onPress={() => dissolveMatch(match)}>
-                                    {t('dashboard.offers.match')}
+                                    {t('dashboard.helpers.buttons.solveMatch')}
                                   </Button>
                                 )) || (
-                                  <Text color="lightText">
-                                    {t('matching.status.dissolved')}
-                                  </Text>
+                                  <AlertMessage
+                                    content={t(
+                                      'matching.request.check.resoloveMatch'
+                                    )}
+                                  />
                                 )
                               }
                             />
@@ -464,9 +466,7 @@ const Dashboard: React.FC<Props> = () => {
                           name: 'Schüler Dashboard – Matching anfragen',
                           documentTitle: 'Schüler Dashboard'
                         })
-                        navigate('/matching', {
-                          state: { skipOnboarding: true }
-                        })
+                        navigate('/request-match')
                       }}>
                       {t('dashboard.offers.requestMatching')}
                     </Button>
