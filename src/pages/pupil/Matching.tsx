@@ -11,7 +11,8 @@ import {
   useToast,
   Box,
   Heading,
-  Row
+  Row,
+  Modal
 } from 'native-base'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -301,6 +302,27 @@ const Matching: React.FC<Props> = () => {
             }}
             onPressBack={() => setShowDissolveModal(false)}
           />
+          <Modal isOpen={showCancelModal}>
+            <Modal.Content>
+              <Modal.Header>
+                {t('matching.request.check.deleteRequest')}
+              </Modal.Header>
+              <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
+              <Modal.Body>
+                {t('matching.request.check.areyousuretodelete')}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="ghost"
+                  onPress={() => setShowCancelModal(false)}>
+                  {t('matching.request.check.cancel')}
+                </Button>
+                <Button onPress={cancelRequest}>
+                  {t('matching.request.check.deleteRequest')}
+                </Button>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
         </WithNavigation>
       </AsNavigationItem>
     </>
