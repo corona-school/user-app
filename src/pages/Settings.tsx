@@ -8,7 +8,9 @@ import {
   HStack,
   useBreakpointValue,
   CloseIcon,
-  Pressable
+  Pressable,
+  Modal,
+  Button
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +32,8 @@ const Settings: React.FC = () => {
   const { trackPageView, trackEvent } = useMatomo()
 
   const [showDeactivate, setShowDeactivate] = useState<boolean>(false)
+  const [showCertificateOptions, setShowCertificateOptions] =
+    useState<boolean>()
 
   useEffect(() => {
     trackPageView({
@@ -110,12 +114,16 @@ const Settings: React.FC = () => {
                 onPress={() => navigate('/onboarding-list')}
               />
             </Column>
-          )} */}
-          </ProfileSettingRow>
-          <ProfileSettingRow
-            title={t('settings.account.title')}
-            isSpace={false}>
-            {/* <Column mb={tabspace}>
+          )}
+          <Column mb={tabspace}>
+            <EditDataRow
+              label={'Bescheinigung beantragen'}
+              onPress={() => setShowCertificateOptions(true)}
+            />
+          </Column>
+        </ProfileSettingRow>
+        <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
+          {/* <Column mb={tabspace}>
             <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
           </Column>*/}
             <Column mb={tabspace}>

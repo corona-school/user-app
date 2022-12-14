@@ -1,5 +1,5 @@
 import { LFDecision } from './Decision'
-import { Pupil } from './User'
+import { LFPupil } from './User'
 
 export type LFCourse = {
   subject: string
@@ -15,8 +15,8 @@ export interface LFSubCourse {
   lectures: LFLecture[]
   image?: string
   isParticipant?: boolean
-  participants?: Pupil[]
-  participantsAsPupil?: Pupil[]
+  participants?: LFPupil[]
+  participantsAsPupil?: LFPupil[]
   maxParticipants?: number
   participantsCount?: number
   course: LFCourse

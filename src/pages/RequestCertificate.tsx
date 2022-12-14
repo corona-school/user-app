@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useTheme, VStack } from 'native-base'
+import { Text, useTheme, VStack } from 'native-base'
 import {
   createContext,
   Dispatch,
@@ -8,7 +8,9 @@ import {
   useEffect,
   useState
 } from 'react'
+import { useLocation } from 'react-router-dom'
 import WithNavigation from '../components/WithNavigation'
+import { LFMatch } from '../types/lernfair/Match'
 import InstructionProgress from '../widgets/InstructionProgress'
 import RequestCertificateData from './certificates/RequestCertificateData'
 import RequestCertificateMode from './certificates/RequestCertificateMode'
@@ -19,6 +21,8 @@ type Props = {}
 type IRequestCertificateData = {
   subject?: string | boolean
   otherActions: string[]
+  pupilMatches: LFMatch[]
+  requestData: {}
 }
 type IRequestCertificateContext = {
   state: IRequestCertificateData
@@ -26,16 +30,22 @@ type IRequestCertificateContext = {
 }
 export const RequestCertificateContext =
   createContext<IRequestCertificateContext>({
-    state: { otherActions: [] },
+    state: { otherActions: [], pupilMatches: [], requestData: {} },
     setState: () => null
   })
 
 const RequestCertificate: React.FC<Props> = () => {
+  const { trackPageView } = useMatomo()
+  const location = useLocation() as { state: { type: 'group' | 'matching' } }
+  const certType = location?.state?.type
+
   const { space } = useTheme()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
   const [state, setState] = useState<IRequestCertificateData>({
-    otherActions: []
+    otherActions: [],
+    pupilMatches: [],
+    requestData: {}
   })
 
   const onNext = useCallback(() => {
@@ -47,13 +57,15 @@ const RequestCertificate: React.FC<Props> = () => {
   const onGeneric = useCallback(() => {}, [])
   const onAutomatic = useCallback(() => {}, [])
   const onManual = useCallback(() => {}, [])
-  const { trackPageView } = useMatomo()
 
   useEffect(() => {
     trackPageView({
       documentTitle: 'Zertifikate anfordern'
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (!certType) return <Text>Es ist ein Fehler aufgetreten</Text>
 
   return (
     <RequestCertificateContext.Provider value={{ state, setState }}>
@@ -75,7 +87,11 @@ const RequestCertificate: React.FC<Props> = () => {
             />
           )}
           {currentIndex === 1 && (
-            <RequestCertificateData onNext={onNext} onBack={onBack} />
+            <RequestCertificateData
+              onNext={onNext}
+              onBack={onBack}
+              certificateType={certType}
+            />
           )}
           {currentIndex === 2 && (
             <RequestCertificateMode
