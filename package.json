@@ -1,6 +1,6 @@
 {
   "name": "lernfair",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "private": true,
   "devDependencies": {
     "@apollo/client": "^3.6.9",
