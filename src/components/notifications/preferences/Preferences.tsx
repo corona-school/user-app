@@ -11,19 +11,7 @@ type Props = {
 }
 
 export const Preferences: FC<Props> = ({title, notificationCategories}) => {
-  const { userPreferences, updateUserPreferences } = useUserPreferences()
-  const handleSwitchUpdate = (
-    category: string,
-    channel: string,
-    value: boolean
-  ) => {
-    updateUserPreferences({
-      variables: {
-        preferences: { ...userPreferences, [category]: {[channel]: value}}
-      },
-      optimisticResponse: { meUpdate: true }
-    })
-  }
+  const { userPreferences, updateUserPreference } = useUserPreferences()
 
   const marginLeft = useBreakpointValue({
     base: 0,
@@ -49,7 +37,7 @@ export const Preferences: FC<Props> = ({title, notificationCategories}) => {
                 notificationTypeDetails={notificationCategories[category]}
                 value={userPreferences[category][channel]}
                 onUpdate={(value: boolean) =>
-                  handleSwitchUpdate(category, channel, value)
+                  updateUserPreference(category, channel, value)
                 }
               />
             ))

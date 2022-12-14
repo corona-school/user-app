@@ -25,12 +25,23 @@ for (const preference of getAllNotificationPreferenceCategories()) {
 }
 
 const useUserPreferences = () => {
-  const [userPreferences, setUserPreferences] =
+  const [userPreferences, setUserPreferencesPrivate] =
     useState<NotificationPreferences>(defaultPreferences)
 
   const { data, loading, error } = useQuery(notificationPreferencesQuery)
 
   const [updateUserPreferences] = useMutation(notificationPreferencesMutation)
+
+  const updateUserPreference = (category: string, channel: string, value: boolean) => {
+    const preferences = { ...userPreferences, [category]: {[channel]: value}}
+    updateUserPreferences({
+      variables: {
+        preferences,
+      },
+      optimisticResponse: { meUpdate: true }
+    }).then(value => { if (value?.data?.meUpdate) setUserPreferencesPrivate(preferences)
+    })
+  }
 
   useEffect(() => {
     if (!loading && !error && data?.me?.notificationPreferences) {
@@ -38,14 +49,12 @@ const useUserPreferences = () => {
         data?.me?.notificationPreferences
       )
       const [preferences] = userPreferencesAsJson
-      setUserPreferences(preferences)
+      setUserPreferencesPrivate(preferences)
     }
   }, [loading, error, data?.me?.notificationPreferences])
   return {
     userPreferences,
-    loading,
-    error,
-    updateUserPreferences
+    updateUserPreference
   }
 }
 
