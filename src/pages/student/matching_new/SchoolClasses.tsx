@@ -34,9 +34,14 @@ const SchoolClasses: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const [update] = useMutation(gql`
-    mutation updateStudent($subjects: [SubjectInput!]) {
+  const [updateSubjects] = useMutation(gql`
+    mutation updateStudentSubjects($subjects: [SubjectInput!]) {
       meUpdate(update: { student: { subjects: $subjects } })
+    }
+  `)
+
+  const [createMatchRequest] = useMutation(gql`
+    mutation {
       studentCreateMatchRequest
     }
   `)
@@ -127,20 +132,26 @@ const SchoolClasses: React.FC<Props> = () => {
       })
     }
 
-    const res = await update({ variables: { subjects: subjects } })
+    const resSubs = await updateSubjects({ variables: { subjects: subjects } })
+    if (resSubs.data && !resSubs.errors) {
+      const resRequest = await createMatchRequest()
 
-    if (res.data && !res.errors) {
-      showModal()
+      if (resRequest.data && !resRequest.errors) {
+        showModal()
+      } else {
+        toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+      }
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
   }, [
+    createMatchRequest,
     matching.schoolClasses,
     matching.setDazSupport,
     matching.subjects,
     showModal,
     toast,
-    update
+    updateSubjects
   ])
 
   return (
