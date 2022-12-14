@@ -22,16 +22,23 @@ const Details: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
   const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching, setCurrentIndex } =
+  const { matching, setMatching, setCurrentIndex, isEdit } =
     useContext(RequestMatchContext)
   const navigate = useNavigate()
 
   const [update, _update] = useMutation(gql`
     mutation updatePupil($subjects: [SubjectInput!]) {
       meUpdate(update: { pupil: { subjects: $subjects } })
-      pupilCreateMatchRequest
     }
   `)
+
+  const [createMatchRequest] = useMutation(
+    gql`
+      mutation {
+        pupilCreateMatchRequest
+      }
+    `
+  )
 
   const buttonWidth = useBreakpointValue({
     base: '100%',
@@ -85,20 +92,31 @@ const Details: React.FC<Props> = () => {
       subs.push({ name: 'Deutsch als Zweitsprache', mandatory: true })
     }
 
-    const res = await update({ variables: { subjects: subs } })
+    const resSubs = await update({ variables: { subjects: subs } })
 
-    if (res.data && !res.errors) {
-      showModal()
+    if (resSubs.data && !resSubs.errors) {
+      if (!isEdit) {
+        const resRequest = await createMatchRequest()
+        if (resRequest.data && !resRequest.errors) {
+          showModal()
+        } else {
+          toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+        }
+      } else {
+        showModal()
+      }
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
   }, [
+    createMatchRequest,
     matching.priority,
     matching.setDazPriority,
     matching.subjects,
     showModal,
     toast,
-    update
+    update,
+    isEdit
   ])
 
   return (

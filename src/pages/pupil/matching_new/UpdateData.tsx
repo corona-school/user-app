@@ -223,11 +223,7 @@ const UpdateData: React.FC<Props> = ({
 
         <Button
           onPress={() => {
-            if (!isEdit) {
-              setCurrentIndex(2)
-            } else {
-              navigate('/matching', { state: { tabID: 1 } })
-            }
+            setCurrentIndex(2)
           }}
           isDisabled={isLoading}>
           Weiter

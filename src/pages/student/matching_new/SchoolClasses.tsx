@@ -24,7 +24,7 @@ type Props = {}
 const SchoolClasses: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching, setCurrentIndex } =
+  const { matching, setMatching, setCurrentIndex, isEdit } =
     useContext(RequestMatchContext)
   const navigate = useNavigate()
   const { setShow, setContent, setVariant } = useModal()
@@ -134,18 +134,23 @@ const SchoolClasses: React.FC<Props> = () => {
 
     const resSubs = await updateSubjects({ variables: { subjects: subjects } })
     if (resSubs.data && !resSubs.errors) {
-      const resRequest = await createMatchRequest()
+      if (!isEdit) {
+        const resRequest = await createMatchRequest()
 
-      if (resRequest.data && !resRequest.errors) {
-        showModal()
+        if (resRequest.data && !resRequest.errors) {
+          showModal()
+        } else {
+          toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+        }
       } else {
-        toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+        showModal()
       }
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
   }, [
     createMatchRequest,
+    isEdit,
     matching.schoolClasses,
     matching.setDazSupport,
     matching.subjects,
