@@ -10,20 +10,17 @@ import {
   Column,
   useToast,
   Box,
-  Heading,
-  Row,
-  Modal
+  Modal,
+  Row
 } from 'native-base'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 import Tabs from '../../components/Tabs'
-import Tag from '../../components/Tag'
 import WithNavigation from '../../components/WithNavigation'
 import DissolveMatchModal from '../../modals/DissolveMatchModal'
 import { LFMatch } from '../../types/lernfair/Match'
-import { LFSubject } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import LearningPartner from '../../widgets/LearningPartner'
 import OpenMatchRequest from '../../widgets/OpenMatchRequest'
@@ -69,6 +66,7 @@ const Matching: React.FC<Props> = () => {
   const toast = useToast()
   const { data } = useQuery(query)
 
+  const [showEditModal, setShowEditModal] = useState<boolean>(false)
   const [showDissolveModal, setShowDissolveModal] = useState<boolean>()
   const [focusedMatch, setFocusedMatch] = useState<LFMatch>()
   const [showCancelModal, setShowCancelModal] = useState<boolean>()
@@ -232,11 +230,7 @@ const Matching: React.FC<Props> = () => {
                                     showCancelMatchRequestModal
                                   }
                                   subjects={data?.me?.pupil?.subjectsFormatted}
-                                  onEditRequest={() =>
-                                    navigate('/request-match', {
-                                      state: { edit: true }
-                                    })
-                                  }
+                                  onEditRequest={() => setShowEditModal(true)}
                                 />
                               ))) || (
                             <AlertMessage
@@ -276,6 +270,37 @@ const Matching: React.FC<Props> = () => {
                 <Button onPress={cancelRequest}>
                   {t('matching.request.check.deleteRequest')}
                 </Button>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+          <Modal isOpen={showEditModal}>
+            <Modal.Content>
+              <Modal.CloseButton />
+              <Modal.Header>Anfrage bearbeiten</Modal.Header>
+              <Modal.Body>
+                <Text>
+                  Wenn du deine Angaben änderst, verändert sich deine Wartezeit
+                  nicht. Wir informieren dich per E-Mail sobald du an der Reihe
+                  bist und wir eine:n passende:n Lernpartner:in für dich
+                  gefunden haben.
+                </Text>
+              </Modal.Body>
+              <Modal.Footer>
+                <Row>
+                  <Button
+                    onPress={() => setShowEditModal(false)}
+                    variant={'secondary-light'}>
+                    Abbrechen
+                  </Button>
+                  <Button
+                    onPress={() =>
+                      navigate('/request-match', {
+                        state: { edit: true }
+                      })
+                    }>
+                    Bearbeiten
+                  </Button>
+                </Row>
               </Modal.Footer>
             </Modal.Content>
           </Modal>
