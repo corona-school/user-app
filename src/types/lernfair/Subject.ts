@@ -14,7 +14,7 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'biologie', label: 'Biologie' },
   { key: 'chemie', label: 'Chemie' },
   { key: 'deutsch', label: 'Deutsch' },
-  // { key: 'deutsch-2', label: 'Deutsch als Zweitsprache' },
+  { key: 'deutsch-2', label: 'Deutsch als Zweitsprache' },
   { key: 'englisch', label: 'Englisch' },
   { key: 'erdkunde', label: 'Erdkunde' },
   { key: 'französisch', label: 'Französisch' },

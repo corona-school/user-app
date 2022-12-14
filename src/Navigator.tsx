@@ -8,7 +8,6 @@ import Login from './pages/Login'
 import Welcome from './pages/Welcome'
 import LoginToken from './pages/LoginToken'
 import { RequireAuth } from './User'
-import FullPageModal from './widgets/FullPageModal'
 
 // All other pages load lazy:
 const NavigatorLazy = lazy(() => import('./NavigatorLazy'))
@@ -43,7 +42,6 @@ export default function Navigator() {
           }
         />
       </Routes>
-      <FullPageModal />
     </BrowserRouter>
   )
 }

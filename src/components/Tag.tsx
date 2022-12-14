@@ -8,11 +8,10 @@ type Props = {
   paddingX?: number | string
   paddingY?: number | string
   borderColor?: string
-  variant?: 'normal' | 'outline' | 'rating' | 'secondary' | 'secondary-light'
+  variant?: 'normal' | 'outline' | 'rating' | 'secondary'
   beforeElement?: ReactNode | ReactNode[]
   afterElement?: ReactNode | ReactNode[]
   isReview?: boolean
-  marginBottom?: number
 }
 
 const Tag: React.FC<Props> = ({
@@ -25,8 +24,7 @@ const Tag: React.FC<Props> = ({
   variant = 'normal',
   beforeElement,
   afterElement,
-  isReview,
-  marginBottom
+  isReview
 }) => {
   const { colors, space } = useTheme()
 
@@ -44,32 +42,22 @@ const Tag: React.FC<Props> = ({
       case 'rating':
         return colors.text['50']
       case 'secondary':
-      case 'secondary-light':
         return 'primary.500'
       default:
         return colors.text['50']
     }
   }, [colors.text, variant])
 
-  const color = useMemo(() => {
-    switch (variant) {
-      case 'secondary':
-      case 'outline':
-      case 'rating':
-        return 'darkText'
-      case 'normal':
-      case 'secondary-light':
-        return 'lightText'
-      default:
-        return 'darkText'
-    }
-  }, [variant])
+  const color = useMemo(
+    () => (variant === 'normal' ? colors.text['50'] : colors.text['900']),
+    [colors.text, variant]
+  )
 
   return (
     <Box
       paddingX={pad[0]}
       paddingY={pad[1]}
-      marginBottom={marginBottom !== undefined ? marginBottom : space['0.5']}
+      marginBottom={space['0.5']}
       bg={bg}
       borderRadius={borderRadius || 4}
       borderWidth={1}

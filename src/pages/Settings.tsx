@@ -135,12 +135,6 @@ const Settings: React.FC = () => {
           </Column> */}
             <Column mb={tabspace}>
               <EditDataRow
-                label={t('settings.account.deactivateAccount')}
-                onPress={() => setShowDeactivate(true)}
-              />
-            </Column>
-            <Column mb={tabspace}>
-              <EditDataRow
                 label={t('settings.account.logout')}
                 onPress={() => {
                   trackEvent({
@@ -158,16 +152,25 @@ const Settings: React.FC = () => {
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.imprint')}
-                onPress={() => navigate('/impressum')}
+                onPress={() => navigate('/imprint')}
               />
             </Column>
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.legal.datapolicy')}
-                onPress={() => navigate('/datenschutz')}
+                onPress={() => navigate('/privacy')}
               />
             </Column>
           </ProfileSettingRow>
+
+          {userType === 'pupil' && (
+            <Column mt={tabspace}>
+              <EditDataRow
+                label={t('settings.account.deactivateAccount')}
+                onPress={() => setShowDeactivate(true)}
+              />
+            </Column>
+          )}
         </VStack>
       </WithNavigation>
       <DeactivateAccountModal

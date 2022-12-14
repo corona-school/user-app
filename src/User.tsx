@@ -16,7 +16,7 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
       return <CenterLoadingSpinner />
 
     if (sessionState === 'logged-in') {
-      if (user && !(user.pupil ?? user.student)!.verifiedAt)
+      if (user && !(user.pupil ?? user.student).verifiedAt)
         return <VerifyEmailModal email={user.email} />
   
       return children

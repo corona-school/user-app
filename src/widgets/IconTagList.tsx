@@ -2,6 +2,7 @@ import { View, Box, Link, Row, Column, Text, CircleIcon } from 'native-base'
 import { useEffect, useMemo, useState } from 'react'
 import { IconLoader } from '../components/IconLoader'
 
+
 export type IIconTagList = {
   iconPath?: string
   textIcon?: string
@@ -33,7 +34,7 @@ const IconTagList: React.FC<IIconTagList> = ({
 
   const renderIcon = useMemo(() => {
     if (!iconPath) return
-    return <IconLoader iconPath={iconPath} />
+    return <IconLoader iconPath={iconPath} />;
   }, [iconPath])
 
   const renderText = useMemo(() => {
@@ -41,14 +42,14 @@ const IconTagList: React.FC<IIconTagList> = ({
 
     return (
       <Box
-        size={'10'}
+        size={'7'}
         position={'relative'}
         justifyContent="center"
         alignItems="center">
         <CircleIcon
           color="lightText"
           position="absolute"
-          size={'10'}
+          size={'7'}
           top="0"
           left="0"
           zIndex="-1"

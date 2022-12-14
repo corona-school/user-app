@@ -39,8 +39,8 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
   const toast = useToast()
 
   const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(gql`
-    mutation deactiveAccount($reason: String) {
-      meDeactivate(reason: $reason)
+    mutation {
+      meDeactivate
     }
   `)
 
@@ -66,52 +66,24 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     !isOther && setOther('')
   }, [isOther, reason, reasons.length])
 
-  const showError = useCallback(() => {
-    toast.show({
-      description: t('profile.Deactivate.error')
-    })
-  }, [t, toast])
-
   const deactivate = useCallback(async () => {
-    if (reason === undefined) return
-    try {
-      const res = await deactivateAccount({
-        variables: {
-          reason: !isOther
-            ? `${t(`profile.Deactivate.${userType}.${parseInt(reason)}`)}`
-            : other
-        }
+    const res = await deactivateAccount()
+    onCloseModal && onCloseModal()
+    if (res.data.meDeactivate) {
+      trackEvent({
+        category: 'profil',
+        action: 'click-event',
+        name: 'Account deaktivieren',
+        documentTitle: 'Deactivate'
       })
-
-      onCloseModal && onCloseModal()
-      if (res.data.meDeactivate) {
-        trackEvent({
-          category: 'profil',
-          action: 'click-event',
-          name: 'Account deaktivieren',
-          documentTitle: 'Deactivate'
-        })
-        logout()
-        navigate('/welcome', { state: { deactivated: true } })
-      } else {
-        showError()
-      }
-    } catch (e) {
-      showError()
+      logout()
+      navigate('/welcome', { state: { deactivated: true } })
+    } else {
+      toast.show({
+        description: t('profile.Deactivate.error')
+      })
     }
-  }, [
-    reason,
-    deactivateAccount,
-    isOther,
-    t,
-    userType,
-    other,
-    onCloseModal,
-    trackEvent,
-    logout,
-    navigate,
-    toast
-  ])
+  }, [deactivateAccount, logout, navigate, onCloseModal, t, toast, trackEvent])
 
   const isValidInput = useMemo(() => {
     if (!reason) return false

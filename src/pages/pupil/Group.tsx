@@ -274,7 +274,7 @@ const PupilGroup: React.FC<Props> = () => {
                           </CSSWrapper>
                         )
                       )) || (
-                      <Box paddingLeft={space['1']} width="100%">
+                      <Box paddingLeft={space['1']}>
                         <AlertMessage
                           content={t('matching.group.error.nofound')}
                         />

@@ -41,14 +41,13 @@ const query = gql`
         matches {
           id
           dissolved
-          subjectsFormatted {
-            name
-          }
           pupil {
             firstname
-            lastname
-            schooltype
+
             grade
+            subjectsFormatted {
+              name
+            }
           }
         }
         canRequestMatch {
@@ -162,6 +161,14 @@ const MatchingStudent: React.FC<Props> = () => {
     }
   }, [dissolveData?.matchDissolve, toast, toastShown])
 
+  const activeMatches = useMemo(
+    () =>
+      data?.me?.student?.matches?.filter(
+        (match: LFMatch) => !match.dissolved
+      ) || [],
+    [data?.me?.student?.matches]
+  )
+
   const { trackPageView, trackEvent } = useMatomo()
 
   useEffect(() => {
@@ -170,6 +177,14 @@ const MatchingStudent: React.FC<Props> = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const mandatorySubjects = useMemo(
+    () =>
+      data?.me?.student?.subjectsFormatted?.filter(
+        (sub: LFSubject) => sub.mandatory
+      ),
+    [data?.me?.student?.subjectsFormatted]
+  )
 
   return (
     <AsNavigationItem path="matching">
@@ -221,24 +236,22 @@ const MatchingStudent: React.FC<Props> = () => {
                   content: (
                     <VStack>
                       <Flex direction="row" flexWrap="wrap">
-                        {(data?.me?.student?.matches.length &&
-                          data?.me?.student?.matches?.map(
+                        {(activeMatches.length &&
+                          activeMatches?.map(
                             (match: LFMatch, index: number) => (
                               <Column width={CardGrid} marginRight="15px">
                                 <LearningPartner
                                   key={index}
                                   isDark={true}
                                   name={match?.pupil?.firstname}
-                                  subjects={match?.subjectsFormatted}
-                                  status={
-                                    match?.dissolved ? 'aufgelöst' : 'aktiv'
+                                  subjects={match?.pupil?.subjectsFormatted}
+                                  schooltype={
+                                    match?.pupil?.schooltype || 'Backend Error'
                                   }
-                                  schooltype={t(
-                                    `lernfair.schooltypes.${match?.pupil?.schooltype}`
-                                  )}
                                   schoolclass={match?.pupil?.grade}
+                                  avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                                   button={
-                                    !match.dissolved && (
+                                    (!match.dissolved && (
                                       <Button
                                         variant="outlinelight"
                                         onPress={() =>
@@ -248,6 +261,12 @@ const MatchingStudent: React.FC<Props> = () => {
                                           'dashboard.helpers.buttons.solveMatch'
                                         )}
                                       </Button>
+                                    )) || (
+                                      <AlertMessage
+                                        content={t(
+                                          'matching.request.check.resoloveMatch'
+                                        )}
+                                      />
                                     )
                                   }
                                 />

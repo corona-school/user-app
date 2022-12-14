@@ -27,6 +27,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import AsNavigationItem from '../components/AsNavigationItem'
 import Hello from '../widgets/Hello'
 import AlertMessage from '../widgets/AlertMessage'
+import useLernfair from '../hooks/useLernfair'
 import { useUserType } from '../hooks/useApollo'
 
 type Props = {}
@@ -40,7 +41,7 @@ type MentorCategory =
   | 'OTHER'
 
 const HelpCenter: React.FC<Props> = () => {
-  const userType = useUserType()
+  const userType = useLernfair()
   const { space, sizes } = useTheme()
   const [dsgvo, setDSGVO] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -150,7 +151,10 @@ const HelpCenter: React.FC<Props> = () => {
 
   return (
     <AsNavigationItem path="hilfebereich">
-      <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
+      <WithNavigation
+        showBack={backArrow}
+        headerTitle="Hilfebereich"
+        headerContent={<Hello />}>
         <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
           <Box
             maxWidth={ContentContainerWidth}
@@ -191,7 +195,7 @@ const HelpCenter: React.FC<Props> = () => {
               },
 
               {
-                hide: userType === 'pupil',
+                hide: userType !== 'pupil',
                 title: t('helpcenter.assistance.title'),
                 content: (
                   <IFrame

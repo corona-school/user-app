@@ -26,7 +26,7 @@ const AppointmentInfoRow: React.FC<Props> = ({
           {t('course.CourseDate.Preview.appointmentLabel')}{' '}
           {`${index + 1}`.padStart(2, '0')}
         </Heading>
-        {onPressDelete && <Link onPress={onPressDelete}>Termin löschen</Link>}
+        {<Link onPress={onPressDelete}>Termin löschen</Link>}
       </Row>
 
       <VStack>

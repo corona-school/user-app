@@ -2,14 +2,12 @@ import { ArrowBackIcon } from 'native-base'
 import { TouchableOpacity } from 'react-native'
 import { useNavigate } from 'react-router-dom'
 
-type Props = {
-  onPress?: () => any
-}
+type Props = {}
 
-const BackButton: React.FC<Props> = ({ onPress }) => {
+const BackButton: React.FC<Props> = () => {
   const navigate = useNavigate()
   return (
-    <TouchableOpacity onPress={onPress || (() => navigate(-1))}>
+    <TouchableOpacity onPress={() => navigate(-1)}>
       <ArrowBackIcon size="xl" color="lightText" />
     </TouchableOpacity>
   )

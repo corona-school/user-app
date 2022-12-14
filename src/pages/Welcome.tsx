@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
       outlineButtonText={t('welcome.btn.login')}
       outlinebuttonLink={() => navigate('/login')}
       defaultButtonText={t('welcome.btn.signup')}
-      defaultbuttonLink={() => navigate('/registration')}
+      defaultbuttonLink={() => navigate('/registration/1')}
       icon={<Logo />}
       extraContent={
         deactivated && (

@@ -4,9 +4,6 @@
 /gg
 _generated.scss
 
-# generated gql files
-src/gql
-
 # dependencies
 /node_modules
 /.pnp
