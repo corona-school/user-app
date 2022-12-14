@@ -38,12 +38,12 @@ const OpenMatchRequest: React.FC<Props> = ({
   return (
     <Column width={CardGrid} marginRight="15px" marginBottom="15px">
       <Box bgColor="primary.100" padding={space['1.5']} borderRadius={8}>
-        <Heading color="darkText" paddingLeft={space['1']}>
+        <Heading color="darkText">
           {t('matching.request.check.request')}{' '}
           {`${index + 1}`.padStart(2, '0')}
         </Heading>
 
-        <Column mt="3" paddingLeft={space['1']} space={space['0.5']}>
+        <Column mt="3" space={space['0.5']}>
           <Text color="darkText" bold>
             {t('matching.request.check.subjects')}
           </Text>
