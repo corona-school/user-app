@@ -1,5 +1,5 @@
-import { FetchResult, gql, useMutation } from '@apollo/client'
-import { DocumentNode, GraphQLError } from 'graphql'
+import { gql, useMutation } from '@apollo/client'
+import { DocumentNode } from 'graphql'
 import {
   Text,
   VStack,
@@ -13,7 +13,7 @@ import {
 } from 'native-base'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import CSSWrapper from '../../../components/CSSWrapper'
 import { schooltypes } from '../../../types/lernfair/SchoolType'
 import { states } from '../../../types/lernfair/State'
@@ -34,7 +34,6 @@ const UpdateData: React.FC<Props> = ({
   state,
   refetchQuery
 }) => {
-  const navigate = useNavigate()
   const { setCurrentIndex, isEdit } = useContext(RequestMatchContext)
   const { space } = useTheme()
   const { t } = useTranslation()
@@ -43,7 +42,7 @@ const UpdateData: React.FC<Props> = ({
 
   const [showModal, setShowModal] = useState<boolean>()
   const [modalType, setModalType] = useState<
-    'schooltype' | 'schoolclass' | 'state'
+    'schooltypes' | 'schoolclass' | 'states'
   >()
   const [modalSelection, setModalSelection] = useState<string>()
 
@@ -74,14 +73,14 @@ const UpdateData: React.FC<Props> = ({
 
   const listItems = useMemo(() => {
     switch (modalType) {
-      case 'schooltype':
+      case 'schooltypes':
         return schooltypes
       case 'schoolclass':
         return Array.from({ length: 13 }, (_, i) => ({
           label: `${i + 1}. Klasse`,
           key: `${i + 1}`
         }))
-      case 'state':
+      case 'states':
         return states
       default:
         return []
@@ -90,12 +89,12 @@ const UpdateData: React.FC<Props> = ({
 
   const data = useMemo(() => {
     switch (modalType) {
-      case 'schooltype':
+      case 'schooltypes':
         return schooltype
 
       case 'schoolclass':
         return `${gradeAsInt}`
-      case 'state':
+      case 'states':
         return state
       default:
         return schooltype
@@ -112,7 +111,7 @@ const UpdateData: React.FC<Props> = ({
     setIsLoading(true)
     try {
       switch (modalType) {
-        case 'schooltype':
+        case 'schooltypes':
           await meUpdateSchooltype({
             variables: { data: modalSelection }
           })
@@ -122,7 +121,7 @@ const UpdateData: React.FC<Props> = ({
             variables: { data: parseInt(modalSelection) }
           })
           break
-        case 'state':
+        case 'states':
           await meUpdateState({ variables: { data: modalSelection } })
           break
         default:
@@ -158,7 +157,7 @@ const UpdateData: React.FC<Props> = ({
         <ProfileSettingItem
           title={t('profile.SchoolType.label')}
           href={() => {
-            setModalType('schooltype')
+            setModalType('schooltypes')
             setShowModal(true)
           }}>
           <Row flexWrap="wrap" w="100%">
@@ -201,7 +200,7 @@ const UpdateData: React.FC<Props> = ({
         <ProfileSettingItem
           title={t('profile.State.label')}
           href={() => {
-            setModalType('state')
+            setModalType('states')
             setShowModal(true)
           }}>
           <Row flexWrap="wrap" w="100%">
@@ -251,11 +250,21 @@ const UpdateData: React.FC<Props> = ({
           <Modal.Body>
             <Row flexWrap="wrap">
               {listItems.map((item: { label: string; key: string }) => (
-                <IconTagList
-                  initial={modalSelection === item.key}
-                  text={item.label}
-                  onPress={() => setModalSelection(item.key)}
-                />
+                <Column mb={space['1']} mr={space['1']}>
+                  <IconTagList
+                    initial={modalSelection === item.key}
+                    text={item.label}
+                    onPress={() => setModalSelection(item.key)}
+                    iconPath={
+                      (modalType !== 'schoolclass' &&
+                        `${modalType}/icon_${item.key}.svg`) ||
+                      ''
+                    }
+                    textIcon={
+                      (modalType === 'schoolclass' && `${item.key}`) || ''
+                    }
+                  />
+                </Column>
               ))}
             </Row>
           </Modal.Body>
