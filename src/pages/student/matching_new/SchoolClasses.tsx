@@ -5,7 +5,8 @@ import {
   Button,
   useToast,
   Text,
-  useBreakpointValue
+  useBreakpointValue,
+  Box
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import Card from '../../../components/Card'
@@ -61,28 +62,42 @@ const SchoolClasses: React.FC<Props> = () => {
         paddingX={space['2']}
         paddingTop={space['2']}
         space={space['1']}
-        alignItems="center">
-        <PartyIcon />
-        <Heading fontSize={'2xl'} color="lightText" textAlign="center">
-          Geschafft, du bist ein:e Held:in!
-        </Heading>
-        <Text color="lightText" textAlign="center">
-          Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!
-        </Text>
-        <Text color="lightText" textAlign="center">
-          Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert
-          in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden
-          haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du
-          Fragen haben, kannst du dich jederzeit bei uns melden.
-        </Text>
-        <Button
-          w={buttonWidth}
-          onPress={() => {
-            navigate('/start')
-            setShow(false)
-          }}>
-          Fertig
-        </Button>
+        alignItems="center"
+        height="100%">
+        <Box
+          maxWidth="600px"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="center">
+          <PartyIcon />
+          <Heading
+            fontSize={'2xl'}
+            color="lightText"
+            textAlign="center"
+            marginY={space['1.5']}>
+            Geschafft, du bist ein:e Held:in!
+          </Heading>
+          <Text color="lightText" textAlign="center" marginBottom={space['1']}>
+            Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!
+          </Text>
+          <Text color="lightText" textAlign="center" marginBottom={space['1']}>
+            Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche
+            dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich
+            gefunden haben, werden wir dich direkt per E-Mail benachrichtigen.
+            Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.
+          </Text>
+          <Button
+            w={buttonWidth}
+            onPress={() => {
+              navigate('/matching', {
+                state: { tabID: 1 }
+              })
+              setShow(false)
+            }}>
+            Fertig
+          </Button>
+        </Box>
       </VStack>
     )
     setShow(true)

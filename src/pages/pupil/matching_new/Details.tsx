@@ -59,7 +59,9 @@ const Details: React.FC<Props> = () => {
           w={buttonWidth}
           variant={'outlinelight'}
           onPress={() => {
-            navigate('/start')
+            navigate('/matching', {
+              state: { tabID: 1 }
+            })
             setShow(false)
           }}>
           Fertig
