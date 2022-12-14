@@ -1,24 +1,13 @@
 import { UserNotification } from '../types/lernfair/Notification'
-
-import { ReactElement } from 'react'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
 import {
-  marketingNotificationPreference,
   messageIcons,
-  systemNotificationPreference
 } from './notification-preferences'
+import { FC } from "react"
 
-function getIconForMessageType(messageType: string): ReactElement {
-  const messageIcon: JSX.Element = messageIcons[messageType]
-  return messageIcon
-}
-
-const getNotificationPreferencesData = (category: string) => {
-  const systemPreferences = systemNotificationPreference[category]
-  const marketingPreferences = marketingNotificationPreference[category]
-  return { systemPreferences, marketingPreferences }
-}
+const getIconForMessageType = (messageType: string): FC =>
+  messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null
 
 const getTimeDifference = (timestamp: string) => {
   const now = DateTime.now()
@@ -106,7 +95,6 @@ const getAllNewUserNotificationsButMinimumFiveNotifications = (
 
 export {
   getIconForMessageType,
-  getNotificationPreferencesData,
   getTimeText,
   isNewNotification,
   getNewNotifications,

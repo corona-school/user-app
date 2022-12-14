@@ -9,9 +9,9 @@ import {
 } from 'native-base'
 import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
-import SystemNotifications from '../../components/notification/preferences/SystemNotifications'
 import { useTranslation } from 'react-i18next'
-import MarketingNotifications from '../../components/notification/preferences/MarketingNotifications'
+import { SystemNotifications } from '../../components/notifications/preferences/SystemNotifications'
+import { MarketingNotifications } from '../../components/notifications/preferences/MarketingNotifications'
 
 const NotficationControlPanel = () => {
   const { space } = useTheme()
