@@ -46,6 +46,9 @@ import Card from '../../components/Card'
 
 type Props = {}
 
+// pupil {
+//   firstname
+// }
 const query = gql`
   query {
     me {
@@ -59,10 +62,13 @@ const query = gql`
           name
         }
         participationCertificates {
-          subjectsFormatted
           state
+          subjectsFormatted
           startDate
-          pupilId
+          endDate
+          hoursTotal
+          medium
+          categories
         }
       }
     }
@@ -189,10 +195,11 @@ const ProfileStudent: React.FC<Props> = () => {
   const downloadCertificate = useCallback(
     async (lang: 'de' | 'en') => {
       setShowSelectPDFLanguageModal(false)
+
       const res = await requestCertificate({
         variables: {
           lang,
-          uuid: focusedCertificateUuid
+          uuid: `${focusedCertificateUuid}`
         }
       })
 
@@ -333,12 +340,13 @@ const ProfileStudent: React.FC<Props> = () => {
                       isDisabled={_requestCertificate.loading}
                       certificate={cert}
                       onPressDownload={() => {
+                        console.log(cert)
                         setFocusedCertificateUuid(cert.uuid)
                         setShowSelectPDFLanguageModal(true)
                       }}
                       onPressDetails={() =>
-                        navigate('/certificate-details', {
-                          state: { certificate: cert }
+                        navigate('/certificate-list', {
+                          state: { type: 'matching' }
                         })
                       }
                     />

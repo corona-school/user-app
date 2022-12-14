@@ -41,7 +41,7 @@ const awaitingPupil: CertificatePupil = {
   status: 'awaiting-approval'
 }
 
-const CertificateDetails: React.FC = () => {
+const CertificateList: React.FC = () => {
   const { space } = useTheme()
 
   const location = useLocation() as { state: { certificate: LFCertificate } }
@@ -137,4 +137,4 @@ const CertificateDetails: React.FC = () => {
     </WithNavigation>
   )
 }
-export default CertificateDetails
+export default CertificateList
