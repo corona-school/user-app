@@ -61,7 +61,6 @@ const WidgetUnsplash: React.FC<{
   prefill?: string
 }> = ({ photo, onShowUnsplash, onDeletePhoto, prefill }) => {
   const { space } = useTheme()
-  const { t } = useTranslation()
 
   return (
     <>
@@ -111,22 +110,6 @@ const CourseData: React.FC<Props> = ({
   onShowAddInstructor,
   onRemoveInstructor
 }) => {
-  // const { data } = useQuery(gql`
-  //   query {
-  //     me {
-  //       student {
-  //         subjectsFormatted {
-  //           name
-  //           grade {
-  //             min
-  //             max
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // `)
-
   const { space, sizes, colors } = useTheme()
   const { t } = useTranslation()
   const {
