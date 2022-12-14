@@ -11,44 +11,47 @@ import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'
 import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg'
 import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg'
 import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg'
+import { FC } from "react"
 
-type PreferenceDataType = {
-  [category: string]: {
-    title: string
-    icon?: JSX.Element
-  }
+export interface NotificationCategoryDetails {
+  title: string
+  icon?: FC
 }
 
-type Icon = { [category: string]: JSX.Element }
+export type NotificationCategories = {
+  [category: string]: NotificationCategoryDetails
+}
 
-export const systemNotificationPreference: PreferenceDataType = {
+export const systemNotificationCategories: NotificationCategories = {
   chat: {
     title: 'notification.controlPanel.preference.chat.title',
-    icon: <IconMessage />
+    icon: IconMessage
   },
   match: {
     title: 'notification.controlPanel.preference.match.title',
-    icon: <IconMatch />
+    icon: IconMatch
   },
   course: {
     title: 'notification.controlPanel.preference.course.title',
-    icon: <IconCourse />
+    icon: IconCourse
   },
   appointment: {
     title: 'notification.controlPanel.preference.appointment.title',
-    icon: <IconAppointment />
+    icon: IconAppointment
   },
   survey: {
     title: 'notification.controlPanel.preference.survey.title',
-    icon: <IconSurvey />
+    icon: IconSurvey
   },
   news: {
     title: 'notification.controlPanel.preference.news.title',
-    icon: <IconNews />
+    icon: IconNews
   }
 }
 
-export const marketingNotificationPreference: PreferenceDataType = {
+export const getSystemNotificationPreferenceCategories = () => Object.keys(systemNotificationCategories)
+
+export const marketingNotificationCategories: NotificationCategories = {
   newsletter: {
     title: 'notification.controlPanel.preference.newsletter.title'
   },
@@ -75,11 +78,14 @@ export const marketingNotificationPreference: PreferenceDataType = {
   }
 }
 
-export const messageIcons: Icon = {
-  message: <MessageIcon />,
-  match: <MatchIcon />,
-  course: <CourseIcon />,
-  appointment: <AppointmentIcon />,
-  survey: <SurveyIcon />,
-  news: <NewsIcon />
+export const getMarketingNotificationPreferenceCategories = () => Object.keys(marketingNotificationCategories)
+export const getAllNotificationPreferenceCategories = () => [...getSystemNotificationPreferenceCategories(), ...getMarketingNotificationPreferenceCategories()]
+
+export const messageIcons: { [category: string]: FC } = {
+  message: MessageIcon,
+  match: MatchIcon,
+  course: CourseIcon,
+  appointment: AppointmentIcon,
+  survey: SurveyIcon,
+  news: NewsIcon,
 }

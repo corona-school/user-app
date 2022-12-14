@@ -30,6 +30,8 @@ const MessageBox: React.FC<Props> = ({
     maxW: 200
   }
 
+  const Icon = getIconForMessageType(messageType)
+
   return (
     <Box
       borderRadius={boxProps.borderRadius}
@@ -39,7 +41,7 @@ const MessageBox: React.FC<Props> = ({
       w={!isStandalone ? boxProps.fullWidth : boxProps.width}>
       <HStack alignItems="center" space={1}>
         <VStack>
-          <Box px="1.5">{getIconForMessageType(messageType)}</Box>
+          <Box px="1.5"><Icon /></Box>
         </VStack>
         <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
           <Text bold fontSize="md">

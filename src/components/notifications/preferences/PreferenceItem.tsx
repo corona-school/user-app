@@ -11,24 +11,24 @@ import {
   Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { getNotificationPreferencesData } from '../../../helper/notification-helper'
+import { FC } from "react"
+import { NotificationCategoryDetails } from "../../../helper/notification-preferences"
 
 type PrefProps = {
   category: string
-  channel: string
+  notificationTypeDetails: NotificationCategoryDetails
   value: boolean
   onUpdate: (value: boolean) => void
 }
 
 const PreferenceItem: React.FC<PrefProps> = ({
-  category,
-  channel,
+  notificationTypeDetails,
   value,
   onUpdate
 }) => {
   const { t } = useTranslation()
 
-  const { systemPreferences } = getNotificationPreferencesData(category)
+  const Icon: FC = notificationTypeDetails?.icon ? notificationTypeDetails?.icon : () => null
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -57,12 +57,12 @@ const PreferenceItem: React.FC<PrefProps> = ({
         py={3}
         width={width}>
         <HStack alignItems="center" space={1}>
-          {systemPreferences?.icon && (
-            <VStack>{systemPreferences?.icon}</VStack>
+          {notificationTypeDetails?.icon && (
+            <VStack><Icon /></VStack>
           )}
           <VStack maxW={maxW}>
             <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
-              {t(systemPreferences.title)}
+              {t(notificationTypeDetails.title)}
               <>
                 {isMobile ? (
                   <Pressable

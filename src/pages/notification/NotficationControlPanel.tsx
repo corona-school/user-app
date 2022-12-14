@@ -1,4 +1,3 @@
-import { t } from 'i18next'
 import {
   Heading,
   Row,
@@ -10,8 +9,8 @@ import {
 import Tabs from '../../components/Tabs'
 import WithNavigation from '../../components/WithNavigation'
 import { useTranslation } from 'react-i18next'
-import SystemNotifications from '../../components/notifications/preferences/SystemNotifications'
-import MarketingNotifications from '../../components/notifications/preferences/MarketingNotifications'
+import { SystemNotifications } from '../../components/notifications/preferences/SystemNotifications'
+import { MarketingNotifications } from '../../components/notifications/preferences/MarketingNotifications'
 
 const NotficationControlPanel = () => {
   const { space } = useTheme()
