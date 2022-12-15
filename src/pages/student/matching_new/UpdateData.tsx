@@ -32,7 +32,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [showModal, setShowModal] = useState<boolean>()
-  const [modalType, setModalType] = useState<'state'>()
+  const [modalType, setModalType] = useState<'states'>()
   const [modalSelection, setModalSelection] = useState<string>()
 
   const [meUpdateState] = useMutation(
@@ -46,7 +46,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
 
   const listItems = useMemo(() => {
     switch (modalType) {
-      case 'state':
+      case 'states':
         return states
       default:
         return []
@@ -55,7 +55,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
 
   const data = useMemo(() => {
     switch (modalType) {
-      case 'state':
+      case 'states':
         return state
     }
   }, [modalType, state])
@@ -70,7 +70,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
     setIsLoading(true)
     try {
       switch (modalType) {
-        case 'state':
+        case 'states':
           await meUpdateState({ variables: { data: modalSelection } })
           break
         default:
@@ -98,7 +98,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
         <ProfileSettingItem
           title={t('profile.State.label')}
           href={() => {
-            setModalType('state')
+            setModalType('states')
             setShowModal(true)
           }}>
           <Row flexWrap="wrap" w="100%">
@@ -135,11 +135,14 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
           <Modal.Body>
             <Row flexWrap="wrap">
               {listItems.map((item: { label: string; key: string }) => (
-                <IconTagList
-                  initial={modalSelection === item.key}
-                  text={item.label}
-                  onPress={() => setModalSelection(item.key)}
-                />
+                <Column mb={space['1']} mr={space['1']}>
+                  <IconTagList
+                    initial={modalSelection === item.key}
+                    text={item.label}
+                    onPress={() => setModalSelection(item.key)}
+                    iconPath={`${modalType}/icon_${item.key}.svg`}
+                  />
+                </Column>
               ))}
             </Row>
           </Modal.Body>

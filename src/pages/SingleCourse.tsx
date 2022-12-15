@@ -35,6 +35,8 @@ import { useUserType } from '../hooks/useApollo'
 
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 import SetMeetingLinkModal from '../modals/SetMeetingLinkModal'
+import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal'
+import { GraphQLError } from 'graphql'
 
 const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
@@ -51,6 +53,7 @@ const SingleCourse: React.FC = () => {
   const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
   const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
   const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
+  const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -62,6 +65,7 @@ const SingleCourse: React.FC = () => {
       ? `
       isInstructor
       participants{
+        id
     firstname
     lastname
     grade
@@ -143,7 +147,7 @@ const SingleCourse: React.FC = () => {
     }
   )
 
-  const [leaveSubcourse, _leaveSubcourse] = useMutation(
+  const [leaveSubcourse] = useMutation(
     gql`
       mutation ($courseId: Float!) {
         subcourseLeave(subcourseId: $courseId)
@@ -200,7 +204,7 @@ const SingleCourse: React.FC = () => {
 
   const course = useMemo(() => courseData?.subcourse, [courseData])
 
-  const participants = useMemo(() => {
+  const participants: LFParticipant[] = useMemo(() => {
     if (userType === 'student') {
       return course?.participants
     } else {
@@ -218,6 +222,25 @@ const SingleCourse: React.FC = () => {
   const isFull = useMemo(
     () => course?.participantsCount >= course?.maxParticipants,
     [course?.maxParticipants, course?.participantsCount]
+  )
+
+  const [sendMessage, _sendMessage] = useMutation(
+    gql`
+      mutation sendMessage(
+        $subject: String!
+        $message: String!
+        $subcourseId: Int!
+        $participants: [Int!]!
+      ) {
+        subcourseNotifyParticipants(
+          subcourseId: $subcourseId
+          title: $subject
+          body: $message
+          participantIDs: $participants
+          fileIDs: []
+        )
+      }
+    `
   )
 
   const ContainerWidth = useBreakpointValue({
@@ -252,6 +275,32 @@ const SingleCourse: React.FC = () => {
       course?.isParticipant && setLoadParticipants(true)
     }
   }, [course, loading])
+
+  const onSendMessage = useCallback(
+    async (subject: string, message: string) => {
+      if (subject && message && participants) {
+        const ps = participants.map(p => p.id)
+
+        try {
+          await sendMessage({
+            variables: {
+              subject,
+              message,
+              subcourseId: courseId,
+              participants: ps
+            }
+          })
+          toast.show({ description: 'Nachricht erfolgreich versendet' })
+          setShowMessageModal(false)
+        } catch (e) {
+          toast.show({
+            description: 'Deine Nachricht konnte nicht versendet werden'
+          })
+        }
+      }
+    },
+    [courseId, participants, sendMessage, toast]
+  )
 
   const getMeetingLink = useCallback(async () => {
     try {
@@ -500,7 +549,13 @@ const SingleCourse: React.FC = () => {
           )}
 
           {userType === 'student' && course?.isInstructor && (
-            <Box marginBottom={space['1.5']}>
+            <VStack marginBottom={space['1.5']} space={space['1']}>
+              <Button
+                onPress={() => setShowMessageModal(true)}
+                width={ButtonContainer}
+                variant="outline">
+                Teilnehmer:innen kontaktieren
+              </Button>
               <Button
                 onPress={() => {
                   navigate('/edit-course', {
@@ -511,7 +566,7 @@ const SingleCourse: React.FC = () => {
                 variant="outline">
                 Kurs editieren
               </Button>
-            </Box>
+            </VStack>
           )}
 
           {course?.course?.allowContact && (
@@ -757,6 +812,12 @@ const SingleCourse: React.FC = () => {
         onClose={() => setShowMeetingUrlModal(false)}
         disableButtons={_setMeetingUrl.loading}
         onPressStartMeeting={link => _setMeetingLink(link)}
+      />
+      <SendParticipantsMessageModal
+        isOpen={showMessageModal}
+        onClose={() => setShowMessageModal(false)}
+        onSend={onSendMessage}
+        isDisabled={_sendMessage.loading}
       />
     </>
   )
