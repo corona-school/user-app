@@ -1,8 +1,13 @@
 name: Deploy Storybook
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   push:
-    branches: [ main, feat/online-storybook ]
+    branches: [ main ]
 jobs:
  
   build-and-deploy-storybook:
