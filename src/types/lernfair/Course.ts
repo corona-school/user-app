@@ -38,7 +38,7 @@ export type LFLecture = {
 
 export type LFTag = {
   name: string
-  category?: string
+  id: number
 }
 
 export type LFInstructor = {

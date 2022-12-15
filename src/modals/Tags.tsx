@@ -1,81 +1,105 @@
 import { gql, useQuery } from '@apollo/client'
 import {
-  View,
   Text,
   VStack,
   Button,
-  Image,
-  Box,
   Flex,
   useTheme,
-  Heading,
   Row,
-  ArrowBackIcon,
   Column,
-  AspectRatio
+  Heading,
+  Modal
 } from 'native-base'
-import { useCallback, useState } from 'react'
+import { useMemo } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner'
-import Pagination from '../components/Pagination'
-import SearchBar from '../components/SearchBar'
+import Tag from '../components/Tag'
+import { LFTag } from '../types/lernfair/Course'
 
 type Props = {
+  isOpen?: boolean
   onClose: () => any
+  selections: LFTag[]
+  onSelectTag: (tag: LFTag) => any
+  onDeleteTag: (index: number) => any
 }
 
-const Tags: React.FC<Props> = ({ onClose }) => {
+const Tags: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  selections,
+  onSelectTag,
+  onDeleteTag
+}) => {
   const { space } = useTheme()
 
-  const [isLoading, setIsLoading] = useState<boolean>()
-  const [searchResults, setSearchResults] = useState([])
-  const [tags, setTags] = useState<string>('')
+  const { data, loading: isLoading } = useQuery(gql`
+    query {
+      courseTags(category: "club") {
+        id
+        name
+      }
+    }
+  `)
 
-  const [lastSearch, setLastSearch] = useState<string>('')
-  // const [getTags] = useQuery(gql`query ($search: String!){
-  //   course_tags(take: 50, skip: 0, where: {name: {contains: $search}}) {
-  // }`)
-
-  const search = useCallback(async () => {
-    setIsLoading(true)
-    // const res = await getTags()
-    setIsLoading(false)
-  }, [])
-
-  if (isLoading) return <CenterLoadingSpinner />
+  const unselectedTags = useMemo(
+    () => data?.courseTags.filter((tag: LFTag) => !selections.includes(tag)),
+    [data?.courseTags, selections]
+  )
 
   return (
-    <VStack flex="1" overflowY="scroll" h="100%">
-      <Row w="100%" paddingX={space['1']} paddingY={space['0.5']}>
-        <Button padding={space['1']} onPress={onClose}>
-          <ArrowBackIcon />
-        </Button>
-        <SearchBar
-          onSearch={s => search()}
-          onChangeText={setLastSearch}
-          value={lastSearch}
-        />
-      </Row>
-      <View overflowY={'scroll'} flex="1">
-        {(searchResults.length > 0 && (
-          <VStack pb={'72px'} marginX={space['1']}>
-            <Row flex="1" flexWrap={'wrap'} marginX={-space['0.5']}>
-              {searchResults?.map((photo: any) => (
-                <TouchableWithoutFeedback onPress={() => null}>
-                  <Column
-                    flex={{ base: '50%', lg: '25%' }}
-                    padding={space['0.5']}></Column>
-                </TouchableWithoutFeedback>
-              ))}
-            </Row>
-          </VStack>
-        )) || (
-          <Flex flex="1" justifyContent="center" alignItems="center">
-            <Text>Keine Suchergebnisse.</Text>
-          </Flex>
-        )}
-      </View>
-    </VStack>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal.Content>
+        <Modal.CloseButton />
+        <Modal.Header>Tags wählen</Modal.Header>
+        <Modal.Body>
+          {!isLoading && (
+            <VStack marginX={space['1']} space={space['1']}>
+              <Heading>Ausgewählte Tags</Heading>
+              <Row flex="1" flexWrap={'wrap'}>
+                {selections.map((tag: LFTag, index: number) => (
+                  <TagItem tag={tag} onPress={() => onDeleteTag(index)} />
+                ))}
+              </Row>
+              <VStack space={space['1']}>
+                <Heading>Weitere Tags</Heading>
+                <Row flex="1" flexWrap={'wrap'}>
+                  {(data?.courseTags.length > 0 &&
+                    unselectedTags?.map((tag: LFTag) => (
+                      <TagItem tag={tag} onPress={() => onSelectTag(tag)} />
+                    ))) || (
+                    <Flex flex="1" justifyContent="center" alignItems="center">
+                      <Text>Keine Tags gefunden</Text>
+                    </Flex>
+                  )}
+                </Row>
+              </VStack>
+            </VStack>
+          )}
+          {isLoading && <CenterLoadingSpinner />}
+        </Modal.Body>
+        <Modal.Footer>
+          <Row space={space['1']}>
+            <Button onPress={onClose}>OK</Button>
+          </Row>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
   )
 }
 export default Tags
+
+const TagItem: React.FC<{ tag: LFTag; onPress: () => any }> = ({
+  tag,
+  onPress
+}) => {
+  const { space } = useTheme()
+
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <Column mr={space['0.5']}>
+        <Tag text={tag.name} />
+      </Column>
+    </TouchableWithoutFeedback>
+  )
+}
