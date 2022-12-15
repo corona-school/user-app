@@ -11,10 +11,16 @@ import WithNavigation from '../../components/WithNavigation'
 import { useTranslation } from 'react-i18next'
 import { SystemNotifications } from '../../components/notifications/preferences/SystemNotifications'
 import { MarketingNotifications } from '../../components/notifications/preferences/MarketingNotifications'
+import { useUserPreferences } from "../../hooks/useNotificationPreferences"
+import { createContext } from "react"
+
+export const NotificationPreferencesContext =
+  createContext<ReturnType<typeof useUserPreferences>>({userPreferences: {}, updateUserPreference: ()=>null})
 
 const NotficationControlPanel = () => {
   const { space } = useTheme()
   const { t } = useTranslation()
+  const { userPreferences, updateUserPreference } = useUserPreferences()
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -27,7 +33,7 @@ const NotficationControlPanel = () => {
   })
 
   return (
-    <>
+    <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreference }}>
       <WithNavigation
         showBack
         headerTitle={t('notification.controlPanel.title')}>
@@ -53,7 +59,7 @@ const NotficationControlPanel = () => {
           </VStack>
         </View>
       </WithNavigation>
-    </>
+    </NotificationPreferencesContext.Provider>
   )
 }
 

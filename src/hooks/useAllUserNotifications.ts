@@ -1,5 +1,4 @@
 import { ApolloError, gql, useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
 import { UserNotification } from '../types/lernfair/Notification'
 
 const userNotificationQuery = gql`
