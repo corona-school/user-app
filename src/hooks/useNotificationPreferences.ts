@@ -1,9 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences'
-import {
-  getAllNotificationPreferenceCategories,
-} from "../helper/notification-preferences"
 
 const notificationPreferencesQuery = gql`
   query {
@@ -19,14 +16,9 @@ const notificationPreferencesMutation = gql`
   }
 `
 
-const defaultPreferences: NotificationPreferences = {}
-for (const preference of getAllNotificationPreferenceCategories()) {
-  defaultPreferences[preference] = { email: false}
-}
-
 const useUserPreferences = () => {
   const [userPreferences, setUserPreferencesPrivate] =
-    useState<NotificationPreferences>(defaultPreferences)
+    useState<NotificationPreferences>({})
 
   const { data, loading, error } = useQuery(notificationPreferencesQuery)
 

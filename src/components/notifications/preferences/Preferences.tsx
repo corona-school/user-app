@@ -1,8 +1,8 @@
 import { Box, Text, useBreakpointValue } from 'native-base'
 import PreferenceItem from './PreferenceItem'
-import { FC } from "react"
-import { useUserPreferences } from "../../../hooks/useNotificationPreferences"
+import { FC, useContext } from "react"
 import { NotificationCategories } from "../../../helper/notification-preferences"
+import { NotificationPreferencesContext } from "../../../pages/notification/NotficationControlPanel"
 
 const channels = ['email']
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const Preferences: FC<Props> = ({title, notificationCategories}) => {
-  const { userPreferences, updateUserPreference } = useUserPreferences()
+  const { userPreferences, updateUserPreference } = useContext(NotificationPreferencesContext)
 
   const marginLeft = useBreakpointValue({
     base: 0,
@@ -23,6 +23,10 @@ export const Preferences: FC<Props> = ({title, notificationCategories}) => {
     lg: 3
   })
 
+  const getCheckboxValue = (category: string, channel: string) =>
+    userPreferences[category] && userPreferences[category].hasOwnProperty(channel)?
+      userPreferences[category][channel] : false
+
   return (
     <>
       <Box ml={marginLeft}>
@@ -31,16 +35,16 @@ export const Preferences: FC<Props> = ({title, notificationCategories}) => {
         </Text>
         <Box>
           { Object.keys(notificationCategories).map((category: string) =>
-            channels.map((channel: string) => (
-              <PreferenceItem
+            channels.map((channel: string) =>
+              (
+                <PreferenceItem
                 category={category}
                 notificationTypeDetails={notificationCategories[category]}
-                value={userPreferences[category][channel]}
+                value={getCheckboxValue(category,channel)}
                 onUpdate={(value: boolean) =>
                   updateUserPreference(category, channel, value)
                 }
-              />
-            ))
+              />))
           )}
         </Box>
       </Box>
