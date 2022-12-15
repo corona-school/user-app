@@ -237,7 +237,7 @@ const SingleCourse: React.FC = () => {
           title: $subject
           body: $message
           participantIDs: $participants
-          fileIDs: ""
+          fileIDs: []
         )
       }
     `
