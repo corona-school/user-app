@@ -36,7 +36,7 @@ import { useUserType } from '../hooks/useApollo'
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 import SetMeetingLinkModal from '../modals/SetMeetingLinkModal'
 import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal'
-import { GraphQLError } from 'graphql'
+import CancelSubCourseModal from '../modals/CancelSubCourseModal'
 
 const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
@@ -59,6 +59,7 @@ const SingleCourse: React.FC = () => {
   const location = useLocation()
   const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
   const userType = useUserType()
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
 
   const userQuery =
     userType === 'student'
@@ -178,17 +179,15 @@ const SingleCourse: React.FC = () => {
     }
   )
 
+  const [cancelSubcourse] = useMutation(gql`mutation {
+    subcourseCancel(subcourseId: ${courseId})
+  }`)
+
   useEffect(() => {
     if (_joinSubcourse?.data?.subcourseJoin) {
       setSignedInModal(true)
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
-
-  // useEffect(() => {
-  //   if (_leaveSubcourse?.data?.subcourseLeave) {
-  //     setSignedOutModal(true)
-  //   }
-  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -366,6 +365,16 @@ const SingleCourse: React.FC = () => {
       60
     )
   }, [course])
+
+  const cancelCourse = useCallback(async () => {
+    try {
+      await cancelSubcourse()
+      toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt' })
+    } catch (e) {
+      toast.show({ description: 'Der Kurs konnte nicht abgesagt werden' })
+    }
+    setShowCancelModal(false)
+  }, [cancelSubcourse, toast])
 
   return (
     <>
@@ -565,6 +574,12 @@ const SingleCourse: React.FC = () => {
                 width={ButtonContainer}
                 variant="outline">
                 Kurs editieren
+              </Button>
+              <Button
+                onPress={() => setShowCancelModal(true)}
+                width={ButtonContainer}
+                variant="outline">
+                Kurs absagen
               </Button>
             </VStack>
           )}
@@ -818,6 +833,11 @@ const SingleCourse: React.FC = () => {
         onClose={() => setShowMessageModal(false)}
         onSend={onSendMessage}
         isDisabled={_sendMessage.loading}
+      />
+      <CancelSubCourseModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onCourseCancel={cancelCourse}
       />
     </>
   )
