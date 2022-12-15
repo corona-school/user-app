@@ -8,7 +8,9 @@ To develop locally, install all dependencies with `npm ci`, then use `npm start`
 
 To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
 
-To open the Storybook with documentation about components, install optional dependencies with `npm run dev-install`, 
+Documentation about Components can be found in **[Storybook](https://corona-school.github.io/user-app/)**.
+
+To open the Storybook with documentation about components locally, install optional dependencies with `npm run dev-install`, 
  then storybook can be started with `npm run dev-storybook`. To add documentation, add [MDX Files](https://storybook.js.org/docs/react/api/mdx) into the source folder (named .stories.mdx!). React Components must always be wrapped in the `<Story>` Component. In case a story shows a white screen, check the browser debug logs like in any other React app.
 A basic MDX file looks like this:
 
