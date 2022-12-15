@@ -115,20 +115,20 @@ const MatchingStudent: React.FC<Props> = () => {
   }, [])
 
   const dissolve = useCallback(
-    (reason: string) => {
+    async (reason: string) => {
+      setShowDissolveModal(false)
       trackEvent({
         category: 'matching',
         action: 'click-event',
         name: 'Helfer Matching lösen',
         documentTitle: 'Helfer Matching'
       })
-      dissolveMatch({
+      return await dissolveMatch({
         variables: {
           matchId: focusedMatch?.id,
           dissolveReason: parseInt(reason)
         }
       })
-      setShowDissolveModal(false)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [dissolveMatch, focusedMatch?.id]
@@ -306,8 +306,8 @@ const MatchingStudent: React.FC<Props> = () => {
 
       <DissolveMatchModal
         showDissolveModal={showDissolveModal}
-        onPressDissolve={(reason: string) => {
-          dissolve(reason)
+        onPressDissolve={async (reason: string) => {
+          return await dissolve(reason)
         }}
         onPressBack={() => setShowDissolveModal(false)}
       />

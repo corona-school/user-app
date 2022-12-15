@@ -9,11 +9,11 @@ export type LFSubject = {
   __typename?: string
 }
 
-export const subjects: { key: string; label: string }[] = [
+export const subjects: { key: string; label: string; formatted?: string }[] = [
   { key: 'mathematik', label: 'Mathematik' },
   { key: 'deutsch', label: 'Deutsch' },
   { key: 'englisch', label: 'Englisch' },
-  { key: 'französisch', label: 'Französisch' },
+  { key: 'französisch', label: 'Französisch', formatted: 'Franz_sisch' },
   { key: 'physik', label: 'Physik' },
   { key: 'chemie', label: 'Chemie' },
   { key: 'biologie', label: 'Biologie' },
@@ -28,7 +28,7 @@ export const subjects: { key: string; label: string }[] = [
   { key: 'kunst', label: 'Kunst' },
   { key: 'philosophie', label: 'Philosophie' },
   { key: 'italienisch', label: 'Italienisch' },
-  { key: 'paedagogik', label: 'Pädagogik' },
+  { key: 'paedagogik', label: 'Pädagogik', formatted: 'P_dagogik' },
   { key: 'russisch', label: 'Russisch' },
   { key: 'sachkunde', label: 'Sachkunde' }
 ]
@@ -42,9 +42,14 @@ export const getSubjectKey: (name: string) => string = name => {
   return 'other'
 }
 
-export const getSubjectLabel: (key: string) => string = key => {
+export const getSubjectLabel: (
+  key: string,
+  fromFormatted?: boolean
+) => string = (key, fromFormatted) => {
   for (let subject of subjects) {
-    if (subject.key === key) {
+    if (
+      (fromFormatted ? subject.formatted || subject.key : subject.key) === key
+    ) {
       return subject.label
     }
   }

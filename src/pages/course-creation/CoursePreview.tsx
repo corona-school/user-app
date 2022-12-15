@@ -15,7 +15,7 @@ import { useCallback, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tag from '../../components/Tag'
 import { LFLecture } from '../../types/lernfair/Course'
-import { getSubjectKey } from '../../types/lernfair/Subject'
+import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject'
 import Utility from '../../Utility'
 import AlertMessage from '../../widgets/AlertMessage'
 import AppointmentInfoRow from '../../widgets/AppointmentInfoRow'
@@ -104,7 +104,7 @@ const CoursePreview: React.FC<Props> = ({
                 <IconTagList
                   iconPath={`subjects/icon_${getSubjectKey(subject.name)}.svg`}
                   isDisabled
-                  text={subject.name || ''}
+                  text={getSubjectLabel(subject.name, true)}
                 />
               </>
             )}
@@ -141,9 +141,7 @@ const CoursePreview: React.FC<Props> = ({
         {t('course.CourseDate.Preview.tagHeadline')}
       </Heading>
       <Row space={space['0.5']}>
-        {(tags &&
-          tags.split(',').length &&
-          tags.split(',').map(t => <Tag text={t} />)) || (
+        {(tags && tags.map(t => <Tag text={t.name} />)) || (
           <Text>{t('course.CourseDate.Preview.notags')}</Text>
         )}
       </Row>

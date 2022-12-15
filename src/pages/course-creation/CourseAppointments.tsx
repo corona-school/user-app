@@ -38,17 +38,33 @@ const CourseAppointments: React.FC<Props> = ({
     setNewLectures
   } = useContext(CreateCourseContext)
   const [showError, setShowError] = useState<boolean>()
+  const [showValidDateMessage, setShowValidDateMessage] = useState<{
+    show: boolean
+    index: number
+  }>({ show: false, index: -1 })
 
   const isValidInput = useMemo(() => {
     if ([...lectures, ...newLectures].length === 0) return false
 
     if (lectures.length === 0) {
-      for (const lec of newLectures) {
+      for (let i = 0; i < newLectures.length; i++) {
+        const lec = newLectures[i]
         if (!lec.date) return false
         if (!lec.time) return false
         if (!lec.duration) return false
+        const validDate = DateTime.fromISO(lec.date).diffNow('days').days >= 6
+        !validDate &&
+          setShowValidDateMessage({
+            show: true,
+            index: i
+          })
+        if (!validDate) return false
       }
     }
+    setShowValidDateMessage({
+      show: false,
+      index: -1
+    })
     return true
   }, [lectures, newLectures])
 
@@ -127,6 +143,9 @@ const CourseAppointments: React.FC<Props> = ({
         <Row maxWidth={ContainerWidth}>
           <CourseDateWizard
             index={i}
+            showInvalidDateMessage={
+              showValidDateMessage.show && i === showValidDateMessage.index
+            }
             onPressDelete={() => {
               const arr = [...newLectures]
               arr.splice(i, 1)

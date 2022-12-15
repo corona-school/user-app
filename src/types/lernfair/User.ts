@@ -46,6 +46,7 @@ export type Pupil = {
 }
 
 export type Participant = {
+  id: string
   firstname: string
   lastname: string
   grade: number
