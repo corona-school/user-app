@@ -13,14 +13,20 @@ import {
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DatePicker from '../../components/DatePicker'
+import AlertMessage from '../../widgets/AlertMessage'
 import { CreateCourseContext } from '../CreateCourse'
 
 type Props = {
   index: number
   onPressDelete?: () => any
+  showInvalidDateMessage?: boolean
 }
 
-const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete }) => {
+const CourseDateWizard: React.FC<Props> = ({
+  index,
+  onPressDelete,
+  showInvalidDateMessage
+}) => {
   const { newLectures, setNewLectures } = useContext(CreateCourseContext)
   const { t } = useTranslation()
   const { space, sizes } = useTheme()
@@ -125,6 +131,10 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete }) => {
           <Select.Item value="240" label={t('course.selectOptions._4hour')} />
         </Select>
       </FormControl>
+
+      {showInvalidDateMessage && (
+        <AlertMessage content={'Das angegebene Datum ist ungültig'} />
+      )}
     </VStack>
   )
 }
