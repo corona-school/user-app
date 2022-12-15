@@ -1,0 +1,2 @@
+// Magically fixes broken dependencies as outlines in https://github.com/storybookjs/storybook/issues/6204#issuecomment-725713148
+{ "presets": ["@babel/preset-typescript", ["@babel/preset-react", {"runtime": "automatic"}]] }
