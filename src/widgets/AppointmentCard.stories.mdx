@@ -1,0 +1,14 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import AppointmentCard from "./AppointmentCard";
+import { NativeBaseProvider } from "native-base";
+import Theme from "../Theme";
+
+<Meta title="AppointmentCard" component={AppointmentCard} />
+
+# AppointmentCard
+
+This is how an empty appointment card looks like:
+
+<NativeBaseProvider theme={Theme}>
+  <AppointmentCard />
+</NativeBaseProvider>
