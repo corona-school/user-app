@@ -1,6 +1,6 @@
+import React from "react"
 import { NativeBaseProvider } from "native-base";
 import Theme from "../src/Theme";
-import React from "react";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -12,11 +12,11 @@ export const parameters = {
   },
 }
 
-// TODO: Unfortunately the following does not work for MDX files?
+// NOTE: Decorators are only applied to <Story> tags inside MDX!
 export const decorators = [
-  (Story) => (
+  (Page: () => React.ReactElement) => (
     <NativeBaseProvider theme={Theme}>
-      <Story />
+      <Page/>
     </NativeBaseProvider>
-  ),
-];
+  )
+]
