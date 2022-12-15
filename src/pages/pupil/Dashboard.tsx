@@ -561,14 +561,14 @@ const Dashboard: React.FC<Props> = () => {
       </WithNavigation>
       <DissolveMatchModal
         showDissolveModal={showDissolveModal}
-        onPressDissolve={(reason: string) => {
-          dissolve({
+        onPressDissolve={async (reason: string) => {
+          setShowDissolveModal(false)
+          return await dissolve({
             variables: {
               matchId: dissolveData?.id,
               dissolveReason: parseInt(reason)
             }
           })
-          setShowDissolveModal(false)
         }}
         onPressBack={() => setShowDissolveModal(false)}
       />
