@@ -233,7 +233,9 @@ const CourseData: React.FC<Props> = ({
         </FormControl>
 
         <FormControl>
-          <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }}>
+          <FormControl.Label
+            _text={{ color: 'primary.900', fontSize: 'md' }}
+            isRequired>
             {t('course.CourseDate.form.detailsContent')}
           </FormControl.Label>
 
