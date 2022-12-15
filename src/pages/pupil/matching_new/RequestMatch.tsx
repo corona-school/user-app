@@ -11,7 +11,6 @@ import {
 import { useLocation } from 'react-router-dom'
 import AsNavigationItem from '../../../components/AsNavigationItem'
 import WithNavigation from '../../../components/WithNavigation'
-import MatchingOnboarding from '../MatchingOnboarding'
 import MatchingPending from '../MatchingPending'
 import Details from './Details'
 import Filter from './Filter'
@@ -44,28 +43,29 @@ type RequestMatchContextType = {
   matching: MatchRequest
   setMatching: Dispatch<SetStateAction<MatchRequest>>
   setCurrentIndex: Dispatch<SetStateAction<number>>
+  isEdit: boolean
 }
 export const RequestMatchContext = createContext<RequestMatchContextType>({
   matching: { subjects: [], priority: {} },
   setMatching: () => null,
-  setCurrentIndex: () => null
+  setCurrentIndex: () => null,
+  isEdit: false
 })
 
 const RequestMatch: React.FC = () => {
   const { space } = useTheme()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [isEdit, setIsEdit] = useState<boolean>(false)
   const [matching, setMatching] = useState<MatchRequest>({
     subjects: [],
     priority: {},
     message: ''
   })
+
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const location = useLocation()
+  const locationState = location.state as { edit: boolean }
   const { trackPageView } = useMatomo()
-
-  const { skipOnboarding } = (location.state || {}) as {
-    skipOnboarding: boolean
-  }
 
   useEffect(() => {
     trackPageView({
@@ -75,12 +75,12 @@ const RequestMatch: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (skipOnboarding) {
+    setIsEdit(locationState?.edit)
+    if (locationState?.edit) {
       setCurrentIndex(1)
     }
-
     setIsLoading(false)
-  }, [skipOnboarding, setCurrentIndex])
+  }, [locationState])
 
   const { data, loading } = useQuery(query)
 
@@ -88,26 +88,24 @@ const RequestMatch: React.FC = () => {
     <AsNavigationItem path="matching">
       <WithNavigation showBack isLoading={loading || isLoading}>
         <RequestMatchContext.Provider
-          value={{ matching, setMatching, setCurrentIndex }}>
-          {!loading &&
-            !isLoading &&
-            ((data?.me?.pupil.openMatchRequestCount === 0 && (
-              <Box paddingX={space['1']} paddingBottom={space['1']}>
-                {currentIndex === 0 && <Filter />}
-                {currentIndex === 1 && (
-                  <UpdateData
-                    schooltype={data.me.pupil.schooltype}
-                    gradeAsInt={data.me.pupil.gradeAsInt}
-                    state={data.me.pupil.state}
-                    refetchQuery={query}
-                  />
-                )}
-                {currentIndex === 2 && <German />}
-                {currentIndex === 3 && <Subjects />}
-                {currentIndex === 4 && <Priority />}
-                {currentIndex === 5 && <Details />}
-              </Box>
-            )) || <MatchingPending refetchQuery={query} />)}
+          value={{ isEdit, matching, setMatching, setCurrentIndex }}>
+          {!loading && !isLoading && (
+            <Box paddingX={space['1']} paddingBottom={space['1']}>
+              {currentIndex === 0 && <Filter />}
+              {currentIndex === 1 && (
+                <UpdateData
+                  schooltype={data.me.pupil.schooltype}
+                  gradeAsInt={data.me.pupil.gradeAsInt}
+                  state={data.me.pupil.state}
+                  refetchQuery={query}
+                />
+              )}
+              {currentIndex === 2 && <German />}
+              {currentIndex === 3 && <Subjects />}
+              {currentIndex === 4 && <Priority />}
+              {currentIndex === 5 && <Details />}
+            </Box>
+          )}
         </RequestMatchContext.Provider>
       </WithNavigation>
     </AsNavigationItem>

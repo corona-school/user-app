@@ -13,8 +13,7 @@ import RequestMatchPreview from './RequestMatchPreview'
 import RequestMatchWizard from './RequestMatchWizard'
 import { Slider } from '@miblanchard/react-native-slider'
 import { ClassRange } from '../../types/lernfair/SchoolClass'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { LFSubject } from '../../types/lernfair/Subject'
+import { useNavigate } from 'react-router-dom'
 import AsNavigationItem from '../../components/AsNavigationItem'
 
 type Props = {}

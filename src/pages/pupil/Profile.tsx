@@ -12,8 +12,7 @@ import {
   Button,
   TextArea,
   useBreakpointValue,
-  Flex,
-  Pressable
+  Flex
 } from 'native-base'
 import NotificationAlert from '../../components/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation'
@@ -27,8 +26,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
-import { getSubjectKey } from '../../types/lernfair/Subject'
 import AlertMessage from '../../widgets/AlertMessage'
 import CSSWrapper from '../../components/CSSWrapper'
 import useLernfair from '../../hooks/useLernfair'
@@ -324,30 +321,6 @@ const Profile: React.FC<Props> = () => {
                       </CSSWrapper>
                     </Column>
                   )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
-                </Row>
-              </ProfileSettingItem>
-
-              <ProfileSettingItem
-                border={false}
-                title={t('profile.NeedHelpIn.label')}
-                href={() => navigate('/change-setting/subjects')}>
-                <Row flexWrap="wrap" w="100%">
-                  {(data?.me?.pupil?.subjectsFormatted?.length &&
-                    data?.me?.pupil?.subjectsFormatted?.map(
-                      (sub: { name: string; __typename: string }) => (
-                        <Column marginRight={3} mb={space['0.5']}>
-                          <CSSWrapper className="profil-tab-link">
-                            <IconTagList
-                              isDisabled
-                              iconPath={`subjects/icon_${getSubjectKey(
-                                sub.name
-                              )}.svg`}
-                              text={sub.name}
-                            />
-                          </CSSWrapper>
-                        </Column>
-                      )
-                    )) || <Text>{t('profile.Notice.noSchoolSubject')}</Text>}
                 </Row>
               </ProfileSettingItem>
             </ProfileSettingRow>

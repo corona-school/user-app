@@ -24,6 +24,7 @@ const German: React.FC = () => {
       <TwoColGrid>
         <Column>
           <IconTagList
+            iconPath={`lf-yes.svg`}
             initial={supportDaz === 'yes'}
             variant="selection"
             text="Ja"
@@ -32,6 +33,7 @@ const German: React.FC = () => {
         </Column>
         <Column>
           <IconTagList
+            iconPath={`lf-no.svg`}
             initial={supportDaz === 'no'}
             variant="selection"
             text="Nein"

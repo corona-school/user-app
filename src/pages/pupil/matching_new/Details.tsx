@@ -22,16 +22,23 @@ const Details: React.FC<Props> = () => {
   const { setShow, setContent, setVariant } = useModal()
   const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching, setCurrentIndex } =
+  const { matching, setMatching, setCurrentIndex, isEdit } =
     useContext(RequestMatchContext)
   const navigate = useNavigate()
 
   const [update, _update] = useMutation(gql`
     mutation updatePupil($subjects: [SubjectInput!]) {
       meUpdate(update: { pupil: { subjects: $subjects } })
-      pupilCreateMatchRequest
     }
   `)
+
+  const [createMatchRequest] = useMutation(
+    gql`
+      mutation {
+        pupilCreateMatchRequest
+      }
+    `
+  )
 
   const buttonWidth = useBreakpointValue({
     base: '100%',
@@ -49,17 +56,29 @@ const Details: React.FC<Props> = () => {
         alignItems="center">
         <PartyIcon />
         <Heading fontSize={'2xl'} color="lightText" textAlign="center">
-          Geschafft, du bist auf der Warteliste!
+          {(!isEdit && 'Geschafft, du bist auf der Warteliste!') ||
+            'Geschafft, Änderungen gespeichert!'}
         </Heading>
-
-        <Button onPress={() => navigate('/group')} w={buttonWidth}>
+        <Text color="lightText" textAlign="center">
+          {(!isEdit &&
+            'Danke für deine Anfrage. Du bist jetzt auf unserer Warteliste. Voraussichtlich musst du 3-6 Monate warten. Wenn du an der Reihe bist, werden wir dich per E-Mail informieren. Bis dahin kannst du gerne an unseren Kursen in der Gruppen-Nachhilfe teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.') ||
+            'Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht.'}
+        </Text>
+        <Button
+          onPress={() => {
+            setShow(false)
+            navigate('/group')
+          }}
+          w={buttonWidth}>
           Zu den Gruppenkursen
         </Button>
         <Button
           w={buttonWidth}
           variant={'outlinelight'}
           onPress={() => {
-            navigate('/start')
+            navigate('/matching', {
+              state: { tabID: 1 }
+            })
             setShow(false)
           }}>
           Fertig
@@ -67,7 +86,7 @@ const Details: React.FC<Props> = () => {
       </VStack>
     )
     setShow(true)
-  }, [navigate, setContent, setShow, setVariant, space])
+  }, [buttonWidth, navigate, setContent, setShow, setVariant, space])
 
   const requestMatch = useCallback(async () => {
     const subs: LFSubject[] = []
@@ -79,14 +98,36 @@ const Details: React.FC<Props> = () => {
       subs.push(data)
     }
 
-    const res = await update({ variables: { subjects: subs } })
+    if (matching.setDazPriority) {
+      subs.push({ name: 'Deutsch als Zweitsprache', mandatory: true })
+    }
 
-    if (res.data && !res.errors) {
-      showModal()
+    const resSubs = await update({ variables: { subjects: subs } })
+
+    if (resSubs.data && !resSubs.errors) {
+      if (!isEdit) {
+        const resRequest = await createMatchRequest()
+        if (resRequest.data && !resRequest.errors) {
+          showModal()
+        } else {
+          toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+        }
+      } else {
+        showModal()
+      }
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
-  }, [matching.priority, matching.subjects, showModal, toast, update])
+  }, [
+    createMatchRequest,
+    matching.priority,
+    matching.setDazPriority,
+    matching.subjects,
+    showModal,
+    toast,
+    update,
+    isEdit
+  ])
 
   return (
     <VStack paddingX={space['1']} space={space['0.5']}>

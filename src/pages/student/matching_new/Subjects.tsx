@@ -1,4 +1,4 @@
-import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base'
+import { VStack, useTheme, Heading, Column, Button } from 'native-base'
 import { useContext } from 'react'
 import { subjects } from '../../../types/lernfair/Subject'
 import IconTagList from '../../../widgets/IconTagList'
@@ -45,10 +45,7 @@ const Subjects: React.FC = () => {
       >
         Weiter
       </Button>
-      <Button
-        variant="outline"
-        onPress={() => setCurrentIndex(1)} // 2 = german
-      >
+      <Button variant="outline" onPress={() => setCurrentIndex(0)}>
         Zurück
       </Button>
     </VStack>

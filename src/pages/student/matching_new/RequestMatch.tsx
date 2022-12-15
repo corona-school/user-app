@@ -37,27 +37,27 @@ type RequestMatchContextType = {
   matching: MatchRequest
   setMatching: Dispatch<SetStateAction<MatchRequest>>
   setCurrentIndex: Dispatch<SetStateAction<number>>
+  isEdit: boolean
 }
 export const RequestMatchContext = createContext<RequestMatchContextType>({
   matching: { subjects: [], schoolClasses: {} },
   setMatching: () => null,
-  setCurrentIndex: () => null
+  setCurrentIndex: () => null,
+  isEdit: false
 })
 
 const RequestMatching: React.FC = () => {
   const { space } = useTheme()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [isEdit, setIsEdit] = useState<boolean>(false)
   const [matching, setMatching] = useState<MatchRequest>({
     subjects: [],
     schoolClasses: {}
   })
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const location = useLocation()
+  const locationState = location.state as { edit: boolean }
   const { trackPageView } = useMatomo()
-
-  const { skipOnboarding } = (location.state || {}) as {
-    skipOnboarding: boolean
-  }
 
   useEffect(() => {
     trackPageView({
@@ -67,12 +67,9 @@ const RequestMatching: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (skipOnboarding) {
-      setCurrentIndex(1)
-    }
-
+    setIsEdit(locationState?.edit)
     setIsLoading(false)
-  }, [skipOnboarding, setCurrentIndex])
+  }, [locationState])
 
   const { data, loading } = useQuery(query)
 
@@ -80,7 +77,7 @@ const RequestMatching: React.FC = () => {
     <AsNavigationItem path="matching">
       <WithNavigation showBack isLoading={loading || isLoading}>
         <RequestMatchContext.Provider
-          value={{ matching, setMatching, setCurrentIndex }}>
+          value={{ matching, setMatching, setCurrentIndex, isEdit }}>
           {!loading && !isLoading && (
             <Box paddingX={space['1']} paddingBottom={space['1']}>
               {currentIndex === 0 && (

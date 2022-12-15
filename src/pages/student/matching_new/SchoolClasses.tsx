@@ -5,7 +5,8 @@ import {
   Button,
   useToast,
   Text,
-  useBreakpointValue
+  useBreakpointValue,
+  Box
 } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import Card from '../../../components/Card'
@@ -16,13 +17,14 @@ import { ClassRange } from '../../../types/lernfair/SchoolClass'
 import { useNavigate } from 'react-router-dom'
 import useModal from '../../../hooks/useModal'
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg'
+import { getSubjectLabel } from '../../../types/lernfair/Subject'
 
 type Props = {}
 
 const SchoolClasses: React.FC<Props> = () => {
   const { space, sizes } = useTheme()
   const toast = useToast()
-  const { matching, setMatching, setCurrentIndex } =
+  const { matching, setMatching, setCurrentIndex, isEdit } =
     useContext(RequestMatchContext)
   const navigate = useNavigate()
   const { setShow, setContent, setVariant } = useModal()
@@ -32,9 +34,14 @@ const SchoolClasses: React.FC<Props> = () => {
     lg: sizes['desktopbuttonWidth']
   })
 
-  const [update, _update] = useMutation(gql`
-    mutation updateStudent($subjects: [SubjectInput!]) {
+  const [updateSubjects] = useMutation(gql`
+    mutation updateStudentSubjects($subjects: [SubjectInput!]) {
       meUpdate(update: { student: { subjects: $subjects } })
+    }
+  `)
+
+  const [createMatchRequest] = useMutation(gql`
+    mutation {
       studentCreateMatchRequest
     }
   `)
@@ -60,28 +67,42 @@ const SchoolClasses: React.FC<Props> = () => {
         paddingX={space['2']}
         paddingTop={space['2']}
         space={space['1']}
-        alignItems="center">
-        <PartyIcon />
-        <Heading fontSize={'2xl'} color="lightText" textAlign="center">
-          Geschafft, du bist ein:e Held:in!
-        </Heading>
-        <Text color="lightText" textAlign="center">
-          Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!
-        </Text>
-        <Text color="lightText" textAlign="center">
-          Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert
-          in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden
-          haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du
-          Fragen haben, kannst du dich jederzeit bei uns melden.
-        </Text>
-        <Button
-          w={buttonWidth}
-          onPress={() => {
-            navigate('/start')
-            setShow(false)
-          }}>
-          Fertig
-        </Button>
+        alignItems="center"
+        height="100%">
+        <Box
+          maxWidth="600px"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="center">
+          <PartyIcon />
+          <Heading
+            fontSize={'2xl'}
+            color="lightText"
+            textAlign="center"
+            marginY={space['1.5']}>
+            Geschafft, du bist ein:e Held:in!
+          </Heading>
+          <Text color="lightText" textAlign="center" marginBottom={space['1']}>
+            Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!
+          </Text>
+          <Text color="lightText" textAlign="center" marginBottom={space['1']}>
+            Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche
+            dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich
+            gefunden haben, werden wir dich direkt per E-Mail benachrichtigen.
+            Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.
+          </Text>
+          <Button
+            w={buttonWidth}
+            onPress={() => {
+              navigate('/matching', {
+                state: { tabID: 1 }
+              })
+              setShow(false)
+            }}>
+            Fertig
+          </Button>
+        </Box>
       </VStack>
     )
     setShow(true)
@@ -102,29 +123,40 @@ const SchoolClasses: React.FC<Props> = () => {
       }
     }
 
-    const subjects: { key: string; classRange: ClassRange }[] = []
+    const subjects: { name: string; grade: ClassRange }[] = []
 
     for (const [subjectKey, selectedClasses] of Object.entries(classes)) {
       subjects.push({
-        key: subjectKey,
-        classRange: { min: selectedClasses[0], max: selectedClasses[1] }
+        name: getSubjectLabel(subjectKey),
+        grade: { min: selectedClasses[0], max: selectedClasses[1] }
       })
     }
 
-    const res = await update({ variables: subjects })
+    const resSubs = await updateSubjects({ variables: { subjects: subjects } })
+    if (resSubs.data && !resSubs.errors) {
+      if (!isEdit) {
+        const resRequest = await createMatchRequest()
 
-    if (res.data && !res.errors) {
-      showModal()
+        if (resRequest.data && !resRequest.errors) {
+          showModal()
+        } else {
+          toast.show({ description: 'Es ist ein Fehler aufgetreten' })
+        }
+      } else {
+        showModal()
+      }
     } else {
       toast.show({ description: 'Es ist ein Fehler aufgetreten' })
     }
   }, [
+    createMatchRequest,
+    isEdit,
     matching.schoolClasses,
     matching.setDazSupport,
     matching.subjects,
     showModal,
     toast,
-    update
+    updateSubjects
   ])
 
   return (

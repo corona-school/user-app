@@ -1,6 +1,7 @@
 import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base'
 import { useMemo, useState } from 'react'
 import { useUserType } from '../hooks/useApollo'
+import { useTranslation } from 'react-i18next'
 
 type DissolveModalProps = {
   showDissolveModal: boolean | undefined
@@ -8,37 +9,17 @@ type DissolveModalProps = {
   onPressBack: () => any
 }
 
-const studentReasonOptions = {
-  1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
-  2: 'Mein:e Lernpartner:in benötigt keine Unterstützung mehr',
-  3: 'Ich konnte meinem/meiner Lernpartner:in nicht behilflich sein',
-  4: 'Ich habe keine Zeit mehr mein*e Lernpartner:in zu unterstützen',
-  5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
-  6: 'Wir konnten keine gemeinsamen Termine finden',
-  7: 'Wir hatten technische Schwierigkeiten',
-  8: 'Sonstiges',
-  9: 'Wir hatten sprachliche Schwierigkeiten'
-  // 10: It turned out a user had a criminal record, and their account got cancelled. (don't include as option in frontend)
-}
-
-const pupilReasonOptions = {
-  1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
-  2: 'Mein:e Lernpartner:in konnte mir nicht behilflich sein',
-  3: 'Mein:e Lernpartner:in hat keine Zeit mehr mich zu unterstützen',
-  4: 'Ich benötige keine Unterstützung mehr',
-  5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
-  6: 'Wir konnten keine gemeinsamen Termine finden',
-  7: 'Wir hatten technische Schwierigkeiten',
-  8: 'Sonstiges',
-  9: 'Wir hatten sprachliche Schwierigkeiten'
-  // 10: It turned out a user had a criminal record, and their account got cancelled.
-}
+// corresponding dissolve reason ids in translation file
+// for now just loop through 1-9 (+1 in loop)
+export const studentReasonOptions = new Array(9).fill(0)
+export const pupilReasonOptions = new Array(9).fill(0)
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({
   showDissolveModal,
   onPressDissolve,
   onPressBack
 }) => {
+  const { t } = useTranslation()
   const { space } = useTheme()
   const userType = useUserType()
   const [reason, setReason] = useState<string>('')
@@ -48,20 +29,22 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({
       (userType === 'student' && studentReasonOptions) || pupilReasonOptions,
     [userType]
   )
-  console.log(reason)
+
   return (
     <Modal isOpen={showDissolveModal} onClose={onPressBack}>
       <Modal.Content>
         <Modal.CloseButton />
-        <Modal.Header>Warum möchtest du das Match auflösen?</Modal.Header>
+        <Modal.Header>{t('matching.dissolveModal.title')}</Modal.Header>
         <Modal.Body>
           <Radio.Group
             name="dissolve-reason"
             value={reason}
             onChange={setReason}>
             <VStack space={space['1']}>
-              {Object.values(reasons).map((reason: string, index: number) => (
-                <Radio value={`${index + 1}`}>{reason}</Radio>
+              {reasons.map((_: number, index: number) => (
+                <Radio value={`${index + 1}`}>
+                  {t(`matching.dissolveReasons.${userType}.${index + 1}`)}
+                </Radio>
               ))}
             </VStack>
           </Radio.Group>
@@ -71,10 +54,10 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({
             <Button
               isDisabled={!reason}
               onPress={() => onPressDissolve(reason)}>
-              Match auflösen
+              {t('matching.dissolveModal.btn')}
             </Button>
-            <Button onPress={onPressBack} variant="outline">
-              Zurück
+            <Button onPress={onPressBack} variant="ghost">
+              {t('back')}
             </Button>
           </Row>
         </Modal.Footer>

@@ -53,6 +53,7 @@ const Filter: React.FC = () => {
           <TwoColGrid>
             <Column>
               <IconTagList
+                iconPath={`lf-yes.svg`}
                 initial={isFit === 'yes'}
                 text="Ja"
                 variant="selection"
@@ -61,6 +62,7 @@ const Filter: React.FC = () => {
             </Column>
             <Column>
               <IconTagList
+                iconPath={`lf-no.svg`}
                 initial={isFit === 'no'}
                 text="Nein"
                 variant="selection"
@@ -81,6 +83,7 @@ const Filter: React.FC = () => {
           <TwoColGrid>
             <Column>
               <IconTagList
+                iconPath={`lf-yes.svg`}
                 initial={isAcceptWaitingTime === 'yes'}
                 text="Ja"
                 variant="selection"
@@ -89,6 +92,7 @@ const Filter: React.FC = () => {
             </Column>
             <Column>
               <IconTagList
+                iconPath={`lf-no.svg`}
                 initial={isAcceptWaitingTime === 'no'}
                 text="Nein"
                 variant="selection"

@@ -1,5 +1,6 @@
 import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base'
-import { Fragment, ReactNode, useMemo, useState } from 'react'
+import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export type Tab = {
   title: string
@@ -21,6 +22,14 @@ const Tabs: React.FC<Props> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const { space } = useTheme()
+  const location = useLocation()
+  const tabIDState = location.state as { tabID: number }
+
+  useEffect(() => {
+    if (tabIDState?.tabID !== undefined) {
+      setCurrentIndex(tabIDState.tabID)
+    }
+  }, [tabIDState])
 
   const Tab = ({
     tab,
