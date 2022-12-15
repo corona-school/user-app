@@ -1,0 +1,35 @@
+name: Deploy Storybook
+
+on:
+  push:
+    branches: [ main, feat/online-storybook ]
+jobs:
+ 
+  build-and-deploy-storybook:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies including optional ones
+        run: npm run dev-install
+
+      - name: Build Storybook
+        run: npm run dev-storybook-build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './storybook-static'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
