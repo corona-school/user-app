@@ -5,6 +5,9 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 on:
   push:
     branches: [ main ]
