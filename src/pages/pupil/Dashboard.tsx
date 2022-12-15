@@ -336,9 +336,9 @@ const Dashboard: React.FC<Props> = () => {
                           sortedAppointments[0]?.course.course?.name,
                         documentTitle: 'Schüler Dashboard'
                       })
-                      navigate('/single-course', {
-                        state: { course: sortedAppointments[0]?.course.id }
-                      })
+                      navigate(
+                        `/single-course/${sortedAppointments[0]?.course.id}`
+                      )
                     }}
                     tags={highlightedAppointment?.course?.course?.tags}
                     date={highlightedAppointment?.lecture.start}
@@ -388,9 +388,7 @@ const Dashboard: React.FC<Props> = () => {
                                   documentTitle: 'Schüler Dashboard'
                                 })
 
-                                navigate('/single-course', {
-                                  state: { course: course.id }
-                                })
+                                navigate(`/single-course/${course.id}`)
                               }}
                               key={`appointment-${course.id}`}
                               description={course.course.description}
@@ -534,9 +532,7 @@ const Dashboard: React.FC<Props> = () => {
                               name: 'Schüler Dashboard – Matching Vorschlag',
                               documentTitle: 'Schüler Dashboard'
                             })
-                            navigate('/single-course', {
-                              state: { course: sc.id }
-                            })
+                            navigate(`/single-course/${sc.id}`)
                           }}
                           onPress={() => {
                             trackEvent({
@@ -545,9 +541,7 @@ const Dashboard: React.FC<Props> = () => {
                               name: 'Schüler Dashboard – Matching Vorschlag',
                               documentTitle: 'Schüler Dashboard'
                             })
-                            navigate('/single-course', {
-                              state: { course: sc.id }
-                            })
+                            navigate(`/single-course/${sc.id}`)
                           }}
                         />
                       </Column>

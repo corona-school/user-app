@@ -210,9 +210,7 @@ const CourseArchive: React.FC<Props> = () => {
                                   'Kurs Archive – Kachel: ' + sub.course.name,
                                 documentTitle: 'Kurse Archive'
                               })
-                              navigate('/single-course', {
-                                state: { course: sub.id }
-                              })
+                              navigate(`/single-course/${sub.id}`)
                             }}
                             image={sub.course.image}
                             title={sub.course.name}

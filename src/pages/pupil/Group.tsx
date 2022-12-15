@@ -264,9 +264,7 @@ const PupilGroup: React.FC<Props> = () => {
                               date={course.firstLecture?.start}
                               countCourse={course.lectures?.length}
                               onPressToCourse={() =>
-                                navigate('/single-course', {
-                                  state: { course: course.id }
-                                })
+                                navigate(`/single-course/${course.id}`)
                               }
                               image={course.course.image}
                               title={course.course.name}

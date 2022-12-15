@@ -14,7 +14,7 @@ import {
   Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
@@ -56,8 +56,7 @@ const SingleCourse: React.FC = () => {
   const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
 
   const navigate = useNavigate()
-  const location = useLocation()
-  const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
+  const { id: courseId } = useParams()
   const userType = useUserType()
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
 

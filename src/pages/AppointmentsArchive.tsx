@@ -202,9 +202,7 @@ const AppointmentsArchive: React.FC<Props> = () => {
                               date={lecture.start}
                               countCourse={sub.lectures.length}
                               onPressToCourse={() =>
-                                navigate('/single-course', {
-                                  state: { course: sub.id }
-                                })
+                                navigate(`/single-course/${sub.id}`)
                               }
                               image={sub.course.image}
                               title={sub.course.name}
