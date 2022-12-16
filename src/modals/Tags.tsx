@@ -35,7 +35,7 @@ const Tags: React.FC<Props> = ({
 
   const { data, loading: isLoading } = useQuery(gql`
     query {
-      courseTags(category: "club") {
+      courseTags(category: "revision") {
         id
         name
       }
