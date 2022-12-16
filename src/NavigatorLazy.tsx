@@ -81,7 +81,7 @@ export default function NavigatorLazy() {
       />
 
       <Route
-        path="/single-course"
+        path="/single-course/:id"
         element={
           <RequireAuth>
             <SingleCourse />

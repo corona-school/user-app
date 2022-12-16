@@ -75,7 +75,10 @@ const StudentGroupSupport: React.FC<Props> = () => {
                     key={index}
                     variant="horizontal"
                     description="Lorem Ipsum"
-                    tags={[{ name: 'Mathematik' }, { name: 'Gruppenkurs' }]}
+                    tags={[
+                      { name: 'Mathematik', id: 0 },
+                      { name: 'Gruppenkurs', id: 0 }
+                    ]}
                     date={new Date().toString()}
                     countCourse={4}
                     onPressToCourse={() => alert('YES')}

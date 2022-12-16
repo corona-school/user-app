@@ -14,7 +14,7 @@ import {
   Tooltip
 } from 'native-base'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Tabs from '../components/Tabs'
 import Tag from '../components/Tag'
 import WithNavigation from '../components/WithNavigation'
@@ -35,6 +35,8 @@ import { useUserType } from '../hooks/useApollo'
 
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType'
 import SetMeetingLinkModal from '../modals/SetMeetingLinkModal'
+import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal'
+import CancelSubCourseModal from '../modals/CancelSubCourseModal'
 
 const SingleCourse: React.FC = () => {
   const { space, sizes } = useTheme()
@@ -51,17 +53,19 @@ const SingleCourse: React.FC = () => {
   const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false)
   const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>()
   const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false)
+  const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
 
   const navigate = useNavigate()
-  const location = useLocation()
-  const { course: courseId } = (location.state || {}) as { course: LFSubCourse }
+  const { id: courseId } = useParams()
   const userType = useUserType()
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
 
   const userQuery =
     userType === 'student'
       ? `
       isInstructor
       participants{
+        id
     firstname
     lastname
     grade
@@ -143,7 +147,7 @@ const SingleCourse: React.FC = () => {
     }
   )
 
-  const [leaveSubcourse, _leaveSubcourse] = useMutation(
+  const [leaveSubcourse] = useMutation(
     gql`
       mutation ($courseId: Float!) {
         subcourseLeave(subcourseId: $courseId)
@@ -174,17 +178,15 @@ const SingleCourse: React.FC = () => {
     }
   )
 
+  const [cancelSubcourse] = useMutation(gql`mutation {
+    subcourseCancel(subcourseId: ${courseId})
+  }`)
+
   useEffect(() => {
     if (_joinSubcourse?.data?.subcourseJoin) {
       setSignedInModal(true)
     }
   }, [_joinSubcourse?.data?.subcourseJoin])
-
-  // useEffect(() => {
-  //   if (_leaveSubcourse?.data?.subcourseLeave) {
-  //     setSignedOutModal(true)
-  //   }
-  // }, [_leaveSubcourse?.data?.subcourseLeave])
 
   useEffect(() => {
     if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
@@ -200,7 +202,7 @@ const SingleCourse: React.FC = () => {
 
   const course = useMemo(() => courseData?.subcourse, [courseData])
 
-  const participants = useMemo(() => {
+  const participants: LFParticipant[] = useMemo(() => {
     if (userType === 'student') {
       return course?.participants
     } else {
@@ -218,6 +220,25 @@ const SingleCourse: React.FC = () => {
   const isFull = useMemo(
     () => course?.participantsCount >= course?.maxParticipants,
     [course?.maxParticipants, course?.participantsCount]
+  )
+
+  const [sendMessage, _sendMessage] = useMutation(
+    gql`
+      mutation sendMessage(
+        $subject: String!
+        $message: String!
+        $subcourseId: Int!
+        $participants: [Int!]!
+      ) {
+        subcourseNotifyParticipants(
+          subcourseId: $subcourseId
+          title: $subject
+          body: $message
+          participantIDs: $participants
+          fileIDs: []
+        )
+      }
+    `
   )
 
   const ContainerWidth = useBreakpointValue({
@@ -252,6 +273,32 @@ const SingleCourse: React.FC = () => {
       course?.isParticipant && setLoadParticipants(true)
     }
   }, [course, loading])
+
+  const onSendMessage = useCallback(
+    async (subject: string, message: string) => {
+      if (subject && message && participants) {
+        const ps = participants.map(p => p.id)
+
+        try {
+          await sendMessage({
+            variables: {
+              subject,
+              message,
+              subcourseId: courseId,
+              participants: ps
+            }
+          })
+          toast.show({ description: 'Nachricht erfolgreich versendet' })
+          setShowMessageModal(false)
+        } catch (e) {
+          toast.show({
+            description: 'Deine Nachricht konnte nicht versendet werden'
+          })
+        }
+      }
+    },
+    [courseId, participants, sendMessage, toast]
+  )
 
   const getMeetingLink = useCallback(async () => {
     try {
@@ -317,6 +364,16 @@ const SingleCourse: React.FC = () => {
       60
     )
   }, [course])
+
+  const cancelCourse = useCallback(async () => {
+    try {
+      await cancelSubcourse()
+      toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt' })
+    } catch (e) {
+      toast.show({ description: 'Der Kurs konnte nicht abgesagt werden' })
+    }
+    setShowCancelModal(false)
+  }, [cancelSubcourse, toast])
 
   return (
     <>
@@ -500,7 +557,13 @@ const SingleCourse: React.FC = () => {
           )}
 
           {userType === 'student' && course?.isInstructor && (
-            <Box marginBottom={space['1.5']}>
+            <VStack marginBottom={space['1.5']} space={space['1']}>
+              <Button
+                onPress={() => setShowMessageModal(true)}
+                width={ButtonContainer}
+                variant="outline">
+                Teilnehmer:innen kontaktieren
+              </Button>
               <Button
                 onPress={() => {
                   navigate('/edit-course', {
@@ -511,7 +574,13 @@ const SingleCourse: React.FC = () => {
                 variant="outline">
                 Kurs editieren
               </Button>
-            </Box>
+              <Button
+                onPress={() => setShowCancelModal(true)}
+                width={ButtonContainer}
+                variant="outline">
+                Kurs absagen
+              </Button>
+            </VStack>
           )}
 
           {course?.course?.allowContact && (
@@ -757,6 +826,17 @@ const SingleCourse: React.FC = () => {
         onClose={() => setShowMeetingUrlModal(false)}
         disableButtons={_setMeetingUrl.loading}
         onPressStartMeeting={link => _setMeetingLink(link)}
+      />
+      <SendParticipantsMessageModal
+        isOpen={showMessageModal}
+        onClose={() => setShowMessageModal(false)}
+        onSend={onSendMessage}
+        isDisabled={_sendMessage.loading}
+      />
+      <CancelSubCourseModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onCourseCancel={cancelCourse}
       />
     </>
   )

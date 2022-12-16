@@ -60,6 +60,7 @@ export type CreateCourseError =
   | 'upload_image'
   | 'instructors'
   | 'lectures'
+  | 'tags'
 
 export type Lecture = {
   id?: string | number
@@ -77,8 +78,8 @@ type ICreateCourseContext = {
   setClassRange?: Dispatch<SetStateAction<[number, number]>>
   description?: string
   setDescription?: Dispatch<SetStateAction<string>>
-  tags?: string
-  setTags?: Dispatch<SetStateAction<string>>
+  tags?: LFTag[]
+  setTags?: Dispatch<SetStateAction<LFTag[]>>
   maxParticipantCount?: string
   setMaxParticipantCount?: Dispatch<SetStateAction<string>>
   joinAfterStart?: boolean
@@ -111,7 +112,7 @@ const CreateCourse: React.FC<Props> = () => {
   const [subject, setSubject] = useState<LFSubject>({ name: '' })
   const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13])
   const [description, setDescription] = useState<string>('')
-  const [tags, setTags] = useState<string>('')
+  const [tags, setTags] = useState<LFTag[]>([])
   const [maxParticipantCount, setMaxParticipantCount] = useState<string>('')
   const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false)
   const [allowContact, setAllowContact] = useState<boolean>(false)
@@ -168,6 +169,7 @@ const CreateCourse: React.FC<Props> = () => {
           subject
           allowContact
           tags {
+            id
             name
           }
         }
@@ -246,6 +248,12 @@ const CreateCourse: React.FC<Props> = () => {
     }
   `)
 
+  const [setCourseTags] = useMutation(gql`
+    mutation ($courseId: Float!, $courseTagIds: [Float!]!) {
+      courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
+    }
+  `)
+
   const { space, sizes } = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -298,7 +306,7 @@ const CreateCourse: React.FC<Props> = () => {
     }
 
     if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
-      setTags(prefillCourse.course.tags.map((t: LFTag) => t.name).join(', '))
+      setTags(prefillCourse.course.tags)
     }
 
     if (prefillCourse.lectures && Array.isArray(prefillCourse.lectures)) {
@@ -364,13 +372,12 @@ const CreateCourse: React.FC<Props> = () => {
       maxGrade: number
       maxParticipants: number
       joinAfterStart: boolean
-      lectures: LFLecture[]
+      lectures?: LFLecture[]
     } = {
       minGrade: courseClasses[0],
       maxGrade: courseClasses[1],
       maxParticipants: parseInt(maxParticipantCount),
-      joinAfterStart,
-      lectures: []
+      joinAfterStart
     }
 
     return subcourse
@@ -427,11 +434,19 @@ const CreateCourse: React.FC<Props> = () => {
       setIsLoading(false)
       return
     }
-
+    const tagIds = tags.map((t: LFTag) => t.id)
+    const tagsRes = await setCourseTags({
+      variables: { courseTagIds: tagIds, courseId }
+    })
+    if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+      errors.push('tags')
+    }
     /**
      * Subcourse Creation
      */
     const subcourse = _getSubcourseData()
+
+    subcourse.lectures = []
 
     const subRes = await createSubcourse({
       variables: {
@@ -471,10 +486,7 @@ const CreateCourse: React.FC<Props> = () => {
           }
         })
         if (!res.data && res.errors) {
-          errors.push('subcourse')
-          finishCourseCreation(errors)
-          setIsLoading(false)
-          return
+          errors.push('instructors')
         }
       }
     }
@@ -546,7 +558,9 @@ const CreateCourse: React.FC<Props> = () => {
     pickedPhoto,
     resetCourse,
     resetSubcourse,
-    setCourseImage
+    setCourseImage,
+    setCourseTags,
+    tags
   ])
 
   const editCourse = useCallback(async () => {
@@ -576,6 +590,14 @@ const CreateCourse: React.FC<Props> = () => {
       finishCourseCreation(errors)
       setIsLoading(false)
       return
+    }
+
+    const tagIds = tags.map((t: LFTag) => t.id)
+    const tagsRes = await setCourseTags({
+      variables: { courseTagIds: tagIds, courseId }
+    })
+    if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+      errors.push('tags')
     }
 
     const subcourse = _getSubcourseData()
@@ -678,6 +700,8 @@ const CreateCourse: React.FC<Props> = () => {
     _getCourseData,
     updateCourse,
     courseId,
+    tags,
+    setCourseTags,
     _getSubcourseData,
     updateSubcourse,
     prefillCourseId,

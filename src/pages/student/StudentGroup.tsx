@@ -164,11 +164,7 @@ const StudentGroup: React.FC = () => {
           tags={course.course.tags}
           date={(showDate && course.firstLecture?.start) || ''}
           countCourse={course.lectures.length}
-          onPressToCourse={() =>
-            navigate('/single-course', {
-              state: { course: course.id }
-            })
-          }
+          onPressToCourse={() => navigate(`/single-course/${course.id}`)}
           image={course.course.image}
           title={course.course.name}
         />

@@ -12,6 +12,7 @@ export type LFPupil = {
 }
 
 export type Participant = {
+  id: string
   firstname: string
   lastname: string
   grade: number

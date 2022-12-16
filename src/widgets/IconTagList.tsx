@@ -41,14 +41,14 @@ const IconTagList: React.FC<IIconTagList> = ({
 
     return (
       <Box
-        size={'10'}
+        size={'8'}
         position={'relative'}
         justifyContent="center"
         alignItems="center">
         <CircleIcon
           color="lightText"
           position="absolute"
-          size={'10'}
+          size={'8'}
           top="0"
           left="0"
           zIndex="-1"

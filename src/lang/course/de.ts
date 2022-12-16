@@ -96,7 +96,8 @@ const course = {
     set_image: 'Dein Bild konnte leider nicht als Kursbild gesetzt werden.',
     instructors:
       'Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.',
-    lectures: 'Ein oder mehrere Termine konnten nicht hinzugefügt werden.'
+    lectures: 'Ein oder mehrere Termine konnten nicht hinzugefügt werden.',
+    tags: 'Deine Tags konnten nicht hinzugefügt werden.'
   },
   CourseDate: {
     tabs: {

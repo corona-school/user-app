@@ -365,9 +365,7 @@ const DashboardStudent: React.FC<Props> = () => {
                             'Helfer Dashboard – Nächster Termin ' +
                               nextAppointment[1].course?.name || ''
                         })
-                        navigate('/single-course', {
-                          state: { course: nextAppointment[1].id }
-                        })
+                        navigate(`/single-course/${nextAppointment[1].id}`)
                       }}
                       tags={nextAppointment[1].course?.tags}
                       date={nextAppointment[0].start || ''}
@@ -416,9 +414,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                   course.name
                               })
 
-                              navigate('/single-course', {
-                                state: { course: el.id }
-                              })
+                              navigate(`/single-course/${el.id}`)
                             }}
                             key={`appointment-${el.id}`}
                             description={course.description}
@@ -479,9 +475,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     sub.course.name
                                 })
 
-                                navigate('/single-course', {
-                                  state: { course: sub.id }
-                                })
+                                navigate(`/single-course/${sub.id}`)
                               }}
                               image={sub.course.image}
                               title={sub.course.name}
@@ -610,14 +604,14 @@ const DashboardStudent: React.FC<Props> = () => {
       </WithNavigation>
       <DissolveMatchModal
         showDissolveModal={showDissolveModal}
-        onPressDissolve={(reason: string) => {
-          dissolve({
+        onPressDissolve={async (reason: string) => {
+          setShowDissolveModal(false)
+          return await dissolve({
             variables: {
               matchId: dissolveData?.id,
               dissolveReason: parseInt(reason)
             }
           })
-          setShowDissolveModal(false)
         }}
         onPressBack={() => setShowDissolveModal(false)}
       />
