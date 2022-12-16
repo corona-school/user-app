@@ -1,12 +1,13 @@
 import { DateTime } from 'luxon'
 import { Text, VStack, useTheme, Heading, Button } from 'native-base'
-import { useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useCallback, useMemo, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 import Card from '../../components/Card'
 import CollapsibleContent from '../../components/CollapsibleContent'
 import WithNavigation from '../../components/WithNavigation'
 import { LFCertificate } from '../../types/lernfair/Certificate'
+import AppointmentCard from '../../widgets/AppointmentCard'
 
 type CertificatePupil = {
   name: string
@@ -44,8 +45,12 @@ const awaitingPupil: CertificatePupil = {
 const CertificateList: React.FC = () => {
   const { space } = useTheme()
 
-  const location = useLocation() as { state: { certificate: LFCertificate } }
+  const navigate = useNavigate()
+  const location = useLocation() as {
+    state: { certificate: LFCertificate; type: 'group' | 'matching' }
+  }
   const certificate = location?.state?.certificate || {}
+  const certificateType = location?.state?.type || 'group'
 
   const approvedPupils = useMemo(() => {
     return new Array(2).fill(0).map((_, i) => approvedPupil)
@@ -54,13 +59,15 @@ const CertificateList: React.FC = () => {
     return new Array(4).fill(0).map((_, i) => awaitingPupil)
   }, [])
 
-  const PupilStatus: React.FC<{ pupil: CertificatePupil }> = ({ pupil }) => {
+  const PupilStatus: React.FC<{
+    pupil: CertificatePupil
+    variant?: 'normal' | 'dark'
+  }> = ({ pupil, variant }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    const variant = useMemo(() => (isOpen ? 'dark' : 'normal'), [isOpen])
     const textColor = useMemo(
-      () => (isOpen ? 'lightText' : 'darkText'),
-      [isOpen]
+      () => (variant === 'dark' ? 'lightText' : 'darkText'),
+      [variant]
     )
     return (
       <Card flexibleWidth padding={space['1']} variant={variant}>
@@ -74,6 +81,7 @@ const CertificateList: React.FC = () => {
 
         <CollapsibleContent
           isOpen={isOpen}
+          textColor={textColor}
           onPressHeader={() => setIsOpen(prev => !prev)}>
           <VStack mt={space['0.5']} space={'1'}>
             <Text color={textColor}>
@@ -93,47 +101,88 @@ const CertificateList: React.FC = () => {
             <Text color={textColor}>Medium: {pupil.medium}</Text>
           </VStack>
         </CollapsibleContent>
-        <Button variant="outline" mt={space['1']} _text={{ color: textColor }}>
-          Erneut senden
-        </Button>
+        {variant !== 'dark' && (
+          <Button
+            variant="outline"
+            mt={space['1']}
+            _text={{ color: textColor }}>
+            Erneut senden
+          </Button>
+        )}
       </Card>
     )
   }
 
-  if (!certificate.uuid)
-    return (
-      <>
-        <Text>Fehler beim Laden des Zertifikates</Text>
-      </>
-    )
+  const updateCertificates = useCallback(() => {
+    navigate('/request-certificate', {
+      state: { edit: true, type: certificateType }
+    })
+  }, [certificateType, navigate])
 
   return (
     <WithNavigation headerLeft={<BackButton />}>
-      <VStack space={space['1']} paddingX={space['1']}>
-        <Heading>Bescheinigung {certificate.categories}</Heading>
-        <Text>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua.
-        </Text>
+      {/* {!certificate.uuid && <Text>Fehler beim Laden des Zertifikates</Text>} */}
 
-        {approvedPupils.length > 0 && (
-          <VStack space={space['1']}>
-            <Heading>Bestätigt</Heading>
-            {approvedPupils.map((pupil, i) => (
-              <PupilStatus pupil={pupil} />
-            ))}
-          </VStack>
-        )}
-        {awaitingPupils.length > 0 && (
-          <VStack space={space['1']}>
-            <Heading>Ausstehend</Heading>
-            {awaitingPupils.map((pupil, i) => (
-              <PupilStatus pupil={pupil} />
-            ))}
-          </VStack>
-        )}
-      </VStack>
+      {(certificate.uuid || true) && (
+        <VStack space={space['1']} paddingX={space['1']}>
+          <Heading>
+            {certificateType === 'group'
+              ? 'Gruppenkurse'
+              : '1:1 Lernunterstützung'}
+          </Heading>
+          <Text>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+            erat, sed diam voluptua.
+          </Text>
+
+          <Button onPress={updateCertificates}>
+            Bescheinigungen aktualisieren
+          </Button>
+
+          {certificateType === 'matching' && (
+            <>
+              {approvedPupils.length > 0 && (
+                <VStack space={space['1']}>
+                  <Heading>Bestätigt</Heading>
+                  {approvedPupils.map((pupil, i) => (
+                    <PupilStatus pupil={pupil} variant="dark" />
+                  ))}
+                </VStack>
+              )}
+              {awaitingPupils.length > 0 && (
+                <VStack space={space['1']}>
+                  <Heading>Ausstehend</Heading>
+                  {awaitingPupils.map((pupil, i) => (
+                    <PupilStatus pupil={pupil} />
+                  ))}
+                </VStack>
+              )}
+            </>
+          )}
+
+          {certificateType === 'group' && (
+            <VStack space={space['1']}>
+              <AppointmentCard
+                isGrid
+                isFullHeight
+                variant="horizontal"
+                description={'Lorem Ipsum'}
+                date={DateTime.now().toISO()}
+                title={'Kursname'}
+                tags={[
+                  { name: 'Mathe', id: 0 },
+                  { name: 'Deutsch', id: 0 }
+                ]}
+              />
+            </VStack>
+          )}
+
+          <Heading>Tätigkeiten</Heading>
+          <Text>• Bearbeitung und Vermittlung von Arbeitsinhalten</Text>
+          <Text>• Digitale Unterstützung beim Lernen</Text>
+        </VStack>
+      )}
     </WithNavigation>
   )
 }

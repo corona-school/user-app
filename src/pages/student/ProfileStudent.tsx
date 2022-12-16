@@ -327,31 +327,36 @@ const ProfileStudent: React.FC<Props> = () => {
             </ProfileSettingRow>
             <ProfileSettingRow title={'Meine Bescheinigungen'}>
               <VStack space={space['1']}>
-                {data?.me?.student?.participationCertificates?.map(
-                  (cert: LFCertificate) => (
-                    <CertificateOverviewRow
-                      Icon={
-                        cert.categories === 'test' ? (
-                          <CertificateGroupIcon />
-                        ) : (
-                          <CertificateMatchingIcon />
-                        )
-                      }
-                      isDisabled={_requestCertificate.loading}
-                      certificate={cert}
-                      onPressDownload={() => {
-                        console.log(cert)
-                        setFocusedCertificateUuid(cert.uuid)
-                        setShowSelectPDFLanguageModal(true)
-                      }}
-                      onPressDetails={() =>
-                        navigate('/certificate-list', {
-                          state: { type: 'matching' }
-                        })
-                      }
-                    />
-                  )
-                )}
+                <CertificateOverviewRow
+                  title="Gruppenkurse"
+                  isDisabled={_requestCertificate.loading}
+                  Icon={<CertificateGroupIcon />}
+                  certificate={{}}
+                  onPressDownload={() => {
+                    // setFocusedCertificateUuid(cert.uuid)
+                    setShowSelectPDFLanguageModal(true)
+                  }}
+                  onPressDetails={() =>
+                    navigate('/certificate-list', {
+                      state: { type: 'group' }
+                    })
+                  }
+                />
+                <CertificateOverviewRow
+                  title="1:1 Lernunterstützung"
+                  isDisabled={_requestCertificate.loading}
+                  Icon={<CertificateGroupIcon />}
+                  certificate={{}}
+                  onPressDownload={() => {
+                    // setFocusedCertificateUuid(cert.uuid)
+                    setShowSelectPDFLanguageModal(true)
+                  }}
+                  onPressDetails={() =>
+                    navigate('/certificate-list', {
+                      state: { type: 'matching' }
+                    })
+                  }
+                />
               </VStack>
             </ProfileSettingRow>
           </VStack>
@@ -486,13 +491,15 @@ const ProfileStudent: React.FC<Props> = () => {
 export default ProfileStudent
 
 type CertificateProps = {
+  title: string
   Icon?: ReactNode
-  certificate: LFCertificate
+  certificate: any
   onPressDownload?: () => void
   onPressDetails?: () => void
   isDisabled?: boolean
 }
 const CertificateOverviewRow: React.FC<CertificateProps> = ({
+  title,
   Icon,
   certificate,
   onPressDownload,
@@ -505,20 +512,20 @@ const CertificateOverviewRow: React.FC<CertificateProps> = ({
       <VStack>
         <Row justifyContent="flex-end" alignItems="center">
           {Icon && <Box mr={space['0.5']}>{Icon}</Box>}
-          <Heading flex="1">{certificate.categories}</Heading>
+          <Heading flex="1">{title}</Heading>
         </Row>
         <VStack py={space['1']}>
           <Text>
             <Text bold mr="0.5">
               Beantragt am:
             </Text>
-            {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}
+            {DateTime.now().toFormat('dd.MM.yyyy')}
           </Text>
           <Text>
             <Text bold mr="0.5">
               Status:{' '}
             </Text>
-            {certificate.state}
+            <Text>0 von X bestätigt</Text>
           </Text>
         </VStack>
         <Button

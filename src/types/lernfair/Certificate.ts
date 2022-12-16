@@ -4,9 +4,11 @@ export type LFCertificateStatus =
   | 'manual'
   | string
 
+type LFCertificateCategory = 'test' | 'xyzipd'
+
 export type LFCertificate = {
   uuid: string
-  categories: string
+  categories: LFCertificateCategory
   certificateDate: string
   startDate: string
   endDate: string

@@ -31,8 +31,8 @@ const RequestCertificateData: React.FC<Props> = ({
       <Heading>Informationen eintragen</Heading>
 
       {(certificateType === 'matching' && (
-        <RequestCertificateMatchingWizard />
-      )) || <RequestCertificateGroupWizard />}
+        <RequestCertificateMatchingWizard onNext={onNext} />
+      )) || <RequestCertificateGroupWizard onNext={onNext} />}
     </VStack>
   )
 }

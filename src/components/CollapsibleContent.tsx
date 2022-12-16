@@ -14,16 +14,18 @@ type Props = {
   children: ReactNode | ReactNode[]
   header?: ReactNode | ReactNode[]
   onPressHeader?: () => any
+  textColor?: string
 }
 
 const CollapsibleContent: React.FC<Props> = ({
   children,
   isOpen,
+  textColor,
   header,
   onPressHeader
 }) => {
   const { space, colors } = useTheme()
-  const textColor = useMemo(() => (isOpen ? 'lightText' : 'darkText'), [isOpen])
+
   const iconColor = useMemo(
     () => (isOpen ? 'lightText' : 'primary.900'),
     [isOpen]

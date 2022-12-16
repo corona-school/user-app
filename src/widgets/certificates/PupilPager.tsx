@@ -1,32 +1,37 @@
 import { Flex } from 'native-base'
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext } from 'react'
 import { RequestCertificateContext } from '../../pages/RequestCertificate'
 import { LFMatch } from '../../types/lernfair/Match'
 import SelectedPupilWizard from './SelectedPupilWizard'
 
 type Props = {
   onFinished: () => any
+  onBack: () => any
 }
 
-const PupilPager: React.FC<Props> = ({ onFinished }) => {
-  const { state } = useContext(RequestCertificateContext)
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
+const PupilPager: React.FC<Props> = ({ onFinished, onBack }) => {
+  const { state, pupilIndex, setPupilIndex } = useContext(
+    RequestCertificateContext
+  )
 
   const next = useCallback(() => {
-    if (currentIndex + 1 < state?.pupilMatches.length) {
-      setCurrentIndex(prev => prev + 1)
+    if (pupilIndex + 1 < state?.pupilMatches.length) {
+      setPupilIndex(prev => prev + 1)
     } else {
+      console.log('finished')
       onFinished()
     }
     window.scrollTo({ top: 0 })
-  }, [currentIndex, onFinished, state?.pupilMatches.length])
+  }, [pupilIndex, state?.pupilMatches.length, setPupilIndex, onFinished])
 
   const prev = useCallback(() => {
-    if (currentIndex - 1 >= 0) {
-      setCurrentIndex(prev => prev - 1)
+    if (pupilIndex - 1 >= 0) {
+      setPupilIndex(prev => prev - 1)
       window.scrollTo({ top: 0 })
+    } else {
+      onBack()
     }
-  }, [currentIndex])
+  }, [pupilIndex, setPupilIndex, onBack])
 
   return (
     <Flex>
@@ -34,13 +39,13 @@ const PupilPager: React.FC<Props> = ({ onFinished }) => {
         state?.pupilMatches.length > 0 &&
         state?.pupilMatches?.map(
           (match: LFMatch, i: number) =>
-            i === currentIndex && (
+            i === pupilIndex && (
               <SelectedPupilWizard
                 match={match}
                 onNext={next}
                 onPrev={prev}
                 pupilCount={state?.pupilMatches.length}
-                currentIndex={currentIndex}
+                currentIndex={pupilIndex}
               />
             )
         )}
