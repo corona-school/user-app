@@ -7,7 +7,7 @@ module.exports = {
             recommended: true,
             url: "https://github.com/corona-school/user-app/tree/main/linter"
         },
-        hasSuggestions: true
+        fixable: "code"
     },
     create(context) {
         let importNode = null;
@@ -25,7 +25,7 @@ module.exports = {
                     return;
                 }
 
-                if (importNode.source.value.endsWith("src/gql") || importNode.source.value.endsWith("../gql")) {
+                if (importNode.source.value.endsWith("src/gql") || importNode.source.value.endsWith("./gql")) {
                     return;
                 }
 
@@ -33,18 +33,14 @@ module.exports = {
                 
                         node: importNode,
                         message: `Use gql from src/gql instead which has proper Typescript types`,
-                        suggest: [
-                            {
-                                desc: `Add other gql import`,
-                                fix(fixer) {
-                                    return [
-                                        fixer.removeRange([importSpecifierNode.range[0], importSpecifierNode.range[1] + 1]),
-                                        fixer.insertTextBefore(importNode, "import { gql } from '../gql';\n")
-                                    ];
-                                }
-                            }
-                        ],
-                    });
+                        fix(fixer) {
+                            const subfolders = context.getFilename().split("src/")[1].split("/").length - 1;
+                            return [
+                                fixer.removeRange([importSpecifierNode.range[0], importSpecifierNode.range[1] + 1]),
+                                fixer.insertTextBefore(importNode, `import { gql } from './${"../".repeat(subfolders)}gql';\n`)
+                            ];
+                         }
+                });
             },
             "TaggedTemplateExpression": function(taggedTemplateNode) {
                 if (taggedTemplateNode.tag.name !== "gql") {
@@ -54,18 +50,13 @@ module.exports = {
                 context.report({
                     node: taggedTemplateNode,
                     message: `Use regular function call instead of tagged template literal`,
-                    suggest: [
-                        {
-                            desc: `Add (...)`,
-                            fix(fixer) {
+                    fix(fixer) {
                                 return [
                                     fixer.insertTextBeforeRange(taggedTemplateNode.quasi.range, "("),
                                     fixer.insertTextAfterRange(taggedTemplateNode.quasi.range, ")"),
                                 ]
                             }
-                        }
-                    ]
-                })
+                });
             }
         };
     }
