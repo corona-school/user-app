@@ -30,13 +30,13 @@ const VerifyEmail: React.FC<Props> = () => {
   const { onLogin } = useApollo()
 
   const [loginToken, loginResult] = useMutation(gql`
-    mutation ($token: String!) {
+    mutation LoginTokenOnEmailVerification($token: String!) {
       loginToken(token: $token)
     }
   `)
 
   const [meQuery, { data: meData }] = useLazyQuery(gql`
-    query {
+    query GetMyId {
       me {
         pupil {
           id

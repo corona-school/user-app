@@ -18,7 +18,7 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
   )
 
   const { data, loading } = useQuery(gql`
-    query {
+    query GetSubcoursesForCertificate {
       me {
         student {
           subcoursesInstructing {

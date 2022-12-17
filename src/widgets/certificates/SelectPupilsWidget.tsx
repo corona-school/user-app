@@ -28,7 +28,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
   const { setState } = useContext(RequestCertificateContext)
 
   const { data, loading } = useQuery(gql`
-    query {
+    query GetPupilsForCertificate {
       me {
         student {
           subjectsFormatted {

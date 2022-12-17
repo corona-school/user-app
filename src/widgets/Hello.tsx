@@ -7,7 +7,7 @@ type Props = {}
 const Hello: React.FC<Props> = () => {
   const { t } = useTranslation()
   const { data, loading } = useQuery(gql`
-    query {
+    query GetFirstname {
       me {
         firstname
       }

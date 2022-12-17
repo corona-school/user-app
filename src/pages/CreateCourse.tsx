@@ -132,7 +132,7 @@ const CreateCourse: React.FC<Props> = () => {
   const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId])
 
   const { data: studentData, loading } = useQuery(gql`
-    query {
+    query StudentCanCreateCourse {
       me {
         student {
           canCreateCourse {
@@ -146,7 +146,7 @@ const CreateCourse: React.FC<Props> = () => {
   `)
 
   const [courseQuery] = useLazyQuery(gql`
-    query ($id: Int!) {
+    query GetSubcourse($id: Int!) {
       subcourse(subcourseId: $id) {
         id
         participantsCount
@@ -249,7 +249,7 @@ const CreateCourse: React.FC<Props> = () => {
   `)
 
   const [setCourseTags] = useMutation(gql`
-    mutation ($courseId: Float!, $courseTagIds: [Float!]!) {
+    mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
       courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
     }
   `)

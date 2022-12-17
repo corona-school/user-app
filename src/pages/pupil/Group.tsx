@@ -32,7 +32,7 @@ import CSSWrapper from '../../components/CSSWrapper'
 type Props = {}
 
 const query = gql`
-  query {
+  query PupilSubcourseOverview {
     me {
       pupil {
         canJoinSubcourses {
@@ -90,7 +90,7 @@ const PupilGroup: React.FC<Props> = () => {
     searchAllSubcoursesQuery,
     { loading: allSubcoursesSearchLoading, data: allSubcoursesData }
   ] = useLazyQuery(gql`
-    query ($name: String) {
+    GetAllSubcourses query ($name: String) {
       subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
         isParticipant
         maxParticipants

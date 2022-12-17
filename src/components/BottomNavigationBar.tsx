@@ -27,7 +27,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
 
   const { data, loading } = useQuery(
     gql`
-      query {
+      query GetRoles {
         myRoles
       }
     `

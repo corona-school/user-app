@@ -29,7 +29,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
 
   const { data, loading } = useQuery(
     gql`
-      query {
+      query GetRolesSidebar {
         myRoles
       }
     `

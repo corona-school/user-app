@@ -34,7 +34,7 @@ import { useNavigate } from 'react-router-dom'
 import AlertMessage from '../../widgets/AlertMessage'
 import { useUserType } from '../../hooks/useApollo'
 
-const queryPupil = `query {
+const queryPupil = gql`query GetPupilSubjects {
   me {
     pupil {
       subjectsFormatted {
@@ -43,7 +43,7 @@ const queryPupil = `query {
     }
   }
 }`
-const queryStudent = `query {
+const queryStudent = gql`query GetStudentSubjects {
   me {
     student {
       subjectsFormatted {
@@ -56,10 +56,10 @@ const queryStudent = `query {
     }
   }
 }`
-const mutPupil = `mutation updateSubjects($subjects: [SubjectInput!]) {
+const mutPupil = gql`mutation updateSubjectsStudent($subjects: [SubjectInput!]) {
   meUpdate(update: { pupil: { subjects: $subjects } })
 }`
-const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
+const mutStudent = gql`mutation updateSubjectsPupil($subjects: [SubjectInput!]) {
   meUpdate(update: { student: { subjects: $subjects } })
 }`
 
@@ -82,17 +82,13 @@ const ChangeSettingSubject: React.FC<Props> = () => {
   ])
 
   const { data, loading } = useQuery(
-    gql`
-      ${userType === 'student' ? queryStudent : queryPupil}
-    `,
+    userType === 'student' ? queryStudent : queryPupil,
     {
       fetchPolicy: 'no-cache'
     }
   )
 
-  const [updateSubjects, _updateSubjects] = useMutation(gql`
-    ${userType === 'student' ? mutStudent : mutPupil}
-  `)
+  const [updateSubjects, _updateSubjects] = useMutation(userType === 'student' ? mutStudent : mutPupil)
 
   /**
    * remove unused / unwanted data

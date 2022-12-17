@@ -56,12 +56,12 @@ export default function Login() {
   )
 
   const [resetPW, _resetPW] = useMutation(gql`
-  mutation ($email: String!) {
+  mutation PasswordReset($email: String!) {
     tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
   }
 `)
   const [sendToken, _sendToken] = useMutation(gql`
-  mutation ($email: String!) {
+  mutation Authenticate($email: String!) {
     tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
   }
 `)

@@ -178,7 +178,7 @@ const SingleCourse: React.FC = () => {
     }
   )
 
-  const [cancelSubcourse] = useMutation(gql`mutation {
+  const [cancelSubcourse] = useMutation(gql`mutation CancelSubcourse {
     subcourseCancel(subcourseId: ${courseId})
   }`)
 

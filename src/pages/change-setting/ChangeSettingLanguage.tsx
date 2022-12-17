@@ -27,24 +27,24 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-const queryStudent = `query {
+const queryStudent = gql`query GetStudentLanguages {
   me {
     student {
       languages
     }
   }
 }`
-const queryPupil = `query {
+const queryPupil = gql`query GetPupilLanguages {
   me {
     pupil {
       languages
     }
   }
 }`
-const mutStudent = `mutation updateLanguage($languages: [StudentLanguage!]) {
+const mutStudent = gql`mutation updateLanguageStudent($languages: [StudentLanguage!]) {
   meUpdate(update: { student: { languages: $languages } })
 }`
-const mutPupil = `mutation updateLanguage($languages: [Language!]) {
+const mutPupil = gql`mutation updateLanguagePupil($languages: [Language!]) {
   meUpdate(update: { pupil: { languages: $languages } })
 }`
 
@@ -62,17 +62,13 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const { data, loading } = useQuery(
-    gql`
-      ${userType === 'student' ? queryStudent : queryPupil}
-    `,
+    userType === 'student' ? queryStudent : queryPupil,
     {
       fetchPolicy: 'no-cache'
     }
   )
 
-  const [updateLanguage, _updateLanguage] = useMutation(gql`
-    ${userType === 'student' ? mutStudent : mutPupil}
-  `)
+  const [updateLanguage, _updateLanguage] = useMutation(userType === 'student' ? mutStudent : mutPupil)
 
   useEffect(() => {
     if (

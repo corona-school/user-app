@@ -40,7 +40,7 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
   })
 
   const [sendVerification, _sendVerification] = useMutation(gql`
-    mutation ($email: String!) {
+    mutation RequestVerifyEmail($email: String!) {
       tokenRequest(email: $email, action: "user-verify-email", redirectTo: "${REDIRECT_OPTIN}")
     }
   `)

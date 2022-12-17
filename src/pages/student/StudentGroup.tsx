@@ -26,7 +26,7 @@ import CSSWrapper from '../../components/CSSWrapper'
 import { CreateCourseError } from '../CreateCourse'
 
 const query = gql`
-  query {
+  query StudentCourseOverview {
     me {
       student {
         canCreateCourse {

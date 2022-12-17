@@ -32,7 +32,7 @@ import OpenMatchRequest from '../../widgets/OpenMatchRequest'
 
 type Props = {}
 const query = gql`
-  query {
+  query MatchingStudentOverview {
     me {
       student {
         id
@@ -93,7 +93,7 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [dissolveMatch, { data: dissolveData }] = useMutation(
     gql`
-      mutation ($matchId: Float!, $dissolveReason: Float!) {
+      mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
         matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
       }
     `,
@@ -102,7 +102,7 @@ const MatchingStudent: React.FC<Props> = () => {
 
   const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
     gql`
-      mutation {
+      mutation StudentDeleteMatchRequest {
         studentDeleteMatchRequest
       }
     `,

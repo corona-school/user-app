@@ -42,7 +42,7 @@ const MatchingWizard: React.FC<Props> = () => {
   }, [])
 
   const { data, loading } = useQuery(gql`
-    query {
+    query PupilRequestMatchInfo {
       me {
         pupil {
           id

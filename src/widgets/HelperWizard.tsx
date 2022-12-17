@@ -25,7 +25,7 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { data } = useQuery(gql`
-    query {
+    query GetOnboardingInfos {
       me {
         student {
           firstMatchRequest

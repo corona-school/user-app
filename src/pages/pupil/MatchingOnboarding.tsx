@@ -19,7 +19,7 @@ type Props = {
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
   const { data } = useQuery(gql`
-    query {
+    query PupilMatchOnboarding {
       me {
         pupil {
           id

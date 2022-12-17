@@ -47,7 +47,7 @@ const Settings: React.FC = () => {
   })
 
   const { data, loading } = useQuery(gql`
-    query {
+    query GetFirstname {
       me {
         firstname
       }

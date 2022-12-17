@@ -24,7 +24,7 @@ import IconTagList from '../../widgets/IconTagList'
 import ProfileSettingItem from '../../widgets/ProfileSettingItem'
 import ProfileSettingRow from '../../widgets/ProfileSettingRow'
 
-const queryStudent = `query {
+const queryStudent = gql`query GetStudentSchool {
   me {
     student {
       schooltype
@@ -32,7 +32,7 @@ const queryStudent = `query {
     }
   }
 }`
-const queryPupil = `query {
+const queryPupil = gql`query GetPupilSchool {
   me {
     pupil {
       schooltype
@@ -40,10 +40,10 @@ const queryPupil = `query {
     }
   }
 }`
-const mutStudent = `mutation updateSchoolGrade($grade: Int!) {
+const mutStudent = gql`mutation updateSchoolGradeStudent($grade: Int!) {
   meUpdate(update: { student: { gradeAsInt: $grade } })
 }`
-const mutPupil = `mutation updateSchoolGrade($grade: Int!) {
+const mutPupil = gql`mutation updateSchoolGradePupil($grade: Int!) {
   meUpdate(update: { pupil: { gradeAsInt: $grade } })
 }`
 
@@ -62,17 +62,13 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const { data, loading } = useQuery(
-    gql`
-      ${state?.userType === 'student' ? queryStudent : queryPupil}
-    `,
+    state?.userType === 'student' ? queryStudent : queryPupil,
     {
       fetchPolicy: 'no-cache'
     }
   )
 
-  const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
-    ${state?.userType === 'student' ? mutStudent : mutPupil}
-  `)
+  const [updateSchoolGrade, _updateSchoolGrade] = useMutation(state?.userType === 'student' ? mutStudent : mutPupil)
 
   const schoolGrades = useMemo(() => {
     return new Array(13).fill(0).map((_, i) => i + 1)

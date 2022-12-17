@@ -33,7 +33,7 @@ import useLernfair from '../../hooks/useLernfair'
 type Props = {}
 
 const query = gql`
-  query {
+  query PupilProfile {
     me {
       firstname
       lastname

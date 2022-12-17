@@ -46,11 +46,8 @@ import Card from '../../components/Card'
 
 type Props = {}
 
-// pupil {
-//   firstname
-// }
 const query = gql`
-  query {
+  query StudentProfile {
     me {
       firstname
       lastname

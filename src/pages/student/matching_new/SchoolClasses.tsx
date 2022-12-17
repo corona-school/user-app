@@ -41,7 +41,7 @@ const SchoolClasses: React.FC<Props> = () => {
   `)
 
   const [createMatchRequest] = useMutation(gql`
-    mutation {
+    mutation StudentCreateMatchRequest {
       studentCreateMatchRequest
     }
   `)

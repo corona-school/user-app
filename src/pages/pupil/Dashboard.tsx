@@ -41,7 +41,7 @@ import LearningPartner from '../../widgets/LearningPartner'
 type Props = {}
 
 const query = gql`
-  query {
+  query PupilDashboard {
     me {
       firstname
       pupil {

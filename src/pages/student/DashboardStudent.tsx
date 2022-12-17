@@ -40,7 +40,7 @@ import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal'
 type Props = {}
 
 const query = gql`
-  query {
+  query StudentDashboard {
     me {
       firstname
       student {

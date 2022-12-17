@@ -16,7 +16,7 @@ const LoginToken: React.FC<Props> = () => {
   const redirectTo = searchParams?.get('redirectTo')
 
   const [loginToken, loginTokenResult] = useMutation(gql`
-    mutation ($token: String!) {
+    mutation LoginToken2($token: String!) {
       loginToken(token: $token)
     }
   `)

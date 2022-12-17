@@ -34,7 +34,7 @@ const Tags: React.FC<Props> = ({
   const { space } = useTheme()
 
   const { data, loading: isLoading } = useQuery(gql`
-    query {
+    query GetCourseTags {
       courseTags(category: "revision") {
         id
         name
