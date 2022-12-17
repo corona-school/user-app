@@ -1,12 +1,12 @@
-import { Flex, Spinner } from 'native-base'
+import { Flex, Spinner } from 'native-base';
 
-type Props = {}
+type Props = {};
 
 const CenterLoadingSpinner: React.FC<Props> = () => {
-  return (
-    <Flex flex="1" h="100%" justifyContent="center" alignItems="center">
-      <Spinner />
-    </Flex>
-  )
-}
-export default CenterLoadingSpinner
+    return (
+        <Flex flex="1" h="100%" justifyContent="center" alignItems="center">
+            <Spinner />
+        </Flex>
+    );
+};
+export default CenterLoadingSpinner;
