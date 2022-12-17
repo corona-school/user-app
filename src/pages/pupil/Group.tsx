@@ -76,28 +76,28 @@ const PupilGroup: React.FC<Props> = () => {
     const { data, loading } = useQuery(query);
 
     const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(gql`
-    GetAllSubcourses query ($name: String) {
-      subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
-        isParticipant
-        maxParticipants
-        participantsCount
-        id
-        firstLecture {
-          start
+        query GetAllSubcourses($name: String) {
+            subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+                isParticipant
+                maxParticipants
+                participantsCount
+                id
+                firstLecture {
+                    start
+                }
+                lectures {
+                    start
+                }
+                course {
+                    name
+                    image
+                    tags {
+                        name
+                    }
+                }
+            }
         }
-        lectures {
-          start
-        }
-        course {
-          name
-          image
-          tags {
-            name
-          }
-        }
-      }
-    }
-  `);
+    `);
 
     useEffect(() => {
         trackPageView({
