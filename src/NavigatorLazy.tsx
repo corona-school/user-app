@@ -36,7 +36,6 @@ import ProfileStudent from './pages/student/ProfileStudent';
 import RequestCertificate from './pages/RequestCertificate';
 import PupilGroup from './pages/pupil/Group';
 import StudentGroup from './pages/student/StudentGroup';
-import StudentGroupSupport from './pages/student/StudentGroupSupport';
 import CourseArchive from './pages/CourseArchive';
 import LearningPartnerArchive from './pages/LearningPartnerArchive';
 import UserProfile from './pages/UserProfile';
@@ -248,7 +247,7 @@ export default function NavigatorLazy() {
                 path="/group/offer"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<StudentGroupSupport />} />
+                        <PupilGroup />
                     </RequireAuth>
                 }
             ></Route>

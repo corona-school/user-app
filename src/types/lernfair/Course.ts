@@ -11,7 +11,7 @@ export type LFCourse = {
     allowContact?: boolean;
 };
 export interface LFSubCourse {
-    id?: string;
+    id?: number;
     lectures: LFLecture[];
     image?: string;
     isParticipant?: boolean;
