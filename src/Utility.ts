@@ -20,10 +20,17 @@ export const secondsToTimerString = (seconds: number) => {
 export const toTimerString = (refDate: number, compareDate: number) => {
     const diff = Math.abs(compareDate / 1000 - refDate / 1000);
 
+    const days = Math.floor(diff / (60 * 60 * 24));
     const hrs = Math.floor((diff / (60 * 60)) % 24);
     const mins = Math.floor((diff / 60) % 60);
 
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    if (days > 7) return `In einigen Wochen`;
+
+    if (days > 1) return `In ${days} Tagen`;
+
+    if (days === 1) return `Morgen`;
+
+    return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
 
 export const createToken = () => {
