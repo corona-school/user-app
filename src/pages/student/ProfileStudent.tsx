@@ -309,7 +309,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 </Row>
                             </ProfileSettingItem>
                         </ProfileSettingRow>
-                        <ProfileSettingRow title={'Meine Bescheinigungen'}>
+                        {/* <ProfileSettingRow title={'Meine Bescheinigungen'}>
                             <VStack space={space['1']}>
                                 <CertificateOverviewRow
                                     title="Gruppenkurse"
@@ -342,7 +342,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                     }
                                 />
                             </VStack>
-                        </ProfileSettingRow>
+                        </ProfileSettingRow> */}
                     </VStack>
                 </VStack>
             </WithNavigation>
