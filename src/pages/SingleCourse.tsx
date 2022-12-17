@@ -22,7 +22,7 @@ import SetMeetingLinkModal from '../modals/SetMeetingLinkModal';
 import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal';
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import { Participant } from '../gql/graphql';
+import { Participant, Subcourse } from '../gql/graphql';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -85,62 +85,7 @@ function ParticipantRow({ participant }: { participant: { firstname: string; las
         </Modal.Body>
     </Modal.Content>
 </Modal>
-<Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>
-                Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.
-            </Text>
-            <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
-                <Column>
-                    <Button
-                        height="100%"
-                        colorScheme="blueGray"
-                        variant="ghost"
-                        onPress={() => {
-                            setSignedOutSureModal(false);
-                        }}
-                    >
-                        Abbrechen
-                    </Button>
-                </Column>
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setSignedOutSureModal(false);
-                            leaveSubcourse({ variables: { subcourseId } });
-                            setSignedOutModal(false);
-                        }}
-                    >
-                        Vom Kurs abmelden
-                    </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
-<Modal isOpen={isSignedOutModal} onClose={() => setSignedOutModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs abgemeldet.</Text>
-            <Row justifyContent="center">
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setSignedOutModal(false);
-                        }}
-                    >
-                        Fenster schließen
-                    </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
+
 <Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
     <Modal.Content>
         <Modal.CloseButton />
@@ -415,9 +360,116 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     );
 }
 
-/* function PupilActions() {
+function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const { t } = useTranslation();
+
     const [isSignedOutSureModal, setSignedOutSureModal] = useState(false);
     const [isSignedOutModal, setSignedOutModal] = useState(false);
+
+    const [leaveSubcourse, { loading }] = useMutation(
+        gql(`
+            mutation LeaveSubcourse($subcourseId: Float!) {
+                subcourseLeave(subcourseId: $subcourseId)
+            }
+        `),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
+    const { space, sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const buttonWrap = useBreakpointValue({
+        base: 'column',
+        lg: 'row',
+    });
+
+    return (
+        <>
+            <VStack space={space['0.5']}>
+                <Button
+                    onPress={() => {
+                        setSignedOutSureModal(true);
+                    }}
+                    width={ButtonContainer}
+                    marginBottom={space['0.5']}
+                    isDisabled={loading}
+                >
+                    Kurs verlassen
+                </Button>
+
+                <AlertMessage content={t('single.buttoninfo.successMember')} />
+            </VStack>
+            <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Kurseinformationen</Modal.Header>
+                    <Modal.Body>
+                        <Text marginBottom={space['1']}>
+                            Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.
+                        </Text>
+                        <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
+                            <Column>
+                                <Button
+                                    height="100%"
+                                    colorScheme="blueGray"
+                                    variant="ghost"
+                                    onPress={() => {
+                                        setSignedOutSureModal(false);
+                                    }}
+                                >
+                                    Abbrechen
+                                </Button>
+                            </Column>
+                            <Column>
+                                <Button
+                                    onPress={() => {
+                                        setSignedOutSureModal(false);
+                                        leaveSubcourse();
+                                        setSignedOutModal(true);
+                                    }}
+                                >
+                                    Vom Kurs abmelden
+                                </Button>
+                            </Column>
+                        </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+            <Modal
+                isOpen={isSignedOutModal}
+                onClose={() => {
+                    setSignedOutModal(false);
+                    refresh();
+                }}
+            >
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Kurseinformationen</Modal.Header>
+                    <Modal.Body>
+                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs abgemeldet.</Text>
+                        <Row justifyContent="center">
+                            <Column>
+                                <Button
+                                    onPress={() => {
+                                        setSignedOutModal(false);
+                                        refresh();
+                                    }}
+                                >
+                                    Fenster schließen
+                                </Button>
+                            </Column>
+                        </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+        </>
+    );
+}
+
+/* function PupilActions() {
     const [isOnWaitingListModal, setOnWaitingListModal] = useState(false);
     const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false);
 
@@ -436,16 +488,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
             }
         );
     
-        const [leaveSubcourse] = useMutation(
-            gql(`
-                mutation ($courseId: Float!) {
-                    subcourseLeave(subcourseId: $courseId)
-                }
-            `),
-            {
-                refetchQueries: [query, participantQuery],
-            }
-        );
+        
         const [joinWaitingList, _joinWaitingList] = useMutation(
             gql(`
                 mutation ($courseId: Float!) {
@@ -532,20 +575,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
                                 </VStack>
                             )}
                             {course?.isParticipant && (
-                                <VStack space={space['0.5']}>
-                                    <Button
-                                        onPress={() => {
-                                            setSignedOutSureModal(true);
-                                        }}
-                                        width={ButtonContainer}
-                                        marginBottom={space['0.5']}
-                                        isDisabled={loading}
-                                    >
-                                        Kurs verlassen
-                                    </Button>
 
-                                    <AlertMessage content={t('single.buttoninfo.successMember')} />
-                                </VStack>
                             )}
                         </Box>
         </>;
@@ -554,6 +584,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 /* ---------------- Course UI ---------------------- */
 
 const SingleCourse: React.FC = () => {
+    const userType = useUserType();
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
@@ -561,7 +592,7 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    const { data, loading } = useQuery(
+    const { data, loading, refetch } = useQuery(
         gql(`query GetSingleSubcourse($subcourseId: Int!) {
         subcourse(subcourseId: $subcourseId){
             id
@@ -714,10 +745,10 @@ const SingleCourse: React.FC = () => {
                             <Heading fontSize="md">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(', ')}</Heading>
                         )}
                     </Row>
-
                     <Box marginBottom={space['1']}>
                         {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
                     </Box>
+                    <>{subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}</>
                     <Tabs tabs={tabs} />
                 </Box>
             </WithNavigation>
