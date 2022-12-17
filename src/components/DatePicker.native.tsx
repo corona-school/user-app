@@ -1,4 +1,4 @@
 const DatePicker: React.FC = () => {
-  return <></>
-}
-export default DatePicker
+    return <></>;
+};
+export default DatePicker;

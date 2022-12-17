@@ -1,36 +1,24 @@
-import {
-  createContext,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState
-} from 'react'
+import { createContext, ReactNode, SetStateAction, useContext, useState } from 'react';
 type LernFair = {
-  rootPath?: string
-  setRootPath?: (path: string) => SetStateAction<string>
-}
+    rootPath?: string;
+    setRootPath?: (path: string) => SetStateAction<string>;
+};
 
-const LernfairContext = createContext<LernFair>({})
+const LernfairContext = createContext<LernFair>({});
 
-export const LernfairProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
-  const lernfair = useLernfairProvider()
-  return (
-    <LernfairContext.Provider value={lernfair}>
-      {children}
-    </LernfairContext.Provider>
-  )
-}
+export const LernfairProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const lernfair = useLernfairProvider();
+    return <LernfairContext.Provider value={lernfair}>{children}</LernfairContext.Provider>;
+};
 
 const useLernfairProvider = () => {
-  const [rootPath, setRootPath] = useState<string>('dashboard')
+    const [rootPath, setRootPath] = useState<string>('dashboard');
 
-  return { rootPath, setRootPath } as LernFair
-}
+    return { rootPath, setRootPath } as LernFair;
+};
 
 const useLernfair = () => {
-  return useContext(LernfairContext)
-}
+    return useContext(LernfairContext);
+};
 
-export default useLernfair
+export default useLernfair;

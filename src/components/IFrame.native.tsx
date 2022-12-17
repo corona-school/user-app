@@ -1,12 +1,12 @@
-import { View, Text } from 'native-base'
+import { View, Text } from 'native-base';
 
-type Props = {}
+type Props = {};
 
 const IFrame: React.FC<Props> = () => {
-  return (
-    <View>
-      <Text>IFrame.native</Text>
-    </View>
-  )
-}
-export default IFrame
+    return (
+        <View>
+            <Text>IFrame.native</Text>
+        </View>
+    );
+};
+export default IFrame;
