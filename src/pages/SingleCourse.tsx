@@ -22,7 +22,7 @@ import SetMeetingLinkModal from '../modals/SetMeetingLinkModal';
 import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal';
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import { Participant, Subcourse } from '../gql/graphql';
+import { Course, Participant, Subcourse } from '../gql/graphql';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -92,7 +92,7 @@ function JoinMeetingAction({
     return (
         <>
             <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
-                <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                <Tooltip isDisabled={disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
                     <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading}>
                         Videochat beitreten
                     </Button>
@@ -314,6 +314,65 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                 onSend={onSendMessage}
                 isDisabled={_sendMessage.loading}
             />
+        </>
+    );
+}
+
+/* Submits the course for review courseState.created -> submitted, 
+   a Screener will review the course and then approve it courseState.allowed 
+   
+   Note that this is executed on the Course, not the Subcourse! */
+function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'> & { course?: Pick<Course, 'id'> | null }; refresh: () => void }) {
+    const toast = useToast();
+
+    const [submit, { loading }] = useMutation(
+        gql(`
+        mutation CourseSubmit($courseId: Float!) { 
+            courseSubmit(courseId: $courseId)
+        }
+    `),
+        { variables: { courseId: subcourse!.course!.id } }
+    );
+
+    async function doSubmit() {
+        await submit();
+        toast.show({ description: 'Kurs zur Prüfung freigegeben' });
+        refresh();
+    }
+
+    return (
+        <>
+            <Button onPress={doSubmit} disabled={loading}>
+                Zur Prüfung freigeben
+            </Button>
+        </>
+    );
+}
+
+/* Publishes the Subourse - It will then be visible to pupils which can then join */
+function StudentPublishAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const toast = useToast();
+
+    const [publish, { loading }] = useMutation(
+        gql(`
+        mutation SubcoursePublish($subcourseId: Float!) {
+            subcoursePublish(subcourseId: $subcourseId)
+        }
+    `),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
+    async function doPublish() {
+        await publish();
+        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen' });
+        refresh();
+    }
+
+    return (
+        <>
+            <Button onPress={doPublish} disabled={loading}>
+                Kurs veröffentlichen
+            </Button>
         </>
     );
 }
@@ -727,6 +786,8 @@ const SingleCourse: React.FC = () => {
                 lastname
             }
             course {
+                id
+                courseState
                 name
                 image
                 category
@@ -873,7 +934,13 @@ const SingleCourse: React.FC = () => {
                         {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
                     </Box>
                     <>
-                        {subcourse && (subcourse.isInstructor || subcourse.isParticipant) && <JoinMeetingAction subcourse={subcourse} refresh={refetch} />}
+                        {subcourse && course!.courseState === 'allowed' && !subcourse.published && (
+                            <StudentPublishAction subcourse={subcourse} refresh={refetch} />
+                        )}
+                        {subcourse && course!.courseState === 'created' && <StudentSubmitAction subcourse={subcourse} refresh={refetch} />}
+                        {subcourse && subcourse.published && (subcourse.isInstructor || subcourse.isParticipant) && (
+                            <JoinMeetingAction subcourse={subcourse} refresh={refetch} />
+                        )}
 
                         {subcourse && userType === 'student' && subcourse.isInstructor && <StudentEditCourseAction subcourse={subcourse} />}
                         {subcourse && userType === 'student' && subcourse.isInstructor && subcourse.published && (
