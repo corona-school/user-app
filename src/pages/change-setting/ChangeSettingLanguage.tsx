@@ -1,216 +1,178 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import {
-  Button,
-  Text,
-  Heading,
-  useTheme,
-  VStack,
-  Row,
-  Column,
-  Input,
-  FormControl,
-  Stack,
-  useBreakpointValue
-} from 'native-base'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { TouchableOpacity } from 'react-native'
-import { useNavigate } from 'react-router-dom'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
-import WithNavigation from '../../components/WithNavigation'
-import { useUserType } from '../../hooks/useApollo'
-import useLernfair from '../../hooks/useLernfair'
-import { languages } from '../../types/lernfair/Language'
-import AlertMessage from '../../widgets/AlertMessage'
-import IconTagList from '../../widgets/IconTagList'
-import ProfileSettingItem from '../../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Button, Text, Heading, useTheme, VStack, Row, Column, Input, FormControl, Stack, useBreakpointValue } from 'native-base';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity } from 'react-native';
+import { useNavigate } from 'react-router-dom';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import WithNavigation from '../../components/WithNavigation';
+import { useUserType } from '../../hooks/useApollo';
+import useLernfair from '../../hooks/useLernfair';
+import { languages } from '../../types/lernfair/Language';
+import AlertMessage from '../../widgets/AlertMessage';
+import IconTagList from '../../widgets/IconTagList';
+import ProfileSettingItem from '../../widgets/ProfileSettingItem';
+import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
-const queryStudent = gql`query GetStudentLanguages {
-  me {
-    student {
-      languages
+const queryStudent = gql`
+    query GetStudentLanguages {
+        me {
+            student {
+                languages
+            }
+        }
     }
-  }
-}`
-const queryPupil = gql`query GetPupilLanguages {
-  me {
-    pupil {
-      languages
+`;
+const queryPupil = gql`
+    query GetPupilLanguages {
+        me {
+            pupil {
+                languages
+            }
+        }
     }
-  }
-}`
-const mutStudent = gql`mutation updateLanguageStudent($languages: [StudentLanguage!]) {
-  meUpdate(update: { student: { languages: $languages } })
-}`
-const mutPupil = gql`mutation updateLanguagePupil($languages: [Language!]) {
-  meUpdate(update: { pupil: { languages: $languages } })
-}`
+`;
+const mutStudent = gql`
+    mutation updateLanguageStudent($languages: [StudentLanguage!]) {
+        meUpdate(update: { student: { languages: $languages } })
+    }
+`;
+const mutPupil = gql`
+    mutation updateLanguagePupil($languages: [Language!]) {
+        meUpdate(update: { pupil: { languages: $languages } })
+    }
+`;
 
-type Props = {}
+type Props = {};
 
 const ChangeSettingLanguage: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
-  const { t } = useTranslation()
+    const { space, sizes } = useTheme();
+    const { t } = useTranslation();
 
-  const [selections, setSelections] = useState<string[]>([])
+    const [selections, setSelections] = useState<string[]>([]);
 
-  const [showError, setShowError] = useState<boolean>()
-  const userType = useUserType()
+    const [showError, setShowError] = useState<boolean>();
+    const userType = useUserType();
 
-  const navigate = useNavigate()
+    const navigate = useNavigate();
 
-  const { data, loading } = useQuery(
-    userType === 'student' ? queryStudent : queryPupil,
-    {
-      fetchPolicy: 'no-cache'
-    }
-  )
+    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+        fetchPolicy: 'no-cache',
+    });
 
-  const [updateLanguage, _updateLanguage] = useMutation(userType === 'student' ? mutStudent : mutPupil)
+    const [updateLanguage, _updateLanguage] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
-  useEffect(() => {
-    if (
-      data?.me[userType || 'pupil'] &&
-      data?.me[userType || 'pupil'].languages
-    ) {
-      setSelections(data?.me[userType || 'pupil'].languages)
-    }
-  }, [data?.me, userType])
+    useEffect(() => {
+        if (data?.me[userType || 'pupil'] && data?.me[userType || 'pupil'].languages) {
+            setSelections(data?.me[userType || 'pupil'].languages);
+        }
+    }, [data?.me, userType]);
 
-  useEffect(() => {
-    if (_updateLanguage.data && !_updateLanguage.error) {
-      // setUserSettingChanged(true)
-      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
-    }
-  }, [_updateLanguage.data, _updateLanguage.error, navigate])
+    useEffect(() => {
+        if (_updateLanguage.data && !_updateLanguage.error) {
+            // setUserSettingChanged(true)
+            navigate('/profile', { state: { showSuccessfulChangeAlert: true } });
+        }
+    }, [_updateLanguage.data, _updateLanguage.error, navigate]);
 
-  useEffect(() => {
-    if (_updateLanguage.error) {
-      setShowError(true)
-    }
-  }, [_updateLanguage.error])
+    useEffect(() => {
+        if (_updateLanguage.error) {
+            setShowError(true);
+        }
+    }, [_updateLanguage.error]);
 
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
 
-  const ButtonContainer = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
 
-  const { trackPageView } = useMatomo()
+    const { trackPageView } = useMatomo();
 
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Profil Einstellungen – Sprache'
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    useEffect(() => {
+        trackPageView({
+            documentTitle: 'Profil Einstellungen – Sprache',
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  return (
-    <WithNavigation
-      headerTitle={t('profile.FluentLanguagenalData.single.header')}
-      showBack
-      isLoading={loading}>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
-        <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
-          <Row flexWrap="wrap" width="100%">
-            {selections.map((language, index) => (
-              <Column
-                marginRight={3}
-                marginBottom={3}
-                key={`selection-${index}`}>
-                <TouchableOpacity
-                  onPress={() =>
-                    setSelections(prev => {
-                      const res = [...prev]
-                      res.splice(index, 1)
-                      return res
-                    })
-                  }>
-                  <Row alignItems="center" justifyContent="center">
-                    <IconTagList
-                      isDisabled
-                      iconPath={`languages/icon_${language.toLowerCase()}.svg`}
-                      text={t(`lernfair.languages.${language.toLowerCase()}`)}
-                    />
-                    <Text color={'danger.500'} fontSize="xl" ml="1" bold>
-                      x
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-              </Column>
-            ))}
-          </Row>
-        </ProfileSettingItem>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        <ProfileSettingRow
-          title={t('profile.FluentLanguagenalData.single.others')}>
-          <ProfileSettingItem
-            border={false}
-            isIcon={false}
-            isHeaderspace={false}>
-            <VStack w="100%">
-              <Row flexWrap="wrap" width="100%">
-                {languages.map(
-                  (subject, index) =>
-                    !selections.find(sel => sel === subject.label) && (
-                      <Column
-                        marginRight={3}
-                        marginBottom={3}
-                        key={`offers-${index}`}>
-                        <IconTagList
-                          initial={false}
-                          iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
-                          text={subject.label}
-                          onPress={() => {
-                            setSelections(prev => [...prev, subject.label])
-                            if (
-                              !selections.find(sel => sel === subject.label)
-                            ) {
-                            }
-                          }}
-                        />
-                      </Column>
-                    )
-                )}
-              </Row>
+    return (
+        <WithNavigation headerTitle={t('profile.FluentLanguagenalData.single.header')} showBack isLoading={loading}>
+            <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
+                <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
+                    <Row flexWrap="wrap" width="100%">
+                        {selections.map((language, index) => (
+                            <Column marginRight={3} marginBottom={3} key={`selection-${index}`}>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        setSelections((prev) => {
+                                            const res = [...prev];
+                                            res.splice(index, 1);
+                                            return res;
+                                        })
+                                    }
+                                >
+                                    <Row alignItems="center" justifyContent="center">
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`languages/icon_${language.toLowerCase()}.svg`}
+                                            text={t(`lernfair.languages.${language.toLowerCase()}`)}
+                                        />
+                                        <Text color={'danger.500'} fontSize="xl" ml="1" bold>
+                                            x
+                                        </Text>
+                                    </Row>
+                                </TouchableOpacity>
+                            </Column>
+                        ))}
+                    </Row>
+                </ProfileSettingItem>
             </VStack>
-          </ProfileSettingItem>
-        </ProfileSettingRow>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        paddingBottom={space['1.5']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        {showError && <AlertMessage content={t('profile.errormessage')} />}
-        <Button
-          width={ButtonContainer}
-          onPress={() => {
-            updateLanguage({ variables: { languages: selections } })
-          }}>
-          {t('profile.FluentLanguagenalData.single.button')}
-        </Button>
-      </VStack>
-    </WithNavigation>
-  )
-}
-export default ChangeSettingLanguage
+            <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <ProfileSettingRow title={t('profile.FluentLanguagenalData.single.others')}>
+                    <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
+                        <VStack w="100%">
+                            <Row flexWrap="wrap" width="100%">
+                                {languages.map(
+                                    (subject, index) =>
+                                        !selections.find((sel) => sel === subject.label) && (
+                                            <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
+                                                <IconTagList
+                                                    initial={false}
+                                                    iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
+                                                    text={subject.label}
+                                                    onPress={() => {
+                                                        setSelections((prev) => [...prev, subject.label]);
+                                                        if (!selections.find((sel) => sel === subject.label)) {
+                                                        }
+                                                    }}
+                                                />
+                                            </Column>
+                                        )
+                                )}
+                            </Row>
+                        </VStack>
+                    </ProfileSettingItem>
+                </ProfileSettingRow>
+            </VStack>
+            <VStack paddingX={space['1.5']} paddingBottom={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                {showError && <AlertMessage content={t('profile.errormessage')} />}
+                <Button
+                    width={ButtonContainer}
+                    onPress={() => {
+                        updateLanguage({ variables: { languages: selections } });
+                    }}
+                >
+                    {t('profile.FluentLanguagenalData.single.button')}
+                </Button>
+            </VStack>
+        </WithNavigation>
+    );
+};
+export default ChangeSettingLanguage;

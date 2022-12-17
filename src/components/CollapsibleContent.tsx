@@ -1,62 +1,33 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Heading,
-  Pressable,
-  Row,
-  useTheme,
-  VStack
-} from 'native-base'
-import { ReactNode, useMemo } from 'react'
+import { ChevronDownIcon, ChevronUpIcon, Heading, Pressable, Row, useTheme, VStack } from 'native-base';
+import { ReactNode, useMemo } from 'react';
 
 type Props = {
-  isOpen?: boolean
-  children: ReactNode | ReactNode[]
-  header?: ReactNode | ReactNode[]
-  onPressHeader?: () => any
-  textColor?: string
-}
+    isOpen?: boolean;
+    children: ReactNode | ReactNode[];
+    header?: ReactNode | ReactNode[];
+    onPressHeader?: () => any;
+    textColor?: string;
+};
 
-const CollapsibleContent: React.FC<Props> = ({
-  children,
-  isOpen,
-  textColor,
-  header,
-  onPressHeader
-}) => {
-  const { space, colors } = useTheme()
+const CollapsibleContent: React.FC<Props> = ({ children, isOpen, textColor, header, onPressHeader }) => {
+    const { space, colors } = useTheme();
 
-  const iconColor = useMemo(
-    () => (isOpen ? 'lightText' : 'primary.900'),
-    [isOpen]
-  )
+    const iconColor = useMemo(() => (isOpen ? 'lightText' : 'primary.900'), [isOpen]);
 
-  return (
-    <VStack>
-      {header || (
-        <Pressable onPress={onPressHeader}>
-          <Row
-            alignItems="center"
-            borderBottomWidth="1"
-            borderColor={colors['primary']['500']}>
-            <Heading
-              fontSize="md"
-              pt={space['1']}
-              pb={space['0.5']}
-              flex="1"
-              color={textColor}>
-              Weitere Details
-            </Heading>
-            {isOpen ? (
-              <ChevronUpIcon color={iconColor} />
-            ) : (
-              <ChevronDownIcon color={iconColor} />
+    return (
+        <VStack>
+            {header || (
+                <Pressable onPress={onPressHeader}>
+                    <Row alignItems="center" borderBottomWidth="1" borderColor={colors['primary']['500']}>
+                        <Heading fontSize="md" pt={space['1']} pb={space['0.5']} flex="1" color={textColor}>
+                            Weitere Details
+                        </Heading>
+                        {isOpen ? <ChevronUpIcon color={iconColor} /> : <ChevronDownIcon color={iconColor} />}
+                    </Row>
+                </Pressable>
             )}
-          </Row>
-        </Pressable>
-      )}
-      {isOpen && children}
-    </VStack>
-  )
-}
-export default CollapsibleContent
+            {isOpen && children}
+        </VStack>
+    );
+};
+export default CollapsibleContent;

@@ -1,5 +1,5 @@
-import { View } from 'native-base'
+import { View } from 'native-base';
 
 export default function Navigator() {
-  return <View></View>
+    return <View></View>;
 }
