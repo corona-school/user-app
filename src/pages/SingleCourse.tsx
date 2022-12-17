@@ -43,134 +43,65 @@ function ParticipantRow({ participant }: { participant: { firstname: string; las
     );
 }
 
-/* function JoinMeetingAction() {
-        const disableMeetingButton: boolean = useMemo(() => {
-        return DateTime.fromISO(course?.nextLecture?.start).diffNow('minutes').minutes > 60;
-    }, [course]);
+function JoinMeetingAction({
+    subcourse,
+    refresh,
+}: {
+    subcourse: Pick<Subcourse, 'id'> & { nextLecture?: { start: string; duration: number } | null };
+    refresh: () => void;
+}) {
+    const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
+
+    const [joinMeeting, _joinMeeting] = useMutation(
+        gql(`mutation SubcourseJoinMeeting($subcourseId: Float!) {
+        subcourseJoinMeeting(subcourseId: $subcourseId)
+      }`),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
+    const disableMeetingButton: boolean = useMemo(() => {
+        return !subcourse.nextLecture || DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes > 60;
+    }, [subcourse]);
+
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
-    const [showMeetingButton, setShowMeetingButton] = useState<boolean>(false);
 
     const getMeetingLink = useCallback(async () => {
         try {
-            const res = await joinMeeting({ variables: { subcourseId } });
+            const res = await joinMeeting({ variables: { subcourseId: subcourse.id } });
 
-            if (res.data.subcourseJoinMeeting) {
-                window.open(res.data.subcourseJoinMeeting, '_blank');
+            if (res.data?.subcourseJoinMeeting) {
+                window.open(res.data!.subcourseJoinMeeting, '_blank');
             } else {
                 setShowMeetingNotStarted(true);
             }
         } catch (e) {
             setShowMeetingNotStarted(true);
         }
-    }, [courseId, joinMeeting]);
+    }, [subcourse, joinMeeting]);
 
-    return <>
-    <Modal isOpen={isSignedInModal} onClose={() => setSignedInModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs angemeldet.</Text>
-            <Row justifyContent="center">
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setSignedInModal(false);
-                        }}
-                    >
-                        Fenster schließen
+    return (
+        <>
+            <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
+                <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                    <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading}>
+                        Videochat beitreten
                     </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
-
-<Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs abgemeldet.</Text>
-            <Row justifyContent="center">
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setOnWaitingListModal(false);
-                        }}
-                    >
-                        Fenster schließen
-                    </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
-<Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>Du hast dich erfolgreich auf die Warteliste angemeldet.</Text>
-            <Row justifyContent="center">
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setOnWaitingListModal(false);
-                        }}
-                    >
-                        Fenster schließen
-                    </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
-<Modal isOpen={isLeaveWaitingListModal} onClose={() => setLeaveWaitingListModal(false)}>
-    <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Kurseinformationen</Modal.Header>
-        <Modal.Body>
-            <Text marginBottom={space['1']}>Du hast die Warteliste erfolgreich verlassen.</Text>
-            <Row justifyContent="center">
-                <Column>
-                    <Button
-                        onPress={() => {
-                            setLeaveWaitingListModal(false);
-                        }}
-                    >
-                        Fenster schließen
-                    </Button>
-                </Column>
-            </Row>
-        </Modal.Body>
-    </Modal.Content>
-</Modal>
-                        {userType === 'pupil' && course?.isParticipant && (
-                        <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
-                            <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                                <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={!showMeetingButton || _joinMeeting.loading}>
-                                    Videochat beitreten
-                                </Button>
-                            </Tooltip>
-                            {showMeetingNotStarted && <AlertMessage content="Der Videochat wurde noch nicht gestartet." />}
-                        </VStack>
-                    )}
-                    {userType === 'student' && course?.isInstructor && (
-                        <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
-                            <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.student')}>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => setShowMeetingUrlModal(true)}
-                                    isDisabled={disableMeetingButton || _setMeetingUrl.loading}
-                                >
-                                    Videochat starten
-                                </Button>
-                            </Tooltip>
-                        </VStack>
-                    )}
-    </>;
-} */
+                </Tooltip>
+                {showMeetingNotStarted && <AlertMessage content="Der Videochat wurde noch nicht gestartet." />}
+            </VStack>
+        </>
+    );
+}
 
 /* ------------- Student UI Elements ------------------ */
 function Participants({ subcourseId }: { subcourseId: number }) {
@@ -206,124 +137,186 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     );
 }
 
-/* function StudentActions() {
-    const [cancelSubcourse] = useMutation(gql(`mutation CancelSubcourse {
-        subcourseCancel(subcourseId: ${courseId})
-      }`));
+function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const toast = useToast();
+    const { sizes } = useTheme();
 
-const [setMeetingUrl, _setMeetingUrl] = useMutation(gql(`
-mutation setMeetingUrl($subcourseId: Float!, $meetingUrl: String!) {
-    subcourseSetMeetingURL(subcourseId: $subcourseId, meetingURL: $meetingUrl)
-}
-`));
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
 
-const _setMeetingLink = useCallback(
-async (link: string) => {
-    try {
-        const res = await setMeetingUrl({
-            variables: {
-                courseId: courseData.subcourse.id,
-                meetingUrl: link,
-            },
-        });
+    const [showCancelModal, setShowCancelModal] = useState(false);
 
-        setShowMeetingUrlModal(false);
-        if (res.data.subcourseSetMeetingURL && !res.errors) {
-            toast.show({
-                description: t('course.meeting.result.success'),
-            });
-        } else {
-            toast.show({
-                description: t('course.meeting.result.error'),
-            });
-        }
-    } catch (e) {
-        toast.show({
-            description: t('course.meeting.result.error'),
-        });
-    }
-},
-[courseData?.subcourse?.id, setMeetingUrl, t, toast]
-);
-
-const [sendMessage, _sendMessage] = useMutation(
-    gql(`
-        mutation sendMessage($subject: String!, $message: String!, $subcourseId: Int!, $participants: [Int!]!) {
-            subcourseNotifyParticipants(subcourseId: $subcourseId, title: $subject, body: $message, participantIDs: $participants, fileIDs: [])
-        }
-    `)
-);
-
-const onSendMessage = useCallback(
-    async (subject: string, message: string) => {
-        if (subject && message && participants) {
-            const ps = participants.map((p) => p.id);
-
-            try {
-                await sendMessage({
-                    variables: {
-                        subject,
-                        message,
-                        subcourseId,
-                        participants: ps,
-                    },
-                });
-                toast.show({ description: 'Nachricht erfolgreich versendet' });
-                setShowMessageModal(false);
-            } catch (e) {
-                toast.show({
-                    description: 'Deine Nachricht konnte nicht versendet werden',
-                });
-            }
-        }
-    },
-    [courseId, participants, sendMessage, toast]
-);
+    const [cancelSubcourse] = useMutation(
+        gql(`mutation CancelSubcourse($subcourseId: Float!) {
+        subcourseCancel(subcourseId: $subcourseId)
+      }`),
+        { variables: { subcourseId: subcourse.id } }
+    );
 
     const cancelCourse = useCallback(async () => {
         try {
             await cancelSubcourse();
             toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt' });
+            refresh();
         } catch (e) {
             toast.show({ description: 'Der Kurs konnte nicht abgesagt werden' });
         }
         setShowCancelModal(false);
     }, [cancelSubcourse, toast]);
 
-      return 
-      <VStack marginBottom={space['1.5']} space={space['1']}>
-      <Button onPress={() => setShowMessageModal(true)} width={ButtonContainer} variant="outline">
-          Teilnehmer:innen kontaktieren
-      </Button>
-      <Button
-          onPress={() => {
-              navigate('/edit-course', {
-                  state: { courseId: courseData.subcourse.id },
-              });
-          }}
-          width={ButtonContainer}
-          variant="outline"
-      >
-          Kurs editieren
-      </Button>
-      <Button onPress={() => setShowCancelModal(true)} width={ButtonContainer} variant="outline">
-          Kurs absagen
-      </Button>
-                  <SetMeetingLinkModal
+    return (
+        <>
+            <Button onPress={() => setShowCancelModal(true)} width={ButtonContainer} variant="outline">
+                Kurs absagen
+            </Button>
+            <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
+        </>
+    );
+}
+
+function StudentEditCourseAction({ subcourse }: { subcourse: Pick<Subcourse, 'id'> }) {
+    const navigate = useNavigate();
+    const { sizes } = useTheme();
+
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    return (
+        <>
+            <Button
+                onPress={() => {
+                    navigate('/edit-course', {
+                        state: { courseId: subcourse.id },
+                    });
+                }}
+                width={ButtonContainer}
+                variant="outline"
+            >
+                Kurs editieren
+            </Button>
+        </>
+    );
+}
+
+function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const [showMeetingUrlModal, setShowMeetingUrlModal] = useState(false);
+
+    const toast = useToast();
+    const { t } = useTranslation();
+
+    const [setMeetingUrl, { data, loading }] = useMutation(
+        gql(`
+    mutation setMeetingUrl($subcourseId: Float!, $meetingUrl: String!) {
+        subcourseSetMeetingURL(subcourseId: $subcourseId, meetingURL: $meetingUrl)
+    }
+    `)
+    );
+
+    const _setMeetingLink = useCallback(
+        async (link: string) => {
+            try {
+                const res = await setMeetingUrl({
+                    variables: {
+                        subcourseId: subcourse.id,
+                        meetingUrl: link,
+                    },
+                });
+
+                setShowMeetingUrlModal(false);
+                if (res.data?.subcourseSetMeetingURL) {
+                    toast.show({
+                        description: t('course.meeting.result.success'),
+                    });
+                } else {
+                    toast.show({
+                        description: t('course.meeting.result.error'),
+                    });
+                }
+            } catch (e) {
+                toast.show({
+                    description: t('course.meeting.result.error'),
+                });
+            }
+        },
+        [subcourse!.id, setMeetingUrl, t, toast]
+    );
+
+    return (
+        <>
+            <SetMeetingLinkModal
                 isOpen={showMeetingUrlModal}
                 onClose={() => setShowMeetingUrlModal(false)}
-                disableButtons={_setMeetingUrl.loading}
+                disableButtons={loading}
                 onPressStartMeeting={(link) => _setMeetingLink(link)}
             />
+        </>
+    );
+}
+
+function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const toast = useToast();
+    const t = useTranslation();
+    const { sizes } = useTheme();
+
+    const [showMessageModal, setShowMessageModal] = useState(false);
+
+    const [sendMessage, _sendMessage] = useMutation(
+        gql(`
+            mutation sendMessage($subject: String!, $message: String!, $subcourseId: Int!, $participants: [Int!]!) {
+                subcourseNotifyParticipants(subcourseId: $subcourseId, title: $subject, body: $message, participantIDs: $participants, fileIDs: [])
+            }
+        `)
+    );
+
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const onSendMessage = useCallback(
+        async (subject: string, message: string) => {
+            if (subject && message) {
+                const ps = [] as any; // TODO
+
+                try {
+                    await sendMessage({
+                        variables: {
+                            subject,
+                            message,
+                            subcourseId: subcourse.id,
+                            participants: ps,
+                        },
+                    });
+                    toast.show({ description: 'Nachricht erfolgreich versendet' });
+                    setShowMessageModal(false);
+                } catch (e) {
+                    toast.show({
+                        description: 'Deine Nachricht konnte nicht versendet werden',
+                    });
+                }
+            }
+        },
+        [subcourse.id, sendMessage, toast]
+    );
+
+    return (
+        <>
+            <Button onPress={() => setShowMessageModal(true)} width={ButtonContainer} variant="outline">
+                Teilnehmer:innen kontaktieren
+            </Button>
             <SendParticipantsMessageModal
                 isOpen={showMessageModal}
                 onClose={() => setShowMessageModal(false)}
                 onSend={onSendMessage}
                 isDisabled={_sendMessage.loading}
             />
-            <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
-  </VStack>
-} */
+        </>
+    );
+}
 
 /* ------------- Pupil UI Elements -------------------- */
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
@@ -356,6 +349,101 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
             {otherParticipants.map((participant) => (
                 <ParticipantRow participant={participant} />
             ))}
+        </>
+    );
+}
+
+function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const { t } = useTranslation();
+
+    const [isSignedInModal, setSignedInModal] = useState(false);
+
+    const { data: canJoinData } = useQuery(
+        gql(`
+        query CanJoin($subcourseId: Int!) { 
+            subcourse(subcourseId: $subcourseId) {
+                canJoin { allowed reason }
+            }
+        }
+    `),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
+    const [joinSubcourse, { loading, data }] = useMutation(
+        gql(`
+            mutation SubcourseJoin($subcourseId: Float!) {
+                subcourseJoin(subcourseId: $subcourseId)
+            }
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
+
+    useEffect(() => {
+        if (data?.subcourseJoin) {
+            setSignedInModal(true);
+        }
+    }, [data?.subcourseJoin]);
+
+    const { space, sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const buttonWrap = useBreakpointValue({
+        base: 'column',
+        lg: 'row',
+    });
+
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
+
+    return (
+        <>
+            {!canJoinData?.subcourse!.canJoin.allowed && <AlertMessage content={t(`lernfair.reason.${canJoinData?.subcourse!.canJoin?.reason}.coursetext`)} />}
+            {canJoinData?.subcourse!.canJoin.allowed && (
+                <Button
+                    onPress={() => {
+                        joinSubcourse();
+                    }}
+                    width={ButtonContainer}
+                    marginBottom={space['0.5']}
+                    isDisabled={loading}
+                >
+                    {t('single.button.login')}
+                </Button>
+            )}
+            <Modal
+                isOpen={isSignedInModal}
+                onClose={() => {
+                    setSignedInModal(false);
+                    refresh();
+                }}
+            >
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Kurseinformationen</Modal.Header>
+                    <Modal.Body>
+                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs angemeldet.</Text>
+                        <Row justifyContent="center">
+                            <Column>
+                                <Button
+                                    onPress={() => {
+                                        setSignedInModal(false);
+                                        refresh();
+                                    }}
+                                >
+                                    Fenster schließen
+                                </Button>
+                            </Column>
+                        </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
         </>
     );
 }
@@ -449,7 +537,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     <Modal.CloseButton />
                     <Modal.Header>Kurseinformationen</Modal.Header>
                     <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs abgemeldet.</Text>
+                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich vom Kurs abgemeldet.</Text>
                         <Row justifyContent="center">
                             <Column>
                                 <Button
@@ -469,117 +557,149 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
     );
 }
 
-/* function PupilActions() {
-    const [isOnWaitingListModal, setOnWaitingListModal] = useState(false);
+function PupilLeaveWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const { t } = useTranslation();
     const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false);
 
-    const [joinMeeting, _joinMeeting] = useMutation(gql(`mutation{
-        subcourseJoinMeeting(subcourseId: ${subcourseId})
-      }`));
-    
-        const [joinSubcourse, _joinSubcourse] = useMutation(
-            gql(`
-                mutation ($courseId: Float!) {
-                    subcourseJoin(subcourseId: $courseId)
-                }
-            `),
-            {
-                refetchQueries: [query, participantQuery],
+    const [leaveWaitingList, { loading, data }] = useMutation(
+        gql(`
+            mutation LeaveWaitingList($subcourseId: Float!) {
+                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
             }
-        );
-    
-        
-        const [joinWaitingList, _joinWaitingList] = useMutation(
-            gql(`
-                mutation ($courseId: Float!) {
-                    subcourseJoinWaitinglist(subcourseId: $courseId)
-                }
-            `),
-            {
-                refetchQueries: [query, participantQuery],
-            }
-        );
-        const [leaveWaitingList, _leaveWaitingList] = useMutation(
-            gql(`
-                mutation ($courseId: Float!) {
-                    subcourseLeaveWaitinglist(subcourseId: $courseId)
-                }
-            `),
-            {
-                refetchQueries: [query, participantQuery],
-            }
-        );
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
 
-        useEffect(() => {
-            if (_joinSubcourse?.data?.subcourseJoin) {
-                setSignedInModal(true);
-            }
-        }, [_joinSubcourse?.data?.subcourseJoin]);
-    
-        useEffect(() => {
-            if (_joinWaitingList?.data?.subcourseJoinWaitinglist) {
-                setOnWaitingListModal(true);
-            }
-        }, [_joinWaitingList?.data?.subcourseJoinWaitinglist]);
-    
-        useEffect(() => {
-            if (_leaveWaitingList?.data?.subcourseLeaveWaitinglist) {
-                setLeaveWaitingListModal(true);
-            }
-        }, [_leaveWaitingList?.data?.subcourseLeaveWaitinglist]);
+    useEffect(() => {
+        if (data?.subcourseLeaveWaitinglist) {
+            setLeaveWaitingListModal(true);
+        }
+    }, [data?.subcourseLeaveWaitinglist]);
 
-        return <>
-                                <Box marginBottom={space['0.5']} maxWidth={sizes['imageHeaderWidth']}>
-                            {!course?.canJoin?.allowed && !course?.isParticipant && (
-                                <AlertMessage content={t(`lernfair.reason.${course?.canJoin?.reason}.coursetext`)} />
-                            )}
-                            {!course?.isParticipant && !course?.isOnWaitingList && (
+    const { space, sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const buttonWrap = useBreakpointValue({
+        base: 'column',
+        lg: 'row',
+    });
+
+    return (
+        <>
+            <VStack space={space['0.5']}>
+                <AlertMessage content={t('single.buttoninfo.waitingListMember')} />
+                <Button
+                    onPress={() => {
+                        leaveWaitingList();
+                    }}
+                    width={ButtonContainer}
+                    marginBottom={space['0.5']}
+                    isDisabled={loading}
+                >
+                    Warteliste verlassen
+                </Button>
+            </VStack>
+            <Modal
+                isOpen={isLeaveWaitingListModal}
+                onClose={() => {
+                    setLeaveWaitingListModal(false);
+                    refresh();
+                }}
+            >
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Kursinformationen</Modal.Header>
+                    <Modal.Body>
+                        <Text marginBottom={space['1']}>Du hast die Warteliste erfolgreich verlassen.</Text>
+                        <Row justifyContent="center">
+                            <Column>
                                 <Button
                                     onPress={() => {
-                                        joinSubcourse({ variables: { subcourseId } });
+                                        setLeaveWaitingListModal(false);
+                                        refresh();
                                     }}
-                                    width={ButtonContainer}
-                                    marginBottom={space['0.5']}
-                                    isDisabled={!course?.canJoin?.allowed || _joinSubcourse.loading}
                                 >
-                                    {t('single.button.login')}
+                                    Fenster schließen
                                 </Button>
-                            )}
-                            {!course?.isParticipant && isFull && (
+                            </Column>
+                        </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+        </>
+    );
+}
+
+function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
+    const [isOnWaitingListModal, setOnWaitingListModal] = useState(false);
+    const [joinWaitingList, { data, loading }] = useMutation(
+        gql(`
+            mutation JoinWaitingList($subcourseId: Float!) {
+                subcourseJoinWaitinglist(subcourseId: $subcourseId)
+            }
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
+
+    const { space, sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const buttonWrap = useBreakpointValue({
+        base: 'column',
+        lg: 'row',
+    });
+
+    useEffect(() => {
+        if (data?.subcourseJoinWaitinglist) {
+            setOnWaitingListModal(true);
+        }
+    }, [data?.subcourseJoinWaitinglist]);
+
+    return (
+        <>
+            <Button
+                onPress={() => {
+                    joinWaitingList();
+                }}
+                width={ButtonContainer}
+                marginBottom={space['0.5']}
+                isDisabled={loading}
+            >
+                Auf die Warteliste
+            </Button>
+            <Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Kursinformationen</Modal.Header>
+                    <Modal.Body>
+                        <Text marginBottom={space['1']}>Du bist auf der Warteliste!</Text>
+                        <Row justifyContent="center">
+                            <Column>
                                 <Button
                                     onPress={() => {
-                                        joinWaitingList({
-                                            variables: { subcourseId },
-                                        });
+                                        setOnWaitingListModal(false);
                                     }}
-                                    width={ButtonContainer}
-                                    marginBottom={space['0.5']}
-                                    isDisabled={!course?.canJoin?.allowed || loading}
                                 >
-                                    Auf die Warteliste
+                                    Fenster schließen
                                 </Button>
-                            )}
-                            {course?.isOnWaitingList && (
-                                <VStack space={space['0.5']}>
-                                    <AlertMessage content={t('single.buttoninfo.waitingListMember')} />
-                                    <Button
-                                        onPress={() => {
-                                            leaveWaitingList({ variables: { subcourseId } });
-                                        }}
-                                        width={ButtonContainer}
-                                        marginBottom={space['0.5']}
-                                        isDisabled={loading}
-                                    >
-                                        Warteliste verlassen
-                                    </Button>
-                                </VStack>
-                            )}
-                            {course?.isParticipant && (
-
-                            )}
-                        </Box>
-        </>;
-} */
+                            </Column>
+                        </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+        </>
+    );
+}
 
 /* ---------------- Course UI ---------------------- */
 
@@ -622,8 +742,10 @@ const SingleCourse: React.FC = () => {
                 duration
             }
 
+            published
             isInstructor
             isParticipant
+            isOnWaitingList
         }
     }`),
         { variables: { subcourseId } }
@@ -631,6 +753,8 @@ const SingleCourse: React.FC = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+
+    const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -748,7 +872,27 @@ const SingleCourse: React.FC = () => {
                     <Box marginBottom={space['1']}>
                         {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
                     </Box>
-                    <>{subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}</>
+                    <>
+                        {subcourse && (subcourse.isInstructor || subcourse.isParticipant) && <JoinMeetingAction subcourse={subcourse} refresh={refetch} />}
+
+                        {subcourse && userType === 'student' && subcourse.isInstructor && <StudentEditCourseAction subcourse={subcourse} />}
+                        {subcourse && userType === 'student' && subcourse.isInstructor && subcourse.published && (
+                            <StudentContactParticiantsAction subcourse={subcourse} refresh={refetch} />
+                        )}
+                        {subcourse && userType === 'student' && subcourse.isInstructor && (
+                            <StudentSetMeetingUrlAction subcourse={subcourse} refresh={refetch} />
+                        )}
+
+                        {subcourse && userType === 'pupil' && !subcourse.isParticipant && <PupilJoinCourseAction subcourse={subcourse} refresh={refetch} />}
+                        {subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}
+
+                        {subcourse && userType === 'pupil' && !subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
+                            <PupilJoinWaitingListAction subcourse={subcourse} refresh={refetch} />
+                        )}
+                        {subcourse && userType === 'pupil' && subcourse.isOnWaitingList && (
+                            <PupilLeaveWaitingListAction subcourse={subcourse} refresh={refetch} />
+                        )}
+                    </>
                     <Tabs tabs={tabs} />
                 </Box>
             </WithNavigation>
