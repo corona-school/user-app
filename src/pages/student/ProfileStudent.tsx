@@ -26,7 +26,8 @@ import UserProgress from '../../widgets/UserProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql } from './../../gql';
+import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -40,11 +41,8 @@ import Card from '../../components/Card';
 
 type Props = {};
 
-// pupil {
-//   firstname
-// }
-const query = gql`
-    query {
+const query = gql(`
+    query StudentProfile {
         me {
             firstname
             lastname
@@ -67,7 +65,7 @@ const query = gql`
             }
         }
     }
-`;
+`);
 
 const ProfileStudent: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
@@ -96,27 +94,29 @@ const ProfileStudent: React.FC<Props> = () => {
         fetchPolicy: 'no-cache',
     });
     const [requestCertificate, _requestCertificate] = useMutation(
-        gql`
-            mutation ($lang: String!, $uuid: String!) {
+        gql(`
+            mutation GetCertificate($lang: String!, $uuid: String!) {
                 participationCertificateAsPDF(language: $lang, uuid: $uuid)
             }
-        `
+        `)
     );
 
     const [changeName, _changeName] = useMutation(
-        gql`
+        gql(`
             mutation changeName($firstname: String!, $lastname: String!) {
                 meUpdate(update: { firstname: $firstname, lastname: $lastname })
             }
-        `,
+        `),
         { refetchQueries: [query] }
     );
 
-    const [changeAboutMe, _changeAboutMe] = useMutation(gql`
+    const [changeAboutMe, _changeAboutMe] = useMutation(
+        gql(`
         mutation changeAboutMe($aboutMe: String!) {
             meUpdate(update: { student: { aboutMe: $aboutMe } })
         }
-    `);
+    `)
+    );
 
     useEffect(() => {
         if (_changeName.data || _changeAboutMe.data) {
@@ -126,9 +126,9 @@ const ProfileStudent: React.FC<Props> = () => {
 
     useEffect(() => {
         if (data?.me) {
-            setFirstName(data?.me?.firstname);
-            setLastName(data?.me?.lastname);
-            setAboutMe(data?.me?.student?.aboutMe);
+            setFirstName(data.me.firstname);
+            setLastName(data.me.lastname);
+            setAboutMe(data.me.student!.aboutMe);
         }
     }, [data?.me]);
 
@@ -136,13 +136,13 @@ const ProfileStudent: React.FC<Props> = () => {
         const max = 4.0;
         let complete = 0.0;
 
-        data?.me?.firstname && data?.me?.lastname && (complete += 1);
-        data?.me?.student?.aboutMe?.length > 0 && (complete += 1);
+        data?.me.firstname && data?.me.lastname && (complete += 1);
+        (data?.me.student!.aboutMe?.length ?? 0) > 0 && (complete += 1);
         data?.me?.student?.languages?.length && (complete += 1);
         data?.me?.student?.state && (complete += 1);
         // data?.me?.student?.schooltype && (complete += 1)
         // data?.me?.student?.gradeAsInt && (complete += 1)
-        data?.me?.student?.subjectsFormatted?.length > 0 && (complete += 1);
+        (data?.me?.student?.subjectsFormatted?.length ?? 0) > 0 && (complete += 1);
         return Math.floor((complete / max) * 100);
     }, [
         data?.me?.firstname,
@@ -293,7 +293,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 }
                             >
                                 <Row>
-                                    {(data?.me?.student.state && (
+                                    {(data?.me?.student!.state && (
                                         <Column marginRight={3}>
                                             {(data?.me?.student?.state && (
                                                 <CSSWrapper className="profil-tab-link">
@@ -386,7 +386,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 onPress={() => {
                                     setNameModalVisible(false);
                                     changeName({
-                                        variables: { firstname: firstName, lastname: lastName },
+                                        variables: { firstname: firstName!, lastname: lastName! },
                                     });
                                 }}
                             >

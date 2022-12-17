@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 import { View, Text, Heading, Row, useTheme, Button, Box, useBreakpointValue, Column } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +15,9 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { data } = useQuery(gql`
-        query {
+    const { data } = useQuery(
+        gql(`
+        query GetOnboardingInfos {
             me {
                 student {
                     firstMatchRequest
@@ -34,7 +36,8 @@ const HelperWizard: React.FC<Props> = ({ index }) => {
                 }
             }
         }
-    `);
+    `)
+    );
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],

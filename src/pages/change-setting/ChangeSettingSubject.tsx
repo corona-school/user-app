@@ -16,34 +16,42 @@ import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../../widgets/AlertMessage';
 import { useUserType } from '../../hooks/useApollo';
 
-const queryPupil = `query {
-  me {
-    pupil {
-      subjectsFormatted {
-        name
-      }
-    }
-  }
-}`;
-const queryStudent = `query {
-  me {
-    student {
-      subjectsFormatted {
-        name
-        grade {
-          min
-          max
+const queryPupil = gql`
+    query GetPupilSubjects {
+        me {
+            pupil {
+                subjectsFormatted {
+                    name
+                }
+            }
         }
-      }
     }
-  }
-}`;
-const mutPupil = `mutation updateSubjects($subjects: [SubjectInput!]) {
-  meUpdate(update: { pupil: { subjects: $subjects } })
-}`;
-const mutStudent = `mutation updateSubjects($subjects: [SubjectInput!]) {
-  meUpdate(update: { student: { subjects: $subjects } })
-}`;
+`;
+const queryStudent = gql`
+    query GetStudentSubjects {
+        me {
+            student {
+                subjectsFormatted {
+                    name
+                    grade {
+                        min
+                        max
+                    }
+                }
+            }
+        }
+    }
+`;
+const mutPupil = gql`
+    mutation updateSubjectsStudent($subjects: [SubjectInput!]) {
+        meUpdate(update: { pupil: { subjects: $subjects } })
+    }
+`;
+const mutStudent = gql`
+    mutation updateSubjectsPupil($subjects: [SubjectInput!]) {
+        meUpdate(update: { student: { subjects: $subjects } })
+    }
+`;
 
 type Props = {};
 
@@ -61,18 +69,11 @@ const ChangeSettingSubject: React.FC<Props> = () => {
     const [showError, setShowError] = useState<boolean>();
     const [selectedClassRange, setSelectedClassRange] = useState<number[]>([1, 13]);
 
-    const { data, loading } = useQuery(
-        gql`
-            ${userType === 'student' ? queryStudent : queryPupil}
-        `,
-        {
-            fetchPolicy: 'no-cache',
-        }
-    );
+    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+        fetchPolicy: 'no-cache',
+    });
 
-    const [updateSubjects, _updateSubjects] = useMutation(gql`
-        ${userType === 'student' ? mutStudent : mutPupil}
-    `);
+    const [updateSubjects, _updateSubjects] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
     /**
      * remove unused / unwanted data

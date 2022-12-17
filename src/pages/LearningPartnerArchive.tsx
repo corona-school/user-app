@@ -13,7 +13,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 type Props = {};
 
 const pupilQuery = gql`
-    query {
+    query GetMatches {
         me {
             pupil {
                 matches {

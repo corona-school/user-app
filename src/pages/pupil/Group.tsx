@@ -21,7 +21,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 type Props = {};
 
 const query = gql`
-    query {
+    query PupilSubcourseOverview {
         me {
             pupil {
                 canJoinSubcourses {
@@ -76,28 +76,28 @@ const PupilGroup: React.FC<Props> = () => {
     const { data, loading } = useQuery(query);
 
     const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(gql`
-        query ($name: String) {
-            subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
-                isParticipant
-                maxParticipants
-                participantsCount
-                id
-                firstLecture {
-                    start
-                }
-                lectures {
-                    start
-                }
-                course {
-                    name
-                    image
-                    tags {
-                        name
-                    }
-                }
-            }
+    GetAllSubcourses query ($name: String) {
+      subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+        isParticipant
+        maxParticipants
+        participantsCount
+        id
+        firstLecture {
+          start
         }
-    `);
+        lectures {
+          start
+        }
+        course {
+          name
+          image
+          tags {
+            name
+          }
+        }
+      }
+    }
+  `);
 
     useEffect(() => {
         trackPageView({

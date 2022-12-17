@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Pressable, Modal, Button } from 'native-base';
 import { useEffect, useState } from 'react';
@@ -34,13 +35,15 @@ const Settings: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
-    const { data, loading } = useQuery(gql`
-        query {
+    const { data, loading } = useQuery(
+        gql(`
+        query GetFirstname {
             me {
                 firstname
             }
         }
-    `);
+    `)
+    );
 
     return (
         <>

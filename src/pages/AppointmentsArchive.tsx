@@ -16,7 +16,7 @@ import { useUserType } from '../hooks/useApollo';
 type Props = {};
 
 const studentQuery = gql`
-    query {
+    query GetSubcoursesInstructing {
         me {
             student {
                 subcoursesInstructing {
@@ -37,7 +37,7 @@ const studentQuery = gql`
     }
 `;
 const pupilQuery = gql`
-    query {
+    query GetSubcoursesJoined {
         me {
             pupil {
                 subcoursesJoined {

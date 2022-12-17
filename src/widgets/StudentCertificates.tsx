@@ -12,7 +12,7 @@ type Props = {
 const StudentCertificates: React.FC<Props> = ({ filter }) => {
     const { space } = useTheme();
     const { data } = useQuery(gql`
-        query {
+        query GetStudentCertificates {
             me {
                 student {
                     participationCertificates {

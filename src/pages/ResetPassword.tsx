@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import PasswordInput from '../components/PasswordInput';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 import useApollo from '../hooks/useApollo';
 import AlertMessage from '../widgets/AlertMessage';
 import { log } from '../log';
@@ -25,11 +26,13 @@ const ResetPassword: React.FC<Props> = () => {
     const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false);
     const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] = useState(false);
 
-    const [changePassword] = useMutation(gql`
+    const [changePassword] = useMutation(
+        gql(`
         mutation changePassword($password: String!) {
             passwordCreate(password: $password)
         }
-    `);
+    `)
+    );
 
     const ContainerWidth = useBreakpointValue({
         base: '90%',
@@ -50,7 +53,7 @@ const ResetPassword: React.FC<Props> = () => {
         if (!passwordLengthCheck || !passwordMismatchCheck) return;
 
         const res = await changePassword({ variables: { password } });
-        if (res.data.passwordCreate) {
+        if (res.data?.passwordCreate) {
             setShowSuccessModal(true);
         } else {
             setShowErrorModal(true);
@@ -76,11 +79,11 @@ const ResetPassword: React.FC<Props> = () => {
 
             try {
                 const loginResult = await client.mutate({
-                    mutation: gql`
+                    mutation: gql(`
                         mutation LoginToken($token: String!) {
                             loginToken(token: $token)
                         }
-                    `,
+                    `),
                     variables: { token },
                 });
                 log('PasswordReset', 'Logged in with token');

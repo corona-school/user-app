@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 import { View, Text, VStack, Link, Center, CircleIcon, Row, useTheme, Pressable } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,11 +19,11 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
     const navigate = useNavigate();
 
     const { data, loading } = useQuery(
-        gql`
-            query {
+        gql(`
+            query GetRolesSidebar {
                 myRoles
             }
-        `
+        `)
     );
 
     const disableGroup: boolean = useMemo(() => {

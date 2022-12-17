@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './gql';
+import { useMutation } from '@apollo/client';
 import { AlertDialog, Button } from 'native-base';
 import React, { ErrorInfo, useEffect, useRef, useState } from 'react';
 import useApollo from './hooks/useApollo';
@@ -28,11 +29,13 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     const { client } = useApollo();
     const [issue, setIssue] = useState<string | null>(null);
 
-    const [reportToBackend] = useMutation(gql`
+    const [reportToBackend] = useMutation(
+        gql(`
         mutation ReportIssue($userAgent: String!, $logs: [String!]!, $stack: String!, $message: String!, $issueTag: String!) {
             userReportIssue(userAgent: $userAgent, logs: $logs, errorStack: $stack, errorMessage: $message, issueTag: $issueTag)
         }
-    `);
+    `)
+    );
 
     function reportIssue(error: Error, errorInfo: ErrorInfo) {
         if (process.env.NODE_ENV !== 'production') return;

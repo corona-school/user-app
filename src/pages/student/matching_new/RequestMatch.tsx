@@ -11,7 +11,7 @@ import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 
 const query = gql`
-    query {
+    query StudentMatchRequestCount {
         me {
             student {
                 state

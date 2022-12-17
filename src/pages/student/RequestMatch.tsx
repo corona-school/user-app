@@ -36,7 +36,7 @@ const RequestMatch: React.FC<Props> = () => {
     const navigate = useNavigate();
 
     const { data } = useQuery(gql`
-        query {
+        query StudentMatchRequestInfo {
             me {
                 student {
                     subjectsFormatted {
@@ -61,7 +61,7 @@ const RequestMatch: React.FC<Props> = () => {
     `);
 
     const [createMatchRequest, matchRequest] = useMutation(gql`
-        mutation {
+        mutation StudentCreateMatchRequest {
             studentCreateMatchRequest
         }
     `);

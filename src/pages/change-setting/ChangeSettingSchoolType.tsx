@@ -14,27 +14,6 @@ import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
-const queryStudent = `query {
-  me {
-    student {
-      schooltype
-    }
-  }
-}`;
-const queryPupil = `query {
-  me {
-    pupil {
-      schooltype
-    }
-  }
-}`;
-const mutStudent = `mutation updateSchooltype($schooltype: SchoolType!) {
-  meUpdate(update: { student: { schooltype: $schooltype } })
-}`;
-const mutPupil = `mutation updateSchooltype($schooltype: SchoolType!) {
-  meUpdate(update: { pupil: { schooltype: $schooltype } })
-}`;
-
 type Props = {};
 
 const ChangeSettingSchoolType: React.FC<Props> = () => {
@@ -49,7 +28,13 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
 
     const { data, loading } = useQuery(
         gql`
-            ${userType === 'student' ? queryStudent : queryPupil}
+            query GetPupilSchooltype {
+                me {
+                    pupil {
+                        schooltype
+                    }
+                }
+            }
         `,
         {
             fetchPolicy: 'no-cache',
@@ -57,7 +42,9 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     );
 
     const [updateSchooltype, _updateSchooltype] = useMutation(gql`
-        ${userType === 'student' ? mutStudent : mutPupil}
+        mutation updateSchooltypePupil($schooltype: SchoolType!) {
+            meUpdate(update: { pupil: { schooltype: $schooltype } })
+        }
     `);
 
     const [selections, setSelections] = useState<string>('');

@@ -24,7 +24,7 @@ const Details: React.FC<Props> = () => {
 
     const [createMatchRequest] = useMutation(
         gql`
-            mutation {
+            mutation PupilCreateMatchRequest {
                 pupilCreateMatchRequest
             }
         `

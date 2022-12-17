@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 import { View, Text } from 'native-base';
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,16 +16,18 @@ const LoginToken: React.FC<Props> = () => {
     const token = searchParams?.get('secret_token');
     const redirectTo = searchParams?.get('redirectTo');
 
-    const [loginToken, loginTokenResult] = useMutation(gql`
-        mutation ($token: String!) {
+    const [loginToken, loginTokenResult] = useMutation(
+        gql(`
+        mutation LoginToken2($token: String!) {
             loginToken(token: $token)
         }
-    `);
+    `)
+    );
 
     const login = useCallback(async () => {
         try {
             log('LoginToken', 'Trying to log in with token');
-            const res = await loginToken({ variables: { token } });
+            const res = await loginToken({ variables: { token: token! } });
             log('LoginToken', 'Successfully logged in with token');
             onLogin(res);
             navigate(redirectTo || '/start');

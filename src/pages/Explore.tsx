@@ -12,7 +12,7 @@ type Props = {};
 
 const Explore: React.FC<Props> = () => {
     const { data, error, loading } = useQuery(gql`
-        query {
+        query GetPublicSubcourses {
             subcoursesPublic(take: 10, skip: 0) {
                 course {
                     name

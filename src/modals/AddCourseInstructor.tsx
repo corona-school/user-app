@@ -1,4 +1,5 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useLazyQuery } from '@apollo/client';
 import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Heading, Flex, Text, Box } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -21,18 +22,20 @@ const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onIns
     const [pageIndex, setPageIndex] = useState<number>(1);
     const [selectedInstructor, setSelectedInstructor] = useState<LFInstructor>();
 
-    const [searchInstructors, { data, loading }] = useLazyQuery(gql`
-    query searchInstructors($search: String!) {
-      otherInstructors(take: ${RESULTS_PER_PAGE}, skip: ${(pageIndex - 1) * RESULTS_PER_PAGE}, search: $search) {
+    const [searchInstructors, { data, loading }] = useLazyQuery(
+        gql(`
+    query searchInstructors($search: String!, $take: Int!, $skip: Int!) {
+      otherInstructors(take: $take, skip: $skip, search: $search) {
         id
         firstname
         lastname
       }
     }
-  `);
+  `)
+    );
 
     const search = useCallback(() => {
-        searchInstructors({ variables: { search: searchString } });
+        searchInstructors({ variables: { search: searchString, take: RESULTS_PER_PAGE, skip: (pageIndex - 1) * RESULTS_PER_PAGE } });
     }, [searchInstructors, searchString]);
 
     const instructors = useMemo(() => {
@@ -54,7 +57,7 @@ const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onIns
                     <Flex pb={'72px'} flex="1">
                         <Heading marginX={space['1']}>Seite {pageIndex}</Heading>
                         <VStack flex="1">
-                            {instructors?.map((instructor: LFInstructor) => {
+                            {instructors?.map((instructor) => {
                                 let isAdded = false;
                                 if (addedInstructors.find((i) => i.id === instructor.id)) {
                                     isAdded = true;

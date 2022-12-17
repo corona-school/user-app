@@ -3,7 +3,8 @@ import { useCallback, useContext, useState } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
 import { Slider } from '@miblanchard/react-native-slider';
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { ClassRange } from '../../../types/lernfair/SchoolClass';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
@@ -24,17 +25,21 @@ const SchoolClasses: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const [updateSubjects] = useMutation(gql`
+    const [updateSubjects] = useMutation(
+        gql(`
         mutation updateStudentSubjects($subjects: [SubjectInput!]) {
             meUpdate(update: { student: { subjects: $subjects } })
         }
-    `);
+    `)
+    );
 
-    const [createMatchRequest] = useMutation(gql`
-        mutation {
+    const [createMatchRequest] = useMutation(
+        gql(`
+        mutation StudentCreateMatchRequest {
             studentCreateMatchRequest
         }
-    `);
+    `)
+    );
 
     const setSubjectClass = useCallback(
         (subjectKey: string, value: [number, number]) => {

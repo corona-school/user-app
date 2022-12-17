@@ -17,7 +17,7 @@ import MatchingOnboarding from './MatchingOnboarding';
 type Props = {};
 
 const query: DocumentNode = gql`
-    query {
+    query PupilMatching {
         me {
             pupil {
                 subjectsFormatted {
@@ -74,7 +74,7 @@ const Matching: React.FC<Props> = () => {
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql`
-            mutation ($matchId: Float!, $dissolveReason: Float!) {
+            mutation dissolveMatchPupil2($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
             }
         `,
@@ -83,7 +83,7 @@ const Matching: React.FC<Props> = () => {
 
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
         gql`
-            mutation {
+            mutation PupilDeleteMatchRequest {
                 pupilDeleteMatchRequest
             }
         `,

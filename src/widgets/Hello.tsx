@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 import { Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
@@ -6,13 +7,15 @@ type Props = {};
 
 const Hello: React.FC<Props> = () => {
     const { t } = useTranslation();
-    const { data, loading } = useQuery(gql`
-        query {
+    const { data, loading } = useQuery(
+        gql(`
+        query GetFirstname {
             me {
                 firstname
             }
         }
-    `);
+    `)
+    );
 
     if (loading) return <></>;
     return (

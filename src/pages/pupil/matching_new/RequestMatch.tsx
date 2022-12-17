@@ -14,7 +14,7 @@ import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 
 const query = gql`
-    query {
+    query PupilMatchRequestInfo {
         me {
             pupil {
                 schooltype

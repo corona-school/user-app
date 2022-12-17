@@ -15,27 +15,35 @@ import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
-const queryPupil = `query {
-  me {
-    pupil {
-      state
+const queryPupil = gql`
+    query GetPupilState {
+        me {
+            pupil {
+                state
+            }
+        }
     }
-  }
-}`;
-const queryStudent = `query {
-  me {
-    student {
-      state
+`;
+const queryStudent = gql`
+    query GetStudentState {
+        me {
+            student {
+                state
+            }
+        }
     }
-  }
-}`;
+`;
 
-const mutStudent = `mutation updateState($state: StudentState!) {
-  meUpdate(update: { student: { state: $state } })
-}`;
-const mutPupil = `mutation updateState($state: State!) {
-  meUpdate(update: { pupil: { state: $state } })
-}`;
+const mutStudent = gql`
+    mutation updateStateStudent($state: StudentState!) {
+        meUpdate(update: { student: { state: $state } })
+    }
+`;
+const mutPupil = gql`
+    mutation updateStatePupil($state: State!) {
+        meUpdate(update: { pupil: { state: $state } })
+    }
+`;
 
 type Props = {};
 
@@ -50,18 +58,11 @@ const ChangeSettingState: React.FC<Props> = () => {
     const navigate = useNavigate();
 
     const userType = useUserType();
-    const { data, loading } = useQuery(
-        gql`
-            ${userType === 'student' ? queryStudent : queryPupil}
-        `,
-        {
-            fetchPolicy: 'no-cache',
-        }
-    );
+    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+        fetchPolicy: 'no-cache',
+    });
 
-    const [updateState, _updateState] = useMutation(gql`
-        ${userType === 'student' ? mutStudent : mutPupil}
-    `);
+    const [updateState, _updateState] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
     useEffect(() => {
         if (userType && data?.me[userType].state) {

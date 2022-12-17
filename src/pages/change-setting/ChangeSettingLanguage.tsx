@@ -15,26 +15,34 @@ import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
-const queryStudent = `query {
-  me {
-    student {
-      languages
+const queryStudent = gql`
+    query GetStudentLanguages {
+        me {
+            student {
+                languages
+            }
+        }
     }
-  }
-}`;
-const queryPupil = `query {
-  me {
-    pupil {
-      languages
+`;
+const queryPupil = gql`
+    query GetPupilLanguages {
+        me {
+            pupil {
+                languages
+            }
+        }
     }
-  }
-}`;
-const mutStudent = `mutation updateLanguage($languages: [StudentLanguage!]) {
-  meUpdate(update: { student: { languages: $languages } })
-}`;
-const mutPupil = `mutation updateLanguage($languages: [Language!]) {
-  meUpdate(update: { pupil: { languages: $languages } })
-}`;
+`;
+const mutStudent = gql`
+    mutation updateLanguageStudent($languages: [StudentLanguage!]) {
+        meUpdate(update: { student: { languages: $languages } })
+    }
+`;
+const mutPupil = gql`
+    mutation updateLanguagePupil($languages: [Language!]) {
+        meUpdate(update: { pupil: { languages: $languages } })
+    }
+`;
 
 type Props = {};
 
@@ -49,18 +57,11 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
 
     const navigate = useNavigate();
 
-    const { data, loading } = useQuery(
-        gql`
-            ${userType === 'student' ? queryStudent : queryPupil}
-        `,
-        {
-            fetchPolicy: 'no-cache',
-        }
-    );
+    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+        fetchPolicy: 'no-cache',
+    });
 
-    const [updateLanguage, _updateLanguage] = useMutation(gql`
-        ${userType === 'student' ? mutStudent : mutPupil}
-    `);
+    const [updateLanguage, _updateLanguage] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
     useEffect(() => {
         if (data?.me[userType || 'pupil'] && data?.me[userType || 'pupil'].languages) {
