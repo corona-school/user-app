@@ -31,6 +31,7 @@ type Props = {
   loop?: boolean
   isOnboarding?: boolean
   onFinish?: () => any
+  showNavigation?: boolean
 }
 
 export type IViewPagerContext = {
@@ -51,7 +52,8 @@ const ViewPager: React.FC<Props> = ({
   onNext,
   loop,
   isOnboarding,
-  onFinish
+  onFinish,
+  showNavigation = true
 }) => {
   const navigate = useNavigate()
 
@@ -81,86 +83,88 @@ const ViewPager: React.FC<Props> = ({
               (c, index) => index === currentIndex && <Flex flex="1">{c}</Flex>
             )}
         </Flex>
-        <Row
-          position="fixed"
-          backgroundColor="primary.900"
-          width="100%"
-          bottom="0">
-          <Box
-            flexDirection="row"
-            width={ContentContainerWidth}
-            marginX="auto"
-            padding="14px"
-            alignItems="center"
-            justifyContent={'space-between'}>
-            <Pressable
-              onPress={() => {
-                let i =
-                  currentIndex > 0
-                    ? currentIndex - 1
-                    : loop
-                    ? (isMultiple && children?.length - 1) || 0
-                    : 0
-                setCurrentIndex(i)
-                onPrev && onPrev(i)
-              }}>
-              <Box
-                width="32px"
-                height="32px"
-                padding="6px"
-                backgroundColor="primary.100"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="50%">
-                <LfPrev />
-              </Box>
-            </Pressable>
-            {isOnboarding && (
-              <Box>
-                <Link
-                  onPress={() => setCancelModal(true)}
-                  _text={{
-                    color: 'lightText',
-                    fontWeight: '700',
-                    textDecoration: 'none'
-                  }}>
-                  {t('skip')}
-                </Link>
-              </Box>
-            )}
-            <Pressable
-              onPress={() => {
-                let i =
-                  currentIndex < (isMultiple && children?.length - 1)
-                    ? currentIndex + 1
-                    : loop
-                    ? 0
-                    : currentIndex
-                setCurrentIndex(i)
+        {showNavigation && (
+          <Row
+            position="fixed"
+            backgroundColor="primary.900"
+            width="100%"
+            bottom="0">
+            <Box
+              flexDirection="row"
+              width={ContentContainerWidth}
+              marginX="auto"
+              padding="14px"
+              alignItems="center"
+              justifyContent={'space-between'}>
+              <Pressable
+                onPress={() => {
+                  let i =
+                    currentIndex > 0
+                      ? currentIndex - 1
+                      : loop
+                      ? (isMultiple && children?.length - 1) || 0
+                      : 0
+                  setCurrentIndex(i)
+                  onPrev && onPrev(i)
+                }}>
+                <Box
+                  width="32px"
+                  height="32px"
+                  padding="6px"
+                  backgroundColor="primary.100"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="50%">
+                  <LfPrev />
+                </Box>
+              </Pressable>
+              {isOnboarding && (
+                <Box>
+                  <Link
+                    onPress={() => setCancelModal(true)}
+                    _text={{
+                      color: 'lightText',
+                      fontWeight: '700',
+                      textDecoration: 'none'
+                    }}>
+                    {t('skip')}
+                  </Link>
+                </Box>
+              )}
+              <Pressable
+                onPress={() => {
+                  let i =
+                    currentIndex < (isMultiple && children?.length - 1)
+                      ? currentIndex + 1
+                      : loop
+                      ? 0
+                      : currentIndex
+                  setCurrentIndex(i)
 
-                if (isMultiple) {
-                  if (currentIndex + 1 === children?.length) {
-                    onFinish && onFinish()
+                  if (isMultiple) {
+                    if (currentIndex + 1 === children?.length) {
+                      onFinish && onFinish()
+                    } else {
+                      onNext && onNext(i)
+                    }
                   } else {
-                    onNext && onNext(i)
+                    onFinish && onFinish()
                   }
-                } else {
-                  onFinish && onFinish()
-                }
-              }}>
-              <Box
-                width="32px"
-                height="32px"
-                padding="6px"
-                backgroundColor="primary.100"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="50%">
-                <LfNext />
-              </Box>
-            </Pressable>
-          </Box>
-        </Row>
+                }}>
+                <Box
+                  width="32px"
+                  height="32px"
+                  padding="6px"
+                  backgroundColor="primary.100"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="50%">
+                  <LfNext />
+                </Box>
+              </Pressable>
+            </Box>
+          </Row>
+        )}
         <Modal
           bg="modalbg"
           isOpen={cancelModal}

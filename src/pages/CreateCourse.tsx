@@ -354,7 +354,7 @@ const CreateCourse: React.FC<Props> = () => {
       schooltype: studentData?.me?.student?.schooltype || 'other',
       outline: '', // keep empty for now, unused
       name: courseName,
-      category: 'club',
+      category: 'revision',
       allowContact
     }),
     [
