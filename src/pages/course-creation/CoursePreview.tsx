@@ -13,14 +13,15 @@ import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 
 type Props = {
-    onNext: () => any;
-    onBack: () => any;
+    onBack: () => void;
     isDisabled?: boolean;
     isError?: boolean;
-    prefillCourseId?: number | string;
+    createAndSubmit?: () => void;
+    createOnly?: () => void;
+    update?: () => void;
 };
 
-const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled, isError, prefillCourseId }) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const {
@@ -187,22 +188,60 @@ const CoursePreview: React.FC<Props> = ({ onNext, onBack, isDisabled, isError, p
                 </Box>
             )}
             <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
-                <Button
-                    marginBottom={space['1']}
-                    width={ButtonContainer}
-                    onPress={() => {
-                        trackEvent({
-                            category: 'kurse',
-                            action: 'click-event',
-                            name: 'Helfer Kurs erstellen – veröffentlichen Button',
-                            documentTitle: 'Helfer Kurs erstellen – publish button',
-                        });
-                        onNext();
-                    }}
-                    isDisabled={isDisabled}
-                >
-                    {(!!prefillCourseId && 'Änderungen speichern') || t('course.CourseDate.Preview.publishCourse')}
-                </Button>
+                {update && (
+                    <Button
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            update();
+                        }}
+                        isDisabled={isDisabled}
+                    >
+                        {t('course.CourseDate.Preview.updateCourse')}
+                    </Button>
+                )}
+                {createAndSubmit && (
+                    <Button
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – veröffentlichen Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            createAndSubmit();
+                        }}
+                        isDisabled={isDisabled}
+                    >
+                        {t('course.CourseDate.Preview.publishCourse')}
+                    </Button>
+                )}
+                {createOnly && (
+                    <Button
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – Erstellen Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            createOnly();
+                        }}
+                        isDisabled={isDisabled}
+                    >
+                        {t('course.CourseDate.Preview.saveCourse')}
+                    </Button>
+                )}
                 <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack} isDisabled={isDisabled}>
                     {t('course.CourseDate.Preview.editCourse')}
                 </Button>

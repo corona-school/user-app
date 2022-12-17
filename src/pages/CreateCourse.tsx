@@ -219,6 +219,12 @@ const CreateCourse: React.FC<Props> = () => {
         }
     `);
 
+    const [submitCourse] = useMutation(gql`
+        mutation SubmitCourse($courseId: Float!) {
+            courseSubmit(courseId: $courseId)
+        }
+    `);
+
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -351,163 +357,170 @@ const CreateCourse: React.FC<Props> = () => {
         return l;
     }, []);
 
-    const submitCourse = useCallback(async () => {
-        setIsLoading(true);
+    const finishCreation = useCallback(
+        async (alsoSubmit: boolean) => {
+            setIsLoading(true);
 
-        const errors: CreateCourseError[] = [];
+            const errors: CreateCourseError[] = [];
 
-        /**
-         * Course Creation
-         */
-        const course = _getCourseData();
-        const courseData = (await createCourse({
-            variables: {
-                course,
-            },
-        })) as { data: { courseCreate?: { id: number } }; errors?: GraphQLError[] };
+            /**
+             * Course Creation
+             */
+            const course = _getCourseData();
+            const courseData = (await createCourse({
+                variables: {
+                    course,
+                },
+            })) as { data: { courseCreate?: { id: number } }; errors?: GraphQLError[] };
 
-        if (!courseData.data && courseData.errors) {
-            errors.push('course');
-            await resetCourse();
-            finishCourseCreation(errors);
-            return;
-        }
-
-        const courseId = courseData?.data?.courseCreate?.id;
-
-        if (!courseId) {
-            errors.push('course');
-            await resetCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-        const tagIds = tags.map((t: LFTag) => t.id);
-        const tagsRes = await setCourseTags({
-            variables: { courseTagIds: tagIds, courseId },
-        });
-        if (!tagsRes.data.courseSetTags && tagsRes.errors) {
-            errors.push('tags');
-        }
-        /**
-         * Subcourse Creation
-         */
-        const subcourse = _getSubcourseData();
-
-        subcourse.lectures = [];
-
-        const subRes = await createSubcourse({
-            variables: {
-                courseId: courseId,
-                subcourse,
-            },
-        });
-
-        if (!subRes.data && subRes.errors) {
-            errors.push('subcourse');
-            await resetSubcourse();
-            await resetCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-
-        if (subRes.data.subcourseCreate && !subRes.errors) {
-            for await (const lecture of newLectures) {
-                const l = _convertLecture(lecture);
-                let res = await addLecture({
-                    variables: {
-                        courseId: subRes.data.subcourseCreate.id,
-                        lecture: l,
-                    },
-                });
-                if (!res.data.lectureDelete && res.errors) {
-                    errors.push('lectures');
-                }
+            if (!courseData.data && courseData.errors) {
+                errors.push('course');
+                await resetCourse();
+                finishCourseCreation(errors);
+                return;
             }
 
-            for await (const instructor of addedInstructors) {
-                let res = await addCourseInstructor({
-                    variables: {
-                        courseId: subRes.data?.subcourseCreate?.id,
-                        studentId: instructor.id,
-                    },
-                });
-                if (!res.data && res.errors) {
-                    errors.push('instructors');
-                }
+            const courseId = courseData?.data?.courseCreate?.id;
+
+            if (!courseId) {
+                errors.push('course');
+                await resetCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
             }
-        }
+            const tagIds = tags.map((t: LFTag) => t.id);
+            const tagsRes = await setCourseTags({
+                variables: { courseTagIds: tagIds, courseId },
+            });
+            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+                errors.push('tags');
+            }
 
-        /**
-         * Image upload
-         */
-        if (!pickedPhoto) {
-            finishCourseCreation(errors);
-            return;
-        }
-        setImageLoading(true);
-        const formData: FormData = new FormData();
+            if (alsoSubmit) {
+                await submitCourse({ variables: { courseId } });
+            }
+            /**
+             * Subcourse Creation
+             */
+            const subcourse = _getSubcourseData();
 
-        const base64 = pickedPhoto ? await fetch(pickedPhoto) : require('../assets/images/globals/image-placeholder.png');
-        const data = await base64.blob();
-        formData.append('file', data, 'img_course.jpeg');
+            subcourse.lectures = [];
 
-        let uploadFileId;
-        try {
-            uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
-                method: 'POST',
-                body: formData,
+            const subRes = await createSubcourse({
+                variables: {
+                    courseId: courseId,
+                    subcourse,
+                },
             });
 
-            if (!uploadFileId) {
+            if (!subRes.data && subRes.errors) {
+                errors.push('subcourse');
+                await resetSubcourse();
+                await resetCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
+            }
+
+            if (subRes.data.subcourseCreate && !subRes.errors) {
+                for await (const lecture of newLectures) {
+                    const l = _convertLecture(lecture);
+                    let res = await addLecture({
+                        variables: {
+                            courseId: subRes.data.subcourseCreate.id,
+                            lecture: l,
+                        },
+                    });
+                    if (!res.data.lectureDelete && res.errors) {
+                        errors.push('lectures');
+                    }
+                }
+
+                for await (const instructor of addedInstructors) {
+                    let res = await addCourseInstructor({
+                        variables: {
+                            courseId: subRes.data?.subcourseCreate?.id,
+                            studentId: instructor.id,
+                        },
+                    });
+                    if (!res.data && res.errors) {
+                        errors.push('instructors');
+                    }
+                }
+            }
+
+            /**
+             * Image upload
+             */
+            if (!pickedPhoto) {
+                finishCourseCreation(errors);
+                return;
+            }
+            setImageLoading(true);
+            const formData: FormData = new FormData();
+
+            const base64 = pickedPhoto ? await fetch(pickedPhoto) : require('../assets/images/globals/image-placeholder.png');
+            const data = await base64.blob();
+            formData.append('file', data, 'img_course.jpeg');
+
+            let uploadFileId;
+            try {
+                uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!uploadFileId) {
+                    errors.push('upload_image');
+                }
+            } catch (e) {
+                console.error(e);
                 errors.push('upload_image');
             }
-        } catch (e) {
-            console.error(e);
-            errors.push('upload_image');
-        }
 
-        if (!uploadFileId) {
+            if (!uploadFileId) {
+                finishCourseCreation(errors);
+                return;
+            }
+
+            /**
+             * Set image in course
+             */
+            const imageRes = (await setCourseImage({
+                variables: {
+                    courseId: courseId,
+                    fileId: uploadFileId,
+                },
+            })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
+
+            if (!imageRes.data && imageRes.errors) {
+                errors.push('set_image');
+            }
+
+            setImageLoading(false);
+
             finishCourseCreation(errors);
-            return;
-        }
-
-        /**
-         * Set image in course
-         */
-        const imageRes = (await setCourseImage({
-            variables: {
-                courseId: courseId,
-                fileId: uploadFileId,
-            },
-        })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
-
-        if (!imageRes.data && imageRes.errors) {
-            errors.push('set_image');
-        }
-
-        setImageLoading(false);
-
-        finishCourseCreation(errors);
-    }, [
-        _convertLecture,
-        _getCourseData,
-        _getSubcourseData,
-        addCourseInstructor,
-        addLecture,
-        addedInstructors,
-        createCourse,
-        createSubcourse,
-        finishCourseCreation,
-        newLectures,
-        pickedPhoto,
-        resetCourse,
-        resetSubcourse,
-        setCourseImage,
-        setCourseTags,
-        tags,
-    ]);
+        },
+        [
+            _convertLecture,
+            _getCourseData,
+            _getSubcourseData,
+            addCourseInstructor,
+            addLecture,
+            addedInstructors,
+            createCourse,
+            createSubcourse,
+            finishCourseCreation,
+            newLectures,
+            pickedPhoto,
+            resetCourse,
+            resetSubcourse,
+            setCourseImage,
+            setCourseTags,
+            tags,
+        ]
+    );
 
     const editCourse = useCallback(async () => {
         setIsLoading(true);
@@ -663,21 +676,13 @@ const CreateCourse: React.FC<Props> = () => {
         addLecture,
     ]);
 
-    const onFinish = useCallback(async () => {
-        if (isEditing) {
-            editCourse();
-        } else {
-            submitCourse();
-        }
-    }, [isEditing, editCourse, submitCourse]);
-
     const onNext = useCallback(() => {
         if (currentIndex >= 2) {
-            onFinish();
+            return;
         } else {
             setCurrentIndex((prev) => prev + 1);
         }
-    }, [currentIndex, onFinish]);
+    }, [currentIndex]);
 
     const onBack = useCallback(() => {
         setCurrentIndex((prev) => prev - 1);
@@ -858,11 +863,12 @@ const CreateCourse: React.FC<Props> = () => {
                             {currentIndex === 2 && (
                                 <>
                                     <CoursePreview
-                                        onNext={onNext}
+                                        createAndSubmit={prefillCourseId ? undefined : () => finishCreation(/* also submit */ true)}
+                                        createOnly={prefillCourseId ? undefined : () => finishCreation(/* also submit */ false)}
+                                        update={prefillCourseId ? editCourse : undefined}
                                         onBack={onBack}
                                         isError={showCourseError}
                                         isDisabled={loading || isLoading || imageLoading}
-                                        prefillCourseId={prefillCourseId}
                                     />
                                     <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">
                                         <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
