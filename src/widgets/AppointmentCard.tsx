@@ -193,7 +193,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         </Column>
                                         <Column>
                                             <Row>
-                                                <Text color={textColor}>Startet in: </Text>
+                                                <Text color={textColor}>Startet: </Text>
                                                 <Text bold color="primary.400">
                                                     {remainingTime}
                                                 </Text>
