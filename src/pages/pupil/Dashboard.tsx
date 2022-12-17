@@ -450,7 +450,7 @@ const Dashboard: React.FC<Props> = () => {
                 showDissolveModal={showDissolveModal}
                 onPressDissolve={async (reason: string) => {
                     setShowDissolveModal(false);
-                    return await dissolve({
+                    await dissolve({
                         variables: {
                             matchId: dissolveData?.id,
                             dissolveReason: parseInt(reason),

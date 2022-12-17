@@ -209,7 +209,7 @@ const Matching: React.FC<Props> = () => {
                     <DissolveMatchModal
                         showDissolveModal={showDissolveModal}
                         onPressDissolve={async (reason: string) => {
-                            return await dissolve(reason);
+                            await dissolve(reason);
                         }}
                         onPressBack={() => setShowDissolveModal(false)}
                     />

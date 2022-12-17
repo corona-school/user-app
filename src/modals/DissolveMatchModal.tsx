@@ -2,10 +2,11 @@ import { Button, Modal, Radio, Row, Text, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
 import { useTranslation } from 'react-i18next';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
-    onPressDissolve: (dissolveReason: string) => any;
+    onPressDissolve: (dissolveReason: string) => Promise<void>;
     onPressBack: () => any;
 };
 
@@ -20,6 +21,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
     const { space } = useTheme();
     const userType = useUserType();
     const [reason, setReason] = useState<string>('');
+    const navigate = useNavigate();
 
     const reasons = useMemo(() => (userType === 'student' && studentReasonOptions) || pupilReasonOptions, [userType]);
 
@@ -41,7 +43,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason)}>
+                                <Button isDisabled={!reason} onPress={() => setCurrentIndex(1)}>
                                     {t('matching.dissolveModal.btn')}
                                 </Button>
                                 <Button onPress={onPressBack} variant="ghost">
@@ -62,18 +64,18 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button onPress={onPressBack} variant="secondary">
+                                <Button
+                                    onPress={() => {
+                                        onPressDissolve(reason);
+                                    }}
+                                    variant="secondary"
+                                >
                                     Abbrechen
                                 </Button>
                                 <Button
                                     isDisabled={!reason}
                                     onPress={() => {
-                                        const res = onPressDissolve(reason);
-                                        if (res) {
-                                            setCurrentIndex(1);
-                                        } else {
-                                            onPressBack();
-                                        }
+                                        onPressDissolve(reason).then(() => navigate('/request-match'));
                                     }}
                                 >
                                     Neue Lernpartner:in
