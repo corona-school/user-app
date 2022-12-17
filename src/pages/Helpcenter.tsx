@@ -6,7 +6,8 @@ import InfoScreen from '../widgets/InfoScreen';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TextInput from '../components/TextInput';
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 import useModal from '../hooks/useModal';
 import IFrame from '../components/IFrame';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -23,8 +24,6 @@ const HelpCenter: React.FC<Props> = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
     const [dsgvo, setDSGVO] = useState<boolean>(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [mentorCategory, setMentorCategory] = useState<MentorCategory>();
     const [subject, setSubject] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
@@ -35,27 +34,28 @@ const HelpCenter: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const [contactMentor, { data }] = useMutation(gql`
-        mutation contactMentor($cat: MentorCategory!, $sub: String!, $msg: String!) {
-            mentoringContact(data: { category: $cat, subject: $sub, message: $msg })
+    const [contactSupport, { data }] = useMutation(
+        gql(`
+        mutation ContactSupport($subject: String! $message: String!) { 
+	        userContactSupport(message: { subject: $subject message: $message })
         }
-    `);
+    `)
+    );
 
     const sendContactMessage = useCallback(async () => {
-        const res = (await contactMentor({
+        const res = await contactSupport({
             variables: {
-                cat: mentorCategory,
-                sub: subject,
-                msg: message,
+                subject,
+                message,
             },
-        })) as { data: { mentoringContact: boolean } };
+        });
 
-        if (res.data?.mentoringContact) {
+        if (res.data?.userContactSupport) {
             setMessageSent(true);
         } else {
             setShowError(true);
         }
-    }, [contactMentor, mentorCategory, message, subject]);
+    }, [contactSupport, message, subject]);
 
     useEffect(() => {
         if (!show && data) {
