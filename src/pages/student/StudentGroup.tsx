@@ -6,7 +6,8 @@ import NotificationAlert from '../../components/NotificationAlert';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs from '../../components/Tabs';
 import { useEffect, useMemo } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '../../gql';
+import { useQuery } from '@apollo/client';
 import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus, sortByDate } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -18,50 +19,45 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { CreateCourseError } from '../CreateCourse';
 
-const query = gql`
-    query StudentCourseOverview {
-        me {
-            student {
-                canCreateCourse {
-                    allowed
-                    reason
-                }
-                coursesInstructing {
-                    id
-                    name
-                    description
-                    tags {
-                        name
-                    }
-                }
-                subcoursesInstructing {
-                    id
-                    published
-                    participantsCount
-                    maxParticipants
-                    firstLecture {
-                        start
-                        duration
-                    }
-                    lectures {
-                        start
-                        duration
-                    }
-                    course {
-                        name
-                        description
-                        tags {
-                            name
+const StudentGroup: React.FC = () => {
+    const { data, loading } = useQuery(
+        gql(`
+            query StudentCourseOverview {
+                me {
+                    student {
+                        canCreateCourse {
+                            allowed
+                            reason
+                        }
+                        subcoursesInstructing {
+                            id
+                            published
+                            participantsCount
+                            maxParticipants
+                            firstLecture {
+                                start
+                                duration
+                            }
+                            lectures {
+                                start
+                                duration
+                            }
+                            course {
+                                courseState
+                                name
+                                description
+                                image
+                                tags {
+                                    id
+                                    name
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    }
-`;
-
-const StudentGroup: React.FC = () => {
-    const { data, loading } = useQuery(query);
+        `)
+    );
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -82,34 +78,28 @@ const StudentGroup: React.FC = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const submittedSubcourses: LFSubCourse[] = useMemo(
-        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub: LFSubCourse) => !sub.published)),
-        [data?.me?.student?.subcoursesInstructing]
+    const submittedSubcourses = useMemo(
+        () => data?.me.student!.subcoursesInstructing.filter((it) => it.course.courseState === 'submitted'),
+        [data?.me.student!.subcoursesInstructing]
     );
 
-    const pastCourses: LFSubCourse[] = useMemo(
+    const unpublishedOrDraftedSubcourses = useMemo(
         () =>
-            sortByDate(
-                data?.me?.student?.subcoursesInstructing.filter((course: LFSubCourse) => {
-                    let ok = true;
-                    if (!course.lectures) return false;
-                    for (const lecture of course.lectures) {
-                        if (DateTime.fromISO(lecture.start).toMillis() < DateTime.now().toMillis()) {
-                            continue;
-                        } else {
-                            ok = false;
-                            break;
-                        }
-                    }
-                    return ok;
-                })
+            data?.me.student!.subcoursesInstructing.filter(
+                (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published)
             ),
+        [data?.me.student!.subcoursesInstructing]
+    );
+
+    const pastSubcourses = useMemo(
+        () =>
+            sortByDate(data?.me?.student?.subcoursesInstructing.filter((it) => it.lectures.every((lecture) => lecture.start + lecture.duration < Date.now()))),
         [data?.me?.student?.subcoursesInstructing]
     );
 
-    const publishedSubcourses: LFSubCourse[] = useMemo(
-        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub: LFSubCourse) => sub.published && !pastCourses.includes(sub))),
-        [data?.me?.student?.subcoursesInstructing, pastCourses]
+    const publishedSubcourses = useMemo(
+        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published && !pastSubcourses.includes(sub))),
+        [data?.me?.student?.subcoursesInstructing, pastSubcourses]
     );
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -121,23 +111,23 @@ const StudentGroup: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const renderSubcourse = (course: LFSubCourse, index: number, showDate: boolean = true) => {
+    const renderSubcourse = (subcourse: typeof publishedSubcourses[number], index: number, showDate: boolean = true) => {
         return (
             <CSSWrapper className="course-list__item">
                 <AppointmentCard
                     showTrafficLight
-                    trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
+                    trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                     isFullHeight
                     isSpaceMarginBottom={false}
                     key={index}
                     variant="horizontal"
-                    description={course.course.description}
-                    tags={course.course.tags}
-                    date={(showDate && course.firstLecture?.start) || ''}
-                    countCourse={course.lectures.length}
-                    onPressToCourse={() => navigate(`/single-course/${course.id}`)}
-                    image={course.course.image}
-                    title={course.course.name}
+                    description={subcourse.course.description}
+                    tags={subcourse.course.tags}
+                    date={(showDate && subcourse.firstLecture?.start) || ''}
+                    countCourse={subcourse.lectures.length}
+                    onPressToCourse={() => navigate(`/single-course/${subcourse.id}`)}
+                    image={subcourse.course.image ?? undefined}
+                    title={subcourse.course.name}
                 />
             </CSSWrapper>
         );
@@ -214,9 +204,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {(publishedSubcourses?.length > 0 &&
-                                                            publishedSubcourses?.map((sub: LFSubCourse, index: number) => {
-                                                                return renderSubcourse(sub, index);
+                                                        {((publishedSubcourses?.length ?? 0) > 0 &&
+                                                            publishedSubcourses?.map((subcourse, index) => {
+                                                                return renderSubcourse(subcourse, index);
                                                             })) || <AlertMessage content={t('empty.courses')} />}
                                                     </CSSWrapper>
                                                 </>
@@ -227,21 +217,33 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {(submittedSubcourses?.length > 0 &&
-                                                            submittedSubcourses?.map((sub: LFSubCourse, index: number) => renderSubcourse(sub, index))) || (
+                                                        {((submittedSubcourses?.length ?? 0) > 0 &&
+                                                            submittedSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
                                                             <AlertMessage content={t('empty.coursescheck')} />
                                                         )}
                                                     </CSSWrapper>
                                                 </>
                                             ),
                                         },
-
+                                        {
+                                            title: t('matching.group.helper.course.tabs.tab3.title'),
+                                            content: (
+                                                <>
+                                                    <CSSWrapper className="course-list__wrapper">
+                                                        {((unpublishedOrDraftedSubcourses?.length ?? 0) > 0 &&
+                                                            unpublishedOrDraftedSubcourses!.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
+                                                            <AlertMessage content={t('empty.coursescheck')} />
+                                                        )}
+                                                    </CSSWrapper>
+                                                </>
+                                            ),
+                                        },
                                         {
                                             title: t('matching.group.helper.course.tabs.tab4.title'),
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {pastCourses?.map((course: LFSubCourse, index) => renderSubcourse(course, index, false)) || (
+                                                        {pastSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index, false)) || (
                                                             <AlertMessage content={t('empty.courses')} />
                                                         )}
                                                     </CSSWrapper>
