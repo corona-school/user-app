@@ -58,8 +58,19 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         <Modal.Header>Neue Lernpartner:in anfordern</Modal.Header>
                         <Modal.Body>
                             <Text>
-                                Möchest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte dabei, dass du wieder einige Zeit warten musst bis wir
-                                jemanden für dich finden können.
+                                {userType === 'pupil' && (
+                                    <>
+                                        Möchest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte dabei, dass du wieder einige Zeit warten musst bis
+                                        wir jemanden für dich finden können.
+                                    </>
+                                )}
+                                {userType === 'student' && (
+                                    <>
+                                        Wir würden uns wahnsinnig freuen, wenn du eine:n neue:n Schüler:in unterstützen möchtest. Bei uns warten sehr viele
+                                        Kinder auf individuelle Unterstützung und es wäre der absolute Hammer, wenn du uns bei unserer Mission weiter
+                                        unterstützst!
+                                    </>
+                                )}
                             </Text>
                         </Modal.Body>
                         <Modal.Footer>
