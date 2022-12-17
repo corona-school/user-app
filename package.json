@@ -3,7 +3,6 @@
   "version": "0.3.1",
   "private": true,
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.15.0",
     "@apollo/client": "^3.6.9",
     "@babel/core": "^7.16.0",
     "@graphql-codegen/cli": "2.15.0",
@@ -35,9 +34,6 @@
     "css-minimizer-webpack-plugin": "^4.0.0",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
-    "eslint": "^8.3.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-webpack-plugin": "^3.1.1",
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
     "graphql": "^16.5.0",
@@ -81,7 +77,9 @@
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1"
+    "workbox-webpack-plugin": "^6.4.1",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.8.1"
   },
   "optionalDependencies": {
     "@storybook/addon-actions": "^6.5.14",
@@ -97,23 +95,14 @@
     "start": "npm run fetch-api && node scripts/start.js",
     "build": "npm run fetch-api && node scripts/build.js",
     "check-types": "tsc",
-    
     "serve": "node serve.js",
-    
     "update-backend": "graphql-codegen init",
     "fetch-api": "graphql-codegen --config codegen.ts",
-    
     "analyze-bundle": "npm run build --profile && npx source-map-explorer ./build/static/js/main.*.js --html ./build/source-map.html",
-    
     "dev-install": "npm ci --include=optional",
     "dev-storybook": "start-storybook -p 6006",
-    "dev-storybook-build": "build-storybook"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "dev-storybook-build": "build-storybook",
+    "prettier": "./prettier-commits.sh"
   },
   "browserslist": {
     "production": [
@@ -185,5 +174,6 @@
   "dependencies": {
     "compression": "^1.7.4",
     "express": "^4.18.2"
-  }
+  },
+  "pre-commit": ["prettier"]
 }
