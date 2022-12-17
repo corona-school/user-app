@@ -324,6 +324,12 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
    Note that this is executed on the Course, not the Subcourse! */
 function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'> & { course?: Pick<Course, 'id'> | null }; refresh: () => void }) {
     const toast = useToast();
+    const { sizes } = useTheme();
+
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
 
     const [submit, { loading }] = useMutation(
         gql(`
@@ -342,7 +348,7 @@ function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse
 
     return (
         <>
-            <Button onPress={doSubmit} disabled={loading}>
+            <Button with={ButtonContainer} onPress={doSubmit} disabled={loading}>
                 Zur Prüfung freigeben
             </Button>
         </>
@@ -352,6 +358,11 @@ function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse
 /* Publishes the Subourse - It will then be visible to pupils which can then join */
 function StudentPublishAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const toast = useToast();
+    const { sizes } = useTheme();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
 
     const [publish, { loading }] = useMutation(
         gql(`
@@ -370,7 +381,7 @@ function StudentPublishAction({ subcourse, refresh }: { subcourse: Pick<Subcours
 
     return (
         <>
-            <Button onPress={doPublish} disabled={loading}>
+            <Button width={ButtonContainer} onPress={doPublish} disabled={loading}>
                 Kurs veröffentlichen
             </Button>
         </>
@@ -543,6 +554,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     width={ButtonContainer}
                     marginBottom={space['0.5']}
                     isDisabled={loading}
+                    variant="outline"
                 >
                     Kurs verlassen
                 </Button>
@@ -643,11 +655,6 @@ function PupilLeaveWaitingListAction({ subcourse, refresh }: { subcourse: Pick<S
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
-
     return (
         <>
             <VStack space={space['0.5']}>
@@ -713,11 +720,6 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
-
     useEffect(() => {
         if (data?.subcourseJoinWaitinglist) {
             setOnWaitingListModal(true);
@@ -756,6 +758,40 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
                     </Modal.Body>
                 </Modal.Content>
             </Modal>
+        </>
+    );
+}
+
+function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id'> }) {
+    const [showMessageModal, setShowMessageModal] = useState(false);
+
+    const { sizes } = useTheme();
+    const toast = useToast();
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
+    const [contact, { loading }] = useMutation(
+        gql(`
+        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!) {
+            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: [] title: $title body: $body)
+        }
+    `)
+    );
+
+    async function doContact(title: string, body: string) {
+        await contact({ variables: { subcourseId: subcourse.id, title, body } });
+        toast.show({ description: 'Benachrichtigung verschickt' });
+        setShowMessageModal(false);
+    }
+
+    return (
+        <>
+            <Button onPress={() => setShowMessageModal(true)} disabled={loading} width={ButtonContainer}>
+                Kursleiter:innen kontaktieren
+            </Button>
+            <SendParticipantsMessageModal isOpen={showMessageModal} onClose={() => setShowMessageModal(false)} onSend={doContact} isDisabled={loading} />
         </>
     );
 }
@@ -933,7 +969,7 @@ const SingleCourse: React.FC = () => {
                     <Box marginBottom={space['1']}>
                         {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
                     </Box>
-                    <>
+                    <Box>
                         {subcourse && course!.courseState === 'allowed' && !subcourse.published && (
                             <StudentPublishAction subcourse={subcourse} refresh={refetch} />
                         )}
@@ -950,6 +986,7 @@ const SingleCourse: React.FC = () => {
                             <StudentSetMeetingUrlAction subcourse={subcourse} refresh={refetch} />
                         )}
 
+                        {subcourse && userType === 'pupil' && course?.allowContact && <PupilContactInstructors subcourse={subcourse} />}
                         {subcourse && userType === 'pupil' && !subcourse.isParticipant && <PupilJoinCourseAction subcourse={subcourse} refresh={refetch} />}
                         {subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}
 
@@ -959,7 +996,7 @@ const SingleCourse: React.FC = () => {
                         {subcourse && userType === 'pupil' && subcourse.isOnWaitingList && (
                             <PupilLeaveWaitingListAction subcourse={subcourse} refresh={refetch} />
                         )}
-                    </>
+                    </Box>
                     <Tabs tabs={tabs} />
                 </Box>
             </WithNavigation>
