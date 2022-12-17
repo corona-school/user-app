@@ -79,7 +79,10 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.8.1"
+    "prettier": "^2.8.1",
+    "eslint": "^8.3.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-webpack-plugin": "^3.1.1"
   },
   "optionalDependencies": {
     "@storybook/addon-actions": "^6.5.14",
@@ -104,6 +107,12 @@
     "dev-storybook-build": "build-storybook",
     "prettier": "./prettier-commits.sh",
     "prettier-all": "prettier --write \"./**.tsx\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
