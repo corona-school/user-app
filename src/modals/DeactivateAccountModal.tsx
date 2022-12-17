@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -29,11 +30,13 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const userType = useUserType();
     const toast = useToast();
 
-    const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(gql`
+    const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(
+        gql(`
         mutation deactiveAccount($reason: String) {
             meDeactivate(reason: $reason)
         }
-    `);
+    `)
+    );
 
     const desc = useMemo(
         () => (userType === 'student' ? t('profile.Deactivate.modal.description.student') : t('profile.Deactivate.modal.description.pupil')),
@@ -64,7 +67,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
             });
 
             onCloseModal && onCloseModal();
-            if (res.data.meDeactivate) {
+            if (res.data?.meDeactivate) {
                 trackEvent({
                     category: 'profil',
                     action: 'click-event',

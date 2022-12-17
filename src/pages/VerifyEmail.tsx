@@ -1,4 +1,5 @@
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { GraphQLError } from 'graphql';
 import { VStack, Heading, Button, Flex, Box, Image, useTheme, useBreakpointValue } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -20,13 +21,16 @@ const VerifyEmail: React.FC<Props> = () => {
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
     const { onLogin } = useApollo();
 
-    const [loginToken, loginResult] = useMutation(gql`
+    const [loginToken, loginResult] = useMutation(
+        gql(`
         mutation LoginTokenOnEmailVerification($token: String!) {
             loginToken(token: $token)
         }
-    `);
+    `)
+    );
 
-    const [meQuery, { data: meData }] = useLazyQuery(gql`
+    const [meQuery, { data: meData }] = useLazyQuery(
+        gql(`
         query GetMyId {
             me {
                 pupil {
@@ -37,7 +41,8 @@ const VerifyEmail: React.FC<Props> = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
     const login = useCallback(async () => {
         const res = (await loginToken({ variables: { token } })) as {

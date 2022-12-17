@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -28,16 +29,19 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const [sendVerification, _sendVerification] = useMutation(gql`
-    mutation RequestVerifyEmail($email: String!) {
-      tokenRequest(email: $email, action: "user-verify-email", redirectTo: "${REDIRECT_OPTIN}")
-    }
-  `);
+    const [sendVerification, _sendVerification] = useMutation(
+        gql(`
+        mutation RequestVerifyEmail($email: String!, $redirectTo: String!) {
+        tokenRequest(email: $email, action: "user-verify-email", redirectTo: $redirectTo)
+        }
+    `)
+    );
 
     const requestEmailVerification = useCallback(async () => {
         const res = await sendVerification({
             variables: {
-                email,
+                email: email!,
+                redirectTo: REDIRECT_OPTIN,
             },
         });
 

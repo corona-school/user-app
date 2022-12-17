@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 import { Text, VStack, Button, Flex, useTheme, Row, Column, Heading, Modal } from 'native-base';
 import { useMemo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
@@ -17,14 +18,16 @@ type Props = {
 const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDeleteTag }) => {
     const { space } = useTheme();
 
-    const { data, loading: isLoading } = useQuery(gql`
+    const { data, loading: isLoading } = useQuery(
+        gql(`
         query GetCourseTags {
             courseTags(category: "revision") {
                 id
                 name
             }
         }
-    `);
+    `)
+    );
 
     const unselectedTags = useMemo(() => data?.courseTags.filter((tag: LFTag) => !selections.includes(tag)), [data?.courseTags, selections]);
 
@@ -45,7 +48,8 @@ const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDel
                             <VStack space={space['1']}>
                                 <Heading>Weitere Tags</Heading>
                                 <Row flex="1" flexWrap={'wrap'}>
-                                    {(data?.courseTags.length > 0 &&
+                                    {(data &&
+                                        data?.courseTags.length > 0 &&
                                         unselectedTags?.map((tag: LFTag) => <TagItem tag={tag} onPress={() => onSelectTag(tag)} />)) || (
                                         <Flex flex="1" justifyContent="center" alignItems="center">
                                             <Text>Keine Tags gefunden</Text>

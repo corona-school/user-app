@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '../gql';
+import { useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
 import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
@@ -25,33 +26,39 @@ export default function Login() {
     const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
-    const [login, loginResult] = useMutation(gql`
+    const [login, loginResult] = useMutation(
+        gql(`
         mutation login($password: String!, $email: String!) {
             loginPassword(password: $password, email: $email)
         }
-    `);
+    `)
+    );
 
     const navigate = useNavigate();
     const { trackPageView, trackEvent } = useMatomo();
 
     const [determineLoginOptions, _determineLoginOptions] = useMutation(
-        gql`
+        gql(`
             mutation determineLoginOptions($email: String!) {
                 userDetermineLoginOptions(email: $email)
             }
-        `
+        `)
     );
 
-    const [resetPW, _resetPW] = useMutation(gql`
-  mutation PasswordReset($email: String!) {
-    tokenRequest(email: $email, action: "user-password-reset", redirectTo: "${REDIRECT_PASSWORD}")
-  }
-`);
-    const [sendToken, _sendToken] = useMutation(gql`
-  mutation Authenticate($email: String!) {
-    tokenRequest(email: $email, action: "user-authenticate", redirectTo: "${REDIRECT_LOGIN}")
-  }
-`);
+    const [resetPW, _resetPW] = useMutation(
+        gql(`
+        mutation PasswordReset($email: String!, $redirectTo: String!) {
+            tokenRequest(email: $email, action: "user-password-reset", redirectTo: $redirectTo)
+        }
+    `)
+    );
+    const [sendToken, _sendToken] = useMutation(
+        gql(`
+        mutation Authenticate($email: String!, $redirectTo: String!) {
+            tokenRequest(email: $email, action: "user-authenticate", redirectTo: $redirectTo)
+        }
+    `)
+    );
 
     useEffect(() => {
         if (sessionState === 'logged-in') navigate('/');
@@ -88,11 +95,12 @@ export default function Login() {
     const requestToken = useCallback(async () => {
         const res = await sendToken({
             variables: {
-                email: email,
+                email: email!,
+                redirectTo: REDIRECT_LOGIN,
             },
         });
 
-        if (res.data.tokenRequest) {
+        if (res.data!.tokenRequest) {
             setShowEmailSent(true);
         } else if (res.errors) {
             if (res.errors[0].message.includes('Unknown User')) {
@@ -107,8 +115,8 @@ export default function Login() {
         loginButton();
         const result = await login({
             variables: {
-                email: email,
-                password: password,
+                email: email!,
+                password: password!,
             },
         });
         onLogin(result);
@@ -117,10 +125,10 @@ export default function Login() {
     const getLoginOption = useCallback(async () => {
         if (!email || email.length < 6) return;
         const res = await determineLoginOptions({ variables: { email } });
-        if (res.data.userDetermineLoginOptions === 'password') {
+        if (res.data!.userDetermineLoginOptions === 'password') {
             setShowPasswordField(true);
             setLoginEmail(email);
-        } else if (res.data.userDetermineLoginOptions === 'email') {
+        } else if (res.data!.userDetermineLoginOptions === 'email') {
             requestToken();
         } else {
             setShowNoAccountModal(true);
@@ -150,10 +158,11 @@ export default function Login() {
             const res = await resetPW({
                 variables: {
                     email: pw,
+                    redirectTo: REDIRECT_PASSWORD,
                 },
             });
 
-            if (res.data.tokenRequest) {
+            if (res.data!.tokenRequest) {
                 setShowPasswordResetResult('success');
             } else if (res.errors) {
                 if (res.errors[0].message.includes('Unknown User')) {

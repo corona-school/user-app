@@ -5,7 +5,8 @@ import { NavigationItems } from '../types/navigation';
 import CSSWrapper from './CSSWrapper';
 import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../gql';
+import { useQuery } from '@apollo/client';
 
 type Props = {
     show?: boolean;
@@ -18,11 +19,11 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
     const { rootPath, setRootPath } = useLernfair();
 
     const { data, loading } = useQuery(
-        gql`
+        gql(`
             query GetRoles {
                 myRoles
             }
-        `
+        `)
     );
 
     const disableGroup: boolean = useMemo(() => {
