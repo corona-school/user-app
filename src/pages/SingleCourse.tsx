@@ -264,6 +264,21 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
 
     const [showMessageModal, setShowMessageModal] = useState(false);
 
+    const { data: participantsData } = useQuery(
+        gql(`
+        query SubcourseParticipantsForContact($subcourseId: Int!) {
+            subcourse(subcourseId: $subcourseId) {
+                participants { 
+                    id
+                    firstname
+                    lastname
+                }
+            }
+        }
+    `),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
     const [sendMessage, _sendMessage] = useMutation(
         gql(`
             mutation sendMessage($subject: String!, $message: String!, $subcourseId: Int!, $participants: [Int!]!) {
@@ -279,16 +294,14 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
 
     const onSendMessage = useCallback(
         async (subject: string, message: string) => {
-            if (subject && message) {
-                const ps = [] as any; // TODO
-
+            if (subject && message && participantsData) {
                 try {
                     await sendMessage({
                         variables: {
                             subject,
                             message,
                             subcourseId: subcourse.id,
-                            participants: ps,
+                            participants: participantsData.subcourse!.participants.map((it) => it.id),
                         },
                     });
                     toast.show({ description: 'Nachricht erfolgreich versendet' });
@@ -300,7 +313,7 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                 }
             }
         },
-        [subcourse.id, sendMessage, toast]
+        [subcourse.id, sendMessage, toast, participantsData]
     );
 
     return (
