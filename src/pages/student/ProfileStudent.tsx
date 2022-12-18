@@ -1,20 +1,20 @@
 import {
-    Heading,
-    useTheme,
-    VStack,
-    Row,
-    Column,
-    Text,
-    Modal,
-    FormControl,
-    Input,
-    Button,
-    TextArea,
-    Container,
-    useBreakpointValue,
-    Flex,
-    useToast,
     Box,
+    Button,
+    Column,
+    Container,
+    Flex,
+    FormControl,
+    Heading,
+    Input,
+    Modal,
+    Row,
+    Text,
+    TextArea,
+    useBreakpointValue,
+    useTheme,
+    useToast,
+    VStack,
 } from 'native-base';
 import NotificationAlert from '../../components/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
@@ -26,17 +26,13 @@ import UserProgress from '../../widgets/UserProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gql } from './../../gql';
+import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import useLernfair from '../../hooks/useLernfair';
-import CertificateGroupIcon from '../../assets/icons/lernfair/lf-certificate-group.svg';
-import CertificateMatchingIcon from '../../assets/icons/lernfair/lf-certificate-matching.svg';
-
-import { LFCertificate } from '../../types/lernfair/Certificate';
 import Card from '../../components/Card';
 
 type Props = {};
@@ -133,25 +129,16 @@ const ProfileStudent: React.FC<Props> = () => {
     }, [data?.me]);
 
     const profileCompleteness = useMemo(() => {
-        const max = 4.0;
+        const max = 5.0;
         let complete = 0.0;
 
         data?.me.firstname && data?.me.lastname && (complete += 1);
         (data?.me.student!.aboutMe?.length ?? 0) > 0 && (complete += 1);
         data?.me?.student?.languages?.length && (complete += 1);
         data?.me?.student?.state && (complete += 1);
-        // data?.me?.student?.schooltype && (complete += 1)
-        // data?.me?.student?.gradeAsInt && (complete += 1)
         (data?.me?.student?.subjectsFormatted?.length ?? 0) > 0 && (complete += 1);
         return Math.floor((complete / max) * 100);
-    }, [
-        data?.me?.firstname,
-        data?.me?.lastname,
-        data?.me?.student?.aboutMe?.length,
-        data?.me?.student?.languages?.length,
-        data?.me?.student?.state,
-        data?.me?.student?.subjectsFormatted?.length,
-    ]);
+    }, [data?.me?.firstname, data?.me?.lastname, data?.me?.student]);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -467,6 +454,7 @@ type CertificateProps = {
     onPressDetails?: () => void;
     isDisabled?: boolean;
 };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CertificateOverviewRow: React.FC<CertificateProps> = ({ title, Icon, certificate, onPressDownload, onPressDetails, isDisabled }) => {
     const { space } = useTheme();
     return (
