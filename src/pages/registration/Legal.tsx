@@ -71,27 +71,19 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                         </Text>
                     </Checkbox>
 
-          <Checkbox value={'usa'} alignItems="flex-start">
-            <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA">
-              <Text>
-                Ich stimme ferner ausdrücklich der Verarbeitung meiner
-                personenbezogenen Daten über unsere in den USA sitzenden
-                Auftragsverarbeiter Google und Heroku zu, die die Einhaltung des
-                europäischen Datenschutzniveaus aufgrund der Möglichkeit von
-                Anfragen von US-Nachrichtendiensten nicht gewährleisten können.
-                Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln
-                abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart,
-                Art. 46 Abs. 2 lit. c DSGVO.
-              </Text>
-            </Accordion>
-          </Checkbox>
+                    <Checkbox value={'usa'} alignItems="flex-start">
+                        <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA" required>
+                            <Text>
+                                Ich stimme ferner ausdrücklich der Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden
+                                Auftragsverarbeiter Google und Heroku zu, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von
+                                Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln
+                                abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.
+                            </Text>
+                        </Accordion>
+                    </Checkbox>
 
-          {errors['dsgvo'] && (
-            <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />
-          )}
-          {errors['usa'] && (
-            <AlertMessage content="Bitte bestätige die Datenverarbeitung durch unsere Auftragsverarbeiter in den USA." />
-          )}
+                    {errors['dsgvo'] && <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />}
+                    {errors['usa'] && <AlertMessage content="Bitte bestätige die Datenverarbeitung durch unsere Auftragsverarbeiter in den USA." />}
 
                     {userType === 'student' && (
                         <VStack space={space['0.5']} mt={space['1']}>
