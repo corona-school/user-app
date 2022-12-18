@@ -1,4 +1,4 @@
-import { Box, Heading, useTheme, VStack, Row, Column, Text, Modal, FormControl, Input, Button, TextArea, useBreakpointValue, Flex } from 'native-base';
+import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -9,15 +9,16 @@ import UserProgress from '../../widgets/UserProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import useLernfair from '../../hooks/useLernfair';
+import { gql } from '../../gql';
 
 type Props = {};
 
-const query = gql`
+const query = gql(`
     query PupilProfile {
         me {
             firstname
@@ -34,7 +35,7 @@ const query = gql`
             }
         }
     }
-`;
+`);
 
 const Profile: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
@@ -60,20 +61,20 @@ const Profile: React.FC<Props> = () => {
     });
 
     const [changeName, _changeName] = useMutation(
-        gql`
+        gql(`
             mutation changeName($firstname: String!, $lastname: String!) {
                 meUpdate(update: { firstname: $firstname, lastname: $lastname })
             }
-        `,
+        `),
         { refetchQueries: [query] }
     );
 
     const [changeAboutMe, _changeAboutMe] = useMutation(
-        gql`
+        gql(`
             mutation changeAboutMePupil($aboutMe: String!) {
                 meUpdate(update: { pupil: { aboutMe: $aboutMe } })
             }
-        `,
+        `),
         { refetchQueries: [query] }
     );
 
@@ -87,7 +88,7 @@ const Profile: React.FC<Props> = () => {
         if (data?.me) {
             setFirstName(data?.me?.firstname);
             setLastName(data?.me?.lastname);
-            setAboutMe(data?.me?.pupil?.aboutMe);
+            setAboutMe(data?.me?.pupil?.aboutMe ?? '');
         }
     }, [data?.me]);
 
@@ -213,7 +214,7 @@ const Profile: React.FC<Props> = () => {
                                 }}
                             >
                                 <Text>
-                                    {_changeName?.data?.me?.firstname || data?.me?.firstname} {_changeName?.data?.me?.lastname || data?.me?.lastname}
+                                    {data?.me?.firstname} {data?.me?.lastname}
                                 </Text>
                             </ProfileSettingItem>
 
@@ -285,7 +286,7 @@ const Profile: React.FC<Props> = () => {
                                             <CSSWrapper className="profil-tab-link">
                                                 <IconTagList
                                                     isDisabled
-                                                    textIcon={data?.me?.pupil?.gradeAsInt}
+                                                    textIcon={`${data?.me?.pupil?.gradeAsInt}`}
                                                     text={t('lernfair.schoolclass', {
                                                         class: data?.me?.pupil?.gradeAsInt,
                                                     })}
@@ -328,7 +329,7 @@ const Profile: React.FC<Props> = () => {
                                 onPress={() => {
                                     setNameModalVisible(false);
                                     changeName({
-                                        variables: { firstname: firstName, lastname: lastName },
+                                        variables: { firstname: firstName ?? '', lastname: lastName ?? '' },
                                     });
                                 }}
                             >
