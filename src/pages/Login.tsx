@@ -31,7 +31,8 @@ export default function Login() {
         mutation login($password: String!, $email: String!) {
             loginPassword(password: $password, email: $email)
         }
-    `)
+    `),
+        { errorPolicy: 'all' }
     );
 
     const navigate = useNavigate();
@@ -120,7 +121,7 @@ export default function Login() {
             },
         });
         onLogin(result);
-    }, [email, login, loginButton, navigate, password]);
+    }, [email, login, onLogin, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
         if (!email || email.length < 6) return;
