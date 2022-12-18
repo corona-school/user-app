@@ -153,7 +153,8 @@ const AppointmentsArchive: React.FC<Props> = () => {
                                                         variant="horizontal"
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        date={lecture.start}
+                                                        startDate={lecture.start}
+                                                        duration={lecture.duration}
                                                         countCourse={sub.lectures.length}
                                                         onPressToCourse={() => navigate(`/single-course/${sub.id}`)}
                                                         image={sub.course.image}

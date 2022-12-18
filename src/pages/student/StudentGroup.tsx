@@ -123,7 +123,8 @@ const StudentGroup: React.FC = () => {
                     variant="horizontal"
                     description={subcourse.course.description}
                     tags={subcourse.course.tags}
-                    date={(showDate && subcourse.firstLecture?.start) || ''}
+                    startDate={(showDate && subcourse.firstLecture?.start) || ''}
+                    duration={subcourse.firstLecture?.duration}
                     countCourse={subcourse.lectures.length}
                     onPressToCourse={() => navigate(`/single-course/${subcourse.id}`)}
                     image={subcourse.course.image ?? undefined}

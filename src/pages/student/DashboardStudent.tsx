@@ -169,26 +169,25 @@ const DashboardStudent: React.FC<Props> = () => {
 
         const courses = publishedSubcourses.filter((it) => !it.ongoingLecture);
 
-        courses.sort((a, b) => a.nextLecture!.start.localeCompare(b.nextLecture!.start));
+        courses.sort((a, b) => a.nextLecture?.start.localeCompare(b.nextLecture?.start));
 
         return courses;
     }, [publishedSubcourses]);
 
-    // TODO: Optimizable?
     const nextAppointment = useMemo(() => {
-        if (!data?.me?.student) return undefined;
+        if (!publishedSubcourses) return undefined;
 
-        const firstOngoing = data.me.student.subcoursesInstructing.find((it) => !!it.ongoingLecture);
+        const firstOngoing = publishedSubcourses.find((it) => !!it.ongoingLecture);
         if (firstOngoing) {
             return [firstOngoing.ongoingLecture, firstOngoing] as const;
         }
 
-        const next = data.me.student.subcoursesInstructing
+        const next = publishedSubcourses
             .filter((it) => !!it.nextLecture)
-            .reduce((a, b) => ((a?.nextLecture!.start ?? '') > (b?.nextLecture!.start ?? '') ? a : b));
+            .reduce((a, b) => ((a?.nextLecture!.start ?? '') < (b?.nextLecture!.start ?? '') ? a : b));
 
         return [next.nextLecture!, next] as const;
-    }, [data?.me?.student, sortedPublishedSubcourses]);
+    }, [data?.me?.student, publishedSubcourses]);
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
@@ -292,7 +291,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                             navigate(`/single-course/${nextAppointment[1].id}`);
                                         }}
                                         tags={nextAppointment[1].course?.tags}
-                                        date={nextAppointment[0]?.start || ''}
+                                        startDate={nextAppointment[0]?.start || ''}
+                                        duration={nextAppointment[0]?.duration}
                                         isTeaser={true}
                                         image={nextAppointment[1]?.course?.image ?? undefined}
                                         title={nextAppointment[1].course?.name || ''}
@@ -330,7 +330,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     key={`appointment-${el.id}`}
                                                     description={course.description}
                                                     tags={course.tags}
-                                                    date={firstLecture.start}
+                                                    startDate={firstLecture.start}
+                                                    duration={firstLecture.duration}
                                                     image={course.image ?? undefined}
                                                     title={course.name}
                                                 />
@@ -360,7 +361,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                         key={index}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        date={firstLecture.start}
+                                                        startDate={firstLecture.start}
+                                                        duration={firstLecture.duration}
                                                         countCourse={sub.lectures.length}
                                                         showTrafficLight
                                                         trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}

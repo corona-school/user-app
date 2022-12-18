@@ -31,7 +31,8 @@ import CourseTrafficLamp from './CourseTrafficLamp';
 
 type Props = {
     tags?: LFTag[];
-    date?: string;
+    startDate?: string;
+    duration?: number; // in minutes
     title: string;
     description: string;
     child?: string;
@@ -53,9 +54,43 @@ type Props = {
     trafficLightStatus?: TrafficStatus;
 };
 
+function AppointmentDate({ startDate, duration, textColor }: { startDate: string; duration: number; textColor: 'lightText' | 'darkText' }) {
+    const startDateTime = DateTime.fromISO(startDate);
+    const endDateTime = DateTime.fromISO(startDate).plus({ minutes: duration });
+
+    if (endDateTime.diffNow().toMillis() < 0) {
+        return <Text color={textColor}>Schon vorbei</Text>;
+    }
+
+    if (startDateTime.diffNow().toMillis() < 0) {
+        const endsIn = toTimerString(endDateTime.toMillis(), Date.now());
+
+        return (
+            <>
+                <Text color={textColor}>Endet: </Text>
+                <Text bold color="primary.400">
+                    {endsIn}
+                </Text>
+            </>
+        );
+    }
+
+    const startsIn = toTimerString(Date.now(), startDateTime.toMillis());
+
+    return (
+        <>
+            <Text color={textColor}>Startet: </Text>
+            <Text bold color="primary.400">
+                {startsIn}
+            </Text>
+        </>
+    );
+}
+
 const AppointmentCard: React.FC<Props> = ({
     tags,
-    date: _date,
+    startDate,
+    duration,
     title,
     countCourse,
     description,
@@ -77,17 +112,6 @@ const AppointmentCard: React.FC<Props> = ({
     videoButton,
 }) => {
     const { space, sizes } = useTheme();
-    const [remainingTime, setRemainingTime] = useState<string>('00:00');
-
-    const date = _date && DateTime.fromISO(_date);
-
-    useEffect(() => {
-        date && setRemainingTime(toTimerString(date.toMillis(), Date.now()));
-    }, [date]);
-
-    useInterval(() => {
-        date && setRemainingTime(toTimerString(date.toMillis(), Date.now()));
-    }, 1000);
 
     const textColor = useMemo(() => (isTeaser ? 'lightText' : 'darkText'), [isTeaser]);
 
@@ -177,26 +201,23 @@ const AppointmentCard: React.FC<Props> = ({
                             </Box>
 
                             <Box padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px">
-                                {!isTeaser && date && (
+                                {!isTeaser && startDate && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
-                                            <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
+                                            <Text color={textColor}>{DateTime.fromISO(startDate).toFormat('dd.MM.yyyy')}</Text>
                                             <Text color={textColor}>•</Text>
-                                            <Text color={textColor}>{date.toFormat('HH:mm')} Uhr</Text>
+                                            <Text color={textColor}>{DateTime.fromISO(startDate).toFormat('HH:mm')} Uhr</Text>
                                         </Row>
                                     </>
                                 )}
-                                {date && isTeaser && (
+                                {startDate && isTeaser && (
                                     <Row marginBottom={space['1']} alignItems="center">
                                         <Column marginRight="10px">
                                             <Text>{<LFTimerIcon />}</Text>
                                         </Column>
                                         <Column>
                                             <Row>
-                                                <Text color={textColor}>Startet: </Text>
-                                                <Text bold color="primary.400">
-                                                    {remainingTime}
-                                                </Text>
+                                                <AppointmentDate startDate={startDate} duration={duration ?? 0} textColor={textColor} />
                                             </Row>
                                         </Column>
                                     </Row>
@@ -277,12 +298,12 @@ const AppointmentCard: React.FC<Props> = ({
 
                         <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
                             <Row space={1} marginTop={space['0.5']}>
-                                {date && (
+                                {startDate && (
                                     <Text>
-                                        {'Ab'} {date.toFormat('dd.MM.yyyy')}
+                                        {'Ab'} {DateTime.fromISO(startDate).toFormat('dd.MM.yyyy')}
                                     </Text>
                                 )}
-                                {date && countCourse && (
+                                {startDate && countCourse && (
                                     <>
                                         <Text>•</Text>
                                         <Text>

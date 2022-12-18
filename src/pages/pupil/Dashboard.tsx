@@ -298,7 +298,8 @@ const Dashboard: React.FC<Props> = () => {
                                             navigate(`/single-course/${sortedAppointments[0]?.course.id}`);
                                         }}
                                         tags={highlightedAppointment?.course?.course?.tags}
-                                        date={highlightedAppointment?.lecture.start}
+                                        startDate={highlightedAppointment?.lecture.start}
+                                        duration={highlightedAppointment?.lecture.duration}
                                         image={highlightedAppointment?.course.course?.image}
                                         title={highlightedAppointment?.course.course?.name}
                                         description={highlightedAppointment?.course.course?.description?.substring(0, 64)}
@@ -330,7 +331,8 @@ const Dashboard: React.FC<Props> = () => {
                                                     key={`appointment-${course.id}`}
                                                     description={course.course.description}
                                                     tags={course.course.tags}
-                                                    date={lecture.start}
+                                                    startDate={lecture.start}
+                                                    duration={lecture.duration}
                                                     image={course.course.image}
                                                     title={course.course.name}
                                                 />

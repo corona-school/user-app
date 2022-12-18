@@ -225,7 +225,8 @@ const PupilGroup: React.FC<Props> = () => {
                                                         variant="horizontal"
                                                         description={course.course.description}
                                                         tags={course.course.tags}
-                                                        date={course.firstLecture?.start}
+                                                        startDate={course.firstLecture?.start}
+                                                        duration={course.firstLecture?.duration}
                                                         countCourse={course.lectures?.length}
                                                         onPressToCourse={() => navigate(`/single-course/${course.id}`)}
                                                         image={course.course.image}

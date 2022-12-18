@@ -157,7 +157,7 @@ const CourseArchive: React.FC<Props> = () => {
                                                         variant="horizontal"
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        date={firstDate?.toString()}
+                                                        startDate={firstDate?.toString()}
                                                         countCourse={sub.lectures.length}
                                                         onPressToCourse={() => {
                                                             trackEvent({
