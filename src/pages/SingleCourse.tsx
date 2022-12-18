@@ -80,7 +80,8 @@ function JoinMeetingAction({
         if (!subcourse.nextLecture) {
             return true;
         }
-        if (DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes > 60) {
+        const tillNextLecture = DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes;
+        if (tillNextLecture > 60) {
             return true;
         }
 
@@ -107,11 +108,11 @@ function JoinMeetingAction({
         <>
             <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
                 <Tooltip
-                    isDisabled={disableMeetingButton}
+                    isDisabled={!disableMeetingButton}
                     maxWidth={300}
                     label={t(userType === 'student' ? 'course.meeting.hint.student' : 'course.meeting.hint.pupil')}
                 >
-                    <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading}>
+                    <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={disableMeetingButton || _joinMeeting.loading}>
                         Videochat beitreten
                     </Button>
                 </Tooltip>
