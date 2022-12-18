@@ -32,7 +32,6 @@ import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
-import useLernfair from '../../hooks/useLernfair';
 import Card from '../../components/Card';
 
 type Props = {};
@@ -67,7 +66,6 @@ const ProfileStudent: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { rootPath } = useLernfair();
     const { trackPageView } = useMatomo();
     const toast = useToast();
     const [firstName, setFirstName] = useState<string>();
@@ -197,7 +195,7 @@ const ProfileStudent: React.FC<Props> = () => {
             <WithNavigation
                 showBack
                 isLoading={loading}
-                onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
+                onBack={() => navigate(-1)}
                 headerTitle={t('profile.title')}
                 headerContent={
                     <Flex
