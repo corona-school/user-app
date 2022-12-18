@@ -10,7 +10,7 @@ import Utility, { getTrafficStatus } from '../Utility';
 import { gql } from '../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
@@ -48,6 +48,7 @@ function JoinMeetingAction({
     subcourse: Pick<Subcourse, 'id'> & { lectures?: { start: string; duration: number }[] | null };
     refresh: () => void;
 }) {
+    const [disableMeetingButton, setDisableMeetingButton] = useState(true);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const ButtonContainer = useBreakpointValue({
@@ -67,12 +68,14 @@ function JoinMeetingAction({
         { variables: { subcourseId: subcourse.id } }
     );
 
-    const disableMeetingButton: boolean = useMemo(() => {
-        const currentOrNextLecture = subcourse.lectures?.find((lecture) => {
-            const minutes = DateTime.fromISO(lecture.start).diffNow('minutes').minutes;
-            return minutes < 60 && minutes > -lecture.duration;
-        });
-        return !currentOrNextLecture;
+    useEffect(() => {
+        setInterval(() => {
+            const currentOrNextLecture = subcourse.lectures?.find((lecture) => {
+                const minutes = DateTime.fromISO(lecture.start).diffNow('minutes').minutes;
+                return minutes < 60 && minutes > -lecture.duration;
+            });
+            setDisableMeetingButton(!currentOrNextLecture);
+        }, 1000);
     }, [subcourse]);
 
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
