@@ -1,28 +1,26 @@
-import { Box, Heading, useTheme, Text, Image, Column, Row, Button, useBreakpointValue, VStack, Modal, useToast, Tooltip } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
 import Tag from '../components/Tag';
 import WithNavigation from '../components/WithNavigation';
-import { LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import CourseTrafficLamp from '../widgets/CourseTrafficLamp';
 
-import Utility, { getFirstLectureFromSubcourse, getTrafficStatus } from '../Utility';
-import { gql } from './../gql';
+import Utility, { getTrafficStatus } from '../Utility';
+import { gql } from '../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Participant as LFParticipant } from '../types/lernfair/User';
 import AlertMessage from '../widgets/AlertMessage';
-import { useUser, useUserType } from '../hooks/useApollo';
+import { useUserType } from '../hooks/useApollo';
 
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
 import SetMeetingLinkModal from '../modals/SetMeetingLinkModal';
 import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal';
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import { Course, Participant, Subcourse } from '../gql/graphql';
+import { Course, Subcourse } from '../gql/graphql';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -47,7 +45,7 @@ function JoinMeetingAction({
     subcourse,
     refresh,
 }: {
-    subcourse: Pick<Subcourse, 'id'> & { nextLecture?: { start: string; duration: number } | null };
+    subcourse: Pick<Subcourse, 'id'> & { lectures?: { start: string; duration: number }[] | null };
     refresh: () => void;
 }) {
     const { t } = useTranslation();
@@ -70,7 +68,11 @@ function JoinMeetingAction({
     );
 
     const disableMeetingButton: boolean = useMemo(() => {
-        return !subcourse.nextLecture || DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes > 60;
+        const currentOrNextLecture = subcourse.lectures?.find((lecture) => {
+            const minutes = DateTime.fromISO(lecture.start).diffNow('minutes').minutes;
+            return minutes < 60 && minutes > -lecture.duration;
+        });
+        return !currentOrNextLecture;
     }, [subcourse]);
 
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
@@ -93,7 +95,7 @@ function JoinMeetingAction({
         <>
             <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
                 <Tooltip isDisabled={disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                    <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading}>
+                    <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading || disableMeetingButton}>
                         Videochat beitreten
                     </Button>
                 </Tooltip>
