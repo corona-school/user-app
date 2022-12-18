@@ -8,7 +8,7 @@ type Props = {
     name: string;
     subjects: LFSubject[];
     schooltype?: string;
-    schoolclass?: number;
+    schoolclass?: string;
     isDark?: boolean;
     button?: ReactNode;
     status?: string;
