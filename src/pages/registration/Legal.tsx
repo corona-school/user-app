@@ -96,7 +96,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
             </Text>
           </Checkbox>
 
-          <Row alignItems="flex-start" mt={space['0.5']} ml="28px">
+          <Checkbox value={'usa'} alignItems="flex-start">
             <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA">
               <Text>
                 Ich stimme ferner ausdrücklich der Verarbeitung meiner
@@ -109,10 +109,13 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                 Art. 46 Abs. 2 lit. c DSGVO.
               </Text>
             </Accordion>
-          </Row>
+          </Checkbox>
 
           {errors['dsgvo'] && (
             <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />
+          )}
+          {errors['usa'] && (
+            <AlertMessage content="Bitte bestätige die Datenverarbeitung durch unsere Auftragsverarbeiter in den USA." />
           )}
 
           {userType === 'student' && (
