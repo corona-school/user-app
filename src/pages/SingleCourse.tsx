@@ -47,11 +47,15 @@ function JoinMeetingAction({
     subcourse,
     refresh,
 }: {
-    subcourse: Pick<Subcourse, 'id'> & { nextLecture?: { start: string; duration: number } | null };
+    subcourse: Pick<Subcourse, 'id'> & {
+        nextLecture?: { start: string; duration: number } | null;
+        ongoingLecture?: { start: string; duration: number } | null;
+    };
     refresh: () => void;
 }) {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
+    const userType = useUserType();
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -70,7 +74,17 @@ function JoinMeetingAction({
     );
 
     const disableMeetingButton: boolean = useMemo(() => {
-        return !subcourse.nextLecture || DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes > 60;
+        if (subcourse.ongoingLecture) {
+            return false;
+        }
+        if (!subcourse.nextLecture) {
+            return true;
+        }
+        if (DateTime.fromISO(subcourse.nextLecture.start).diffNow('minutes').minutes > 60) {
+            return true;
+        }
+
+        return false;
     }, [subcourse]);
 
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
@@ -92,7 +106,11 @@ function JoinMeetingAction({
     return (
         <>
             <VStack space={space['0.5']} py={space['1']} maxWidth={ContainerWidth}>
-                <Tooltip isDisabled={disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                <Tooltip
+                    isDisabled={disableMeetingButton}
+                    maxWidth={300}
+                    label={t(userType === 'student' ? 'course.meeting.hint.student' : 'course.meeting.hint.pupil')}
+                >
                     <Button width={ButtonContainer} onPress={getMeetingLink} isDisabled={_joinMeeting.loading}>
                         Videochat beitreten
                     </Button>
@@ -827,6 +845,10 @@ const SingleCourse: React.FC = () => {
             participantsCount
             maxParticipants
             nextLecture{
+                start
+                duration
+            }
+            ongoingLecture {
                 start
                 duration
             }
