@@ -1,8 +1,9 @@
-import { gql, useMutation } from "@apollo/client";
-import { AlertDialog, Button } from "native-base";
-import React, { ErrorInfo, useEffect, useRef, useState } from "react";
-import useApollo from "./hooks/useApollo";
-import { getLastLogs } from "./log";
+import { gql } from './gql';
+import { useMutation } from '@apollo/client';
+import { AlertDialog, Button } from 'native-base';
+import React, { ErrorInfo, useEffect, useRef, useState } from 'react';
+import useApollo from './hooks/useApollo';
+import { getLastLogs } from './log';
 
 // c.f. https://reactjs.org/docs/error-boundaries.html
 type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
@@ -10,18 +11,17 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     state = { hasError: false };
 
     constructor(props: ErrorBoundaryProps) {
-      super(props);
+        super(props);
     }
-  
+
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         this.props.onError(error, errorInfo);
         this.setState({ hasError: true });
     }
 
     render() {
-      if (!this.state.hasError)
-        return this.props.children;
-      return null;
+        if (!this.state.hasError) return this.props.children;
+        return null;
     }
 }
 
@@ -29,11 +29,13 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     const { client } = useApollo();
     const [issue, setIssue] = useState<string | null>(null);
 
-    const [reportToBackend] = useMutation(gql`
-        mutation ReportIssue($userAgent: String!, $logs: [String!]!, $stack: String!, $message: String!, $issueTag: String!) { 
-	        userReportIssue(userAgent: $userAgent logs: $logs errorStack: $stack, errorMessage: $message issueTag: $issueTag)
+    const [reportToBackend] = useMutation(
+        gql(`
+        mutation ReportIssue($userAgent: String!, $logs: [String!]!, $stack: String!, $message: String!, $issueTag: String!) {
+            userReportIssue(userAgent: $userAgent, logs: $logs, errorStack: $stack, errorMessage: $message, issueTag: $issueTag)
         }
-    `);
+    `)
+    );
 
     function reportIssue(error: Error, errorInfo: ErrorInfo) {
         if (process.env.NODE_ENV !== 'production') return;
@@ -49,7 +51,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                 logs: getLastLogs(),
                 stack: `Error Stack:\n${error.stack}\n\nReact Stack:\n${errorInfo.componentStack}`,
                 message: error.message,
-            }
+            },
         });
 
         setIssue(issueTag);
@@ -58,10 +60,16 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     function contactSupport() {
         window.open(`mailto:support@lern-fair.de?subject=Tech-Issue ${issue}`, '_blank');
     }
-    
+
     useEffect(() => {
-        const errorHandler = (event: ErrorEvent) => { reportIssue(event.error, { componentStack: "unknown error" }); return true };
-        const unhandledHandler = (event: PromiseRejectionEvent) => { reportIssue(event.reason, { componentStack: "unhandled rejection"}); return true };
+        const errorHandler = (event: ErrorEvent) => {
+            reportIssue(event.error, { componentStack: 'unknown error' });
+            return true;
+        };
+        const unhandledHandler = (event: PromiseRejectionEvent) => {
+            reportIssue(event.reason, { componentStack: 'unhandled rejection' });
+            return true;
+        };
 
         window.addEventListener('error', errorHandler);
         window.addEventListener('unhandledrejection', unhandledHandler);
@@ -74,15 +82,14 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
 
     const closeRef = useRef(null);
 
-    return <>
-        <AlertDialog isOpen={!!issue} onClose={() => window.location.reload()} leastDestructiveRef={closeRef}>
+    return (
+        <>
+            <AlertDialog isOpen={!!issue} onClose={() => window.location.reload()} leastDestructiveRef={closeRef}>
                 <AlertDialog.Content>
-                    <AlertDialog.Header>
-                        Ein Fehler ist aufgetreten
-                    </AlertDialog.Header>
+                    <AlertDialog.Header>Ein Fehler ist aufgetreten</AlertDialog.Header>
                     <AlertDialog.Body>
-                        Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler.
-                        Solltest du Fragen haben, kontaktiere den Support
+                        Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere
+                        den Support
                     </AlertDialog.Body>
                     <AlertDialog.Footer>
                         <Button.Group direction="column" space={2}>
@@ -96,8 +103,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                     </AlertDialog.Footer>
                 </AlertDialog.Content>
             </AlertDialog>
-            <ErrorBoundary onError={reportIssue}>
-                {children}
-            </ErrorBoundary>
-    </>;
+            <ErrorBoundary onError={reportIssue}>{children}</ErrorBoundary>
+        </>
+    );
 }

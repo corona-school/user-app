@@ -1,7 +1,5 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import CourseOfferCard from "./CourseOfferCard";
-import { NativeBaseProvider } from "native-base";
-import Theme from "../Theme";
+import { Meta, Story } from '@storybook/addon-docs';
+import CourseOfferCard from './CourseOfferCard';
 
 <Meta title="CourseOfferCard" component={CourseOfferCard} />
 
@@ -9,8 +7,8 @@ import Theme from "../Theme";
 
 This is how an empty appointment card looks like:
 
-* unused
+-   unused
 
 <NativeBaseProvider theme={Theme}>
-  <CourseOfferCard title="Test" tags={["Mathe", "Deutsch"]} date={new Date()} />
+    <CourseOfferCard title="Test" tags={['Mathe', 'Deutsch']} date={new Date()} />
 </NativeBaseProvider>
