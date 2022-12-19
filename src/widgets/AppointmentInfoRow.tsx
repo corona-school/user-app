@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon';
-import { Text, VStack, Heading, Row, useTheme, Link } from 'native-base';
+import { View, Text, VStack, Heading, Row, useTheme, Link } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import { Lecture } from '../pages/CreateCourse';
 import { LFLecture } from '../types/lernfair/Course';
+import Utility from '../Utility';
 
 type Props = {
     lecture: LFLecture;
