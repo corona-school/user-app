@@ -32,4 +32,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# ide
 /.idea
+
+# Storybook
+/storybook-static
+

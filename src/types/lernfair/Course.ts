@@ -1,50 +1,50 @@
-import { LFDecision } from './Decision'
-import { Pupil } from './User'
+import { LFDecision } from './Decision';
+import { LFPupil } from './User';
 
 export type LFCourse = {
-  subject: string
-  id?: string
-  name: string
-  description: string
-  tags?: LFTag[]
-  image?: string
-  allowContact?: boolean
-}
+    subject: string;
+    id?: string;
+    name: string;
+    description: string;
+    tags?: LFTag[];
+    image?: string;
+    allowContact?: boolean;
+};
 export interface LFSubCourse {
-  id?: string
-  lectures: LFLecture[]
-  image?: string
-  isParticipant?: boolean
-  participants?: Pupil[]
-  participantsAsPupil?: Pupil[]
-  maxParticipants?: number
-  participantsCount?: number
-  course: LFCourse
-  canJoin?: LFDecision
-  isOnWaitingList?: boolean
-  published?: boolean
-  joinAfterStart?: boolean
-  instructors?: LFInstructor[]
-  firstLecture?: LFLecture
-  minGrade?: number
-  maxGrade?: number
+    id?: number;
+    lectures: LFLecture[];
+    image?: string;
+    isParticipant?: boolean;
+    participants?: LFPupil[];
+    participantsAsPupil?: LFPupil[];
+    maxParticipants?: number;
+    participantsCount?: number;
+    course: LFCourse;
+    canJoin?: LFDecision;
+    isOnWaitingList?: boolean;
+    published?: boolean;
+    joinAfterStart?: boolean;
+    instructors?: LFInstructor[];
+    firstLecture?: LFLecture;
+    minGrade?: number;
+    maxGrade?: number;
 }
 
 export type LFLecture = {
-  id?: number
-  start: string
-  duration: number | string
-}
+    id?: number;
+    start: string;
+    duration: number | string;
+};
 
 export type LFTag = {
-  name: string
-  category?: string
-}
+    name: string;
+    id: number;
+};
 
 export type LFInstructor = {
-  id?: string
-  firstname: string
-  lastname: string
-}
+    id?: number;
+    firstname: string;
+    lastname: string;
+};
 
-export type TrafficStatus = 'full' | 'last' | 'free'
+export type TrafficStatus = 'full' | 'last' | 'free';

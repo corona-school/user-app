@@ -1,0 +1,11 @@
+{
+  "name": "eslint-plugin-lernfair-app-linter",
+  "version": "1.0.0",
+  "description": "Custom ESLint rules for the Lern-Fair User App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Learn-Fair Tech Team",
+  "license": "ISC"
+}

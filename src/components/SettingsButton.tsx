@@ -1,14 +1,14 @@
-import { Button, HamburgerIcon } from 'native-base'
-import { useNavigate } from 'react-router-dom'
+import { Button, HamburgerIcon } from 'native-base';
+import { useNavigate } from 'react-router-dom';
 
-type Props = {}
+type Props = {};
 
 const SettingsButton: React.FC<Props> = () => {
-  const navigate = useNavigate()
-  return (
-    <Button variant="ghost" onPress={() => navigate('/settings')}>
-      <HamburgerIcon size="xl" color="lightText" />
-    </Button>
-  )
-}
-export default SettingsButton
+    const navigate = useNavigate();
+    return (
+        <Button onPress={() => navigate('/settings')}>
+            <HamburgerIcon size="xl" color="lightText" />
+        </Button>
+    );
+};
+export default SettingsButton;

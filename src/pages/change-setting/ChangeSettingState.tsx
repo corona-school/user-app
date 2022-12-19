@@ -1,200 +1,167 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import {
-  Button,
-  Text,
-  useTheme,
-  VStack,
-  Row,
-  Column,
-  Alert,
-  HStack,
-  useBreakpointValue,
-  Heading
-} from 'native-base'
-import { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import BackButton from '../../components/BackButton'
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
-import WithNavigation from '../../components/WithNavigation'
-import { useUserType } from '../../hooks/useApollo'
-import useLernfair from '../../hooks/useLernfair'
-import { states } from '../../types/lernfair/State'
-import AlertMessage from '../../widgets/AlertMessage'
-import IconTagList from '../../widgets/IconTagList'
-import ProfileSettingItem from '../../widgets/ProfileSettingItem'
-import ProfileSettingRow from '../../widgets/ProfileSettingRow'
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Button, Text, useTheme, VStack, Row, Column, Alert, HStack, useBreakpointValue, Heading } from 'native-base';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import BackButton from '../../components/BackButton';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import WithNavigation from '../../components/WithNavigation';
+import { useUserType } from '../../hooks/useApollo';
+import useLernfair from '../../hooks/useLernfair';
+import { states } from '../../types/lernfair/State';
+import AlertMessage from '../../widgets/AlertMessage';
+import IconTagList from '../../widgets/IconTagList';
+import ProfileSettingItem from '../../widgets/ProfileSettingItem';
+import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
-const queryPupil = `query {
-  me {
-    pupil {
-      state
+const queryPupil = gql`
+    query GetPupilState {
+        me {
+            pupil {
+                state
+            }
+        }
     }
-  }
-}`
-const queryStudent = `query {
-  me {
-    student {
-      state
+`;
+const queryStudent = gql`
+    query GetStudentState {
+        me {
+            student {
+                state
+            }
+        }
     }
-  }
-}`
+`;
 
-const mutStudent = `mutation updateState($state: StudentState!) {
-  meUpdate(update: { student: { state: $state } })
-}`
-const mutPupil = `mutation updateState($state: State!) {
-  meUpdate(update: { pupil: { state: $state } })
-}`
+const mutStudent = gql`
+    mutation updateStateStudent($state: StudentState!) {
+        meUpdate(update: { student: { state: $state } })
+    }
+`;
+const mutPupil = gql`
+    mutation updateStatePupil($state: State!) {
+        meUpdate(update: { pupil: { state: $state } })
+    }
+`;
 
-type Props = {}
+type Props = {};
 
 const ChangeSettingState: React.FC<Props> = () => {
-  const { space, sizes } = useTheme()
+    const { space, sizes } = useTheme();
 
-  const [userState, setUserState] = useState<string>('')
-  const { t } = useTranslation()
+    const [userState, setUserState] = useState<string>('');
+    const { t } = useTranslation();
 
-  const [showError, setShowError] = useState<boolean>()
+    const [showError, setShowError] = useState<boolean>();
 
-  const navigate = useNavigate()
+    const navigate = useNavigate();
 
-  const userType = useUserType()
-  const { data, loading } = useQuery(
-    gql`
-      ${userType === 'student' ? queryStudent : queryPupil}
-    `,
-    {
-      fetchPolicy: 'no-cache'
-    }
-  )
+    const userType = useUserType();
+    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+        fetchPolicy: 'no-cache',
+    });
 
-  const [updateState, _updateState] = useMutation(gql`
-    ${userType === 'student' ? mutStudent : mutPupil}
-  `)
+    const [updateState, _updateState] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
-  useEffect(() => {
-    if (userType && data?.me[userType].state) {
-      setUserState(data?.me[userType].state)
-    }
-  }, [data?.me, userType])
+    useEffect(() => {
+        if (userType && data?.me[userType].state) {
+            setUserState(data?.me[userType].state);
+        }
+    }, [data?.me, userType]);
 
-  const state = useMemo(
-    () =>
-      states.find(state => state.key === userState) || {
-        key: '',
-        label: ''
-      },
-    [userState]
-  )
+    const state = useMemo(
+        () =>
+            states.find((state) => state.key === userState) || {
+                key: '',
+                label: '',
+            },
+        [userState]
+    );
 
-  useEffect(() => {
-    if (_updateState.data && !_updateState.error) {
-      // setUserSettingChanged(true)
-      navigate('/profile', { state: { showSuccessfulChangeAlert: true } })
-    }
-  }, [_updateState.data, _updateState.error, navigate])
+    useEffect(() => {
+        if (_updateState.data && !_updateState.error) {
+            // setUserSettingChanged(true)
+            navigate('/profile', { state: { showSuccessfulChangeAlert: true } });
+        }
+    }, [_updateState.data, _updateState.error, navigate]);
 
-  useEffect(() => {
-    if (_updateState.error) {
-      setShowError(true)
-    }
-  }, [_updateState.error])
+    useEffect(() => {
+        if (_updateState.error) {
+            setShowError(true);
+        }
+    }, [_updateState.error]);
 
-  const ContainerWidth = useBreakpointValue({
-    base: '100%',
-    lg: sizes['containerWidth']
-  })
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
 
-  const ButtonContainer = useBreakpointValue({
-    base: '100%',
-    lg: sizes['desktopbuttonWidth']
-  })
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
 
-  const { trackPageView } = useMatomo()
+    const { trackPageView } = useMatomo();
 
-  useEffect(() => {
-    trackPageView({
-      documentTitle: 'Profil Einstellungen – Bundesland'
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    useEffect(() => {
+        trackPageView({
+            documentTitle: 'Profil Einstellungen – Bundesland',
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  if (loading) <CenterLoadingSpinner />
+    if (loading) <CenterLoadingSpinner />;
 
-  return (
-    <WithNavigation headerTitle={t('profile.State.single.header')} showBack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        <Heading>{t('profile.State.single.selectedStates')}</Heading>
-        <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
-          <Row flexWrap="wrap" width="100%">
-            <Column
-              marginRight={3}
-              marginBottom={3}
-              key={`selection-${userState}`}>
-              <IconTagList
-                isDisabled
-                textIcon={`${userState}`}
-                iconPath={`states/icon_${userState}.svg`}
-                text={t(`lernfair.states.${userState}`)}
-              />
-            </Column>
-          </Row>
-        </ProfileSettingItem>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        space={space['1']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        <ProfileSettingRow title={t('profile.State.single.otherStates')}>
-          <ProfileSettingItem
-            border={false}
-            isIcon={false}
-            isHeaderspace={false}>
-            <VStack w="100%">
-              <Row flexWrap="wrap" width="100%">
-                {states.map((s, index) => (
-                  <Column
-                    marginRight={3}
-                    marginBottom={3}
-                    key={`offers-${index}`}>
-                    <IconTagList
-                      initial={userState === s.key}
-                      iconPath={`states/icon_${s.key}.svg`}
-                      text={s.label}
-                      onPress={() => setUserState(s.key)}
-                    />
-                  </Column>
-                ))}
-              </Row>
+    return (
+        <WithNavigation headerTitle={t('profile.State.single.header')} showBack>
+            <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <Heading>{t('profile.State.single.selectedStates')}</Heading>
+                <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
+                    <Row flexWrap="wrap" width="100%">
+                        <Column marginRight={3} marginBottom={3} key={`selection-${userState}`}>
+                            <IconTagList
+                                isDisabled
+                                textIcon={`${userState}`}
+                                iconPath={`states/icon_${userState}.svg`}
+                                text={t(`lernfair.states.${userState}`)}
+                            />
+                        </Column>
+                    </Row>
+                </ProfileSettingItem>
             </VStack>
-          </ProfileSettingItem>
-        </ProfileSettingRow>
-      </VStack>
-      <VStack
-        paddingX={space['1.5']}
-        paddingBottom={space['1.5']}
-        marginX="auto"
-        width="100%"
-        maxWidth={ContainerWidth}>
-        {showError && <AlertMessage content={t('profile.errormessage')} />}
-        <Button
-          width={ButtonContainer}
-          onPress={() => {
-            updateState({ variables: { state: state.key } })
-          }}>
-          {t('profile.State.single.button')}
-        </Button>
-      </VStack>
-    </WithNavigation>
-  )
-}
-export default ChangeSettingState
+            <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <ProfileSettingRow title={t('profile.State.single.otherStates')}>
+                    <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
+                        <VStack w="100%">
+                            <Row flexWrap="wrap" width="100%">
+                                {states.map((s, index) => (
+                                    <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
+                                        <IconTagList
+                                            initial={userState === s.key}
+                                            iconPath={`states/icon_${s.key}.svg`}
+                                            text={s.label}
+                                            onPress={() => setUserState(s.key)}
+                                        />
+                                    </Column>
+                                ))}
+                            </Row>
+                        </VStack>
+                    </ProfileSettingItem>
+                </ProfileSettingRow>
+            </VStack>
+            <VStack paddingX={space['1.5']} paddingBottom={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                {showError && <AlertMessage content={t('profile.errormessage')} />}
+                <Button
+                    width={ButtonContainer}
+                    onPress={() => {
+                        updateState({ variables: { state: state.key } });
+                    }}
+                >
+                    {t('profile.State.single.button')}
+                </Button>
+            </VStack>
+        </WithNavigation>
+    );
+};
+export default ChangeSettingState;

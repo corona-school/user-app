@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ja aktiv</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Kachel-Registrierung-Ja-aktiv-auf-hell" transform="translate(-50.000000, -15.000000)">
+            <g id="ja-aktiv" transform="translate(50.000000, 15.000000)">
+                <circle id="Oval" fill="#82B1B0" cx="15" cy="15" r="15"></circle>
+                <path d="M29.6337515,4.84801363 C29.1456199,4.3598332 28.3542187,4.3598332 27.8659895,4.84801363 L12.8903053,19.8238443 L7.1338973,14.0674363 C6.6457657,13.5792559 5.85436458,13.5793047 5.36613532,14.0674363 C4.87795489,14.5555679 4.87795489,15.346969 5.36613532,15.8351494 L12.0064243,22.4753408 C12.4944094,22.9634724 13.2863965,22.9631306 13.7741863,22.4753408 L29.6337515,6.61577561 C30.1219319,6.12764401 30.1218831,5.33619406 29.6337515,4.84801363 Z" id="Path" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>
