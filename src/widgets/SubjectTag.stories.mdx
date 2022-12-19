@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import SubjectTag from './SubjectTag'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import SubjectTag from './SubjectTag';
 
-<Meta title='SubjectTag' component={SubjectTag} />
+<Meta title="SubjectTag" component={SubjectTag} />
 
 # SubjectTag
 
-* unused right now
-* basically replaced with `IconTagList`
+-   unused right now
+-   basically replaced with `IconTagList`
 
-<NativeBaseProvider theme={Theme}>
-<SubjectTag title="my title"/>
-</NativeBaseProvider>
+<Story name="SubjectTag">
+    <SubjectTag title="my title" />
+</Story>

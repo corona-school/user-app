@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import AsNavigationItem from './AsNavigationItem'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import AsNavigationItem from './AsNavigationItem';
 
-<Meta title='AsNavigationItem' component={AsNavigationItem} />
+<Meta title="AsNavigationItem" component={AsNavigationItem} />
 
 # AsNavigationItem
 
-* this is just a wrapper component
-* it allows to control the active navigation path by using a effect to set `rootPath`on initial rendering
+-   this is just a wrapper component
+-   it allows to control the active navigation path by using a effect to set `rootPath`on initial rendering
 
-<NativeBaseProvider theme={Theme}>
-<AsNavigationItem />
-</NativeBaseProvider>
+<Story name="As Navigation Item">
+    <AsNavigationItem />
+</Story>

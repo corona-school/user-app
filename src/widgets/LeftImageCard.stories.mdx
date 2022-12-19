@@ -1,16 +1,15 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider, Heading, Button } from 'native-base'
-import Theme from '../Theme';
-import LeftImageCard from './LeftImageCard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading, Button } from 'native-base';
+import LeftImageCard from './LeftImageCard';
 
-<Meta title='LeftImageCard' component={LeftImageCard} />
+<Meta title="LeftImageCard" component={LeftImageCard} />
 
 # LeftImageCard
 
-* basically unused
+-   basically unused
 
-<NativeBaseProvider theme={Theme}>
-<LeftImageCard avatar={'https://picsum.photos/200/300'} button={<Button>My button</Button>}>
-<Heading>My title</Heading>
-</LeftImageCard>
-</NativeBaseProvider>
+<Story name="LeftImageCard">
+    <LeftImageCard avatar={'https://picsum.photos/200/300'} button={<Button>My button</Button>}>
+        <Heading>My title</Heading>
+    </LeftImageCard>
+</Story>

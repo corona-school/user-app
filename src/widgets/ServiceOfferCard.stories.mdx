@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import ServiceOfferCard from './ServiceOfferCard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import ServiceOfferCard from './ServiceOfferCard';
 
-<Meta title='ServiceOfferCard' component={ServiceOfferCard} />
+<Meta title="ServiceOfferCard" component={ServiceOfferCard} />
 
 # ServiceOfferCard
 
-* unused right now
-* intended to be used for services of lernfair other than matching an group courses
+-   unused right now
+-   intended to be used for services of lernfair other than matching an group courses
 
-<NativeBaseProvider theme={Theme}>
-<ServiceOfferCard />
-</NativeBaseProvider>
+<Story name="ServiceOfferCard">
+    <ServiceOfferCard />
+</Story>

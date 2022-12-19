@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import QuickStartCard from './QuickStartCard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import QuickStartCard from './QuickStartCard';
 
-<Meta title='QuickStartCard' component={QuickStartCard} />
+<Meta title="QuickStartCard" component={QuickStartCard} />
 
 # QuickStartCard
 
-* unused right now
+-   unused right now
 
-<NativeBaseProvider theme={Theme}>
-<QuickStartCard />
-</NativeBaseProvider>
+<Story name="QuickStartCard">
+    <QuickStartCard />
+</Story>

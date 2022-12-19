@@ -1,16 +1,14 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import RatingCard from './RatingCard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import RatingCard from './RatingCard';
 
-<Meta title='RatingCard' component={RatingCard} />
+<Meta title="RatingCard" component={RatingCard} />
 
 # RatingCard
 
-* unused right now
-* barely developed
-* show a user rating
+-   unused right now
+-   barely developed
+-   show a user rating
 
-<NativeBaseProvider theme={Theme}>
-<RatingCard />
-</NativeBaseProvider>
+<Story name="RatingCard">
+    <RatingCard />
+</Story>

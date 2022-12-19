@@ -1,21 +1,19 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider, Box } from 'native-base'
-import Theme from '../Theme';
-import HSection from './HSection'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Box } from 'native-base';
+import HSection from './HSection';
 
-<Meta title='HSection' component={HSection} />
+<Meta title="HSection" component={HSection} />
 
 # HSection
 
-* use `showAll` to show "show all" Link
-* use `wrap` to make children wrap
-* `smallTitle`and `scrollable`
+-   use `showAll` to show "show all" Link
+-   use `wrap` to make children wrap
+-   `smallTitle`and `scrollable`
 
-
-<NativeBaseProvider theme={Theme}>
-<HSection title="Test" showAll>
-  <Box w="150px" h="150px" background="red.500"></Box>
-  <Box w="150px" h="150px" background="green.500"></Box>
-  <Box w="150px" h="150px" background="blue.500"></Box>
-</HSection>
-</NativeBaseProvider>
+<Story name="HSection">
+    <HSection title="Test" showAll>
+        <Box w="150px" h="150px" background="red.500"></Box>
+        <Box w="150px" h="150px" background="green.500"></Box>
+        <Box w="150px" h="150px" background="blue.500"></Box>
+    </HSection>
+</Story>

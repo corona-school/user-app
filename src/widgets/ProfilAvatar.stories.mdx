@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import ProfilAvatar from './ProfilAvatar'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import ProfilAvatar from './ProfilAvatar';
 
-<Meta title='ProfilAvatar' component={ProfilAvatar} />
+<Meta title="ProfilAvatar" component={ProfilAvatar} />
 
 # ProfilAvatar
 
-* unused
+-   unused
 
-<NativeBaseProvider theme={Theme}>
-<ProfilAvatar image="https://picsum.photos/200"/>
-</NativeBaseProvider>
+<Story name="ProfilAvatar">
+    <ProfilAvatar image="https://picsum.photos/200" />
+</Story>

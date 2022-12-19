@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import StudentMatch from './StudentMatch'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import StudentMatch from './StudentMatch';
 
-<Meta title='StudentMatch' component={StudentMatch} />
+<Meta title="StudentMatch" component={StudentMatch} />
 
 # StudentMatch
 
-* unused
-* barely developed
+-   unused
+-   barely developed
 
-<NativeBaseProvider theme={Theme}>
-<StudentMatch />
-</NativeBaseProvider>
+<Story name="StudentMatch">
+    <StudentMatch />
+</Story>

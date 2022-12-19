@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../../Theme';
-import SelectPupilsWidget from './SelectPupilsWidget'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import SelectPupilsWidget from './SelectPupilsWidget';
 
-<Meta title='SelectPupilsWidget' component={SelectPupilsWidget} />
+<Meta title="SelectPupilsWidget" component={SelectPupilsWidget} />
 
 # SelectPupilsWidget
 
-* display all matches pupils for a student
-* allows for selection of pupils for certificate
+-   display all matches pupils for a student
+-   allows for selection of pupils for certificate
 
-<NativeBaseProvider theme={Theme}>
-<SelectPupilsWidget />
-</NativeBaseProvider>
+<Story name="SelectedPupilsWidget">
+    <SelectPupilsWidget />
+</Story>

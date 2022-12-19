@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import PostCards from './PostCards'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import PostCards from './PostCards';
 
-<Meta title='PostCards' component={PostCards} />
+<Meta title="PostCards" component={PostCards} />
 
 # PostCards
 
-* unused
+-   unused
 
-<NativeBaseProvider theme={Theme}>
-<PostCards />
-</NativeBaseProvider>
+<Story name="PostCards">
+    <PostCards />
+</Story>

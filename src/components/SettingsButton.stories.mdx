@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import SettingsButton from './SettingsButton'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import SettingsButton from './SettingsButton';
 
-<Meta title='SettingsButton' component={SettingsButton} />
+<Meta title="SettingsButton" component={SettingsButton} />
 
 # SettingsButton
 
-* a hamburger button that navigates to `Settings`
+-   a hamburger button that navigates to `Settings`
 
-<NativeBaseProvider theme={Theme}>
-<SettingsButton />
-</NativeBaseProvider>
+<Story name="SettingsButton">
+    <SettingsButton />
+</Story>

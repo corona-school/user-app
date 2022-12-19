@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import CSSWrapper from './CSSWrapper'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import CSSWrapper from './CSSWrapper';
 
-<Meta title='CSSWrapper' component={CSSWrapper} />
+<Meta title="CSSWrapper" component={CSSWrapper} />
 
 # CSSWrapper
 
-* this wrapper component was used to apply css in places where native was not applicable or hard to achieve
-* there is a `*.native` file that was a fallback for natives contexts
+-   this wrapper component was used to apply css in places where native was not applicable or hard to achieve
+-   there is a `*.native` file that was a fallback for natives contexts
 
-<NativeBaseProvider theme={Theme}>
-<CSSWrapper />
-</NativeBaseProvider>
+<Story name="CSSWrapper">
+    <CSSWrapper />
+</Story>

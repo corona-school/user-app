@@ -1,17 +1,15 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import Questionnaire from './Questionnaire'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import Questionnaire from './Questionnaire';
 
-<Meta title='Questionnaire' component={Questionnaire} />
+<Meta title="Questionnaire" component={Questionnaire} />
 
 # Questionnaire
 
-* was supposed to be a extendable and reusable component to display boarding processes
-* was kinda trashed and replaced by simple `currentIndex` handling wherever needed after registration rework
+-   was supposed to be a extendable and reusable component to display boarding processes
+-   was kinda trashed and replaced by simple `currentIndex` handling wherever needed after registration rework
 
-* so its unused right now
+-   so its unused right now
 
-<NativeBaseProvider theme={Theme}>
-<Questionnaire />
-</NativeBaseProvider>
+<Story name="Questionaire">
+    <Questionnaire />
+</Story>

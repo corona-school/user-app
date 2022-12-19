@@ -1,17 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider, Text } from 'native-base'
-import Theme from '../Theme';
-import InfoScreen from './InfoScreen'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import InfoScreen from './InfoScreen';
 
-<Meta title='InfoScreen' component={InfoScreen} />
+<Meta title="InfoScreen" component={InfoScreen} />
 
 # InfoScreen
 
-* used in different pages as basic layout (Welcome.tsx for example)
-* has properties for buttons and content 
+-   used in different pages as basic layout (Welcome.tsx for example)
+-   has properties for buttons and content
 
-
-<NativeBaseProvider theme={Theme}>
-<InfoScreen title="Hello World" content={<Text>MyContent</Text>}/>
-</NativeBaseProvider>
-
+<Story name="InfoScreen">
+    <InfoScreen title="Hello World" content={<Text>MyContent</Text>} />
+</Story>

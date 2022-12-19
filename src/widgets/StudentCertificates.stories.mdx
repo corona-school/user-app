@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import StudentCertificates from './StudentCertificates'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import StudentCertificates from './StudentCertificates';
 
-<Meta title='StudentCertificates' component={StudentCertificates} />
+<Meta title="StudentCertificates" component={StudentCertificates} />
 
 # StudentCertificates
 
-* loads a student's certificates
+-   loads a student's certificates
 
-<NativeBaseProvider theme={Theme}>
-<StudentCertificates filter=""/>
-</NativeBaseProvider>
+<Story name="StudentCertificates">
+    <StudentCertificates filter="" />
+</Story>

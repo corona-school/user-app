@@ -1,21 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import OpenMatchRequest from './OpenMatchRequest'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import OpenMatchRequest from './OpenMatchRequest';
 
-<Meta title='OpenMatchRequest' component={OpenMatchRequest} />
+<Meta title="OpenMatchRequest" component={OpenMatchRequest} />
 
 # OpenMatchRequest
 
-* pass `[]: LFSubject[]` to `subjects
-* `onEditRequest`and `showCancelMatchRequestModal` to show appropriate callbacks
+-   pass `[]: LFSubject[]` to `subjects
+-   `onEditRequest`and `showCancelMatchRequestModal` to show appropriate callbacks
 
-
-
-<NativeBaseProvider theme={Theme}>
-<OpenMatchRequest 
-  subjects={[{name: "Englisch"}, {name: "Deutsch"}]} 
-  cancelLoading={false} 
-  index={2} 
-  showCancelMatchRequestModal={() => null} />
-</NativeBaseProvider>
+<Story name="OpenMatchRequest">
+    <OpenMatchRequest subjects={[{ name: 'Englisch' }, { name: 'Deutsch' }]} cancelLoading={false} index={2} showCancelMatchRequestModal={() => null} />
+</Story>

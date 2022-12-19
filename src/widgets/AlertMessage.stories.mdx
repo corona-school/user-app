@@ -1,7 +1,5 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme'
-import AlertMessage from './AlertMessage'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import AlertMessage from './AlertMessage';
 
 <Meta title="AlertMessage" component={AlertMessage} />
 
@@ -9,6 +7,6 @@ import AlertMessage from './AlertMessage'
 
 Just pass string to `content`
 
-<NativeBaseProvider theme={Theme}>
-  <AlertMessage content="Lorem Ipsum" />
-</NativeBaseProvider>
+<Story name="AlertMessage">
+    <AlertMessage content="Lorem Ipsum" />
+</Story>

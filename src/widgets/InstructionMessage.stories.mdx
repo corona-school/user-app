@@ -1,15 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import InstructionMessage from './InstructionMessage'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import InstructionMessage from './InstructionMessage';
 
-<Meta title='InstructionMessage' component={InstructionMessage} />
+<Meta title="InstructionMessage" component={InstructionMessage} />
 
 # InstructionMessage
 
-* currently unused
-* used in onboardings to show an instruction
+-   currently unused
+-   used in onboardings to show an instruction
 
-<NativeBaseProvider theme={Theme}>
-<InstructionMessage text="Lorem Ipsum" title="My Title"/>
-</NativeBaseProvider>
+<Story name="InstructionMessage">
+    <InstructionMessage text="Lorem Ipsum" title="My Title" />
+</Story>

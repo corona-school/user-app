@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import RatingTag from './RatingTag'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import RatingTag from './RatingTag';
 
-<Meta title='RatingTag' component={RatingTag} />
+<Meta title="RatingTag" component={RatingTag} />
 
 # RatingTag
 
-* show a rating
+-   show a rating
 
-<NativeBaseProvider theme={Theme}>
-<RatingTag rating="4.2" />
-</NativeBaseProvider>
+<Story name="RatingTag">
+    <RatingTag rating="4.2" />
+</Story>

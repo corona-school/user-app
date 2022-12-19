@@ -1,19 +1,17 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider, Heading } from 'native-base'
-import Theme from '../Theme';
-import HeaderCard from './HeaderCard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading } from 'native-base';
+import HeaderCard from './HeaderCard';
 
-<Meta title='HeaderCard' component={HeaderCard} />
+<Meta title="HeaderCard" component={HeaderCard} />
 
 # HeaderCard
 
-* is used to display views below the scrollable header seamlessly
-* use `leftContent`and `rightContent` to display content on either side
-* `showBack` / `onBack` to use navigation in here
+-   is used to display views below the scrollable header seamlessly
+-   use `leftContent`and `rightContent` to display content on either side
+-   `showBack` / `onBack` to use navigation in here
 
-
-<NativeBaseProvider theme={Theme}>
-<HeaderCard>
-<Heading>My heading</Heading>
-</HeaderCard>
-</NativeBaseProvider>
+<Story name="HeaderCard">
+    <HeaderCard>
+        <Heading>My heading</Heading>
+    </HeaderCard>
+</Story>

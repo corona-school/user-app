@@ -1,14 +1,12 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import PersonListing from './PersonListing'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import PersonListing from './PersonListing';
 
-<Meta title='PersonListing' component={PersonListing} />
+<Meta title="PersonListing" component={PersonListing} />
 
 # PersonListing
 
-* unused
+-   unused
 
-<NativeBaseProvider theme={Theme}>
-<PersonListing />
-</NativeBaseProvider>
+<Story name="PersonListing">
+    <PersonListing />
+</Story>

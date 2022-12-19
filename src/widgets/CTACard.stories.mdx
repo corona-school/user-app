@@ -1,29 +1,16 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider, Text, Button } from 'native-base'
-import Theme from '../Theme';
-import CTACard from './CTACard'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Text, Button } from 'native-base';
+import CTACard from './CTACard';
 
-<Meta title='CTACard' component={CTACard} />
+<Meta title="CTACard" component={CTACard} />
 
 # CTACard
 
-* `closable`is not used right now
-* with `content` and `button` dynamic content can be put into the card__item
-* add an icon via `icon`
-* 3 variants: `'normal' | 'outline' | 'dark'`
+-   `closable`is not used right now
+-   with `content` and `button` dynamic content can be put into the card\_\_item
+-   add an icon via `icon`
+-   3 variants: `'normal' | 'outline' | 'dark'`
 
-<NativeBaseProvider theme={Theme}>
-<CTACard
-  title={"My title"}
-  content={
-    <Text>
-      Content
-    </Text>
-  }
-  button={
-    <Button>
-      My Button
-    </Button>
-  }
-/>
-</NativeBaseProvider>
+<Story name="CTACard">
+    <CTACard title={'My title'} content={<Text>Content</Text>} button={<Button>My Button</Button>} />
+</Story>

@@ -1,16 +1,14 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { NativeBaseProvider } from 'native-base'
-import Theme from '../Theme';
-import FullPageModal from './FullPageModal'
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import FullPageModal from './FullPageModal';
 
-<Meta title='FullPageModal' component={FullPageModal} />
+<Meta title="FullPageModal" component={FullPageModal} />
 
 # FullPageModal
 
-* not shown here because view state comes from `React.Context`
+-   not shown here because view state comes from `React.Context`
 
-* use `setShow, setContent and setVariant` to control modal
+-   use `setShow, setContent and setVariant` to control modal
 
-<NativeBaseProvider theme={Theme}>
-<FullPageModal />
-</NativeBaseProvider>
+<Story name="FullPageModal">
+    <FullPageModal />
+</Story>
