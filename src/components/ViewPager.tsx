@@ -6,15 +6,13 @@ import {
   Link,
   Modal,
   useBreakpointValue,
-  useTheme,
-  Text
+  useTheme
 } from 'native-base'
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
-  useEffect,
   useState
 } from 'react'
 import { useTranslation } from 'react-i18next'
