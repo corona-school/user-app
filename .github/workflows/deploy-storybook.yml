@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies including optional ones
         run: npm run dev-install
 
+      - name: Fetch GraphQL Types
+        run: npm run fetch-api
+
       - name: Build Storybook
         run: npm run dev-storybook-build
 
