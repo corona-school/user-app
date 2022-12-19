@@ -23,6 +23,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
+import ImportantInformation from '../../widgets/ImportantInformation';
 
 type Props = {};
 
@@ -266,6 +267,7 @@ const Dashboard: React.FC<Props> = () => {
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <ImportantInformation variant="dark" />
                         <VStack>
                             {highlightedAppointment && (
                                 <VStack marginBottom={space['1.5']}>
