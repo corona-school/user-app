@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import UserProgress from './UserProgress'
+
+<Meta title='UserProgress' component={UserProgress} />
+
+# UserProgress
+
+* Used to display a progress
+* Mainly used to display profile completeness
+* pass percentage as number/integer
+
+<NativeBaseProvider theme={Theme}>
+<UserProgress percent={50} showPercent/>
+</NativeBaseProvider>

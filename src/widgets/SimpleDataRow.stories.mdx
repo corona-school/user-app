@@ -1,0 +1,14 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import SimpleDataRow from './SimpleDataRow'
+
+<Meta title='SimpleDataRow' component={SimpleDataRow} />
+
+# SimpleDataRow
+
+* simple widget to show data
+
+<NativeBaseProvider theme={Theme}>
+<SimpleDataRow label="My label" value="my value"/>
+</NativeBaseProvider>

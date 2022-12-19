@@ -14,8 +14,7 @@ import {
   Pressable,
   Heading,
   CheckCircleIcon,
-  Tooltip,
-  Container
+  Tooltip
 } from 'native-base'
 import Card from '../components/Card'
 import Tag from '../components/Tag'

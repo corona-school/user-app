@@ -1,0 +1,24 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import WebServiceCard from './WebServiceCard'
+
+<Meta title='WebServiceCard' component={WebServiceCard} />
+
+# WebServiceCard
+
+* used to display external services 
+
+<NativeBaseProvider theme={Theme}>
+<WebServiceCard 
+  title="my Title"
+  description="my description"
+  image="https://picsum.photos/680/480"
+  url="https://google.com"
+  tags={["Informationen", "PDF"]}
+  pros={["Pro1", "Pro2"]}
+  contra={["Contra1"]}
+  
+/>
+</NativeBaseProvider>
+

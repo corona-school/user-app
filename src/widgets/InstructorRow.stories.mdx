@@ -1,0 +1,17 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import InstructorRow from './InstructorRow'
+
+<Meta title='InstructorRow' component={InstructorRow} />
+
+# InstructorRow
+
+* pass `instructor: LFInstructor`
+* `isAdded: boolean` to show a message that the intructor has been added already
+
+
+<NativeBaseProvider theme={Theme}>
+<InstructorRow instructor={{firstname: "Jane", lastname: "Doe"}}  />
+<InstructorRow instructor={{firstname: "John", lastname: "Doe"}} isAdded />
+</NativeBaseProvider>

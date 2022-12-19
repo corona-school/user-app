@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import IconTagList from './IconTagList'
+
+<Meta title='IconTagList' component={IconTagList} />
+
+# IconTagList
+
+* use `initial` like a input `value` prop
+* iconPath starts at `./src/assets`
+* `textIcon` sets a string as icon
+
+<NativeBaseProvider theme={Theme}>
+<IconTagList text="Lorem" textIcon="3"/>
+</NativeBaseProvider>

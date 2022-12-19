@@ -1,0 +1,17 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import CourseTrafficLamp from './CourseTrafficLamp'
+
+<Meta title="CourseTrafficLamp" component={CourseTrafficLamp} />
+
+# CourseTrafficLamp
+
+* accepts `TrafficStatus` as primary property
+* rest is for styling purposes
+
+<NativeBaseProvider theme={Theme}>
+  <CourseTrafficLamp status={"full"}/>
+</NativeBaseProvider>
+
+

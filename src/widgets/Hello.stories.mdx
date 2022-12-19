@@ -1,0 +1,14 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import Hello from './Hello'
+
+<Meta title='Hello' component={Hello} />
+
+# Hello
+
+* Shows firstname in and hello message to user
+
+<NativeBaseProvider theme={Theme}>
+<Hello />
+</NativeBaseProvider>

@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../../Theme';
+import PupilPager from './PupilPager'
+
+<Meta title='PupilPager' component={PupilPager} />
+
+# PupilPager
+
+* A widget to show pupils of the student for certificate selection
+* controlled via `React.Context` `pupilIndex` as paging
+
+
+<NativeBaseProvider theme={Theme}>
+<PupilPager />
+</NativeBaseProvider>

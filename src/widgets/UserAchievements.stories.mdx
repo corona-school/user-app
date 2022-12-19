@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider, Box } from 'native-base'
+import Theme from '../Theme';
+import UserAchievements from './UserAchievements'
+
+<Meta title='UserAchievements' component={UserAchievements} />
+
+# UserAchievements
+
+* pass a local icon to `icon`
+
+<NativeBaseProvider theme={Theme}>
+<Box background="primary.900">
+<UserAchievements points={20} /></Box>
+</NativeBaseProvider>

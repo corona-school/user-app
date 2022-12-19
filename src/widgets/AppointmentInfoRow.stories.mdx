@@ -1,0 +1,20 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme'
+import AlertMessage from './AlertMessage'
+import AppointmentInfoRow from './AppointmentInfoRow'
+
+<Meta title="AppointmentInfoRow" component={AppointmentInfoRow} />
+
+# AppointmentInfoRow
+
+Show an appointment data row in the course creation wizard
+
+* requires a LFLecture, an index and an delete callback
+
+<NativeBaseProvider theme={Theme}>
+  <AppointmentInfoRow onPressDelete={() => {}} index={0} lecture={{
+    start: new Date().toISOString(),
+    duration: 90
+  }} />
+</NativeBaseProvider>

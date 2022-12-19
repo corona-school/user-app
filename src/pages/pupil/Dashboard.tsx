@@ -17,7 +17,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import AppointmentCard from '../../widgets/AppointmentCard'
 import HSection from '../../widgets/HSection'
 import SignInCard from '../../widgets/SignInCard'
-import TeacherCard from '../../widgets/TeacherCard'
 import WithNavigation from '../../components/WithNavigation'
 import { useNavigate } from 'react-router-dom'
 import NotificationAlert from '../../components/NotificationAlert'
@@ -328,6 +327,7 @@ const Dashboard: React.FC<Props> = () => {
                     }
                     isTeaser={true}
                     onPressToCourse={() => {
+                      DateTime.now().plus({ days: 7 }).toISODate()
                       trackEvent({
                         category: 'dashboard',
                         action: 'click-event',

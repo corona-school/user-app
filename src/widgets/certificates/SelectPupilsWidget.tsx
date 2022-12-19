@@ -1,15 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import {
-  Text,
-  useTheme,
-  VStack,
-  Checkbox,
-  Button,
-  HStack,
-  Row,
-  Heading,
-  Column
-} from 'native-base'
+import { Text, useTheme, VStack, Button, Heading } from 'native-base'
 import { useCallback, useContext, useState } from 'react'
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner'
 import { LFMatch } from '../../types/lernfair/Match'

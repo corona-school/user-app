@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider, Button } from 'native-base'
+import Theme from '../Theme';
+import LearningPartner from './LearningPartner'
+
+<Meta title='LearningPartner' component={LearningPartner} />
+
+# LearningPartner
+
+* primarily used to show matches
+
+<NativeBaseProvider theme={Theme}>
+<LearningPartner isDark name="My Name" subjects={[{name: "Mathe"}, {name: "Deutsch"}]} status="My status" 
+button={<Button>My Button</Button>}/>
+</NativeBaseProvider>
+

@@ -1,0 +1,19 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import StudyPartnerCard from './StudyPartnerCard'
+
+<Meta title='StudyPartnerCard' component={StudyPartnerCard} />
+
+# StudyPartnerCard
+
+* unused
+* barely developed
+
+* pass `tags` as array of strings
+* date is a `Date` object
+
+<NativeBaseProvider theme={Theme}>
+<StudyPartnerCard title="my title" tags={["Mathe", "Deutsch"]} date={new Date()}/>
+</NativeBaseProvider>
+

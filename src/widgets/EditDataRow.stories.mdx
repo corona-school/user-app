@@ -1,0 +1,18 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider } from 'native-base'
+import Theme from '../Theme';
+import EditDataRow from './EditDataRow'
+
+<Meta title='EditDataRow' component={EditDataRow} />
+
+# EditDataRow
+
+* primarily used in settings
+
+<NativeBaseProvider theme={Theme}>
+<EditDataRow 
+  label="My Label"
+  value="My value"
+  onPress={() => null}
+  />
+</NativeBaseProvider>

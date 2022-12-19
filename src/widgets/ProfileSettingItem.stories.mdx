@@ -1,0 +1,14 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { NativeBaseProvider, Heading } from 'native-base'
+import Theme from '../Theme';
+import ProfileSettingItem from './ProfileSettingItem'
+
+<Meta title='ProfileSettingItem' component={ProfileSettingItem} />
+
+# ProfileSettingItem
+
+<NativeBaseProvider theme={Theme}>
+<ProfileSettingItem>
+<Heading>My Heading</Heading>
+</ProfileSettingItem>
+</NativeBaseProvider>
