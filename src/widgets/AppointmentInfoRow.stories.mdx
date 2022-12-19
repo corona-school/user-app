@@ -1,0 +1,22 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import AlertMessage from './AlertMessage';
+import AppointmentInfoRow from './AppointmentInfoRow';
+
+<Meta title="Misc/AppointmentInfoRow" component={AppointmentInfoRow} />
+
+# AppointmentInfoRow
+
+Show an appointment data row in the course creation wizard
+
+-   requires a LFLecture, an index and an delete callback
+
+<Story name="AppointmentInfoRow">
+    <AppointmentInfoRow
+        onPressDelete={() => {}}
+        index={0}
+        lecture={{
+            start: new Date().toISOString(),
+            duration: 90,
+        }}
+    />
+</Story>

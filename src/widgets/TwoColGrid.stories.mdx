@@ -1,0 +1,17 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Box } from 'native-base';
+import TwoColGrid from './TwoColGrid';
+
+<Meta title="Layout/TwoColGrid" component={TwoColGrid} />
+
+# TwoColGrid
+
+-   used to display items in a 2-col grid manner
+
+<Story name="TwoColGrid">
+    <TwoColGrid title="My title">
+        <Box w="100%" h="150px" background="green.500"></Box>
+        <Box w="100%" h="150px" background="red.500"></Box>
+        <Box w="100%" h="150px" background="blue.500"></Box>
+    </TwoColGrid>
+</Story>

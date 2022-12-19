@@ -1,3 +1,6 @@
+const getClientEnvironment = require('../config/env');
+const webpack = require('webpack');
+
 module.exports = {
   "stories": [
     // Storybook Stories can also be written in .tsx, though I guess markdown is the preferred way of writing documentation
@@ -24,6 +27,8 @@ module.exports = {
         use: ["style-loader", "css-loader", "postcss-loader"],
       }
     );
+    // Support for process.env.*
+    storybookConfig.plugins.push(new webpack.DefinePlugin(getClientEnvironment('').stringified));
     return storybookConfig;
   }
 }

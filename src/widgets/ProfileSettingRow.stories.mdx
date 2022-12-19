@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading } from 'native-base';
+import ProfileSettingRow from './ProfileSettingRow';
+
+<Meta title="Misc/ProfileSettingRow" component={ProfileSettingRow} />
+
+# ProfileSettingRow
+
+-   used in profile to show a data section
+-   `help`and `helpHeadline` are not used right now
+
+<Story name="ProfileSettingsRow">
+    <ProfileSettingRow title="My title">
+        <Heading>My Heading</Heading>
+    </ProfileSettingRow>
+</Story>
