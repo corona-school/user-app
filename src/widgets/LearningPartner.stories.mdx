@@ -9,9 +9,24 @@ import LearningPartner from './LearningPartner';
 -   primarily used to show matches
 
 <Story name="LearningPartner isDark">
-    <LearningPartner isDark name="My Name" subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]} status="My status" button={<Button>My Button</Button>} />
+    <LearningPartner
+        isDark
+        name="My Name"
+        subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
+        status="My status"
+        button={<Button>My Button</Button>}
+        contactMail="test@example.org"
+        meetingId="123"
+    />
 </Story>
 
 <Story name="LearningPartner">
-    <LearningPartner name="My Name" subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]} status="My status" button={<Button>My Button</Button>} />
+    <LearningPartner
+        name="My Name"
+        subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
+        status="My status"
+        button={<Button>My Button</Button>}
+        contactMail="test@example.org"
+        meetingId="123"
+    />
 </Story>

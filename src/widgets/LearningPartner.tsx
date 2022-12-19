@@ -1,4 +1,4 @@
-import { View, Text, Row, Box, useTheme, VStack } from 'native-base';
+import { View, Text, Row, Box, useTheme, VStack, Button, Column } from 'native-base';
 import { ReactNode } from 'react';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -12,9 +12,11 @@ type Props = {
     isDark?: boolean;
     button?: ReactNode;
     status?: string;
+    contactMail?: string;
+    meetingId?: string;
 };
 
-const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolclass, isDark = false, button, status }) => {
+const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolclass, isDark = false, button, status, contactMail, meetingId }) => {
     const { space } = useTheme();
 
     return (
@@ -63,9 +65,15 @@ const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolcl
                     )}
 
                     {button && (
-                        <Row flexDirection="column" mt={space['1']}>
+                        <Column mt={space['1']} space={space['1']}>
+                            {meetingId && (
+                                <Button space={2} onPress={() => window.open(`https://meet.jit.si/CoronaSchool-${meetingId}`, '_blank')}>
+                                    Videochat
+                                </Button>
+                            )}
+                            {contactMail && <Button onPress={() => (window.location.href = `mailto:${contactMail}`)}>Kontaktieren</Button>}
                             {button}
-                        </Row>
+                        </Column>
                     )}
                 </VStack>
             </Card>
