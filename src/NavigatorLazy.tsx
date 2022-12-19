@@ -53,6 +53,7 @@ import RequestMatchStudent from './pages/student/matching_new/RequestMatch'
 import MatchingStudent from './pages/student/MatchingStudent'
 import RequestMatch from './pages/pupil/matching_new/RequestMatch'
 import Matching from './pages/pupil/Matching'
+import CertificateList from './pages/student/CertificateDetails'
 
 export default function NavigatorLazy() {
   return (
@@ -140,6 +141,14 @@ export default function NavigatorLazy() {
         }
       />
 
+      <Route
+        path="/certificate-list"
+        element={
+          <RequireAuth>
+            <CertificateList />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/request-certificate"
         element={

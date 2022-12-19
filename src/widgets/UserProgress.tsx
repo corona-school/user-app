@@ -2,9 +2,10 @@ import { View, Progress, Heading } from 'native-base'
 
 type Props = {
   percent: number
+  showPercent?: boolean
 }
 
-const UserProgress: React.FC<Props> = ({ percent }) => {
+const UserProgress: React.FC<Props> = ({ percent, showPercent = true }) => {
   return (
     <View>
       <Progress
@@ -16,7 +17,7 @@ const UserProgress: React.FC<Props> = ({ percent }) => {
         }}
         value={percent}
       />
-      <Heading fontSize="sm">{percent} %</Heading>
+      {showPercent && <Heading fontSize="sm">{percent} %</Heading>}
     </View>
   )
 }

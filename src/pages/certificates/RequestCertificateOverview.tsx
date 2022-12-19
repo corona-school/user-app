@@ -5,14 +5,9 @@ import { useEffect } from 'react'
 type Props = {
   onNext: () => any
   onBack: () => any
-  onGeneric: () => any
 }
 
-const RequestCertificateOverview: React.FC<Props> = ({
-  onNext,
-  onBack,
-  onGeneric
-}) => {
+const RequestCertificateOverview: React.FC<Props> = ({ onNext, onBack }) => {
   const { space, colors } = useTheme()
   const { trackPageView } = useMatomo()
 
@@ -69,9 +64,7 @@ const RequestCertificateOverview: React.FC<Props> = ({
         möchtest, die keine Informationen zum Ausmaß oder den Inhalten der
         Tätigkeit enthält, kannst du dies hier tun.
       </Text>
-      <Button variant="outline" onPress={onGeneric}>
-        Bescheinigung durch Lern Fair beantragen
-      </Button>
+
       <Button variant="link" onPress={onBack}>
         Zurück
       </Button>

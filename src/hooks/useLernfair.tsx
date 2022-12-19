@@ -10,7 +10,7 @@ type LernFair = {
   setRootPath?: (path: string) => SetStateAction<string>
 }
 
-const LernfairContext = createContext<LernFair>({ })
+const LernfairContext = createContext<LernFair>({})
 
 export const LernfairProvider: React.FC<{ children: ReactNode }> = ({
   children
@@ -32,6 +32,5 @@ const useLernfairProvider = () => {
 const useLernfair = () => {
   return useContext(LernfairContext)
 }
-
 
 export default useLernfair

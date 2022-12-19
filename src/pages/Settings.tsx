@@ -8,14 +8,15 @@ import {
   HStack,
   useBreakpointValue,
   CloseIcon,
-  Pressable
+  Pressable,
+  Modal,
+  Button
 } from 'native-base'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import WithNavigation from '../components/WithNavigation'
 import useApollo, { useUserType } from '../hooks/useApollo'
-import useLernfair from '../hooks/useLernfair'
 import DeactivateAccountModal from '../modals/DeactivateAccountModal'
 import EditDataRow from '../widgets/EditDataRow'
 import ProfileSettingRow from '../widgets/ProfileSettingRow'
@@ -30,6 +31,8 @@ const Settings: React.FC = () => {
   const { trackPageView, trackEvent } = useMatomo()
 
   const [showDeactivate, setShowDeactivate] = useState<boolean>(false)
+  const [showCertificateOptions, setShowCertificateOptions] =
+    useState<boolean>()
 
   useEffect(() => {
     trackPageView({
@@ -69,10 +72,6 @@ const Settings: React.FC = () => {
           width="100%"
           maxWidth={ContainerWidth}>
           <HStack space={space['1']} alignItems="center">
-            {/* <ProfilAvatar
-            size="md"
-            image="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-          /> */}
             <Heading>{data?.me?.firstname}</Heading>
           </HStack>
         </VStack>
@@ -91,48 +90,19 @@ const Settings: React.FC = () => {
                 onPress={() => navigate('/profile')}
               />
             </Column>
-            {/* <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.general.languageVersion')}
-              isDisabled
-            />
-          </Column>
-          <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.general.notifications')}
-              isDisabled
-            />
-          </Column> */}
-            {/* {userType === 'student' && (
             <Column mb={tabspace}>
               <EditDataRow
-                label={t('settings.general.onboarding')}
-                onPress={() => navigate('/onboarding-list')}
+                label={'Bescheinigung beantragen'}
+                onPress={() => setShowCertificateOptions(true)}
               />
             </Column>
-          )} */}
-          </ProfileSettingRow>
-          <ProfileSettingRow
-            title={t('settings.account.title')}
-            isSpace={false}>
-            {/* <Column mb={tabspace}>
-            <EditDataRow label={t('settings.account.changeEmail')} isDisabled />
-          </Column>*/}
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.account.changePassword')}
                 onPress={() => navigate('/reset-password')}
               />
             </Column>
-            {/* <Column mb={tabspace}>
-            <EditDataRow label={t('settings.account.changeUser')} isDisabled />
-          </Column> */}
-            {/* <Column mb={tabspace}>
-            <EditDataRow
-              label={t('settings.account.deleteAccount')}
-              isDisabled
-            />
-          </Column> */}
+
             <Column mb={tabspace}>
               <EditDataRow
                 label={t('settings.account.deactivateAccount')}
@@ -174,6 +144,34 @@ const Settings: React.FC = () => {
         isOpen={showDeactivate}
         onCloseModal={() => setShowDeactivate(false)}
       />
+      <Modal
+        isOpen={showCertificateOptions}
+        onClose={() => setShowCertificateOptions(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Bescheinigung beantragen</Modal.Header>
+          <Modal.Body>
+            <VStack space={4}>
+              <Button
+                onPress={() => {
+                  setShowCertificateOptions(false)
+                  navigate('/request-certificate', {
+                    state: { type: 'matching' }
+                  })
+                }}>
+                1:1 Lernunterstützung
+              </Button>
+              <Button
+                onPress={() => {
+                  setShowCertificateOptions(false)
+                  navigate('/request-certificate', { state: { type: 'group' } })
+                }}>
+                Gruppenkurs
+              </Button>
+            </VStack>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </>
   )
 }
