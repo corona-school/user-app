@@ -32,6 +32,7 @@ import CourseTrafficLamp from './CourseTrafficLamp';
 type Props = {
     tags?: LFTag[];
     date?: string;
+    duration?: number; // in minutes
     title: string;
     description: string;
     child?: string;
@@ -56,6 +57,7 @@ type Props = {
 const AppointmentCard: React.FC<Props> = ({
     tags,
     date: _date,
+    duration,
     title,
     countCourse,
     description,
@@ -77,17 +79,27 @@ const AppointmentCard: React.FC<Props> = ({
     videoButton,
 }) => {
     const { space, sizes } = useTheme();
-    const [remainingTime, setRemainingTime] = useState<string>('00:00');
+    const [currentTime, setCurrentTime] = useState(Date.now());
 
     const date = _date && DateTime.fromISO(_date);
 
-    useEffect(() => {
-        date && setRemainingTime(toTimerString(date.toMillis(), Date.now()));
-    }, [date]);
-
     useInterval(() => {
-        date && setRemainingTime(toTimerString(date.toMillis(), Date.now()));
+        setCurrentTime(Date.now());
     }, 1000);
+
+    let remainingTime: string | null = null;
+    let ongoingTime: string | null = null;
+    let ended = false;
+
+    if (date) {
+        if (date.toMillis() < currentTime) {
+           // appointment not yet started
+           remainingTime = toTimerString(date.toMillis(), currentTime);
+        } else if(duration && (date.toMillis() + duration * 60 * 1000) < currentTime) {
+            // appointment not yet ended -> ongoing
+            ongoingTime = ("" + Math.floor((currentTime - date.toMillis()) / 1000 / 60)) + " Minuten";
+        } else { ended = true }
+    }
 
     const textColor = useMemo(() => (isTeaser ? 'lightText' : 'darkText'), [isTeaser]);
 
@@ -192,12 +204,22 @@ const AppointmentCard: React.FC<Props> = ({
                                             <Text>{<LFTimerIcon />}</Text>
                                         </Column>
                                         <Column>
-                                            <Row>
+                                            {remainingTime && <Row>
                                                 <Text color={textColor}>Startet: </Text>
                                                 <Text bold color="primary.400">
                                                     {remainingTime}
                                                 </Text>
-                                            </Row>
+                                            </Row>}
+                                            {ongoingTime && <Row>
+                                                <Text bold color="primary.400">
+                                                    Läuft seit {ongoingTime}
+                                                </Text>
+                                            </Row>}
+                                            {ended && <Row>
+                                                <Text bold color="primary.400">
+                                                    Schon vorbei
+                                                </Text>
+                                            </Row>}
                                         </Column>
                                     </Row>
                                 )}
