@@ -286,6 +286,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                         }}
                                         tags={highlightedAppointment.subcourse.course?.tags}
                                         date={highlightedAppointment.lecture.start || ''}
+                                        duration={highlightedAppointment.lecture.duration}
                                         isTeaser={true}
                                         image={highlightedAppointment.subcourse.course?.image}
                                         title={highlightedAppointment.subcourse.course?.name || ''}
