@@ -121,7 +121,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         infos.push({
             label: 'interestconformation',
             btnfn: [confirmInterest, refuseInterest],
-            lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'subject never empty') },
+            lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
         });
     pupil?.matches?.forEach((match: any) => {
         if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
