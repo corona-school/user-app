@@ -229,7 +229,7 @@ const DashboardStudent: React.FC<Props> = () => {
     const disableMeetingButton: boolean = useMemo(() => {
         if (!highlightedAppointment) return true;
         return DateTime.fromISO(highlightedAppointment.lecture.start).diffNow('minutes').minutes > 60;
-    }, [highlightedAppointment.lecture]);
+    }, [highlightedAppointment]);
 
     return (
         <AsNavigationItem path="start">
