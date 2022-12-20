@@ -23,6 +23,7 @@ import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
+import { log } from '../../log';
 
 type Props = {};
 
@@ -122,6 +123,13 @@ const DashboardStudent: React.FC<Props> = () => {
         }
     );
 
+    
+    const [joinMeeting, _joinMeeting] = useMutation(gql`
+        mutation joinMeetingStudent($subcourseId: Float!) {
+            subcourseJoinMeeting(subcourseId: $courseId)
+        }
+    `);
+
     const requestMatch = useCallback(async () => {
         navigate('/request-match');
     }, [navigate]);
@@ -205,6 +213,18 @@ const DashboardStudent: React.FC<Props> = () => {
     const highlightedAppointment = sortedAppointments[0];
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved), [data?.me?.student?.matches]);
+
+    const getMeetingLink = useCallback(async () => {
+        const subcourseId = highlightedAppointment?.subcourse.id;
+        if (!subcourseId) return;
+
+        try {
+            const res = await joinMeeting({ variables: { subcourseId } });
+            window.open(res.data.subcourseJoinMeeting, '_blank');
+        } catch (e) {
+            log("DashboardStudent", `Student failed to join Meeting: ${(e as Error)?.message}`, e);
+        }
+    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
 
     const disableMeetingButton: boolean = useMemo(() => {
         if (!highlightedAppointment) return true;
