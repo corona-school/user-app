@@ -4,7 +4,7 @@ const helperwizard = {
     verifizierung: {
         title: 'Verifiziere deine E-Mail-Adresse',
         content:
-            '“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am dd.mm.yyyy eine E-Mail an xxx@mail.de gesendet. Du hast keine E-Mail von uns erhalten?”',
+            '“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”',
         buttons: ['E-Mail erneut senden'],
     },
     passwort: {
@@ -23,25 +23,25 @@ const helperwizard = {
     statusSchüler: {
         title: 'Du bist auf der Warteliste!',
         content:
-            'Sobald du an der Reihe bist, werden wir dich per E-mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am dd.mm.yyyy gestellt. In der Zwischenzeit kannst du an unserer Gruppen-Nachhilfe teilnehmen.',
+            'Sobald du an der Reihe bist, werden wir dich per E-mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unserer Gruppen-Nachhilfe teilnehmen.',
         buttons: ['Gruppenkurse ansehen', 'Anfrage zurücknehmen'],
     },
     interestconformation: {
         title: 'Brauchst du noch Unterstützung?',
         content:
-            'Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern SUBECTS SCHÜLER:IN? Wenn du “Nein” klickst oder dich nicht innerhalb von 14 Tagen bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.',
+            'Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von 14 Tagen bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.',
         buttons: ['Ja', 'Nein'],
     },
     kontaktSchüler: {
         title: 'Neue Lernpartner:in',
         content:
-            'Es ist endlich soweit, wir haben eine:n Lernpartner:in für dich gefunden! NAME HELFER:IN kann dich ab sofort in SUBJECTS HELFER:IN unterstützen. Bitte nehme Kontakt mit NAME HELFER:IN auf und vereinbare ein erstes Treffen. ',
+            'Es ist endlich soweit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
     angeforderteBescheinigung: {
-        title: 'HELFER:IN NAME braucht eine Bestätigung von dir',
+        title: '{{nameHelfer}} braucht eine Bestätigung von dir',
         content:
-            'HELFER:IN NAME hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du auf “Ja” klickst, können wir HELFER:IN NAME diesen Wunsch erfüllen. Ist es richtig, dass ihr schon so lange zusammen lernt? \nStart: dd.mm.yyyy \nEnde: dd.mm.yyyy \nAnzahl Stunden pro Woche: nh',
+            '{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du auf “Ja” klickst, können wir {{nameHelfer}} diesen Wunsch erfüllen. Ist es richtig, dass ihr schon so lange zusammen lernt? \nStart: {{date}} \nEnde: {{date}} \nAnzahl Stunden pro Woche: {{stunden}}',
         buttons: ['Ja, Angaben bestätigen', 'Nein, Problem melden'],
     },
 
@@ -67,7 +67,7 @@ const helperwizard = {
     kontaktStudent: {
         title: 'Neue Lernpartner:in',
         content:
-            'Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! NAME SCHÜLER:IN freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit NAME SCHÜLER:IN auf und vereinbare ein erstes Treffen.',
+            'Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
 };
