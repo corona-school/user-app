@@ -73,6 +73,8 @@ const Settings: React.FC = () => {
                         {/* <Column mb={tabspace}>
                             <EditDataRow label={'Bescheinigung beantragen'} onPress={() => setShowCertificateOptions(true)} />
                         </Column> */}
+                    </ProfileSettingRow>
+                    <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
                             <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/reset-password')} />
                         </Column>
