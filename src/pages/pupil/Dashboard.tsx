@@ -156,9 +156,7 @@ const Dashboard: React.FC<Props> = () => {
             const _a = DateTime.fromISO(a.lecture.start).toMillis();
             const _b = DateTime.fromISO(b.lecture.start).toMillis();
 
-            if (_a > _b) return 1;
-            else if (_a < _b) return -1;
-            else return 0;
+            return _a - _b;
         });
     }, [data?.me?.pupil?.subcoursesJoined]);
 
