@@ -40,7 +40,7 @@ const notification = {
             marketing: {
                 title: 'Marketing',
                 description:
-                    'Marketing-Benachrichtigung werden ausschließlich per Mail versendet. Hier kannst du einstellen welche Arten von Mails du erhalten möchtest.',
+                    'Marketing-Benachrichtigung werden ausschließlich per Mail versendet.\nHier kannst du einstellen welche Arten von Mails du erhalten möchtest.',
             },
         },
     },
