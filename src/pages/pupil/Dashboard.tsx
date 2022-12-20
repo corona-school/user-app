@@ -62,6 +62,7 @@ const query = gql`
                     isParticipant
                     lectures {
                         start
+                        duration
                     }
                     course {
                         name
