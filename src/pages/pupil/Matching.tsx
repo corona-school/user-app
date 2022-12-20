@@ -27,6 +27,7 @@ const query: DocumentNode = gql`
                 id
                 matches {
                     id
+                    uuid
                     dissolved
                     subjectsFormatted {
                         name
@@ -35,6 +36,7 @@ const query: DocumentNode = gql`
                         firstname
                         lastname
                     }
+                    studentEmail
                 }
                 canRequestMatch {
                     allowed
@@ -173,6 +175,8 @@ const Matching: React.FC<Props> = () => {
                                                                         </Button>
                                                                     )
                                                                 }
+                                                                contactMail={match?.studentEmail}
+                                                                meetingId={match?.uuid}
                                                             />
                                                         </Column>
                                                     ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}

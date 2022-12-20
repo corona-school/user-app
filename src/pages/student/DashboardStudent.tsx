@@ -43,6 +43,7 @@ const query = gql`
                 }
                 matches {
                     id
+                    uuid
                     dissolved
                     pupil {
                         firstname
@@ -51,6 +52,7 @@ const query = gql`
                             name
                         }
                     }
+                    pupilEmail
                 }
                 subcoursesInstructing {
                     id
@@ -455,6 +457,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                                 </Button>
                                                             )) || <Text color="lightText">{t('matching.status.dissolved')}</Text>
                                                         }
+                                                        contactMail={match?.pupilEmail}
+                                                        meetingId={match?.uuid}
                                                     />
                                                 </CSSWrapper>
                                             ))) ||

@@ -33,6 +33,7 @@ const query = gql`
             pupil {
                 matches {
                     id
+                    uuid
                     dissolved
                     subjectsFormatted {
                         name
@@ -42,6 +43,7 @@ const query = gql`
                         firstname
                         lastname
                     }
+                    studentEmail
                 }
                 firstMatchRequest
                 openMatchRequestCount
@@ -361,6 +363,8 @@ const Dashboard: React.FC<Props> = () => {
                                                                     </Button>
                                                                 )) || <AlertMessage content={t('matching.request.check.resoloveMatch')} />
                                                             }
+                                                            contactMail={match?.studentEmail}
+                                                            meetingId={match?.uuid}
                                                         />
                                                     </Box>
                                                 ) || <AlertMessage content={t('dashboard.offers.noMatching')} />
