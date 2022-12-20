@@ -104,9 +104,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     if (pupil && !pupil?.verifiedAt)
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
     if (student?.canRequestMatch?.reason === 'not-screened' || student?.canCreateCourse?.reason === 'not-screened')
-        infos.push({ label: 'kennenlernen', btnfn: [], lang: {} });
-    if (!pupil?.firstMatchRequest && !data?.me?.student)
-        infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
+        infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
+    if (pupil && !pupil?.firstMatchRequest) infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
     if (pupil?.openMatchRequestCount && pupil?.openMatchRequestCount > 0)
         infos.push({
             label: 'statusSchüler',
@@ -115,7 +114,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         });
     if (student?.openMatchRequestCount && student?.openMatchRequestCount > 0)
         infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
-    if (!data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
+    if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
         infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
     const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
     if (pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending')
@@ -140,7 +139,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: { nameSchüler: match.pupil.firstname },
             });
     });
-    if (!pupil && !student?.certificateOfConduct?.id)
+    if (student && !student?.certificateOfConduct?.id)
         infos.push({ label: 'zeugnis', btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de')], lang: {} });
     // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
 
