@@ -99,7 +99,6 @@ const DashboardStudent: React.FC<Props> = () => {
     const { t } = useTranslation();
     const [toastShown, setToastShown] = useState<boolean>();
 
-    const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false);
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [dissolveData, setDissolveData] = useState<LFMatch>();
 
@@ -246,11 +245,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={() => {
-                                                            setShowMeetingUrlModal(true);
-                                                        }}
+                                                        onPress={() => { /* TODO */ }}
                                                         isDisabled={
-                                                            disableMeetingButton || _setMeetingUrl.loading || (_setMeetingUrl.called && !_setMeetingUrl.data)
+                                                            disableMeetingButton || true
                                                         }
                                                     >
                                                         {t('course.meeting.videobutton.student')}
@@ -442,12 +439,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     });
                 }}
                 onPressBack={() => setShowDissolveModal(false)}
-            />
-            <SetMeetingLinkModal
-                isOpen={showMeetingUrlModal}
-                onClose={() => setShowMeetingUrlModal(false)}
-                disableButtons={_setMeetingUrl.loading}
-                onPressStartMeeting={(link) => _setMeetingLink(link)}
             />
         </AsNavigationItem>
     );
