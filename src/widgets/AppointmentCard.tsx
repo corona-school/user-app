@@ -92,10 +92,10 @@ const AppointmentCard: React.FC<Props> = ({
     let ended = false;
 
     if (date) {
-        if (date.toMillis() < currentTime) {
+        if (currentTime < date.toMillis()) {
            // appointment not yet started
            remainingTime = toTimerString(date.toMillis(), currentTime);
-        } else if(duration && (date.toMillis() + duration * 60 * 1000) < currentTime) {
+        } else if(duration && currentTime < (date.toMillis() + duration * 60 * 1000)) {
             // appointment not yet ended -> ongoing
             ongoingTime = ("" + Math.floor((currentTime - date.toMillis()) / 1000 / 60)) + " Minuten";
         } else { ended = true }
