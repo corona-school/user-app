@@ -33,7 +33,7 @@ export interface LFSubCourse {
 export type LFLecture = {
     id?: number;
     start: string;
-    duration: number | string;
+    duration: number;
 };
 
 export type LFTag = {
