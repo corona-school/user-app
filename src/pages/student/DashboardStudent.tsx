@@ -22,6 +22,7 @@ import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
+import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 
 type Props = {};
@@ -99,7 +100,6 @@ const DashboardStudent: React.FC<Props> = () => {
     const { t } = useTranslation();
     const [toastShown, setToastShown] = useState<boolean>();
 
-    const [showMeetingUrlModal, setShowMeetingUrlModal] = useState<boolean>(false);
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [dissolveData, setDissolveData] = useState<LFMatch>();
 
@@ -122,6 +122,13 @@ const DashboardStudent: React.FC<Props> = () => {
             refetchQueries: [query],
         }
     );
+
+    
+    const [joinMeeting, _joinMeeting] = useMutation(gql`
+        mutation joinMeetingStudent($subcourseId: Float!) {
+            subcourseJoinMeeting(subcourseId: $subcourseId)
+        }
+    `);
 
     const requestMatch = useCallback(async () => {
         navigate('/request-match');
@@ -183,90 +190,46 @@ const DashboardStudent: React.FC<Props> = () => {
         return courses;
     }, [publishedSubcourses]);
 
-    // TODO: Optimizable?
-    const nextAppointment: [appointment: LFLecture, course: LFSubCourse] | undefined = useMemo(() => {
-        if (!data?.me?.student) return undefined;
+    const sortedAppointments: { subcourse: LFSubCourse; lecture: LFLecture }[] = useMemo(() => {
+        const lectures: { subcourse: LFSubCourse; lecture: LFLecture }[] = [];
+        if (!publishedSubcourses) return [];
 
-        let firstCourse: LFSubCourse | null = null;
-        let firstDate: DateTime = DateTime.now();
-        let firstLecture: LFLecture | null = null;
+        for (const subcourse of publishedSubcourses) {
+            const futureAndOngoingLectures = subcourse.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration);
 
-        for (const sub of sortedPublishedSubcourses) {
-            if (!firstCourse) {
-                firstCourse = sub;
-            }
-
-            let _firstLecture: LFLecture | null = getFirstLectureFromSubcourse(sub.lectures);
-            let _firstDate: DateTime | null = _firstLecture && DateTime.fromISO(_firstLecture.start);
-
-            if (!firstLecture) {
-                firstLecture = _firstLecture;
-            }
-            if (!firstDate) {
-                firstDate = _firstDate;
-            }
-
-            if (_firstDate && _firstDate.toMillis() < firstDate.toMillis()) {
-                firstLecture = _firstLecture;
-                firstDate = _firstDate;
-                firstCourse = sub;
+            for (const lecture of futureAndOngoingLectures) {
+                lectures.push({ lecture, subcourse });
             }
         }
 
-        if (!firstLecture || !firstCourse) {
-            return undefined;
-        }
+        return lectures.sort((a, b) => {
+            const _a = DateTime.fromISO(a.lecture.start).toMillis();
+            const _b = DateTime.fromISO(b.lecture.start).toMillis();
 
-        // if (DateTime.fromISO(firstLecture.start).diffNow().as('hours') >= 24) {
-        //   return undefined
-        // }
+            return _a - _b;
+        });
+    }, [publishedSubcourses]);
 
-        return [firstLecture, firstCourse];
-    }, [data?.me?.student, sortedPublishedSubcourses]);
+    const highlightedAppointment = sortedAppointments[0];
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved), [data?.me?.student?.matches]);
 
-    const [setMeetingUrl, _setMeetingUrl] = useMutation(gql`
-        mutation joinMeetingStudent($courseId: Float!, $meetingUrl: String!) {
-            subcourseSetMeetingURL(subcourseId: $courseId, meetingURL: $meetingUrl)
+    const getMeetingLink = useCallback(async () => {
+        const subcourseId = highlightedAppointment?.subcourse.id;
+        if (!subcourseId) return;
+
+        try {
+            const res = await joinMeeting({ variables: { subcourseId } });
+            window.open(res.data.subcourseJoinMeeting, '_blank');
+        } catch (e) {
+            log("DashboardStudent", `Student failed to join Meeting: ${(e as Error)?.message}`, e);
         }
-    `);
+    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
 
     const disableMeetingButton: boolean = useMemo(() => {
-        if (!nextAppointment) return true;
-        return DateTime.fromISO(nextAppointment[0]?.start).diffNow('minutes').minutes > 60;
-    }, [nextAppointment]);
-
-    const _setMeetingLink = useCallback(
-        async (link: string) => {
-            if (!nextAppointment || !nextAppointment[1]) return;
-
-            try {
-                const res = await setMeetingUrl({
-                    variables: {
-                        courseId: nextAppointment[1].id,
-                        meetingUrl: link,
-                    },
-                });
-
-                setShowMeetingUrlModal(false);
-                if (res.data.subcourseSetMeetingURL && !res.errors) {
-                    toast.show({
-                        description: t('course.meeting.result.success'),
-                    });
-                } else {
-                    toast.show({
-                        description: t('course.meeting.result.error'),
-                    });
-                }
-            } catch (e) {
-                toast.show({
-                    description: t('course.meeting.result.error'),
-                });
-            }
-        },
-        [nextAppointment, setMeetingUrl, t, toast]
-    );
+        if (!highlightedAppointment) return true;
+        return DateTime.fromISO(highlightedAppointment.lecture.start).diffNow('minutes').minutes > 60;
+    }, [highlightedAppointment]);
 
     return (
         <AsNavigationItem path="start">
@@ -291,7 +254,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {data?.me?.student?.subcoursesInstructing?.length > 0 && nextAppointment && (
+                            {highlightedAppointment && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
@@ -302,11 +265,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={() => {
-                                                            setShowMeetingUrlModal(true);
-                                                        }}
+                                                        onPress={() => { getMeetingLink(); }}
                                                         isDisabled={
-                                                            disableMeetingButton || _setMeetingUrl.loading || (_setMeetingUrl.called && !_setMeetingUrl.data)
+                                                            disableMeetingButton
                                                         }
                                                     >
                                                         {t('course.meeting.videobutton.student')}
@@ -318,31 +279,24 @@ const DashboardStudent: React.FC<Props> = () => {
                                             trackEvent({
                                                 category: 'dashboard',
                                                 action: 'click-event',
-                                                name: 'Helfer Dashboard Kachelklick   ' + nextAppointment[1].course?.name || '',
-                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + nextAppointment[1].course?.name || '',
+                                                name: 'Helfer Dashboard Kachelklick   ' + highlightedAppointment.subcourse.course?.name || '',
+                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + highlightedAppointment.subcourse.course?.name || '',
                                             });
-                                            navigate(`/single-course/${nextAppointment[1].id}`);
+                                            navigate(`/single-course/${highlightedAppointment.subcourse.id}`);
                                         }}
-                                        tags={nextAppointment[1].course?.tags}
-                                        date={nextAppointment[0].start || ''}
+                                        tags={highlightedAppointment.subcourse.course?.tags}
+                                        date={highlightedAppointment.lecture.start || ''}
+                                        duration={highlightedAppointment.lecture.duration}
                                         isTeaser={true}
-                                        image={nextAppointment[1].course?.image}
-                                        title={nextAppointment[1].course?.name || ''}
-                                        description={nextAppointment[1].course?.description || ''}
+                                        image={highlightedAppointment.subcourse.course?.image}
+                                        title={highlightedAppointment.subcourse.course?.name || ''}
+                                        description={highlightedAppointment.subcourse.course?.description || ''}
                                     />
                                 </VStack>
                             )}
-                            <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                {(sortedPublishedSubcourses?.length > 1 &&
-                                    sortedPublishedSubcourses?.slice(1, 5).map((el: LFSubCourse, i: number) => {
-                                        const course = el.course;
-                                        if (!course) return <></>;
-
-                                        const lectures = el.lectures;
-                                        if (!lectures) return <></>;
-
-                                        const firstLecture = getFirstLectureFromSubcourse(lectures);
-                                        if (!firstLecture) return <></>;
+                            {sortedAppointments.length > 1 && <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
+                                {(sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
+                                        const { course } = subcourse;
 
                                         return (
                                             <Column minWidth="230px" maxWidth="300px" flex={1} h="100%">
@@ -357,19 +311,19 @@ const DashboardStudent: React.FC<Props> = () => {
                                                             documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
                                                         });
 
-                                                        navigate(`/single-course/${el.id}`);
+                                                        navigate(`/single-course/${subcourse.id}`);
                                                     }}
-                                                    key={`appointment-${el.id}`}
+                                                    key={`appointment-${index}`}
                                                     description={course.description}
                                                     tags={course.tags}
-                                                    date={firstLecture.start}
+                                                    date={lecture.start}
                                                     image={course.image}
                                                     title={course.name}
                                                 />
                                             </Column>
                                         );
-                                    })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
-                            </HSection>
+                                    }))}
+                            </HSection>}
                             <HSection
                                 title={t('dashboard.helpers.headlines.course')}
                                 showAll
@@ -506,12 +460,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     });
                 }}
                 onPressBack={() => setShowDissolveModal(false)}
-            />
-            <SetMeetingLinkModal
-                isOpen={showMeetingUrlModal}
-                onClose={() => setShowMeetingUrlModal(false)}
-                disableButtons={_setMeetingUrl.loading}
-                onPressStartMeeting={(link) => _setMeetingLink(link)}
             />
         </AsNavigationItem>
     );

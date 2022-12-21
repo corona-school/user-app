@@ -63,6 +63,7 @@ const query = gql`
                     isParticipant
                     lectures {
                         start
+                        duration
                     }
                     course {
                         name
@@ -146,9 +147,9 @@ const Dashboard: React.FC<Props> = () => {
         if (!data?.me?.pupil?.subcoursesJoined) return [];
 
         for (const sub of data?.me?.pupil?.subcoursesJoined) {
-            const futureLectures = sub.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis());
+            const futureAndOngoingLectures = sub.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration);
 
-            for (const lecture of futureLectures) {
+            for (const lecture of futureAndOngoingLectures) {
                 lectures.push({ lecture: lecture, course: sub });
             }
         }
@@ -157,9 +158,7 @@ const Dashboard: React.FC<Props> = () => {
             const _a = DateTime.fromISO(a.lecture.start).toMillis();
             const _b = DateTime.fromISO(b.lecture.start).toMillis();
 
-            if (_a > _b) return 1;
-            else if (_a < _b) return -1;
-            else return 0;
+            return _a - _b;
         });
     }, [data?.me?.pupil?.subcoursesJoined]);
 
@@ -304,6 +303,7 @@ const Dashboard: React.FC<Props> = () => {
                                         }}
                                         tags={highlightedAppointment?.course?.course?.tags}
                                         date={highlightedAppointment?.lecture.start}
+                                        duration={highlightedAppointment?.lecture.duration}
                                         image={highlightedAppointment?.course.course?.image}
                                         title={highlightedAppointment?.course.course?.name}
                                         description={highlightedAppointment?.course.course?.description?.substring(0, 64)}
