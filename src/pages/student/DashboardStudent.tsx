@@ -254,7 +254,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {data?.me?.student?.subcoursesInstructing?.length > 0 && highlightedAppointment && (
+                            {highlightedAppointment && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
@@ -294,8 +294,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                     />
                                 </VStack>
                             )}
-                            <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                {(sortedAppointments.slice(0, 5).map(({ lecture, subcourse }, index) => {
+                            {sortedAppointments.length > 1 && <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
+                                {(sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
                                         const { course } = subcourse;
 
                                         return (
@@ -322,8 +322,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 />
                                             </Column>
                                         );
-                                    })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
-                            </HSection>
+                                    }))}
+                            </HSection>}
                             <HSection
                                 title={t('dashboard.helpers.headlines.course')}
                                 showAll
