@@ -243,15 +243,6 @@ export default function NavigatorLazy() {
             ></Route>
 
             <Route
-                path="/group/offer"
-                element={
-                    <RequireAuth>
-                        <PupilGroup />
-                    </RequireAuth>
-                }
-            ></Route>
-
-            <Route
                 path="/matching"
                 element={
                     <RequireAuth>
