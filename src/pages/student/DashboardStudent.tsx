@@ -9,7 +9,6 @@ import NotificationAlert from '../../components/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
-import HelperWizard from '../../widgets/HelperWizard';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
@@ -24,6 +23,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
 import { log } from '../../log';
+import ImportantInformation from '../../widgets/ImportantInformation';
 
 type Props = {};
 
@@ -251,7 +251,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <VStack>
                             <VStack marginBottom={space['1.5']}>
-                                <HelperWizard />
+                                <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
                             {data?.me?.student?.subcoursesInstructing?.length > 0 && highlightedAppointment && (
