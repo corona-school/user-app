@@ -265,9 +265,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={() => { /* TODO */ }}
+                                                        onPress={() => { getMeetingLink(); }}
                                                         isDisabled={
-                                                            disableMeetingButton || true
+                                                            disableMeetingButton
                                                         }
                                                     >
                                                         {t('course.meeting.videobutton.student')}
