@@ -20,7 +20,7 @@ import {
 } from 'native-base';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getSubjectLabel, subjects } from '../../types/lernfair/Subject';
+import { subjects } from '../../types/lernfair/Subject';
 import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png';

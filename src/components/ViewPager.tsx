@@ -1,5 +1,5 @@
-import { Flex, Row, Box, Pressable, Link, Modal, useBreakpointValue, useTheme, Text } from 'native-base';
-import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
+import { Flex, Row, Box, Pressable, Link, Modal, useBreakpointValue, useTheme } from 'native-base';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import OnBoardingSkipModal from '../widgets/OnBoardingSkipModal';

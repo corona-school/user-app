@@ -5,12 +5,11 @@ import IconTagList from '../widgets/IconTagList';
 import ProfileSettingItem from '../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 
-import { useLocation, useNavigate } from 'react-router-dom';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import BackButton from '../components/BackButton';
 
 type Props = {};
 

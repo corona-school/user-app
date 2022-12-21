@@ -1,5 +1,4 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { t } from 'i18next';
 import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Row, Box } from 'native-base';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -7,7 +7,6 @@ import matomo from './matomo';
 import { MatomoProvider } from '@jonkoops/matomo-tracker-react';
 
 import './web/scss/index.scss';
-import FullPageModal from './widgets/FullPageModal';
 import { LFModalProvider } from './hooks/useModal';
 import { LernfairProvider } from './hooks/useLernfair';
 import { IssueReporter } from './IssueReporter';

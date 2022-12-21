@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Input, useBreakpointValue, Flex, Column, Row, Spinner, Box, Alert, HStack } from 'native-base';
+import { Text, Heading, useTheme, VStack, Input, useBreakpointValue, Row, Spinner, Box } from 'native-base';
 
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../components/WithNavigation';
@@ -7,7 +7,6 @@ import AppointmentCard from '../widgets/AppointmentCard';
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useMemo, useState } from 'react';
 import { LFSubCourse } from '../types/lernfair/Course';
-import useLernfair from '../hooks/useLernfair';
 import { DateTime } from 'luxon';
 import { useNavigate } from 'react-router-dom';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';

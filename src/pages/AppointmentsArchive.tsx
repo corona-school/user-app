@@ -1,10 +1,9 @@
-import { Text, Heading, useTheme, VStack, Input, SearchIcon, useBreakpointValue, Flex, Column, Spinner, Box, Row, Button } from 'native-base';
+import { Text, Heading, useTheme, VStack, Input, SearchIcon, useBreakpointValue, Spinner, Box, Row, Button } from 'native-base';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/NotificationAlert';
 import AppointmentCard from '../widgets/AppointmentCard';
-import useLernfair from '../hooks/useLernfair';
 import { useEffect, useMemo, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { LFLecture, LFSubCourse } from '../types/lernfair/Course';

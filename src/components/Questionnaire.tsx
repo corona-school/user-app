@@ -2,8 +2,6 @@ import { Box, Button, Flex, Heading, Image, Progress, Text, useBreakpointValue, 
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
-import useLernfair from '../hooks/useLernfair';
-import useRegistration from '../hooks/useRegistration';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import QuestionnaireSelectionView from './questionnaire/QuestionnaireSelectionView';
 import { ISelectionItem } from './questionnaire/SelectionItem';

@@ -1,4 +1,4 @@
-import { View, Text, Modal, Radio, Row, Button, useTheme } from 'native-base';
+import { Text, Modal, Row, Button, useTheme } from 'native-base';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

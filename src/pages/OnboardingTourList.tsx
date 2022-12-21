@@ -1,7 +1,6 @@
-import { Button, Text, Heading, useTheme, VStack, CheckCircleIcon, Stagger, useBreakpointValue, Flex, Column } from 'native-base';
+import { Button, Text, Heading, useTheme, VStack, Stagger, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import BackButton from '../components/BackButton';
 import WithNavigation from '../components/WithNavigation';
 import CTACard from '../widgets/CTACard';
 

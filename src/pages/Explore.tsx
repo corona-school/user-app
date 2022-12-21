@@ -1,9 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { View, Text, VStack, useTheme, Heading } from 'native-base';
+import { Text, VStack, useTheme, Heading } from 'native-base';
 import { useEffect } from 'react';
 import NotificationAlert from '../components/NotificationAlert';
-import SettingsButton from '../components/SettingsButton';
 import WithNavigation from '../components/WithNavigation';
 import { LFSubCourse } from '../types/lernfair/Course';
 import SignInCard from '../widgets/SignInCard';

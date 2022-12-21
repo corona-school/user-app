@@ -1,6 +1,5 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { LFUserType } from '../types/lernfair/User';
-import useApollo from './useApollo';
 
 type LFRegistration = {
     firstname: string;

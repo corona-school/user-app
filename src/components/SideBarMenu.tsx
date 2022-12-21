@@ -1,6 +1,6 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
-import { View, Text, VStack, Link, Center, CircleIcon, Row, useTheme, Pressable } from 'native-base';
+import { View, Text, VStack, Center, CircleIcon, Row, useTheme, Pressable } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';

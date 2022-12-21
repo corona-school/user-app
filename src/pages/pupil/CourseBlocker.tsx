@@ -1,12 +1,10 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Container, Heading, Text, useTheme, Image, Link, useBreakpointValue } from 'native-base';
+import { Button, Container, Heading, Text, useTheme, Image, Link, useBreakpointValue } from 'native-base';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LFIconBook from '../../assets/icons/lernfair/onboarding/lf-onboarding-group.svg';
 import LFImageLearing from '../../assets/images/course/course-blocker.jpg';
-import BackButton from '../../components/BackButton';
-import WithNavigation from '../../components/WithNavigation';
 import CTACard from '../../widgets/CTACard';
 
 type Props = {};

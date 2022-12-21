@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Column, Modal, useToast, Box, Row } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Column, Modal, useToast } from 'native-base';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -12,8 +12,6 @@ import { LFMatch } from '../../types/lernfair/Match';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import LearningPartner from '../../widgets/LearningPartner';
-import { LFSubject } from '../../types/lernfair/Subject';
-import Tag from '../../components/Tag';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 

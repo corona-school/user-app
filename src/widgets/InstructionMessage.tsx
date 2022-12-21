@@ -1,7 +1,5 @@
 import { Text, VStack, useTheme, Heading } from 'native-base';
 import { ReactNode } from 'react';
-import Card from '../components/Card';
-import CSSWrapper from '../components/CSSWrapper';
 
 export type IInstructionMessage = {
     title?: string;

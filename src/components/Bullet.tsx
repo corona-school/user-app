@@ -1,4 +1,4 @@
-import { Box, useTheme } from 'native-base';
+import { Box } from 'native-base';
 
 type Props = {
     isActive?: boolean;

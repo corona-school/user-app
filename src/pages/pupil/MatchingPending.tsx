@@ -1,6 +1,6 @@
 import { DocumentNode, gql, useMutation } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, Heading, Button, Modal, Radio, useTheme, Row, useBreakpointValue } from 'native-base';
+import { Text, VStack, Heading, Button, useTheme, useBreakpointValue } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';

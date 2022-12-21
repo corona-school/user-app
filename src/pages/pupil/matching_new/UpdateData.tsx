@@ -3,7 +3,6 @@ import { DocumentNode } from 'graphql';
 import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import CSSWrapper from '../../../components/CSSWrapper';
 import { schooltypes } from '../../../types/lernfair/SchoolType';
 import { states } from '../../../types/lernfair/State';

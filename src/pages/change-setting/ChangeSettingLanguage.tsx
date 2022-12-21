@@ -1,14 +1,12 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Text, Heading, useTheme, VStack, Row, Column, Input, FormControl, Stack, useBreakpointValue } from 'native-base';
+import { Button, Text, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-dom';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import WithNavigation from '../../components/WithNavigation';
 import { useUserType } from '../../hooks/useApollo';
-import useLernfair from '../../hooks/useLernfair';
 import { languages } from '../../types/lernfair/Language';
 import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';

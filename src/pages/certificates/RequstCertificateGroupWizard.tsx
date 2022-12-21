@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Text, useTheme, VStack, Heading, Box, Button } from 'native-base';
+import { Text, useTheme, VStack, Heading, Button } from 'native-base';
 import { useContext } from 'react';
 import CardOverlay from '../../components/CardOverlay';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
