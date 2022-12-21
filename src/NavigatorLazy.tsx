@@ -259,6 +259,7 @@ export default function NavigatorLazy() {
                 }
             />
 
+            {/* TODO: Clarify if this is needed
             <Route
                 path="/course-archive"
                 element={
@@ -266,8 +267,9 @@ export default function NavigatorLazy() {
                         <CourseArchive />
                     </RequireAuth>
                 }
-            />
+            />*/}
 
+            {/* TODO: Clarify if this is needed
             <Route
                 path="/learningpartner-archive"
                 element={
@@ -275,7 +277,7 @@ export default function NavigatorLazy() {
                         <LearningPartnerArchive />
                     </RequireAuth>
                 }
-            />
+            />*/}
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
