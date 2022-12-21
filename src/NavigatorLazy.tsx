@@ -38,7 +38,6 @@ import PupilGroup from './pages/pupil/Group';
 import StudentGroup from './pages/student/StudentGroup';
 import CourseArchive from './pages/CourseArchive';
 import LearningPartnerArchive from './pages/LearningPartnerArchive';
-import UserProfile from './pages/UserProfile';
 import NoAcceptRegistration from './pages/NoAcceptRegistration';
 import VerifyEmail from './pages/VerifyEmail';
 import VerifyEmailModal from './modals/VerifyEmailModal';
@@ -283,15 +282,6 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <LearningPartnerArchive />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/user-profile"
-                element={
-                    <RequireAuth>
-                        <UserProfile />
                     </RequireAuth>
                 }
             />
