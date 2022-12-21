@@ -1,36 +1,17 @@
-import { MessageType, UserNotification } from '../types/lernfair/Notification'
-import MessageIcon from '../assets/icons/lernfair/notifications/lf_message.svg'
-import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg'
-import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg'
-import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg'
-import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg'
-import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg'
-import { ReactElement } from 'react'
+import { UserNotification } from '../types/lernfair/Notification'
 import { DateTime } from 'luxon'
 import { TOptions } from 'i18next'
+import {
+  messageIcons,
+} from './notification-preferences'
+import { FC } from "react"
 
-function getIconForMessageType(messageType: string): ReactElement {
-  switch (messageType) {
-    case MessageType.MESSAGE:
-      return <MessageIcon />
-    case MessageType.MATCH:
-      return <MatchIcon />
-    case MessageType.COURSE:
-      return <CourseIcon />
-    case MessageType.APPOINTMENT:
-      return <AppointmentIcon />
-    case MessageType.SURVEY:
-      return <SurveyIcon />
-    case MessageType.NEWS:
-      return <NewsIcon />
-    default:
-      return <MatchIcon />
-  }
-}
+const getIconForMessageType = (messageType: string): FC =>
+  messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null
 
-const getTimeDifference = (timestring: string) => {
+const getTimeDifference = (timestamp: string) => {
   const now = DateTime.now()
-  const createdAt = DateTime.fromISO(timestring)
+  const createdAt = DateTime.fromISO(timestamp)
   const timeDiff = now.diff(createdAt, 'minutes')
   const minutesDiff = now.diff(createdAt, 'minutes').minutes
   const hoursDiff = now.diff(createdAt, 'hours').hours
@@ -119,3 +100,4 @@ export {
   getNewNotifications,
   getAllNewUserNotificationsButMinimumFiveNotifications
 }
+

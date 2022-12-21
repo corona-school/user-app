@@ -19,5 +19,17 @@ export enum MessageType {
   COURSE = 'course',
   APPOINTMENT = 'appointment',
   SURVEY = 'survey',
-  NEWS = 'news'
+  NEWS = 'news',
+  CHAT = 'chat'
+}
+
+export enum MarketingMessageType {
+  NEWSLETTER = 'newsletter',
+  TRAINING = 'training',
+  EVENTS = 'events',
+  NEWSOFFER = 'newsoffer',
+  REQUEST = 'request',
+  LEARNOFFER = 'learnoffer',
+  ALTERNATIVEOFFER = 'alternativeoffer',
+  FEEDBACK = 'feedback'
 }
