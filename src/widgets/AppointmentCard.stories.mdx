@@ -1,12 +1,31 @@
-import { Meta, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { VStack, Button } from 'native-base';
+import AlertMessage from './AlertMessage';
 import AppointmentCard from './AppointmentCard';
+import { DateTime } from 'luxon';
 
-<Meta title="AppointmentCard" component={AppointmentCard} />
+<Meta title="Dashboard/AppointmentCard" component={AppointmentCard} />
 
 # AppointmentCard
 
-This is how an empty appointment card looks like:
+-   use `isTeaser={true}` to show the appointment in highlighted state
+-   pass dates as iso string
+-   use `isGrid` to make card fill parent
+-   `videoButton` is only shown in `isTeaser` cards
 
-<Story name="Empty Appointment Card">
-    <AppointmentCard />
+(adding `isTeaser` makes the component unrenderable in storybook?)
+
+<Story name="AppointmentCard">
+    <VStack minW="420px" maxW="33%">
+        <AppointmentCard
+            isGrid
+            onPressToCourse={() => null}
+            description={'My description'}
+            tags={[{ name: 'Mathe' }, { name: 'Englisch' }]}
+            date={new Date().toISOString()}
+            image={'https://picsum.photos/480/360'}
+            title={'Lorem Ipsum'}
+            videoButton={<Button>Hello World</Button>}
+        />
+    </VStack>
 </Story>

@@ -8,7 +8,6 @@ import LFImageLearing from '../../assets/images/course/course-blocker.jpg';
 import BackButton from '../../components/BackButton';
 import WithNavigation from '../../components/WithNavigation';
 import CTACard from '../../widgets/CTACard';
-import HelperWizard from '../../widgets/HelperWizard';
 
 type Props = {};
 
@@ -71,9 +70,6 @@ const PupilCourseBlocker: React.FC<Props> = () => {
                     icon={<LFIconBook />}
                     button={<Button onPress={() => navigate('/onboarding-list')}>{t('course.blocker.pupil.cta.button')}</Button>}
                 />
-            </Container>
-            <Container maxWidth={ContainerWidth} width="100%" marginX="auto" paddingX={space['1.5']} marginBottom={space['1.5']} alignItems="stretch">
-                <HelperWizard />
             </Container>
         </>
     );

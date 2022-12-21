@@ -18,11 +18,9 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
     const [checks, setChecks] = useState<string[]>([]);
     const [errors, setErrors] = useState<{
         dsgvo: boolean;
-        usa: boolean;
         straftaten: boolean;
     }>({
         dsgvo: false,
-        usa: false,
         straftaten: false,
     });
 
@@ -31,16 +29,14 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
             setErrors({
                 straftaten: true,
                 dsgvo: !checks.includes('dsgvo'),
-                usa: !checks.includes('usa'),
             });
-            return checks.includes('dsgvo') && checks.includes('usa');
+            return checks.includes('dsgvo');
         } else {
             setErrors({
                 dsgvo: !checks.includes('dsgvo'),
-                usa: !checks.includes('usa'),
                 straftaten: !checks.includes('straftaten'),
             });
-            return checks.includes('dsgvo') && checks.includes('usa') && checks.includes('straftaten');
+            return checks.includes('dsgvo') && checks.includes('straftaten');
         }
     }, [checks, userType]);
 
@@ -74,9 +70,9 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                     <Row alignItems="flex-start" mt={space['0.5']} ml="28px">
                         <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA">
                             <Text>
-                                Ich stimme ferner ausdrücklich der Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden
-                                Auftragsverarbeiter Google und Heroku zu, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von
-                                Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln
+                                Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden
+                                Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit
+                                von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln
                                 abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.
                             </Text>
                         </Accordion>

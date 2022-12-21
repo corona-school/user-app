@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import LFIconBook from '../../assets/icons/lernfair/onboarding/lf-onboarding-group.svg';
 import LFImageLearing from '../../assets/images/course/course-blocker.jpg';
 import CTACard from '../../widgets/CTACard';
-import HelperWizard from '../../widgets/HelperWizard';
 
 type Props = {};
 
@@ -70,9 +69,6 @@ const CourseBlocker: React.FC<Props> = () => {
                     icon={<LFIconBook />}
                     button={<Button onPress={() => navigate('/onboarding-list')}>{t('course.blocker.student.cta.button')}</Button>}
                 />
-            </Container>
-            <Container maxWidth={ContainerWidth} width="100%" marginX="auto" paddingX={space['1.5']} marginBottom={space['1.5']} alignItems="stretch">
-                <HelperWizard />
             </Container>
         </>
     );

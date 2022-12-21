@@ -22,6 +22,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
+import ImportantInformation from '../../widgets/ImportantInformation';
 
 type Props = {};
 
@@ -32,6 +33,7 @@ const query = gql`
             pupil {
                 matches {
                     id
+                    uuid
                     dissolved
                     subjectsFormatted {
                         name
@@ -41,6 +43,7 @@ const query = gql`
                         firstname
                         lastname
                     }
+                    studentEmail
                 }
                 firstMatchRequest
                 openMatchRequestCount
@@ -265,6 +268,7 @@ const Dashboard: React.FC<Props> = () => {
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <ImportantInformation variant="dark" />
                         <VStack>
                             {highlightedAppointment && (
                                 <VStack marginBottom={space['1.5']}>
@@ -288,6 +292,7 @@ const Dashboard: React.FC<Props> = () => {
                                         }
                                         isTeaser={true}
                                         onPressToCourse={() => {
+                                            DateTime.now().plus({ days: 7 }).toISODate();
                                             trackEvent({
                                                 category: 'dashboard',
                                                 action: 'click-event',
@@ -359,6 +364,8 @@ const Dashboard: React.FC<Props> = () => {
                                                                     </Button>
                                                                 )) || <AlertMessage content={t('matching.request.check.resoloveMatch')} />
                                                             }
+                                                            contactMail={match?.studentEmail}
+                                                            meetingId={match?.uuid}
                                                         />
                                                     </Box>
                                                 ) || <AlertMessage content={t('dashboard.offers.noMatching')} />

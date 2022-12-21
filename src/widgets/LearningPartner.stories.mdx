@@ -1,0 +1,32 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Button } from 'native-base';
+import LearningPartner from './LearningPartner';
+
+<Meta title="Matching/LearningPartner" component={LearningPartner} />
+
+# LearningPartner
+
+-   primarily used to show matches
+
+<Story name="LearningPartner isDark">
+    <LearningPartner
+        isDark
+        name="My Name"
+        subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
+        status="My status"
+        button={<Button>My Button</Button>}
+        contactMail="test@example.org"
+        meetingId="123"
+    />
+</Story>
+
+<Story name="LearningPartner">
+    <LearningPartner
+        name="My Name"
+        subjects={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
+        status="My status"
+        button={<Button>My Button</Button>}
+        contactMail="test@example.org"
+        meetingId="123"
+    />
+</Story>

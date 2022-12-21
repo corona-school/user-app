@@ -9,7 +9,6 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
-import HelperWizard from '../../widgets/HelperWizard';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
@@ -23,6 +22,7 @@ import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
+import ImportantInformation from '../../widgets/ImportantInformation';
 
 type Props = {};
 
@@ -43,6 +43,7 @@ const query = gql`
                 }
                 matches {
                     id
+                    uuid
                     dissolved
                     pupil {
                         firstname
@@ -51,6 +52,7 @@ const query = gql`
                             name
                         }
                     }
+                    pupilEmail
                 }
                 subcoursesInstructing {
                     id
@@ -286,7 +288,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <VStack>
                             <VStack marginBottom={space['1.5']}>
-                                <HelperWizard />
+                                <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
                             {data?.me?.student?.subcoursesInstructing?.length > 0 && nextAppointment && (
@@ -455,6 +457,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                                 </Button>
                                                             )) || <Text color="lightText">{t('matching.status.dissolved')}</Text>
                                                         }
+                                                        contactMail={match?.pupilEmail}
+                                                        meetingId={match?.uuid}
                                                     />
                                                 </CSSWrapper>
                                             ))) ||

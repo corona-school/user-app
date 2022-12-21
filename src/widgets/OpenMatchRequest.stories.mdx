@@ -1,0 +1,13 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import OpenMatchRequest from './OpenMatchRequest';
+
+<Meta title="Matching/OpenMatchRequest" component={OpenMatchRequest} />
+
+# OpenMatchRequest
+
+-   pass `[]: LFSubject[]` to `subjects
+-   `onEditRequest`and `showCancelMatchRequestModal` to show appropriate callbacks
+
+<Story name="OpenMatchRequest">
+    <OpenMatchRequest subjects={[{ name: 'Englisch' }, { name: 'Deutsch' }]} cancelLoading={false} index={2} showCancelMatchRequestModal={() => null} />
+</Story>

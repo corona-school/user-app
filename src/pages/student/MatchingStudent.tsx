@@ -28,6 +28,7 @@ const query = gql`
                 }
                 matches {
                     id
+                    uuid
                     dissolved
                     subjectsFormatted {
                         name
@@ -38,6 +39,7 @@ const query = gql`
                         schooltype
                         grade
                     }
+                    pupilEmail
                 }
                 canRequestMatch {
                     allowed
@@ -206,6 +208,8 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                         </Button>
                                                                     )
                                                                 }
+                                                                contactMail={match?.pupilEmail}
+                                                                meetingId={match?.uuid}
                                                             />
                                                         </Column>
                                                     ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}

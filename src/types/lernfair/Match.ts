@@ -7,4 +7,7 @@ export type LFMatch = {
     pupil: any;
     student: any;
     subjectsFormatted: LFSubject[];
+    uuid: string;
+    studentEmail: string;
+    pupilEmail: string;
 };

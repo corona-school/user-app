@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { NativeBaseProvider, Button } from 'native-base';
+import Theme from '../Theme';
+import TeacherCard from './TeacherCard';
+
+<Meta title="Misc/TeacherCard" component={TeacherCard} />
+
+# TeacherCard
+
+-   unused
+-   replaced with `LearningPartner`
+
+<NativeBaseProvider theme={Theme}>
+    <TeacherCard tags={[]} name="teacher name" button={<Button>my button</Button>} />
+</NativeBaseProvider>
