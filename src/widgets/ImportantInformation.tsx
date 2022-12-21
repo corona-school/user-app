@@ -167,8 +167,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     {t('helperwizard.' + config.label + '.content', config.lang)}
                                 </Text>
                                 {buttontexts.map((buttontext, index) => {
+                                    const btnFn = config.btnfn[index];
+
                                     return (
-                                        <Button onPress={() => config.btnfn[index]()} key={index} marginBottom={'5px'}>
+                                        <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
                                             {buttontext}
                                         </Button>
                                     );
