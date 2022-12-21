@@ -6,7 +6,7 @@ type Props = {};
 const SettingsButton: React.FC<Props> = () => {
     const navigate = useNavigate();
     return (
-        <Button onPress={() => navigate('/settings')}>
+        <Button variant={'ghost'} onPress={() => navigate('/settings')}>
             <HamburgerIcon size="xl" color="lightText" />
         </Button>
     );

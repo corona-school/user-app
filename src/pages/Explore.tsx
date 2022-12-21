@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Text, VStack, useTheme, Heading } from 'native-base';
 import { useEffect } from 'react';
-import NotificationAlert from '../components/Notification/NotificationAlert';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import { LFSubCourse } from '../types/lernfair/Course';
 import SignInCard from '../widgets/SignInCard';
@@ -10,7 +10,7 @@ import SignInCard from '../widgets/SignInCard';
 type Props = {};
 
 const Explore: React.FC<Props> = () => {
-    const { data, error, loading } = useQuery(gql`
+    const { data, loading } = useQuery(gql`
         query GetPublicSubcourses {
             subcoursesPublic(take: 10, skip: 0) {
                 course {

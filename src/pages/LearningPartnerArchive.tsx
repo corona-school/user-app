@@ -2,10 +2,9 @@ import { Text, Heading, useTheme, VStack, Input, useBreakpointValue, Column, Row
 
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../components/WithNavigation';
-import NotificationAlert from '../components/Notification/NotificationAlert';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LFMatch } from '../types/lernfair/Match';
 import TeacherCard from '../widgets/TeacherCard';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -30,7 +29,6 @@ const pupilQuery = gql`
 
 const LearningPartnerArchive: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
-    const navigate = useNavigate();
 
     const { t } = useTranslation();
 

@@ -1,12 +1,5 @@
-import {
-  Box,
-  HStack,
-  Spacer,
-  Text,
-  useBreakpointValue,
-  VStack
-} from 'native-base'
-import { getIcon } from '../../helper/notification-helper'
+import { Box, HStack, Spacer, Text, VStack } from 'native-base'
+import { getIconForMessageType } from '../../helper/notification-helper'
 import { UserNotification } from '../../types/lernfair/Notification'
 import TimeIndicator from './TimeIndicator'
 
@@ -21,7 +14,8 @@ const MessageBox: React.FC<Props> = ({
   isStandalone,
   isRead
 }) => {
-  const { headline, body, notification, createdAt } = userNotification
+  const { sentAt } = userNotification
+  const { headline, body, messageType } = userNotification.message
 
   const boxProps = {
     mb: 2,
@@ -36,6 +30,8 @@ const MessageBox: React.FC<Props> = ({
     maxW: 200
   }
 
+  const Icon = getIconForMessageType(messageType)
+
   return (
     <Box
       borderRadius={boxProps.borderRadius}
@@ -45,7 +41,7 @@ const MessageBox: React.FC<Props> = ({
       w={!isStandalone ? boxProps.fullWidth : boxProps.width}>
       <HStack alignItems="center" space={1}>
         <VStack>
-          <Box px="1.5">{getIcon(notification.messageType)}</Box>
+          <Box px="1.5"><Icon /></Box>
         </VStack>
         <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
           <Text bold fontSize="md">
@@ -58,7 +54,7 @@ const MessageBox: React.FC<Props> = ({
         <Spacer />
         {!isStandalone && (
           <VStack>
-            <TimeIndicator createdAt={createdAt} />
+            <TimeIndicator sentAt={sentAt} />
           </VStack>
         )}
       </HStack>

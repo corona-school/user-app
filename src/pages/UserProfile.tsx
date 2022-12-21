@@ -1,5 +1,5 @@
 import { Box, Heading, useTheme, VStack, Row, Column, Text, useBreakpointValue } from 'native-base';
-import NotificationAlert from '../components/Notification/NotificationAlert';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import IconTagList from '../widgets/IconTagList';
 import ProfileSettingItem from '../widgets/ProfileSettingItem';
