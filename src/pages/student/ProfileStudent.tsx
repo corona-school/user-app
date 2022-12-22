@@ -236,6 +236,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 href={() => {
                                     setNameModalVisible(!nameModalVisible);
                                 }}
+                                isIcon={false}
                             >
                                 <Text>
                                     {data?.me?.firstname} {data?.me?.lastname}

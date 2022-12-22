@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/pupil/Dashboard';
-import Profile from './pages/pupil/Profile';
+import ProfilePupil from './pages/pupil/ProfilePupil';
 
 import Settings from './pages/Settings';
 import OnboardingTourList from './pages/OnboardingTourList';
@@ -90,7 +90,7 @@ export default function NavigatorLazy() {
                 path="/profile"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Profile />} studentComponent={<ProfileStudent />} />
+                        <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
                     </RequireAuth>
                 }
             />

@@ -15,7 +15,23 @@ import { DateTime } from 'luxon';
 
 (adding `isTeaser` makes the component unrenderable in storybook?)
 
-<Story name="AppointmentCard">
+<Story name="AppointmentCard soon">
+    <VStack minW="420px" maxW="33%">
+        <AppointmentCard
+            isGrid
+            onPressToCourse={() => null}
+            description={'My description'}
+            tags={[{ name: 'Mathe' }, { name: 'Englisch' }]}
+            date={new Date(Date.now() + 1000 * 60 * 90).toISOString()}
+            duration={60}
+            image={'https://picsum.photos/480/360'}
+            title={'Lorem Ipsum'}
+            videoButton={<Button>Hello World</Button>}
+        />
+    </VStack>
+</Story>
+
+<Story name="AppointmentCard just started">
     <VStack minW="420px" maxW="33%">
         <AppointmentCard
             isGrid
@@ -23,6 +39,23 @@ import { DateTime } from 'luxon';
             description={'My description'}
             tags={[{ name: 'Mathe' }, { name: 'Englisch' }]}
             date={new Date().toISOString()}
+            duration={60}
+            image={'https://picsum.photos/480/360'}
+            title={'Lorem Ipsum'}
+            videoButton={<Button>Hello World</Button>}
+        />
+    </VStack>
+</Story>
+
+<Story name="AppointmentCard ended">
+    <VStack minW="420px" maxW="33%">
+        <AppointmentCard
+            isGrid
+            onPressToCourse={() => null}
+            description={'My description'}
+            tags={[{ name: 'Mathe' }, { name: 'Englisch' }]}
+            date={new Date(Date.now() - 1000 * 60 * 61).toISOString()}
+            duration={60}
             image={'https://picsum.photos/480/360'}
             title={'Lorem Ipsum'}
             videoButton={<Button>Hello World</Button>}

@@ -37,7 +37,7 @@ const query = gql(`
     }
 `);
 
-const Profile: React.FC<Props> = () => {
+const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -375,4 +375,4 @@ const Profile: React.FC<Props> = () => {
         </>
     );
 };
-export default Profile;
+export default ProfilePupil;
