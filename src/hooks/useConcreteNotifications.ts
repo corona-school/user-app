@@ -1,33 +1,31 @@
-import { gql, useQuery } from '@apollo/client'
-import { useEffect, useState } from "react"
+import { gql, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
 const userNotificationQuery = gql`
-  query {
-    me {
-      concreteNotifications(take: 100) {
-        id
-        message {
-          headline
-          body
+    query {
+        me {
+            concreteNotifications(take: 100) {
+                id
+                message {
+                    headline
+                    body
+                    messageType
+                }
+                sentAt
+            }
         }
-        sentAt
-      }
     }
-  }
-`
+`;
 
 export const useConcreteNotifications = () => {
-  const { data, loading, error, refetch } = useQuery(userNotificationQuery)
-  const [userNotifications, setUserNotifications] = useState()
+    const { data, loading, error, refetch } = useQuery(userNotificationQuery);
+    const [userNotifications, setUserNotifications] = useState();
 
-  useEffect(() => {
-    if (
-      !loading &&
-      !error
-    ) {
-      setUserNotifications(data?.me?.concreteNotifications)
-    }
-  }, [loading, data, error])
+    useEffect(() => {
+        if (!loading && !error) {
+            setUserNotifications(data?.me?.concreteNotifications);
+        }
+    }, [loading, data, error]);
 
-  return { userNotifications, refetch, loading }
-}
+    return { userNotifications, refetch, loading };
+};

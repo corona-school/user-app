@@ -1,49 +1,46 @@
-import { gql, useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
-import { UserNotification } from '../types/lernfair/Notification'
+import { gql, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import { UserNotification } from '../types/lernfair/Notification';
 
 const concreteNotificationQuery = gql`
-  query ConcreteNotification($id: Int!) {
-    concrete_notification(concreteNotificationId: $id) {
-      id
-      message {
-        headline
-        body
-      }
-      sentAt
+    query ConcreteNotification($id: Int!) {
+        concrete_notification(concreteNotificationId: $id) {
+            id
+            message {
+                headline
+                body
+                messageType
+            }
+            sentAt
+        }
     }
-  }
-`
+`;
 
 const isMessageValid = (message: UserNotification | null): boolean => {
-  if (!message) return false
+    if (!message) return false;
 
-  const requiredFields = ['headline', 'body']
-  const fields = Object.keys(message)
+    const requiredFields = ['headline', 'body'];
+    const fields = Object.keys(message);
 
-  for (const requiredField of requiredFields) {
-    if (!fields.includes(requiredField)) return false
-  }
+    for (const requiredField of requiredFields) {
+        if (!fields.includes(requiredField)) return false;
+    }
 
-  return true
-}
+    return true;
+};
 
 export const useConcreteNotification = (id: number | null) => {
-  const { data, loading, error } = useQuery(concreteNotificationQuery, {
-    variables: { id },
-    skip: !id
-  })
-  const [concreteNotification, setConcreteNotification] = useState(null)
+    const { data, loading, error } = useQuery(concreteNotificationQuery, {
+        variables: { id },
+        skip: !id,
+    });
+    const [concreteNotification, setConcreteNotification] = useState(null);
 
-  useEffect(() => {
-    if (
-      !loading &&
-      !error &&
-      isMessageValid(data?.concrete_notification?.message)
-    ) {
-      setConcreteNotification(data?.concrete_notification)
-    }
-  }, [loading, data, error])
+    useEffect(() => {
+        if (!loading && !error && isMessageValid(data?.concrete_notification?.message)) {
+            setConcreteNotification(data?.concrete_notification);
+        }
+    }, [loading, data, error]);
 
-  return concreteNotification
-}
+    return concreteNotification;
+};
