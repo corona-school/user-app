@@ -57,7 +57,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                                 <Pressable ml={1} onPress={() => setIsModalOpen(true)}>
                                     <InformationBadge />
                                 </Pressable>
-                                <Modal bg="modalbg" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                                <Modal bg="modalbg" isOpen={isModalOpen}>
                                     <InformationModal onPressClose={() => setIsModalOpen(false)} category={category} />
                                 </Modal>
                             </Box>
@@ -69,11 +69,12 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                                 _text={{ textAlign: 'center' }}
                                 p={3}
                                 hasArrow
-                            >
-                                <Circle rounded="full" bg="amber.700" size={4} ml={1}>
-                                    <Text color={'white'}>i</Text>
-                                </Circle>
-                            </Tooltip>
+                                children={
+                                    <Circle rounded="full" bg="amber.700" size={4} ml={1}>
+                                        <Text color={'white'}>i</Text>
+                                    </Circle>
+                                }
+                            ></Tooltip>
                         )}
                     </Text>
                 </VStack>
