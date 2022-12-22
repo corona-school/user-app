@@ -4,6 +4,7 @@ import { FC, useState } from 'react';
 import { NotificationCategoryDetails } from '../../../helper/notification-preferences';
 import InformationModal from './InformationModal';
 import { getNotificationCategoriesData } from '../../../helper/notification-helper';
+import InformationBadge from './InformationBadge';
 
 type PrefProps = {
     category: string;
@@ -13,7 +14,7 @@ type PrefProps = {
 };
 
 const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails, value, onUpdate }) => {
-    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { colors } = useTheme();
 
     const { t } = useTranslation();
@@ -41,53 +42,47 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
     };
 
     return (
-        <>
-            <Box borderBottomWidth={1} borderBottomColor={'#F7F7F7'} py={3} width={width}>
-                <HStack alignItems="center" space={1}>
-                    {notificationTypeDetails?.icon && (
-                        <VStack>
-                            <Icon />
-                        </VStack>
-                    )}
-                    <VStack maxW={maxW}>
-                        <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
-                            {t(notificationTypeDetails.title)}
-                            <>
-                                {isMobile ? (
-                                    <Box>
-                                        <Pressable ml={1} onPress={() => setOpenModal(true)}>
-                                            <Circle rounded="full" bg="amber.700" size={4}>
-                                                <Text color={'white'}>i</Text>
-                                            </Circle>
-                                        </Pressable>
-                                        <Modal bg="modalbg" isOpen={openModal} onClose={() => setOpenModal(false)}>
-                                            <InformationModal onPressClose={() => setOpenModal(false)} category={category} />
-                                        </Modal>
-                                    </Box>
-                                ) : (
-                                    <Tooltip
-                                        maxWidth={270}
-                                        label={t(notificationPreferenceInfos.modal.body)}
-                                        bg={colors['primary']['900']}
-                                        _text={{ textAlign: 'center' }}
-                                        p={3}
-                                        hasArrow
-                                    >
-                                        <Circle rounded="full" bg="amber.700" size={4} ml={1}>
-                                            <Text color={'white'}>i</Text>
-                                        </Circle>
-                                    </Tooltip>
-                                )}
-                            </>
-                        </Text>
-                    </VStack>
-                    <Spacer />
+        <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={width}>
+            <HStack alignItems="center" space={1}>
+                {notificationTypeDetails?.icon && (
                     <VStack>
-                        <Switch value={value} onToggle={() => handleToggle(!value)} />
+                        <Icon />
                     </VStack>
-                </HStack>
-            </Box>
-        </>
+                )}
+                <VStack maxW={maxW}>
+                    <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
+                        {t(notificationTypeDetails.title)}
+                        {isMobile ? (
+                            <Box>
+                                <Pressable ml={1} onPress={() => setIsModalOpen(true)}>
+                                    <InformationBadge />
+                                </Pressable>
+                                <Modal bg="modalbg" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                                    <InformationModal onPressClose={() => setIsModalOpen(false)} category={category} />
+                                </Modal>
+                            </Box>
+                        ) : (
+                            <Tooltip
+                                maxWidth={270}
+                                label={t(notificationPreferenceInfos.modal.body)}
+                                bg={colors['primary']['900']}
+                                _text={{ textAlign: 'center' }}
+                                p={3}
+                                hasArrow
+                            >
+                                <Circle rounded="full" bg="amber.700" size={4} ml={1}>
+                                    <Text color={'white'}>i</Text>
+                                </Circle>
+                            </Tooltip>
+                        )}
+                    </Text>
+                </VStack>
+                <Spacer />
+                <VStack>
+                    <Switch value={value} onToggle={() => handleToggle(!value)} />
+                </VStack>
+            </HStack>
+        </Box>
     );
 };
 
