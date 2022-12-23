@@ -15,21 +15,77 @@ const notification = {
     },
     controlPanel: {
         title: 'E-Mail-Benachrichtigungen',
+        closeButton: 'Schließen',
         preference: {
-            chat: { title: 'Chat-Nachrichten' },
-            match: { title: 'Matches & Informationen zur Zordnung' },
-            course: { title: 'Lehrinformationen & Zertifikate' },
-            appointment: { title: 'Terminhinweise' },
-            survey: { title: 'Feedback & Befragungen' },
-            news: { title: 'Neue Funktionen & Features' },
-            newsletter: { title: 'Newsletter' },
-            training: { title: 'Fortbildungen & Hilfsmaterial' },
-            events: { title: 'Events & Social Happenings' },
-            newsoffer: { title: 'Neuigkeiten über Angebot und Platform' },
-            request: { title: 'Gesuchen' },
-            learnoffer: { title: 'Hinweise zum Lernangebot' },
-            alternativeoffer: { title: 'Hinweise zu Alternativangeboten' },
-            feedback: { title: 'Feedback und Befragungen' },
+            chat: {
+                title: 'Chat-Nachrichten',
+                modalBody: 'Hier geht es um die Chat-Nachrichten, die du von Kurslehrer:innen oder auch Kursteilnehmer:innen erhältst.',
+            },
+            match: {
+                title: 'Matches & Informationen zur Zordnung',
+                modalBody:
+                    'Wir möchten dich informieren, wenn wir eine geeignete Person für dich gefunden haben und halten dich über den Status deiner Zuordnung auf dem Laufenden. Außerdem fragen wir gelegentlich mal nach, ob du mit deiner Zuordnung zufrieden bist.',
+            },
+            course: {
+                title: 'Lehrinformationen & Zertifikate',
+                modalBody:
+                    'Wir möchten dich über wichtige Informationen rund um dein Lernangebot informieren.Wir benachrichtigen dich, wenn du eine Anmeldung erfolgreich abgeschlossen hast, wir noch eine Bestätigung von dir benötigen oder wenn ein Zertifikat zum Download bereitsteht.',
+            },
+            appointment: {
+                title: 'Terminhinweise',
+                modalBody:
+                    'Bevor ein Termin beginnt, zu dem du dich angemeldet hast, möchten wir dir gerne eine Erinnerung schicken. Dies kann zum Beispiel kurz vor einem Kursbeginn geschehen.',
+            },
+            survey: {
+                title: 'Feedback & Befragungen',
+                modalBody:
+                    'Wir möchten, dass du zufrieden mit Lern Fair bist. Wir fragen deshalb hin und wieder bei dir nach, ob du zufrieden bist oder ob etwas besser laufen könnte..',
+            },
+            news: {
+                title: 'Neue Funktionen & Features',
+                modalBody:
+                    'Wir sind stetig dabei, unser Angebot zu verbessern und entwickeln unsere Plattform weiter. Wir möchten dich gerne über neue Features und Funktionen informieren.',
+            },
+            newsletter: {
+                title: 'Newsletter',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            training: {
+                title: 'Fortbildungen & Hilfsmaterial',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            events: {
+                title: 'Events & Social Happenings',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            newsoffer: {
+                title: 'Neuigkeiten über Angebot und Platform',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            request: {
+                title: 'Gesuchen',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            learnoffer: {
+                title: 'Hinweise zum Lernangebot',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            alternativeoffer: {
+                title: 'Hinweise zu Alternativangeboten',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
+            feedback: {
+                title: 'Feedback und Befragungen',
+                modalBody:
+                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+            },
         },
         tabs: {
             system: {
