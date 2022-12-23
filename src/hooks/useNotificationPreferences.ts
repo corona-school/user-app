@@ -35,6 +35,20 @@ const useUserPreferences = () => {
         });
     };
 
+    /*
+  const setUserPreferences = (preferences: NotificationPreferences) => {
+    const preferences = { ...userPreferences, [category]: { [channel]: value } };
+    updateUserPreferences({
+      variables: {
+        preferences,
+      },
+      optimisticResponse: { meUpdate: true },
+    }).then((value) => {
+      if (value?.data?.meUpdate) setUserPreferencesPrivate(preferences);
+    });
+  };
+  */
+
     useEffect(() => {
         if (!loading && !error && data?.me?.notificationPreferences) {
             const userPreferencesAsJson = JSON.parse(data?.me?.notificationPreferences);

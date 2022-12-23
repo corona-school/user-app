@@ -3,15 +3,16 @@ import PreferenceItem from './PreferenceItem';
 import { FC, useContext } from 'react';
 import { NotificationCategories } from '../../../helper/notification-preferences';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
+import { ToggleAll } from './ToggleAll';
 
-const channels = ['email'];
 type Props = {
     title: string;
     notificationCategories: NotificationCategories;
+    enableToggleAll?: boolean;
 };
 
 export const Preferences: FC<Props> = ({ title, notificationCategories }) => {
-    const { userPreferences, updateUserPreference } = useContext(NotificationPreferencesContext);
+    const { userPreferences, updateUserPreference, channels } = useContext(NotificationPreferencesContext);
 
     const marginLeft = useBreakpointValue({
         base: 0,
@@ -31,6 +32,7 @@ export const Preferences: FC<Props> = ({ title, notificationCategories }) => {
             <Box ml={marginLeft}>
                 <Text mb={marginBottom}>{title}</Text>
                 <Box>
+                    <ToggleAll notificationCategories={notificationCategories} />
                     {Object.keys(notificationCategories).map((category: string) =>
                         channels.map((channel: string) => (
                             <PreferenceItem

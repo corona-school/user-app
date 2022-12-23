@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { Heading, Row, useBreakpointValue, useTheme, View, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
@@ -8,7 +7,14 @@ import { MarketingNotifications } from '../../components/notifications/preferenc
 import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext } from 'react';
 
-export const NotificationPreferencesContext = createContext<ReturnType<typeof useUserPreferences>>({ userPreferences: {}, updateUserPreference: () => null });
+const channels = ['email'];
+
+type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
+export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({
+    userPreferences: {},
+    updateUserPreference: () => null,
+    channels: [],
+});
 
 const NotficationControlPanel = () => {
     const { space } = useTheme();
@@ -26,7 +32,7 @@ const NotficationControlPanel = () => {
     });
 
     return (
-        <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreference }}>
+        <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreference, channels }}>
             <WithNavigation showBack headerTitle={t('notification.controlPanel.title')}>
                 <View py={5} width={width}>
                     {!isMobile && (
