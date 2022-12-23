@@ -123,7 +123,6 @@ const DashboardStudent: React.FC<Props> = () => {
         }
     );
 
-    
     const [joinMeeting, _joinMeeting] = useMutation(gql`
         mutation joinMeetingStudent($subcourseId: Float!) {
             subcourseJoinMeeting(subcourseId: $subcourseId)
@@ -195,7 +194,9 @@ const DashboardStudent: React.FC<Props> = () => {
         if (!publishedSubcourses) return [];
 
         for (const subcourse of publishedSubcourses) {
-            const futureAndOngoingLectures = subcourse.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration);
+            const futureAndOngoingLectures = subcourse.lectures.filter(
+                (lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
+            );
 
             for (const lecture of futureAndOngoingLectures) {
                 lectures.push({ lecture, subcourse });
@@ -222,7 +223,7 @@ const DashboardStudent: React.FC<Props> = () => {
             const res = await joinMeeting({ variables: { subcourseId } });
             window.open(res.data.subcourseJoinMeeting, '_blank');
         } catch (e) {
-            log("DashboardStudent", `Student failed to join Meeting: ${(e as Error)?.message}`, e);
+            log('DashboardStudent', `Student failed to join Meeting: ${(e as Error)?.message}`, e);
         }
     }, [highlightedAppointment?.subcourse.id, joinMeeting]);
 
@@ -265,10 +266,10 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={() => { getMeetingLink(); }}
-                                                        isDisabled={
-                                                            disableMeetingButton
-                                                        }
+                                                        onPress={() => {
+                                                            getMeetingLink();
+                                                        }}
+                                                        isDisabled={disableMeetingButton}
                                                     >
                                                         {t('course.meeting.videobutton.student')}
                                                     </Button>
@@ -294,8 +295,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                     />
                                 </VStack>
                             )}
-                            {sortedAppointments.length > 1 && <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                {(sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
+                            {sortedAppointments.length > 1 && (
+                                <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
+                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
                                         const { course } = subcourse;
 
                                         return (
@@ -322,8 +324,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 />
                                             </Column>
                                         );
-                                    }))}
-                            </HSection>}
+                                    })}
+                                </HSection>
+                            )}
                             <HSection
                                 title={t('dashboard.helpers.headlines.course')}
                                 showAll
@@ -440,7 +443,18 @@ const DashboardStudent: React.FC<Props> = () => {
                                     title={t('dashboard.helpers.headlines.recommendFriends')}
                                     closeable={false}
                                     content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
-                                    button={<Button variant="outline">{t('dashboard.helpers.buttons.recommend')}</Button>}
+                                    button={
+                                        <Button
+                                            variant="outline"
+                                            onPress={() =>
+                                                window.open(
+                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zuhause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%0AAlles%20was%20du%20daf%C3%BCr%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung!%20%0ARegistriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3'
+                                                )
+                                            }
+                                        >
+                                            {t('dashboard.helpers.buttons.recommend')}
+                                        </Button>
+                                    }
                                     icon={<BooksIcon />}
                                 />
                             </VStack>
