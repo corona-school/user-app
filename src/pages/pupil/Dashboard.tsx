@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import SignInCard from '../../widgets/SignInCard';
-import TeacherCard from '../../widgets/TeacherCard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/NotificationAlert';
@@ -147,7 +146,9 @@ const Dashboard: React.FC<Props> = () => {
         if (!data?.me?.pupil?.subcoursesJoined) return [];
 
         for (const sub of data?.me?.pupil?.subcoursesJoined) {
-            const futureAndOngoingLectures = sub.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration);
+            const futureAndOngoingLectures = sub.lectures.filter(
+                (lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
+            );
 
             for (const lecture of futureAndOngoingLectures) {
                 lectures.push({ lecture: lecture, course: sub });
@@ -416,7 +417,7 @@ const Dashboard: React.FC<Props> = () => {
                             <HSection
                                 marginBottom={space['1.5']}
                                 title={t('dashboard.relatedcontent.header')}
-                                onShowAll={() => navigate('/group/offer')}
+                                onShowAll={() => navigate('/group')}
                                 showAll={data?.subcoursesPublic?.length > 4}
                             >
                                 {(data?.subcoursesPublic?.length &&

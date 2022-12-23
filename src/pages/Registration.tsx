@@ -1,12 +1,11 @@
 import { Box, Button, Flex, Heading, Image, Text, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useModal from '../hooks/useModal';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
 import { REDIRECT_OPTIN } from '../Utility';
-import BackButton from '../components/BackButton';
 import UserType from './registration/UserType';
 import PersonalData from './registration/PersonalData';
 import SchoolClass from './registration/SchoolClass';

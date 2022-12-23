@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -15,7 +15,6 @@ import {
     Heading,
     CheckCircleIcon,
     Tooltip,
-    Container,
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -93,12 +92,14 @@ const AppointmentCard: React.FC<Props> = ({
 
     if (date) {
         if (currentTime < date.toMillis()) {
-           // appointment not yet started
-           remainingTime = toTimerString(date.toMillis(), currentTime);
-        } else if(duration && currentTime < (date.toMillis() + duration * 60 * 1000)) {
+            // appointment not yet started
+            remainingTime = toTimerString(date.toMillis(), currentTime);
+        } else if (duration && currentTime < date.toMillis() + duration * 60 * 1000) {
             // appointment not yet ended -> ongoing
-            ongoingTime = ("" + Math.floor((currentTime - date.toMillis()) / 1000 / 60)) + " Minuten";
-        } else { ended = true }
+            ongoingTime = '' + Math.floor((currentTime - date.toMillis()) / 1000 / 60) + ' Minuten';
+        } else {
+            ended = true;
+        }
     }
 
     const textColor = useMemo(() => (isTeaser ? 'lightText' : 'darkText'), [isTeaser]);
@@ -204,22 +205,28 @@ const AppointmentCard: React.FC<Props> = ({
                                             <Text>{<LFTimerIcon />}</Text>
                                         </Column>
                                         <Column>
-                                            {remainingTime && <Row>
-                                                <Text color={textColor}>Startet: </Text>
-                                                <Text bold color="primary.400">
-                                                    {remainingTime}
-                                                </Text>
-                                            </Row>}
-                                            {ongoingTime && <Row>
-                                                <Text bold color="primary.400">
-                                                    Läuft seit {ongoingTime}
-                                                </Text>
-                                            </Row>}
-                                            {ended && <Row>
-                                                <Text bold color="primary.400">
-                                                    Schon vorbei
-                                                </Text>
-                                            </Row>}
+                                            {remainingTime && (
+                                                <Row>
+                                                    <Text color={textColor}>Startet: </Text>
+                                                    <Text bold color="primary.400">
+                                                        {remainingTime}
+                                                    </Text>
+                                                </Row>
+                                            )}
+                                            {ongoingTime && (
+                                                <Row>
+                                                    <Text bold color="primary.400">
+                                                        Läuft seit {ongoingTime}
+                                                    </Text>
+                                                </Row>
+                                            )}
+                                            {ended && (
+                                                <Row>
+                                                    <Text bold color="primary.400">
+                                                        Schon vorbei
+                                                    </Text>
+                                                </Row>
+                                            )}
                                         </Column>
                                     </Row>
                                 )}

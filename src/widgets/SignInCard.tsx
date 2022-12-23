@@ -1,10 +1,8 @@
 import { DateTime } from 'luxon';
 import { Text, Box, Row, useTheme, Button, Image, Link } from 'native-base';
-import { useCallback, useMemo } from 'react';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { LFLecture, LFSubCourse, LFTag, TrafficStatus } from '../types/lernfair/Course';
-import Utility from '../Utility';
+import { LFSubCourse, LFTag, TrafficStatus } from '../types/lernfair/Course';
 import CourseTrafficLamp from './CourseTrafficLamp';
 
 type Props = {

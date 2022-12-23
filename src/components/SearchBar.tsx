@@ -1,4 +1,4 @@
-import { useTheme, Row, Button, ArrowBackIcon, Input, SearchIcon } from 'native-base';
+import { useTheme, Row, Button, Input, SearchIcon } from 'native-base';
 import { useState } from 'react';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 
