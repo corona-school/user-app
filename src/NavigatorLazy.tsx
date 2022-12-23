@@ -36,9 +36,6 @@ import ProfileStudent from './pages/student/ProfileStudent';
 import RequestCertificate from './pages/RequestCertificate';
 import PupilGroup from './pages/pupil/Group';
 import StudentGroup from './pages/student/StudentGroup';
-import CourseArchive from './pages/CourseArchive';
-import LearningPartnerArchive from './pages/LearningPartnerArchive';
-import UserProfile from './pages/UserProfile';
 import NoAcceptRegistration from './pages/NoAcceptRegistration';
 import VerifyEmail from './pages/VerifyEmail';
 import VerifyEmailModal from './modals/VerifyEmailModal';
@@ -244,15 +241,6 @@ export default function NavigatorLazy() {
             ></Route>
 
             <Route
-                path="/group/offer"
-                element={
-                    <RequireAuth>
-                        <PupilGroup />
-                    </RequireAuth>
-                }
-            ></Route>
-
-            <Route
                 path="/matching"
                 element={
                     <RequireAuth>
@@ -265,33 +253,6 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/course-archive"
-                element={
-                    <RequireAuth>
-                        <CourseArchive />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/learningpartner-archive"
-                element={
-                    <RequireAuth>
-                        <LearningPartnerArchive />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/user-profile"
-                element={
-                    <RequireAuth>
-                        <UserProfile />
                     </RequireAuth>
                 }
             />

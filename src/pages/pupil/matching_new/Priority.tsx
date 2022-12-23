@@ -1,6 +1,6 @@
 import { Button } from 'native-base';
 import { useTheme } from 'native-base';
-import { View, Text, VStack, Heading, Column } from 'native-base';
+import { Text, VStack, Heading, Column } from 'native-base';
 import { useContext } from 'react';
 import IconTagList from '../../../widgets/IconTagList';
 import TwoColGrid from '../../../widgets/TwoColGrid';

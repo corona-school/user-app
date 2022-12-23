@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
-import { Box, Link, Row, Text, useTheme } from 'native-base';
+import { Box, Row, Text, useTheme } from 'native-base';
 import Tag from '../components/Tag';
 import LeftImageCard from './LeftImageCard';
-import RatingTag from './RatingTag';
 
 type Props = {
     variant?: 'normal' | 'dark';

@@ -11,12 +11,6 @@ export const REDIRECT_LOGIN = `/`;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
 
-export const secondsToTimerString = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-};
-
 export const toTimerString = (refDate: number, compareDate: number) => {
     const diff = Math.abs(compareDate / 1000 - refDate / 1000);
 

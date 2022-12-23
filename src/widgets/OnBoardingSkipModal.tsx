@@ -1,5 +1,4 @@
-import { t } from 'i18next';
-import { Row, Box, useTheme, Modal, Heading, Text, Button, Image, CloseIcon } from 'native-base';
+import { Row, Box, useTheme, Modal, Heading, Text, Button, CloseIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 

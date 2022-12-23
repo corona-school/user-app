@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from 'react';
 import InfoScreen from '../widgets/InfoScreen';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import TextInput from '../components/TextInput';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import useModal from '../hooks/useModal';

@@ -1,6 +1,5 @@
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
-import { View, Text } from 'native-base';
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';

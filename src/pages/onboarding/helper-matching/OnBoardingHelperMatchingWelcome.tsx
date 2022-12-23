@@ -1,4 +1,4 @@
-import { Heading, useTheme, Text, View, Modal } from 'native-base';
+import { useTheme, Text, View, Modal } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import MatchingCard from '../../../assets/icons/lernfair/lf-matching-card.svg';

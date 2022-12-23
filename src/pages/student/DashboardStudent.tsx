@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip, Modal } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -21,7 +21,6 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
-import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 
@@ -123,7 +122,6 @@ const DashboardStudent: React.FC<Props> = () => {
         }
     );
 
-    
     const [joinMeeting, _joinMeeting] = useMutation(gql`
         mutation joinMeetingStudent($subcourseId: Float!) {
             subcourseJoinMeeting(subcourseId: $subcourseId)
@@ -195,7 +193,9 @@ const DashboardStudent: React.FC<Props> = () => {
         if (!publishedSubcourses) return [];
 
         for (const subcourse of publishedSubcourses) {
-            const futureAndOngoingLectures = subcourse.lectures.filter((lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration);
+            const futureAndOngoingLectures = subcourse.lectures.filter(
+                (lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
+            );
 
             for (const lecture of futureAndOngoingLectures) {
                 lectures.push({ lecture, subcourse });
@@ -222,7 +222,7 @@ const DashboardStudent: React.FC<Props> = () => {
             const res = await joinMeeting({ variables: { subcourseId } });
             window.open(res.data.subcourseJoinMeeting, '_blank');
         } catch (e) {
-            log("DashboardStudent", `Student failed to join Meeting: ${(e as Error)?.message}`, e);
+            log('DashboardStudent', `Student failed to join Meeting: ${(e as Error)?.message}`, e);
         }
     }, [highlightedAppointment?.subcourse.id, joinMeeting]);
 
@@ -265,10 +265,10 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={() => { getMeetingLink(); }}
-                                                        isDisabled={
-                                                            disableMeetingButton
-                                                        }
+                                                        onPress={() => {
+                                                            getMeetingLink();
+                                                        }}
+                                                        isDisabled={disableMeetingButton}
                                                     >
                                                         {t('course.meeting.videobutton.student')}
                                                     </Button>
@@ -294,8 +294,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                     />
                                 </VStack>
                             )}
-                            {sortedAppointments.length > 1 && <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                {(sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
+                            {sortedAppointments.length > 1 && (
+                                <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
+                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
                                         const { course } = subcourse;
 
                                         return (
@@ -322,8 +323,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 />
                                             </Column>
                                         );
-                                    }))}
-                            </HSection>}
+                                    })}
+                                </HSection>
+                            )}
                             <HSection
                                 title={t('dashboard.helpers.headlines.course')}
                                 showAll
