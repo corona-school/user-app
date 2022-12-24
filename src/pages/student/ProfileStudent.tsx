@@ -62,20 +62,61 @@ const query = gql(`
     }
 `);
 
+function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSave: () => void; onClose: () => void }) {
+    const { t } = useTranslation();
+
+    const [changedAboutMe, setAboutMe] = useState<string>();
+
+    const [changeAboutMe, _changeAboutMe] = useMutation(
+        gql(`
+        mutation changeAboutMe($aboutMe: String!) {
+            meUpdate(update: { student: { aboutMe: $aboutMe } })
+        }
+    `),
+        { refetchQueries: [query] }
+    );
+
+    const onSaveAboutMe = useCallback(() => {
+        if (changedAboutMe === undefined) return;
+        changeAboutMe({ variables: { aboutMe: changedAboutMe } }).then(onSave);
+        onClose();
+    }, [changeAboutMe, changedAboutMe, onSave, onClose]);
+
+    return (
+        <Modal isOpen={true} onClose={onClose}>
+            <Modal.Content>
+                <Modal.CloseButton />
+                <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
+                <Modal.Body>
+                    <FormControl>
+                        <FormControl.Label>{t('profile.AboutMe.popup.label')}</FormControl.Label>
+                        <TextArea autoCompleteType={{}} value={changedAboutMe ?? aboutMe} onChangeText={setAboutMe} />
+                    </FormControl>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button.Group space={2}>
+                        <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
+                            {t('profile.AboutMe.popup.exit')}
+                        </Button>
+                        <Button onPress={onSaveAboutMe}>{t('profile.AboutMe.popup.save')}</Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
+    );
+}
+
 const ProfileStudent: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
     const toast = useToast();
-    const [firstName, setFirstName] = useState<string>();
-    const [lastName, setLastName] = useState<string>();
 
-    const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
 
-    const [aboutMe, setAboutMe] = useState<string>('');
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
+    const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
 
     const [showSelectPDFLanguageModal, setShowSelectPDFLanguageModal] = useState<boolean>(false);
     const [focusedCertificateUuid, setFocusedCertificateUuid] = useState<string>('');
@@ -94,37 +135,6 @@ const ProfileStudent: React.FC<Props> = () => {
             }
         `)
     );
-
-    const [changeName, _changeName] = useMutation(
-        gql(`
-            mutation changeName($firstname: String!, $lastname: String!) {
-                meUpdate(update: { firstname: $firstname, lastname: $lastname })
-            }
-        `),
-        { refetchQueries: [query] }
-    );
-
-    const [changeAboutMe, _changeAboutMe] = useMutation(
-        gql(`
-        mutation changeAboutMe($aboutMe: String!) {
-            meUpdate(update: { student: { aboutMe: $aboutMe } })
-        }
-    `)
-    );
-
-    useEffect(() => {
-        if (_changeName.data || _changeAboutMe.data) {
-            setUserSettings(true);
-        }
-    }, [_changeAboutMe.data, _changeName.data]);
-
-    useEffect(() => {
-        if (data?.me) {
-            setFirstName(data.me.firstname);
-            setLastName(data.me.lastname);
-            setAboutMe(data.me.student!.aboutMe);
-        }
-    }, [data?.me]);
 
     const profileCompleteness = useMemo(() => {
         const max = 5.0;
@@ -231,13 +241,7 @@ const ProfileStudent: React.FC<Props> = () => {
                     )}
                     <VStack paddingX={space['1.5']} space={space['1']}>
                         <ProfileSettingRow title={t('profile.PersonalData')}>
-                            <ProfileSettingItem
-                                title={t('profile.UserName.label.title')}
-                                href={() => {
-                                    setNameModalVisible(!nameModalVisible);
-                                }}
-                                isIcon={false}
-                            >
+                            <ProfileSettingItem title={t('profile.UserName.label.title')} isIcon={false}>
                                 <Text>
                                     {data?.me?.firstname} {data?.me?.lastname}
                                 </Text>
@@ -246,11 +250,14 @@ const ProfileStudent: React.FC<Props> = () => {
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
-                                    setAboutMeModalVisible(!aboutMeModalVisible);
+                                    setAboutMeModalVisible(true);
                                 }}
                             >
-                                {(data?.me?.student?.aboutMe && <Text>{data?.me?.student?.aboutMe}</Text>) || <Text>{t('profile.AboutMe.empty')}</Text>}
+                                <Text>{data?.me.student!.aboutMe ?? t('profile.AboutMe.empty')}</Text>
                             </ProfileSettingItem>
+                            {data && aboutMeModalVisible && (
+                                <StudentAboutMeModal aboutMe={data.me.student!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
+                            )}
 
                             <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.student?.languages?.length && (
@@ -332,89 +339,6 @@ const ProfileStudent: React.FC<Props> = () => {
                     </VStack>
                 </VStack>
             </WithNavigation>
-            <Modal isOpen={nameModalVisible} onClose={() => setNameModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('profile.UserName.popup.header')}</Modal.Header>
-                    <Modal.Body>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.UserName.label.firstname')}</FormControl.Label>
-                            <Input
-                                value={firstName}
-                                onChangeText={(text) => {
-                                    setFirstName(text);
-                                }}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.UserName.label.lastname')}</FormControl.Label>
-                            <Input
-                                value={lastName}
-                                onChangeText={(text) => {
-                                    setLastName(text);
-                                }}
-                            />
-                        </FormControl>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button.Group space={2}>
-                            <Button
-                                variant="ghost"
-                                colorScheme="blueGray"
-                                onPress={() => {
-                                    setNameModalVisible(false);
-                                }}
-                            >
-                                {t('profile.UserName.popup.exit')}
-                            </Button>
-                            <Button
-                                isDisabled={!firstName || !lastName}
-                                onPress={() => {
-                                    setNameModalVisible(false);
-                                    changeName({
-                                        variables: { firstname: firstName!, lastname: lastName! },
-                                    });
-                                }}
-                            >
-                                {t('profile.UserName.popup.save')}
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
-            <Modal isOpen={aboutMeModalVisible} onClose={() => setAboutMeModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
-                    <Modal.Body>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.AboutMe.popup.label')}</FormControl.Label>
-                            <TextArea autoCompleteType={{}} value={aboutMe} onChangeText={setAboutMe} />
-                        </FormControl>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button.Group space={2}>
-                            <Button
-                                variant="ghost"
-                                colorScheme="blueGray"
-                                onPress={() => {
-                                    setAboutMeModalVisible(false);
-                                }}
-                            >
-                                {t('profile.AboutMe.popup.exit')}
-                            </Button>
-                            <Button
-                                onPress={() => {
-                                    changeAboutMe({ variables: { aboutMe } });
-                                    setAboutMeModalVisible(false);
-                                }}
-                            >
-                                {t('profile.AboutMe.popup.save')}
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
             <Modal
                 isOpen={showSelectPDFLanguageModal}
                 onClose={() => {
