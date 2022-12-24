@@ -36,12 +36,11 @@ const query = gql(`
     }
 `);
 
-function SetPupilName({ firstname, lastname, onSave }: { firstname: string; lastname: string; onSave: () => void }) {
+function PupilNameModal({ firstname, lastname, onSave, onClose }: { firstname: string; lastname: string; onSave: () => void; onClose: () => void }) {
     const { t } = useTranslation();
 
     const [changedFirstName, setFirstName] = useState<string>();
     const [changedLastName, setLastName] = useState<string>();
-    const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
 
     const [changeName, _changeName] = useMutation(
         gql(`
@@ -52,61 +51,45 @@ function SetPupilName({ firstname, lastname, onSave }: { firstname: string; last
         { refetchQueries: [query] }
     );
 
-    const onClose = useCallback(() => setNameModalVisible(false), [setNameModalVisible]);
     const onSaveName = useCallback(() => {
-        setNameModalVisible(false);
         changeName({
             variables: { firstname: changedFirstName, lastname: changedLastName },
-        });
-        onSave();
-    }, [setNameModalVisible, changeName, onSave]);
+        }).then(onSave);
+        onClose();
+    }, [onClose, changeName, onSave, changedFirstName, changedLastName]);
 
     return (
-        <>
-            <ProfileSettingItem
-                title={t('profile.UserName.label.title')}
-                href={() => {
-                    setNameModalVisible(!nameModalVisible);
-                }}
-            >
-                <Text>
-                    {changedFirstName ?? firstname} {changedLastName ?? lastname}
-                </Text>
-            </ProfileSettingItem>
-
-            <Modal bg="modalbg" isOpen={nameModalVisible} onClose={onClose}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('profile.UserName.popup.header')}</Modal.Header>
-                    <Modal.Body>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.UserName.label.firstname')}</FormControl.Label>
-                            <Input value={changedFirstName ?? firstname} onChangeText={setFirstName} />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.UserName.label.lastname')}</FormControl.Label>
-                            <Input value={changedLastName ?? lastname} onChangeText={setLastName} />
-                        </FormControl>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button.Group space={2}>
-                            <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                                {t('profile.UserName.popup.exit')}
-                            </Button>
-                            <Button onPress={onSaveName}>{t('profile.UserName.popup.save')}</Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
-        </>
+        <Modal bg="modalbg" isOpen={true} onClose={onClose}>
+            <Modal.Content>
+                <Modal.CloseButton />
+                <Modal.Header>{t('profile.UserName.popup.header')}</Modal.Header>
+                <Modal.Body>
+                    <FormControl>
+                        <FormControl.Label>{t('profile.UserName.label.firstname')}</FormControl.Label>
+                        <Input value={changedFirstName ?? firstname} onChangeText={setFirstName} />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>{t('profile.UserName.label.lastname')}</FormControl.Label>
+                        <Input value={changedLastName ?? lastname} onChangeText={setLastName} />
+                    </FormControl>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button.Group space={2}>
+                        <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
+                            {t('profile.UserName.popup.exit')}
+                        </Button>
+                        <Button onPress={onSaveName}>{t('profile.UserName.popup.save')}</Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
     );
 }
 
-function SetPupilAboutMe({ aboutMe, onSave }: { aboutMe: string; onSave: () => void }) {
+function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSave: () => void; onClose: () => void }) {
     const { t } = useTranslation();
 
-    const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
-    const [changedAboutMe, setAboutMe] = useState<string>('');
+    const [changedAboutMe, setAboutMe] = useState<string>();
 
     const [changeAboutMe, _changeAboutMe] = useMutation(
         gql(`
@@ -118,51 +101,34 @@ function SetPupilAboutMe({ aboutMe, onSave }: { aboutMe: string; onSave: () => v
     );
 
     return (
-        <>
-            <ProfileSettingItem
-                title={t('profile.AboutMe.label')}
-                href={() => {
-                    setAboutMeModalVisible(!aboutMeModalVisible);
-                }}
-            >
-                <Text>{changedAboutMe ?? aboutMe}</Text>
-            </ProfileSettingItem>
-
-            <Modal bg="modalbg" isOpen={aboutMeModalVisible} onClose={() => setAboutMeModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
-                    <Modal.Body>
-                        <FormControl>
-                            <FormControl.Label>{t('profile.AboutMe.popup.label')}</FormControl.Label>
-                            <TextArea autoCompleteType={{}} value={changedAboutMe ?? aboutMe} onChangeText={setAboutMe} />
-                        </FormControl>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button.Group space={2}>
-                            <Button
-                                variant="ghost"
-                                colorScheme="blueGray"
-                                onPress={() => {
-                                    setAboutMeModalVisible(false);
-                                }}
-                            >
-                                {t('profile.AboutMe.popup.exit')}
-                            </Button>
-                            <Button
-                                onPress={() => {
-                                    if (changedAboutMe !== undefined) changeAboutMe({ variables: { aboutMe: changedAboutMe } });
-                                    setAboutMeModalVisible(false);
-                                    onSave();
-                                }}
-                            >
-                                {t('profile.AboutMe.popup.save')}
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
-        </>
+        <Modal bg="modalbg" isOpen={true} onClose={onClose}>
+            <Modal.Content>
+                <Modal.CloseButton />
+                <Modal.Header>{t('profile.AboutMe.popup.header')}</Modal.Header>
+                <Modal.Body>
+                    <FormControl>
+                        <FormControl.Label>{t('profile.AboutMe.popup.label')}</FormControl.Label>
+                        <TextArea autoCompleteType={{}} value={changedAboutMe ?? aboutMe} onChangeText={setAboutMe} />
+                    </FormControl>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button.Group space={2}>
+                        <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
+                            {t('profile.AboutMe.popup.exit')}
+                        </Button>
+                        <Button
+                            onPress={() => {
+                                if (changedAboutMe === undefined) return;
+                                changeAboutMe({ variables: { aboutMe: changedAboutMe } }).then(onSave);
+                                onClose();
+                            }}
+                        >
+                            {t('profile.AboutMe.popup.save')}
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
     );
 }
 
@@ -170,6 +136,10 @@ const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
+    const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
+
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
     const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
 
@@ -297,8 +267,36 @@ const ProfilePupil: React.FC<Props> = () => {
                     )}
                     <VStack paddingX={space['1.5']} space={space['1']}>
                         <ProfileSettingRow title={t('profile.PersonalData')}>
-                            {data && <SetPupilName firstname={data!.me.firstname} lastname={data!.me.lastname} onSave={onSave} />}
-                            {data && <SetPupilAboutMe aboutMe={data!.me.pupil!.aboutMe} onSave={onSave} />}
+                            <ProfileSettingItem
+                                title={t('profile.UserName.label.title')}
+                                href={() => {
+                                    setNameModalVisible(true);
+                                }}
+                            >
+                                <Text>
+                                    {data?.me.firstname} {data?.me.lastname}
+                                </Text>
+                            </ProfileSettingItem>
+                            {data && nameModalVisible && (
+                                <PupilNameModal
+                                    firstname={data!.me.firstname}
+                                    lastname={data!.me.lastname}
+                                    onSave={onSave}
+                                    onClose={() => setNameModalVisible(false)}
+                                />
+                            )}
+
+                            <ProfileSettingItem
+                                title={t('profile.AboutMe.label')}
+                                href={() => {
+                                    setAboutMeModalVisible(true);
+                                }}
+                            >
+                                <Text>{data?.me.pupil!.aboutMe}</Text>
+                            </ProfileSettingItem>
+                            {data && aboutMeModalVisible && (
+                                <PupilAboutMeModal aboutMe={data!.me.pupil!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
+                            )}
 
                             <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.pupil?.languages?.length && (
