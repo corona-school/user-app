@@ -10,7 +10,7 @@ const helperwizard = {
     passwort: {
         title: 'Passwort einrichten',
         content:
-            'Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung',
+            'Es ist endlich soweit, wir stellen unser Login-System um! Du kannst bei uns ab sofort ein Passwort vergeben und dich damit zukünftig einloggen. Also worauf wartest du?',
         buttons: ['Passwort einrichten'],
     },
     // Nur Schüler:innen
