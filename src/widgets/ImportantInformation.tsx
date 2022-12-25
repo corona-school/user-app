@@ -1,11 +1,12 @@
 import { useTranslation, getI18n } from 'react-i18next';
-import { Box, Heading, Text, Button, HStack, useTheme, ScrollView } from 'native-base';
+import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column } from 'native-base';
 import Card from '../components/Card';
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import HSection from './HSection';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -143,44 +144,39 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         infos.push({ label: 'zeugnis', btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de')], lang: {} });
     // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
 
+    if (!infos.length) return null;
+
     return (
-        <Box marginBottom={'25px'}>
-            {infos.length > 0 && (
-                <Heading fontSize="lg" marginBottom="17px">
-                    {t('helperwizard.nextStep')}
-                </Heading>
-            )}
-            <ScrollView>
-                <HStack space={space['0.5']}>
-                    {infos.map((config, index) => {
-                        const buttontexts: String[] = t('helperwizard.' + config.label + '.buttons', { returnObjects: true });
-                        return (
-                            <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                                <Box marginBottom="20px">
-                                    <BooksIcon />
-                                </Box>
-                                <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                    {t('helperwizard.' + config.label + '.title', config.lang)}
-                                </Heading>
+        <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
+            {infos.map((config, index) => {
+                const buttontexts: String[] = t('helperwizard.' + config.label + '.buttons', { returnObjects: true });
+                return (
+                    <Column width="100%" maxWidth="500px">
+                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
+                            <Box marginBottom="20px">
+                                <BooksIcon />
+                            </Box>
+                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
+                                {t('helperwizard.' + config.label + '.title', config.lang)}
+                            </Heading>
 
-                                <Text color={textColor} marginBottom="25px">
-                                    {t('helperwizard.' + config.label + '.content', config.lang)}
-                                </Text>
-                                {buttontexts.map((buttontext, index) => {
-                                    const btnFn = config.btnfn[index];
+                            <Text color={textColor} marginBottom="25px">
+                                {t('helperwizard.' + config.label + '.content', config.lang)}
+                            </Text>
+                            {buttontexts.map((buttontext, index) => {
+                                const btnFn = config.btnfn[index];
 
-                                    return (
-                                        <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
-                                            {buttontext}
-                                        </Button>
-                                    );
-                                })}
-                            </Card>
-                        );
-                    })}
-                </HStack>
-            </ScrollView>
-        </Box>
+                                return (
+                                    <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
+                                        {buttontext}
+                                    </Button>
+                                );
+                            })}
+                        </Card>
+                    </Column>
+                );
+            })}
+        </HSection>
     );
 };
 export default ImportantInformation;
