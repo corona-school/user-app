@@ -40,9 +40,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 			  }
               firstMatchRequest
               openMatchRequestCount
-              certificateOfConduct {
-                id
-              }
+              certificateOfConductDeactivationDate
               canRequestMatch {
                 allowed
                 reason
@@ -104,7 +102,11 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
     if (pupil && !pupil?.verifiedAt)
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
-    if (student?.canRequestMatch?.reason === 'not-screened' || student?.canCreateCourse?.reason === 'not-screened')
+    if (
+        student?.canRequestMatch?.reason === 'not-screened' ||
+        student?.canCreateCourse?.reason === 'not-screened' ||
+        (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
+    )
         infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
     if (pupil && !pupil?.firstMatchRequest) infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
     if (pupil?.openMatchRequestCount && pupil?.openMatchRequestCount > 0)
@@ -140,8 +142,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: { nameSchüler: match.pupil.firstname },
             });
     });
-    if (student && !student?.certificateOfConduct?.id)
-        infos.push({ label: 'zeugnis', btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de')], lang: {} });
+    if (student && student?.certificateOfConductDeactivationDate)
+        infos.push({
+            label: 'zeugnis',
+            btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de')],
+            lang: {
+                cocDate: DateTime.fromISO(student.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
+            },
+        });
     // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
 
     if (!infos.length) return null;
