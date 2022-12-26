@@ -40,6 +40,14 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
         }
     }, [checks, userType]);
 
+    const goBack = () => {
+        if (userType === 'pupil') {
+            setCurrentIndex(4);
+        } else {
+            setCurrentIndex(1);
+        }
+    };
+
     const next = useCallback(() => {
         if (isInputValid()) {
             if (checks.includes('newsletter')) {
@@ -110,15 +118,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                     <Box alignItems="center" marginTop={space['2']}>
                         <Row space={space['1']} justifyContent="center">
                             <Column width="100%">
-                                <Button
-                                    width="100%"
-                                    height="100%"
-                                    variant="ghost"
-                                    colorScheme="blueGray"
-                                    onPress={() => {
-                                        setCurrentIndex(3);
-                                    }}
-                                >
+                                <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={goBack}>
                                     {t('lernfair.buttons.prev')}
                                 </Button>
                             </Column>
