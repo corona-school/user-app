@@ -197,22 +197,6 @@ const Registration: React.FC = () => {
         setShow(true);
     }, [setVariant, setShow, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, setContent, space, t]);
 
-    const goBack = useCallback(() => {
-        if (currentIndex === 0) {
-            navigate(-1);
-        } else {
-            if (userType === 'pupil') {
-                setCurrentIndex(currentIndex - 1);
-            } else {
-                if (currentIndex === 5) {
-                    setCurrentIndex(1);
-                } else {
-                    setCurrentIndex(currentIndex - 1);
-                }
-            }
-        }
-    }, [currentIndex, navigate, userType]);
-
     return (
         <Flex alignItems="center" w="100%" h="100vh">
             <Box w="100%" position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
