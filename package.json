@@ -84,7 +84,8 @@
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1"
+        "workbox-webpack-plugin": "^6.4.1",
+        "apollo-codegen": "^0.20.2"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^6.5.14",
@@ -98,21 +99,22 @@
         "svg-react-loader": "^0.4.6"
     },
     "scripts": {
-        "start": "concurrently npm:start-graphql npm:start-dev-server --names 'graphql,dev-server' --default-input-target dev-server --kill-others",
-        "start-graphql": "graphql-codegen --config codegen.ts --watch",
+        "start": "npm run graphql-fetch-schema && concurrently npm:start-graphql npm:start-dev-server --names 'graphql,dev-server' --default-input-target dev-server --kill-others",
+        "start-graphql": "npm run graphql-watch",
         "start-dev-server": "node scripts/start.js",
-        "build": "npm run fetch-api && node scripts/build.js",
+        "build": "npm run graphql-fetch-schema && npm run graphql-build && node scripts/build.js",
         "check-types": "tsc",
         "serve": "node serve.js",
-        "update-backend": "graphql-codegen init",
-        "fetch-api": "graphql-codegen --config codegen.ts",
         "analyze-bundle": "npm run build --profile && npx source-map-explorer ./build/static/js/main.*.js --html ./build/source-map.html",
         "dev-install": "npm ci --include=optional",
         "dev-storybook": "start-storybook -p 6006",
         "dev-storybook-build": "build-storybook",
         "prettier": "./prettier-commits.sh",
         "prettier-all": "prettier --write \"./**.tsx\"",
-        "linter": "eslint . --ext .tsx"
+        "linter": "eslint . --ext .tsx",
+        "graphql-fetch-schema": "node scripts/fetch-graphql-schema.js",
+        "graphql-watch": "graphql-codegen --config config/graphql-codegen.ts --watch",
+        "graphql-build": "graphql-codegen --config config/graphql-codegen.ts"
     },
     "eslintConfig": {
         "extends": [
