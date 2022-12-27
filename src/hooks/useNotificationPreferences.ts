@@ -21,11 +21,15 @@ const useUserPreferences = () => {
 
     const { data, loading, error } = useQuery(notificationPreferencesQuery);
 
-    const [updateUserPreferences] = useMutation(notificationPreferencesMutation);
+    const [mutateUserPreferences] = useMutation(notificationPreferencesMutation);
 
     const updateUserPreference = (category: string, channel: string, value: boolean) => {
         const preferences = { ...userPreferences, [category]: { [channel]: value } };
-        updateUserPreferences({
+        updateUserPreferences(preferences);
+    };
+
+    const updateUserPreferences = (preferences: NotificationPreferences) => {
+        mutateUserPreferences({
             variables: {
                 preferences,
             },
@@ -34,20 +38,6 @@ const useUserPreferences = () => {
             if (value?.data?.meUpdate) setUserPreferencesPrivate(preferences);
         });
     };
-
-    /*
-  const setUserPreferences = (preferences: NotificationPreferences) => {
-    const preferences = { ...userPreferences, [category]: { [channel]: value } };
-    updateUserPreferences({
-      variables: {
-        preferences,
-      },
-      optimisticResponse: { meUpdate: true },
-    }).then((value) => {
-      if (value?.data?.meUpdate) setUserPreferencesPrivate(preferences);
-    });
-  };
-  */
 
     useEffect(() => {
         if (!loading && !error && data?.me?.notificationPreferences) {
@@ -59,6 +49,7 @@ const useUserPreferences = () => {
     return {
         userPreferences,
         updateUserPreference,
+        updateUserPreferences,
     };
 };
 

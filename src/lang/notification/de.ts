@@ -17,6 +17,8 @@ const notification = {
         title: 'E-Mail-Benachrichtigungen',
         closeButton: 'Schließen',
         preference: {
+            enableAll: 'Alle Newsletter aktivieren',
+            disableAll: 'Alle Newsletter deaktivieren',
             chat: {
                 title: 'Chat-Nachrichten',
                 modalBody: 'Hier geht es um die Chat-Nachrichten, die du von Kurslehrer:innen oder auch Kursteilnehmer:innen erhältst.',

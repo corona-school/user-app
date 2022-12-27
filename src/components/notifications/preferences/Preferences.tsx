@@ -11,7 +11,7 @@ type Props = {
     enableToggleAll?: boolean;
 };
 
-export const Preferences: FC<Props> = ({ title, notificationCategories }) => {
+export const Preferences: FC<Props> = ({ title, notificationCategories, enableToggleAll }) => {
     const { userPreferences, updateUserPreference, channels } = useContext(NotificationPreferencesContext);
 
     const marginLeft = useBreakpointValue({
@@ -32,7 +32,6 @@ export const Preferences: FC<Props> = ({ title, notificationCategories }) => {
             <Box ml={marginLeft}>
                 <Text mb={marginBottom}>{title}</Text>
                 <Box>
-                    <ToggleAll notificationCategories={notificationCategories} />
                     {Object.keys(notificationCategories).map((category: string) =>
                         channels.map((channel: string) => (
                             <PreferenceItem
@@ -43,6 +42,7 @@ export const Preferences: FC<Props> = ({ title, notificationCategories }) => {
                             />
                         ))
                     )}
+                    {enableToggleAll && <ToggleAll notificationCategories={notificationCategories} />}
                 </Box>
             </Box>
         </>

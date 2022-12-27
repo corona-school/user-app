@@ -10,16 +10,12 @@ import { createContext } from 'react';
 const channels = ['email'];
 
 type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
-export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({
-    userPreferences: {},
-    updateUserPreference: () => null,
-    channels: [],
-});
+export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({} as NotificationPreferencesContextType);
 
 const NotficationControlPanel = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { userPreferences, updateUserPreference } = useUserPreferences();
+    const userPreferences = useUserPreferences();
 
     const isMobile = useBreakpointValue({
         base: true,
@@ -32,7 +28,7 @@ const NotficationControlPanel = () => {
     });
 
     return (
-        <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreference, channels }}>
+        <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
             <WithNavigation showBack headerTitle={t('notification.controlPanel.title')}>
                 <View py={5} width={width}>
                     {!isMobile && (
