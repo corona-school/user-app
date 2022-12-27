@@ -1,5 +1,5 @@
 const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+const { existsSync, mkdirSync } = require("fs");
 const chalk = require('chalk');
 
 // Required by ./config
@@ -29,6 +29,7 @@ console.info(chalk.bgBlue.white(
 ));
 
 try {
+    if (!existsSync('src/gql')) mkdirSync('src/gql');
     execSync(`apollo-codegen introspect-schema ${schema} --output src/gql/schema.json`);
 } catch(error) {
     if (!existsSync("src/gql/schema.json")) {
