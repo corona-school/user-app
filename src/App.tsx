@@ -23,7 +23,6 @@ function App() {
                             <MatomoProvider value={matomo}>
                                 <NotificationsProvider>
                                     <Navigator />
-                                    <FullPageModal />
                                     <ToastNotifications />
                                 </NotificationsProvider>
                             </MatomoProvider>

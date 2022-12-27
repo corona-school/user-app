@@ -137,6 +137,7 @@ const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { rootPath } = useLernfair();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
     const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
