@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "GraphQL.vscode-graphql"
+        "graphql.vscode-graphql",
+        "dbaeumer.vscode-eslint"
     ]
 }
