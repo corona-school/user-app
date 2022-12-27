@@ -1,0 +1,2 @@
+# Used by the VSCode GraphQL plugin, which provides autocompletion and other IDE features
+schema: 'src/gql/schema.json'
