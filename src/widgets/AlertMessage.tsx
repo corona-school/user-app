@@ -1,5 +1,4 @@
-import { View, Text, Alert, useTheme, HStack, useBreakpointValue } from 'native-base';
-import { useTranslation } from 'react-i18next';
+import { Text, Alert, useTheme, HStack, useBreakpointValue } from 'native-base';
 
 type Props = {
     content: string | any;

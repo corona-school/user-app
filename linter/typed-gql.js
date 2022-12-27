@@ -57,6 +57,25 @@ module.exports = {
                                 ]
                             }
                 });
+            },
+            "CallExpression": function(callNode) {
+                if (callNode?.callee.name !== "gql") {
+                    return;
+                }
+
+                const queryNode = callNode.arguments[0];
+                if (!queryNode) return;
+
+                if (queryNode.type !== "TemplateLiteral") return;
+                const query = queryNode.quasis[0]?.value.raw;
+                if (!query) return;
+
+                if (query.includes("query (") || query.includes("query {") || query.includes("mutation (") | query.includes("mutation {")) {
+                    context.report({
+                        node: queryNode,
+                        message: `Use a named query like 'query Name() {...}' or 'mutation Name() {...}'`,
+                    })
+                }
             }
         };
     }

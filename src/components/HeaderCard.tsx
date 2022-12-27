@@ -1,5 +1,5 @@
-import { Box, useTheme, Heading, Row, useBreakpointValue, Flex, HStack } from 'native-base';
-import { ReactNode, useEffect } from 'react';
+import { Box, useTheme, Heading, Row, useBreakpointValue, HStack } from 'native-base';
+import { ReactNode } from 'react';
 import BackButton from './BackButton';
 
 type Props = {

@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Heading, Text, useTheme, VStack } from 'native-base';
+import { Text, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -9,7 +9,6 @@ import { LFMatch } from '../types/lernfair/Match';
 import InstructionProgress from '../widgets/InstructionProgress';
 import RequestCertificateData from './certificates/RequestCertificateData';
 import RequestCertificateOverview from './certificates/RequestCertificateOverview';
-import PartyIcon from '../assets/icons/lernfair/lf-party.svg';
 
 type Props = {};
 

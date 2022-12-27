@@ -7,7 +7,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useApollo from '../hooks/useApollo';
-import useLernfair from '../hooks/useLernfair';
 import { LFUserType } from '../types/lernfair/User';
 
 type Props = {};

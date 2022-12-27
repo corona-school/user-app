@@ -4,10 +4,8 @@ import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } fr
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import WithNavigation from '../../components/WithNavigation';
 import { useUserType } from '../../hooks/useApollo';
-import useLernfair from '../../hooks/useLernfair';
 import { schooltypes } from '../../types/lernfair/SchoolType';
 import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';

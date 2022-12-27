@@ -1,6 +1,6 @@
 import { gql } from './../gql';
 import { useLazyQuery } from '@apollo/client';
-import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Heading, Flex, Text, Box } from 'native-base';
+import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Heading, Flex, Text } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import Pagination from '../components/Pagination';

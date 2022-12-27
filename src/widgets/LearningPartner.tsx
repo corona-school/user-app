@@ -1,4 +1,4 @@
-import { View, Text, Row, Box, useTheme, VStack, Button, Column } from 'native-base';
+import { View, Text, Row, useTheme, VStack, Button, Column } from 'native-base';
 import { ReactNode } from 'react';
 import Card from '../components/Card';
 import Tag from '../components/Tag';

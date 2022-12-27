@@ -1,4 +1,4 @@
-import { Box, PresenceTransition } from 'native-base';
+import { Box } from 'native-base';
 import { createContext, ReactNode, useMemo } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
 import useModal from '../hooks/useModal';
