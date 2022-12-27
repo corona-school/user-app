@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Pressable, Text, useTheme, View, VStack } from 'native-base';
+import { Flex, Input, Pressable, Text, useTheme, View, VStack } from 'native-base';
 import { InterfaceInputProps } from 'native-base/lib/typescript/components/primitives/Input/types';
 import { useState } from 'react';
 import ShowPassword from '../assets/icons/lernfair/lf-show-password.svg';

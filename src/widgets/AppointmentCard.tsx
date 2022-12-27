@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -15,7 +15,6 @@ import {
     Heading,
     CheckCircleIcon,
     Tooltip,
-    Container,
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';

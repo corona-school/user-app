@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
-const userNotificationQuery = gql`
+const userNotificationQuery = gql(`
     query {
         me {
             concreteNotifications(take: 100) {
@@ -15,7 +15,7 @@ const userNotificationQuery = gql`
             }
         }
     }
-`;
+`);
 
 export const useConcreteNotifications = () => {
     const { data, loading, error, refetch } = useQuery(userNotificationQuery);

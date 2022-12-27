@@ -1,6 +1,6 @@
 {
     "root": true,
-    "plugins": ["react-hooks", "lernfair-app-linter"],
+    "plugins": ["react-hooks", "lernfair-app-linter", "unused-imports"],
     "extends": ["react-app"],
     "rules": {
       "no-extra-semi": ["warn"],
@@ -13,6 +13,7 @@
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "no-unused-expressions": "off",
-      "lernfair-app-linter/typed-gql": "warn"
+      "lernfair-app-linter/typed-gql": "warn",
+      "unused-imports/no-unused-imports": "warn"
     }
   }

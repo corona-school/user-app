@@ -1,7 +1,6 @@
 import { AddIcon, Button, Checkbox, Column, DeleteIcon, Row, useTheme } from 'native-base';
 import { Text, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import TextInput from '../../components/TextInput';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 

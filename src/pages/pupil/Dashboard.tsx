@@ -417,7 +417,7 @@ const Dashboard: React.FC<Props> = () => {
                             <HSection
                                 marginBottom={space['1.5']}
                                 title={t('dashboard.relatedcontent.header')}
-                                onShowAll={() => navigate('/group/offer')}
+                                onShowAll={() => navigate('/group')}
                                 showAll={data?.subcoursesPublic?.length > 4}
                             >
                                 {(data?.subcoursesPublic?.length &&

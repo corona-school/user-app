@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip, Modal } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -21,7 +21,6 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
-import SetMeetingLinkModal from '../../modals/SetMeetingLinkModal';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 
@@ -443,7 +442,18 @@ const DashboardStudent: React.FC<Props> = () => {
                                     title={t('dashboard.helpers.headlines.recommendFriends')}
                                     closeable={false}
                                     content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
-                                    button={<Button variant="outline">{t('dashboard.helpers.buttons.recommend')}</Button>}
+                                    button={
+                                        <Button
+                                            variant="outline"
+                                            onPress={() =>
+                                                window.open(
+                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zuhause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%0AAlles%20was%20du%20daf%C3%BCr%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung!%20%0ARegistriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3'
+                                                )
+                                            }
+                                        >
+                                            {t('dashboard.helpers.buttons.recommend')}
+                                        </Button>
+                                    }
                                     icon={<BooksIcon />}
                                 />
                             </VStack>

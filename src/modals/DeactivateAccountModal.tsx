@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import useApollo, { useUserType } from '../hooks/useApollo';
-import useLernfair from '../hooks/useLernfair';
 
 // corresponding dissolve reason ids in translation file
 // for now just loop through 0-5 and 0-6 (+1 in loop)

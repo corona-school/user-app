@@ -1,18 +1,19 @@
-import { Row, Box, useTheme, Modal, Heading, Text, Button, CloseIcon } from 'native-base';
+import { Box, CloseIcon, Heading, Modal, Pressable, Text, Row, Button, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { Pressable } from 'react-native';
-
-import WarningIcon from '../assets/icons/lernfair/ic_warning.svg';
+import { getIconForNotificationPreferenceModal, getNotificationCategoriesData } from '../../../helper/notification-helper';
 
 type Props = {
     onPressClose?: () => any;
-    onPressDefaultButton?: () => any;
-    onPressOutlineButton?: () => any;
+    category: string;
 };
 
-const OnBoardingSkipModal: React.FC<Props> = ({ onPressClose, onPressDefaultButton, onPressOutlineButton }) => {
-    const { space } = useTheme();
+const InformationModal: React.FC<Props> = ({ onPressClose, category }) => {
     const { t } = useTranslation();
+    const { space } = useTheme();
+
+    const data = getNotificationCategoriesData(category);
+    const modaldata = data.allPrefs[category];
+    const Icon = getIconForNotificationPreferenceModal(category);
 
     return (
         <>
@@ -24,25 +25,20 @@ const OnBoardingSkipModal: React.FC<Props> = ({ onPressClose, onPressDefaultButt
                 </Box>
                 <Modal.Body background="primary.900" padding={space['1']}>
                     <Box alignItems="center" marginY={space['1']}>
-                        <WarningIcon />
+                        <Icon />
                     </Box>
                     <Box paddingY={space['1']}>
                         <Heading maxWidth="330px" marginX="auto" fontSize="md" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                            {t('onboardingList.Wizard.students.welcome.popup.title')}
+                            {t(modaldata.title)}
                         </Heading>
                         <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                            {t('onboardingList.Wizard.students.welcome.popup.content')}
+                            {t(modaldata.modal.body)}
                         </Text>
                     </Box>
                     <Box paddingY={space['1']}>
                         <Row marginBottom={space['0.5']}>
-                            <Button onPress={onPressDefaultButton} width="100%">
-                                {t('onboardingList.Wizard.students.welcome.popup.defaultButtonText')}
-                            </Button>
-                        </Row>
-                        <Row>
-                            <Button onPress={onPressOutlineButton} width="100%" variant="outlinelight">
-                                {t('onboardingList.Wizard.students.welcome.popup.outlineButtonText')}
+                            <Button onPress={onPressClose} width="100%">
+                                {t('notification.controlPanel.closeButton')}
                             </Button>
                         </Row>
                     </Box>
@@ -51,4 +47,5 @@ const OnBoardingSkipModal: React.FC<Props> = ({ onPressClose, onPressDefaultButt
         </>
     );
 };
-export default OnBoardingSkipModal;
+
+export default InformationModal;

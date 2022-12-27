@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Text, Row, useTheme, Container, Column, Button, VStack, Heading } from 'native-base';
+import { Text, Row, useTheme, Container, Column, VStack } from 'native-base';
 import { useMemo } from 'react';
 import Card from '../components/Card';
 import { LFCertificate } from '../types/lernfair/Certificate';

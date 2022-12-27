@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Text, VStack } from 'native-base';
+import { Box } from 'native-base';
 import { useContext } from 'react';
 import PupilPager from '../../widgets/certificates/PupilPager';
 import SelectActionsWidget from '../../widgets/certificates/SelectActionsWidget';

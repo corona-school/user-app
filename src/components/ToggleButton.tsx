@@ -1,5 +1,4 @@
-import { Button, Pressable, Row, Text, useTheme, View } from 'native-base';
-import { Touchable } from 'react-native';
+import { Pressable, Row, Text, useTheme } from 'native-base';
 
 type Props = {
     label: string;

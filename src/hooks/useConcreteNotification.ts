@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { UserNotification } from '../types/lernfair/Notification';
 
-const concreteNotificationQuery = gql`
+const concreteNotificationQuery = gql(`
     query ConcreteNotification($id: Int!) {
         concrete_notification(concreteNotificationId: $id) {
             id
@@ -14,7 +14,7 @@ const concreteNotificationQuery = gql`
             sentAt
         }
     }
-`;
+`);
 
 const isMessageValid = (message: UserNotification | null): boolean => {
     if (!message) return false;
