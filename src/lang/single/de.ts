@@ -39,7 +39,8 @@ const single = {
         participant: 'Teilnehmer',
     },
     buttonPromote: {
-        criteria: 'Mit diesem Button kannst du deinen Kurs\nnoch einmal bei den Usern bewerben.\nDu kannst dies allerdings nur einmal tun.',
+        button: 'Kurs bewerben',
+        tooltip: 'Mit diesem Button kannst du deinen Kurs\nnoch einmal bei den Usern bewerben.\nDu kannst dies allerdings nur einmal tun.',
     },
 };
 export default single;

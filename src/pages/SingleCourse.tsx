@@ -979,7 +979,11 @@ const SingleCourse: React.FC = () => {
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0].start)} {t('single.global.clock')}
                         </Text>
                     )}
-                    <Box my={2}>{subcourse && <PromoteButton subcourseId={subcourse.id} />}</Box>
+                    <Box my={2}>
+                        {subcourse && getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants) !== 'full' && (
+                            <PromoteButton subcourseId={subcourse.id} />
+                        )}
+                    </Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>
                     <Row alignItems="center" paddingBottom={space['1']}>
                         {subcourse?.instructors && subcourse?.instructors[0] && (

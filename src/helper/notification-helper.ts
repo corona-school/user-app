@@ -98,6 +98,7 @@ const getNotificationCategoriesData = (category: string) => {
 export {
     getIconForMessageType,
     getIconForNotificationPreferenceModal,
+    getTimeDifference,
     getTimeText,
     isNewNotification,
     getNewNotifications,
