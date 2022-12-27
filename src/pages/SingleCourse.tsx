@@ -21,6 +21,7 @@ import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
+import PromoteButton from '../widgets/PromoteButton';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -978,6 +979,7 @@ const SingleCourse: React.FC = () => {
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0].start)} {t('single.global.clock')}
                         </Text>
                     )}
+                    <Box my={2}>{subcourse && <PromoteButton subcourseId={subcourse.id} />}</Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>
                     <Row alignItems="center" paddingBottom={space['1']}>
                         {subcourse?.instructors && subcourse?.instructors[0] && (
