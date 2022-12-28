@@ -1,23 +1,26 @@
-import IconMessage from '../assets/icons/lernfair/notifications/Icon_Message.svg';
-import IconMatch from '../assets/icons/lernfair/notifications/Icon_Match.svg';
+import IconChat from '../assets/icons/lernfair/notifications/Icon_Chat.svg';
 import IconAppointment from '../assets/icons/lernfair/notifications/Icon_Appointment.svg';
-import IconCourse from '../assets/icons/lernfair/notifications/Icon_Course.svg';
-import IconNews from '../assets/icons/lernfair/notifications/Icon_News.svg';
+import IconSuggestion from '../assets/icons/lernfair/notifications/Icon_Suggestion.svg';
+import IconAnnouncement from '../assets/icons/lernfair/notifications/Icon_Announcement.svg';
 import IconSurvey from '../assets/icons/lernfair/notifications/Icon_Survey.svg';
+import IconCall from '../assets/icons/lernfair/notifications/Icon_Call.svg';
+import IconAdvice from '../assets/icons/lernfair/notifications/Icon_Advice.svg';
 
-import MessageIcon from '../assets/icons/lernfair/notifications/lf_message.svg';
-import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg';
-import CourseIcon from '../assets/icons/lernfair/notifications/lf_course.svg';
+import ChatIcon from '../assets/icons/lernfair/notifications/lf_chat.svg';
+import SuggestionIcon from '../assets/icons/lernfair/notifications/lf_suggestion.svg';
 import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg';
 import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg';
-import NewsIcon from '../assets/icons/lernfair/notifications/lf_news.svg';
+import AnnouncementIcon from '../assets/icons/lernfair/notifications/lf_announcement.svg';
+import CallIcon from '../assets/icons/lernfair/notifications/lf_call.svg';
+import AdviceIcon from '../assets/icons/lernfair/notifications/lf_advice.svg';
 
-import IconMessageModal from '../assets/icons/lernfair/notifications/Ic_Message.svg';
-import IconMatchModal from '../assets/icons/lernfair/notifications/Ic_Match.svg';
-import IconCourseModal from '../assets/icons/lernfair/notifications/Ic_Course.svg';
+import IconChatModal from '../assets/icons/lernfair/notifications/Ic_Chat.svg';
+import IconSuggestioneModal from '../assets/icons/lernfair/notifications/Ic_Suggestion.svg';
 import IconAppointmentModal from '../assets/icons/lernfair/notifications/Ic_Appointment.svg';
 import IconSurveyModal from '../assets/icons/lernfair/notifications/Ic_Survey.svg';
-import IconNewsModal from '../assets/icons/lernfair/notifications/Ic_News.svg';
+import IconAnnouncementModal from '../assets/icons/lernfair/notifications/Ic_Announcement.svg';
+import IconCallModal from '../assets/icons/lernfair/notifications/Ic_Call.svg';
+import IconAdviceModal from '../assets/icons/lernfair/notifications/Ic_Advice.svg';
 
 import { FC } from 'react';
 
@@ -36,34 +39,10 @@ export type NotificationCategories = {
 export const systemNotificationCategories: NotificationCategories = {
     chat: {
         title: 'notification.controlPanel.preference.chat.title',
-        icon: IconMessage,
+        icon: IconChat,
         modal: {
             body: 'notification.controlPanel.preference.chat.modalBody',
-            icon: IconMessageModal,
-        },
-    },
-    match: {
-        title: 'notification.controlPanel.preference.match.title',
-        icon: IconMatch,
-        modal: {
-            body: 'notification.controlPanel.preference.match.modalBody',
-            icon: IconMatchModal,
-        },
-    },
-    course: {
-        title: 'notification.controlPanel.preference.course.title',
-        icon: IconCourse,
-        modal: {
-            body: 'notification.controlPanel.preference.course.modalBody',
-            icon: IconCourseModal,
-        },
-    },
-    appointment: {
-        title: 'notification.controlPanel.preference.appointment.title',
-        icon: IconAppointment,
-        modal: {
-            body: 'notification.controlPanel.preference.appointment.modalBody',
-            icon: IconAppointmentModal,
+            icon: IconChatModal,
         },
     },
     survey: {
@@ -74,12 +53,44 @@ export const systemNotificationCategories: NotificationCategories = {
             icon: IconSurveyModal,
         },
     },
-    news: {
-        title: 'notification.controlPanel.preference.news.title',
-        icon: IconNews,
+    appointment: {
+        title: 'notification.controlPanel.preference.appointment.title',
+        icon: IconAppointment,
         modal: {
-            body: 'notification.controlPanel.preference.news.modalBody',
-            icon: IconNewsModal,
+            body: 'notification.controlPanel.preference.appointment.modalBody',
+            icon: IconAppointmentModal,
+        },
+    },
+    advice: {
+        title: 'notification.controlPanel.preference.advice.title',
+        icon: IconAdvice,
+        modal: {
+            body: 'notification.controlPanel.preference.advice.modalBody',
+            icon: IconAppointmentModal,
+        },
+    },
+    suggestion: {
+        title: 'notification.controlPanel.preference.suggestion.title',
+        icon: IconSuggestion,
+        modal: {
+            body: 'notification.controlPanel.preference.suggestion.modalBody',
+            icon: IconSuggestioneModal,
+        },
+    },
+    announcement: {
+        title: 'notification.controlPanel.preference.announcement.title',
+        icon: IconAnnouncement,
+        modal: {
+            body: 'notification.controlPanel.preference.announcement.modalBody',
+            icon: IconAnnouncementModal,
+        },
+    },
+    call: {
+        title: 'notification.controlPanel.preference.call.title',
+        icon: IconCall,
+        modal: {
+            body: 'notification.controlPanel.preference.call.modalBody',
+            icon: IconCallModal,
         },
     },
 };
@@ -87,28 +98,16 @@ export const systemNotificationCategories: NotificationCategories = {
 export const getSystemNotificationPreferenceCategories = () => Object.keys(systemNotificationCategories);
 
 export const marketingNotificationCategories: NotificationCategories = {
-    newsletter: {
-        title: 'notification.controlPanel.preference.newsletter.title',
+    news: {
+        title: 'notification.controlPanel.preference.news.title',
         modal: {
-            body: 'notification.controlPanel.preference.newsletter.modalBody',
+            body: 'notification.controlPanel.preference.news.modalBody',
         },
     },
-    training: {
-        title: 'notification.controlPanel.preference.training.title',
+    event: {
+        title: 'notification.controlPanel.preference.event.title',
         modal: {
-            body: 'notification.controlPanel.preference.training.modalBody',
-        },
-    },
-    events: {
-        title: 'notification.controlPanel.preference.events.title',
-        modal: {
-            body: 'notification.controlPanel.preference.events.modalBody',
-        },
-    },
-    newsoffer: {
-        title: 'notification.controlPanel.preference.newsoffer.title',
-        modal: {
-            body: 'notification.controlPanel.preference.newsoffer.modalBody',
+            body: 'notification.controlPanel.preference.event.modalBody',
         },
     },
     request: {
@@ -117,22 +116,10 @@ export const marketingNotificationCategories: NotificationCategories = {
             body: 'notification.controlPanel.preference.request.modalBody',
         },
     },
-    learnoffer: {
-        title: 'notification.controlPanel.preference.learnoffer.title',
+    alternative: {
+        title: 'notification.controlPanel.preference.alternative.title',
         modal: {
-            body: 'notification.controlPanel.preference.learnoffer.modalBody',
-        },
-    },
-    alternativeoffer: {
-        title: 'notification.controlPanel.preference.alternativeoffer.title',
-        modal: {
-            body: 'notification.controlPanel.preference.alternativeoffer.modalBody',
-        },
-    },
-    feedback: {
-        title: 'notification.controlPanel.preference.feedback.title',
-        modal: {
-            body: 'notification.controlPanel.preference.feedback.modalBody',
+            body: 'notification.controlPanel.preference.alternative.modalBody',
         },
     },
 };
@@ -141,19 +128,21 @@ export const getMarketingNotificationPreferenceCategories = () => Object.keys(ma
 export const getAllNotificationPreferenceCategories = () => [...getSystemNotificationPreferenceCategories(), ...getMarketingNotificationPreferenceCategories()];
 
 export const messageIcons: { [category: string]: FC } = {
-    message: MessageIcon,
-    match: MatchIcon,
-    course: CourseIcon,
-    appointment: AppointmentIcon,
+    chat: ChatIcon,
     survey: SurveyIcon,
-    news: NewsIcon,
+    appointment: AppointmentIcon,
+    advice: AdviceIcon,
+    suggestion: SuggestionIcon,
+    announcement: AnnouncementIcon,
+    call: CallIcon,
 };
 
 export const modalIcons: { [category: string]: FC } = {
-    chat: IconMessageModal,
-    match: IconMatchModal,
-    course: IconCourseModal,
-    appointment: IconAppointmentModal,
+    chat: IconChatModal,
     survey: IconSurveyModal,
-    news: IconNewsModal,
+    appointment: IconAppointmentModal,
+    advice: IconAdviceModal,
+    suggestion: IconSuggestioneModal,
+    announcement: IconAnnouncementModal,
+    call: IconCallModal,
 };

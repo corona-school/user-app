@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { Heading, Row, useBreakpointValue, useTheme, View, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
@@ -42,7 +41,7 @@ const NotficationControlPanel = () => {
                                     content: <SystemNotifications />,
                                 },
                                 {
-                                    title: t('notification.controlPanel.tabs.marketing.title'),
+                                    title: t('notification.controlPanel.tabs.newsletter.title'),
                                     content: <MarketingNotifications />,
                                 },
                             ]}

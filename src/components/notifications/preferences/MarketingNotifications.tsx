@@ -4,5 +4,5 @@ import { marketingNotificationCategories } from '../../../helper/notification-pr
 
 export const MarketingNotifications = () => {
     const { t } = useTranslation();
-    return <Preferences title={t('notification.controlPanel.tabs.marketing.description')} notificationCategories={marketingNotificationCategories} />;
+    return <Preferences title={t('notification.controlPanel.tabs.newsletter.description')} notificationCategories={marketingNotificationCategories} />;
 };
