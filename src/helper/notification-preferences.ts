@@ -1,11 +1,3 @@
-import IconChat from '../assets/icons/lernfair/notifications/Icon_Chat.svg';
-import IconAppointment from '../assets/icons/lernfair/notifications/Icon_Appointment.svg';
-import IconSuggestion from '../assets/icons/lernfair/notifications/Icon_Suggestion.svg';
-import IconAnnouncement from '../assets/icons/lernfair/notifications/Icon_Announcement.svg';
-import IconSurvey from '../assets/icons/lernfair/notifications/Icon_Survey.svg';
-import IconCall from '../assets/icons/lernfair/notifications/Icon_Call.svg';
-import IconAdvice from '../assets/icons/lernfair/notifications/Icon_Advice.svg';
-
 import ChatIcon from '../assets/icons/lernfair/notifications/lf_chat.svg';
 import SuggestionIcon from '../assets/icons/lernfair/notifications/lf_suggestion.svg';
 import AppointmentIcon from '../assets/icons/lernfair/notifications/lf_appointment.svg';
@@ -39,7 +31,7 @@ export type NotificationCategories = {
 export const systemNotificationCategories: NotificationCategories = {
     chat: {
         title: 'notification.controlPanel.preference.chat.title',
-        icon: IconChat,
+        icon: ChatIcon,
         modal: {
             body: 'notification.controlPanel.preference.chat.modalBody',
             icon: IconChatModal,
@@ -47,7 +39,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     survey: {
         title: 'notification.controlPanel.preference.survey.title',
-        icon: IconSurvey,
+        icon: SurveyIcon,
         modal: {
             body: 'notification.controlPanel.preference.survey.modalBody',
             icon: IconSurveyModal,
@@ -55,7 +47,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     appointment: {
         title: 'notification.controlPanel.preference.appointment.title',
-        icon: IconAppointment,
+        icon: AppointmentIcon,
         modal: {
             body: 'notification.controlPanel.preference.appointment.modalBody',
             icon: IconAppointmentModal,
@@ -63,7 +55,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     advice: {
         title: 'notification.controlPanel.preference.advice.title',
-        icon: IconAdvice,
+        icon: AdviceIcon,
         modal: {
             body: 'notification.controlPanel.preference.advice.modalBody',
             icon: IconAppointmentModal,
@@ -71,7 +63,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     suggestion: {
         title: 'notification.controlPanel.preference.suggestion.title',
-        icon: IconSuggestion,
+        icon: SuggestionIcon,
         modal: {
             body: 'notification.controlPanel.preference.suggestion.modalBody',
             icon: IconSuggestioneModal,
@@ -79,7 +71,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     announcement: {
         title: 'notification.controlPanel.preference.announcement.title',
-        icon: IconAnnouncement,
+        icon: AnnouncementIcon,
         modal: {
             body: 'notification.controlPanel.preference.announcement.modalBody',
             icon: IconAnnouncementModal,
@@ -87,7 +79,7 @@ export const systemNotificationCategories: NotificationCategories = {
     },
     call: {
         title: 'notification.controlPanel.preference.call.title',
-        icon: IconCall,
+        icon: CallIcon,
         modal: {
             body: 'notification.controlPanel.preference.call.modalBody',
             icon: IconCallModal,
@@ -135,6 +127,7 @@ export const messageIcons: { [category: string]: FC } = {
     suggestion: SuggestionIcon,
     announcement: AnnouncementIcon,
     call: CallIcon,
+    event: CallIcon,
 };
 
 export const modalIcons: { [category: string]: FC } = {

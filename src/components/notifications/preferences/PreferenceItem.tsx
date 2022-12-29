@@ -28,7 +28,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
     });
 
     const maxW = useBreakpointValue({
-        base: 200,
+        base: 300,
         lg: '100%',
     });
 
