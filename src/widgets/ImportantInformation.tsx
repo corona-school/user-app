@@ -159,7 +159,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             {infos.map((config, index) => {
                 const buttontexts: String[] = t('helperwizard.' + config.label + '.buttons', { returnObjects: true });
                 return (
-                    <Column width="100%" maxWidth="500px">
+                    <Column width="100%" maxWidth="500px" key={config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />
