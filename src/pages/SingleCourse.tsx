@@ -820,6 +820,7 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
 const SingleCourse: React.FC = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
+    const toast = useToast();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
 
@@ -832,6 +833,10 @@ const SingleCourse: React.FC = () => {
             id
             participantsCount
             maxParticipants
+            capacity
+            published
+            publishedAt
+            alreadyPromoted
             nextLecture{
                 start
                 duration
@@ -867,8 +872,23 @@ const SingleCourse: React.FC = () => {
         { variables: { subcourseId } }
     );
 
+    const [promote] = useMutation(
+        gql(`
+    mutation subcoursePromote($subcourseId: Float!) {
+        subcoursePromote(subcourseId: $subcourseId)
+    }
+`),
+        { variables: { subcourseId: subcourseId } }
+    );
+
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+
+    const doPromote = async () => {
+        await promote();
+        toast.show({ description: t('single.buttonPromote.toast') });
+        refetch();
+    };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
@@ -980,8 +1000,16 @@ const SingleCourse: React.FC = () => {
                         </Text>
                     )}
                     <Box my={2}>
-                        {subcourse && getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants) !== 'full' && (
-                            <PromoteButton subcourseId={subcourse.id} />
+                        {subcourse && (
+                            <PromoteButton
+                                subcourseId={subcourse.id}
+                                alreadyPromoted={subcourse.alreadyPromoted}
+                                capacity={subcourse.capacity}
+                                published={subcourse.published}
+                                publishedAt={subcourse.publishedAt}
+                                loading={loading}
+                                promote={doPromote}
+                            />
                         )}
                     </Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>

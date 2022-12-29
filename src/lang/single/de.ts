@@ -40,7 +40,8 @@ const single = {
     },
     buttonPromote: {
         button: 'Kurs bewerben',
-        tooltip: 'Mit diesem Button kannst du deinen Kurs\nnoch einmal bei den Usern bewerben.\nDu kannst dies allerdings nur einmal tun.',
+        tooltip: 'Mit diesem Button kannst du deinen Kurs\neinmal bei den Nutzern bewerben.\nNach einmaliger Benutzung ist diese Funktion deaktiviert.',
+        toast: 'Kurs beworben',
     },
 };
 export default single;
