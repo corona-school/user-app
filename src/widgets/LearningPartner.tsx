@@ -35,7 +35,7 @@ const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolcl
                                 <Text bold>Fächer:</Text>
                             </Text>
                             {subjects.map((sub: LFSubject) => (
-                                <Tag text={sub.name} variant="secondary-light" marginBottom={0} />
+                                <Tag text={sub.name} variant="secondary-light" marginBottom={0} key={sub.name} />
                             ))}
                         </Row>
                     )}
