@@ -37,10 +37,7 @@ const PromoteButton: React.FC<Props> = ({ subcourseId }) => {
     const { data, loading, refetch } = useQuery(promoteQuery, { variables: { subcourseId: subcourseId } });
     const [promote] = useMutation(mutation, { variables: { subcourseId: subcourseId } });
 
-    const alreadyPromoted = data?.subcourse?.alreadyPromoted;
-    const capacity = data?.subcourse?.capacity ?? 0;
-    const publishedAt = data?.subcourse?.publishedAt;
-    const published = data?.subcourse?.published;
+    const { alreadyPromoted, capacity, publishedAt, published } = data?.subcourse;
     const { daysDiff } = getTimeDifference(publishedAt);
 
     const ButtonContainer = useBreakpointValue({
