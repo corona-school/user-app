@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
@@ -18,7 +18,7 @@ import('./NavigatorLazy');
 
 export default function Navigator() {
     return (
-        <BrowserRouter>
+        <>
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/login-token" element={<LoginToken />} />
@@ -44,6 +44,6 @@ export default function Navigator() {
                 />
             </Routes>
             <FullPageModal />
-        </BrowserRouter>
+        </>
     );
 }
