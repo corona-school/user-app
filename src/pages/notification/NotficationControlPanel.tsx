@@ -7,12 +7,15 @@ import { MarketingNotifications } from '../../components/notifications/preferenc
 import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext } from 'react';
 
-export const NotificationPreferencesContext = createContext<ReturnType<typeof useUserPreferences>>({ userPreferences: {}, updateUserPreference: () => null });
+const channels = ['email'];
+
+type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
+export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({} as NotificationPreferencesContextType);
 
 const NotficationControlPanel = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { userPreferences, updateUserPreference } = useUserPreferences();
+    const userPreferences = useUserPreferences();
 
     const isMobile = useBreakpointValue({
         base: true,
@@ -25,7 +28,7 @@ const NotficationControlPanel = () => {
     });
 
     return (
-        <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreference }}>
+        <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
             <WithNavigation showBack headerTitle={t('notification.controlPanel.title')}>
                 <View py={5} width={width}>
                     {!isMobile && (

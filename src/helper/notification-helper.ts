@@ -6,13 +6,14 @@ import {
     marketingNotificationCategories,
     messageIcons,
     modalIcons,
+    NotificationCategories,
     systemNotificationCategories,
 } from './notification-preferences';
 import { FC } from 'react';
+import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
 
 const getIconForMessageType = (messageType: string): FC => (messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null);
 const getIconForNotificationPreferenceModal = (messageType: string): FC => {
-    console.log(messageType);
     return modalIcons.hasOwnProperty(messageType) ? modalIcons[messageType] : () => null;
 };
 
@@ -95,6 +96,23 @@ const getNotificationCategoriesData = (category: string) => {
     return { systemPreferences, marketingPreferences, all, allPrefs };
 };
 
+const getAllPreferencesInCategorySetToValue = (
+    preferences: NotificationPreferences,
+    value: boolean,
+    categories: NotificationCategories,
+    channels: string[]
+): NotificationPreferences => {
+    const newPreferences: NotificationPreferences = getPreferencesCopy(preferences);
+    Object.keys(categories).forEach((category: string) => {
+        if (!newPreferences.hasOwnProperty(category)) newPreferences[category] = {};
+        channels.forEach((channel: string) => (newPreferences[category][channel] = value));
+    });
+
+    return newPreferences;
+};
+
+const getPreferencesCopy = (preferences: NotificationPreferences): NotificationPreferences => JSON.parse(JSON.stringify(preferences));
+
 export {
     getIconForMessageType,
     getIconForNotificationPreferenceModal,
@@ -103,4 +121,5 @@ export {
     getNewNotifications,
     getAllNewUserNotificationsButMinimumFiveNotifications,
     getNotificationCategoriesData,
+    getAllPreferencesInCategorySetToValue,
 };

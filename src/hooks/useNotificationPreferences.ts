@@ -21,11 +21,15 @@ const useUserPreferences = () => {
 
     const { data, loading, error } = useQuery(notificationPreferencesQuery);
 
-    const [updateUserPreferences] = useMutation(notificationPreferencesMutation);
+    const [mutateUserPreferences] = useMutation(notificationPreferencesMutation);
 
     const updateUserPreference = (category: string, channel: string, value: boolean) => {
         const preferences = { ...userPreferences, [category]: { [channel]: value } };
-        updateUserPreferences({
+        updateUserPreferences(preferences);
+    };
+
+    const updateUserPreferences = (preferences: NotificationPreferences) => {
+        mutateUserPreferences({
             variables: {
                 preferences,
             },
@@ -45,6 +49,7 @@ const useUserPreferences = () => {
     return {
         userPreferences,
         updateUserPreference,
+        updateUserPreferences,
     };
 };
 
