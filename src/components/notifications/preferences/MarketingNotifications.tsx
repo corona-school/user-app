@@ -6,7 +6,7 @@ export const MarketingNotifications = () => {
     const { t } = useTranslation();
     return (
         <Preferences
-            title={t('notification.controlPanel.tabs.marketing.description')}
+            title={t('notification.controlPanel.tabs.newsletter.description')}
             notificationCategories={marketingNotificationCategories}
             enableToggleAll={true}
         />
