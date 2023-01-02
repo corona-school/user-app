@@ -14,6 +14,7 @@ const notification = {
         },
         modal: {
             leavePageText: 'Du bist dabei Lernfair zu verlassen.',
+            leavePageButton: 'weiter zur externen Seite',
         },
     },
     controlPanel: {

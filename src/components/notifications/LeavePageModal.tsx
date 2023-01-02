@@ -34,7 +34,7 @@ const LeavePageModal: React.FC<Props> = ({ url, messageType, onClose, navigateTo
                     <Box>
                         <Row marginBottom={space['0.5']}>
                             <Button onPress={navigateTo} width="100%">
-                                {url}
+                                {t('notification.panel.modal.leavePageButton')}
                             </Button>
                         </Row>
                         <Row marginBottom={space['0.5']}>
