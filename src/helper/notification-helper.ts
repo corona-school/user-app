@@ -12,7 +12,6 @@ import { FC } from 'react';
 
 const getIconForMessageType = (messageType: string): FC => (messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null);
 const getIconForNotificationPreferenceModal = (messageType: string): FC => {
-    console.log(messageType);
     return modalIcons.hasOwnProperty(messageType) ? modalIcons[messageType] : () => null;
 };
 

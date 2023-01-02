@@ -1,20 +1,51 @@
-import { Box, Card, HStack, VStack, Text, Avatar, Spacer } from 'native-base';
+import { Box, Card, HStack, VStack, Text, Avatar, Spacer, Button, Heading } from 'native-base';
 import AppointmentDate from './AppointmentDate';
+import { DateTime } from 'luxon';
+import { useEffect, useState } from 'react';
 
-const AppointmentTile = () => {
-    const current = true;
+type Props = {
+    courseStart: string;
+    duration: number;
+    courseTitle: string;
+    courseInstructor: string;
+};
+const AppointmentTile: React.FC<Props> = ({ courseStart, duration, courseTitle, courseInstructor }) => {
+    const [isCurrent, setIsCurrent] = useState<boolean>(false);
+
+    const getCourseTime = (): string => {
+        const now = DateTime.now();
+        const start = DateTime.fromISO(courseStart);
+        const ende = start.plus({ minutes: duration });
+        const startTime = start.setLocale('de-DE').toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'de' });
+        const endTime = ende.setLocale('de-DE').toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'de' });
+        if (start > now) {
+            return `${startTime} - ${endTime} Uhr`;
+        } else {
+            return '';
+        }
+    };
+
+    useEffect(() => {
+        const now = DateTime.now();
+        const start = DateTime.fromISO(courseStart);
+        if (start >= now) {
+            setIsCurrent(true);
+        } else {
+            setIsCurrent(false);
+        }
+    }, [courseStart]);
+
     return (
-        <Box w={288}>
+        <Box w={300}>
             <HStack>
-                <AppointmentDate current={current} />
+                <AppointmentDate current={isCurrent} />
                 <Spacer />
-
                 <Box w={248}>
-                    <Card bg={current ? 'primary.900' : 'primary.100'} shadow={'none'}>
+                    <Card bg={isCurrent ? 'primary.900' : 'primary.100'} shadow={'none'}>
                         <VStack>
                             <HStack alignItems={'center'}>
-                                <Text fontSize={'xs'} color={current ? 'white' : ''}>
-                                    11:00 – 12:00 Uhr
+                                <Text fontSize={'xs'} color={isCurrent ? 'white' : 'primary.900'}>
+                                    {getCourseTime()}
                                 </Text>
                                 <Spacer />
                                 <Avatar.Group>
@@ -24,13 +55,14 @@ const AppointmentTile = () => {
                                 </Avatar.Group>
                             </HStack>
                             <Box>
-                                <Text fontSize={'md'} color={current ? 'white' : ''}>
-                                    Grundlagen Tutorium
-                                </Text>
-                                <Text fontSize={'xs'} color={current ? 'white' : ''}>
-                                    Andreas Müller
+                                <Heading fontSize={'md'} color={isCurrent ? 'white' : 'primary.900'}>
+                                    {courseTitle}
+                                </Heading>
+                                <Text mt={1} fontSize={'xs'} color={isCurrent ? 'white' : 'primary.900'}>
+                                    {courseInstructor}
                                 </Text>
                             </Box>
+                            {isCurrent && <Button mt={2}>Videochat beitreten</Button>}
                         </VStack>
                     </Card>
                 </Box>
