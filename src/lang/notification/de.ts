@@ -12,9 +12,10 @@ const notification = {
         button: {
             text: 'Ältere Benachrichtigungen anzeigen',
         },
-        modal: {
-            leavePageText: 'Du bist dabei Lernfair zu verlassen.',
-            leavePageButton: 'weiter zur externen Seite',
+        leavePageModal: {
+            text: 'Du bist dabei Lernfair zu verlassen',
+            description: 'Du wirst zu folgender Seite weitergeleitet',
+            button: 'Weiter zur externer Seite',
         },
     },
     controlPanel: {

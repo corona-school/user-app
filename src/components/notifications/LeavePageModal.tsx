@@ -1,4 +1,4 @@
-import { Box, CloseIcon, Heading, Modal, Pressable, useTheme, Row, Button } from 'native-base';
+import { Box, CloseIcon, Heading, Modal, Pressable, useTheme, Row, Button, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { getIconForNotificationPreferenceModal } from '../../helper/notification-helper';
 
@@ -16,7 +16,7 @@ const LeavePageModal: React.FC<Props> = ({ url, messageType, onClose, navigateTo
 
     return (
         <>
-            <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
+            <Modal.Content width="350" marginX="auto" backgroundColor="transparent">
                 <Box position="absolute" zIndex="1" right="20px" top="14px">
                     <Pressable onPress={onClose}>
                         <CloseIcon color="white" />
@@ -26,15 +26,21 @@ const LeavePageModal: React.FC<Props> = ({ url, messageType, onClose, navigateTo
                     <Box alignItems="center" marginY={space['1']}>
                         <Icon />
                     </Box>
-                    <Box paddingY={space['2']}>
+                    <Box paddingY={space['2']} maxW={'100%'}>
                         <Heading maxWidth="330px" marginX="auto" fontSize="lg" textAlign={'center'} color="lightText" marginBottom={space['0.5']}>
-                            {t('notification.panel.modal.leavePageText')}
+                            {t('notification.panel.leavePageModal.text')}
                         </Heading>
+                        <Text my={2} textAlign={'center'} fontSize="sm" color="lightText">
+                            {t('notification.panel.leavePageModal.description')}
+                        </Text>
+                        <Text italic textAlign={'center'} fontSize="sm" color="lightText" ellipsizeMode="middle" numberOfLines={1}>
+                            {url}
+                        </Text>
                     </Box>
                     <Box>
                         <Row marginBottom={space['0.5']}>
                             <Button onPress={navigateTo} width="100%">
-                                {t('notification.panel.modal.leavePageButton')}
+                                {t('notification.panel.leavePageModal.button')}
                             </Button>
                         </Row>
                         <Row marginBottom={space['0.5']}>
