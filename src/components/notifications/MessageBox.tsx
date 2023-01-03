@@ -1,10 +1,11 @@
-import { Box, HStack, Pressable, Spacer, Text, VStack } from 'native-base';
+import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
 import { getIconForMessageType } from '../../helper/notification-helper';
 import { UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
+import LeavePageModal from './LeavePageModal';
 
 type Props = {
     userNotification: UserNotification;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { sentAt } = userNotification;
     const { headline, body, messageType, navigateTo } = userNotification.message;
 
@@ -36,7 +38,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
         }
-        return navigateExternal();
+        setIsModalOpen(true);
     };
 
     const navigateExternal = () => window.open(navigateTo, '_blank');
@@ -47,9 +49,14 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
         const Component = () => <Box {...boxProps}>{children}</Box>;
         if (typeof navigateTo === 'string') {
             return (
-                <Pressable onPress={navigateToLink}>
-                    <Component />
-                </Pressable>
+                <>
+                    <Pressable onPress={navigateToLink}>
+                        <Component />
+                    </Pressable>
+                    <Modal isOpen={isModalOpen}>
+                        <LeavePageModal url={navigateTo} messageType={messageType} onClose={() => setIsModalOpen(false)} navigateTo={navigateExternal} />
+                    </Modal>
+                </>
             );
         }
         return <Component />;
