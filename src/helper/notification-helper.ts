@@ -116,6 +116,7 @@ const getPreferencesCopy = (preferences: NotificationPreferences): NotificationP
 export {
     getIconForMessageType,
     getIconForNotificationPreferenceModal,
+    getTimeDifference,
     getTimeText,
     isNewNotification,
     getNewNotifications,

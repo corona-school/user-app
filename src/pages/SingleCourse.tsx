@@ -21,6 +21,8 @@ import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
+import PromoteButton from '../widgets/PromoteButton';
+import { getTimeDifference } from '../helper/notification-helper';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -819,6 +821,7 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
 const SingleCourse: React.FC = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
+    const toast = useToast();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
 
@@ -831,6 +834,10 @@ const SingleCourse: React.FC = () => {
             id
             participantsCount
             maxParticipants
+            capacity
+            published
+            publishedAt
+            alreadyPromoted
             nextLecture{
                 start
                 duration
@@ -866,8 +873,40 @@ const SingleCourse: React.FC = () => {
         { variables: { subcourseId } }
     );
 
+    const [promote, { error }] = useMutation(
+        gql(`
+    mutation subcoursePromote($subcourseId: Float!) {
+        subcoursePromote(subcourseId: $subcourseId)
+    }
+`),
+        { variables: { subcourseId: subcourseId } }
+    );
+
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+
+    const doPromote = async () => {
+        await promote();
+        if (error) {
+            toast.show({ description: t('single.buttonPromote.toastFail') });
+        } else {
+            toast.show({ description: t('single.buttonPromote.toast') });
+        }
+        refetch();
+    };
+
+    const isPublishedThreeDaysAgo = (publishDate: string): boolean => {
+        const { daysDiff } = getTimeDifference(publishDate);
+        if (publishDate === null || daysDiff > 3) {
+            return true;
+        }
+        return false;
+    };
+
+    const cannotPromoteCourse = () => {
+        if (!subcourse || !subcourse.published) return false;
+        return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
+    };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
@@ -978,6 +1017,7 @@ const SingleCourse: React.FC = () => {
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0].start)} {t('single.global.clock')}
                         </Text>
                     )}
+                    <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} onClick={doPromote} />}</Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>
                     <Row alignItems="center" paddingBottom={space['1']}>
                         {subcourse?.instructors && subcourse?.instructors[0] && (
