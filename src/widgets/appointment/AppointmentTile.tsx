@@ -1,8 +1,7 @@
 import { Box, Card, HStack, VStack, Text, Avatar, Spacer, Button, Heading } from 'native-base';
 import AppointmentDate from './AppointmentDate';
 import { useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
-import { getCourseTime } from '../../helper/appointment-helper';
+import { isCourseCurrentOrNot } from '../../helper/appointment-helper';
 
 type Props = {
     courseStart: string;
@@ -15,14 +14,9 @@ const AppointmentTile: React.FC<Props> = ({ courseStart, duration, courseTitle, 
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
 
     useEffect(() => {
-        const now = DateTime.now();
-        const start = DateTime.fromISO(courseStart);
-        if (start >= now) {
-            setIsCurrent(false);
-        } else {
-            setIsCurrent(true);
-        }
-    }, [courseStart]);
+        const currentOrNot = isCourseCurrentOrNot(courseStart, duration);
+        setIsCurrent(currentOrNot.currentOrNot);
+    }, [courseStart, duration]);
 
     return (
         <Box w={300}>
@@ -34,7 +28,7 @@ const AppointmentTile: React.FC<Props> = ({ courseStart, duration, courseTitle, 
                         <VStack>
                             <HStack alignItems={'center'}>
                                 <Text fontSize={'xs'} color={isCurrent ? 'white' : 'primary.900'}>
-                                    {getCourseTime(courseStart, duration)}
+                                    {isCourseCurrentOrNot(courseStart, duration).timeText}
                                 </Text>
                                 <Spacer />
                                 <Avatar.Group>
