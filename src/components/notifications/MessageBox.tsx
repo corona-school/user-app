@@ -54,7 +54,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
                         <Component />
                     </Pressable>
                     <Modal isOpen={isModalOpen}>
-                        <LeavePageModal url={navigateTo} messageType={messageType} onClose={() => setIsModalOpen(false)} navigateTo={navigateToLink} />
+                        <LeavePageModal url={navigateTo} messageType={messageType} onClose={() => setIsModalOpen(false)} navigateTo={navigateExternal} />
                     </Modal>
                 </>
             );
