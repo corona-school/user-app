@@ -1,5 +1,4 @@
 import { Button, Tooltip, useBreakpointValue, useTheme } from 'native-base';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTimeDifference } from '../helper/notification-helper';
 
@@ -14,11 +13,8 @@ type Props = {
 };
 
 const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity, publishedAt, published, loading, promote }) => {
-    const [isPromotionButtonDisabled, setIsPromotionButtonDisabled] = useState<boolean>();
     const { sizes } = useTheme();
     const { t } = useTranslation();
-
-    const { daysDiff } = getTimeDifference(publishedAt);
 
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -33,19 +29,19 @@ const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity
         return false;
     };
 
-    useEffect(() => {
+    const canPromoteCourse = () => {
         if (!alreadyPromoted && capacity < 0.75 && isPublishedThreeDaysAgo(publishedAt)) {
-            setIsPromotionButtonDisabled(false);
+            return false;
         } else {
-            setIsPromotionButtonDisabled(true);
+            return true;
         }
-    }, [alreadyPromoted, capacity, publishedAt, daysDiff]);
+    };
 
     return (
         <>
             {!loading && published && isPublishedThreeDaysAgo(publishedAt) && (
                 <Tooltip label={t('single.buttonPromote.tooltip')} p={3} placement="bottom" hasArrow>
-                    <Button width={ButtonContainer} isDisabled={isPromotionButtonDisabled} onPress={promote}>
+                    <Button width={ButtonContainer} isDisabled={canPromoteCourse()} onPress={promote}>
                         {t('single.buttonPromote.button')}
                     </Button>
                 </Tooltip>

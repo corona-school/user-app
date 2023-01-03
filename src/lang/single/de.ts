@@ -42,6 +42,7 @@ const single = {
         button: 'Kurs bewerben',
         tooltip: 'Mit diesem Button kannst du deinen Kurs\neinmal bei den Nutzern bewerben.\nNach einmaliger Benutzung ist diese Funktion deaktiviert.',
         toast: 'Kurs beworben',
+        toastFail: 'Kurs konnte nicht beworben werden',
     },
 };
 export default single;

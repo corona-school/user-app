@@ -872,7 +872,7 @@ const SingleCourse: React.FC = () => {
         { variables: { subcourseId } }
     );
 
-    const [promote, _promote] = useMutation(
+    const [promote, { error }] = useMutation(
         gql(`
     mutation subcoursePromote($subcourseId: Float!) {
         subcoursePromote(subcourseId: $subcourseId)
@@ -886,8 +886,8 @@ const SingleCourse: React.FC = () => {
 
     const doPromote = async () => {
         await promote();
-        if (_promote.error) {
-            toast.show({ description: 'Kurs konnte nicht beworben werden' });
+        if (error) {
+            toast.show({ description: t('single.buttonPromote.toastFail') });
         } else {
             toast.show({ description: t('single.buttonPromote.toast') });
         }
