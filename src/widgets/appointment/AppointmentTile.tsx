@@ -1,7 +1,8 @@
 import { Box, Card, HStack, VStack, Text, Avatar, Spacer, Button, Heading } from 'native-base';
 import AppointmentDate from './AppointmentDate';
-import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
+import { getCourseTime } from '../../helper/appointment-helper';
 
 type Props = {
     courseStart: string;
@@ -9,43 +10,31 @@ type Props = {
     courseTitle: string;
     courseInstructor: string;
 };
+
 const AppointmentTile: React.FC<Props> = ({ courseStart, duration, courseTitle, courseInstructor }) => {
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
-
-    const getCourseTime = (): string => {
-        const now = DateTime.now();
-        const start = DateTime.fromISO(courseStart);
-        const ende = start.plus({ minutes: duration });
-        const startTime = start.setLocale('de-DE').toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'de' });
-        const endTime = ende.setLocale('de-DE').toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'de' });
-        if (start > now) {
-            return `${startTime} - ${endTime} Uhr`;
-        } else {
-            return '';
-        }
-    };
 
     useEffect(() => {
         const now = DateTime.now();
         const start = DateTime.fromISO(courseStart);
         if (start >= now) {
-            setIsCurrent(true);
-        } else {
             setIsCurrent(false);
+        } else {
+            setIsCurrent(true);
         }
     }, [courseStart]);
 
     return (
         <Box w={300}>
             <HStack>
-                <AppointmentDate current={isCurrent} />
+                <AppointmentDate current={isCurrent} date={courseStart} />
                 <Spacer />
                 <Box w={248}>
                     <Card bg={isCurrent ? 'primary.900' : 'primary.100'} shadow={'none'}>
                         <VStack>
                             <HStack alignItems={'center'}>
                                 <Text fontSize={'xs'} color={isCurrent ? 'white' : 'primary.900'}>
-                                    {getCourseTime()}
+                                    {getCourseTime(courseStart, duration)}
                                 </Text>
                                 <Spacer />
                                 <Avatar.Group>
