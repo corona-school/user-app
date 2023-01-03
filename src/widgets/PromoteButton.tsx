@@ -29,7 +29,7 @@ const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity
         return false;
     };
 
-    const canPromoteCourse = () => {
+    const cannotPromoteCourse = () => {
         return !(!alreadyPromoted && capacity < 0.75 && isPublishedThreeDaysAgo(publishedAt));
     };
 
@@ -37,7 +37,7 @@ const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity
         <>
             {published && (
                 <Tooltip label={t('single.buttonPromote.tooltip')} p={3} placement="bottom" hasArrow>
-                    <Button width={ButtonContainer} isDisabled={loading || canPromoteCourse()} onPress={promote}>
+                    <Button width={ButtonContainer} isDisabled={loading || cannotPromoteCourse()} onPress={promote}>
                         {t('single.buttonPromote.button')}
                     </Button>
                 </Tooltip>
