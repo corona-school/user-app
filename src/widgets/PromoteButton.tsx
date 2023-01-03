@@ -1,18 +1,13 @@
 import { Button, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { getTimeDifference } from '../helper/notification-helper';
 
 type Props = {
-    subcourseId: number;
-    alreadyPromoted: boolean;
-    capacity: number;
-    publishedAt: string;
-    published: boolean;
+    isDisabled: boolean | undefined;
     loading: boolean;
     promote: () => void;
 };
 
-const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity, publishedAt, published, loading, promote }) => {
+const PromoteButton: React.FC<Props> = ({ isDisabled, loading, promote }) => {
     const { sizes } = useTheme();
     const { t } = useTranslation();
 
@@ -20,28 +15,13 @@ const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
-
-    const isPublishedThreeDaysAgo = (publishDate: string): boolean => {
-        const { daysDiff } = getTimeDifference(publishDate);
-        if (publishDate === null || daysDiff > 3) {
-            return true;
-        }
-        return false;
-    };
-
-    const cannotPromoteCourse = () => {
-        return !(!alreadyPromoted && capacity < 0.75 && isPublishedThreeDaysAgo(publishedAt));
-    };
-
     return (
         <>
-            {published && (
-                <Tooltip label={t('single.buttonPromote.tooltip')} p={3} placement="bottom" hasArrow>
-                    <Button width={ButtonContainer} isDisabled={loading || cannotPromoteCourse()} onPress={promote}>
-                        {t('single.buttonPromote.button')}
-                    </Button>
-                </Tooltip>
-            )}
+            <Tooltip label={t('single.buttonPromote.tooltip')} p={3} placement="bottom" hasArrow>
+                <Button width={ButtonContainer} isDisabled={loading || isDisabled} onPress={promote}>
+                    {t('single.buttonPromote.button')}
+                </Button>
+            </Tooltip>
         </>
     );
 };

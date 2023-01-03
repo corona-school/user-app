@@ -22,6 +22,7 @@ import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
 import PromoteButton from '../widgets/PromoteButton';
+import { getTimeDifference } from '../helper/notification-helper';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -894,6 +895,19 @@ const SingleCourse: React.FC = () => {
         refetch();
     };
 
+    const isPublishedThreeDaysAgo = (publishDate: string): boolean => {
+        const { daysDiff } = getTimeDifference(publishDate);
+        if (publishDate === null || daysDiff > 3) {
+            return true;
+        }
+        return false;
+    };
+
+    const cannotPromoteCourse = () => {
+        if (!subcourse) return;
+        return !(!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt));
+    };
+
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
     const ContainerWidth = useBreakpointValue({
@@ -1004,17 +1018,7 @@ const SingleCourse: React.FC = () => {
                         </Text>
                     )}
                     <Box my={2}>
-                        {subcourse && (
-                            <PromoteButton
-                                subcourseId={subcourse.id}
-                                alreadyPromoted={subcourse.alreadyPromoted}
-                                capacity={subcourse.capacity}
-                                published={subcourse.published}
-                                publishedAt={subcourse.publishedAt}
-                                loading={loading}
-                                promote={doPromote}
-                            />
-                        )}
+                        {subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} loading={loading} promote={doPromote} />}
                     </Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>
                     <Row alignItems="center" paddingBottom={space['1']}>

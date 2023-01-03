@@ -128,8 +128,7 @@ export const getFirstLectureFromSubcourse: (lectures: LFLecture[], pastLectures?
 };
 
 export const getTrafficStatus: (participants: number, maxParticipants: number) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
-    const status = participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
-    return status;
+    return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
 };
 
 export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | null }>(arr: Subcourse[] | undefined) => {
