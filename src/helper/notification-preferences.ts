@@ -127,7 +127,6 @@ export const messageIcons: { [category: string]: FC } = {
     suggestion: SuggestionIcon,
     announcement: AnnouncementIcon,
     call: CallIcon,
-    event: CallIcon,
 };
 
 export const modalIcons: { [category: string]: FC } = {
