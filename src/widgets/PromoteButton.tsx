@@ -30,11 +30,7 @@ const PromoteButton: React.FC<Props> = ({ subcourseId, alreadyPromoted, capacity
     };
 
     const canPromoteCourse = () => {
-        if (!alreadyPromoted && capacity < 0.75 && isPublishedThreeDaysAgo(publishedAt)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(!alreadyPromoted && capacity < 0.75 && isPublishedThreeDaysAgo(publishedAt)) 
     };
 
     return (
