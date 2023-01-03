@@ -38,7 +38,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
         }
-        return navigateExternal();
+        setIsModalOpen(true);
     };
 
     const navigateExternal = () => window.open(navigateTo, '_blank');
@@ -50,7 +50,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
         if (typeof navigateTo === 'string') {
             return (
                 <>
-                    <Pressable onPress={() => setIsModalOpen(true)}>
+                    <Pressable onPress={navigateToLink}>
                         <Component />
                     </Pressable>
                     <Modal isOpen={isModalOpen}>
