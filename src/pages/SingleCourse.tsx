@@ -905,7 +905,7 @@ const SingleCourse: React.FC = () => {
 
     const cannotPromoteCourse = () => {
         if (!subcourse) return;
-        return !(!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt));
+        return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
     };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -1017,9 +1017,7 @@ const SingleCourse: React.FC = () => {
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0].start)} {t('single.global.clock')}
                         </Text>
                     )}
-                    <Box my={2}>
-                        {subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} loading={loading} promote={doPromote} />}
-                    </Box>
+                    <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} onClick={doPromote} />}</Box>
                     <Heading paddingBottom={space['1']}>{course?.name}</Heading>
                     <Row alignItems="center" paddingBottom={space['1']}>
                         {subcourse?.instructors && subcourse?.instructors[0] && (
