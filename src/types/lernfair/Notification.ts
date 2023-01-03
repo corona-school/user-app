@@ -14,22 +14,18 @@ type Message = {
 };
 
 export enum MessageType {
-    MESSAGE = 'message',
-    MATCH = 'match',
-    COURSE = 'course',
-    APPOINTMENT = 'appointment',
-    SURVEY = 'survey',
-    NEWS = 'news',
     CHAT = 'chat',
+    SURVEY = 'survey',
+    APPOINTMENT = 'appointment',
+    ADVICE = 'advice',
+    SUGGESTION = 'suggestion',
+    ACCOUNCEMENT = 'announcement',
+    CALL = 'call',
 }
 
 export enum MarketingMessageType {
-    NEWSLETTER = 'newsletter',
-    TRAINING = 'training',
-    EVENTS = 'events',
-    NEWSOFFER = 'newsoffer',
+    NEWS = 'news',
+    EVENT = 'event',
     REQUEST = 'request',
-    LEARNOFFER = 'learnoffer',
-    ALTERNATIVEOFFER = 'alternativeoffer',
-    FEEDBACK = 'feedback',
+    ALTERNATIVE = 'alternative',
 }

@@ -44,7 +44,7 @@ const NotficationControlPanel = () => {
                                     content: <SystemNotifications />,
                                 },
                                 {
-                                    title: t('notification.controlPanel.tabs.marketing.title'),
+                                    title: t('notification.controlPanel.tabs.newsletter.title'),
                                     content: <MarketingNotifications />,
                                 },
                             ]}
