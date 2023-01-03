@@ -904,7 +904,7 @@ const SingleCourse: React.FC = () => {
     };
 
     const cannotPromoteCourse = () => {
-        if (!subcourse) return;
+        if (!subcourse || subcourse.published) return false;
         return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
     };
 

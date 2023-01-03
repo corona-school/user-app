@@ -2,7 +2,7 @@ import { Button, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-    isDisabled: boolean | undefined;
+    isDisabled: boolean;
     onClick: () => void;
 };
 
