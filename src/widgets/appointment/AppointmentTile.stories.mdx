@@ -6,7 +6,7 @@ import AppointmentTile from './AppointmentTile';
 # Example Component
 
 <Story name="AppointmentTile">
-    <AppointmentTile courseStart={'2023-01-03T16:00:00.547Z'} duration={15} courseTitle={'Grundlagen Tutorium'} courseInstructor={'Andreas Müller'} />
-    <AppointmentTile courseStart={'2023-01-04T06:40:00.547Z'} duration={120} courseTitle={'UX Design'} courseInstructor={'Thomas Maier'} />
-    <AppointmentTile courseStart={'2023-01-05T13:00:00.547Z'} duration={15} courseTitle={'GraphQL '} courseInstructor={'Emma Peters'} />
+    <AppointmentTile courseStart="2023-01-03T16:00:00.547Z" duration={15} courseTitle="Grundlagen Tutorium" courseInstructor="Andreas Müller" />
+    <AppointmentTile courseStart={new Date().toISOString()} duration={15} courseTitle="UX Design" courseInstructor="Thomas Maier" />
+    <AppointmentTile courseStart="2023-01-05T13:00:00.547Z" duration={15} courseTitle="GraphQL" courseInstructor="Emma Peters" />
 </Story>
