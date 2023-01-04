@@ -12,7 +12,7 @@ const AppointmentDate: React.FC<Props> = ({ current, date }) => {
     }, [date]);
 
     return (
-        <VStack h={40}>
+        <VStack mr={3}>
             <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5}>
                 <Text fontSize={'xs'}>{day().courseDay}.</Text>
                 <Text fontSize={'md'} bold>
