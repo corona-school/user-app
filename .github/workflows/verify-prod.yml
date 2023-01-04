@@ -19,7 +19,6 @@ jobs:
         run: npm ci
 
       - name: Typecheck App against productive GraphQL
-        continue-on-error: true 
         env:
           CI: false
           GRAPHQL_SCHEMA_URL: https://api.corona-school.de/apollo
