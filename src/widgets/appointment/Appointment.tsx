@@ -8,10 +8,11 @@ type Props = {
     courseStart: string;
     duration: number;
     courseTitle: string;
-    courseInstructor: string;
+    instructors: string[];
+    participants?: string[];
 };
 
-const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, courseInstructor }) => {
+const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants }) => {
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
 
     useEffect(() => {
@@ -30,8 +31,9 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, cour
                 <AppointmentTile
                     timeDescriptionText={getCourseTimeText(courseStart, duration)}
                     courseTitle={courseTitle}
-                    courseInstructor={courseInstructor}
                     isCurrentlyTakingPlace={isCurrent}
+                    instructors={instructors}
+                    participants={participants}
                 />
             </HStack>
         </Box>

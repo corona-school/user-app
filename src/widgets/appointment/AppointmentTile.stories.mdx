@@ -7,6 +7,12 @@ import Appointment from './Appointment';
 # Example Component
 
 <Story name="AppointmentTile">
-    <Appointment courseStart="2023-01-03T16:00:00.547Z" duration={15} courseTitle="Grundlagen Tutorium" courseInstructor="Andreas Müller" />
-    <Appointment courseStart={new Date().toISOString()} duration={15} courseTitle="UX Design" courseInstructor="Thomas Maier" />
+    <Appointment courseStart="2023-01-03T16:00:00.547Z" duration={15} courseTitle="Grundlagen Tutorium" instructors={['Thomas Maier']} />
+    <Appointment
+        courseStart={new Date().toISOString()}
+        duration={15}
+        courseTitle="UX Design"
+        instructors={['Andreas Müller', 'Claudia Max']}
+        participants={['Max', 'Tim', 'Tom', 'Nina', 'Emma']}
+    />
 </Story>

@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { Box, Card, HStack, VStack, Text, Avatar, Button, Heading, useBreakpointValue, Spacer } from 'native-base';
 import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
@@ -7,11 +6,12 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 type Props = {
     timeDescriptionText: string;
     courseTitle: string;
-    courseInstructor: string;
     isCurrentlyTakingPlace: boolean;
+    instructors?: string[];
+    participants?: string[];
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, courseInstructor, isCurrentlyTakingPlace }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -33,33 +33,32 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, co
                             </Text>
                         </HStack>
                         <Spacer />
-                        <Avatar.Group _avatar={{ size: 'xs' }} max={3}>
-                            <Avatar>
-                                <StudentAvatar />
-                            </Avatar>
-                            <Avatar>
-                                <PupilAvatar />
-                            </Avatar>
-                            <Avatar>
-                                <PupilAvatar />
-                            </Avatar>
-                            <Avatar>
-                                <PupilAvatar />
-                            </Avatar>
-                            <Avatar>
-                                <PupilAvatar />
-                            </Avatar>
+                        <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
+                            {instructors
+                                ?.map((i) => (
+                                    <Avatar key={i}>
+                                        <StudentAvatar style={{ marginTop: '-1' }} />
+                                    </Avatar>
+                                ))
+                                .concat(
+                                    participants?.map((i) => (
+                                        <Avatar key={i}>
+                                            <PupilAvatar style={{ marginTop: '-1' }} />
+                                        </Avatar>
+                                    )) ?? []
+                                )}
                         </Avatar.Group>
                     </HStack>
                     <Box>
                         <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                             {courseTitle}
                         </Heading>
+
                         <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                            {courseInstructor}
+                            {instructors?.join(', ')}
                         </Text>
                     </Box>
-                    {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton') as string}</Button>}
+                    {isCurrentlyTakingPlace && <Button mt={2}>Videochat beitreten</Button>}
                 </VStack>
             </Card>
         </Box>
