@@ -1,14 +1,17 @@
-import { Box, Card, HStack, VStack, Text, Avatar, Spacer, Button, Heading, useBreakpointValue } from 'native-base';
+import { t } from 'i18next';
+import { Box, Card, HStack, VStack, Text, Avatar, Button, Heading, useBreakpointValue, Spacer } from 'native-base';
 import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
+import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
+import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 
 type Props = {
-    timeText: string;
+    timeDescriptionText: string;
     courseTitle: string;
     courseInstructor: string;
-    current: boolean;
+    isCurrentlyTakingPlace: boolean;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeText, courseTitle, courseInstructor, current }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, courseInstructor, isCurrentlyTakingPlace }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -16,43 +19,47 @@ const AppointmentTile: React.FC<Props> = ({ timeText, courseTitle, courseInstruc
 
     return (
         <Box w={width}>
-            <Card bg={current ? 'primary.900' : 'primary.100'} shadow={'none'}>
+            <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
                 <VStack>
                     <HStack alignItems={'center'}>
                         <HStack>
-                            {current && (
+                            {isCurrentlyTakingPlace && (
                                 <Box mr={2}>
                                     <WarningIcon />
                                 </Box>
                             )}
-                            <Text fontSize={'xs'} color={current ? 'white' : 'primary.900'}>
-                                {timeText}
+                            <Text fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                {timeDescriptionText}
                             </Text>
                         </HStack>
                         <Spacer />
-                        <Avatar.Group _avatar={{ size: 'xs' }} max={5}>
-                            <Avatar
-                                source={{
-                                    uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-                                }}
-                            ></Avatar>
-                            <Avatar
-                                source={{
-                                    uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                                }}
-                            ></Avatar>
+                        <Avatar.Group _avatar={{ size: 'xs' }} max={3}>
+                            <Avatar>
+                                <StudentAvatar />
+                            </Avatar>
+                            <Avatar>
+                                <PupilAvatar />
+                            </Avatar>
+                            <Avatar>
+                                <PupilAvatar />
+                            </Avatar>
+                            <Avatar>
+                                <PupilAvatar />
+                            </Avatar>
+                            <Avatar>
+                                <PupilAvatar />
+                            </Avatar>
                         </Avatar.Group>
                     </HStack>
                     <Box>
-                        <Heading fontSize={'md'} color={current ? 'white' : 'primary.900'}>
+                        <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                             {courseTitle}
                         </Heading>
-                        <Text mt={1} fontSize={'xs'} color={current ? 'white' : 'primary.900'}>
+                        <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                             {courseInstructor}
                         </Text>
                     </Box>
-                    {/* BUG: have to be: {t("appointment.tile.videoButton")}  */}
-                    {current && <Button mt={2}>Videochat beitreten</Button>}
+                    {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton') as string}</Button>}
                 </VStack>
             </Card>
         </Box>

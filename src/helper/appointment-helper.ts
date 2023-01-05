@@ -1,41 +1,56 @@
 import { DateTime } from 'luxon';
 
-type courseDate = {
-    currentOrNot: boolean;
-    timeText: string;
+type CourseTimes = {
+    start: DateTime;
+    end: DateTime;
+    now: DateTime;
 };
-
-const getCourseDate = (courseStart: string, duration: number) => {
+const getCourseTimes = (courseStart: string, duration: number): CourseTimes => {
     const now = DateTime.now();
     const start = DateTime.fromISO(courseStart);
     const end = start.plus({ minutes: duration });
+    return { start, end, now };
+};
+
+const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boolean => {
+    const { start, end, now } = getCourseTimes(courseStart, duration);
+
+    if (start > now) {
+        return false;
+    } else if (start <= now && now < end) {
+        return true;
+    } else if (now > end) {
+        return false;
+    } else {
+        return false;
+    }
+};
+
+const getCourseTimeText = (courseStart: string, duration: number): string => {
+    const { start, now, end } = getCourseTimes(courseStart, duration);
     const startTime = start.setLocale('de-DE').toFormat('T');
     const endTime = end.setLocale('de-DE').toFormat('T');
 
-    let courseDate: courseDate = {
-        currentOrNot: false,
-        timeText: '',
-    };
-
     if (start > now) {
-        courseDate.currentOrNot = false;
-        courseDate.timeText = `${startTime} - ${endTime} Uhr`;
+        return `${startTime} - ${endTime} Uhr`;
     } else if (start <= now && now < end) {
-        courseDate.currentOrNot = true;
-        courseDate.timeText = `Jetzt - ${endTime} Uhr`;
+        return `Jetzt - ${endTime} Uhr`;
     } else if (now > end) {
-        courseDate.currentOrNot = false;
-        courseDate.timeText = `${startTime} - ${endTime} Uhr`;
+        return `${startTime} - ${endTime} Uhr`;
     } else {
-        return courseDate;
+        return '';
     }
-    return courseDate;
 };
 
-const getCourseDay = (courseDate: string) => {
+type CourseDay = {
+    courseDay: string;
+    courseDateDay: string;
+};
+
+const getCourseDay = (courseDate: string): CourseDay => {
     const courseDay = DateTime.fromISO(courseDate).setLocale('de').toFormat('ccc');
     const courseDateDay = DateTime.fromISO(courseDate).setLocale('de').toFormat('dd');
     return { courseDay, courseDateDay };
 };
 
-export { getCourseDay, getCourseDate };
+export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText };

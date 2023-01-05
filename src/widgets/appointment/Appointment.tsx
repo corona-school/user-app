@@ -1,6 +1,6 @@
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
-import { getCourseDate } from '../../helper/appointment-helper';
+import { getCourseTimeText, isCourseTakingPlaceRightNow } from '../../helper/appointment-helper';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
@@ -15,8 +15,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, cour
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
 
     useEffect(() => {
-        const currentOrNot = getCourseDate(courseStart, duration);
-        setIsCurrent(currentOrNot.currentOrNot);
+        setIsCurrent(isCourseTakingPlaceRightNow(courseStart, duration));
     }, [courseStart, duration]);
 
     const width = useBreakpointValue({
@@ -29,10 +28,10 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, cour
             <HStack>
                 <AppointmentDate current={isCurrent} date={courseStart} />
                 <AppointmentTile
-                    timeText={getCourseDate(courseStart, duration).timeText}
+                    timeDescriptionText={getCourseTimeText(courseStart, duration)}
                     courseTitle={courseTitle}
                     courseInstructor={courseInstructor}
-                    current={isCurrent}
+                    isCurrentlyTakingPlace={isCurrent}
                 />
             </HStack>
         </Box>
