@@ -1,0 +1,10 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import AppointmentList from './AppointmentList';
+
+<Meta title="Appointment/List" component={AppointmentList} />
+
+# Appointment Liste Example
+
+<Story name="AppointmentList">
+    <AppointmentList courseStart={new Date().toISOString()} duration={30} />
+</Story>
