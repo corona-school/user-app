@@ -62,7 +62,7 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
                     <Button onPress={enableAll} isDisabled={allEnabled} width={buttonWidth}>
                         {t('notification.controlPanel.preference.enableAll')}
                     </Button>
-                    <Button onPress={disableAll} _text={{ padding: '3px 5px' }} variant="ghost" isDisabled={allDisabled} width={buttonWidth}>
+                    <Button onPress={disableAll} _text={{ padding: '3px 5px' }} variant="outline" isDisabled={allDisabled} width={buttonWidth}>
                         {t('notification.controlPanel.preference.disableAll')}
                     </Button>
                 </Stack>
