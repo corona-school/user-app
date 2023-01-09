@@ -15,9 +15,14 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
 
-    const width = useBreakpointValue({
+    const boxWidth = useBreakpointValue({
         base: 340,
         lg: '100%',
+    });
+
+    const buttonWidth = useBreakpointValue({
+        base: '100%',
+        lg: '25%',
     });
 
     // use isEnabled=true to check if all preferences are enabled and isEnabled=false to check if all preferences are disabled
@@ -52,12 +57,12 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         userPreferences &&
         channels &&
         notificationCategories && (
-            <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={width}>
-                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={1}>
-                    <Button onPress={enableAll} disabled={allEnabled}>
+            <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
+                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
+                    <Button onPress={enableAll} isDisabled={allEnabled} width={buttonWidth}>
                         {t('notification.controlPanel.preference.enableAll')}
                     </Button>
-                    <Button onPress={disableAll} variant="ghost" disabled={allDisabled}>
+                    <Button onPress={disableAll} _text={{ padding: '3px 5px' }} variant="ghost" isDisabled={allDisabled} width={buttonWidth}>
                         {t('notification.controlPanel.preference.disableAll')}
                     </Button>
                 </Stack>
