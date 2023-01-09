@@ -1,23 +1,16 @@
-import { Box, Toast } from 'native-base'
-import MessageBox from '../components/notifications/MessageBox'
-import { UserNotification } from '../types/lernfair/Notification'
+import { Box, Toast } from 'native-base';
+import MessageBox from '../components/notifications/MessageBox';
+import { UserNotification } from '../types/lernfair/Notification';
 
-export const showInAppMessage = (
-  notification: UserNotification,
-  isMobile: boolean
-) => {
-  return Toast.show({
-    placement: isMobile ? 'top' : 'top-right',
-    render: () => {
-      return (
-        <Box mr={5}>
-          <MessageBox
-            key={notification.id}
-            isStandalone={true}
-            userNotification={notification}
-          />
-        </Box>
-      )
-    }
-  })
-}
+export const showInAppMessage = (notification: UserNotification, isMobile: boolean) => {
+    return Toast.show({
+        placement: isMobile ? 'top' : 'top-right',
+        render: () => {
+            return (
+                <Box mr={5}>
+                    <MessageBox key={notification.id} isStandalone={true} userNotification={notification} />
+                </Box>
+            );
+        },
+    });
+};
