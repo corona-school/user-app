@@ -8,8 +8,17 @@ type Props = {
     courseStart: string;
     duration: number;
     courseTitle: string;
-    instructors: string[];
-    participants?: string[];
+    instructors: Instructor[];
+    participants?: Participant[];
+};
+
+type Instructor = {
+    firstname: string;
+    lastname: string;
+};
+
+type Participant = {
+    firstname: string;
 };
 
 const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants }) => {
@@ -21,7 +30,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
 
     const width = useBreakpointValue({
         base: '80%',
-        lg: '90%',
+        lg: '100%',
     });
 
     return (
