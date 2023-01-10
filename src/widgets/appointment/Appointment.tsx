@@ -8,7 +8,7 @@ type Props = {
     courseStart: string;
     duration: number;
     courseTitle: string;
-    instructors: Instructor[];
+    instructors?: Instructor[];
     participants?: Participant[];
 };
 

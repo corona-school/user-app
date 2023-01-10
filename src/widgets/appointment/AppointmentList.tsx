@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import { Box, Center, Divider, Text, useBreakpointValue } from 'native-base';
-import { Appointment as Type } from '../../types/lernfair/Appointment';
-import Appointment from './Appointment';
+import { Box, useBreakpointValue } from 'native-base';
+import { Appointment as AppointmentType, CalendarDates } from '../../types/lernfair/Appointment';
+import CalendarYear from './CalendarYear';
 import { pupilsAppointments } from './testdata';
 
 const AppointmentList: React.FC = () => {
@@ -12,61 +12,43 @@ const AppointmentList: React.FC = () => {
         lg: '90%',
     });
 
-    const sortAppointments = (): Type[] => {
-        return courses.sort((a, b) => {
-            const _a = DateTime.fromISO(a.startDate).toMillis();
-            const _b = DateTime.fromISO(b.startDate).toMillis();
-            return _a - _b;
+    const sortAppointments = (): AppointmentType[] => {
+        return courses.sort((firstCourse, secondCourse) => {
+            const first = DateTime.fromISO(firstCourse.startDate).toMillis();
+            const second = DateTime.fromISO(secondCourse.startDate).toMillis();
+            return first - second;
         });
     };
 
     const sortedAppointments = sortAppointments();
 
-    const getAppointmentsForOneMonth = () => {
-        const now = DateTime.now();
+    const getAppointmentsForMonth = () => {
+        const dates: CalendarDates = {};
 
-        // let month = DateTime.fromISO(sortedAppointments[0].startDate).month;
-        // for (let i = 0; i <= sortedAppointments.length; i++) {
-        //     const month1 = DateTime.fromISO(sortedAppointments[i].startDate).month;
-        //     if (month1 > month) {
-        //         month = month1;
-        //     }
-        // }
-        // console.log(month);
-
-        return sortedAppointments.filter((appoint) => {
-            const appointmentDate = DateTime.fromISO(appoint.startDate);
-            if (appointmentDate.year === now.year) {
-                if (appointmentDate.month === now.month) {
-                    return appoint;
-                }
+        for (let appointment of sortedAppointments) {
+            let year = DateTime.fromISO(appointment.startDate).year;
+            let month = DateTime.fromISO(appointment.startDate).month;
+            let week = DateTime.fromISO(appointment.startDate).weekNumber;
+            if (!dates[year]) {
+                dates[year] = {};
             }
-        });
+            if (!dates[year][month]) {
+                dates[year][month] = {};
+            }
+            if (!dates[year][month][week]) {
+                dates[year][month][week] = [];
+            }
+            dates[year][month][week]!.push(appointment);
+        }
+        return dates;
     };
 
-    const monthAppointments = getAppointmentsForOneMonth();
-    const month = DateTime.fromISO(monthAppointments[0].startDate).setLocale('de-DE').toLocaleString({ month: 'long', year: 'numeric' });
-
-    const checkIfCourseMonthIsCurrentMonth = (course: {}) => {};
+    const monthAppointments = getAppointmentsForMonth();
 
     return (
-        <Box w={width}>
-            <Center>
-                <Text>{month}</Text>
-            </Center>
-            <Divider my={3} />
-            {monthAppointments.map((appointment) => {
-                return (
-                    <Box>
-                        <Appointment
-                            courseStart={appointment.startDate}
-                            duration={appointment.duration}
-                            courseTitle={appointment.title}
-                            instructors={appointment.organizers}
-                            participants={appointment.participants}
-                        />
-                    </Box>
-                );
+        <Box width={width}>
+            {Object.entries(monthAppointments).map((year) => {
+                return <CalendarYear year={year[0]} appointments={year[1]} />;
             })}
         </Box>
     );

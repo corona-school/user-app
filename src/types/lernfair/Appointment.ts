@@ -18,3 +18,31 @@ export type Appointment = {
     isCancelled: boolean;
     appointmentType: string;
 };
+
+export type AppointmentData = {
+    startDate: string;
+    duration: number;
+    title: string;
+    organizers: { firstname: string; lastname: string }[] | undefined;
+    participants: { firstname: string }[] | undefined;
+};
+
+export type CalendarDates = {
+    [year: number]: {
+        [month: number]: {
+            [week: number]: Appointment[];
+        };
+    };
+};
+
+export type CalendarYear = {
+    [year: number]: CalendarMonth;
+};
+
+export type CalendarMonth = {
+    [month: number]: CalendarWeek;
+};
+
+export type CalendarWeek = {
+    [week: number]: Appointment[];
+};
