@@ -1,3 +1,5 @@
+import { getI18n } from 'react-i18next';
+
 import { DateTime } from 'luxon';
 
 type CourseTimes = {
@@ -30,13 +32,14 @@ const getCourseTimeText = (courseStart: string, duration: number): string => {
     const { start, now, end } = getCourseTimes(courseStart, duration);
     const startTime = start.setLocale('de-DE').toFormat('T');
     const endTime = end.setLocale('de-DE').toFormat('T');
+    const i18n = getI18n();
 
     if (start > now) {
-        return `${startTime} - ${endTime} Uhr`;
+        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     } else if (start <= now && now < end) {
-        return `Jetzt - ${endTime} Uhr`;
+        return i18n.t('appointment.clock.nowToEnd', { end: endTime });
     } else if (now > end) {
-        return `${startTime} - ${endTime} Uhr`;
+        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     } else {
         return '';
     }
