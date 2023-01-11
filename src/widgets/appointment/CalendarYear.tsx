@@ -1,16 +1,24 @@
 import { Box } from 'native-base';
+import { useMemo } from 'react';
+import { Month } from '../../types/lernfair/Appointment';
 import CalendarMonth from './CalendarMonth';
 
 type YearProps = {
     year: number;
-    appointments: any;
+    appointmentsOfYear: Month;
+    scrollToRef: any;
 };
 
-const CalendarYear: React.FC<YearProps> = ({ year, appointments }) => {
+const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToRef }) => {
+    const appointmentsForOneMonth = useMemo(() => Object.entries(appointmentsOfYear), [appointmentsOfYear]);
+    const monthIndex = 0;
+    const appointmentsIndex = 1;
     return (
         <Box>
-            {Object.entries(appointments).map((month) => {
-                return <CalendarMonth year={Number(year)} month={Number(month[0])} appointments={month[1]} />;
+            {appointmentsForOneMonth.map((monthEntries) => {
+                const month = Number(monthEntries[monthIndex]);
+                const appointmentInMonth = monthEntries[appointmentsIndex];
+                return <CalendarMonth year={year} month={month} appointmentsOfMonth={appointmentInMonth} scrollToRef={scrollToRef} />;
             })}
         </Box>
     );

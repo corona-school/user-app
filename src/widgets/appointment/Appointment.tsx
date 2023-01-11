@@ -10,6 +10,7 @@ type Props = {
     courseTitle: string;
     instructors?: Instructor[];
     participants?: Participant[];
+    scrollToRef?: any;
 };
 
 type Instructor = {
@@ -21,7 +22,7 @@ type Participant = {
     firstname: string;
 };
 
-const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants }) => {
+const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef }) => {
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
 
     useEffect(() => {
@@ -34,18 +35,20 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
     });
 
     return (
-        <Box w={width} mt={3}>
-            <HStack>
-                <AppointmentDate current={isCurrent} date={courseStart} />
-                <AppointmentTile
-                    timeDescriptionText={getCourseTimeText(courseStart, duration)}
-                    courseTitle={courseTitle}
-                    isCurrentlyTakingPlace={isCurrent}
-                    instructors={instructors}
-                    participants={participants}
-                />
-            </HStack>
-        </Box>
+        <div ref={scrollToRef}>
+            <Box w={width} mt={3}>
+                <HStack>
+                    <AppointmentDate current={isCurrent} date={courseStart} />
+                    <AppointmentTile
+                        timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                        courseTitle={courseTitle}
+                        isCurrentlyTakingPlace={isCurrent}
+                        instructors={instructors}
+                        participants={participants}
+                    />
+                </HStack>
+            </Box>
+        </div>
     );
 };
 

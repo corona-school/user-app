@@ -27,14 +27,14 @@ export type CalendarDates = {
     };
 };
 
-export type CalendarYear = {
-    [year: number]: CalendarMonth;
+export type Year = {
+    [year: number]: Month;
 };
 
-export type CalendarMonth = {
-    [month: number]: CalendarWeek;
+export type Month = {
+    [month: number]: Week;
 };
 
-export type CalendarWeek = {
+export type Week = {
     [week: number]: AppointmentType[];
 };

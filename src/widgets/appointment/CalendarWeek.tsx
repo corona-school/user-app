@@ -1,15 +1,20 @@
 import { Box, Divider } from 'native-base';
+import { isCourseTakingPlaceRightNow } from '../../helper/appointment-helper';
 import { AppointmentType } from '../../types/lernfair/Appointment';
 import Appointment from './Appointment';
 
 type WeekProps = {
-    appointments: any;
+    appointmentsOfWeek: AppointmentType[];
+    lastOfMonth: boolean;
+    scrollToRef: any;
 };
-const CalendarWeek: React.FC<WeekProps> = ({ appointments }) => {
+const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef }) => {
     return (
         <Box>
-            {appointments &&
-                appointments.map((appointment: AppointmentType) => {
+            {appointmentsOfWeek &&
+                appointmentsOfWeek.map((appointment: AppointmentType) => {
+                    const current = isCourseTakingPlaceRightNow(appointment.startDate, appointment.duration);
+
                     return (
                         <Appointment
                             courseStart={appointment.startDate}
@@ -17,10 +22,11 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointments }) => {
                             courseTitle={appointment.title}
                             instructors={appointment.organizers}
                             participants={appointment.participants}
+                            scrollToRef={current ? scrollToRef : null}
                         />
                     );
                 })}
-            <Divider my={5} />
+            {!lastOfMonth && <Divider my={5} />}
         </Box>
     );
 };

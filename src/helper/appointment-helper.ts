@@ -26,6 +26,16 @@ const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boo
     }
 };
 
+const isCourseInFuture = (courseStart: string, duration: number): boolean => {
+    const { start, now } = getCourseTimes(courseStart, duration);
+
+    if (start > now) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 const getCourseTimeText = (courseStart: string, duration: number): string => {
     const { start, now, end } = getCourseTimes(courseStart, duration);
     const startTime = start.setLocale('de-DE').toFormat('T');
@@ -53,4 +63,4 @@ const getCourseDay = (courseDate: string): CourseDay => {
     return { courseDay, courseDateDay };
 };
 
-export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText };
+export { getCourseDay, isCourseTakingPlaceRightNow, isCourseInFuture, getCourseTimeText };

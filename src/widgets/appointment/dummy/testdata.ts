@@ -98,7 +98,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Kleber',
             },
         ],
-        startDate: '2023-02-11T08:00:00Z',
+        startDate: '2023-02-11T09:00:00Z',
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
