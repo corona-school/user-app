@@ -1,5 +1,5 @@
 import { Box, Divider } from 'native-base';
-import { AppointmentData } from '../../types/lernfair/Appointment';
+import { AppointmentType } from '../../types/lernfair/Appointment';
 import Appointment from './Appointment';
 
 type WeekProps = {
@@ -9,7 +9,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointments }) => {
     return (
         <Box>
             {appointments &&
-                appointments.map((appointment: AppointmentData) => {
+                appointments.map((appointment: AppointmentType) => {
                     return (
                         <Appointment
                             courseStart={appointment.startDate}

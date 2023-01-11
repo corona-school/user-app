@@ -1,6 +1,6 @@
-import { Appointment } from '../../types/lernfair/Appointment';
+import { AppointmentType } from '../../../types/lernfair/Appointment';
 
-export const pupilsAppointments: Appointment[] = [
+export const pupilsAppointments: AppointmentType[] = [
     {
         id: 1,
         title: 'TD Test',

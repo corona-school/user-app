@@ -1,4 +1,4 @@
-export type Appointment = {
+export type AppointmentType = {
     id: number;
     title: string;
     organizers: {
@@ -19,18 +19,10 @@ export type Appointment = {
     appointmentType: string;
 };
 
-export type AppointmentData = {
-    startDate: string;
-    duration: number;
-    title: string;
-    organizers: { firstname: string; lastname: string }[] | undefined;
-    participants: { firstname: string }[] | undefined;
-};
-
 export type CalendarDates = {
     [year: number]: {
         [month: number]: {
-            [week: number]: Appointment[];
+            [week: number]: AppointmentType[];
         };
     };
 };
@@ -44,5 +36,5 @@ export type CalendarMonth = {
 };
 
 export type CalendarWeek = {
-    [week: number]: Appointment[];
+    [week: number]: AppointmentType[];
 };
