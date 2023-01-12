@@ -35,4 +35,11 @@ const getAppointmentsForMonth = () => {
 };
 const monthAppointments = getAppointmentsForMonth();
 
-export default { monthAppointments };
+const findNextCourse = (appointments: AppointmentType[]) => {
+    const now = DateTime.now();
+    return appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
+};
+
+const nextCourse = findNextCourse(courses);
+
+export default { monthAppointments, nextCourse };

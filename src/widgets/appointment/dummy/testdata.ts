@@ -246,7 +246,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Zwei',
             },
         ],
-        startDate: new Date().toISOString(),
+        startDate: '2023-08-20T15:00:00Z',
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,

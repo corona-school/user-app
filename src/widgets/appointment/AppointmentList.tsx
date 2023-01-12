@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef } from 'react';
 
 const AppointmentList: React.FC = () => {
     const currentCourseRef = useRef(null);
-    console.log(currentCourseRef);
     const allAppointments = appointments.monthAppointments;
     const width = useBreakpointValue({
         base: '100%',

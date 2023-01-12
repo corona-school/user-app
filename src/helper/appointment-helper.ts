@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { AppointmentType } from '../types/lernfair/Appointment';
 
 type CourseTimes = {
     start: DateTime;
@@ -21,16 +22,6 @@ const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boo
         return true;
     } else if (now > end) {
         return false;
-    } else {
-        return false;
-    }
-};
-
-const isCourseInFuture = (courseStart: string, duration: number): boolean => {
-    const { start, now } = getCourseTimes(courseStart, duration);
-
-    if (start > now) {
-        return true;
     } else {
         return false;
     }
@@ -63,4 +54,17 @@ const getCourseDay = (courseDate: string): CourseDay => {
     return { courseDay, courseDateDay };
 };
 
-export { getCourseDay, isCourseTakingPlaceRightNow, isCourseInFuture, getCourseTimeText };
+const isCurrentCourseOrNextCourse = (appointments: AppointmentType[], appointment?: AppointmentType) => {
+    const now = DateTime.now();
+    const nextCourse = appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
+
+    const isThereCourseTakingPlaceRightNow = appointments.some((appoint) => {
+        return isCourseTakingPlaceRightNow(appoint.startDate, appoint.duration);
+    });
+
+    if (isThereCourseTakingPlaceRightNow) {
+        return true;
+    }
+};
+
+export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText };
