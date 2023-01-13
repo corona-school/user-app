@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { AppointmentType } from '../types/lernfair/Appointment';
+import appointments from '../widgets/appointment/dummy/appointments';
 
 type CourseTimes = {
     start: DateTime;
@@ -54,17 +55,27 @@ const getCourseDay = (courseDate: string): CourseDay => {
     return { courseDay, courseDateDay };
 };
 
-const isCurrentCourseOrNextCourse = (appointments: AppointmentType[], appointment?: AppointmentType) => {
+const getNextCourseId = (appointments: AppointmentType[]): number => {
     const now = DateTime.now();
-    const nextCourse = appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
-
-    const isThereCourseTakingPlaceRightNow = appointments.some((appoint) => {
-        return isCourseTakingPlaceRightNow(appoint.startDate, appoint.duration);
+    const nextCourse = appointments.find((appointment) => {
+        console.log(DateTime.fromISO(appointment.startDate) > now);
+        return DateTime.fromISO(appointment.startDate) > now;
     });
-
-    if (isThereCourseTakingPlaceRightNow) {
-        return true;
-    }
+    return nextCourse?.id ?? 0;
 };
 
-export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText };
+const getScrollToId = (): number => {
+    const currentId = appointments.currentCourseId;
+    const nextId = appointments.nextCourseId;
+
+    if (currentId) {
+        console.log('current ' + currentId);
+        return currentId;
+    } else if (!currentId) {
+        console.log('next ' + nextId);
+        return nextId;
+    }
+    return 0;
+};
+
+export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };

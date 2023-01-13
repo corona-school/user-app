@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { isCourseTakingPlaceRightNow } from '../../../helper/appointment-helper';
 import { AppointmentType, CalendarDates } from '../../../types/lernfair/Appointment';
 import { pupilsAppointments } from './testdata';
 
@@ -37,9 +38,16 @@ const monthAppointments = getAppointmentsForMonth();
 
 const findNextCourse = (appointments: AppointmentType[]) => {
     const now = DateTime.now();
-    return appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
+    const next = appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
+    return next?.id ?? 0;
 };
 
-const nextCourse = findNextCourse(courses);
+const findCurrentCourse = (appointments: AppointmentType[]) => {
+    const current = appointments.find((appointment) => isCourseTakingPlaceRightNow(appointment.startDate, appointment.duration));
+    return current?.id;
+};
 
-export default { monthAppointments, nextCourse };
+const nextCourseId = findNextCourse(courses);
+const currentCourseId = findCurrentCourse(courses);
+
+export default { monthAppointments, nextCourseId, currentCourseId };

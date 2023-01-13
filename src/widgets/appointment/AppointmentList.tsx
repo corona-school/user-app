@@ -2,6 +2,7 @@ import { Box, useBreakpointValue } from 'native-base';
 import appointments from './dummy/appointments';
 import CalendarYear from './CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
+import { getScrollToId } from '../../helper/appointment-helper';
 
 const AppointmentList: React.FC = () => {
     const currentCourseRef = useRef(null);
@@ -19,6 +20,12 @@ const AppointmentList: React.FC = () => {
         });
     };
 
+    const scrollToCourseId = useMemo(() => {
+        const id = getScrollToId();
+        console.log(id);
+        return id;
+    }, []);
+
     useEffect(() => {
         if (currentCourseRef.current === null) return;
         return handleScroll(currentCourseRef.current);
@@ -33,7 +40,9 @@ const AppointmentList: React.FC = () => {
             {appointmentsForOneYear.map((yearEntries) => {
                 const year = Number(yearEntries[yearIndex]);
                 const appointmentsInYear = yearEntries[appointmentsIndex];
-                return <CalendarYear year={year} appointmentsOfYear={appointmentsInYear} scrollToRef={currentCourseRef} />;
+                return (
+                    <CalendarYear key={year} year={year} appointmentsOfYear={appointmentsInYear} scrollToRef={currentCourseRef} scrollId={scrollToCourseId} />
+                );
             })}
         </Box>
     );

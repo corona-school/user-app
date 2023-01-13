@@ -11,6 +11,7 @@ type Props = {
     instructors?: Instructor[];
     participants?: Participant[];
     scrollToRef?: any;
+    key: React.Key;
 };
 
 type Instructor = {
@@ -25,6 +26,7 @@ type Participant = {
 const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef }) => {
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
 
+    // TODO we have to update the effect more often so that if a course will get "current" the UI changes
     useEffect(() => {
         setIsCurrent(isCourseTakingPlaceRightNow(courseStart, duration));
     }, [courseStart, duration]);
@@ -35,7 +37,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
     });
 
     return (
-        <div ref={scrollToRef}>
+        <div ref={scrollToRef} key={courseStart}>
             <Box w={width} mt={3}>
                 <HStack>
                     <AppointmentDate current={isCurrent} date={courseStart} />

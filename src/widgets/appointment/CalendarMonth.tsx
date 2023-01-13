@@ -9,9 +9,10 @@ type MonthProps = {
     month: number;
     appointmentsOfMonth: Week;
     scrollToRef: any;
+    scrollId: number;
 };
 
-const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef }) => {
+const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId }) => {
     const appointmentsForOneWeek = useMemo(() => Object.entries(appointmentsOfMonth), [appointmentsOfMonth]);
     const values = 1;
 
@@ -24,7 +25,13 @@ const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth,
             {appointmentsForOneWeek.map((weekEntries, idx) => {
                 const appointmentsInWeek = weekEntries[values];
                 return (
-                    <CalendarWeek appointmentsOfWeek={appointmentsInWeek} lastOfMonth={idx === appointmentsForOneWeek.length - 1} scrollToRef={scrollToRef} />
+                    <CalendarWeek
+                        key={weekEntries[0]}
+                        appointmentsOfWeek={appointmentsInWeek}
+                        lastOfMonth={idx === appointmentsForOneWeek.length - 1}
+                        scrollToRef={scrollToRef}
+                        scrollId={scrollId}
+                    />
                 );
             })}
         </Box>

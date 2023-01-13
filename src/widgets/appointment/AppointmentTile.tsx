@@ -44,14 +44,14 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                         <Spacer />
                         <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                             {instructors
-                                ?.map((i) => (
-                                    <Avatar>
+                                ?.map((i, idx) => (
+                                    <Avatar key={i.lastname + '-' + idx}>
                                         <StudentAvatar style={{ marginTop: '-1' }} />
                                     </Avatar>
                                 ))
                                 .concat(
-                                    participants?.map((i) => (
-                                        <Avatar>
+                                    participants?.map((p, index) => (
+                                        <Avatar key={p.firstname + '-' + index}>
                                             <PupilAvatar style={{ marginTop: '-1' }} />
                                         </Avatar>
                                     )) ?? []

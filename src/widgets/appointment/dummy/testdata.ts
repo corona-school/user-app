@@ -3,11 +3,11 @@ import { AppointmentType } from '../../../types/lernfair/Appointment';
 export const pupilsAppointments: AppointmentType[] = [
     {
         id: 1,
-        title: 'TD Test',
+        title: 'Scrum für Einsteiger',
         organizers: [
             {
-                firstname: 'Anna',
-                lastname: 'Müller',
+                firstname: 'Franka',
+                lastname: 'Maier',
             },
         ],
         startDate: '2023-01-09T14:00:00Z',
@@ -154,7 +154,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Müller',
             },
         ],
-        startDate: '2023-01-09T14:00:00Z',
+        startDate: '2023-01-18T12:00:00Z',
         duration: 90,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
