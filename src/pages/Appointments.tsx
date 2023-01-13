@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import AppointmentList from '../widgets/appointment/AppointmentList';
 import Hello from '../widgets/Hello';
 
 const Appointments: React.FC = () => {
@@ -22,7 +21,7 @@ const Appointments: React.FC = () => {
                 <VStack maxWidth={ContainerWidth}>
                     <VStack>
                         <VStack maxWidth={'100%'} marginBottom={space['1']}>
-                            <AppointmentList />
+                            Hello
                         </VStack>
                     </VStack>
                 </VStack>
