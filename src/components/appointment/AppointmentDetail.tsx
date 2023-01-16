@@ -44,7 +44,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const toast = useToast();
-    const { sizes } = useTheme();
+    const { space, sizes } = useTheme();
     const [canceled, setCanceled] = useState<boolean>(false);
 
     const buttonWidth = useBreakpointValue({
@@ -57,11 +57,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
         lg: sizes['containerWidth'],
     });
 
-    const containerMargin = useBreakpointValue({
-        base: 'auto',
-        lg: 5,
-    });
-
     const cancelAppointment = useCallback(() => {
         toast.show({ description: t('appointments.appointmentDetail.canceledToast'), placement: 'top' });
         setCanceled(true);
@@ -71,7 +66,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
     const { date, startTime, endTime } = getAppointmentDateTime(startDate, duration);
 
     return (
-        <Box marginX={containerMargin} maxW={containerWidth}>
+        <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
             {/* Avatare  */}
             <HStack py={5}>
                 <Avatar.Group _avatar={{ size: 'md' }} space={-2} max={5}>
