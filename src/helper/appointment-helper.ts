@@ -16,16 +16,7 @@ const getCourseTimes = (courseStart: string, duration: number): CourseTimes => {
 
 const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boolean => {
     const { start, end, now } = getCourseTimes(courseStart, duration);
-
-    if (start > now) {
-        return false;
-    } else if (start <= now && now < end) {
-        return true;
-    } else if (now > end) {
-        return false;
-    } else {
-        return false;
-    }
+    return start <= now && now < end;
 };
 
 const getCourseTimeText = (courseStart: string, duration: number): string => {
@@ -34,15 +25,10 @@ const getCourseTimeText = (courseStart: string, duration: number): string => {
     const endTime = end.setLocale('de-DE').toFormat('T');
     const i18n = getI18n();
 
-    if (start > now) {
-        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-    } else if (start <= now && now < end) {
+    if (start <= now && now < end) {
         return i18n.t('appointment.clock.nowToEnd', { end: endTime });
-    } else if (now > end) {
-        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-    } else {
-        return '';
     }
+    return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
 };
 
 type CourseDay = {
