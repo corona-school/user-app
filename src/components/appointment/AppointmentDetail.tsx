@@ -63,7 +63,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
     });
 
     const cancelAppointment = useCallback(() => {
-        toast.show({ description: 'Termin wurde abgesagt', placement: 'top' });
+        toast.show({ description: t('appointments.appointmentDetail.canceledToast'), placement: 'top' });
         setCanceled(true);
         // TODO mutation: declinedBy.push(participant)
     }, []);
@@ -164,7 +164,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                             {t('appointments.appointmentDetail.deleteButton')}
                         </Button>
                         <Button variant="outline" width={buttonWidth}>
-                            {t('appointments.appointmentDetail.adjustButton')}
+                            {t('appointments.appointmentDetail.editButton')}
                         </Button>
                     </>
                 )}

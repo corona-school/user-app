@@ -13,7 +13,8 @@ const appointments = {
         courseDescriptionHeader: 'Kursbeschreibung: {{courseTitle}}',
         deleteButton: 'Termin löschen',
         cancelButton: 'Termin absagen',
-        adjustButton: 'Termin bearbeiten',
+        editButton: 'Termin bearbeiten',
+        canceledToast: 'Termin wurde abgesagt',
     },
 };
 
