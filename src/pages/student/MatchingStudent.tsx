@@ -138,7 +138,7 @@ const MatchingStudent: React.FC<Props> = () => {
         };
 
         if (res.studentDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht' });
+            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
@@ -146,7 +146,7 @@ const MatchingStudent: React.FC<Props> = () => {
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst' });
+            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
