@@ -1,18 +1,19 @@
 const appointments = {
-    singleAppointment: {
+    appointmentDetail: {
         group: 'Gruppentermin mit {{instructor}}',
-        single: 'Einzeltermin mit {{instructor}}',
+        oneToOne: 'Einzeltermin mit {{instructor}}',
         without: 'Termin mit {{instructor}}',
-        lecture: 'Lektion {{appointmentCount}}: {{lecture}}',
-        title: 'Kurs: {{courseTitle}}',
-        time: '{{start}} - {{end}} Uhr ({{duration}})',
-        repeateDate: '{{appointmentCount}}. von insgesamt {{appointmentsTotal}} Terminen',
+        appointmentTitle: '{{appointmentTitle}}',
+        courseTitle: 'Kurs: {{courseTitle}}',
+        time: '{{start}} - {{end}} Uhr ({{duration}} Minuten)',
+        repeatDate: '{{appointmentCount}}. von insgesamt {{appointmentsTotal}} Terminen',
         participants: '{{participantsTotal}} Teilnehmer:innen',
         videochatButton: 'Jetzt Videochat beitreten',
-        descriptionTitle: 'Kursbeschreibung: {{courseTitle}}',
-        deleteAppointmentButton: 'Termin löschen',
-        cancelAppointmentButton: 'Termin absagen',
-        adjustAppointmentButton: 'Termin bearbeiten',
+        desciptionHeader: 'Beschreibung',
+        courseDescriptionHeader: 'Kursbeschreibung: {{courseTitle}}',
+        deleteButton: 'Termin löschen',
+        cancelButton: 'Termin absagen',
+        adjustButton: 'Termin bearbeiten',
     },
 };
 
