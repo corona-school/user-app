@@ -5,16 +5,18 @@ import AppointmentDetail from './AppointmentDetail';
 
 # Appointment Detail
 
--   appointment details
+-   single appointment
 
-<Story name="AppointmentDetail">
+<Story name="SingleAppointmentDetails">
     <AppointmentDetail
         id={1}
+        appointmentType={'ONE_TO_ONE'}
         instructors={['Anna Maier']}
         participants={['Max Müller']}
-        appointmentTitle={'Termin ohne Zuordnung'}
-        startDate={'2023-01-20T15:00Z'}
-        duration={60}
+        appointmentTitle={'Nachhilfe Geschichte'}
+        startDate={'2023-01-20T08:00:00Z'}
+        duration={30}
+        description={'Einzeltermin für dich'}
         appointmentsCount={2}
         appointmentsTotal={5}
         userType={'pupil'}
