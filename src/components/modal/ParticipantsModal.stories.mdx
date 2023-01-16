@@ -1,0 +1,16 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import ParticipantsModal from './ParticipantsModal';
+
+<Meta title="Appointment/ParticipantsModal" component={ParticipantsModal} />
+
+# ParticipantsModal
+
+<Story name="ParticipantsModal">
+    <ParticipantsModal
+        participants={[{ firstname: 'Anna', lastname: 'Pupil', userType: 'pupil', declined: false }]}
+        organizers={[
+            { firstname: 'Tobias', lastname: 'Bork', userType: 'student', declined: false },
+            { firstname: 'Tobias', lastname: 'Bork', userType: 'student', declined: true },
+        ]}
+    />
+</Story>
