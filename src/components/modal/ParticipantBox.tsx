@@ -1,6 +1,8 @@
-import { HStack, VStack, Text, Avatar, CloseIcon } from 'native-base';
-import StudentIcon from '../../assets/icons/lernfair/avatar_helfer_innen_32.svg';
-import PupilIcon from '../../assets/icons/lernfair/avatar_schüler_innen_32.svg';
+import { HStack, VStack, Text, Avatar } from 'native-base';
+import StudentIcon from '../../assets/icons/lernfair/avatar_student_32.svg';
+import PupilIcon from '../../assets/icons/lernfair/avatar_pupil_32.svg';
+import PupilCancel from '../../assets/icons/lernfair/avatar_pupil_cancel.svg';
+import StudentCancel from '../../assets/icons/lernfair/avatar_student_cancel.svg';
 
 type ParticipantProps = {
     name: string;
@@ -14,8 +16,15 @@ const ParticipantBox: React.FC<ParticipantProps> = ({ name, userType, declined }
             <HStack alignItems="center" space={1} py="2">
                 <VStack>
                     <Avatar size="sm">
-                        {userType === 'student' ? <StudentIcon /> : <PupilIcon />}
-                        {declined && <Avatar.Badge size="8" bg="red.500" borderWidth="0.5"></Avatar.Badge>}
+                        {userType === 'student' && !declined ? (
+                            <StudentIcon />
+                        ) : userType === 'pupil' && !declined ? (
+                            <PupilIcon />
+                        ) : userType === 'student' && declined ? (
+                            <StudentCancel />
+                        ) : (
+                            <PupilCancel />
+                        )}
                     </Avatar>
                 </VStack>
                 <VStack>

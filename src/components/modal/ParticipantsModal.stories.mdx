@@ -7,10 +7,17 @@ import ParticipantsModal from './ParticipantsModal';
 
 <Story name="ParticipantsModal">
     <ParticipantsModal
-        participants={[{ firstname: 'Anna', lastname: 'Pupil', userType: 'pupil', declined: false }]}
+        participants={[
+            { firstname: 'Anna', lastname: 'Pupil', userType: 'pupil', declined: false },
+            { firstname: 'Tom', lastname: 'Pupil', userType: 'pupil', declined: true },
+            { firstname: 'Julian', lastname: 'Pupil', userType: 'pupil', declined: false },
+            { firstname: 'Emma', lastname: 'Pupil', userType: 'pupil', declined: true },
+            { firstname: 'Paula', lastname: 'Pupil', userType: 'pupil', declined: false },
+            { firstname: 'Emil', lastname: 'Pupil', userType: 'pupil', declined: true },
+        ]}
         organizers={[
             { firstname: 'Tobias', lastname: 'Bork', userType: 'student', declined: false },
-            { firstname: 'Tobias', lastname: 'Bork', userType: 'student', declined: true },
+            { firstname: 'Marius', lastname: 'Augustin', userType: 'student', declined: true },
         ]}
     />
 </Story>
