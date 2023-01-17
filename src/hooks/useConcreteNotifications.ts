@@ -9,7 +9,7 @@ const userNotificationQuery = gql(`
                 message {
                     headline
                     body
-                    messageType
+                    type
                     navigateTo
                 }
                 sentAt
