@@ -6,13 +6,13 @@ import StudentCancel from '../../assets/icons/lernfair/avatar_student_cancel.svg
 import { useTranslation } from 'react-i18next';
 import { LFUserType } from '../../types/lernfair/User';
 
-type ParticipantProps = {
+type BoxProps = {
     name: string;
-    userType: string;
+    userType: LFUserType;
     declined?: boolean;
 };
 
-const ParticipantBox: React.FC<ParticipantProps> = ({ name, userType, declined }) => {
+const AttendeeBox: React.FC<BoxProps> = ({ name, userType, declined }) => {
     const { t } = useTranslation();
 
     const getUserIcon = (userType: LFUserType) => {
@@ -42,7 +42,7 @@ const ParticipantBox: React.FC<ParticipantProps> = ({ name, userType, declined }
                         {name}
                     </Text>
                     <Text fontSize="xs" fontWeight="light" ellipsizeMode="tail" numberOfLines={1} color="white">
-                        {userType === 'student' ? t('appointments.participantsModal.helper') : t('appointments.participantsModal.pupil')}
+                        {userType === 'student' ? t('appointments.attendeesModal.helper') : t('appointments.attendeesModal.pupil')}
                     </Text>
                 </VStack>
             </HStack>
@@ -50,4 +50,4 @@ const ParticipantBox: React.FC<ParticipantProps> = ({ name, userType, declined }
     );
 };
 
-export default ParticipantBox;
+export default AttendeeBox;

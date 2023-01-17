@@ -1,20 +1,20 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Participant } from './Participant';
-import ParticipantBox from './ParticipantBox';
+import { Attendee } from './Attendee';
+import ParticipantBox from './AttendeeBox';
 
 type ModalProps = {
-    organizers?: Participant[];
-    participants?: Participant[];
+    organizers?: Attendee[];
+    participants?: Attendee[];
     declinedBy?: number[];
 };
 
-const ParticipantsModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy }) => {
+const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy }) => {
     const [showParticipantsModal, setShowParticipantsModal] = useState<boolean>(true);
     const { t } = useTranslation();
 
-    const sort = (toSort: Participant[], sortBy: Participant[]) => {
+    const sort = (toSort: Attendee[], sortBy: Attendee[]) => {
         return toSort.sort((a, b) => {
             if (sortBy?.includes(a)) return 1;
             if (sortBy?.includes(b)) return -1;
@@ -39,7 +39,7 @@ const ParticipantsModal: React.FC<ModalProps> = ({ organizers, participants, dec
                 <Modal.Body background="primary.900">
                     <Box>
                         <Text color="white" py="4">
-                            {t('appointments.participantsModal.title')}
+                            {t('appointments.attendeesModal.title')}
                         </Text>
                     </Box>
                     <Box maxH="380">
@@ -54,7 +54,7 @@ const ParticipantsModal: React.FC<ModalProps> = ({ organizers, participants, dec
                             </Box>
                         </ScrollView>
                         <Button mt="2" onPress={() => setShowParticipantsModal(false)}>
-                            {t('appointments.participantsModal.closeButton')}
+                            {t('appointments.attendeesModal.closeButton')}
                         </Button>
                     </Box>
                 </Modal.Body>
@@ -63,4 +63,4 @@ const ParticipantsModal: React.FC<ModalProps> = ({ organizers, participants, dec
     );
 };
 
-export default ParticipantsModal;
+export default AttendeesModal;

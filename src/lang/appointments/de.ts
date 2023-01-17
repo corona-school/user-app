@@ -14,7 +14,7 @@ const appointments = {
         cancelAppointmentButton: 'Termin absagen',
         adjustAppointmentButton: 'Termin bearbeiten',
     },
-    participantsModal: {
+    attendeesModal: {
         title: 'Teilnehmer',
         closeButton: 'Schließen',
         helper: 'Helfer:in',
