@@ -11,7 +11,7 @@ type ModalProps = {
 };
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy }) => {
-    const [showParticipantsModal, setShowParticipantsModal] = useState<boolean>(true);
+    const [showModal, setShowModal] = useState<boolean>(true);
     const { t } = useTranslation();
 
     const sort = (toSort: Attendee[], sortBy: Attendee[]) => {
@@ -21,19 +21,18 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
             return 0;
         });
     };
-    const sortUserByParticipation = () => {
-        const organizersCanceled = organizers?.filter((organizer) => declinedBy?.includes(organizer.id));
-        const participantsCanceled = participants?.filter((participant) => declinedBy?.includes(participant.id));
-        const organizersSorted = sort(organizers || [], organizersCanceled || []);
-        const participantsSorted = sort(participants || [], participantsCanceled || []);
-        return organizersSorted?.concat(participantsSorted || []);
+    const sortAttendeesByParticipation = (attendeesToSort: Attendee[], declinedBy: number[]) => {
+        const attendeeCanceled = attendeesToSort?.filter((attendeee) => declinedBy?.includes(attendeee.id));
+        const attendeesSorted = sort(attendeesToSort || [], attendeeCanceled || []);
+        return attendeesSorted;
     };
 
-    const attendeesSorted = sortUserByParticipation();
+    const organizersSorted = sortAttendeesByParticipation(organizers || [], declinedBy || []);
+    const participantsSorted = sortAttendeesByParticipation(participants || [], declinedBy || []);
 
     // TODO add <Modal> to AppointmentList
     return (
-        <Modal mt="200" isOpen={showParticipantsModal} backgroundColor="transparent" onClose={() => setShowParticipantsModal(false)}>
+        <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
             <Modal.Content width="350" marginX="auto" background="primary.900">
                 <Modal.CloseButton />
                 <Modal.Body background="primary.900">
@@ -45,15 +44,17 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                     <Box maxH="380">
                         <ScrollView>
                             <Box mt="2">
-                                {attendeesSorted?.map((attendee) => {
-                                    const declined = declinedBy?.includes(attendee.id);
-                                    return (
-                                        <ParticipantBox name={`${attendee.firstname} ${attendee.lastname}`} userType={attendee.userType} declined={declined} />
-                                    );
+                                {organizersSorted?.map((organizer) => {
+                                    const declined = declinedBy?.includes(organizer.id);
+                                    return <ParticipantBox name={`${organizer.firstname} ${organizer.lastname}`} userType={'student'} declined={declined} />;
+                                })}
+                                {participantsSorted?.map((participant) => {
+                                    const declined = declinedBy?.includes(participant.id);
+                                    return <ParticipantBox name={`${participant.firstname} ${participant.lastname}`} userType={'pupil'} declined={declined} />;
                                 })}
                             </Box>
                         </ScrollView>
-                        <Button mt="2" onPress={() => setShowParticipantsModal(false)}>
+                        <Button mt="2" onPress={() => setShowModal(false)}>
                             {t('appointments.attendeesModal.closeButton')}
                         </Button>
                     </Box>
