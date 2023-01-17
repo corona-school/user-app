@@ -8,16 +8,17 @@ import ParticipantsModal from './ParticipantsModal';
 <Story name="ParticipantsModal">
     <ParticipantsModal
         participants={[
-            { firstname: 'Anna', lastname: 'Pupil', userType: 'pupil', declined: false },
-            { firstname: 'Tom', lastname: 'Pupil', userType: 'pupil', declined: true },
-            { firstname: 'Julian', lastname: 'Pupil', userType: 'pupil', declined: false },
-            { firstname: 'Emma', lastname: 'Pupil', userType: 'pupil', declined: true },
-            { firstname: 'Paula', lastname: 'Pupil', userType: 'pupil', declined: false },
-            { firstname: 'Emil', lastname: 'Pupil', userType: 'pupil', declined: true },
+            { id: 1, firstname: 'Anna', lastname: 'Pupil', userType: 'pupil' },
+            { id: 2, firstname: 'Tom', lastname: 'Pupil', userType: 'pupil' },
+            { id: 3, firstname: 'Julian', lastname: 'Pupil', userType: 'pupil' },
+            { id: 4, firstname: 'Emma', lastname: 'Pupil', userType: 'pupil' },
+            { id: 5, firstname: 'Paula', lastname: 'Pupil', userType: 'pupil' },
+            { id: 6, firstname: 'Emil', lastname: 'Pupil', userType: 'pupil' },
         ]}
         organizers={[
-            { firstname: 'Tobias', lastname: 'Bork', userType: 'student', declined: false },
-            { firstname: 'Marius', lastname: 'Augustin', userType: 'student', declined: true },
+            { id: 7, firstname: 'Tobias', lastname: 'Bork', userType: 'student' },
+            { id: 8, firstname: 'Marius', lastname: 'Augustin', userType: 'student' },
         ]}
+        declinedBy={[2, 3, 6, 8]}
     />
 </Story>
