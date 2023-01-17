@@ -14,6 +14,12 @@ const appointments = {
         cancelAppointmentButton: 'Termin absagen',
         adjustAppointmentButton: 'Termin bearbeiten',
     },
+    participantsModal: {
+        title: 'Teilnehmer',
+        closeButton: 'Schließen',
+        helper: 'Helfer:in',
+        pupil: 'Schüler:in',
+    },
 };
 
 export default appointments;
