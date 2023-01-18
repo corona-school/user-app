@@ -2,22 +2,10 @@ import { getI18n } from 'react-i18next';
 
 import { DateTime } from 'luxon';
 
-type CourseTimes = {
-    start: DateTime;
-    end: DateTime;
-    now: DateTime;
-};
-
 type AppointmentDates = {
     date: string;
     startTime: string;
     endTime: string;
-};
-const getCourseTimes = (courseStart: string, duration?: number): CourseTimes => {
-    const now = DateTime.now();
-    const start = DateTime.fromISO(courseStart);
-    const end = start.plus({ minutes: duration });
-    return { start, end, now };
 };
 
 const getAppointmentDateTime = (appointmentStart: string, duration?: number): AppointmentDates => {
@@ -30,8 +18,10 @@ const getAppointmentDateTime = (appointmentStart: string, duration?: number): Ap
     return { date, startTime, endTime };
 };
 
-const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boolean => {
-    const { start, end, now } = getCourseTimes(courseStart, duration);
+const isCourseNow = (courseStart: string, duration: number): boolean => {
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const end = start.plus({ minutes: duration });
 
     if (start > now) {
         return false;
@@ -45,7 +35,9 @@ const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boo
 };
 
 const getCourseTimeText = (courseStart: string, duration: number): string => {
-    const { start, now, end } = getCourseTimes(courseStart, duration);
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const end = start.plus({ minutes: duration });
     const startTime = start.setLocale('de-DE').toFormat('T');
     const endTime = end.setLocale('de-DE').toFormat('T');
     const i18n = getI18n();
@@ -72,4 +64,4 @@ const getCourseDay = (courseDate: string): CourseDay => {
     return { courseDay, courseDateDay };
 };
 
-export { getCourseDay, getCourseTimes, isCourseTakingPlaceRightNow, getCourseTimeText, getAppointmentDateTime };
+export { getCourseDay, isCourseNow, getCourseTimeText, getAppointmentDateTime };

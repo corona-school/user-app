@@ -10,6 +10,7 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { getAppointmentDateTime } from '../../helper/appointment-helper';
 import { useCallback, useState } from 'react';
+import { UserType } from '../../types/lernfair/User';
 
 type AppointmentDetailProps = {
     id: number;
@@ -23,7 +24,7 @@ type AppointmentDetailProps = {
     appointmentType?: string;
     appointmentsCount?: number;
     appointmentsTotal?: number;
-    userType?: string;
+    userType?: UserType;
     meetingLink?: string;
 };
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
@@ -67,7 +68,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
 
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            {/* Avatare  */}
+            {/* Avatars  */}
             <HStack py={5}>
                 <Avatar.Group _avatar={{ size: 'md' }} space={-2} max={5}>
                     {instructors
