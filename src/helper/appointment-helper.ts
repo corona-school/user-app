@@ -58,7 +58,6 @@ const getCourseDay = (courseDate: string): CourseDay => {
 const getNextCourseId = (appointments: AppointmentType[]): number => {
     const now = DateTime.now();
     const nextCourse = appointments.find((appointment) => {
-        console.log(DateTime.fromISO(appointment.startDate) > now);
         return DateTime.fromISO(appointment.startDate) > now;
     });
     return nextCourse?.id ?? 0;
@@ -78,10 +77,8 @@ const getScrollToId = (): number => {
     const nextId = appointments.nextCourseId;
 
     if (currentId) {
-        console.log('current ' + currentId);
         return currentId;
     } else if (!currentId) {
-        console.log('next ' + nextId);
         return nextId;
     }
     return 0;
