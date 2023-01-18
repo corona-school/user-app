@@ -5,6 +5,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import AppointmentList from '../widgets/appointment/AppointmentList';
+import FloatingActionButton from '../widgets/FloatingActionButton';
 import Hello from '../widgets/Hello';
 
 const Appointments: React.FC = () => {
@@ -14,17 +15,18 @@ const Appointments: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const fabPlace = useBreakpointValue({
+        base: 'bottom-right',
+        lg: 'top-right',
+    });
     const { t } = useTranslation();
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.pupil.header')} headerLeft={<NotificationAlert />}>
-                <VStack maxWidth={ContainerWidth}>
-                    <VStack>
-                        <VStack maxWidth={'100%'} marginBottom={space['1']}>
-                            <AppointmentList />
-                        </VStack>
-                    </VStack>
+            <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
+                <FloatingActionButton handlePress={() => console.log('Add new appointment')} place={fabPlace} />
+                <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
+                    <AppointmentList />
                 </VStack>
             </WithNavigation>
         </AsNavigationItem>

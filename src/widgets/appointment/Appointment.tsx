@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
 import { getCourseTimeText, isCourseTakingPlaceRightNow } from '../../helper/appointment-helper';
@@ -36,8 +37,20 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
         lg: '100%',
     });
 
+    const isCurrentMonth = () => {
+        const currentMonth = DateTime.now().month;
+        const month = DateTime.fromISO(courseStart).month;
+        if (currentMonth === month) return true;
+        return false;
+    };
+
+    const marginRef = useBreakpointValue({
+        base: isCurrentMonth() ? 40 : 100,
+        lg: isCurrentMonth() ? 40 : 100,
+    });
+
     return (
-        <div ref={scrollToRef} key={courseStart}>
+        <div ref={scrollToRef} key={courseStart} style={{ scrollMarginTop: marginRef }}>
             <Box w={width} mt={3}>
                 <HStack>
                     <AppointmentDate current={isCurrent} date={courseStart} />

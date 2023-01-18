@@ -5,6 +5,7 @@ import { Week } from '../../types/lernfair/Appointment';
 import CalendarWeek from './CalendarWeek';
 
 type MonthProps = {
+    key: React.Key;
     year: number;
     month: number;
     appointmentsOfMonth: Week;
@@ -17,11 +18,11 @@ const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth,
     const values = 1;
 
     return (
-        <Box mt={2}>
+        <Box mb={5}>
             <Center>
                 <Text>{`${Info.months('long', { locale: 'de-DE' })[Number(month) - 1]} ${year}`}</Text>
             </Center>
-            <Divider my={3} />
+            <Divider my={3} width="95%" />
             {appointmentsForOneWeek.map((weekEntries, idx) => {
                 const appointmentsInWeek = weekEntries[values];
                 return (

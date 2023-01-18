@@ -3,6 +3,7 @@ import { AppointmentType } from '../../types/lernfair/Appointment';
 import Appointment from './Appointment';
 
 type WeekProps = {
+    key: React.Key;
     appointmentsOfWeek: AppointmentType[];
     lastOfMonth: boolean;
     scrollToRef: any;
@@ -26,7 +27,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                         />
                     );
                 })}
-            {!lastOfMonth && <Divider my={5} />}
+            {!lastOfMonth && <Divider my={5} width="95%" />}
         </Box>
     );
 };
