@@ -165,10 +165,10 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
     const cancelCourse = useCallback(async () => {
         try {
             await cancelSubcourse();
-            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt' });
+            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
             refresh();
         } catch (e) {
-            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden' });
+            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
         }
         setShowCancelModal(false);
     }, [cancelSubcourse, toast]);
@@ -237,15 +237,18 @@ function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Su
                 if (res.data?.subcourseSetMeetingURL) {
                     toast.show({
                         description: t('course.meeting.result.success'),
+                        placement: 'top',
                     });
                 } else {
                     toast.show({
                         description: t('course.meeting.result.error'),
+                        placement: 'top',
                     });
                 }
             } catch (e) {
                 toast.show({
                     description: t('course.meeting.result.error'),
+                    placement: 'top',
                 });
             }
         },
@@ -311,11 +314,12 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                             participants: participantsData.subcourse!.participants.map((it) => it.id),
                         },
                     });
-                    toast.show({ description: 'Nachricht erfolgreich versendet' });
+                    toast.show({ description: 'Nachricht erfolgreich versendet', placement: 'top' });
                     setShowMessageModal(false);
                 } catch (e) {
                     toast.show({
                         description: 'Deine Nachricht konnte nicht versendet werden',
+                        placement: 'top',
                     });
                 }
             }
@@ -362,7 +366,7 @@ function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse
 
     async function doSubmit() {
         await submit();
-        toast.show({ description: 'Kurs zur Prüfung freigegeben' });
+        toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
         refresh();
     }
 
@@ -395,7 +399,7 @@ function StudentPublishAction({ subcourse, refresh }: { subcourse: Pick<Subcours
 
     async function doPublish() {
         await publish();
-        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen' });
+        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
         refresh();
     }
 
@@ -802,7 +806,7 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
 
     async function doContact(title: string, body: string) {
         await contact({ variables: { subcourseId: subcourse.id, title, body } });
-        toast.show({ description: 'Benachrichtigung verschickt' });
+        toast.show({ description: 'Benachrichtigung verschickt', placement: 'top' });
         setShowMessageModal(false);
     }
 
@@ -888,9 +892,9 @@ const SingleCourse: React.FC = () => {
     const doPromote = async () => {
         await promote();
         if (error) {
-            toast.show({ description: t('single.buttonPromote.toastFail') });
+            toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
         } else {
-            toast.show({ description: t('single.buttonPromote.toast') });
+            toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
         refetch();
     };

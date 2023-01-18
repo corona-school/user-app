@@ -763,10 +763,11 @@ const CreateCourse: React.FC<Props> = () => {
                     const arr = [...addedInstructors];
                     arr.splice(index, 1);
                     setAddedInstructors(arr);
-                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.' });
+                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der/Die Kursleiter:in konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }
@@ -790,10 +791,11 @@ const CreateCourse: React.FC<Props> = () => {
                 if (res.data.lectureDelete && !res.errors) {
                     lecs.splice(index, 1);
                     setLectures(lecs);
-                    toast.show({ description: 'Der Termin wurde entfernt.' });
+                    toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der Termin konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }

@@ -6,7 +6,6 @@ import {
     Flex,
     FormControl,
     Heading,
-    Input,
     Modal,
     Row,
     Text,
@@ -191,10 +190,10 @@ const ProfileStudent: React.FC<Props> = () => {
             });
 
             if (res?.data?.participationCertificateAsPDF) {
-                toast.show({ description: 'Dein Zertifikat wird heruntergeladen' });
+                toast.show({ description: 'Dein Zertifikat wird heruntergeladen', placement: 'top' });
                 window.open(`${process.env.REACT_APP_APOLLO_CLIENT_URI}${res?.data?.participationCertificateAsPDF}`, '_blank');
             } else {
-                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten' });
+                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten', placement: 'top' });
             }
         },
         [focusedCertificateUuid, requestCertificate, toast]
