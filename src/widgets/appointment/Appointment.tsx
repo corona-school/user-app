@@ -37,6 +37,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
         lg: '100%',
     });
 
+    // TODO add to helper functions
     const isCurrentMonth = () => {
         const currentMonth = DateTime.now().month;
         const month = DateTime.fromISO(courseStart).month;

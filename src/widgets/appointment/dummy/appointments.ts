@@ -3,6 +3,7 @@ import { isCourseTakingPlaceRightNow } from '../../../helper/appointment-helper'
 import { AppointmentType, CalendarDates } from '../../../types/lernfair/Appointment';
 import { pupilsAppointments } from './testdata';
 
+// TODO should add the logic in the BE
 const courses = pupilsAppointments;
 
 const getCourseEndDateISO = (startDate: string, duration: number) => {

@@ -6,6 +6,7 @@ import { getScrollToId } from '../../helper/appointment-helper';
 
 const AppointmentList: React.FC = () => {
     const currentCourseRef = useRef<HTMLElement>(null);
+    // TODO change to data from BE
     const allAppointments = appointments.monthAppointments;
 
     const handleScroll = (element: HTMLElement) => {
