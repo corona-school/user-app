@@ -64,6 +64,15 @@ const getNextCourseId = (appointments: AppointmentType[]): number => {
     return nextCourse?.id ?? 0;
 };
 
+const isCurrentMonth = (courseStart: string): boolean => {
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const sameMonth = now.hasSame(start, 'month');
+    const sameYear = now.hasSame(start, 'year');
+    if (sameMonth && sameYear) return true;
+    return false;
+};
+
 const getScrollToId = (): number => {
     const currentId = appointments.currentCourseId;
     const nextId = appointments.nextCourseId;
@@ -78,4 +87,4 @@ const getScrollToId = (): number => {
     return 0;
 };
 
-export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };
+export { getCourseDay, isCurrentMonth, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };

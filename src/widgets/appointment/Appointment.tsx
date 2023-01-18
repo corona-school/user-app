@@ -1,7 +1,6 @@
-import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
-import { getCourseTimeText, isCourseTakingPlaceRightNow } from '../../helper/appointment-helper';
+import { getCourseTimeText, isCourseTakingPlaceRightNow, isCurrentMonth } from '../../helper/appointment-helper';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
@@ -26,6 +25,7 @@ type Participant = {
 
 const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef }) => {
     const [isCurrent, setIsCurrent] = useState<boolean>(false);
+    const currentMonth = isCurrentMonth(courseStart);
 
     // TODO we have to update the effect more often so that if a course will get "current" the UI changes
     useEffect(() => {
@@ -37,17 +37,9 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
         lg: '100%',
     });
 
-    // TODO add to helper functions
-    const isCurrentMonth = () => {
-        const currentMonth = DateTime.now().month;
-        const month = DateTime.fromISO(courseStart).month;
-        if (currentMonth === month) return true;
-        return false;
-    };
-
     const marginRef = useBreakpointValue({
-        base: isCurrentMonth() ? 40 : 100,
-        lg: isCurrentMonth() ? 40 : 100,
+        base: currentMonth ? 40 : 100,
+        lg: currentMonth ? 40 : 100,
     });
 
     return (
