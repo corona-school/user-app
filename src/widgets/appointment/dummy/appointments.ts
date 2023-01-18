@@ -5,10 +5,17 @@ import { pupilsAppointments } from './testdata';
 
 const courses = pupilsAppointments;
 
+const getCourseEndDateISO = (startDate: string, duration: number) => {
+    const firstStart = DateTime.fromISO(startDate);
+    return firstStart.plus({ minutes: duration }).toISO();
+};
+
 const sortAppointments = (): AppointmentType[] => {
     return courses.sort((firstCourse, secondCourse) => {
-        const first = DateTime.fromISO(firstCourse.startDate).toMillis();
-        const second = DateTime.fromISO(secondCourse.startDate).toMillis();
+        const firstEndDate = getCourseEndDateISO(firstCourse.startDate, firstCourse.duration);
+        const secondEndDate = getCourseEndDateISO(secondCourse.startDate, secondCourse.duration);
+        const first = DateTime.fromISO(firstEndDate).toMillis();
+        const second = DateTime.fromISO(secondEndDate).toMillis();
         return first - second;
     });
 };
