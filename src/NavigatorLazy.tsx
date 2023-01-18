@@ -255,10 +255,10 @@ export default function NavigatorLazy() {
                 path="/appointments"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Appointments />} studentComponent={<Appointments />} />
+                        <Appointments />
                     </RequireAuth>
                 }
-            ></Route>
+            />
 
             <Route
                 path="/matching"

@@ -24,13 +24,8 @@ type Participant = {
 };
 
 const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef }) => {
-    const [isCurrent, setIsCurrent] = useState<boolean>(false);
+    const isCurrent = isCourseTakingPlaceRightNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
-
-    // TODO we have to update the effect more often so that if a course will get "current" the UI changes
-    useEffect(() => {
-        setIsCurrent(isCourseTakingPlaceRightNow(courseStart, duration));
-    }, [courseStart, duration]);
 
     const width = useBreakpointValue({
         base: '80%',
