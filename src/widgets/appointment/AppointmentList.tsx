@@ -4,35 +4,21 @@ import CalendarYear from './CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
 
-function getOffsetTopOfParents(parent: Element | null): number {
-    let offset = 0;
-    if (!parent) {
-        return offset;
-    }
-    const p = (parent as HTMLElement).offsetParent;
-    offset = (parent as HTMLElement).offsetTop + getOffsetTopOfParents(p);
-    return offset;
-}
-
 const AppointmentList: React.FC = () => {
     const currentCourseRef = useRef<HTMLElement>(null);
     const allAppointments = appointments.monthAppointments;
-    const width = useBreakpointValue({
-        base: '100%',
-        lg: '90%',
-    });
 
     const handleScroll = (element: HTMLElement) => {
-        window.scrollTo({
-            top: element.offsetTop + getOffsetTopOfParents(element.offsetParent),
-            left: 0,
-            behavior: 'smooth',
-        });
+        element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
     };
+
+    const listWidth = useBreakpointValue({
+        base: '100%',
+        lg: '80%',
+    });
 
     const scrollToCourseId = useMemo(() => {
         const id = getScrollToId();
-        console.log(id);
         return id;
     }, []);
 
@@ -46,7 +32,7 @@ const AppointmentList: React.FC = () => {
     const appointmentsIndex = 1;
 
     return (
-        <Box width={width}>
+        <Box ml={3} width={listWidth} pl={3}>
             {appointmentsForOneYear.map((yearEntries) => {
                 const year = Number(yearEntries[yearIndex]);
                 const appointmentsInYear = yearEntries[appointmentsIndex];
