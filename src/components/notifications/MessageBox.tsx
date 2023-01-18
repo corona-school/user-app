@@ -77,7 +77,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
                     </Box>
                 </VStack>
                 <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
-                    <Text bold fontSize="md">
+                    <Text bold fontSize="md" ellipsizeMode="tail" numberOfLines={1}>
                         {headline}
                     </Text>
                     <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={1}>
