@@ -7,6 +7,7 @@ import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
+import { BACKEND_URL } from '../config';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -97,6 +98,12 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     });
     const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`));
 
+    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
+    async function openRemissionRequest() {
+        const { data } = await downloadRemissionRequest();
+        window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
+    }
+
     let infos: { label: string; btnfn: (() => void)[]; lang: {} }[] = [];
     if (student && !student?.verifiedAt)
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
@@ -145,9 +152,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     if (student && student?.certificateOfConductDeactivationDate)
         infos.push({
             label: 'zeugnis',
-            btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de')],
+            btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
             lang: {
-                cocDate: DateTime.fromISO(student.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
+                cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
             },
         });
     // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
