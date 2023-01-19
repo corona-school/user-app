@@ -15,7 +15,7 @@ const appointments = {
         adjustAppointmentButton: 'Termin bearbeiten',
     },
     attendeesModal: {
-        title: 'Teilnehmer',
+        title: 'Teilnehmer:innen',
         closeButton: 'Schließen',
         helper: 'Helfer:in',
         pupil: 'Schüler:in',
