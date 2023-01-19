@@ -1,6 +1,8 @@
 import { getI18n } from 'react-i18next';
 
 import { DateTime } from 'luxon';
+import { AppointmentType } from '../types/lernfair/Appointment';
+import appointments from '../widgets/appointment/dummy/appointments';
 
 type CourseTimes = {
     start: DateTime;
@@ -42,4 +44,33 @@ const getCourseDay = (courseDate: string): CourseDay => {
     return { courseDay, courseDateDay };
 };
 
-export { getCourseDay, isCourseTakingPlaceRightNow, getCourseTimeText };
+const getNextCourseId = (appointments: AppointmentType[]): number => {
+    const now = DateTime.now();
+    const nextCourse = appointments.find((appointment) => {
+        return DateTime.fromISO(appointment.startDate) > now;
+    });
+    return nextCourse?.id ?? 0;
+};
+
+const isCurrentMonth = (courseStart: string): boolean => {
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const sameMonth = now.hasSame(start, 'month');
+    const sameYear = now.hasSame(start, 'year');
+    if (sameMonth && sameYear) return true;
+    return false;
+};
+
+const getScrollToId = (): number => {
+    const currentId = appointments.currentCourseId;
+    const nextId = appointments.nextCourseId;
+
+    if (currentId) {
+        return currentId;
+    } else if (!currentId) {
+        return nextId;
+    }
+    return 0;
+};
+
+export { getCourseDay, isCurrentMonth, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };

@@ -7,8 +7,17 @@ type Props = {
     timeDescriptionText: string;
     courseTitle: string;
     isCurrentlyTakingPlace: boolean;
-    instructors?: string[];
-    participants?: string[];
+    instructors?: Instructor[];
+    participants?: Participant[];
+};
+
+type Instructor = {
+    firstname: string;
+    lastname: string;
+};
+
+type Participant = {
+    firstname: string;
 };
 
 const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants }) => {
@@ -35,14 +44,14 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                         <Spacer />
                         <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                             {instructors
-                                ?.map((i) => (
-                                    <Avatar key={i}>
+                                ?.map((i, idx) => (
+                                    <Avatar key={i.lastname + '-' + idx}>
                                         <StudentAvatar style={{ marginTop: '-1' }} />
                                     </Avatar>
                                 ))
                                 .concat(
-                                    participants?.map((i) => (
-                                        <Avatar key={i}>
+                                    participants?.map((p, index) => (
+                                        <Avatar key={p.firstname + '-' + index}>
                                             <PupilAvatar style={{ marginTop: '-1' }} />
                                         </Avatar>
                                     )) ?? []
@@ -55,7 +64,11 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                         </Heading>
 
                         <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                            {instructors?.join(', ')}
+                            {instructors
+                                ?.map((instructor) => {
+                                    return `${instructor.firstname} ${instructor.lastname}`;
+                                })
+                                .join(', ')}
                         </Text>
                     </Box>
                     {isCurrentlyTakingPlace && <Button mt={2}>Videochat beitreten</Button>}
