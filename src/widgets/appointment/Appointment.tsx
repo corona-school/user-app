@@ -33,8 +33,8 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
     });
 
     const marginRef = useBreakpointValue({
-        base: currentMonth ? 40 : 100,
-        lg: currentMonth ? 40 : 100,
+        base: currentMonth ? 40 : 60,
+        lg: currentMonth ? 40 : 60,
     });
 
     return (
