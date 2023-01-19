@@ -1,6 +1,6 @@
 import { DocumentNode, gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, Button, useTheme, useBreakpointValue, Flex, Column, useToast, Box, Modal, Row } from 'native-base';
+import { Box, Button, Column, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,6 @@ import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import { LFMatch } from '../../types/lernfair/Match';
-import { sortByDate } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import LearningPartner from '../../widgets/LearningPartner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
