@@ -1,38 +1,37 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Attendee } from './Attendee';
+import { LFUser, Pupil, Student } from '../../types/lernfair/User';
 import ParticipantBox from './AttendeeBox';
 
 type ModalProps = {
-    organizers?: Attendee[];
-    participants?: Attendee[];
+    organizers?: Student[];
+    participants?: Pupil[];
     declinedBy?: number[];
 };
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy }) => {
-    const [showModal, setShowModal] = useState<boolean>(true);
     const { t } = useTranslation();
 
-    const sort = (toSort: Attendee[], sortBy: Attendee[]) => {
+    const sortUserDesc = (toSort: LFUser[], sortBy: LFUser[]) => {
         return toSort.sort((a, b) => {
             if (sortBy?.includes(a)) return 1;
             if (sortBy?.includes(b)) return -1;
             return 0;
         });
     };
-    const sortAttendeesByParticipation = (attendeesToSort: Attendee[], declinedBy: number[]) => {
-        const attendeeCanceled = attendeesToSort?.filter((attendeee) => declinedBy?.includes(attendeee.id));
-        const attendeesSorted = sort(attendeesToSort || [], attendeeCanceled || []);
+
+    const sortAttendeesByParticipation = (attendeesToSort: LFUser[], declinedAttendees: number[]) => {
+        const attendeeCanceled = attendeesToSort?.filter((attendeee) => declinedAttendees?.includes(attendeee.id));
+        const attendeesSorted = sortUserDesc(attendeesToSort || [], attendeeCanceled || []);
         return attendeesSorted;
     };
 
     const organizersSorted = sortAttendeesByParticipation(organizers || [], declinedBy || []);
     const participantsSorted = sortAttendeesByParticipation(participants || [], declinedBy || []);
 
-    // TODO add <Modal> to AppointmentList
+    // TODO add <Modal> to AppointmentList: Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)} + const [showModal, setShowModal] = useState<boolean>(true);
     return (
-        <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+        <>
             <Modal.Content width="350" marginX="auto" background="primary.900">
                 <Modal.CloseButton />
                 <Modal.Body background="primary.900">
@@ -54,13 +53,13 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                 })}
                             </Box>
                         </ScrollView>
-                        <Button mt="2" onPress={() => setShowModal(false)}>
+                        <Button mt="2" onPress={() => console.log('close')}>
                             {t('appointments.attendeesModal.closeButton')}
                         </Button>
                     </Box>
                 </Modal.Body>
             </Modal.Content>
-        </Modal>
+        </>
     );
 };
 
