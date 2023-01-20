@@ -1,12 +1,11 @@
-import { Button, Tooltip, useBreakpointValue, useTheme } from 'native-base';
+import { Button, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-    isDisabled: boolean;
     onClick: () => void;
 };
 
-const PromoteButton: React.FC<Props> = ({ isDisabled, onClick }) => {
+const PromoteButton: React.FC<Props> = ({ onClick }) => {
     const { sizes } = useTheme();
     const { t } = useTranslation();
 
@@ -15,13 +14,9 @@ const PromoteButton: React.FC<Props> = ({ isDisabled, onClick }) => {
         lg: sizes['desktopbuttonWidth'],
     });
     return (
-        <>
-            <Tooltip label={t('single.buttonPromote.tooltip')} p={3} placement="bottom" hasArrow>
-                <Button width={ButtonContainer} isDisabled={isDisabled} onPress={onClick}>
-                    {t('single.buttonPromote.button')}
-                </Button>
-            </Tooltip>
-        </>
+        <Button width={ButtonContainer} onPress={onClick}>
+            {t('single.buttonPromote.button')}
+        </Button>
     );
 };
 

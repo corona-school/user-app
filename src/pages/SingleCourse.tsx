@@ -21,8 +21,8 @@ import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
-import PromoteButton from '../widgets/PromoteButton';
 import { getTimeDifference } from '../helper/notification-helper';
+import PromoteBanner from '../widgets/PromoteBanner';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -909,7 +909,7 @@ const SingleCourse: React.FC = () => {
 
     const cannotPromoteCourse = () => {
         if (!subcourse || !subcourse.published) return false;
-        return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
+        return !(loading || (subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
     };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -1027,10 +1027,17 @@ const SingleCourse: React.FC = () => {
                             <Heading fontSize="md">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(', ')}</Heading>
                         )}
                     </Row>
-                    <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} onClick={doPromote} />}</Box>
-                    <Box marginBottom={space['1']}>
-                        {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
+                    <Box my={2}>
+                        {subcourse && subcourse.published && (
+                            <PromoteBanner
+                                onClick={doPromote}
+                                canNotPromote={cannotPromoteCourse()}
+                                isPromoted={subcourse.alreadyPromoted}
+                                courseStatus={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)}
+                            />
+                        )}
                     </Box>
+
                     <Box>
                         {subcourse && course!.courseState === 'allowed' && !subcourse.published && (
                             <StudentPublishAction subcourse={subcourse} refresh={refetch} />
