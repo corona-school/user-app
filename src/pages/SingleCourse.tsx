@@ -23,6 +23,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
 import PromoteButton from '../widgets/PromoteButton';
 import { getTimeDifference } from '../helper/notification-helper';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -992,7 +993,7 @@ const SingleCourse: React.FC = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading}>
+            <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
                 <Box paddingX={space['1.5']} maxWidth={ContainerWidth} marginX="auto" width="100%">
                     <Box maxWidth={sizes['imageHeaderWidth']} height={imageHeight} marginBottom={space['1.5']}>
                         <Image

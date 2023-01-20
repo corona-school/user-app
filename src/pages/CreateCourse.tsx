@@ -25,6 +25,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 type Props = {};
 
@@ -805,7 +806,12 @@ const CreateCourse: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')} showBack isLoading={loading || isLoading}>
+            <WithNavigation
+                headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')}
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={<NotificationAlert />}
+            >
                 <CreateCourseContext.Provider
                     value={{
                         courseName,

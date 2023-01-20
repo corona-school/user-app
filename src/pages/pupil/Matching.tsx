@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
@@ -156,7 +157,7 @@ const Matching: React.FC<Props> = () => {
     return (
         <>
             <AsNavigationItem path="matching">
-                <WithNavigation headerTitle={t('matching.request.check.header')}>
+                <WithNavigation headerTitle={t('matching.request.check.header')} headerLeft={<NotificationAlert />}>
                     <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                     <Box paddingX={space['1']}>
                         <Tabs
