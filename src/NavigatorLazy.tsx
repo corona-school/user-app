@@ -52,8 +52,12 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import CreateAppointment from './pages/CreateAppointment';
+import useApollo from './hooks/useApollo';
 
 export default function NavigatorLazy() {
+    const { sessionState, user } = useApollo();
+
     return (
         <Routes>
             {/* Public */}
@@ -259,6 +263,8 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            <Route path="/create-appointment" element={<RequireAuth>{user?.student ? <CreateAppointment /> : <Navigate to="/dashboard" />}</RequireAuth>} />
 
             <Route
                 path="/matching"
