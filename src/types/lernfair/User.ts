@@ -18,17 +18,14 @@ export type Pupil = {
     id: number;
     firstname: string;
     lastname: string;
-    gradeAsInt?: number;
-    isPupil?: true;
-    isStudent?: false;
+    isPupil: true;
 };
 
 export type Student = {
     id: number;
     firstname: string;
     lastname: string;
-    isPupil?: false;
-    isStudent?: true;
+    isStudent: true;
 };
 
 export type LFUser = Pupil | Student;

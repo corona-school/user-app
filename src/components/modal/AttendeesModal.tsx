@@ -45,11 +45,13 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                             <Box mt="2">
                                 {organizersSorted?.map((organizer) => {
                                     const declined = declinedBy?.includes(organizer.id);
-                                    return <ParticipantBox name={`${organizer.firstname} ${organizer.lastname}`} userType={'student'} declined={declined} />;
+                                    const userType = 'isStudent' in organizer ? 'student' : 'pupil';
+                                    return <ParticipantBox name={`${organizer.firstname} ${organizer.lastname}`} userType={userType} declined={declined} />;
                                 })}
                                 {participantsSorted?.map((participant) => {
                                     const declined = declinedBy?.includes(participant.id);
-                                    return <ParticipantBox name={`${participant.firstname} ${participant.lastname}`} userType={'pupil'} declined={declined} />;
+                                    const userType = 'isStudent' in participant ? 'student' : 'pupil';
+                                    return <ParticipantBox name={`${participant.firstname} ${participant.lastname}`} userType={userType} declined={declined} />;
                                 })}
                             </Box>
                         </ScrollView>
