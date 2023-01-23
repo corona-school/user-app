@@ -10,43 +10,34 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { getAppointmentDateTime } from '../../helper/appointment-helper';
 import { useCallback, useState } from 'react';
-import { UserType } from '../../types/lernfair/User';
+import { AppointmentType } from '../../types/lernfair/Appointment';
+import useApollo from '../../hooks/useApollo';
+import { gql, useQuery } from '@apollo/client';
 
 type AppointmentDetailProps = {
-    id: number;
-    instructors: string[];
-    participants: string[];
-    appointmentTitle: string;
-    startDate: string;
-    duration: number;
-    courseTitle?: string;
-    description?: string;
-    appointmentType?: string;
-    appointmentsCount?: number;
-    appointmentsTotal?: number;
-    userType?: UserType;
-    meetingLink?: string;
+    appointment: AppointmentType;
 };
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
-    id,
-    instructors,
-    participants,
-    appointmentTitle,
-    startDate,
-    duration,
-    courseTitle,
-    description,
-    appointmentType,
-    appointmentsCount,
-    appointmentsTotal,
-    userType,
-    meetingLink,
-}) => {
+
+const courseQuery = gql(`
+query subcourse($subcourseId: Int!) {
+   subcourse(subcourseId: $subcourseId) {
+        id
+		course {
+            name
+            description
+    }
+  }
+}
+`);
+
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
+    const { data: courseData } = useQuery(courseQuery, { variables: { subcourseId: appointment.subcourseId } });
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const { user } = useApollo();
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -64,16 +55,16 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
         // TODO mutation: declinedBy.push(participant)
     }, []);
 
-    const { date, startTime, endTime } = getAppointmentDateTime(startDate, duration);
+    const { date, startTime, endTime } = getAppointmentDateTime(appointment.startDate, appointment.duration);
 
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
             {/* Avatars  */}
             <HStack py={5}>
                 <Avatar.Group _avatar={{ size: 'md' }} space={-2} max={5}>
-                    {instructors
-                        ?.map((i) => <Avatar key={i}>{<StudentAvatar style={{ margin: '-1' }} />}</Avatar>)
-                        .concat(participants?.map((i) => <Avatar key={i}>{<PupilAvatar style={{ margin: '-20' }} />}</Avatar>) ?? [])}
+                    {appointment.organizers
+                        ?.map((i) => <Avatar>{<StudentAvatar style={{ margin: '-1' }} />}</Avatar>)
+                        .concat(appointment.participants?.map((i) => <Avatar>{<PupilAvatar style={{ margin: '-20' }} />}</Avatar>) ?? [])}
                 </Avatar.Group>
             </HStack>
 
@@ -81,19 +72,19 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
             <VStack space={2}>
                 <Text color="primary.600" fontWeight="normal">
                     {t(
-                        appointmentType === 'GROUP' ? 'appointment.appointmentDetail.group' : 'appointment.appointmentDetail.oneToOne',
+                        appointment.appointmentType === 'GROUP' ? 'appointment.appointmentDetail.group' : 'appointment.appointmentDetail.oneToOne',
 
                         {
-                            instructor: instructors?.join(', '),
+                            instructor: appointment.organizers?.map((o) => o.firstname + ' ' + o.lastname).join(', '),
                         }
                     )}
                 </Text>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
-                    {t('appointment.appointmentDetail.appointmentTitle', { appointmentTitle: appointmentTitle })}
+                    {t('appointment.appointmentDetail.appointmentTitle', { appointmentTitle: appointment.title })}
                 </Heading>
-                {appointmentType === 'GROUP' && (
+                {appointment.appointmentType === 'GROUP' && (
                     <Text color="primary.600" fontWeight="normal">
-                        {t('appointment.appointmentDetail.courseTitle', { courseTitle: courseTitle })}
+                        {t('appointment.appointmentDetail.courseTitle', { courseTitle: appointment.title })}
                     </Text>
                 )}
             </VStack>
@@ -107,51 +98,53 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <TimeIcon />
-                    <Text fontWeight="normal">{t('appointment.appointmentDetail.time', { start: startTime, end: endTime, duration: duration })}</Text>
+                    <Text fontWeight="normal">
+                        {t('appointment.appointmentDetail.time', { start: startTime, end: endTime, duration: appointment.duration })}
+                    </Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <RepeatIcon />
-                    <Text fontWeight="normal">
-                        {t('appointment.appointmentDetail.repeatDate', { appointmentCount: appointmentsCount, appointmentsTotal: appointmentsTotal })}
-                    </Text>
+                    <Text fontWeight="normal">{t('appointment.appointmentDetail.repeatDate', { appointmentCount: 2, appointmentsTotal: 5 })}</Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <PersonIcon />
                     <Text fontWeight="normal">
-                        {t('appointment.appointmentDetail.participants', { participantsTotal: participants.length + instructors.length })}
+                        {t('appointment.appointmentDetail.participants', {
+                            participantsTotal: appointment.participants.length + appointment.organizers.length,
+                        })}
                     </Text>
                     <InformationBadge />
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            <Button width={buttonWidth} isDisabled={meetingLink ? false : true} onPress={() => window.open(meetingLink, '_blank')}>
+            <Button width={buttonWidth} isDisabled={appointment.meetingLink ? false : true} onPress={() => window.open(appointment.meetingLink, '_blank')}>
                 {t('appointment.appointmentDetail.videochatButton')}
             </Button>
 
             {/* Description */}
-            <Divider thickness="0.25" my={5} />
-            {description && (
+            {/* <Divider thickness="0.25" my={5} />
+            {courseData.description && (
                 <>
                     <VStack p={3}>
                         <Text color="primary.900" mb="2">
                             {t(
-                                appointmentType === 'GROUP'
+                                appointment.appointmentType === 'GROUP'
                                     ? 'appointment.appointmentDetail.courseDescriptionHeader'
                                     : 'appointment.appointmentDetail.desciptionHeader',
-                                { courseTitle: courseTitle }
+                                { courseTitle: courseData.name }
                             )}
                         </Text>
                         <Text color="primary.600" fontWeight="normal">
-                            {description}
+                            {courseData.description}
                         </Text>
                     </VStack>
                     <Divider thickness="0.25" my={5} />
                 </>
-            )}
+            )} */}
 
             {/* Button Section */}
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
-                {userType === 'student' && (
+                {user?.student && (
                     <>
                         <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth}>
                             {t('appointment.appointmentDetail.deleteButton')}
@@ -161,7 +154,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                         </Button>
                     </>
                 )}
-                {userType === 'pupil' && (
+                {user?.pupil && (
                     <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth} onPress={cancelAppointment} isDisabled={canceled}>
                         {t('appointment.appointmentDetail.cancelButton')}
                     </Button>

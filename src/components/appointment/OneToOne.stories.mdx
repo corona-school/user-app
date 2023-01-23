@@ -7,16 +7,19 @@ import AppointmentDetail from './AppointmentDetail';
 
 <Story name="1:1">
     <AppointmentDetail
-        id={1}
-        appointmentType={'ONE_TO_ONE'}
-        instructors={['Anna Maier']}
-        participants={['Max Müller']}
-        appointmentTitle={'Lektion: Grundlagen td'}
-        startDate={'2023-01-20T15:00Z'}
-        duration={60}
-        appointmentsCount={2}
-        appointmentsTotal={5}
-        userType={'student'}
-        meetingLink={'https://www.lern-fair.de/'}
+        appointment={{
+            id: 0,
+            title: 'Termin #1',
+            organizers: [{ firstname: 'Anna', lastname: 'Maier' }],
+            startDate: '2023-02-28T15:00:00Z',
+            duration: 60,
+            meetingLink: '',
+            subcourseId: 3,
+            lectureId: 0,
+            participants: [{ firstname: 'Anna', lastname: 'Maier' }],
+            declinedBy: [],
+            isCancelled: false,
+            appointmentType: 'ONE_TO_ONE',
+        }}
     />
 </Story>
