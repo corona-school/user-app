@@ -256,7 +256,7 @@ export default function NavigatorLazy() {
                 path="/appointments"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Appointments />} studentComponent={<Appointments />} />
+                        <Appointments />
                     </RequireAuth>
                 }
             ></Route>
@@ -264,7 +264,7 @@ export default function NavigatorLazy() {
                 path="/single-appointment/:id"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<SingleAppointment />} studentComponent={<SingleAppointment />} />
+                        <SingleAppointment />
                     </RequireAuth>
                 }
             ></Route>

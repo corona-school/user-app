@@ -1,4 +1,13 @@
-const appointments = {
+const appointment = {
+    title: 'Termine',
+    tile: { videoButton: 'Videochat beitreten', clock: 'Uhr' },
+    clock: { startToEnd: '{{start}} - {{end}} Uhr', nowToEnd: 'Jetzt - {{end}} Uhr' },
+    deleteModal: {
+        title: 'Bist du dir sicher, dass du diesen Termin löschen möchtest?',
+        description: 'Der Termin wird dadurch für alle Teilnehmer abgesagt. Du kannst dies nicht rückgängig machen.',
+        delete: 'Termin löschen',
+        cancel: 'Abbrechen',
+    },
     appointmentDetail: {
         group: 'Gruppentermin mit {{instructor}}',
         oneToOne: 'Einzeltermin mit {{instructor}}',
@@ -18,4 +27,4 @@ const appointments = {
     },
 };
 
-export default appointments;
+export default appointment;

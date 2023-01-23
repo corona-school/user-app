@@ -59,7 +59,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
     });
 
     const cancelAppointment = useCallback(() => {
-        toast.show({ description: t('appointments.appointmentDetail.canceledToast'), placement: 'top' });
+        toast.show({ description: t('appointment.appointmentDetail.canceledToast'), placement: 'top' });
         setCanceled(true);
         // TODO mutation: declinedBy.push(participant)
     }, []);
@@ -81,22 +81,19 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
             <VStack space={2}>
                 <Text color="primary.600" fontWeight="normal">
                     {t(
-                        appointmentType === 'GROUP'
-                            ? 'appointments.appointmentDetail.group'
-                            : appointmentType === 'ONE_TO_ONE'
-                            ? 'appointments.appointmentDetail.oneToOne'
-                            : 'appointments.appointmentDetail.without',
+                        appointmentType === 'GROUP' ? 'appointment.appointmentDetail.group' : 'appointment.appointmentDetail.oneToOne',
+
                         {
                             instructor: instructors?.join(', '),
                         }
                     )}
                 </Text>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
-                    {t('appointments.appointmentDetail.appointmentTitle', { appointmentTitle: appointmentTitle })}
+                    {t('appointment.appointmentDetail.appointmentTitle', { appointmentTitle: appointmentTitle })}
                 </Heading>
                 {appointmentType === 'GROUP' && (
                     <Text color="primary.600" fontWeight="normal">
-                        {t('appointments.appointmentDetail.courseTitle', { courseTitle: courseTitle })}
+                        {t('appointment.appointmentDetail.courseTitle', { courseTitle: courseTitle })}
                     </Text>
                 )}
             </VStack>
@@ -110,25 +107,25 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <TimeIcon />
-                    <Text fontWeight="normal">{t('appointments.appointmentDetail.time', { start: startTime, end: endTime, duration: duration })}</Text>
+                    <Text fontWeight="normal">{t('appointment.appointmentDetail.time', { start: startTime, end: endTime, duration: duration })}</Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <RepeatIcon />
                     <Text fontWeight="normal">
-                        {t('appointments.appointmentDetail.repeatDate', { appointmentCount: appointmentsCount, appointmentsTotal: appointmentsTotal })}
+                        {t('appointment.appointmentDetail.repeatDate', { appointmentCount: appointmentsCount, appointmentsTotal: appointmentsTotal })}
                     </Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <PersonIcon />
                     <Text fontWeight="normal">
-                        {t('appointments.appointmentDetail.participants', { participantsTotal: participants.length + instructors.length })}
+                        {t('appointment.appointmentDetail.participants', { participantsTotal: participants.length + instructors.length })}
                     </Text>
                     <InformationBadge />
                 </HStack>
             </Stack>
             <Spacer py={3} />
             <Button width={buttonWidth} isDisabled={meetingLink ? false : true} onPress={() => window.open(meetingLink, '_blank')}>
-                {t('appointments.appointmentDetail.videochatButton')}
+                {t('appointment.appointmentDetail.videochatButton')}
             </Button>
 
             {/* Description */}
@@ -139,8 +136,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                         <Text color="primary.900" mb="2">
                             {t(
                                 appointmentType === 'GROUP'
-                                    ? 'appointments.appointmentDetail.courseDescriptionHeader'
-                                    : 'appointments.appointmentDetail.desciptionHeader',
+                                    ? 'appointment.appointmentDetail.courseDescriptionHeader'
+                                    : 'appointment.appointmentDetail.desciptionHeader',
                                 { courseTitle: courseTitle }
                             )}
                         </Text>
@@ -157,16 +154,16 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({
                 {userType === 'student' && (
                     <>
                         <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth}>
-                            {t('appointments.appointmentDetail.deleteButton')}
+                            {t('appointment.appointmentDetail.deleteButton')}
                         </Button>
                         <Button variant="outline" width={buttonWidth}>
-                            {t('appointments.appointmentDetail.editButton')}
+                            {t('appointment.appointmentDetail.editButton')}
                         </Button>
                     </>
                 )}
                 {userType === 'pupil' && (
                     <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth} onPress={cancelAppointment} isDisabled={canceled}>
-                        {t('appointments.appointmentDetail.cancelButton')}
+                        {t('appointment.appointmentDetail.cancelButton')}
                     </Button>
                 )}
             </Stack>

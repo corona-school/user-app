@@ -218,6 +218,7 @@ const Dashboard: React.FC<Props> = () => {
             setToastShown(true);
             toast.show({
                 description: 'Das Match wurde aufgelöst',
+                placement: 'top',
             });
         }
     }, [_dissolve?.data?.matchDissolve, toast, toastShown]);

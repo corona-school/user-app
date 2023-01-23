@@ -3,22 +3,20 @@ import AppointmentDetail from './AppointmentDetail';
 
 <Meta title="Appointment/Detail" component={AppointmentDetail} />
 
-# Appointment Detail
+# AppointmentDetail
 
--   single appointment
-
-<Story name="SingleAppointmentDetails">
+<Story name="1:1">
     <AppointmentDetail
         id={1}
         appointmentType={'ONE_TO_ONE'}
         instructors={['Anna Maier']}
         participants={['Max Müller']}
-        appointmentTitle={'Nachhilfe Geschichte'}
-        startDate={'2023-01-20T08:00:00Z'}
-        duration={30}
-        description={'Einzeltermin für dich'}
+        appointmentTitle={'Lektion: Grundlagen td'}
+        startDate={'2023-01-20T15:00Z'}
+        duration={60}
         appointmentsCount={2}
         appointmentsTotal={5}
-        userType={'pupil'}
+        userType={'student'}
+        meetingLink={'https://www.lern-fair.de/'}
     />
 </Story>

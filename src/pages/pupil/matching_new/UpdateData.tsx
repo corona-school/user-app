@@ -109,9 +109,9 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet') });
+            toast.show({ description: t('Daten geupdatet'), placement: 'top' });
         } catch (e) {
-            toast.show({ description: t('error') });
+            toast.show({ description: t('error'), placement: 'top' });
         }
         setShowModal(false);
         setIsLoading(false);

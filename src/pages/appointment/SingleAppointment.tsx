@@ -1,5 +1,6 @@
 import AppointmentDetail from '../../components/appointment/AppointmentDetail';
 import WithNavigation from '../../components/WithNavigation';
+import { UserType } from '../../types/lernfair/User';
 
 const SingleAppointment = () => {
     return (
@@ -18,7 +19,7 @@ const SingleAppointment = () => {
                 duration={60}
                 appointmentsCount={2}
                 appointmentsTotal={5}
-                userType={'pupil'}
+                userType={UserType.PUPIL}
                 meetingLink={'https://www.lern-fair.de/'}
             />
         </WithNavigation>

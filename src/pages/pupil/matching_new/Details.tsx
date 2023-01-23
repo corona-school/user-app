@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpointValue } from 'native-base';
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,18 +17,20 @@ const Details: React.FC<Props> = () => {
     const { matching, setMatching, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
 
-    const [update, _update] = useMutation(gql`
+    const [update, _update] = useMutation(
+        gql(`
         mutation updatePupil($subjects: [SubjectInput!]) {
             meUpdate(update: { pupil: { subjects: $subjects } })
         }
-    `);
+    `)
+    );
 
     const [createMatchRequest] = useMutation(
-        gql`
+        gql(`
             mutation PupilCreateMatchRequest {
                 pupilCreateMatchRequest
             }
-        `
+        `)
     );
 
     const buttonWidth = useBreakpointValue({
@@ -97,13 +100,13 @@ const Details: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
     }, [createMatchRequest, matching.priority, matching.setDazPriority, matching.subjects, showModal, toast, update, isEdit]);
 
