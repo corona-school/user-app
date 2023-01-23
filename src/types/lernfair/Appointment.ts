@@ -19,6 +19,12 @@ export type AppointmentType = {
     appointmentType: string;
 };
 
+export enum AppointmentTypes {
+    GROUP = 'GROUP',
+    ONE_TO_ONE = 'ONE_TO_ONE',
+    TRAINING = 'TRAINING',
+}
+
 export type CalendarDates = {
     [year: number]: {
         [month: number]: {
