@@ -16,6 +16,7 @@ import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { CreateCourseError } from '../CreateCourse';
+import { DateTime } from 'luxon';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -91,7 +92,11 @@ const StudentGroup: React.FC = () => {
 
     const pastSubcourses = useMemo(
         () =>
-            sortByDate(data?.me?.student?.subcoursesInstructing.filter((it) => it.lectures.every((lecture) => lecture.start + lecture.duration < Date.now()))),
+            sortByDate(
+                data?.me?.student?.subcoursesInstructing.filter((it) =>
+                    it.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())
+                )
+            ),
         [data?.me?.student?.subcoursesInstructing]
     );
 
