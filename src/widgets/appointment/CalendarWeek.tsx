@@ -26,7 +26,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                             instructors={appointment.organizers}
                             participants={appointment.participants}
                             scrollToRef={appointment.id === scrollId ? scrollToRef : null}
-                            onPressToAppointment={() => navigate(`/appointment/${appointment.id}`)}
+                            onPress={() => navigate(`/appointment/${appointment.id}`)}
                         />
                     );
                 })}

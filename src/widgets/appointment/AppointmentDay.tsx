@@ -11,8 +11,7 @@ type Props = {
     instructors?: Instructor[];
     participants?: Participant[];
     scrollToRef?: any;
-
-    onPressToAppointment: () => void;
+    onPress: () => void;
 };
 
 type Instructor = {
@@ -24,7 +23,7 @@ type Participant = {
     firstname: string;
 };
 
-const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, onPressToAppointment }) => {
+const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, onPress }) => {
     const isCurrent = isCourseNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
@@ -52,7 +51,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                             isCurrentlyTakingPlace={isCurrent}
                             instructors={instructors}
                             participants={participants}
-                            onPressToAppointment={onPressToAppointment}
+                            onPress={onPress}
                         />
                     </Box>
                 </HStack>

@@ -10,7 +10,7 @@ type Props = {
     isCurrentlyTakingPlace: boolean;
     instructors?: Instructor[];
     participants?: Participant[];
-    onPressToAppointment: () => void;
+    onPress: () => void;
 };
 
 type Instructor = {
@@ -22,7 +22,7 @@ type Participant = {
     firstname: string;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, onPressToAppointment }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, onPress }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -31,7 +31,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <Pressable onPress={onPressToAppointment}>
+                <Pressable onPress={onPress}>
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
