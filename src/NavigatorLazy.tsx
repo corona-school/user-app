@@ -52,7 +52,7 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
-import SingleAppointment from './pages/appointment/SingleAppointment';
+import Appointment from './pages/Appointment';
 
 export default function NavigatorLazy() {
     return (
@@ -261,10 +261,10 @@ export default function NavigatorLazy() {
                 }
             ></Route>
             <Route
-                path="/single-appointment/:id"
+                path="/appointment/:id"
                 element={
                     <RequireAuth>
-                        <SingleAppointment />
+                        <Appointment />
                     </RequireAuth>
                 }
             ></Route>

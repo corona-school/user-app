@@ -10,28 +10,15 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { getAppointmentDateTime } from '../../helper/appointment-helper';
 import { useCallback, useState } from 'react';
-import { AppointmentType } from '../../types/lernfair/Appointment';
+import { AppointmentType, AppointmentTypes, Course } from '../../types/lernfair/Appointment';
 import useApollo from '../../hooks/useApollo';
-import { gql, useQuery } from '@apollo/client';
 
 type AppointmentDetailProps = {
     appointment: AppointmentType;
+    course?: Course;
 };
 
-const courseQuery = gql(`
-query subcourse($subcourseId: Int!) {
-   subcourse(subcourseId: $subcourseId) {
-        id
-		course {
-            name
-            description
-    }
-  }
-}
-`);
-
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
-    const { data: courseData } = useQuery(courseQuery, { variables: { subcourseId: appointment.subcourseId } });
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, course }) => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const toast = useToast();
@@ -72,7 +59,9 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
             <VStack space={2}>
                 <Text color="primary.600" fontWeight="normal">
                     {t(
-                        appointment.appointmentType === 'GROUP' ? 'appointment.appointmentDetail.group' : 'appointment.appointmentDetail.oneToOne',
+                        appointment.appointmentType === AppointmentTypes.GROUP
+                            ? 'appointment.appointmentDetail.group'
+                            : 'appointment.appointmentDetail.oneToOne',
 
                         {
                             instructor: appointment.organizers?.map((o) => o.firstname + ' ' + o.lastname).join(', '),
@@ -82,7 +71,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
                     {t('appointment.appointmentDetail.appointmentTitle', { appointmentTitle: appointment.title })}
                 </Heading>
-                {appointment.appointmentType === 'GROUP' && (
+                {appointment.appointmentType === AppointmentTypes.GROUP && (
                     <Text color="primary.600" fontWeight="normal">
                         {t('appointment.appointmentDetail.courseTitle', { courseTitle: appointment.title })}
                     </Text>
@@ -104,7 +93,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <RepeatIcon />
-                    <Text fontWeight="normal">{t('appointment.appointmentDetail.repeatDate', { appointmentCount: 2, appointmentsTotal: 5 })}</Text>
+                    <Text fontWeight="normal">{t('appointment.appointmentDetail.repeatDate', { appointmentCount: 1, appointmentsTotal: 5 })}</Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <PersonIcon />
@@ -122,25 +111,22 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
             </Button>
 
             {/* Description */}
-            {/* <Divider thickness="0.25" my={5} />
-            {courseData.description && (
-                <>
-                    <VStack p={3}>
-                        <Text color="primary.900" mb="2">
-                            {t(
-                                appointment.appointmentType === 'GROUP'
-                                    ? 'appointment.appointmentDetail.courseDescriptionHeader'
-                                    : 'appointment.appointmentDetail.desciptionHeader',
-                                { courseTitle: courseData.name }
-                            )}
-                        </Text>
-                        <Text color="primary.600" fontWeight="normal">
-                            {courseData.description}
-                        </Text>
-                    </VStack>
-                    <Divider thickness="0.25" my={5} />
-                </>
-            )} */}
+            <Divider thickness="0.25" my={5} />
+            <VStack p={3}>
+                <Text color="primary.900" mb="2">
+                    {t(
+                        appointment.appointmentType === AppointmentTypes.GROUP
+                            ? 'appointment.appointmentDetail.courseDescriptionHeader'
+                            : 'appointment.appointmentDetail.desciptionHeader',
+                        { courseTitle: course?.name }
+                    )}
+                </Text>
+                <Text color="primary.600" fontWeight="normal">
+                    // TODO change to appointment.description if type one-to-one
+                    {appointment.appointmentType === AppointmentTypes.GROUP ? course?.description : 'Hier kommt die appointment description.'}
+                </Text>
+            </VStack>
+            <Divider thickness="0.25" my={5} />
 
             {/* Button Section */}
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
