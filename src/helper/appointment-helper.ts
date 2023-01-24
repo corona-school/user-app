@@ -1,5 +1,4 @@
 import { getI18n } from 'react-i18next';
-
 import { DateTime } from 'luxon';
 import { AppointmentType } from '../types/lernfair/Appointment';
 import appointments from '../widgets/appointment/dummy/appointments';
@@ -20,25 +19,19 @@ const getAppointmentDateTime = (appointmentStart: string, duration?: number): Ap
     return { date, startTime, endTime };
 };
 
-type CourseTimes = {
-    start: DateTime;
-    end: DateTime;
-    now: DateTime;
-};
-const getCourseTimes = (courseStart: string, duration: number): CourseTimes => {
+const isCourseNow = (courseStart: string, duration: number): boolean => {
     const now = DateTime.now();
     const start = DateTime.fromISO(courseStart);
     const end = start.plus({ minutes: duration });
-    return { start, end, now };
-};
 
-const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boolean => {
-    const { start, end, now } = getCourseTimes(courseStart, duration);
     return start <= now && now < end;
 };
 
 const getCourseTimeText = (courseStart: string, duration: number): string => {
-    const { start, now, end } = getCourseTimes(courseStart, duration);
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const end = start.plus({ minutes: duration });
+
     const startTime = start.setLocale('de-DE').toFormat('T');
     const endTime = end.setLocale('de-DE').toFormat('T');
     const i18n = getI18n();
@@ -89,4 +82,4 @@ const getScrollToId = (): number => {
     return 0;
 };
 
-export { getCourseDay, getAppointmentDateTime, isCurrentMonth, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };
+export { getCourseDay, getAppointmentDateTime, isCurrentMonth, isCourseNow, getCourseTimeText, getNextCourseId, getScrollToId };
