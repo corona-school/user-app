@@ -832,6 +832,8 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
+    console.log(userType);
+
     const singleSubcourseQuery = gql(`
     query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
@@ -875,7 +877,7 @@ const SingleCourse: React.FC = () => {
         }
     }
     `);
-    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId } });
+    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -883,7 +885,7 @@ const SingleCourse: React.FC = () => {
         subcoursePromote(subcourseId: $subcourseId)
     }
 `),
-        { variables: { subcourseId: subcourseId, isStudent: userType === 'student' } }
+        { variables: { subcourseId: subcourseId } }
     );
 
     const { subcourse } = data ?? {};
