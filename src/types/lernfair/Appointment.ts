@@ -9,7 +9,6 @@ export type AppointmentType = {
     duration: number;
     meetingLink: string;
     subcourseId: number;
-    lectureId: number;
     participants: {
         firstname: string;
         lastname: string;
@@ -17,6 +16,11 @@ export type AppointmentType = {
     declinedBy: { id: number }[];
     isCancelled: boolean;
     appointmentType: string;
+};
+
+export type Course = {
+    name: string;
+    description: string;
 };
 
 export enum AppointmentTypes {

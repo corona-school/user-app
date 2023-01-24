@@ -14,7 +14,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 90,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -46,7 +45,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -74,7 +72,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -102,7 +99,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -130,7 +126,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -158,7 +153,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 90,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -190,7 +184,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -218,7 +211,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -250,7 +242,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
@@ -274,7 +265,6 @@ export const pupilsAppointments: AppointmentType[] = [
         duration: 60,
         meetingLink: 'https://www.lern-fair.de/',
         subcourseId: 2,
-        lectureId: 2,
         participants: [
             {
                 firstname: 'Anna',
