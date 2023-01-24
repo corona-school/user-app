@@ -1,10 +1,8 @@
-import { Box, Button, Stack, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { getAppointmentDateTime } from '../../helper/appointment-helper';
 import { useCallback, useState } from 'react';
 import { AppointmentType, Course } from '../../types/lernfair/Appointment';
-import useApollo from '../../hooks/useApollo';
 import MetaDetails from './MetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
@@ -17,16 +15,10 @@ type AppointmentDetailProps = {
 };
 
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, course }) => {
-    const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
     const [canceled, setCanceled] = useState<boolean>(false);
-
-    const buttonWidth = useBreakpointValue({
-        base: 'full',
-        lg: '300',
-    });
 
     const containerWidth = useBreakpointValue({
         base: 'full',
