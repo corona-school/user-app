@@ -11,7 +11,7 @@ type AppointmentDates = {
 
 const getAppointmentDateTime = (appointmentStart: string, duration?: number): AppointmentDates => {
     const start = DateTime.fromISO(appointmentStart);
-    const date = start.setLocale('de').toFormat('dd. LLLL yyyy');
+    const date = start.setLocale('de').toFormat('cccc, dd. LLLL yyyy');
     const startTime = start.setLocale('de').toFormat('HH:mm');
     const end = start.plus({ minutes: duration });
     const endTime = end.setLocale('de').toFormat('HH:mm');
