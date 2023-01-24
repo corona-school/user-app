@@ -171,7 +171,7 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
             toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
         }
         setShowCancelModal(false);
-    }, [cancelSubcourse, toast]);
+    }, [cancelSubcourse, toast, refresh]);
 
     return (
         <>
@@ -252,7 +252,7 @@ function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Su
                 });
             }
         },
-        [subcourse!.id, setMeetingUrl, t, toast]
+        [subcourse.id, setMeetingUrl, t, toast]
     );
 
     return (
@@ -832,8 +832,8 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    const { data, loading, refetch } = useQuery(
-        gql(`query GetSingleSubcourse($subcourseId: Int!) {
+    const singleSubcourseQuery = gql(`
+    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount
@@ -841,7 +841,7 @@ const SingleCourse: React.FC = () => {
             capacity
             published
             publishedAt
-            ${userType === 'student' ? 'alreadyPromoted' : ''}
+            alreadyPromoted @include(if: $isStudent)
             nextLecture{
                 start
                 duration
@@ -873,9 +873,9 @@ const SingleCourse: React.FC = () => {
             isParticipant
             isOnWaitingList
         }
-    }`),
-        { variables: { subcourseId } }
-    );
+    }
+    `);
+    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -883,7 +883,7 @@ const SingleCourse: React.FC = () => {
         subcoursePromote(subcourseId: $subcourseId)
     }
 `),
-        { variables: { subcourseId: subcourseId } }
+        { variables: { subcourseId: subcourseId, isStudent: userType === 'student' } }
     );
 
     const { subcourse } = data ?? {};
