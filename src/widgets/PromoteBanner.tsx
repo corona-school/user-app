@@ -1,4 +1,4 @@
-import { Box, Card, Divider, HStack, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Card, Divider, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import PromoteButton from './PromoteButton';
 import CheckIcon from '../assets/icons/lernfair/Icon_Done.svg';
@@ -7,26 +7,27 @@ import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 
 type BannerProps = {
-    canNotPromote: boolean;
+    canPromote: boolean;
     isPromoted: boolean;
     courseStatus: TrafficStatus;
     onClick: () => void;
 };
 
-const PromoteBanner: React.FC<BannerProps> = ({ canNotPromote, isPromoted, onClick, courseStatus }) => {
+const PromoteBanner: React.FC<BannerProps> = ({ canPromote, isPromoted, onClick, courseStatus }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
         lg: false,
     });
+
     return (
         <Box>
-            {canNotPromote ? (
+            {!canPromote ? (
                 <CourseTrafficLamp status={courseStatus} paddingY={3} />
             ) : (
                 <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                    <CourseTrafficLamp status={'free'} paddingY={3} />
+                    <CourseTrafficLamp status={courseStatus} paddingY={3} />
                     <Divider />
                     <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems="center" space={1}>
                         <Stack direction="row" alignItems="center" mb="2">
