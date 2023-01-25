@@ -1,32 +1,11 @@
 import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
-import { getIconForMessageType } from '../../helper/notification-helper';
-import { Message, MessageType, UserNotification } from '../../types/lernfair/Notification';
+import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
+import { UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
 import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import LeavePageModal from './LeavePageModal';
-
-const fallBackMessage: Message = {
-    headline: 'Message Error',
-    body: 'notification could not be loaded',
-    type: MessageType.ERROR,
-};
-
-const getMessageWithFallback = (message: Message | null | undefined): Message => {
-    if (!message) return fallBackMessage;
-
-    const result = { ...message };
-
-    (Object.keys(fallBackMessage) as (keyof Message)[]).forEach((key: keyof Message) => {
-        if (!message[key as keyof Message]) {
-            // @ts-ignore Type 'string | undefined' is not assignable to type 'MessageType'.
-            result[key] = fallBackMessage[key];
-        }
-    });
-
-    return result;
-};
 
 type Props = {
     userNotification: UserNotification;
@@ -36,10 +15,12 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { sentAt } = userNotification || { sentAt: '' };
-    const { headline, body, type, navigateTo } = getMessageWithFallback(userNotification.message);
-
     const navigate = useNavigate();
+
+    if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
+
+    const { sentAt } = userNotification || { sentAt: '' };
+    const { headline, body, type, navigateTo } = userNotification.message;
 
     const boxProps = {
         mb: 2,
