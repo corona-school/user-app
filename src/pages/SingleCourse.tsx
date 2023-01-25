@@ -171,7 +171,7 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
             toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
         }
         setShowCancelModal(false);
-    }, [cancelSubcourse, toast]);
+    }, [cancelSubcourse, toast, refresh]);
 
     return (
         <>
@@ -252,7 +252,7 @@ function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Su
                 });
             }
         },
-        [subcourse!.id, setMeetingUrl, t, toast]
+        [subcourse.id, setMeetingUrl, t, toast]
     );
 
     return (
@@ -342,9 +342,9 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
     );
 }
 
-/* Submits the course for review courseState.created -> submitted, 
-   a Screener will review the course and then approve it courseState.allowed 
-   
+/* Submits the course for review courseState.created -> submitted,
+   a Screener will review the course and then approve it courseState.allowed
+
    Note that this is executed on the Course, not the Subcourse! */
 function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'> & { course?: Pick<Course, 'id'> | null }; refresh: () => void }) {
     const toast = useToast();
@@ -832,8 +832,10 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    const { data, loading, refetch } = useQuery(
-        gql(`query GetSingleSubcourse($subcourseId: Int!) {
+    console.log(userType);
+
+    const singleSubcourseQuery = gql(`
+    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount
@@ -841,7 +843,7 @@ const SingleCourse: React.FC = () => {
             capacity
             published
             publishedAt
-            alreadyPromoted
+            alreadyPromoted @include(if: $isStudent)
             nextLecture{
                 start
                 duration
@@ -873,9 +875,9 @@ const SingleCourse: React.FC = () => {
             isParticipant
             isOnWaitingList
         }
-    }`),
-        { variables: { subcourseId } }
-    );
+    }
+    `);
+    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -899,7 +901,7 @@ const SingleCourse: React.FC = () => {
         refetch();
     };
 
-    const isPublishedThreeDaysAgo = (publishDate: string): boolean => {
+    const isMatureForPromotion = (publishDate: string): boolean => {
         const { daysDiff } = getTimeDifference(publishDate);
         if (publishDate === null || daysDiff > 3) {
             return true;
@@ -907,9 +909,10 @@ const SingleCourse: React.FC = () => {
         return false;
     };
 
-    const cannotPromoteCourse = () => {
-        if (!subcourse || !subcourse.published) return false;
-        return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
+    const canPromoteCourse = () => {
+        if (userType !== 'student' || loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted'))
+            return false;
+        return !subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
     };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -1027,7 +1030,9 @@ const SingleCourse: React.FC = () => {
                             <Heading fontSize="md">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(', ')}</Heading>
                         )}
                     </Row>
-                    <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} onClick={doPromote} />}</Box>
+                    {subcourse && userType === 'student' && subcourse.isInstructor && (
+                        <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={!canPromoteCourse()} onClick={doPromote} />}</Box>
+                    )}
                     <Box marginBottom={space['1']}>
                         {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
                     </Box>
