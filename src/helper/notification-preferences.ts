@@ -5,14 +5,16 @@ import SurveyIcon from '../assets/icons/lernfair/notifications/lf_survey.svg';
 import AnnouncementIcon from '../assets/icons/lernfair/notifications/lf_announcement.svg';
 import CallIcon from '../assets/icons/lernfair/notifications/lf_call.svg';
 import AdviceIcon from '../assets/icons/lernfair/notifications/lf_advice.svg';
+import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg';
 
 import IconChatModal from '../assets/icons/lernfair/notifications/Ic_Chat.svg';
-import IconSuggestioneModal from '../assets/icons/lernfair/notifications/Ic_Suggestion.svg';
+import IconSuggestionModal from '../assets/icons/lernfair/notifications/Ic_Suggestion.svg';
 import IconAppointmentModal from '../assets/icons/lernfair/notifications/Ic_Appointment.svg';
 import IconSurveyModal from '../assets/icons/lernfair/notifications/Ic_Survey.svg';
 import IconAnnouncementModal from '../assets/icons/lernfair/notifications/Ic_Announcement.svg';
 import IconCallModal from '../assets/icons/lernfair/notifications/Ic_Call.svg';
 import IconAdviceModal from '../assets/icons/lernfair/notifications/Ic_Advice.svg';
+import MatchModal from '../assets/icons/lernfair/notifications/Ic_Match.svg';
 
 import { FC } from 'react';
 
@@ -66,7 +68,7 @@ export const systemNotificationCategories: NotificationCategories = {
         icon: SuggestionIcon,
         modal: {
             body: 'notification.controlPanel.preference.suggestion.modalBody',
-            icon: IconSuggestioneModal,
+            icon: IconSuggestionModal,
         },
     },
     announcement: {
@@ -127,6 +129,9 @@ export const messageIcons: { [category: string]: FC } = {
     suggestion: SuggestionIcon,
     announcement: AnnouncementIcon,
     call: CallIcon,
+    match: MatchIcon,
+    alternative: SuggestionIcon,
+    legacy: AdviceIcon,
 };
 
 export const modalIcons: { [category: string]: FC } = {
@@ -134,7 +139,10 @@ export const modalIcons: { [category: string]: FC } = {
     survey: IconSurveyModal,
     appointment: IconAppointmentModal,
     advice: IconAdviceModal,
-    suggestion: IconSuggestioneModal,
+    suggestion: IconSuggestionModal,
     announcement: IconAnnouncementModal,
     call: IconCallModal,
+    match: MatchModal,
+    alternative: IconSuggestionModal,
+    legacy: IconAdviceModal,
 };

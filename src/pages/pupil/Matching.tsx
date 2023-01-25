@@ -1,10 +1,11 @@
 import { DocumentNode, gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, Button, useTheme, useBreakpointValue, Flex, Column, useToast, Box, Modal, Row } from 'native-base';
-import { useCallback, useEffect, useState } from 'react';
+import { Box, Button, Column, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
@@ -134,22 +135,29 @@ const Matching: React.FC<Props> = () => {
         };
 
         if (res.pupilDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht' });
+            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
 
+    // active matches should appear first
+    const activeMatches: LFMatch[] = useMemo(() => {
+        return [...(data?.me?.pupil?.matches ?? [])].sort((match1: LFMatch, match2: LFMatch) => {
+            return (match1.dissolved ? 1 : 0) - (match2.dissolved ? 1 : 0);
+        });
+    }, [data?.me?.pupil?.matches]);
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst' });
+            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
     return (
         <>
             <AsNavigationItem path="matching">
-                <WithNavigation headerTitle={t('matching.request.check.header')}>
+                <WithNavigation headerTitle={t('matching.request.check.header')} headerLeft={<NotificationAlert />}>
                     <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                     <Box paddingX={space['1']}>
                         <Tabs
@@ -159,27 +167,26 @@ const Matching: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {(data?.me?.pupil?.matches.length &&
-                                                    data?.me?.pupil?.matches?.map((match: LFMatch, index: number) => (
-                                                        <Column width={CardGrid} marginRight="15px">
-                                                            <LearningPartner
-                                                                key={index}
-                                                                isDark={true}
-                                                                name={`${match?.student?.firstname} ${match?.student?.lastname}`}
-                                                                subjects={match?.subjectsFormatted}
-                                                                status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                                button={
-                                                                    !match.dissolved && (
-                                                                        <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                            {t('dashboard.helpers.buttons.solveMatch')}
-                                                                        </Button>
-                                                                    )
-                                                                }
-                                                                contactMail={match?.studentEmail}
-                                                                meetingId={match?.uuid}
-                                                            />
-                                                        </Column>
-                                                    ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                {activeMatches.map((match: LFMatch, index: number) => (
+                                                    <Column width={CardGrid} marginRight="15px" key={index}>
+                                                        <LearningPartner
+                                                            key={index}
+                                                            isDark={true}
+                                                            name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                                                            subjects={match?.subjectsFormatted}
+                                                            status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
+                                                            button={
+                                                                !match.dissolved && (
+                                                                    <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
+                                                                        {t('dashboard.helpers.buttons.solveMatch')}
+                                                                    </Button>
+                                                                )
+                                                            }
+                                                            contactMail={match?.studentEmail}
+                                                            meetingId={match?.uuid}
+                                                        />
+                                                    </Column>
+                                                )) || <AlertMessage content={t('matching.request.check.noMatches')} />}
                                             </Flex>
                                         </VStack>
                                     ),
@@ -197,6 +204,7 @@ const Matching: React.FC<Props> = () => {
                                                                 <OpenMatchRequest
                                                                     cancelLoading={cancelLoading}
                                                                     index={i}
+                                                                    key={i}
                                                                     showCancelMatchRequestModal={showCancelMatchRequestModal}
                                                                     subjects={data?.me?.pupil?.subjectsFormatted}
                                                                     onEditRequest={() => setShowEditModal(true)}

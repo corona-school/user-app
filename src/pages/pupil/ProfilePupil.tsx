@@ -216,7 +216,7 @@ const ProfilePupil: React.FC<Props> = () => {
             <WithNavigation
                 isLoading={loading}
                 showBack
-                onBack={() => (!!rootPath && navigate(`/${rootPath}`)) || navigate(-1)}
+                onBack={() => navigate(-1)}
                 headerTitle={t('profile.title')}
                 headerContent={
                     <Flex

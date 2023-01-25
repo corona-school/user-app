@@ -16,6 +16,7 @@ import course from './course/de';
 import archive from './archive/de';
 import notification from './notification/de';
 import appointments from './appointments/de';
+import appointment from './appointment/de';
 
 const de = {
     ...shared,
@@ -36,5 +37,6 @@ const de = {
     archive,
     notification,
     appointments,
+    appointment,
 };
 export default de;

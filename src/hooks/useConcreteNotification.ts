@@ -9,7 +9,7 @@ const concreteNotificationQuery = gql(`
             message {
                 headline
                 body
-                messageType
+                type
             }
             sentAt
         }

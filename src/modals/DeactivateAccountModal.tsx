@@ -53,6 +53,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const showError = useCallback(() => {
         toast.show({
             description: t('profile.Deactivate.error'),
+            placement: 'top',
         });
     }, [t, toast]);
 

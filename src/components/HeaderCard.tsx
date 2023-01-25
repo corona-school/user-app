@@ -32,14 +32,14 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
     return (
         <Box bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
             <Box h={`${sizes['headerSizePx']}px`} paddingX={space['1']} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
-                <Row alignItems="center" justifyContent={'center'} h="100%">
+                <Row alignItems="center" justifyContent="center" h="100%">
                     {showBack && (
-                        <Box mr={space['1']} position="absolute" left="0">
+                        <Box mr={space['1']} position="absolute" left="0" marginRight="12">
                             <BackButton onPress={onBack} />
                         </Box>
                     )}
 
-                    <Box flex={1} flexGrow={0} minW="28px">
+                    <Box marginLeft={showBack ? '10' : 0} flex={1} flexGrow={0} minW="28px">
                         {isMobile && leftContent}
                     </Box>
 

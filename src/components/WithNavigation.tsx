@@ -8,6 +8,7 @@ import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
 import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg';
+import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
@@ -15,7 +16,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 // TODO translations
 const navItems: NavigationItems = {
     start: { label: 'Start', icon: LFHomeIcon },
-    // appointments: { label: 'Termine', icon: LFAppointmentIcon, disabled: true },
+    appointments: { label: 'Termine', icon: LFAppointmentIcon },
     group: { label: 'Gruppe', icon: LFGroupIcon },
     matching: { label: 'Einzel', icon: LFMatchingIcon },
     hilfebereich: { label: 'Hilfe', icon: LFHelpIcon },

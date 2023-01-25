@@ -7,7 +7,7 @@ export type UserNotification = {
 type Message = {
     headline: string;
     body: string;
-    messageType: MessageType;
+    type: MessageType;
     navigateTo?: string;
     isUrlExternal?: boolean;
     error?: string;

@@ -66,9 +66,9 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet') });
+            toast.show({ description: t('Daten geupdatet'), placement: 'top' });
         } catch (e) {
-            toast.show({ description: t('error') });
+            toast.show({ description: t('error'), placement: 'top' });
         }
         setShowModal(false);
         setIsLoading(false);
