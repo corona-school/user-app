@@ -23,7 +23,7 @@ const CreateAppointment = () => {
     return (
         <AsNavigationItem path="create-appointments">
             <WithNavigation>
-                <Box width={'80%'}>
+                <Box width={'90%'} mx="4">
                     <InstructionProgress
                         currentIndex={0}
                         instructions={[{ label: 'Zuordnung wählen' }, { label: 'Termine einsehen' }, { label: 'Termin hinzufügen' }]}

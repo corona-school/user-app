@@ -8,6 +8,11 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
+    createAppointment: {
+        assignment: {
+            header: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
+        },
+    },
 };
 
 export default appointment;
