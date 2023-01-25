@@ -8,8 +8,8 @@ import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primiti
 import LeavePageModal from './LeavePageModal';
 
 const fallBackMessage: Message = {
-    headline: 'Error',
-    body: 'Error: not found',
+    headline: 'Message Error',
+    body: 'notification could not be loaded',
     type: MessageType.ERROR,
 };
 
