@@ -11,6 +11,7 @@ import {
 } from './notification-preferences';
 import { FC } from 'react';
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
+import { NotificationMessage } from '../gql/graphql';
 
 const getIconForMessageType = (messageType: string): FC => (messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null);
 const getIconForNotificationPreferenceModal = (messageType: string): FC => {
@@ -113,6 +114,19 @@ const getAllPreferencesInCategorySetToValue = (
 
 const getPreferencesCopy = (preferences: NotificationPreferences): NotificationPreferences => JSON.parse(JSON.stringify(preferences));
 
+const isMessageValid = (message: UserNotification | NotificationMessage | null | undefined): boolean => {
+    if (!message) return false;
+
+    const requiredFields = ['headline', 'body'];
+    const fields = Object.keys(message);
+
+    for (const requiredField of requiredFields) {
+        if (!fields.includes(requiredField)) return false;
+    }
+
+    return true;
+};
+
 export {
     getIconForMessageType,
     getIconForNotificationPreferenceModal,
@@ -123,4 +137,5 @@ export {
     getAllNewUserNotificationsButMinimumFiveNotifications,
     getNotificationCategoriesData,
     getAllPreferencesInCategorySetToValue,
+    isMessageValid,
 };

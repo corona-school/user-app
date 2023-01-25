@@ -1,5 +1,5 @@
 import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
-import { getIconForMessageType } from '../../helper/notification-helper';
+import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import { UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +15,12 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { sentAt } = userNotification;
-    const { headline, body, type, navigateTo } = userNotification.message;
-
     const navigate = useNavigate();
+
+    if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
+
+    const { sentAt } = userNotification || { sentAt: '' };
+    const { headline, body, type, navigateTo } = userNotification.message;
 
     const boxProps = {
         mb: 2,

@@ -4,13 +4,11 @@ export type UserNotification = {
     sentAt: string;
 };
 
-type Message = {
+export type Message = {
     headline: string;
     body: string;
     type: MessageType;
     navigateTo?: string;
-    isUrlExternal?: boolean;
-    error?: string;
 };
 
 export enum MessageType {
@@ -21,6 +19,7 @@ export enum MessageType {
     SUGGESTION = 'suggestion',
     ACCOUNCEMENT = 'announcement',
     CALL = 'call',
+    ERROR = 'error',
 }
 
 export enum MarketingMessageType {
