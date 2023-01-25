@@ -47,12 +47,8 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications, lastTimeChecked
         <Box>
             <Popover.Content ml={panelMarginLeft} mr={panelMarginRight} minW={panelPropsAllDevices.minW}>
                 <Popover.Arrow />
+                <Popover.Header height="headerSizePx" />
                 <Popover.CloseButton />
-                <Popover.Header>
-                    <Box alignSelf="flex-end" mr={10}>
-                        <SettingsIcon />
-                    </Box>
-                </Popover.Header>
                 <Popover.Body>
                     {loading && <Spinner />}
                     <Box maxH={panelPropsAllDevices.maxH}>
