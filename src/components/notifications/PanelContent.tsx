@@ -1,11 +1,11 @@
 import { Box, Button, ScrollView, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { isNewNotification } from '../../helper/notification-helper';
-import { UserNotification } from '../../types/lernfair/Notification';
 import MessageBox from './MessageBox';
+import { Concrete_Notification } from '../../gql/graphql';
 
 type NewProps = {
-    notificationsToShow: UserNotification[];
+    notificationsToShow: Concrete_Notification[];
     lastTimeChecked: string;
     handleClick: () => void;
 };
@@ -18,7 +18,7 @@ const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChe
             <ScrollView>
                 <Box>
                     {notificationsToShow.map(
-                        (notification: UserNotification) =>
+                        (notification) =>
                             notification.message && (
                                 <MessageBox
                                     key={notification.id}
@@ -37,7 +37,7 @@ const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChe
 };
 
 type AllProps = {
-    userNotifications: UserNotification[];
+    userNotifications: Concrete_Notification[];
     lastTimeChecked: string;
 };
 
@@ -46,7 +46,7 @@ const AllNotifications: React.FC<AllProps> = ({ userNotifications, lastTimeCheck
         <>
             <ScrollView>
                 {userNotifications.map(
-                    (notification: UserNotification) =>
+                    (notification: Concrete_Notification) =>
                         notification.message && (
                             <MessageBox
                                 key={notification.id}

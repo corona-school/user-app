@@ -1,15 +1,6 @@
-export type UserNotification = {
-    id: number;
-    message: Message;
-    sentAt: string;
-};
+import { NotificationMessage } from '../../gql/graphql';
 
-export type Message = {
-    headline: string;
-    body: string;
-    type: MessageType;
-    navigateTo?: string;
-};
+export type Message = NotificationMessage;
 
 export enum MessageType {
     CHAT = 'chat',
