@@ -1,11 +1,32 @@
 import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
 import { getIconForMessageType } from '../../helper/notification-helper';
-import { UserNotification } from '../../types/lernfair/Notification';
+import { Message, MessageType, UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
 import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import LeavePageModal from './LeavePageModal';
+
+const fallBackMessage: Message = {
+    headline: 'Error',
+    body: 'Error: not found',
+    type: MessageType.ERROR,
+};
+
+const getMessageWithFallback = (message: Message | null | undefined): Message => {
+    if (!message) return fallBackMessage;
+
+    const result = { ...message };
+
+    (Object.keys(fallBackMessage) as (keyof Message)[]).forEach((key: keyof Message) => {
+        if (!message[key as keyof Message]) {
+            // @ts-ignore Type 'string | undefined' is not assignable to type 'MessageType'.
+            result[key] = fallBackMessage[key];
+        }
+    });
+
+    return result;
+};
 
 type Props = {
     userNotification: UserNotification;
@@ -15,8 +36,8 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { sentAt } = userNotification;
-    const { headline, body, type, navigateTo } = userNotification.message;
+    const { sentAt } = userNotification || { sentAt: '' };
+    const { headline, body, type, navigateTo } = getMessageWithFallback(userNotification.message);
 
     const navigate = useNavigate();
 
