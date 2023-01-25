@@ -16,11 +16,9 @@ import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
-type Props = {};
-
 type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
 
-const HelpCenter: React.FC<Props> = () => {
+const HelpCenter: React.FC = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
     const [dsgvo, setDSGVO] = useState<boolean>(false);

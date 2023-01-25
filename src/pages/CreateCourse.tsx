@@ -27,8 +27,6 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
-type Props = {};
-
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
 export type Lecture = {
@@ -69,7 +67,7 @@ type ICreateCourseContext = {
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
-const CreateCourse: React.FC<Props> = () => {
+const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
@@ -807,7 +805,7 @@ const CreateCourse: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="group">
             <WithNavigation
-                headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')}
+                headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 isLoading={loading || isLoading}
                 headerLeft={<NotificationAlert />}
