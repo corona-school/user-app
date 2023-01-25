@@ -6,6 +6,7 @@ import { SystemNotifications } from '../../components/notifications/preferences/
 import { MarketingNotifications } from '../../components/notifications/preferences/MarketingNotifications';
 import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext } from 'react';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 const channels = ['email'];
 
@@ -29,7 +30,7 @@ const NotficationControlPanel = () => {
 
     return (
         <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
-            <WithNavigation showBack headerTitle={t('notification.controlPanel.title')}>
+            <WithNavigation showBack headerTitle={t('notification.controlPanel.title')} headerLeft={<NotificationAlert />}>
                 <View py={5} width={width}>
                     {!isMobile && (
                         <Row marginBottom={space['2']} ml={3}>

@@ -25,8 +25,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
-
-type Props = {};
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
@@ -68,7 +67,7 @@ type ICreateCourseContext = {
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
-const CreateCourse: React.FC<Props> = () => {
+const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
@@ -805,7 +804,12 @@ const CreateCourse: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')} showBack isLoading={loading || isLoading}>
+            <WithNavigation
+                headerTitle={isEditing ? t('course.edit') : t('course.header')}
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={<NotificationAlert />}
+            >
                 <CreateCourseContext.Provider
                     value={{
                         courseName,

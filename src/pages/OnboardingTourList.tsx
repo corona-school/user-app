@@ -12,6 +12,7 @@ import IconCalender from '../assets/icons/lernfair/onboarding/lf-onboarding-cale
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 type Props = {};
 
@@ -43,7 +44,7 @@ const OnboardingTourList: React.FC<Props> = () => {
     });
 
     return (
-        <WithNavigation headerTitle={t('onboardingList.header')} showBack>
+        <WithNavigation headerTitle={t('onboardingList.header')} showBack headerLeft={<NotificationAlert />}>
             <VStack marginX="auto" maxWidth={ContainerWidth} width="100%" paddingBottom={7} paddingX={space['1.5']}>
                 <Heading paddingBottom={space['0.5']}>{t('onboardingList.title')}</Heading>
                 <Text maxWidth={ContentContainerWidth}>{t('onboardingList.content')}</Text>
