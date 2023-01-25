@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
@@ -168,7 +169,7 @@ const MatchingStudent: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />}>
+            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
