@@ -19,8 +19,7 @@ jobs:
         run: npm ci
 
       - name: Typecheck App against productive GraphQL
-        continue-on-error: true 
         env:
           CI: false
           GRAPHQL_SCHEMA_URL: https://api.corona-school.de/apollo
-        run: npm run fetch-api && npm run check-types
+        run: npm run graphql-fetch-schema && npm run graphql-build && npm run check-types

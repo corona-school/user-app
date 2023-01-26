@@ -120,13 +120,13 @@ const SchoolClasses: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
     }, [createMatchRequest, isEdit, matching.schoolClasses, matching.setDazSupport, matching.subjects, showModal, toast, updateSubjects]);
 

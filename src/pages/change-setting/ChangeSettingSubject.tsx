@@ -13,6 +13,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../../widgets/AlertMessage';
 import { useUserType } from '../../hooks/useApollo';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 const queryPupil = gql`
     query GetPupilSubjects {
@@ -131,7 +132,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={t('profile.NeedHelpIn.single.header')} showBack isLoading={loading}>
+            <WithNavigation headerTitle={t('profile.NeedHelpIn.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <Heading>{userType === 'student' ? t('profile.subjects.single.title') : t('profile.NeedHelpIn.single.title')}</Heading>
                     <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

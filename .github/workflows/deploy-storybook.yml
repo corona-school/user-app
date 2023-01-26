@@ -30,7 +30,7 @@ jobs:
         run: npm run dev-install
 
       - name: Fetch GraphQL Types
-        run: npm run fetch-api
+        run: npm run graphql-fetch-schema && npm run graphql-build
 
       - name: Build Storybook
         run: npm run dev-storybook-build

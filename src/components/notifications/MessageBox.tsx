@@ -1,5 +1,5 @@
 import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
-import { getIconForMessageType } from '../../helper/notification-helper';
+import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import { UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +15,12 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { sentAt } = userNotification;
-    const { headline, body, messageType, navigateTo } = userNotification.message;
-
     const navigate = useNavigate();
+
+    if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
+
+    const { sentAt } = userNotification || { sentAt: '' };
+    const { headline, body, type, navigateTo } = userNotification.message;
 
     const boxProps = {
         mb: 2,
@@ -43,7 +45,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
 
     const navigateExternal = () => window.open(navigateTo, '_blank');
 
-    const Icon = getIconForMessageType(messageType);
+    const Icon = getIconForMessageType(type);
 
     const LinkedBox: FC<InterfaceBoxProps> = ({ children, ...boxProps }) => {
         const Component = () => <Box {...boxProps}>{children}</Box>;
@@ -54,7 +56,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
                         <Component />
                     </Pressable>
                     <Modal isOpen={isModalOpen}>
-                        <LeavePageModal url={navigateTo} messageType={messageType} onClose={() => setIsModalOpen(false)} navigateTo={navigateExternal} />
+                        <LeavePageModal url={navigateTo} messageType={type} onClose={() => setIsModalOpen(false)} navigateTo={navigateExternal} />
                     </Modal>
                 </>
             );
@@ -77,7 +79,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
                     </Box>
                 </VStack>
                 <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
-                    <Text bold fontSize="md">
+                    <Text bold fontSize="md" ellipsizeMode="tail" numberOfLines={1}>
                         {headline}
                     </Text>
                     <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={1}>

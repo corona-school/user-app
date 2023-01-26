@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
 import Tag from '../components/Tag';
 import WithNavigation from '../components/WithNavigation';
-import CourseTrafficLamp from '../widgets/CourseTrafficLamp';
 
 import Utility, { getTrafficStatus } from '../Utility';
 import { gql } from '../gql';
@@ -21,8 +20,9 @@ import SendParticipantsMessageModal from '../modals/SendParticipantsMessageModal
 import CancelSubCourseModal from '../modals/CancelSubCourseModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course, Subcourse } from '../gql/graphql';
-import PromoteButton from '../widgets/PromoteButton';
 import { getTimeDifference } from '../helper/notification-helper';
+import PromoteBanner from '../widgets/PromoteBanner';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -165,13 +165,13 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
     const cancelCourse = useCallback(async () => {
         try {
             await cancelSubcourse();
-            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt' });
+            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
             refresh();
         } catch (e) {
-            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden' });
+            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
         }
         setShowCancelModal(false);
-    }, [cancelSubcourse, toast]);
+    }, [cancelSubcourse, toast, refresh]);
 
     return (
         <>
@@ -237,19 +237,22 @@ function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Su
                 if (res.data?.subcourseSetMeetingURL) {
                     toast.show({
                         description: t('course.meeting.result.success'),
+                        placement: 'top',
                     });
                 } else {
                     toast.show({
                         description: t('course.meeting.result.error'),
+                        placement: 'top',
                     });
                 }
             } catch (e) {
                 toast.show({
                     description: t('course.meeting.result.error'),
+                    placement: 'top',
                 });
             }
         },
-        [subcourse!.id, setMeetingUrl, t, toast]
+        [subcourse.id, setMeetingUrl, t, toast]
     );
 
     return (
@@ -311,11 +314,12 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                             participants: participantsData.subcourse!.participants.map((it) => it.id),
                         },
                     });
-                    toast.show({ description: 'Nachricht erfolgreich versendet' });
+                    toast.show({ description: 'Nachricht erfolgreich versendet', placement: 'top' });
                     setShowMessageModal(false);
                 } catch (e) {
                     toast.show({
                         description: 'Deine Nachricht konnte nicht versendet werden',
+                        placement: 'top',
                     });
                 }
             }
@@ -338,9 +342,9 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
     );
 }
 
-/* Submits the course for review courseState.created -> submitted, 
-   a Screener will review the course and then approve it courseState.allowed 
-   
+/* Submits the course for review courseState.created -> submitted,
+   a Screener will review the course and then approve it courseState.allowed
+
    Note that this is executed on the Course, not the Subcourse! */
 function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'> & { course?: Pick<Course, 'id'> | null }; refresh: () => void }) {
     const toast = useToast();
@@ -362,7 +366,7 @@ function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse
 
     async function doSubmit() {
         await submit();
-        toast.show({ description: 'Kurs zur Prüfung freigegeben' });
+        toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
         refresh();
     }
 
@@ -395,7 +399,7 @@ function StudentPublishAction({ subcourse, refresh }: { subcourse: Pick<Subcours
 
     async function doPublish() {
         await publish();
-        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen' });
+        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
         refresh();
     }
 
@@ -802,7 +806,7 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
 
     async function doContact(title: string, body: string) {
         await contact({ variables: { subcourseId: subcourse.id, title, body } });
-        toast.show({ description: 'Benachrichtigung verschickt' });
+        toast.show({ description: 'Benachrichtigung verschickt', placement: 'top' });
         setShowMessageModal(false);
     }
 
@@ -828,8 +832,10 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    const { data, loading, refetch } = useQuery(
-        gql(`query GetSingleSubcourse($subcourseId: Int!) {
+    console.log(userType);
+
+    const singleSubcourseQuery = gql(`
+    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount
@@ -837,7 +843,7 @@ const SingleCourse: React.FC = () => {
             capacity
             published
             publishedAt
-            alreadyPromoted
+            alreadyPromoted @include(if: $isStudent)
             nextLecture{
                 start
                 duration
@@ -869,9 +875,9 @@ const SingleCourse: React.FC = () => {
             isParticipant
             isOnWaitingList
         }
-    }`),
-        { variables: { subcourseId } }
-    );
+    }
+    `);
+    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -888,14 +894,14 @@ const SingleCourse: React.FC = () => {
     const doPromote = async () => {
         await promote();
         if (error) {
-            toast.show({ description: t('single.buttonPromote.toastFail') });
+            toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
         } else {
-            toast.show({ description: t('single.buttonPromote.toast') });
+            toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
         refetch();
     };
 
-    const isPublishedThreeDaysAgo = (publishDate: string): boolean => {
+    const isMatureForPromotion = (publishDate: string): boolean => {
         const { daysDiff } = getTimeDifference(publishDate);
         if (publishDate === null || daysDiff > 3) {
             return true;
@@ -903,9 +909,10 @@ const SingleCourse: React.FC = () => {
         return false;
     };
 
-    const cannotPromoteCourse = () => {
-        if (!subcourse || !subcourse.published) return false;
-        return !(loading || (!subcourse.alreadyPromoted && subcourse.capacity < 0.75 && isPublishedThreeDaysAgo(subcourse.publishedAt)));
+    const canPromoteCourse = () => {
+        if (userType !== 'student' || loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted'))
+            return false;
+        return subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
     };
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -988,7 +995,7 @@ const SingleCourse: React.FC = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading}>
+            <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
                 <Box paddingX={space['1.5']} maxWidth={ContainerWidth} marginX="auto" width="100%">
                     <Box maxWidth={sizes['imageHeaderWidth']} height={imageHeight} marginBottom={space['1.5']}>
                         <Image
@@ -1023,10 +1030,17 @@ const SingleCourse: React.FC = () => {
                             <Heading fontSize="md">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(', ')}</Heading>
                         )}
                     </Row>
-                    <Box my={2}>{subcourse && subcourse.published && <PromoteButton isDisabled={cannotPromoteCourse()} onClick={doPromote} />}</Box>
-                    <Box marginBottom={space['1']}>
-                        {subcourse && <CourseTrafficLamp status={getTrafficStatus(subcourse!.participantsCount, subcourse!.maxParticipants)} />}
+                    <Box my={2}>
+                        {subcourse && subcourse.published && (
+                            <PromoteBanner
+                                onClick={doPromote}
+                                canPromote={canPromoteCourse()}
+                                isPromoted={subcourse?.alreadyPromoted || false}
+                                courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                            />
+                        )}
                     </Box>
+
                     <Box>
                         {subcourse && course!.courseState === 'allowed' && !subcourse.published && (
                             <StudentPublishAction subcourse={subcourse} refresh={refetch} />

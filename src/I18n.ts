@@ -1,27 +1,29 @@
-import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import de from './lang/de';
 
-import de from './lang/de'
+i18next
+    .use(LanguageDetector)
+    .use(Backend)
+    .use(initReactI18next)
+    .init({
+        debug: false && process.env.NODE_ENV === 'development',
+        resources: {
+            de: {
+                translation: de,
+            },
+        },
+        lng: 'de',
+        fallbackLng: 'de',
+        interpolation: {
+            escapeValue: false,
+        },
+        react: { useSuspense: false },
+        detection: {
+            order: ['localStorage', 'navigator', 'cookie', 'sessionStorage', 'localStorage', 'htmlTag', 'querystring', 'subdomain', 'path'],
+        },
+    });
 
-i18next.use(initReactI18next).init({
-  debug: false && process.env.NODE_ENV === 'development',
-  resources: {
-    de: {
-      translation: de
-    }
-  },
-  fallbackLng: 'de',
-  detection: {
-    order: [
-      'localStorage',
-      'navigator',
-      'cookie',
-      'sessionStorage',
-      'localStorage',
-      'htmlTag',
-      'querystring',
-      'subdomain',
-      'path'
-    ]
-  }
-})
+export default i18next;

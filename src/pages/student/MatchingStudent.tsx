@@ -1,18 +1,19 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Column, Modal, useToast } from 'native-base';
-import { useCallback, useEffect, useState } from 'react';
+import { Button, Column, Flex, Heading, Modal, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import { LFMatch } from '../../types/lernfair/Match';
-import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
+import Hello from '../../widgets/Hello';
 import LearningPartner from '../../widgets/LearningPartner';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 
 type Props = {};
@@ -138,15 +139,22 @@ const MatchingStudent: React.FC<Props> = () => {
         };
 
         if (res.studentDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht' });
+            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
 
+    // active matches should appear first
+    const activeMatches: LFMatch[] = useMemo(() => {
+        return [...(data?.me?.student?.matches ?? [])].sort((match1: LFMatch, match2: LFMatch) => {
+            return (match1.dissolved ? 1 : 0) - (match2.dissolved ? 1 : 0);
+        });
+    }, [data?.me?.student?.matches]);
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst' });
+            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
@@ -161,7 +169,7 @@ const MatchingStudent: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />}>
+            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
@@ -188,29 +196,28 @@ const MatchingStudent: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {(data?.me?.student?.matches.length &&
-                                                    data?.me?.student?.matches?.map((match: LFMatch, index: number) => (
-                                                        <Column width={CardGrid} marginRight="15px">
-                                                            <LearningPartner
-                                                                key={index}
-                                                                isDark={true}
-                                                                name={match?.pupil?.firstname}
-                                                                subjects={match?.subjectsFormatted}
-                                                                status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                                schooltype={t(`lernfair.schooltypes.${match?.pupil?.schooltype}`)}
-                                                                schoolclass={match?.pupil?.grade}
-                                                                button={
-                                                                    !match.dissolved && (
-                                                                        <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                            {t('dashboard.helpers.buttons.solveMatch')}
-                                                                        </Button>
-                                                                    )
-                                                                }
-                                                                contactMail={match?.pupilEmail}
-                                                                meetingId={match?.uuid}
-                                                            />
-                                                        </Column>
-                                                    ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                {activeMatches.map((match: LFMatch, index: number) => (
+                                                    <Column width={CardGrid} marginRight="15px">
+                                                        <LearningPartner
+                                                            key={index}
+                                                            isDark={true}
+                                                            name={match?.pupil?.firstname}
+                                                            subjects={match?.subjectsFormatted}
+                                                            status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
+                                                            schooltype={t(`lernfair.schooltypes.${match?.pupil?.schooltype}`)}
+                                                            schoolclass={match?.pupil?.grade}
+                                                            button={
+                                                                !match.dissolved && (
+                                                                    <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
+                                                                        {t('dashboard.helpers.buttons.solveMatch')}
+                                                                    </Button>
+                                                                )
+                                                            }
+                                                            contactMail={match?.pupilEmail}
+                                                            meetingId={match?.uuid}
+                                                        />
+                                                    </Column>
+                                                )) || <AlertMessage content={t('matching.request.check.noMatches')} />}
                                             </Flex>
                                         </VStack>
                                     ),
