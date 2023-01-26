@@ -64,7 +64,7 @@ const AppointmentAssignment = () => {
         [data?.me?.student?.subcoursesInstructing]
     );
 
-    const sortedPublishedSubcourses = useMemo(() => {
+    const subcoursesToShow = useMemo(() => {
         if (!publishedSubcourses) return [];
 
         const sortedCourses: LFSubCourse[] = publishedSubcourses.sort((a: LFSubCourse, b: LFSubCourse) => {
@@ -85,14 +85,19 @@ const AppointmentAssignment = () => {
         });
 
         const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
-        //Kurse, deren letzter Termin länger als 30 Tage her ist werden nicht mehr angezeigt
+        const coursesWitoutLectures = sortedCourses.filter((course) => course.lectures.length === 0);
+        let coursesNewerThanThirtyDays: LFSubCourse[] = coursesWithLectures;
+
         for (const course of coursesWithLectures) {
             const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
-            const lastLectureDate = DateTime.fromISO(lastLecture.start).diffNow();
-            console.log(course.id, lastLecture.start, lastLectureDate);
+            const lastLectureDate = DateTime.fromISO(lastLecture.start).diffNow().milliseconds / 1000 / 60 / 60 / 24;
+            if (lastLectureDate < -30) {
+                coursesNewerThanThirtyDays = coursesWithLectures.filter((c) => c.id !== course.id);
+            }
         }
+        const coursesToShow = coursesWitoutLectures.concat(coursesNewerThanThirtyDays);
 
-        return sortedCourses;
+        return coursesToShow;
     }, [publishedSubcourses]);
 
     return (
@@ -125,12 +130,18 @@ const AppointmentAssignment = () => {
                         title: 'Gruppe',
                         content: (
                             <VStack space="4">
-                                {sortedPublishedSubcourses.length > 0 &&
-                                    sortedPublishedSubcourses.map((subcourse: LFSubCourse, index: number) => {
-                                        const firstLecture = getFirstLectureFromSubcourse(subcourse.lectures);
-                                        if (!firstLecture) return <></>;
-
-                                        console.log();
+                                {subcoursesToShow.length > 0 &&
+                                    subcoursesToShow.map((subcourse: LFSubCourse, index: number) => {
+                                        const firstLecture = subcourse.lectures.length > 0 && subcourse.lectures[0];
+                                        if (!firstLecture)
+                                            return (
+                                                <AssignmentTile
+                                                    isGroup={true}
+                                                    courseTitle={subcourse.course.name}
+                                                    tags={subcourse.course.tags}
+                                                    courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                />
+                                            );
                                         return (
                                             <AssignmentTile
                                                 isGroup={true}
