@@ -70,7 +70,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                                 p={3}
                                 hasArrow
                                 children={
-                                    <Circle rounded="full" bg="amber.700" size={4} ml={1}>
+                                    <Circle rounded="full" bg="danger.100" size={4} ml={2}>
                                         <Text color={'white'}>i</Text>
                                     </Circle>
                                 }
