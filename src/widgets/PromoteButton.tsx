@@ -14,7 +14,7 @@ const PromoteButton: React.FC<Props> = ({ onClick }) => {
         lg: sizes['desktopbuttonWidth'],
     });
     return (
-        <Button width={ButtonContainer} onPress={onClick}>
+        <Button variant="outline" width={ButtonContainer} onPress={onClick}>
             {t('single.buttonPromote.button')}
         </Button>
     );
