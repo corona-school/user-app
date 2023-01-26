@@ -1,14 +1,14 @@
 import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
-import { UserNotification } from '../../types/lernfair/Notification';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
 import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import LeavePageModal from './LeavePageModal';
+import { Concrete_Notification } from '../../gql/graphql';
 
 type Props = {
-    userNotification: UserNotification;
+    userNotification: Concrete_Notification;
     isStandalone?: boolean;
     isRead?: boolean;
 };
@@ -43,7 +43,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
         setIsModalOpen(true);
     };
 
-    const navigateExternal = () => window.open(navigateTo, '_blank');
+    const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
 
     const Icon = getIconForMessageType(type);
 
