@@ -146,7 +146,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                                                     iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
                                                     text={subject.label}
                                                     onPress={() => {
-                                                        setSelections((prev) => [...prev, subject.label]);
+                                                        setSelections((prev) => [...prev, subject.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)
                                                         if (!selections.find((sel) => sel === subject.label)) {
                                                         }
                                                     }}
@@ -164,7 +164,8 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                 <Button
                     width={ButtonContainer}
                     onPress={() => {
-                        updateLanguage({ variables: { languages: selections } });
+                        //language keys are lowercase in frontend; on backend the first letter is capitalized
+                        updateLanguage({ variables: { languages: selections.map((x) => x[0].toUpperCase() + x.slice(1)) } });
                     }}
                 >
                     {t('profile.FluentLanguagenalData.single.button')}
