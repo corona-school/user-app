@@ -165,7 +165,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                     width={ButtonContainer}
                     onPress={() => {
                         //language keys are lowercase in frontend; on backend the first letter is capitalized
-                        updateLanguage({ variables: { languages: selections.map((x) => x[0].toUpperCase() + x.slice(1)) } });
+                        updateLanguage({ variables: { languages: selections } });
                     }}
                 >
                     {t('profile.FluentLanguagenalData.single.button')}
