@@ -84,15 +84,12 @@ const AppointmentAssignment = () => {
             return aDate > bDate ? 1 : -1;
         });
 
+        const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
         //Kurse, deren letzter Termin länger als 30 Tage her ist werden nicht mehr angezeigt
-        for (const course of sortedCourses) {
-            const lastLecture = course.lectures[course.lectures.length - 1];
-            const now = DateTime.now();
-
-            // if (date < now) {
-            //     console.log('past lecture');
-            // }
-            console.log('last course lecture', lastLecture);
+        for (const course of coursesWithLectures) {
+            const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
+            const lastLectureDate = DateTime.fromISO(lastLecture.start).diffNow();
+            console.log(course.id, lastLecture.start, lastLectureDate);
         }
 
         return sortedCourses;
