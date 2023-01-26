@@ -1,4 +1,3 @@
-import { UserNotification } from '../types/lernfair/Notification';
 import { DateTime } from 'luxon';
 import { TOptions } from 'i18next';
 import {
@@ -11,7 +10,7 @@ import {
 } from './notification-preferences';
 import { FC } from 'react';
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
-import { NotificationMessage } from '../gql/graphql';
+import { Concrete_Notification, NotificationMessage } from '../gql/graphql';
 
 const getIconForMessageType = (messageType: string): FC => (messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null);
 const getIconForNotificationPreferenceModal = (messageType: string): FC => {
@@ -70,12 +69,12 @@ const isNewNotification = (sentAt: string, lastOpen: string) => {
     }
 };
 
-const getNewNotifications = (userNotifications: UserNotification[], lastTimeChecked: string) => {
+const getNewNotifications = (userNotifications: Concrete_Notification[], lastTimeChecked: string) => {
     const newNotifications = userNotifications.filter((notification) => new Date(notification.sentAt).getTime() > new Date(lastTimeChecked).getTime());
     return newNotifications;
 };
 
-const getAllNewUserNotificationsButMinimumFiveNotifications = (userNotifications: UserNotification[], lastTimeChecked: string) => {
+const getAllNewUserNotificationsButMinimumFiveNotifications = (userNotifications: Concrete_Notification[], lastTimeChecked: string) => {
     const userNotificationsToRender = getNewNotifications(userNotifications, lastTimeChecked);
 
     if (userNotifications.length < 5) {
@@ -114,7 +113,7 @@ const getAllPreferencesInCategorySetToValue = (
 
 const getPreferencesCopy = (preferences: NotificationPreferences): NotificationPreferences => JSON.parse(JSON.stringify(preferences));
 
-const isMessageValid = (message: UserNotification | NotificationMessage | null | undefined): boolean => {
+const isMessageValid = (message: NotificationMessage | null | undefined): boolean => {
     if (!message) return false;
 
     const requiredFields = ['headline', 'body'];

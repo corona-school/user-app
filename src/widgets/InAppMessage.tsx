@@ -1,8 +1,8 @@
 import { Box, Toast } from 'native-base';
 import MessageBox from '../components/notifications/MessageBox';
-import { UserNotification } from '../types/lernfair/Notification';
+import { Concrete_Notification } from '../gql/graphql';
 
-export const showInAppMessage = (notification: UserNotification, isMobile: boolean) => {
+export const showInAppMessage = (notification: Concrete_Notification, isMobile: boolean) => {
     if (!notification || !notification.message) return null;
 
     return Toast.show({
