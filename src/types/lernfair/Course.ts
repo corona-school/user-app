@@ -1,40 +1,8 @@
-import { LFDecision } from './Decision';
-import { LFPupil } from './User';
+import { Lecture, Subcourse } from '../../gql/graphql';
 
-export type LFCourse = {
-    subject: string;
-    id?: string;
-    name: string;
-    description: string;
-    tags?: LFTag[];
-    image?: string;
-    allowContact?: boolean;
-};
-export interface LFSubCourse {
-    id?: number;
-    lectures: LFLecture[];
-    image?: string;
-    isParticipant?: boolean;
-    participants?: LFPupil[];
-    participantsAsPupil?: LFPupil[];
-    maxParticipants?: number;
-    participantsCount?: number;
-    course: LFCourse;
-    canJoin?: LFDecision;
-    isOnWaitingList?: boolean;
-    published?: boolean;
-    joinAfterStart?: boolean;
-    instructors?: LFInstructor[];
-    firstLecture?: LFLecture;
-    minGrade?: number;
-    maxGrade?: number;
-}
+export type LFSubCourse = Subcourse;
 
-export type LFLecture = {
-    id?: number;
-    start: string;
-    duration: number;
-};
+export type LFLecture = Lecture;
 
 export type LFTag = {
     name: string;

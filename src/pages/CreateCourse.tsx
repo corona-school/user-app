@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -26,6 +26,8 @@ import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { gql } from '../gql';
+import { Subcourse } from '../gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
@@ -98,7 +100,8 @@ const CreateCourse: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
-    const { data: studentData, loading } = useQuery(gql`
+    const { data: studentData, loading } = useQuery(
+        gql(`
         query StudentCanCreateCourse {
             me {
                 student {
@@ -110,9 +113,11 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [courseQuery] = useLazyQuery(gql`
+    const [courseQuery] = useLazyQuery(
+        gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -147,23 +152,29 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [createCourse, { reset: resetCourse }] = useMutation(gql`
+    const [createCourse, { reset: resetCourse }] = useMutation(
+        gql(`
         mutation createCourse($course: PublicCourseCreateInput!) {
             courseCreate(course: $course) {
                 id
             }
         }
-    `);
-    const [updateCourse, { reset: resetEditCourse }] = useMutation(gql`
+    `)
+    );
+    const [updateCourse, { reset: resetEditCourse }] = useMutation(
+        gql(`
         mutation updateCourse($course: PublicCourseEditInput!, $id: Float!) {
             courseEdit(course: $course, courseId: $id) {
                 id
             }
         }
-    `);
-    const [createSubcourse, { reset: resetSubcourse }] = useMutation(gql`
+    `)
+    );
+    const [createSubcourse, { reset: resetSubcourse }] = useMutation(
+        gql(`
         mutation createSubcourse($courseId: Float!, $subcourse: PublicSubcourseCreateInput!) {
             subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
                 id
@@ -173,56 +184,73 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
-    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(gql`
+    `)
+    );
+    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(
+        gql(`
         mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
             subcourseEdit(subcourse: $course, subcourseId: $id) {
                 id
             }
         }
-    `);
+    `)
+    );
 
-    const [setCourseImage] = useMutation(gql`
+    const [setCourseImage] = useMutation(
+        gql(`
         mutation setCourseImage($courseId: Float!, $fileId: String!) {
             courseSetImage(courseId: $courseId, fileId: $fileId)
         }
-    `);
+    `)
+    );
 
-    const [addCourseInstructor] = useMutation(gql`
+    const [addCourseInstructor] = useMutation(
+        gql(`
         mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [removeCourseInstructor] = useMutation(gql`
+    `)
+    );
+    const [removeCourseInstructor] = useMutation(
+        gql(`
         mutation removeCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseDeleteInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [addLecture] = useMutation(gql`
+    `)
+    );
+    const [addLecture] = useMutation(
+        gql(`
         mutation addLecture($lecture: PublicLectureInput!, $courseId: Float!) {
             lectureCreate(lecture: $lecture, subcourseId: $courseId) {
                 id
             }
         }
-    `);
+    `)
+    );
 
-    const [removeLecture] = useMutation(gql`
+    const [removeLecture] = useMutation(
+        gql(`
         mutation removeLecture($lectureId: Float!) {
             lectureDelete(lectureId: $lectureId)
         }
-    `);
+    `)
+    );
 
-    const [setCourseTags] = useMutation(gql`
+    const [setCourseTags] = useMutation(
+        gql(`
         mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
             courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
         }
-    `);
+    `)
+    );
 
-    const [submitCourse] = useMutation(gql`
+    const [submitCourse] = useMutation(
+        gql(`
         mutation SubmitCourse($courseId: Float!) {
             courseSubmit(courseId: $courseId)
         }
-    `);
+    `)
+    );
 
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -245,14 +273,14 @@ const CreateCourse: React.FC = () => {
 
     const queryCourse = useCallback(async () => {
         if (!prefillCourseId) return;
-        if (!studentData?.me.student.id) return;
+        if (!studentData?.me?.student?.id) return;
 
         setIsLoading(true);
         const {
             data: { subcourse: prefillCourse },
-        } = (await courseQuery({
+        } = await courseQuery({
             variables: { id: prefillCourseId },
-        })) as { data: { subcourse: LFSubCourse } };
+        });
 
         setCourseId(prefillCourse.course.id || '');
         setCourseName(prefillCourse.course.name);
@@ -285,7 +313,7 @@ const CreateCourse: React.FC = () => {
         }
 
         setIsLoading(false);
-    }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
+    }, [courseQuery, prefillCourseId, studentData?.me?.student?.id]);
 
     useEffect(() => {
         if (prefillCourseId !== null) queryCourse();
@@ -313,13 +341,14 @@ const CreateCourse: React.FC = () => {
         () => ({
             description,
             subject: subject.name,
-            schooltype: studentData?.me?.student?.schooltype || 'other',
+            // schooltype: studentData?.me?.student?.schooltype || 'other',
+            schooltype: 'other', // schooltype does not exist
             outline: '', // keep empty for now, unused
             name: courseName,
             category: 'revision',
             allowContact,
         }),
-        [allowContact, courseName, description, studentData?.me?.student?.schooltype, subject.name]
+        [allowContact, courseName, description, subject.name]
     );
 
     const _getSubcourseData = useCallback(() => {
