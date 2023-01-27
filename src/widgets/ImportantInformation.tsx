@@ -118,7 +118,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
     )
         infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
-    if (pupil?.firstMatchRequest !== null && !pupil?.firstMatchRequest && pupil?.subcoursesJoined && pupil?.subcoursesJoined.length == 0)
+    if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length == 0 && pupil?.matches.length == 0)
         infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
     if (pupil?.openMatchRequestCount && pupil?.openMatchRequestCount > 0)
         infos.push({
