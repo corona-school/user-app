@@ -42,21 +42,23 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                             </Text>
                         </HStack>
                         <Spacer />
-                        <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
-                            {instructors
-                                ?.map((i, idx) => (
-                                    <Avatar key={i.lastname + '-' + idx}>
-                                        <StudentAvatar style={{ marginTop: '-1' }} />
-                                    </Avatar>
-                                ))
-                                .concat(
-                                    participants?.map((p, index) => (
-                                        <Avatar key={p.firstname + '-' + index}>
-                                            <PupilAvatar style={{ marginTop: '-1' }} />
+                        {instructors && participants && (
+                            <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
+                                {instructors
+                                    ?.map((i, idx) => (
+                                        <Avatar key={i.lastname + '-' + idx}>
+                                            <StudentAvatar style={{ marginTop: '-1' }} />
                                         </Avatar>
-                                    )) ?? []
-                                )}
-                        </Avatar.Group>
+                                    ))
+                                    .concat(
+                                        participants?.map((p, index) => (
+                                            <Avatar key={p.firstname + '-' + index}>
+                                                <PupilAvatar style={{ marginTop: '-1' }} />
+                                            </Avatar>
+                                        )) ?? []
+                                    )}
+                            </Avatar.Group>
+                        )}
                     </HStack>
                     <Box>
                         <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>

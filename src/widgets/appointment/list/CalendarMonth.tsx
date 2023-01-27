@@ -1,7 +1,7 @@
 import { Info } from 'luxon';
 import { Box, Center, Divider, Text } from 'native-base';
 import { useMemo } from 'react';
-import { Week } from '../../types/lernfair/Appointment';
+import { Week } from '../../../types/lernfair/Appointment';
 import CalendarWeek from './CalendarWeek';
 
 type MonthProps = {
@@ -9,8 +9,8 @@ type MonthProps = {
     year: number;
     month: number;
     appointmentsOfMonth: Week;
-    scrollToRef: any;
-    scrollId: number;
+    scrollToRef?: any;
+    scrollId?: number;
 };
 
 const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId }) => {

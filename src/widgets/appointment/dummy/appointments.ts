@@ -22,10 +22,10 @@ const sortAppointments = (): AppointmentType[] => {
 };
 const sortedAppointments = sortAppointments();
 
-const getAppointmentsForMonth = () => {
+export const getAppointmentsForMonth = (appointments: AppointmentType[]): CalendarDates => {
     const dates: CalendarDates = {};
 
-    for (let appointment of sortedAppointments) {
+    for (let appointment of appointments) {
         let year = DateTime.fromISO(appointment.startDate).year;
         let month = DateTime.fromISO(appointment.startDate).month;
         let week = DateTime.fromISO(appointment.startDate).weekNumber;
@@ -42,7 +42,7 @@ const getAppointmentsForMonth = () => {
     }
     return dates;
 };
-const monthAppointments = getAppointmentsForMonth();
+const monthAppointments = getAppointmentsForMonth(sortedAppointments);
 
 const findNextCourse = (appointments: AppointmentType[]) => {
     const now = DateTime.now();

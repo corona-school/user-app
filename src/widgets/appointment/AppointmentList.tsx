@@ -1,6 +1,6 @@
 import { Box, useBreakpointValue } from 'native-base';
 import appointments from './dummy/appointments';
-import CalendarYear from './CalendarYear';
+import CalendarYear from './list/CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
 

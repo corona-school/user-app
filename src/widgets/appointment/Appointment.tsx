@@ -1,5 +1,4 @@
 import { Box, HStack, useBreakpointValue } from 'native-base';
-import { useEffect, useState } from 'react';
 import { getCourseTimeText, isCourseTakingPlaceRightNow, isCurrentMonth } from '../../helper/appointment-helper';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
@@ -38,20 +37,35 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
     });
 
     return (
-        <div ref={scrollToRef} key={courseStart} style={{ scrollMarginTop: marginRef }}>
-            <Box w={width} mt={3}>
-                <HStack>
-                    <AppointmentDate current={isCurrent} date={courseStart} />
-                    <AppointmentTile
-                        timeDescriptionText={getCourseTimeText(courseStart, duration)}
-                        courseTitle={courseTitle}
-                        isCurrentlyTakingPlace={isCurrent}
-                        instructors={instructors}
-                        participants={participants}
-                    />
-                </HStack>
-            </Box>
-        </div>
+        <>
+            {scrollToRef ? (
+                <div ref={scrollToRef} key={courseStart} style={{ scrollMarginTop: marginRef }}>
+                    <Box w={width} mt={3}>
+                        <HStack>
+                            <AppointmentDate current={isCurrent} date={courseStart} />
+                            <AppointmentTile
+                                timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                                courseTitle={courseTitle}
+                                isCurrentlyTakingPlace={isCurrent}
+                                instructors={instructors}
+                                participants={participants}
+                            />
+                        </HStack>
+                    </Box>
+                </div>
+            ) : (
+                <Box w={width} mt={3}>
+                    <HStack>
+                        <AppointmentDate current={isCurrent} date={courseStart} />
+                        <AppointmentTile
+                            timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                            courseTitle={courseTitle}
+                            isCurrentlyTakingPlace={isCurrent}
+                        />
+                    </HStack>
+                </Box>
+            )}
+        </>
     );
 };
 

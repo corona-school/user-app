@@ -1,14 +1,14 @@
 import { Box } from 'native-base';
 import { useMemo } from 'react';
-import { Month } from '../../types/lernfair/Appointment';
+import { Month } from '../../../types/lernfair/Appointment';
 import CalendarMonth from './CalendarMonth';
 
 type YearProps = {
     key: React.Key;
     year: number;
     appointmentsOfYear: Month;
-    scrollToRef: any;
-    scrollId: number;
+    scrollToRef?: any;
+    scrollId?: number;
 };
 
 const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToRef, scrollId }) => {

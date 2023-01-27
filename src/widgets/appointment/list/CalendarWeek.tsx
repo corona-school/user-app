@@ -1,13 +1,13 @@
 import { Box, Divider } from 'native-base';
-import { AppointmentType } from '../../types/lernfair/Appointment';
-import Appointment from './Appointment';
+import { AppointmentType } from '../../../types/lernfair/Appointment';
+import Appointment from '../Appointment';
 
 type WeekProps = {
     key: React.Key;
     appointmentsOfWeek: AppointmentType[];
     lastOfMonth: boolean;
-    scrollToRef: any;
-    scrollId: number;
+    scrollToRef?: any;
+    scrollId?: number;
 };
 
 const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId }) => {
