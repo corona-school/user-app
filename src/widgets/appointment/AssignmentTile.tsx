@@ -31,7 +31,7 @@ interface MatchTileProps extends BaseProps {
 
 type TileProps = GroupTileProps | MatchTileProps;
 
-const AssignmentTile: React.FC<TileProps> = (props, { next }) => {
+const AssignmentTile: React.FC<TileProps> = (props) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -47,7 +47,7 @@ const AssignmentTile: React.FC<TileProps> = (props, { next }) => {
 
     return (
         <Box>
-            <Pressable onPress={next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={props.next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         {props.type === Assignment.GROUP ? (
