@@ -1,26 +1,39 @@
 import { DateTime } from 'luxon';
-import { Box, HStack, VStack, Text, Center, Pressable, useBreakpointValue, Image, useTheme, Spacer, Row } from 'native-base';
+import { Box, HStack, VStack, Text, Center, Pressable, useBreakpointValue, Image, useTheme, Row } from 'native-base';
+import { useTranslation } from 'react-i18next';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil_56.svg';
 import Tag from '../../components/Tag';
+import { Assignment } from '../../types/lernfair/Appointment';
 import { LFTag, TrafficStatus } from '../../types/lernfair/Course';
 import { LFPupil } from '../../types/lernfair/User';
 import CourseTrafficLamp from '../CourseTrafficLamp';
 
-type TileProps = {
-    isGroup: boolean;
-    imageURL?: string;
-    schooltype?: string;
-    grade?: string;
-    pupil?: LFPupil;
-    subjects?: string[];
-    tags?: LFTag[];
-    startDate?: string;
-    courseTitle?: string;
-    courseStatus?: TrafficStatus;
+type BaseProps = {
+    next: () => void;
 };
 
-const AssignmentTile: React.FC<TileProps> = ({ isGroup, imageURL, schooltype, grade, pupil, subjects, tags, startDate, courseTitle, courseStatus }) => {
+interface GroupTileProps extends BaseProps {
+    type: Assignment.GROUP;
+    imageURL?: string;
+    tags?: LFTag[];
+    startDate?: string;
+    courseTitle: string;
+    courseStatus: TrafficStatus;
+}
+
+interface MatchTileProps extends BaseProps {
+    type: Assignment.MATCH;
+    schooltype: string;
+    grade: string;
+    pupil: LFPupil;
+    subjects?: string[];
+}
+
+type TileProps = GroupTileProps | MatchTileProps;
+
+const AssignmentTile: React.FC<TileProps> = (props, { next }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const containerWidth = useBreakpointValue({
         base: 100,
@@ -34,10 +47,10 @@ const AssignmentTile: React.FC<TileProps> = ({ isGroup, imageURL, schooltype, gr
 
     return (
         <Box>
-            <Pressable onPress={() => console.log('choose this!')} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
-                        {isGroup ? (
+                        {props.type === Assignment.GROUP ? (
                             <Box h="100%" w={containerWidth} padding={space['0.5']}>
                                 <Image
                                     position="absolute"
@@ -49,12 +62,12 @@ const AssignmentTile: React.FC<TileProps> = ({ isGroup, imageURL, schooltype, gr
                                     bg="gray.400"
                                     alt={'Kursbild'}
                                     source={{
-                                        uri: imageURL,
+                                        uri: props.imageURL,
                                     }}
                                     borderTopLeftRadius="15px"
                                     borderBottomLeftRadius="15px"
                                 />
-                                {courseStatus && <CourseTrafficLamp status={courseStatus || 'full'} hideText showBorder paddingY={0} />}
+                                {props.courseStatus && <CourseTrafficLamp status={props.courseStatus || 'full'} hideText showBorder paddingY={0} />}
                             </Box>
                         ) : (
                             <Center bg="primary.900" width={containerWidth} height="100%" borderTopLeftRadius="15px" borderBottomLeftRadius="15px">
@@ -64,27 +77,22 @@ const AssignmentTile: React.FC<TileProps> = ({ isGroup, imageURL, schooltype, gr
                     </Box>
                     <VStack space="1" my="2">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
-                            {isGroup && (
+                            {props.type === Assignment.GROUP && (
                                 <Text>
-                                    {startDate ? `${DateTime.fromISO(startDate).setLocale('de').toFormat('Ab DD • t')} Uhr` : 'Keine Termine vorhanden'}
+                                    {props.startDate
+                                        ? `${DateTime.fromISO(props.startDate).setLocale('de').toFormat('Ab DD • t')} Uhr`
+                                        : t('appointment.createAppointment.assignment.noAppointments')}
                                 </Text>
                             )}
-                            {!isGroup && <Text>{schooltype && `${schooltype} • ${grade}`}</Text>}
-                            <Text bold ellipsizeMode="tail" numberOfLines={1}>
-                                {pupil && !isGroup ? Object.values(pupil).join(' ') : courseTitle}
+                            {props.type === Assignment.MATCH && <Text>{props.schooltype && `${props.schooltype} • ${props.grade}`}</Text>}
+                            <Text bold ellipsizeMode="tail" numberOfLines={5}>
+                                {props.type === Assignment.GROUP ? props.courseTitle : Object.values(props.pupil).join(' ')}
                             </Text>
                         </VStack>
                         <HStack space={2} maxW={isMobile ? 200 : 'full'}>
-                            {subjects && subjects?.map((subject) => <Tag text={subject} />)}
+                            {props.type === Assignment.MATCH && props.subjects?.map((subject, index) => <Tag key={`subject tag ${subject}`} text={subject} />)}
+                            {props.type === Assignment.GROUP && props.tags?.map((tag, i) => <Tag key={`tag-${i}`} text={tag.name} />)}
                         </HStack>
-
-                        {
-                            <Row space={space['0.5']} flexWrap="wrap" maxWidth="210">
-                                {tags?.map((tag, i) => (
-                                    <Tag key={`tag-${i}`} text={tag.name} />
-                                ))}
-                            </Row>
-                        }
                     </VStack>
                 </HStack>
             </Pressable>

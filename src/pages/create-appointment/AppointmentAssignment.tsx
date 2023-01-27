@@ -2,13 +2,19 @@ import { Box, Text, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
 import AssignmentTile from '../../widgets/appointment/AssignmentTile';
 import { gql, useQuery } from '@apollo/client';
-import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { LFMatch } from '../../types/lernfair/Match';
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility';
+import { LFSubCourse } from '../../types/lernfair/Course';
+import { getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import { Assignment } from '../../types/lernfair/Appointment';
+
+type AssignmentProps = {
+    next: () => void;
+    back: () => void;
+};
 
 const query = gql`
     query StudentCourseMatches {
@@ -39,6 +45,11 @@ const query = gql`
                         start
                         duration
                     }
+                    firstLecture {
+                        id
+                        start
+                        duration
+                    }
                     course {
                         name
                         description
@@ -52,9 +63,8 @@ const query = gql`
     }
 `;
 
-//Kurse, deren letzter Termin länger als 30 Tage her ist werden nicht mehr angezeigt
-const AppointmentAssignment = () => {
-    const { data, loading, called } = useQuery(query);
+const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
+    const { data, loading } = useQuery(query);
     const { t } = useTranslation();
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved), [data?.me?.student?.matches]);
@@ -68,11 +78,11 @@ const AppointmentAssignment = () => {
         if (!publishedSubcourses) return [];
 
         const sortedCourses: LFSubCourse[] = publishedSubcourses.sort((a: LFSubCourse, b: LFSubCourse) => {
-            const aLecture = getFirstLectureFromSubcourse(a.lectures);
-            const bLecture = getFirstLectureFromSubcourse(b.lectures);
+            const aLecture = a.firstLecture;
+            const bLecture = b.firstLecture;
 
-            if (bLecture === null) return -1;
-            if (aLecture === null) return 1;
+            if (!bLecture) return -1;
+            if (!aLecture) return 1;
 
             const aDate = DateTime.fromISO(aLecture.start).toMillis();
             const bDate = DateTime.fromISO(bLecture.start).toMillis();
@@ -90,8 +100,8 @@ const AppointmentAssignment = () => {
 
         for (const course of coursesWithLectures) {
             const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
-            const lastLectureDate = DateTime.fromISO(lastLecture.start).diffNow().milliseconds / 1000 / 60 / 60 / 24;
-            if (lastLectureDate < -30) {
+            const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;
+            if (daysDiffFromNow < -30) {
                 coursesNewerThanThirtyDays = coursesWithLectures.filter((c) => c.id !== course.id);
             }
         }
@@ -111,18 +121,24 @@ const AppointmentAssignment = () => {
                         title: 'Einzel',
                         content: (
                             <VStack space="4">
-                                {activeMatches &&
+                                {loading ? (
+                                    <CenterLoadingSpinner />
+                                ) : (
+                                    activeMatches &&
                                     activeMatches.map((match: LFMatch, index: number) => {
                                         return (
                                             <AssignmentTile
-                                                isGroup={false}
+                                                key={`match ${index}`}
+                                                type={Assignment.MATCH}
                                                 schooltype={match?.pupil?.schooltype}
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
                                                 subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
+                                                next={next}
                                             />
                                         );
-                                    })}
+                                    })
+                                )}
                             </VStack>
                         ),
                     },
@@ -130,28 +146,36 @@ const AppointmentAssignment = () => {
                         title: 'Gruppe',
                         content: (
                             <VStack space="4">
-                                {subcoursesToShow.length > 0 &&
+                                {loading ? (
+                                    <CenterLoadingSpinner />
+                                ) : (
+                                    subcoursesToShow.length > 0 &&
                                     subcoursesToShow.map((subcourse: LFSubCourse, index: number) => {
-                                        const firstLecture = subcourse.lectures.length > 0 && subcourse.lectures[0];
-                                        if (!firstLecture)
+                                        const first = subcourse.firstLecture;
+                                        if (!first)
                                             return (
                                                 <AssignmentTile
-                                                    isGroup={true}
+                                                    key={`no-appointments-${index}`}
+                                                    type={Assignment.GROUP}
                                                     courseTitle={subcourse.course.name}
                                                     tags={subcourse.course.tags}
                                                     courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                    next={next}
                                                 />
                                             );
                                         return (
                                             <AssignmentTile
-                                                isGroup={true}
-                                                startDate={firstLecture.start}
+                                                key={`course-${index}`}
+                                                type={Assignment.GROUP}
+                                                startDate={first.start}
                                                 courseTitle={subcourse.course.name}
                                                 tags={subcourse.course.tags}
                                                 courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                next={next}
                                             />
                                         );
-                                    })}
+                                    })
+                                )}
                             </VStack>
                         ),
                     },

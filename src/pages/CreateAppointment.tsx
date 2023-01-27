@@ -25,10 +25,10 @@ const CreateAppointment = () => {
             <WithNavigation>
                 <Box width={'90%'} mx="4">
                     <InstructionProgress
-                        currentIndex={0}
+                        currentIndex={currentIndex}
                         instructions={[{ label: 'Zuordnung wählen' }, { label: 'Termine einsehen' }, { label: 'Termin hinzufügen' }]}
                     />
-                    {currentIndex === 0 && <AppointmentAssignment />}
+                    {currentIndex === 0 && <AppointmentAssignment next={onNext} back={onBack} />}
                 </Box>
             </WithNavigation>
         </AsNavigationItem>

@@ -11,6 +11,7 @@ const appointment = {
     createAppointment: {
         assignment: {
             header: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
+            noAppointments: 'Keine Termine vorhanden',
         },
     },
 };
