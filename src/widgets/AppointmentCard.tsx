@@ -45,7 +45,7 @@ type Props = {
     isSpaceMarginBottom?: boolean;
     isFullHeight?: boolean;
     isHorizontalCardCourseChecked?: boolean;
-    image?: string;
+    image?: string | null;
     onPressToCourse?: () => any;
     videoButton?: ReactNode | ReactNode[];
     countCourse?: number;
@@ -176,7 +176,7 @@ const AppointmentCard: React.FC<Props> = ({
                                     height="100%"
                                     alt={title}
                                     source={{
-                                        uri: image,
+                                        uri: image ?? undefined,
                                     }}
                                 />
                                 {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
@@ -294,7 +294,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 borderBottomLeftRadius="15px"
                                 bgColor="gray.300"
                                 source={{
-                                    uri: image,
+                                    uri: image ?? undefined,
                                 }}
                             />
                             {showTrafficLight && (

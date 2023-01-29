@@ -76,7 +76,7 @@ const CreateCourse: React.FC = () => {
     const state = location.state as { courseId?: number };
     const prefillCourseId = state?.courseId;
 
-    const [courseId, setCourseId] = useState<string>('');
+    const [courseId, setCourseId] = useState<number | null>(null);
     const [courseName, setCourseName] = useState<string>('');
     const [subject, setSubject] = useState<LFSubject>({ name: '' });
     const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
@@ -276,15 +276,15 @@ const CreateCourse: React.FC = () => {
         if (!studentData?.me?.student?.id) return;
 
         setIsLoading(true);
-        const {
-            data: { subcourse: prefillCourse },
-        } = await courseQuery({
+        const { data } = await courseQuery({
             variables: { id: prefillCourseId },
         });
 
-        setCourseId(prefillCourse.course.id || '');
+        const prefillCourse = data!.subcourse!;
+
+        setCourseId(prefillCourse.course.id);
         setCourseName(prefillCourse.course.name);
-        setSubject({ name: prefillCourse.course.subject });
+        if (prefillCourse.course.subject) setSubject({ name: prefillCourse.course.subject });
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
@@ -293,7 +293,7 @@ const CreateCourse: React.FC = () => {
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentData.me.student.id);
+            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentData!.me.student!.id);
             setAddedInstructors(arr);
         }
 
@@ -303,7 +303,7 @@ const CreateCourse: React.FC = () => {
 
         if (prefillCourse.lectures && Array.isArray(prefillCourse.lectures)) {
             // typing is not that nice here
-            const editLectures: any[] = prefillCourse.lectures.map((l: LFLecture) => ({
+            const editLectures: any[] = prefillCourse.lectures.map((l) => ({
                 ...l,
                 duration: l.duration,
                 date: DateTime.fromISO(l.start).toFormat('yyyy-MM-dd'),
@@ -368,8 +368,8 @@ const CreateCourse: React.FC = () => {
         return subcourse;
     }, [courseClasses, joinAfterStart, maxParticipantCount]);
 
-    const _convertLecture: (lecture: Lecture) => LFLecture = useCallback((lecture) => {
-        const l: LFLecture = {
+    const _convertLecture = useCallback((lecture: Lecture) => {
+        const l = {
             start: new Date().toLocaleString(),
             duration: parseInt(lecture.duration),
         };
@@ -397,7 +397,7 @@ const CreateCourse: React.FC = () => {
             const course = _getCourseData();
             const courseData = (await createCourse({
                 variables: {
-                    course,
+                    course: course as any,
                 },
             })) as { data: { courseCreate?: { id: number } }; errors?: GraphQLError[] };
 
@@ -421,7 +421,7 @@ const CreateCourse: React.FC = () => {
             const tagsRes = await setCourseTags({
                 variables: { courseTagIds: tagIds, courseId },
             });
-            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+            if (!tagsRes.data?.courseSetTags && tagsRes.errors) {
                 errors.push('tags');
             }
 
@@ -451,7 +451,7 @@ const CreateCourse: React.FC = () => {
                 return;
             }
 
-            if (subRes.data.subcourseCreate && !subRes.errors) {
+            if (subRes.data?.subcourseCreate && !subRes.errors) {
                 for await (const lecture of newLectures) {
                     const l = _convertLecture(lecture);
                     let res = await addLecture({
@@ -460,7 +460,7 @@ const CreateCourse: React.FC = () => {
                             lecture: l,
                         },
                     });
-                    if (!res.data.lectureDelete && res.errors) {
+                    if (!res.data?.lectureCreate && res.errors) {
                         errors.push('lectures');
                     }
                 }
@@ -469,7 +469,7 @@ const CreateCourse: React.FC = () => {
                     let res = await addCourseInstructor({
                         variables: {
                             courseId: subRes.data?.subcourseCreate?.id,
-                            studentId: instructor.id,
+                            studentId: instructor.id!,
                         },
                     });
                     if (!res.data && res.errors) {
@@ -494,10 +494,12 @@ const CreateCourse: React.FC = () => {
 
             let uploadFileId;
             try {
-                uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
+                const uploadFileResponse = await fetch(BACKEND_URL + '/api/file/upload', {
                     method: 'POST',
                     body: formData,
                 });
+
+                uploadFileId = await uploadFileResponse.text();
 
                 if (!uploadFileId) {
                     errors.push('upload_image');
@@ -557,8 +559,8 @@ const CreateCourse: React.FC = () => {
         const course = _getCourseData();
         const courseData = (await updateCourse({
             variables: {
-                course,
-                id: courseId,
+                course: course as any,
+                id: courseId!,
             },
         })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
 
@@ -581,16 +583,16 @@ const CreateCourse: React.FC = () => {
 
         const tagIds = tags.map((t: LFTag) => t.id);
         const tagsRes = await setCourseTags({
-            variables: { courseTagIds: tagIds, courseId },
+            variables: { courseTagIds: tagIds, courseId: courseId! },
         });
-        if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+        if (!tagsRes.data?.courseSetTags && tagsRes.errors) {
             errors.push('tags');
         }
 
         const subcourse = _getSubcourseData();
         const subRes = await updateSubcourse({
             variables: {
-                id: prefillCourseId,
+                id: prefillCourseId!,
                 course: subcourse,
             },
         });
@@ -607,8 +609,8 @@ const CreateCourse: React.FC = () => {
         for await (const instructor of newInstructors) {
             let res = await addCourseInstructor({
                 variables: {
-                    courseId: prefillCourseId,
-                    studentId: instructor.id,
+                    courseId: prefillCourseId!,
+                    studentId: instructor.id!,
                 },
             });
             if (!res.data && res.errors) {
@@ -621,11 +623,11 @@ const CreateCourse: React.FC = () => {
                 const l = _convertLecture(lecture);
                 let res = await addLecture({
                     variables: {
-                        courseId: prefillCourseId,
+                        courseId: prefillCourseId!,
                         lecture: l,
                     },
                 });
-                if (!res.data.lectureDelete && res.errors) {
+                if (!res.data?.lectureCreate && res.errors) {
                     errors.push('lectures');
                 }
             }
@@ -649,10 +651,12 @@ const CreateCourse: React.FC = () => {
 
         let uploadFileId;
         try {
-            uploadFileId = await fetch(BACKEND_URL + '/api/files/upload', {
+            const uploadFileResponse = await fetch(BACKEND_URL + '/api/files/upload', {
                 method: 'POST',
                 body: formData,
             });
+
+            uploadFileId = await uploadFileResponse.text();
 
             if (!uploadFileId) {
                 errors.push('upload_image');
@@ -672,7 +676,7 @@ const CreateCourse: React.FC = () => {
          */
         const imageRes = (await setCourseImage({
             variables: {
-                courseId: courseId,
+                courseId: courseId!,
                 fileId: uploadFileId,
             },
         })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
@@ -782,12 +786,12 @@ const CreateCourse: React.FC = () => {
             } else {
                 const res = await removeCourseInstructor({
                     variables: {
-                        courseId: prefillCourseId,
-                        studentId: addedInstructors[index].id,
+                        courseId: prefillCourseId!,
+                        studentId: addedInstructors[index].id!,
                     },
                 });
 
-                if (res.data.subcourseDeleteInstructor && !res.errors) {
+                if (res.data?.subcourseDeleteInstructor && !res.errors) {
                     const arr = [...addedInstructors];
                     arr.splice(index, 1);
                     setAddedInstructors(arr);
@@ -816,7 +820,7 @@ const CreateCourse: React.FC = () => {
                         lectureId: lecs[index].id,
                     },
                 });
-                if (res.data.lectureDelete && !res.errors) {
+                if (res.data?.lectureDelete && !res.errors) {
                     lecs.splice(index, 1);
                     setLectures(lecs);
                     toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });

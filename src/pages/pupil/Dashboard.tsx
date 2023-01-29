@@ -426,7 +426,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 showTrafficLight
                                                 trafficLightStatus={getTrafficStatus(sc?.participantsCount || 0, sc?.maxParticipants || 0)}
                                                 tags={sc.course.tags}
-                                                data={sc}
+                                                subcourse={sc}
                                                 onClickSignIn={() => {
                                                     trackEvent({
                                                         category: 'dashboard',
