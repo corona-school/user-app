@@ -394,7 +394,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     )}
                                 </HSection>
                             )}
-                            {(data?.me?.student?.openMatchRequestCount > 0 || activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
+                            {(activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
                                     <Text marginTop={space['0.5']} marginBottom={space['1']}>
