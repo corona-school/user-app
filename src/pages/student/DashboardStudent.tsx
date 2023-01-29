@@ -326,52 +326,51 @@ const DashboardStudent: React.FC<Props> = () => {
                                     })}
                                 </HSection>
                             )}
-                            <HSection
-                                title={t('dashboard.helpers.headlines.course')}
-                                showAll
-                                onShowAll={() => navigate('/group')}
-                                wrap
-                                marginBottom={space['1.5']}
-                                scrollable={false}
-                            >
-                                <CSSWrapper className="course-list__wrapper">
-                                    {(sortedPublishedSubcourses.length > 0 &&
-                                        sortedPublishedSubcourses.slice(0, 4).map((sub: LFSubCourse, index: number) => {
-                                            const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
-                                            if (!firstLecture) return <></>;
-                                            return (
-                                                <CSSWrapper className="course-list__item">
-                                                    <AppointmentCard
-                                                        isFullHeight
-                                                        isSpaceMarginBottom={false}
-                                                        variant="horizontal"
-                                                        key={index}
-                                                        description={sub.course.description}
-                                                        tags={sub.course.tags}
-                                                        date={firstLecture.start}
-                                                        countCourse={sub.lectures.length}
-                                                        showTrafficLight
-                                                        trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
-                                                        onPressToCourse={() => {
-                                                            trackEvent({
-                                                                category: 'dashboard',
-                                                                action: 'click-event',
-                                                                name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
-                                                                documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
-                                                            });
+                            {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
+                                <HSection
+                                    title={t('dashboard.helpers.headlines.course')}
+                                    showAll
+                                    onShowAll={() => navigate('/group')}
+                                    wrap
+                                    marginBottom={space['1.5']}
+                                    scrollable={false}
+                                >
+                                    <CSSWrapper className="course-list__wrapper">
+                                        {(sortedPublishedSubcourses.length > 0 &&
+                                            sortedPublishedSubcourses.slice(0, 4).map((sub: LFSubCourse, index: number) => {
+                                                const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
+                                                if (!firstLecture) return <></>;
+                                                return (
+                                                    <CSSWrapper className="course-list__item">
+                                                        <AppointmentCard
+                                                            isFullHeight
+                                                            isSpaceMarginBottom={false}
+                                                            variant="horizontal"
+                                                            key={index}
+                                                            description={sub.course.description}
+                                                            tags={sub.course.tags}
+                                                            date={firstLecture.start}
+                                                            countCourse={sub.lectures.length}
+                                                            showTrafficLight
+                                                            trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
+                                                            onPressToCourse={() => {
+                                                                trackEvent({
+                                                                    category: 'dashboard',
+                                                                    action: 'click-event',
+                                                                    name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
+                                                                    documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
+                                                                });
 
-                                                            navigate(`/single-course/${sub.id}`);
-                                                        }}
-                                                        image={sub.course.image}
-                                                        title={sub.course.name}
-                                                    />
-                                                </CSSWrapper>
-                                            );
-                                        })) ||
-                                        (data?.me?.student?.canCreateCourse?.allowed ? <AlertMessage content={t('empty.courses')} /> : '')}
-                                </CSSWrapper>
-
-                                {(data?.me?.student?.canCreateCourse?.allowed && (
+                                                                navigate(`/single-course/${sub.id}`);
+                                                            }}
+                                                            image={sub.course.image}
+                                                            title={sub.course.name}
+                                                        />
+                                                    </CSSWrapper>
+                                                );
+                                            })) ||
+                                            (data?.me?.student?.canCreateCourse?.allowed ? <AlertMessage content={t('empty.courses')} /> : '')}
+                                    </CSSWrapper>
                                     <Button
                                         marginTop={space['1']}
                                         width={ButtonContainer}
@@ -387,9 +386,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                     >
                                         {t('dashboard.helpers.buttons.course')}
                                     </Button>
-                                )) || <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`)} />}
-                            </HSection>
-                            {
+                                </HSection>
+                            )}
+                            {(data?.me?.student?.openMatchRequestCount > 0 || activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
                                     <Text marginTop={space['0.5']} marginBottom={space['1']}>
@@ -421,21 +420,19 @@ const DashboardStudent: React.FC<Props> = () => {
                                             (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('empty.matchings')} /> : '')}
                                     </CSSWrapper>
 
-                                    {(data?.me?.student?.canRequestMatch?.reason !== 'not-tutor' && data?.me?.student?.canRequestMatch?.allowed && (
-                                        <>
-                                            <Button
-                                                marginTop={space['1']}
-                                                width={ButtonContainer}
-                                                isDisabled={_dissolve.loading}
-                                                marginY={space['1']}
-                                                onPress={requestMatch}
-                                            >
-                                                {t('dashboard.helpers.buttons.requestMatch')}
-                                            </Button>
-                                        </>
-                                    )) || <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`)} />}
+                                    {data?.me?.student?.canRequestMatch?.allowed && (
+                                        <Button
+                                            marginTop={space['1']}
+                                            width={ButtonContainer}
+                                            isDisabled={_dissolve.loading}
+                                            marginY={space['1']}
+                                            onPress={requestMatch}
+                                        >
+                                            {t('dashboard.helpers.buttons.requestMatch')}
+                                        </Button>
+                                    )}
                                 </VStack>
-                            }
+                            )}
                             <VStack marginBottom={space['1.5']}>
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
                                 <CTACard
