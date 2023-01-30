@@ -91,8 +91,10 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
                         </VStack>
                         <HStack space={2} maxW={isMobile ? 200 : 'full'}>
                             {props.type === Assignment.MATCH && props.subjects?.map((subject, index) => <Tag key={`subject tag ${subject}`} text={subject} />)}
-                            {props.type === Assignment.GROUP && props.tags?.map((tag, i) => <Tag key={`tag-${i}`} text={tag.name} />)}
                         </HStack>
+                        <Row paddingTop="5px" space={space['0.5']} flexWrap="wrap" maxWidth={isMobile ? 200 : 'full'}>
+                            {props.type === Assignment.GROUP && props.tags?.map((tag, i) => <Tag key={`tag-${i}`} text={tag.name} />)}
+                        </Row>
                     </VStack>
                 </HStack>
             </Pressable>
