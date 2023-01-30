@@ -4,7 +4,7 @@ type FabProps = {
     place?: any;
     handlePress?: () => void;
 };
-const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place }) => {
+const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 50,
@@ -38,4 +38,4 @@ const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place }) => {
     );
 };
 
-export default FloatinActionButton;
+export default AddAppointmentButton;
