@@ -13,6 +13,10 @@ const appointment = {
             header: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
             noAppointments: 'Keine Termine vorhanden',
         },
+        view: {
+            addAppointment: 'Termin hinzufügen',
+            backButton: 'zur vorherigen Seite',
+        },
     },
 };
 

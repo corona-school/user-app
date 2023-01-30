@@ -1,7 +1,9 @@
 import { gql } from '@apollo/client';
-import { Box, Button, Stack } from 'native-base';
+import { Box, Button, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
-import List from './List';
+import { useTranslation } from 'react-i18next';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
 
 type Props = {
     next: () => void;
@@ -9,15 +11,29 @@ type Props = {
 };
 
 const AppointmentsView: React.FC<Props> = ({ next, back }) => {
+    const { t } = useTranslation();
+    const { isMobile } = useLayoutHelper();
+
+    const maxHeight = useBreakpointValue({
+        base: 400,
+        lg: 600,
+    });
+
+    const buttonWidth = useBreakpointValue({
+        base: '100%',
+        lg: '25%',
+    });
     return (
         <Box>
-            <Box maxH="400" flex="1" mb="10">
-                <List />
+            <Box maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isStatic={true} />
             </Box>
-            <Stack space="3">
-                <Button onPress={next}>Termin hinzufügen</Button>
-                <Button variant="outline" onPress={back}>
-                    zur vorherigen Seite
+            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
+                <Button onPress={next} width={buttonWidth}>
+                    {t('appointment.createAppointment.view.addAppointment')}
+                </Button>
+                <Button variant="outline" onPress={back} width={buttonWidth}>
+                    {t('appointment.createAppointment.view.backButton')}
                 </Button>
             </Stack>
         </Box>
