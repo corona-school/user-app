@@ -22,6 +22,7 @@
         "@types/react-dom": "^18.0.5",
         "@types/react-native": "^0.68.0",
         "@types/ua-parser-js": "^0.7.36",
+        "apollo-codegen": "^0.20.2",
         "babel-jest": "^27.4.2",
         "babel-loader": "^8.2.3",
         "babel-plugin-named-asset-import": "^0.3.8",
@@ -85,8 +86,7 @@
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1",
-        "apollo-codegen": "^0.20.2"
+        "workbox-webpack-plugin": "^6.4.1"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^6.5.14",
@@ -193,8 +193,7 @@
     "dependencies": {
         "compression": "^1.7.4",
         "express": "^4.18.2",
-        "i18next-browser-languagedetector": "^7.0.1",
-        "i18next-http-backend": "^2.1.1"
+        "i18next-browser-languagedetector": "^7.0.1"
     },
     "pre-commit": [
         "prettier"
