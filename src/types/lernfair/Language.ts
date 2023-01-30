@@ -1,91 +1,91 @@
 export type Language = {
-  key: string
-  label: string
-}
+    key: string;
+    label: string;
+};
 
 export const languages: Language[] = [
-  {
-    key: 'albanisch',
-    label: 'Albanisch'
-  },
-  {
-    key: 'arabisch',
-    label: 'Arabisch'
-  },
-  {
-    key: 'armenisch',
-    label: 'Armenisch'
-  },
-  {
-    key: 'aserbaidschanisch',
-    label: 'Aserbaidschanisch'
-  },
-  {
-    key: 'bosnisch',
-    label: 'Bosnisch'
-  },
-  {
-    key: 'bulgarisch',
-    label: 'Bulgarisch'
-  },
-  {
-    key: 'chinesisch',
-    label: 'Chinesisch'
-  },
-  {
-    key: 'deutsch',
-    label: 'Deutsch'
-  },
-  {
-    key: 'englisch',
-    label: 'Englisch'
-  },
-  {
-    key: 'franz_sisch',
-    label: 'Französisch'
-  },
-  {
-    key: 'italienisch',
-    label: 'Italienisch'
-  },
-  {
-    key: 'kasachisch',
-    label: 'Kasachisch'
-  },
-  {
-    key: 'kurdisch',
-    label: 'Kurdisch'
-  },
-  {
-    key: 'polnisch',
-    label: 'Polnisch'
-  },
-  {
-    key: 'portugiesisch',
-    label: 'Portugiesisch'
-  },
-  {
-    key: 'russisch',
-    label: 'Russisch'
-  },
-  {
-    key: 'spanisch',
-    label: 'Spanisch'
-  },
-  // {
-  //   key: 't_rkisch',
-  //   label: 'Türkisch'
-  // },
-  {
-    key: 'ukrainisch',
-    label: 'Ukrainisch'
-  },
-  {
-    key: 'vietnamesisch',
-    label: 'Vietnamesisch'
-  },
-  {
-    key: 'andere',
-    label: 'Andere'
-  }
-]
+    {
+        key: 'Albanisch',
+        label: 'Albanisch',
+    },
+    {
+        key: 'Arabisch',
+        label: 'Arabisch',
+    },
+    {
+        key: 'Armenisch',
+        label: 'Armenisch',
+    },
+    {
+        key: 'Aserbaidschanisch',
+        label: 'Aserbaidschanisch',
+    },
+    {
+        key: 'Bosnisch',
+        label: 'Bosnisch',
+    },
+    {
+        key: 'Bulgarisch',
+        label: 'Bulgarisch',
+    },
+    {
+        key: 'Chinesisch',
+        label: 'Chinesisch',
+    },
+    {
+        key: 'Deutsch',
+        label: 'Deutsch',
+    },
+    {
+        key: 'Englisch',
+        label: 'Englisch',
+    },
+    {
+        key: 'Franz_sisch',
+        label: 'Französisch',
+    },
+    {
+        key: 'Italienisch',
+        label: 'Italienisch',
+    },
+    {
+        key: 'Kasachisch',
+        label: 'Kasachisch',
+    },
+    {
+        key: 'Kurdisch',
+        label: 'Kurdisch',
+    },
+    {
+        key: 'Polnisch',
+        label: 'Polnisch',
+    },
+    {
+        key: 'Portugiesisch',
+        label: 'Portugiesisch',
+    },
+    {
+        key: 'Russisch',
+        label: 'Russisch',
+    },
+    {
+        key: 'Spanisch',
+        label: 'Spanisch',
+    },
+    // {
+    //   key: 'T_rkisch',
+    //   label: 'Türkisch'
+    // },
+    {
+        key: 'Ukrainisch',
+        label: 'Ukrainisch',
+    },
+    {
+        key: 'Vietnamesisch',
+        label: 'Vietnamesisch',
+    },
+    {
+        key: 'Andere',
+        label: 'Andere',
+    },
+];

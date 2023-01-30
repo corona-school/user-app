@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 import WithNavigation from '../../components/WithNavigation';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -107,7 +108,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     if (loading) return <CenterLoadingSpinner />;
 
     return (
-        <WithNavigation headerTitle={t('profile.SchoolClass.single.header')} showBack>
+        <WithNavigation headerTitle={t('profile.SchoolClass.single.header')} showBack headerLeft={<NotificationAlert />}>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.SchoolClass.single.title')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

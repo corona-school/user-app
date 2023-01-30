@@ -7,7 +7,7 @@ const InformationBadge = () => {
     });
 
     return (
-        <Circle rounded="full" bg="amber.700" size={4} ml={ml}>
+        <Circle rounded="full" bg="danger.100" size={4} ml={ml}>
             <Text color={'white'}>i</Text>
         </Circle>
     );
