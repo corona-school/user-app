@@ -8,9 +8,12 @@ type WeekProps = {
     lastOfMonth: boolean;
     scrollToRef?: any;
     scrollId?: number;
+    isStatic?: boolean;
 };
 
-const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId }) => {
+const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId, isStatic }) => {
+    console.log('alle Termine', appointmentsOfWeek);
+
     return (
         <Box>
             {appointmentsOfWeek &&
@@ -24,6 +27,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                             instructors={appointment.organizers}
                             participants={appointment.participants}
                             scrollToRef={appointment.id === scrollId ? scrollToRef : null}
+                            isStatic={isStatic}
                         />
                     );
                 })}

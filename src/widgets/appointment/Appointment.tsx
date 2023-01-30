@@ -4,13 +4,14 @@ import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
 type Props = {
+    key: React.Key;
     courseStart: string;
     duration: number;
     courseTitle: string;
     instructors?: Instructor[];
     participants?: Participant[];
     scrollToRef?: any;
-    key: React.Key;
+    isStatic?: boolean;
 };
 
 type Instructor = {
@@ -20,9 +21,10 @@ type Instructor = {
 
 type Participant = {
     firstname: string;
+    lastname: string;
 };
 
-const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef }) => {
+const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef, isStatic }) => {
     const isCurrent = isCourseTakingPlaceRightNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
@@ -33,13 +35,13 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
 
     const marginRef = useBreakpointValue({
         base: currentMonth ? 40 : 60,
-        lg: currentMonth ? 40 : 60,
+        lg: currentMonth ? '5px' : '100px',
     });
 
     return (
         <>
-            {scrollToRef ? (
-                <div ref={scrollToRef} key={courseStart} style={{ scrollMarginTop: marginRef }}>
+            {instructors && participants ? (
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />
@@ -49,6 +51,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
                                 isCurrentlyTakingPlace={isCurrent}
                                 instructors={instructors}
                                 participants={participants}
+                                isStatic={isStatic}
                             />
                         </HStack>
                     </Box>

@@ -9,6 +9,7 @@ type Props = {
     isCurrentlyTakingPlace: boolean;
     instructors?: Instructor[];
     participants?: Participant[];
+    isStatic?: boolean;
 };
 
 type Instructor = {
@@ -18,9 +19,10 @@ type Instructor = {
 
 type Participant = {
     firstname: string;
+    lastname: string;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isStatic }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -42,7 +44,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                             </Text>
                         </HStack>
                         <Spacer />
-                        {instructors && participants && (
+                        {!isStatic && (
                             <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                                 {instructors
                                     ?.map((i, idx) => (

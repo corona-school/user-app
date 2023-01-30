@@ -9,12 +9,16 @@ type YearProps = {
     appointmentsOfYear: Month;
     scrollToRef?: any;
     scrollId?: number;
+    isStatic?: boolean;
 };
 
-const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToRef, scrollId }) => {
+const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToRef, scrollId, isStatic }) => {
     const appointmentsForOneMonth = useMemo(() => Object.entries(appointmentsOfYear), [appointmentsOfYear]);
     const monthIndex = 0;
     const appointmentsIndex = 1;
+
+    console.log('alle Termine', appointmentsForOneMonth);
+
     return (
         <Box>
             {appointmentsForOneMonth.map((monthEntries) => {
@@ -28,6 +32,7 @@ const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToR
                         appointmentsOfMonth={appointmentInMonth}
                         scrollToRef={scrollToRef}
                         scrollId={scrollId}
+                        isStatic={isStatic}
                     />
                 );
             })}
