@@ -54,9 +54,10 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import useApollo from './hooks/useApollo';
+import Appointment from './pages/Appointment';
 
 export default function NavigatorLazy() {
-    const { sessionState, user } = useApollo();
+    const { user } = useApollo();
 
     return (
         <Routes>
@@ -262,7 +263,15 @@ export default function NavigatorLazy() {
                         <Appointments />
                     </RequireAuth>
                 }
-            />
+            ></Route>
+            <Route
+                path="/appointment/:id"
+                element={
+                    <RequireAuth>
+                        <Appointment />
+                    </RequireAuth>
+                }
+            ></Route>
 
             <Route path="/create-appointment" element={<RequireAuth>{user?.student ? <CreateAppointment /> : <Navigate to="/dashboard" />}</RequireAuth>} />
 
