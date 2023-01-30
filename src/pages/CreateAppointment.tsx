@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import AsNavigationItem from '../components/AsNavigationItem';
 import WithNavigation from '../components/WithNavigation';
 import InstructionProgress from '../widgets/InstructionProgress';
+import AddAppointment from './create-appointment/AddAppointment';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
 import AppointmentsView from './create-appointment/AppointmentsView';
 
@@ -33,6 +34,7 @@ const CreateAppointment = () => {
                     </View>
                     {currentIndex === 0 && <AppointmentAssignment next={onNext} back={onBack} />}
                     {currentIndex === 1 && <AppointmentsView next={onNext} back={onBack} />}
+                    {currentIndex === 2 && <AddAppointment />}
                 </Box>
             </WithNavigation>
         </AsNavigationItem>
