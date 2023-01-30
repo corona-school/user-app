@@ -1,11 +1,11 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { LFUser, Pupil, Student } from '../../types/lernfair/User';
+import { LFUser, Student } from '../../types/lernfair/User';
 import ParticipantBox from './AttendeeBox';
 
 type ModalProps = {
     organizers?: Student[];
-    participants?: Pupil[];
+    participants?: LFUser[];
     declinedBy?: number[];
 };
 
@@ -21,8 +21,8 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
     };
 
     const sortAttendeesByParticipation = (attendeesToSort: LFUser[], declinedAttendees: number[]) => {
-        const attendeeCanceled = attendeesToSort?.filter((attendeee) => declinedAttendees?.includes(attendeee.id));
-        const attendeesSorted = sortUserDesc(attendeesToSort || [], attendeeCanceled || []);
+        const attendeesCanceled = attendeesToSort?.filter((attendeee) => declinedAttendees?.includes(attendeee.id));
+        const attendeesSorted = sortUserDesc(attendeesToSort || [], attendeesCanceled || []);
         return attendeesSorted;
     };
 

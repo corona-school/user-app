@@ -1,8 +1,8 @@
 import { HStack, VStack, Text, Avatar } from 'native-base';
 import StudentIcon from '../../assets/icons/lernfair/avatar_student_32.svg';
 import PupilIcon from '../../assets/icons/lernfair/avatar_pupil_32.svg';
-import PupilCancel from '../../assets/icons/lernfair/avatar_pupil_cancel.svg';
-import StudentCancel from '../../assets/icons/lernfair/avatar_student_cancel.svg';
+import PupilAvatarCanceled from '../../assets/icons/lernfair/avatar_pupil_cancel.svg';
+import StudentAvatarCancelled from '../../assets/icons/lernfair/avatar_student_cancel.svg';
 import { useTranslation } from 'react-i18next';
 import { LFUserType } from '../../types/lernfair/User';
 
@@ -18,13 +18,13 @@ const AttendeeBox: React.FC<BoxProps> = ({ name, userType, declined }) => {
     const getUserIcon = (userType: LFUserType) => {
         if (userType === 'student') {
             if (declined) {
-                return <StudentCancel />;
+                return <StudentAvatarCancelled />;
             } else {
                 return <StudentIcon />;
             }
         } else if (userType === 'pupil') {
             if (declined) {
-                return <PupilCancel />;
+                return <PupilAvatarCanceled />;
             } else {
                 return <PupilIcon />;
             }
