@@ -2,6 +2,7 @@ import { Box, Card, HStack, VStack, Text, Avatar, Button, Heading, useBreakpoint
 import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
+import { Pressable } from 'react-native';
 
 type Props = {
     timeDescriptionText: string;
@@ -10,6 +11,7 @@ type Props = {
     instructors?: Instructor[];
     participants?: Participant[];
     isStatic?: boolean;
+    onPress?: () => void;
 };
 
 type Instructor = {
@@ -22,61 +24,65 @@ type Participant = {
     lastname: string;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isStatic }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isStatic, onPress }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
     });
 
+    console.log('is Static? ', courseTitle, ' ', isStatic);
+
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <VStack>
-                    <HStack alignItems={'center'}>
-                        <HStack>
-                            {isCurrentlyTakingPlace && (
-                                <Box mr={2}>
-                                    <WarningIcon />
-                                </Box>
-                            )}
-                            <Text fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {timeDescriptionText}
-                            </Text>
-                        </HStack>
-                        <Spacer />
-                        {!isStatic && (
-                            <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
-                                {instructors
-                                    ?.map((i, idx) => (
-                                        <Avatar key={i.lastname + '-' + idx}>
-                                            <StudentAvatar style={{ marginTop: '-1' }} />
-                                        </Avatar>
-                                    ))
-                                    .concat(
-                                        participants?.map((p, index) => (
-                                            <Avatar key={p.firstname + '-' + index}>
-                                                <PupilAvatar style={{ marginTop: '-1' }} />
+                <Pressable disabled={isStatic} onPress={onPress}>
+                    <VStack>
+                        <HStack alignItems={'center'}>
+                            <HStack>
+                                {isCurrentlyTakingPlace && (
+                                    <Box mr={2}>
+                                        <WarningIcon />
+                                    </Box>
+                                )}
+                                <Text fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                    {timeDescriptionText}
+                                </Text>
+                            </HStack>
+                            <Spacer />
+                            {!isStatic && (
+                                <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
+                                    {instructors
+                                        ?.map((i, idx) => (
+                                            <Avatar key={i.lastname + '-' + idx}>
+                                                <StudentAvatar style={{ marginTop: '-1' }} />
                                             </Avatar>
-                                        )) ?? []
-                                    )}
-                            </Avatar.Group>
-                        )}
-                    </HStack>
-                    <Box>
-                        <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                            {courseTitle}
-                        </Heading>
+                                        ))
+                                        .concat(
+                                            participants?.map((p, index) => (
+                                                <Avatar key={p.firstname + '-' + index}>
+                                                    <PupilAvatar style={{ marginTop: '-1' }} />
+                                                </Avatar>
+                                            )) ?? []
+                                        )}
+                                </Avatar.Group>
+                            )}
+                        </HStack>
+                        <Box>
+                            <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                {courseTitle}
+                            </Heading>
 
-                        <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                            {instructors
-                                ?.map((instructor) => {
-                                    return `${instructor.firstname} ${instructor.lastname}`;
-                                })
-                                .join(', ')}
-                        </Text>
-                    </Box>
-                    {isCurrentlyTakingPlace && <Button mt={2}>Videochat beitreten</Button>}
-                </VStack>
+                            <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                {instructors
+                                    ?.map((instructor) => {
+                                        return `${instructor.firstname} ${instructor.lastname}`;
+                                    })
+                                    .join(', ')}
+                            </Text>
+                        </Box>
+                        {isCurrentlyTakingPlace && <Button mt={2}>Videochat beitreten</Button>}
+                    </VStack>
+                </Pressable>
             </Card>
         </Box>
     );

@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import Card from '../../components/Card';
 import CollapsibleContent from '../../components/CollapsibleContent';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import { LFCertificate } from '../../types/lernfair/Certificate';
 import AppointmentCard from '../../widgets/AppointmentCard';
@@ -102,7 +103,7 @@ const CertificateList: React.FC = () => {
     }, [certificateType, navigate]);
 
     return (
-        <WithNavigation headerLeft={<BackButton />}>
+        <WithNavigation showBack headerLeft={<NotificationAlert />}>
             {/* {!certificate.uuid && <Text>Fehler beim Laden des Zertifikates</Text>} */}
 
             {(certificate.uuid || true) && (

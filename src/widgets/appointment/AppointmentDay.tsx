@@ -1,10 +1,10 @@
-import { Box, HStack, useBreakpointValue } from 'native-base';
-import { getCourseTimeText, isCourseTakingPlaceRightNow, isCurrentMonth } from '../../helper/appointment-helper';
+import { Box, HStack, useBreakpointValue, VStack } from 'native-base';
+import { getCourseTimeText, isCourseNow, isCurrentMonth } from '../../helper/appointment-helper';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
 type Props = {
-    key: React.Key;
+    first: boolean;
     courseStart: string;
     duration: number;
     courseTitle: string;
@@ -12,6 +12,7 @@ type Props = {
     participants?: Participant[];
     scrollToRef?: any;
     isStatic?: boolean;
+    onPress: () => void;
 };
 
 type Instructor = {
@@ -24,8 +25,8 @@ type Participant = {
     lastname: string;
 };
 
-const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, instructors, participants, scrollToRef, isStatic }) => {
-    const isCurrent = isCourseTakingPlaceRightNow(courseStart, duration);
+const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, isStatic, onPress }) => {
+    const isCurrent = isCourseNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
     const width = useBreakpointValue({
@@ -35,7 +36,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
 
     const marginRef = useBreakpointValue({
         base: currentMonth ? 40 : 60,
-        lg: currentMonth ? '5px' : '100px',
+        lg: currentMonth ? 40 : 60,
     });
 
     return (
@@ -52,6 +53,7 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
                                 instructors={instructors}
                                 participants={participants}
                                 isStatic={isStatic}
+                                onPress={onPress}
                             />
                         </HStack>
                     </Box>
@@ -72,4 +74,4 @@ const Appointment: React.FC<Props> = ({ courseStart, duration, courseTitle, inst
     );
 };
 
-export default Appointment;
+export default AppointmentDay;

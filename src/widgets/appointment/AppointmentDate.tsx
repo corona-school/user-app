@@ -1,4 +1,4 @@
-import { VStack, Text, Box } from 'native-base';
+import { Text, Box } from 'native-base';
 import { useCallback } from 'react';
 import { getCourseDay } from '../../helper/appointment-helper';
 
@@ -12,14 +12,12 @@ const AppointmentDate: React.FC<Props> = ({ current, date }) => {
     }, [date]);
 
     return (
-        <VStack mr={3}>
-            <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5}>
-                <Text fontSize="xs">{day().courseDay}.</Text>
-                <Text fontSize="md" bold>
-                    {day().courseDateDay}
-                </Text>
-            </Box>
-        </VStack>
+        <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center">
+            <Text fontSize="xs">{day().courseDay}.</Text>
+            <Text fontSize="md" bold>
+                {day().courseDateDay}
+            </Text>
+        </Box>
     );
 };
 

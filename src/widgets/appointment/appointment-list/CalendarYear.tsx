@@ -17,8 +17,6 @@ const CalendarYear: React.FC<YearProps> = ({ year, appointmentsOfYear, scrollToR
     const monthIndex = 0;
     const appointmentsIndex = 1;
 
-    console.log('alle Termine', appointmentsForOneMonth);
-
     return (
         <Box>
             {appointmentsForOneMonth.map((monthEntries) => {
