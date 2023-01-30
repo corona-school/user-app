@@ -1,12 +1,40 @@
 import { Box, useBreakpointValue } from 'native-base';
-import appointments from './dummy/appointments';
+import appointments, { getAppointmentsForMonth } from './dummy/appointments';
 import CalendarYear from './CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
 
+// const appointmentsQuery = gql(`
+// query appointment($id: Int!) {
+//    appointment(id: $id) {
+//         id
+// 		title,
+//         organizers {
+//             firstname,
+//             lastname
+//         },
+//         startDate,
+//         duration,
+//         meetingLink
+//         subcourseId,
+//         participants {
+//             firstname,
+//             lastname
+//         },
+//         declinedBy {
+//             id
+//         },
+//         isCancelled,
+//         appointmentType
+//   }
+// }
+// `);
+
 const AppointmentList: React.FC = () => {
     const currentCourseRef = useRef<HTMLElement>(null);
     // TODO change to data from BE
+    // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
+    // const monthAppointments = getAppointmentsForMonth(appointments)
     const allAppointments = appointments.monthAppointments;
 
     const handleScroll = (element: HTMLElement) => {

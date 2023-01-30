@@ -1,23 +1,32 @@
 export type AppointmentType = {
     id: number;
     title: string;
-    organizers: {
-        firstname: string;
-        lastname: string;
-    }[];
+    organizers: Attendee[];
     startDate: string;
     duration: number;
     meetingLink: string;
     subcourseId: number;
-    lectureId: number;
-    participants: {
-        firstname: string;
-        lastname: string;
-    }[];
+    participants: Attendee[];
     declinedBy: { id: number }[];
     isCancelled: boolean;
     appointmentType: string;
 };
+
+export type Course = {
+    name: string;
+    description: string;
+};
+
+export type Attendee = {
+    firstname: string;
+    lastname: string;
+};
+
+export enum AppointmentTypes {
+    GROUP = 'GROUP',
+    ONE_TO_ONE = 'ONE_TO_ONE',
+    TRAINING = 'TRAINING',
+}
 
 export type CalendarDates = {
     [year: number]: {

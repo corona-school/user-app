@@ -1,5 +1,10 @@
 import { State } from './State';
 
+export enum UserType {
+    STUDENT = 'student',
+    PUPIL = 'pupil',
+}
+
 export type LFUserType = string | 'pupil' | 'student';
 
 export type LFPupil = {
