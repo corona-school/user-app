@@ -20,7 +20,7 @@ const Appointments: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
-    const fabPlace = useBreakpointValue({
+    const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
         lg: 'top-right',
     });
@@ -29,7 +29,7 @@ const Appointments: React.FC = () => {
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
-                {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={fabPlace} />}
+                {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
                     <AppointmentList isStatic={false} />
                 </VStack>

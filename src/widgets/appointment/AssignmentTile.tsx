@@ -80,8 +80,11 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
                             {props.type === Assignment.GROUP && (
                                 <Text>
                                     {props.startDate
-                                        ? `${DateTime.fromISO(props.startDate).setLocale('de').toFormat('Ab DD • t')} Uhr`
-                                        : t('appointment.createAppointment.noAppointments')}
+                                        ? t('appointment.createAppointment.assignment.date', {
+                                              date: DateTime.fromISO(props.startDate).toFormat('dd.MM.yy'),
+                                              time: DateTime.fromISO(props.startDate).toFormat('HH:mm'),
+                                          })
+                                        : t('appointment.createAppointment.assignment.noAppointments')}
                                 </Text>
                             )}
                             {props.type === Assignment.MATCH && <Text>{props.schooltype && `${props.schooltype} • ${props.grade}`}</Text>}

@@ -74,30 +74,23 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
         [data?.me?.student?.subcoursesInstructing]
     );
 
+    // sorted courses should come from BE
     const subcoursesToShow = useMemo(() => {
         if (!publishedSubcourses) return [];
 
         const sortedCourses: LFSubCourse[] = publishedSubcourses.sort((a: LFSubCourse, b: LFSubCourse) => {
-            const aLecture = a.firstLecture;
-            const bLecture = b.firstLecture;
-
-            if (!bLecture) return -1;
-            if (!aLecture) return 1;
-
-            const aDate = DateTime.fromISO(aLecture.start).toMillis();
-            const bDate = DateTime.fromISO(bLecture.start).toMillis();
-
-            if (aDate < DateTime.now().toMillis()) return 1;
-            if (bDate < DateTime.now().toMillis()) return 1;
-
-            if (aDate === bDate) return 0;
-            return aDate > bDate ? 1 : -1;
+            if (!b.firstLecture) return -1;
+            if (!a.firstLecture) return 1;
+            const aInMillis = DateTime.fromISO(a.firstLecture.start).toMillis();
+            const bInMillis = DateTime.fromISO(b.firstLecture.start).toMillis();
+            return aInMillis - bInMillis;
         });
 
         const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
         const coursesWitoutLectures = sortedCourses.filter((course) => course.lectures.length === 0);
         let coursesNewerThanThirtyDays: LFSubCourse[] = coursesWithLectures;
 
+        // should be done in BE
         for (const course of coursesWithLectures) {
             const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
             const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;
@@ -118,17 +111,17 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
             <Tabs
                 tabs={[
                     {
-                        title: 'Einzel',
+                        title: t('appointment.createAppointment.assignment.oneToOneTitle'),
                         content: (
                             <VStack space="4">
                                 {loading ? (
                                     <CenterLoadingSpinner />
                                 ) : (
                                     activeMatches &&
-                                    activeMatches.map((match: LFMatch, index: number) => {
+                                    activeMatches.map((match: LFMatch) => {
                                         return (
                                             <AssignmentTile
-                                                key={`match ${index}`}
+                                                key={match.id}
                                                 type={Assignment.MATCH}
                                                 schooltype={match?.pupil?.schooltype}
                                                 grade={match?.pupil?.grade}
@@ -143,19 +136,19 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                         ),
                     },
                     {
-                        title: 'Gruppe',
+                        title: t('appointment.createAppointment.assignment.group'),
                         content: (
                             <VStack space="4">
                                 {loading ? (
                                     <CenterLoadingSpinner />
                                 ) : (
                                     subcoursesToShow.length > 0 &&
-                                    subcoursesToShow.map((subcourse: LFSubCourse, index: number) => {
+                                    subcoursesToShow.map((subcourse: LFSubCourse) => {
                                         const first = subcourse.firstLecture;
                                         if (!first)
                                             return (
                                                 <AssignmentTile
-                                                    key={`no-appointments-${index}`}
+                                                    key={subcourse.id}
                                                     type={Assignment.GROUP}
                                                     courseTitle={subcourse.course.name}
                                                     tags={subcourse.course.tags}
@@ -165,7 +158,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                             );
                                         return (
                                             <AssignmentTile
-                                                key={`course-${index}`}
+                                                key={subcourse.id}
                                                 type={Assignment.GROUP}
                                                 startDate={first.start}
                                                 courseTitle={subcourse.course.name}

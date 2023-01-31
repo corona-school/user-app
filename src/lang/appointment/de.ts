@@ -11,6 +11,9 @@ const appointment = {
     createAppointment: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
         noAppointments: 'Keine Termine vorhanden',
+        oneToOneTitle: 'Einzel',
+        group: 'Gruppe',
+        date: 'Ab {{date}} • {{time}} Uhr',
         addAppointmentButton: 'Termin hinzufügen',
         backButton: 'zur vorherigen Seite',
         lecture: 'Lektion',

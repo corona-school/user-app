@@ -53,12 +53,9 @@ import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
-import useApollo from './hooks/useApollo';
 import Appointment from './pages/Appointment';
 
 export default function NavigatorLazy() {
-    const { user } = useApollo();
-
     return (
         <Routes>
             {/* Public */}
@@ -273,7 +270,14 @@ export default function NavigatorLazy() {
                 }
             ></Route>
 
-            <Route path="/create-appointment" element={<RequireAuth>{user?.student ? <CreateAppointment /> : <Navigate to="/dashboard" />}</RequireAuth>} />
+            <Route
+                path="/create-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateAppointment />} />
+                    </RequireAuth>
+                }
+            />
 
             <Route
                 path="/matching"
