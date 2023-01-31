@@ -113,7 +113,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
     return (
         <Box>
             <Box py={6}>
-                <Text>{t('appointment.createAppointment.assignment.header')}</Text>
+                <Text>{t('appointment.createAppointment.assignmentHeader')}</Text>
             </Box>
             <Tabs
                 tabs={[

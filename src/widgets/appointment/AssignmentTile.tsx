@@ -81,7 +81,7 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
                                 <Text>
                                     {props.startDate
                                         ? `${DateTime.fromISO(props.startDate).setLocale('de').toFormat('Ab DD • t')} Uhr`
-                                        : t('appointment.createAppointment.assignment.noAppointments')}
+                                        : t('appointment.createAppointment.noAppointments')}
                                 </Text>
                             )}
                             {props.type === Assignment.MATCH && <Text>{props.schooltype && `${props.schooltype} • ${props.grade}`}</Text>}

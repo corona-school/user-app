@@ -13,23 +13,25 @@ const AddAppointment: React.FC = () => {
         <Box width="100%">
             <Stack space={3}>
                 <FormControl>
-                    <FormControl.Label>Titel</FormControl.Label>
+                    <FormControl.Label>{t('appointment.createAppointment.titleLabel')}</FormControl.Label>
                     <InputSuffix />
-                    <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>Textfeld darf nicht leer sein</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                        {t('appointment.createAppointment.emptyFieldError')}
+                    </FormControl.ErrorMessage>
                 </FormControl>
 
                 <FormControl>
-                    <FormControl.Label>Datum</FormControl.Label>
+                    <FormControl.Label>{t('appointment.createAppointment.dateLabel')}</FormControl.Label>
                     <DatePicker />
                 </FormControl>
 
                 <FormControl>
-                    <FormControl.Label>Uhrzeit</FormControl.Label>
+                    <FormControl.Label>{t('appointment.createAppointment.timeLabel')}</FormControl.Label>
                     <DatePicker type="time" />
                 </FormControl>
 
                 <FormControl>
-                    <FormControl.Label>Dauer</FormControl.Label>
+                    <FormControl.Label>{t('appointment.createAppointment.durationLabel')}</FormControl.Label>
                     <Select>
                         <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
                         <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
@@ -43,11 +45,11 @@ const AddAppointment: React.FC = () => {
                 </FormControl>
 
                 <FormControl>
-                    <FormControl.Label>Beschreibung (optional)</FormControl.Label>
-                    <TextArea placeholder="Das ist eine Beschreibung" autoCompleteType={'normal'} />
+                    <FormControl.Label>{t('appointment.createAppointment.descriptionLabel')}</FormControl.Label>
+                    <TextArea placeholder={t('appointment.createAppointment.descriptionPlaceholder')} autoCompleteType={'normal'} />
                 </FormControl>
                 <Checkbox _checked={{ backgroundColor: 'danger.900' }} value="weekly" onChange={() => setWeekly(!weekly)}>
-                    wöchentlich wiederholen...
+                    {t('appointment.createAppointment.weeklyRepeat')}
                 </Checkbox>
             </Stack>
             {weekly && <AddAppointmentWeekly />}
