@@ -61,7 +61,7 @@ const course = {
             header: 'Kurs erstellen',
             title: 'Die Gruppenkurse',
             firstContent:
-                'Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+                'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
             here: 'hier',
             secContent: 'Mehr Informationen zur Gruppennachhilfe findest du',
             thrContent: 'auf unserer Webseite.',
@@ -96,7 +96,7 @@ const course = {
     CourseDate: {
         tabs: {
             course: 'Kurs',
-            appointments: 'Termine',
+            appointments: 'Termin(e)',
             checker: 'Angaben prüfen',
         },
         headline: 'Allgemeine Informationen zu deinem Kurs',
@@ -110,7 +110,7 @@ const course = {
             shortDescriptionLabel: 'Kurzbeschreibung',
             shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …',
             descriptionLabel: 'Beschreibung',
-            descriptionPlaceholder: 'Präziserer Angaben um was es in deinem Kurs geht …',
+            descriptionPlaceholder: 'Präzisere Angaben um was es in deinem Kurs geht …',
             tagsLabel: 'Tags',
             tagsPlaceholder: 'Damit dein Kurs besser gefunden wird',
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',

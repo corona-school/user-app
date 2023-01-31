@@ -364,7 +364,7 @@ const Dashboard: React.FC<Props> = () => {
                                                                     <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
                                                                         {t('dashboard.helpers.buttons.solveMatch')}
                                                                     </Button>
-                                                                )) || <AlertMessage content={t('matching.request.check.resoloveMatch')} />
+                                                                )) || <AlertMessage content={t('matching.request.check.resolveMatch')} />
                                                             }
                                                             contactMail={match?.studentEmail}
                                                             meetingId={match?.uuid}

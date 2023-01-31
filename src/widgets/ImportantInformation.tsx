@@ -129,7 +129,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
     if (pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending')
         infos.push({
-            label: 'interestconformation',
+            label: 'interestconfirmation',
             btnfn: [confirmInterest, refuseInterest],
             lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
         });

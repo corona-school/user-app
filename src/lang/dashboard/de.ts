@@ -53,7 +53,6 @@ const dashboard = {
     },
     helpers: {
         headlines: {
-            newOffer: 'Neues Angebot',
             course: 'Meine Kurse',
             importantNews: 'Wichtige Meldungen',
             myLearningPartner: 'Meine Lernpartner:innen',
@@ -62,7 +61,6 @@ const dashboard = {
             recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
         },
         contents: {
-            newOffer: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
             recommendFriends:
                 'Du stehst hinter der Mission von Lern-Fair für mehr Bildungsgerechtigkeit in Deutschland? Dann erzähle deinen Freunden von Lern-Fair und lass uns gemeinsam noch mehr benachteiligten Kindern und Jugendlichen helfen.',
         },

@@ -3,7 +3,7 @@ const matching = {
         header: '1:1-Lernunterstützung',
         title: 'Unterstützung anfragen',
         firstContent:
-            'Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+            'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
         headlineContent: 'Wichtig',
         contentBox1: 'Da es bei der 1:1-Lernunterstützung zu',
         contentBox2: 'langen Wartezeiten von 3-6 Monaten',
@@ -12,19 +12,6 @@ const matching = {
         ctaCardHeader: 'Gruppen-Lernunterstützung',
         ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
         ctaCardButton: 'Zu den Gruppenkursen',
-    },
-    modal: {
-        header: 'Unterstützung anfragen',
-        content:
-            'Mit unserem Angebot möchten wir vor allem Schüler:innen erreichen, die herkömmliche Nachhilfe aufgrund persönlicher, sozialer, kultureller oder finanzieller Ressourcen nicht oder nur sehr schwer wahrnehmen können. Bitte fordere nur dann eine:n neue:n Lernpartner:in an, wenn du keine andere Möglichkeit hast, Hilfe zu erhalten.',
-        important: 'Wichtig',
-        firstContent: 'Da es bei der 1:1 Lernunterstützung zu langen',
-        middleContentBold: 'Wartezeiten von 3 - 6 Monaten',
-        lastContent: 'kommen kann, bieten wir zusätzlich Gruppen-Lernunterstützung an.',
-        buttons: {
-            continue: 'Weiter',
-            showGroupCourse: 'Zu den Gruppenkursen',
-        },
     },
     pending: {
         header: 'Dein Match',
@@ -84,9 +71,9 @@ const matching = {
             dissolve: 'Match auflösen',
         },
         check: {
-            header: '1:1 Lernunterstützung',
+            header: '1:1-Lernunterstützung',
             title: 'Match anfordern',
-            content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',
+            content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
             contentHeadline: 'Wichtig',
             contenHeadlineContent: 'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
             personalDataHeadline: 'Persönliche Daten',
@@ -112,7 +99,8 @@ const matching = {
             cancel: 'Abbrechen',
             subjects: 'Fächer:',
             noMatches: 'Du hast keine Matches',
-            resoloveMatch: 'Das Match wurde aufgelöst',
+            noRequests: 'Wir suchen gerade nicht nach einem:r neuen Lernpartner:in für dich.',
+            resolveMatch: 'Das Match wurde aufgelöst',
             preview: {
                 title: 'Angaben prüfen',
                 content: 'Bitte überprüfe deine Angaben noch einmal, bevor du dein Match anforderst.',
@@ -214,7 +202,7 @@ const matching = {
     status: { dissolved: 'Das Match wurde aufgelöst.' },
     student: {
         title: 'Match anfordern',
-        text: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen die individuelle Hilfe benötigen.',
+        text: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
         hint: 'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
         personalData: {
             title: 'Persönliche Daten',

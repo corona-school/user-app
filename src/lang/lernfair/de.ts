@@ -94,17 +94,17 @@ const lernfair = {
         'grade-to-high': {
             coursetext: 'Anmeldung derzeit nicht möglich.',
         },
-        proposals: 'Es wurden keine Vorschläge für dich gefunden.',
+        proposals: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',
         'max-requests': {
             course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-            matching: 'Du hast bereits die maximale Anzahl an Matchinganfragen erreicht',
+            matching: 'Du hast bereits die maximale Anzahl an offenen Anfragen erreicht.',
         },
         'not-participant': {
             coursetext: 'Du bist nicht für Gruppenkurse freigeschaltet',
         },
         'max-matches': {
             course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-            matching: 'Du hast bereits die maximale Anzahl an Matchings erreicht',
+            matching: 'Du bist bereits Teil eines Lernpaares und kannst daher kein weiteres beantragen.',
         },
         'not-instructor': {
             course: 'Du bist leider nicht als Tutor verifiziert.',
@@ -114,10 +114,10 @@ const lernfair = {
             course: 'Es wurden keine Kurse gefunden.',
         },
         'not-tutee': {
-            matching: 'Du bist nicht für das Matching zugelassen.',
+            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die 1:1-Lernunterstützung registriert bist.',
         },
         'not-tutor': {
-            matching: 'Du bist nicht für das Matching zugelassen.',
+            matching: 'Du bist noch nicht für das Matching zugelassen.',
         },
         undefined: {
             matching: 'Es wurden keine Matchings gefunden.',

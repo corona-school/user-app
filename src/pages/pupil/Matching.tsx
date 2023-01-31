@@ -208,7 +208,7 @@ const Matching: React.FC<Props> = () => {
                                                                     subjects={data?.me?.pupil?.subjectsFormatted}
                                                                     onEditRequest={() => setShowEditModal(true)}
                                                                 />
-                                                            ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequests')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
