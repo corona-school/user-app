@@ -1,15 +1,15 @@
 import { HStack, VStack, Text, Avatar } from 'native-base';
-import StudentIcon from '../assets/icons/lernfair/avatar_student_32.svg';
-import PupilIcon from '../assets/icons/lernfair/avatar_pupil_32.svg';
-import PupilAvatarCanceled from '../assets/icons/lernfair/avatar_pupil_cancel.svg';
-import StudentAvatarCancelled from '../assets/icons/lernfair/avatar_student_cancel.svg';
+import StudentIcon from '../../assets/icons/lernfair/avatar_student_32.svg';
+import PupilIcon from '../../assets/icons/lernfair/avatar_pupil_32.svg';
+import PupilAvatarCanceled from '../../assets/icons/lernfair/avatar_pupil_cancel.svg';
+import StudentAvatarCancelled from '../../assets/icons/lernfair/avatar_student_cancel.svg';
 import { useTranslation } from 'react-i18next';
-import { LFUserType } from '../types/lernfair/User';
+import { AttendanceStatus, LFUserType } from '../../types/lernfair/User';
 
 type BoxProps = {
     name: string;
     userType: LFUserType;
-    declined?: boolean;
+    declined?: AttendanceStatus;
 };
 
 const AttendeeBox: React.FC<BoxProps> = ({ name, userType, declined }) => {
@@ -17,17 +17,9 @@ const AttendeeBox: React.FC<BoxProps> = ({ name, userType, declined }) => {
 
     const getUserIcon = (userType: LFUserType) => {
         if (userType === 'student') {
-            if (declined) {
-                return <StudentAvatarCancelled />;
-            } else {
-                return <StudentIcon />;
-            }
+            return declined === AttendanceStatus.DECLINED ? <StudentAvatarCancelled /> : <StudentIcon />;
         } else if (userType === 'pupil') {
-            if (declined) {
-                return <PupilAvatarCanceled />;
-            } else {
-                return <PupilIcon />;
-            }
+            return declined === AttendanceStatus.DECLINED ? <PupilAvatarCanceled /> : <PupilIcon />;
         }
     };
 
@@ -42,7 +34,7 @@ const AttendeeBox: React.FC<BoxProps> = ({ name, userType, declined }) => {
                         {name}
                     </Text>
                     <Text fontSize="xs" fontWeight="light" ellipsizeMode="tail" numberOfLines={1} color="white">
-                        {userType === 'student' ? t('appointments.attendeesModal.helper') : t('appointments.attendeesModal.pupil')}
+                        {userType === 'student' ? t('appointment.attendeesModal.helper') : t('appointment.attendeesModal.pupil')}
                     </Text>
                 </VStack>
             </HStack>

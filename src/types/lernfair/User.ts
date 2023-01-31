@@ -5,6 +5,11 @@ export enum UserType {
     PUPIL = 'pupil',
 }
 
+export enum AttendanceStatus {
+    ACCEPTED = 'accepted',
+    DECLINED = 'declined',
+}
+
 export type LFUserType = string | 'pupil' | 'student';
 
 export type LFPupil = {
@@ -19,18 +24,34 @@ export type LFStudent = {
     lastname: string;
 };
 
-export type Pupil = {
-    id: number;
+export interface Attendee {
+    appointmentId: number;
+    status: AttendanceStatus;
+}
+
+export interface ParticipantPupil extends Attendee {
+    pupilId: number;
     firstname: string;
     lastname: string;
     isPupil: true;
-};
+}
 
-export type Student = {
-    id: number;
+export interface ParticipantStudent extends Attendee {
+    studentId: number;
     firstname: string;
     lastname: string;
     isStudent: true;
-};
+}
 
-export type LFUser = Pupil | Student;
+export interface ParticipantScreener extends Attendee {
+    screenerId: number;
+}
+
+export interface Organizer extends Attendee {
+    studentId: number;
+    firstname: string;
+    lastname: string;
+    isStudent: true;
+}
+
+export type Participant = ParticipantPupil | ParticipantStudent;

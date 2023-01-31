@@ -1,35 +1,19 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { LFUser, Student } from '../types/lernfair/User';
-import ParticipantBox from './AttendeeBox';
+import { Organizer, Participant } from '../types/lernfair/User';
+import AttendeeBox from '../components/appointment/AttendeeBox';
 
 type ModalProps = {
-    organizers?: Student[];
-    participants?: LFUser[];
-    declinedBy?: number[];
+    organizers?: Organizer[];
+    participants?: Participant[];
 };
 
-const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy }) => {
+const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants }) => {
     const { t } = useTranslation();
 
-    const sortUserDesc = (toSort: LFUser[], sortBy: LFUser[]) => {
-        return toSort.sort((a, b) => {
-            if (sortBy?.includes(a)) return 1;
-            if (sortBy?.includes(b)) return -1;
-            return 0;
-        });
-    };
-
-    const sortAttendeesByParticipation = (attendeesToSort: LFUser[], declinedAttendees: number[]) => {
-        const attendeesCanceled = attendeesToSort?.filter((attendeee) => declinedAttendees?.includes(attendeee.id));
-        const attendeesSorted = sortUserDesc(attendeesToSort || [], attendeesCanceled || []);
-        return attendeesSorted;
-    };
-
-    const organizersSorted = sortAttendeesByParticipation(organizers || [], declinedBy || []);
-    const participantsSorted = sortAttendeesByParticipation(participants || [], declinedBy || []);
-
+    // will get sorted organizers and participants from BE,
     // TODO add <Modal> to AppointmentList: Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)} + const [showModal, setShowModal] = useState<boolean>(true);
+
     return (
         <>
             <Modal.Content width="350" marginX="auto" background="primary.900">
@@ -37,26 +21,32 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                 <Modal.Body background="primary.900">
                     <Box>
                         <Text color="white" py="4">
-                            {t('appointments.attendeesModal.title')}
+                            {t('appointment.attendeesModal.title')}
                         </Text>
                     </Box>
                     <Box maxH="380">
                         <ScrollView>
                             <Box mt="2">
-                                {organizersSorted?.map((organizer) => {
-                                    const declined = declinedBy?.includes(organizer.id);
+                                {organizers?.map((organizer) => {
                                     const userType = 'isStudent' in organizer ? 'student' : 'pupil';
-                                    return <ParticipantBox name={`${organizer.firstname} ${organizer.lastname}`} userType={userType} declined={declined} />;
+                                    return (
+                                        <AttendeeBox name={`${organizer.firstname} ${organizer.lastname}`} userType={userType} declined={organizer.status} />
+                                    );
                                 })}
-                                {participantsSorted?.map((participant) => {
-                                    const declined = declinedBy?.includes(participant.id);
+                                {participants?.map((participant) => {
                                     const userType = 'isStudent' in participant ? 'student' : 'pupil';
-                                    return <ParticipantBox name={`${participant.firstname} ${participant.lastname}`} userType={userType} declined={declined} />;
+                                    return (
+                                        <AttendeeBox
+                                            name={`${participant.firstname} ${participant.lastname}`}
+                                            userType={userType}
+                                            declined={participant.status}
+                                        />
+                                    );
                                 })}
                             </Box>
                         </ScrollView>
                         <Button mt="2" onPress={() => console.log('close')}>
-                            {t('appointments.attendeesModal.closeButton')}
+                            {t('appointment.attendeesModal.closeButton')}
                         </Button>
                     </Box>
                 </Modal.Body>

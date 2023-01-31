@@ -25,6 +25,12 @@ const appointment = {
         editButton: 'Termin bearbeiten',
         canceledToast: 'Termin wurde abgesagt',
     },
+    attendeesModal: {
+        title: 'Teilnehmer:innen',
+        closeButton: 'Schließen',
+        helper: 'Helfer:in',
+        pupil: 'Schüler:in',
+    },
 };
 
 export default appointment;
