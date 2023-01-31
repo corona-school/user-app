@@ -18,7 +18,7 @@ const appointment = {
         dateLabel: 'Datum',
         timeLabel: 'Uhrzeit',
         durationLabel: 'Dauer',
-        desriptionLabel: 'Beschreibung (optional)',
+        descriptionLabel: 'Beschreibung (optional)',
         descriptionPlaceholder: 'Das ist eine Beschreibung',
         inputPlaceholder: 'z.B. Thema XYZ',
         weeklyRepeat: 'wöchentlich wiederholen...',

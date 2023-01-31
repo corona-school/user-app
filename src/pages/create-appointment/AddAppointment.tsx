@@ -9,12 +9,14 @@ const AddAppointment: React.FC = () => {
     const [weekly, setWeekly] = useState<boolean>(false);
     const { t } = useTranslation();
 
+    const appointments = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+
     return (
         <Box width="100%">
             <Stack space={3}>
                 <FormControl>
                     <FormControl.Label>{t('appointment.createAppointment.titleLabel')}</FormControl.Label>
-                    <InputSuffix />
+                    <InputSuffix appointmentLength={appointments.length} />
                     <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                         {t('appointment.createAppointment.emptyFieldError')}
                     </FormControl.ErrorMessage>
@@ -52,7 +54,7 @@ const AddAppointment: React.FC = () => {
                     {t('appointment.createAppointment.weeklyRepeat')}
                 </Checkbox>
             </Stack>
-            {weekly && <AddAppointmentWeekly />}
+            {weekly && <AddAppointmentWeekly length={appointments.length} />}
         </Box>
     );
 };

@@ -1,21 +1,21 @@
-import { Input, InputGroup, InputLeftAddon, Text } from 'native-base';
+import { Box, Input, InputGroup, InputLeftAddon, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
-const InputSuffix: React.FC = () => {
+type InputProps = {
+    appointmentLength: number;
+};
+const InputSuffix: React.FC<InputProps> = ({ appointmentLength }) => {
     const { t } = useTranslation();
-    const appointments = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
-
-    console.log(appointments.length);
 
     return (
-        <>
+        <Box width="full">
             <InputGroup width="full">
                 <InputLeftAddon borderColor="primary.100">
-                    <Text>{t('appointment.createAppointment.lecture')} #1</Text>
+                    <Text>{t('appointment.createAppointment.lecture') + ` #${appointmentLength + 1}`}</Text>
                 </InputLeftAddon>
-                <Input borderBottomRightRadius={5} borderTopRightRadius={5} placeholder={t('appointment.createAppointment.inputPlaceholder')} />
+                <Input width="85%" borderBottomRightRadius={5} borderTopRightRadius={5} placeholder={t('appointment.createAppointment.inputPlaceholder')} />
             </InputGroup>
-        </>
+        </Box>
     );
 };
 
