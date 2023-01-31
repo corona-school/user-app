@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { isCourseTakingPlaceRightNow } from '../../../helper/appointment-helper';
+import { isCourseNow } from '../../../helper/appointment-helper';
 import { AppointmentType, CalendarDates } from '../../../types/lernfair/Appointment';
 import { pupilsAppointments } from './testdata';
 
@@ -22,13 +22,14 @@ const sortAppointments = (): AppointmentType[] => {
 };
 const sortedAppointments = sortAppointments();
 
-const getAppointmentsForMonth = () => {
+export const getAppointmentsForMonth = (appointments: AppointmentType[]) => {
     const dates: CalendarDates = {};
 
-    for (let appointment of sortedAppointments) {
-        let year = DateTime.fromISO(appointment.startDate).year;
-        let month = DateTime.fromISO(appointment.startDate).month;
-        let week = DateTime.fromISO(appointment.startDate).weekNumber;
+    for (let appointment of appointments) {
+        const date = DateTime.fromISO(appointment.startDate);
+        let year = date.year;
+        let month = date.month;
+        let week = date.weekNumber;
         if (!dates[year]) {
             dates[year] = {};
         }
@@ -42,7 +43,7 @@ const getAppointmentsForMonth = () => {
     }
     return dates;
 };
-const monthAppointments = getAppointmentsForMonth();
+const monthAppointments = getAppointmentsForMonth(sortedAppointments);
 
 const findNextCourse = (appointments: AppointmentType[]) => {
     const now = DateTime.now();
@@ -51,7 +52,7 @@ const findNextCourse = (appointments: AppointmentType[]) => {
 };
 
 const findCurrentCourse = (appointments: AppointmentType[]) => {
-    const current = appointments.find((appointment) => isCourseTakingPlaceRightNow(appointment.startDate, appointment.duration));
+    const current = appointments.find((appointment) => isCourseNow(appointment.startDate, appointment.duration));
     return current?.id;
 };
 

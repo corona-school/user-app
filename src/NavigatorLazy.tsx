@@ -52,6 +52,7 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import Appointment from './pages/Appointment';
 
 export default function NavigatorLazy() {
     return (
@@ -258,7 +259,15 @@ export default function NavigatorLazy() {
                         <Appointments />
                     </RequireAuth>
                 }
-            />
+            ></Route>
+            <Route
+                path="/appointment/:id"
+                element={
+                    <RequireAuth>
+                        <Appointment />
+                    </RequireAuth>
+                }
+            ></Route>
 
             <Route
                 path="/matching"

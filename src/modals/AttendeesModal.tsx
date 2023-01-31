@@ -1,6 +1,6 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { LFUser, Student } from '../../types/lernfair/User';
+import { LFUser, Student } from '../types/lernfair/User';
 import ParticipantBox from './AttendeeBox';
 
 type ModalProps = {
