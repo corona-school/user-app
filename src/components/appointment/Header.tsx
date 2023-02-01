@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) =
             <VStack space={2}>
                 <Text color="primary.600" fontWeight="normal">
                     {t(
-                        appointmentType === AppointmentTypes.GROUP ? 'appointment.appointmentDetail.group' : 'appointment.appointmentDetail.oneToOne',
+                        appointmentType === AppointmentTypes.GROUP ? 'appointment.detail.group' : 'appointment.detail.oneToOne',
 
                         {
                             instructor: organizers?.map((o) => o.firstname + ' ' + o.lastname).join(', '),
@@ -23,11 +23,11 @@ const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) =
                     )}
                 </Text>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
-                    {t('appointment.appointmentDetail.appointmentTitle', { appointmentTitle: title })}
+                    {t('appointment.detail.appointmentTitle', { appointmentTitle: title })}
                 </Heading>
                 {appointmentType === AppointmentTypes.GROUP && (
                     <Text color="primary.600" fontWeight="normal">
-                        {t('appointment.appointmentDetail.courseTitle', { courseTitle: title })}
+                        {t('appointment.detail.courseTitle', { courseTitle: title })}
                     </Text>
                 )}
             </VStack>

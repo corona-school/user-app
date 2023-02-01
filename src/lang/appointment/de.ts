@@ -8,10 +8,13 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
-    createAppointment: {
+    create: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
         noAppointments: 'Keine Termine vorhanden',
         oneToOneTitle: 'Einzel',
+        assignmentProgress: 'Zuordnung wählen',
+        appointmentViewProgress: 'Termine einsehen',
+        appointmentAdd: 'Termin hinzufügen',
         group: 'Gruppe',
         date: 'Ab {{date}} • {{time}} Uhr',
         addAppointmentButton: 'Termin hinzufügen',
@@ -27,7 +30,7 @@ const appointment = {
         weeklyRepeat: 'wöchentlich wiederholen...',
         emptyFieldError: 'Textfeld darf nicht leer sein',
     },
-    appointmentDetail: {
+    detail: {
         group: 'Gruppentermin mit {{instructor}}',
         oneToOne: 'Einzeltermin mit {{instructor}}',
         without: 'Termin mit {{instructor}}',

@@ -106,12 +106,12 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
     return (
         <Box>
             <Box py={6}>
-                <Text>{t('appointment.createAppointment.assignmentHeader')}</Text>
+                <Text>{t('appointment.create.assignmentHeader')}</Text>
             </Box>
             <Tabs
                 tabs={[
                     {
-                        title: t('appointment.createAppointment.assignment.oneToOneTitle'),
+                        title: t('appointment.create.oneToOneTitle'),
                         content: (
                             <VStack space="4">
                                 {loading ? (
@@ -136,7 +136,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                         ),
                     },
                     {
-                        title: t('appointment.createAppointment.assignment.group'),
+                        title: t('appointment.create.group'),
                         content: (
                             <VStack space="4">
                                 {loading ? (

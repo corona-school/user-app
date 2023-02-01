@@ -26,7 +26,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     });
 
     const cancelAppointment = useCallback(() => {
-        toast.show({ description: t('appointment.appointmentDetail.canceledToast'), placement: 'top' });
+        toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
         // TODO mutation: declinedBy.push(participant)
     }, []);

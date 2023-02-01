@@ -30,10 +30,10 @@ const AppointmentsView: React.FC<Props> = ({ next, back }) => {
             </Box>
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                 <Button onPress={next} width={buttonWidth}>
-                    {t('appointment.createAppointment.addAppointmentButton')}
+                    {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} width={buttonWidth}>
-                    {t('appointment.createAppointment.backButton')}
+                    {t('appointment.create.backButton')}
                 </Button>
             </Stack>
         </Box>

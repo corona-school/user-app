@@ -15,12 +15,9 @@ const Description: React.FC<AvatarsProps> = ({ appointmentType, courseName, cour
             <Divider thickness="0.25" my={5} />
             <VStack p={3}>
                 <Text color="primary.900" mb="2">
-                    {t(
-                        appointmentType === AppointmentTypes.GROUP
-                            ? 'appointment.appointmentDetail.courseDescriptionHeader'
-                            : 'appointment.appointmentDetail.desciptionHeader',
-                        { courseTitle: courseName }
-                    )}
+                    {t(appointmentType === AppointmentTypes.GROUP ? 'appointment.detail.courseDescriptionHeader' : 'appointment.detail.desciptionHeader', {
+                        courseTitle: courseName,
+                    })}
                 </Text>
                 <Text color="primary.600" fontWeight="normal">
                     {appointmentType === AppointmentTypes.GROUP ? courseDescription : 'Hier kommt die appointment description.'}
