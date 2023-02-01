@@ -11,14 +11,12 @@ const CreateAppointment = () => {
     const [courseId, setCourseId] = useState<number>();
 
     const onNext = useCallback(() => {
-        if (currentIndex >= 3) {
-            return;
-        } else {
-            setCurrentIndex((prev) => prev + 1);
-        }
+        if (currentIndex >= 3) return;
+        setCurrentIndex((prev) => prev + 1);
     }, [currentIndex]);
 
     const onBack = useCallback(() => {
+        if (currentIndex === 0) return;
         setCurrentIndex((prev) => prev - 1);
     }, []);
 
