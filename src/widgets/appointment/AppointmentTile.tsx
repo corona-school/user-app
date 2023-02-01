@@ -30,8 +30,6 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
         lg: '90%',
     });
 
-    console.log('is Static? ', courseTitle, ' ', isStatic);
-
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">

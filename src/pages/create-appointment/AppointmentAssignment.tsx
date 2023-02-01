@@ -12,7 +12,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { Assignment } from '../../types/lernfair/Appointment';
 
 type AssignmentProps = {
-    next: () => void;
+    next: (id?: number) => void;
     back: () => void;
 };
 
@@ -166,6 +166,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                         return (
                                             <AssignmentTile
                                                 key={`course-${index}`}
+                                                courseId={subcourse.id}
                                                 type={Assignment.GROUP}
                                                 startDate={first.start}
                                                 courseTitle={subcourse.course.name}

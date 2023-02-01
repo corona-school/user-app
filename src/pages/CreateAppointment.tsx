@@ -8,6 +8,7 @@ import AppointmentsView from './create-appointment/AppointmentsView';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [courseId, setCourseId] = useState<number>();
 
     const onNext = useCallback(() => {
         if (currentIndex >= 3) {
@@ -21,18 +22,23 @@ const CreateAppointment = () => {
         setCurrentIndex((prev) => prev - 1);
     }, []);
 
+    const onStepOne = (id?: number) => {
+        if (id) setCourseId(id);
+        onNext();
+    };
+
     return (
         <AsNavigationItem path="create-appointments">
             <WithNavigation>
-                <Box width={'90%'} mx="4">
+                <Box mx="4">
                     <View position="sticky" mb="10" overflow="hidden">
                         <InstructionProgress
                             currentIndex={currentIndex}
                             instructions={[{ label: 'Zuordnung wählen' }, { label: 'Termine einsehen' }, { label: 'Termin hinzufügen' }]}
                         />
                     </View>
-                    {currentIndex === 0 && <AppointmentAssignment next={onNext} back={onBack} />}
-                    {currentIndex === 1 && <AppointmentsView next={onNext} back={onBack} />}
+                    {currentIndex === 0 && <AppointmentAssignment next={onStepOne} back={onBack} />}
+                    {currentIndex === 1 && <AppointmentsView courseId={courseId} next={onNext} back={onBack} />}
                 </Box>
             </WithNavigation>
         </AsNavigationItem>

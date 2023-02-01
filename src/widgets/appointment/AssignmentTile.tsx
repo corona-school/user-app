@@ -9,7 +9,8 @@ import { LFPupil } from '../../types/lernfair/User';
 import CourseTrafficLamp from '../CourseTrafficLamp';
 
 type BaseProps = {
-    next: () => void;
+    next: (id?: number) => void;
+    courseId?: number;
 };
 
 interface GroupTileProps extends BaseProps {
@@ -47,7 +48,7 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
 
     return (
         <Box>
-            <Pressable onPress={props.next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={() => props.next(props.courseId)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         {props.type === Assignment.GROUP ? (
