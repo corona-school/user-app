@@ -240,7 +240,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                     })
                                                                 }
                                                             />
-                                                        ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                        ))) || <AlertMessage content={t('matching.request.check.noRequests')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
