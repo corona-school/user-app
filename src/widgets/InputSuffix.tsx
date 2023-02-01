@@ -1,21 +1,30 @@
-import { Box, Input, InputGroup, InputLeftAddon, Text } from 'native-base';
+import { Input, InputGroup, InputLeftAddon, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 type InputProps = {
     appointmentLength: number;
+    handleInput?: (e: any) => void;
 };
-const InputSuffix: React.FC<InputProps> = ({ appointmentLength }) => {
+
+const InputSuffix: React.FC<InputProps> = ({ appointmentLength, handleInput }) => {
     const { t } = useTranslation();
+    const { isMobile } = useLayoutHelper();
 
     return (
-        <Box width="full">
-            <InputGroup width="full">
-                <InputLeftAddon borderColor="primary.100">
-                    <Text>{t('appointment.createAppointment.lecture') + ` #${appointmentLength + 1}`}</Text>
-                </InputLeftAddon>
-                <Input width="85%" borderBottomRightRadius={5} borderTopRightRadius={5} placeholder={t('appointment.createAppointment.inputPlaceholder')} />
-            </InputGroup>
-        </Box>
+        <InputGroup>
+            <InputLeftAddon borderColor="primary.100" width={isMobile ? '30%' : '25%'} alignItems="start">
+                <Text>{t('appointment.create.lecture') + ` #${appointmentLength + 1}`}</Text>
+            </InputLeftAddon>
+            <Input
+                name="title"
+                width={isMobile ? '70%' : '75%'}
+                onChange={handleInput}
+                borderBottomRightRadius={5}
+                borderTopRightRadius={5}
+                placeholder={t('appointment.create.inputPlaceholder')}
+            />
+        </InputGroup>
     );
 };
 

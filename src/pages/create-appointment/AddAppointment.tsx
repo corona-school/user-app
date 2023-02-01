@@ -1,60 +1,42 @@
-import { Box, Checkbox, FormControl, Select, Stack, TextArea, WarningTwoIcon } from 'native-base';
+import { Box, Button, Checkbox, Stack, useBreakpointValue } from 'native-base';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DatePicker from '../../components/DatePicker';
-import InputSuffix from '../../widgets/InputSuffix';
-import AddAppointmentWeekly from './AddAppointmentWeekly';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import RepeatWeekly from './RepeatWeekly';
+import Form from './Form';
 
-const AddAppointment: React.FC = () => {
+type AddProps = {
+    next: () => void;
+    back: () => void;
+};
+
+const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
     const [weekly, setWeekly] = useState<boolean>(false);
     const { t } = useTranslation();
+    const { isMobile } = useLayoutHelper();
 
-    const appointments = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+    const buttonWidth = useBreakpointValue({
+        base: '100%',
+        lg: '20%',
+    });
 
     return (
-        <Box width="100%">
-            <Stack space={3}>
-                <FormControl>
-                    <FormControl.Label>{t('appointment.createAppointment.titleLabel')}</FormControl.Label>
-                    <InputSuffix appointmentLength={appointments.length} />
-                    <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                        {t('appointment.createAppointment.emptyFieldError')}
-                    </FormControl.ErrorMessage>
-                </FormControl>
-
-                <FormControl>
-                    <FormControl.Label>{t('appointment.createAppointment.dateLabel')}</FormControl.Label>
-                    <DatePicker />
-                </FormControl>
-
-                <FormControl>
-                    <FormControl.Label>{t('appointment.createAppointment.timeLabel')}</FormControl.Label>
-                    <DatePicker type="time" />
-                </FormControl>
-
-                <FormControl>
-                    <FormControl.Label>{t('appointment.createAppointment.durationLabel')}</FormControl.Label>
-                    <Select>
-                        <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
-                        <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
-                        <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
-                        <Select.Item value="60" label={t('course.selectOptions._1hour')} />
-                        <Select.Item value="90" label={t('course.selectOptions._90minutes')} />
-                        <Select.Item value="120" label={t('course.selectOptions._2hour')} />
-                        <Select.Item value="180" label={t('course.selectOptions._3hour')} />
-                        <Select.Item value="240" label={t('course.selectOptions._4hour')} />
-                    </Select>
-                </FormControl>
-
-                <FormControl>
-                    <FormControl.Label>{t('appointment.createAppointment.descriptionLabel')}</FormControl.Label>
-                    <TextArea placeholder={t('appointment.createAppointment.descriptionPlaceholder')} autoCompleteType={'normal'} />
-                </FormControl>
+        <Box>
+            <Form />
+            <Box py="8">
                 <Checkbox _checked={{ backgroundColor: 'danger.900' }} value="weekly" onChange={() => setWeekly(!weekly)}>
-                    {t('appointment.createAppointment.weeklyRepeat')}
+                    {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
+            </Box>
+            {weekly && <RepeatWeekly length={5} />}
+            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3} mt="3">
+                <Button onPress={() => console.log('create appointment/s')} width={buttonWidth}>
+                    {t('appointment.create.addAppointmentButton')}
+                </Button>
+                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
+                    {t('appointment.create.backButton')}
+                </Button>
             </Stack>
-            {weekly && <AddAppointmentWeekly length={appointments.length} />}
         </Box>
     );
 };
