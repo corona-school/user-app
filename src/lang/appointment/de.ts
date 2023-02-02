@@ -8,6 +8,15 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
+    createAppointment: {
+        assignment: {
+            header: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
+            noAppointments: 'Keine Termine vorhanden',
+            oneToOneTitle: 'Einzel',
+            group: 'Gruppe',
+            date: 'Ab {{date}} • {{time}} Uhr',
+        },
+    },
     appointmentDetail: {
         group: 'Gruppentermin mit {{instructor}}',
         oneToOne: 'Einzeltermin mit {{instructor}}',

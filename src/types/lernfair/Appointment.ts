@@ -47,3 +47,8 @@ export type Month = {
 export type Week = {
     [week: number]: AppointmentType[];
 };
+
+export enum Assignment {
+    GROUP = 'Subcourse',
+    MATCH = 'Match',
+}
