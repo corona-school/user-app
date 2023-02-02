@@ -12,24 +12,25 @@ type Props = {
     back: () => void;
 };
 
-const query = gql`
-    query lectures($courseId: Int!) {
-        subcourse(subcourseId: $courseId) {
-            lectures {
-                id
-                start
-                duration
-            }
-        }
-    }
-`;
+// const query = gql`
+//     query lectures($courseId: Int!) {
+//         subcourse(subcourseId: $courseId) {
+//             lectures {
+//                 id
+//                 start
+//                 duration
+//             }
+//         }
+//     }
+// `;
 
 const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-    const { data, loading, error } = useQuery(query, {
-        variables: { courseId },
-    });
+    // TODO get data from BE
+    // const { data, loading, error } = useQuery(query, {
+    //     variables: { courseId },
+    // });
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -44,13 +45,13 @@ const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     // TODO add empty state from upcoming story
     return (
         <Box>
-            {loading && <CenterLoadingSpinner />}
+            {/* {loading && <CenterLoadingSpinner />} */}
             {/* {!data && <Text>KEINE DATEN</Text>} */}
-            {!error && data && (
-                <Box maxH={maxHeight} flex="1" mb="10">
-                    <AppointmentList appointments={data} isStatic={true} />
-                </Box>
-            )}
+            {/* {!error && data && ( */}
+            <Box maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isStatic={true} />
+            </Box>
+            {/* )} */}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                 <Button onPress={next} width={buttonWidth}>
                     {t('appointment.createAppointment.view.addAppointment')}
