@@ -16,9 +16,12 @@ const CreateAppointment = () => {
     }, [currentIndex]);
 
     const onBack = useCallback(() => {
-        if (currentIndex === 0) return;
         setCurrentIndex((prev) => prev - 1);
     }, []);
+
+    const skipStepTwo = useCallback(() => {
+        setCurrentIndex((prev) => prev + 2);
+    }, [currentIndex]);
 
     const onStepOne = (id?: number) => {
         if (id) setCourseId(id);
@@ -29,13 +32,13 @@ const CreateAppointment = () => {
         <AsNavigationItem path="create-appointments">
             <WithNavigation>
                 <Box mx="4">
-                    <View position="sticky" mb="10" overflow="hidden">
+                    <View position="sticky" mb={2} overflow="hidden">
                         <InstructionProgress
                             currentIndex={currentIndex}
                             instructions={[{ label: 'Zuordnung wählen' }, { label: 'Termine einsehen' }, { label: 'Termin hinzufügen' }]}
                         />
                     </View>
-                    {currentIndex === 0 && <AppointmentAssignment next={onStepOne} back={onBack} />}
+                    {currentIndex === 0 && <AppointmentAssignment next={onStepOne} skipStepTwo={skipStepTwo} />}
                     {currentIndex === 1 && <AppointmentsView courseId={courseId} next={onNext} back={onBack} />}
                 </Box>
             </WithNavigation>
