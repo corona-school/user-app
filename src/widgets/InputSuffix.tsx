@@ -23,6 +23,7 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentLength, handleInput }) =
                 borderBottomRightRadius={5}
                 borderTopRightRadius={5}
                 placeholder={t('appointment.create.inputPlaceholder')}
+                _light={{ placeholderTextColor: 'primary.500' }}
             />
         </InputGroup>
     );
