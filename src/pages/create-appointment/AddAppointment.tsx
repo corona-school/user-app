@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import RepeatWeekly from './RepeatWeekly';
 import Form from './Form';
+import { useCreateAppointments } from '../../hooks/useCreateAppointment';
 
 type AddProps = {
     next: () => void;
@@ -15,10 +16,17 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
+    const { newAppointment } = useCreateAppointments();
+
     const buttonWidth = useBreakpointValue({
         base: '100%',
         lg: '20%',
     });
+
+    const handleCreateAppointment = () => {
+        // TODO mutation with newAppointments
+        console.log('create appointment/s', newAppointment);
+    };
 
     return (
         <Box>
@@ -29,8 +37,8 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
                 </Checkbox>
             </Box>
             {weekly && <RepeatWeekly length={5} />}
-            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3} mt="3">
-                <Button onPress={() => console.log('create appointment/s')} width={buttonWidth}>
+            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3} my="3">
+                <Button onPress={handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>

@@ -1,24 +1,36 @@
-import { Box, FormControl, HStack, Select, Stack, TextArea, VStack, WarningTwoIcon } from 'native-base';
-import { useReducer } from 'react';
+import { DateTime } from 'luxon';
+import { Box, FormControl, HStack, Select, TextArea, VStack, WarningTwoIcon } from 'native-base';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
+import { useCreateAppointments } from '../../hooks/useCreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 
-type FormProps = {};
-const reducer = (appointment: any, newData: any) => {
-    console.log('REDUCER: appointment', appointment, 'new Data', newData);
-    return {
-        ...newData,
+const Form: React.FC = () => {
+    const [date, setDate] = useState<string>('');
+    const [time, setTime] = useState<string>('');
+    const { newAppointment, setNewAppoinment } = useCreateAppointments();
+
+    const convertStart = () => {
+        let start: string;
+        const dt = DateTime.fromISO(date);
+        const t = DateTime.fromISO(time);
+
+        const newDate = dt.set({
+            hour: t.hour,
+            minute: t.minute,
+            second: t.second,
+        });
+        start = newDate.toISO();
+        return start;
     };
-};
-const Form: React.FC<FormProps> = ({}) => {
-    const [appointmentData, setAppointmentData] = useReducer(reducer, {});
+
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
     const handleInput = (e: any) => {
-        setAppointmentData({ title: e.target.value });
+        setNewAppoinment({ ...newAppointment, title: e.target.value });
     };
 
     return (
@@ -35,21 +47,23 @@ const Form: React.FC<FormProps> = ({}) => {
                     {/* DATE */}
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker onChange={(e) => setAppointmentData({ ...appointmentData, start: e.target.value })} />
+                        {/* onChange={(e) => setNewAppoinment({ ...newAppointment, start: `${e.target.value}T` })} */}
+                        <DatePicker onChange={(e) => setDate(e.target.value)} />
                     </FormControl>
 
                     {/* TIME */}
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
-                            <DatePicker type="time" onChange={(e) => setAppointmentData({ ...appointmentData, time: e.target.value })} />
+                            {/* onChange={(e) => setNewAppoinment({ ...newAppointment, start: newAppointment.start + `${e.target.value}Z` }) */}
+                            <DatePicker type="time" onChange={(e) => setTime(e.target.value)} />
                         </Box>
                     </FormControl>
 
                     {/* DURATION */}
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
-                        <Select onValueChange={(e) => setAppointmentData({ ...appointmentData, duration: e })}>
+                        <Select onValueChange={(e) => setNewAppoinment({ ...newAppointment, duration: e })}>
                             <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
                             <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
                             <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
@@ -65,7 +79,7 @@ const Form: React.FC<FormProps> = ({}) => {
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                         <TextArea
-                            onChangeText={(e) => setAppointmentData({ ...appointmentData, description: e })}
+                            onChangeText={(e) => setNewAppoinment({ ...newAppointment, description: e })}
                             placeholder={t('appointment.create.descriptionPlaceholder')}
                             autoCompleteType={'normal'}
                             h="100"
@@ -88,7 +102,7 @@ const Form: React.FC<FormProps> = ({}) => {
                         <FormControl>
                             <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                             <Box width="full">
-                                <DatePicker type="time" onChange={(e) => setAppointmentData({ ...appointmentData, time: e.target.value })} />
+                                <DatePicker type="time" onChange={(e) => setNewAppoinment({ ...newAppointment, time: e.target.value })} />
                             </Box>
                         </FormControl>
 
@@ -96,7 +110,7 @@ const Form: React.FC<FormProps> = ({}) => {
                         <FormControl>
                             <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                             <TextArea
-                                onChangeText={(e) => setAppointmentData({ ...appointmentData, description: e })}
+                                onChangeText={(e) => setNewAppoinment({ ...newAppointment, description: e })}
                                 placeholder={t('appointment.create.descriptionPlaceholder')}
                                 autoCompleteType={'normal'}
                                 h="100"
@@ -107,13 +121,13 @@ const Form: React.FC<FormProps> = ({}) => {
                         {/* DATE */}
                         <FormControl>
                             <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                            <DatePicker onChange={(e) => setAppointmentData({ ...appointmentData, start: e.target.value })} />
+                            <DatePicker onChange={(e) => setNewAppoinment({ ...newAppointment, start: e.target.value })} />
                         </FormControl>
 
                         {/* DURATION */}
                         <FormControl>
                             <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
-                            <Select onValueChange={(e) => setAppointmentData({ ...appointmentData, duration: e })}>
+                            <Select onValueChange={(e) => setNewAppoinment({ ...newAppointment, duration: e })}>
                                 <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
                                 <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
                                 <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
