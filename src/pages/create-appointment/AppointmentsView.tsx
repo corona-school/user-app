@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Box, Button, Stack, Text, useBreakpointValue } from 'native-base';
-import React from 'react';
+import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
@@ -12,25 +11,86 @@ type Props = {
     back: () => void;
 };
 
-// const query = gql`
-//     query lectures($courseId: Int!) {
-//         subcourse(subcourseId: $courseId) {
+// query myappointments {
+//     me {
+//       student {
+//         subcoursesInstructing {
+//             id
 //             lectures {
+//               id
+//               title
+//               description
+//               start
+//               duration
+//               meetingLink
+//               subcourseId
+//               matchId
+//               appointmentType
+//               organizers {
+//                 firstname
+//                 lastname
+//               }
+//               appointment_participant_pupil {
 //                 id
-//                 start
-//                 duration
+//                 firstname
+//                 lastname
+//                 isPupil
+//                 declined
+//               }
+//               appointment_participant_student {
+//                 id
+//                 firstname
+//                 lastname
+//                 isStudent
+//                 declined
+//               }
+//               appointment_participant_screener {
+//                 id
+//                 firstname
+//                 lastname
+//                 declined
+//               }
 //             }
+//               course{
+//             name
+//           }
 //         }
+//       }
 //     }
-// `;
+//   }
+
+const query = gql`
+    query lectures($courseId: Int!) {
+        subcourse(subcourseId: $courseId) {
+            id
+            course {
+                name
+            }
+            instructors {
+                firstname
+                lastname
+            }
+            participants {
+                id
+            }
+            participantsCount
+            lectures {
+                id
+                start
+                duration
+            }
+        }
+    }
+`;
 
 const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-    // TODO get data from BE
-    // const { data, loading, error } = useQuery(query, {
-    //     variables: { courseId },
-    // });
+
+    // TODO query appointments in calendar dates format
+    const { data, loading, error } = useQuery(query, {
+        variables: { courseId },
+    });
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -45,13 +105,12 @@ const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     // TODO add empty state from upcoming story
     return (
         <Box>
-            {/* {loading && <CenterLoadingSpinner />} */}
-            {/* {!data && <Text>KEINE DATEN</Text>} */}
-            {/* {!error && data && ( */}
-            <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isStatic={true} />
-            </Box>
-            {/* )} */}
+            {loading && <CenterLoadingSpinner />}
+            {!error && data && (
+                <Box maxH={maxHeight} flex="1" mb="10">
+                    <AppointmentList isStatic={true} />
+                </Box>
+            )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                 <Button onPress={next} width={buttonWidth}>
                     {t('appointment.createAppointment.view.addAppointment')}

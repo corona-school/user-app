@@ -34,14 +34,9 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
         lg: '100%',
     });
 
-    const marginRef = useBreakpointValue({
-        base: currentMonth ? 40 : 60,
-        lg: currentMonth ? 40 : 60,
-    });
-
     return (
         <>
-            {instructors && participants ? (
+            {!isStatic ? (
                 <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
                     <Box w={width} mt={3}>
                         <HStack>
@@ -59,16 +54,18 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                     </Box>
                 </div>
             ) : (
-                <Box w={width} mt={3}>
-                    <HStack>
-                        <AppointmentDate current={isCurrent} date={courseStart} />
-                        <AppointmentTile
-                            timeDescriptionText={getCourseTimeText(courseStart, duration)}
-                            courseTitle={courseTitle}
-                            isCurrentlyTakingPlace={isCurrent}
-                        />
-                    </HStack>
-                </Box>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
+                    <Box w={width} mt={3}>
+                        <HStack>
+                            <AppointmentDate current={isCurrent} date={courseStart} />
+                            <AppointmentTile
+                                timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                                courseTitle={courseTitle}
+                                isCurrentlyTakingPlace={isCurrent}
+                            />
+                        </HStack>
+                    </Box>
+                </div>
             )}
         </>
     );
