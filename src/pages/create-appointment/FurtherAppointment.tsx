@@ -1,4 +1,4 @@
-import { Divider, FormControl, HStack, Stack, TextArea, VStack, WarningTwoIcon } from 'native-base';
+import { Divider, FormControl, HStack, TextArea, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import AppointmentDate from '../../widgets/appointment/AppointmentDate';
@@ -16,12 +16,15 @@ const FurtherAppointment: React.FC<WeeklyProps> = ({ length }) => {
 
     const { newAppointment, setNewAppoinment } = useCreateAppointments();
 
+    const handleInput = (e: any) => {
+        setNewAppoinment({ ...newAppointment, weekly: [{ title: e.target.value }] });
+    };
     return (
         <HStack space={3}>
             <AppointmentDate current={false} date={'2023-02-07T15:00:00Z'} />
             <VStack space={3} width={isMobile ? '75%' : '45%'}>
                 <FormControl>
-                    <InputSuffix appointmentLength={length + 1} />
+                    <InputSuffix appointmentLength={length + 1} handleInput={handleInput} />
                     <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>{t('appointment.create.emptyFieldError')}</FormControl.ErrorMessage>
                 </FormControl>
                 <FormControl>

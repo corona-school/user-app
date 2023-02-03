@@ -1,4 +1,4 @@
-import { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react';
+import { createContext, Dispatch, ReactNode, useContext, useReducer, useState } from 'react';
 
 export enum AppointmentType {
     GROUP = 'group',
@@ -27,11 +27,14 @@ type CreateAppointmentContext = {
     newAppointment: CreateAppointment;
     weeklyAppointment?: WeeklyAppointment[];
     setNewAppoinment: Dispatch<any>;
+    setWeeklyAppointment: Dispatch<any>;
 };
 
 export const CreateAppointmentContext = createContext<CreateAppointmentContext>({
     newAppointment: {},
+    weeklyAppointment: [],
     setNewAppoinment: () => undefined,
+    setWeeklyAppointment: () => undefined,
 });
 
 const appointmentReducer = (appointment: any, newAppointment: CreateAppointment) => {
@@ -49,8 +52,13 @@ const appointmentReducer = (appointment: any, newAppointment: CreateAppointment)
 
 export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [newAppointment, setNewAppoinment] = useReducer(appointmentReducer, {});
+    const [weeklyAppointment, setWeeklyAppointment] = useState<WeeklyAppointment[]>([]);
 
-    return <CreateAppointmentContext.Provider value={{ newAppointment, setNewAppoinment }}>{children}</CreateAppointmentContext.Provider>;
+    return (
+        <CreateAppointmentContext.Provider value={{ newAppointment, weeklyAppointment, setNewAppoinment, setWeeklyAppointment }}>
+            {children}
+        </CreateAppointmentContext.Provider>
+    );
 };
 
 export const useCreateAppointments = () => {

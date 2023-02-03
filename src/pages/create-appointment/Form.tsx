@@ -1,6 +1,4 @@
-import { DateTime } from 'luxon';
 import { Box, FormControl, HStack, Select, TextArea, VStack, WarningTwoIcon } from 'native-base';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import { useCreateAppointments } from '../../hooks/useCreateAppointment';
@@ -8,23 +6,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 
 const Form: React.FC = () => {
-    const [date, setDate] = useState<string>('');
-    const [time, setTime] = useState<string>('');
     const { newAppointment, setNewAppoinment } = useCreateAppointments();
-
-    const convertStart = () => {
-        let start: string;
-        const dt = DateTime.fromISO(date);
-        const t = DateTime.fromISO(time);
-
-        const newDate = dt.set({
-            hour: t.hour,
-            minute: t.minute,
-            second: t.second,
-        });
-        start = newDate.toISO();
-        return start;
-    };
 
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -47,16 +29,17 @@ const Form: React.FC = () => {
                     {/* DATE */}
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        {/* onChange={(e) => setNewAppoinment({ ...newAppointment, start: `${e.target.value}T` })} */}
-                        <DatePicker onChange={(e) => setDate(e.target.value)} />
+                        <DatePicker onChange={(e) => setNewAppoinment({ ...newAppointment, start: `${e.target.value}T` })} />
                     </FormControl>
 
                     {/* TIME */}
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
-                            {/* onChange={(e) => setNewAppoinment({ ...newAppointment, start: newAppointment.start + `${e.target.value}Z` }) */}
-                            <DatePicker type="time" onChange={(e) => setTime(e.target.value)} />
+                            <DatePicker
+                                type="time"
+                                onChange={(e) => setNewAppoinment({ ...newAppointment, start: newAppointment.start + `${e.target.value}:00Z` })}
+                            />
                         </Box>
                     </FormControl>
 
@@ -79,8 +62,10 @@ const Form: React.FC = () => {
                     <FormControl>
                         <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                         <TextArea
+                            value={newAppointment.description}
                             onChangeText={(e) => setNewAppoinment({ ...newAppointment, description: e })}
                             placeholder={t('appointment.create.descriptionPlaceholder')}
+                            _light={{ placeholderTextColor: 'primary.500' }}
                             autoCompleteType={'normal'}
                             h="100"
                         />
@@ -111,7 +96,7 @@ const Form: React.FC = () => {
                             <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                             <TextArea
                                 onChangeText={(e) => setNewAppoinment({ ...newAppointment, description: e })}
-                                placeholder={t('appointment.create.descriptionPlaceholder')}
+                                _light={{ placeholderTextColor: 'primary.500' }}
                                 autoCompleteType={'normal'}
                                 h="100"
                             />

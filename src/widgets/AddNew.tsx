@@ -1,4 +1,5 @@
-import { Button, HStack, Box } from 'native-base';
+import { Button, HStack } from 'native-base';
+import { useCreateAppointments } from '../hooks/useCreateAppointment';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import AppointmentDate from './appointment/AppointmentDate';
 
@@ -7,6 +8,7 @@ type ButtonProps = {
 };
 const AddNew: React.FC<ButtonProps> = ({ length }) => {
     const { isMobile } = useLayoutHelper();
+    const { setWeeklyAppointment } = useCreateAppointments();
 
     return (
         <HStack space={3}>
@@ -18,7 +20,7 @@ const AddNew: React.FC<ButtonProps> = ({ length }) => {
                 borderColor="primary.500"
                 _text={{ color: 'primary.500' }}
                 width={isMobile ? '86%' : '45%'}
-                onPress={() => console.log('neuer wöchentlicher Termin')}
+                onPress={() => setWeeklyAppointment((prev: any) => [...prev, { time: '', duration: '', date: '' }])}
             >
                 {`Lektion #${length + 1} hinzufügen`}
             </Button>

@@ -6,6 +6,11 @@ import RepeatWeekly from './RepeatWeekly';
 import Form from './Form';
 import { useCreateAppointments } from '../../hooks/useCreateAppointment';
 
+export type StartDate = {
+    date: string;
+    time: string;
+};
+
 type AddProps = {
     next: () => void;
     back: () => void;

@@ -56,11 +56,11 @@ const GroupTile: React.FC<GroupTileProps> = ({ imageURL, tags, startDate, course
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             <Text>
                                 {startDate
-                                    ? t('appointment.createAppointment.assignment.date', {
+                                    ? t('appointment.create.date', {
                                           date: DateTime.fromISO(startDate).toFormat('dd.MM.yy'),
                                           time: DateTime.fromISO(startDate).toFormat('HH:mm'),
                                       })
-                                    : t('appointment.createAppointment.assignment.noAppointments')}
+                                    : t('appointment.create.noAppointments')}
                             </Text>
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {courseTitle}
