@@ -17,7 +17,7 @@ interface GroupTileProps extends BaseProps {
     type: Assignment.GROUP;
     imageURL?: string;
     tags?: LFTag[];
-    startDate?: string;
+    start?: string;
     courseTitle: string;
     courseStatus: TrafficStatus;
 }
@@ -80,8 +80,8 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             {props.type === Assignment.GROUP && (
                                 <Text>
-                                    {props.startDate
-                                        ? `${DateTime.fromISO(props.startDate).setLocale('de').toFormat('Ab DD • t')} Uhr`
+                                    {props.start
+                                        ? `${DateTime.fromISO(props.start).setLocale('de').toFormat('Ab DD • t')} Uhr`
                                         : t('appointment.createAppointment.assignment.noAppointments')}
                                 </Text>
                             )}
