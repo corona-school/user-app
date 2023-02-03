@@ -1,6 +1,5 @@
 import { Box, Text, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
-import AssignmentTile from '../../widgets/appointment/AssignmentTile';
 import { gql, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
@@ -9,7 +8,8 @@ import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { Assignment } from '../../types/lernfair/Appointment';
+import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
+import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
 
 type AssignmentProps = {
     next: () => void;
@@ -120,9 +120,8 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                     activeMatches &&
                                     activeMatches.map((match: LFMatch) => {
                                         return (
-                                            <AssignmentTile
+                                            <MatchTile
                                                 key={match.id}
-                                                type={Assignment.MATCH}
                                                 schooltype={match?.pupil?.schooltype}
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
@@ -145,22 +144,10 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                     subcoursesToShow.length > 0 &&
                                     subcoursesToShow.map((subcourse: LFSubCourse) => {
                                         const first = subcourse.firstLecture;
-                                        if (!first)
-                                            return (
-                                                <AssignmentTile
-                                                    key={subcourse.id}
-                                                    type={Assignment.GROUP}
-                                                    courseTitle={subcourse.course.name}
-                                                    tags={subcourse.course.tags}
-                                                    courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                    next={next}
-                                                />
-                                            );
                                         return (
-                                            <AssignmentTile
+                                            <GroupTile
                                                 key={subcourse.id}
-                                                type={Assignment.GROUP}
-                                                startDate={first.start}
+                                                startDate={first && first.start}
                                                 courseTitle={subcourse.course.name}
                                                 tags={subcourse.course.tags}
                                                 courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
