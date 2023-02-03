@@ -14,8 +14,8 @@ type MetaProps = {
     duration: number;
     count: number;
     total: number;
-    attendeesCount: number;
-    meetingLink: string;
+    attendeesCount?: number;
+    meetingLink?: string;
 };
 const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, count, total, attendeesCount, meetingLink }) => {
     const { isMobile } = useLayoutHelper();

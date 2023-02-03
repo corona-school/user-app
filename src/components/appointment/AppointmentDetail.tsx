@@ -19,6 +19,15 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     const toast = useToast();
     const { space, sizes } = useTheme();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const { date, startTime, endTime } = getAppointmentDateTime(appointment.start, appointment.duration);
+
+    const countAttendees = () => {
+        // TODO change to appointment.appointment_participant_pupil, appointment.appointment_participant_student, appointment.appointment_participant_screener
+        const participants = appointment.participants ? appointment.participants.length : 0;
+        const organizers = appointment.organizers ? appointment.organizers.length : 0;
+        return participants + organizers;
+    };
+    const attendeesCount = countAttendees();
 
     const containerWidth = useBreakpointValue({
         base: 'full',
@@ -28,10 +37,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     const cancelAppointment = useCallback(() => {
         toast.show({ description: t('appointment.appointmentDetail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        // TODO mutation: declinedBy.push(participant)
+        // TODO mutation to set participant declined
     }, []);
-
-    const { date, startTime, endTime } = getAppointmentDateTime(appointment.startDate, appointment.duration);
 
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
@@ -44,7 +51,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
                 duration={appointment.duration}
                 count={1}
                 total={5}
-                attendeesCount={appointment.participants.length + appointment.organizers.length}
+                attendeesCount={attendeesCount}
                 meetingLink={appointment.meetingLink}
             />
             <Description appointmentType={appointment.appointmentType} courseName={course?.name} courseDescription={course?.description} />

@@ -4,8 +4,8 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Attendee } from '../../types/lernfair/Appointment';
 
 type AvatarsProps = {
-    organizers: Attendee[];
-    participants: Attendee[];
+    organizers?: Attendee[];
+    participants?: Attendee[];
 };
 const Avatars: React.FC<AvatarsProps> = ({ organizers, participants }) => {
     return (
