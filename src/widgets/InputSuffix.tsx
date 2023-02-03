@@ -13,12 +13,12 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentLength, handleInput }) =
 
     return (
         <InputGroup>
-            <InputLeftAddon borderColor="primary.100" width={isMobile ? '30%' : '25%'} alignItems="start">
-                <Text>{t('appointment.create.lecture') + ` #${appointmentLength + 1}`}</Text>
+            <InputLeftAddon borderColor="primary.100" width={isMobile ? '40%' : '25%'} alignItems="start">
+                <Text>{t('appointment.create.lecture') + ` #${appointmentLength}`}</Text>
             </InputLeftAddon>
             <Input
                 name="title"
-                width={isMobile ? '70%' : '75%'}
+                width={isMobile ? '60%' : '75%'}
                 onChange={handleInput}
                 borderBottomRightRadius={5}
                 borderTopRightRadius={5}
