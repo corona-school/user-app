@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast, Box } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
@@ -105,9 +105,14 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                 </ProfileSettingItem>
 
                 {/*                      1 = subjects */}
-                <Button onPress={() => setCurrentIndex(1)} isDisabled={isLoading}>
-                    Weiter
-                </Button>
+                <Box alignItems="center" marginTop={space['0.5']}>
+                    <Button
+                        w="30%"
+                        onPress={() => setCurrentIndex(1)} // 2 = german
+                    >
+                        {t('lernfair.buttons.next')}
+                    </Button>
+                </Box>
             </VStack>
             <Modal
                 isOpen={showModal}

@@ -1,11 +1,14 @@
-import { VStack, useTheme, Heading, Column, Button } from 'native-base';
+import { t } from 'i18next';
+import { VStack, useTheme, Heading, Column, Button, Box, Row } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import IconTagList from '../../../widgets/IconTagList';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const { setMatching, setCurrentIndex } = useContext(RequestMatchContext);
     const [supportDaz, setSupportDaz] = useState<'yes' | 'no'>();
 
@@ -28,12 +31,20 @@ const German: React.FC = () => {
                     <IconTagList iconPath={`lf-no.svg`} initial={supportDaz === 'no'} variant="selection" text="Nein" onPress={() => setSupportDaz('no')} />
                 </Column>
             </TwoColGrid>
-            <Button onPress={onGoNext} isDisabled={!supportDaz}>
-                Weiter
-            </Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(1)}>
-                Zurück
-            </Button>
+            <Box alignItems="center" marginTop={space['0.5']}>
+                <Row paddingX={space['1']} space={space['1']} justifyContent="center">
+                    <Column width="100%">
+                        <Button height="100%" variant="outline" onPress={() => setCurrentIndex(1)}>
+                            {t('lernfair.buttons.prev')}
+                        </Button>
+                    </Column>
+                    <Column width="100%">
+                        <Button onPress={onGoNext} isDisabled={!supportDaz}>
+                            {t('lernfair.buttons.next')}
+                        </Button>
+                    </Column>
+                </Row>
+            </Box>
         </VStack>
     );
 };

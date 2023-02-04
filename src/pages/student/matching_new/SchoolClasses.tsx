@@ -1,4 +1,4 @@
-import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box } from 'native-base';
+import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box, Column, Row } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
@@ -10,11 +10,15 @@ import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 import { getSubjectLabel } from '../../../types/lernfair/Subject';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import TwoColGrid from '../../../widgets/TwoColGrid';
 
 type Props = {};
 
 const SchoolClasses: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
     const toast = useToast();
     const { matching, setMatching, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
@@ -134,6 +138,7 @@ const SchoolClasses: React.FC<Props> = () => {
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Jahrgangsstufen</Heading>
             <Heading>In welchen Jahrgangsstufen möchtest du helfen?</Heading>
+
             <VStack space={space['1']}>
                 {matching.setDazSupport && (
                     <Item subject={{ key: 'daz', label: 'Deutsch als Zweitsprache' }} onClassChanged={(val) => setSubjectClass('daz', val)} />
@@ -143,11 +148,18 @@ const SchoolClasses: React.FC<Props> = () => {
                     <Item subject={sub} onClassChanged={(val) => setSubjectClass(sub.key, val)} />
                 ))}
             </VStack>
-
-            <Button onPress={submit}>Weiter</Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(2)}>
-                Zurück
-            </Button>
+            <Box alignItems="center" marginTop={space['1']}>
+                <Row space={space['1']} justifyContent="center">
+                    <Column width="100%">
+                        <Button height="100%" variant="outline" onPress={() => setCurrentIndex(2)}>
+                            {t('lernfair.buttons.prev')}
+                        </Button>
+                    </Column>
+                    <Column width="100%">
+                        <Button onPress={submit}>{t('lernfair.buttons.next')}</Button>
+                    </Column>
+                </Row>
+            </Box>
         </VStack>
     );
 };
