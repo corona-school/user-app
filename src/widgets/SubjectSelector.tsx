@@ -34,7 +34,7 @@ export const SUBJECTS = [
     "Wirtschaft"
 ] as const;
 
-const SUBJECT_TO_ICON: { [subject in (typeof SUBJECTS)[number]]: string } = {
+export const SUBJECT_TO_ICON: { [subject in (typeof SUBJECTS)[number]]: string } = {
     "Deutsch als Zweitsprache": "deutsch_als_zweitsprace",
     Deutsch: "deutsch",
     Altgriechisch: "altgriechisch",
@@ -67,7 +67,7 @@ export const DAZ = "Deutsch als Zweitsprache";
 
 export const containsDAZ = (subjects: Subject[]) => subjects.some(it => it.name === DAZ);
 
-export const SubjectSelector = ({ subjects, addSubject, removeSubject, limit, selectable }: { subjects: Subject["name"][], selectable?: Subject["name"][], addSubject: (name: string) => void, removeSubject: (name: string) => void, limit?: number }) => {
+export const SubjectSelector = ({ subjects, addSubject, removeSubject, limit, selectable, variant = "selection" }: { subjects: Subject["name"][], selectable?: Subject["name"][], addSubject: (name: string) => void, removeSubject: (name: string) => void, limit?: number, variant?: "normal" | "selection" }) => {
     const { t } = useTranslation();
 
     return (
@@ -77,7 +77,7 @@ export const SubjectSelector = ({ subjects, addSubject, removeSubject, limit, se
                     <IconTagList
                         key={subject}
                         initial={subjects.includes(subject)}
-                        variant="selection"
+                        variant={variant}
                         text={t(`lernfair.subjects.${subject}`)}
                         iconPath={`subjects/icon_${(SUBJECT_TO_ICON as any)[subject as any] as string}.svg`}
                         onPress={() => {

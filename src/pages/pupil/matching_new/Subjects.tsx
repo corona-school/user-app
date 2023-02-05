@@ -1,9 +1,6 @@
 import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base';
 import { useContext } from 'react';
-import { subjects } from '../../../types/lernfair/Subject';
-import IconTagList from '../../../widgets/IconTagList';
 import { containsDAZ, DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
-import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
 const Subjects: React.FC = () => {

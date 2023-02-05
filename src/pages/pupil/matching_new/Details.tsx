@@ -3,7 +3,6 @@ import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpo
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
-import { LFSubject } from '../../../types/lernfair/Subject';
 import { RequestMatchContext } from './RequestMatch';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 
