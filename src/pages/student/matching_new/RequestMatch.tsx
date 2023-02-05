@@ -78,7 +78,7 @@ const RequestMatching: React.FC = () => {
     useEffect(() => {
         if (data) {
             setMatchRequest({
-                subjects: data.me.student!.subjectsFormatted
+                subjects: data.me.student!.subjectsFormatted.map(it => ({ name: it.name!, grade: { min: it.grade!.min, max: it.grade!.max }})),
             })
         }
     }, [data]);

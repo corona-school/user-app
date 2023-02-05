@@ -8,8 +8,8 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
-import { getSubjectLabel } from '../../../types/lernfair/Subject';
 import { Subject } from '../../../gql/graphql';
+import { useTranslation } from 'react-i18next';
 
 type Props = {};
 
@@ -117,17 +117,17 @@ export default SchoolClasses;
 
 const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject, setSubject: (subject: Subject) => void }) => {
     const { space, colors } = useTheme();
+    const { t } = useTranslation();
 
     const onValueChange = useCallback((range: [number, number]) => {
         setSubject({ name: subject.name, grade: { min: range[0], max: range[1] }});
     }, [subject.name, setSubject]);
 
-    const label = useMemo(() => getSubjectLabel(subject.name), [subject.name]);
 
     return (
         <Card flexibleWidth padding={space['1']}>
             <VStack space={space['0.5']}>
-                <Heading fontSize="md">{label}</Heading>
+                <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}`)}</Heading>
                 <Heading fontSize="md">
                     Klasse {subject.grade!.min}-{subject.grade!.max}
                 </Heading>

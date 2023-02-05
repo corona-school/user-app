@@ -4,19 +4,24 @@ import IconTagList from '../../../widgets/IconTagList';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
+const DAZ = "Deutsch als Zweitsprache";
+
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { setSubject, matchRequest, setCurrentIndex } = useContext(RequestMatchContext);
+    const { setSubject, matchRequest, setCurrentIndex, removeSubject } = useContext(RequestMatchContext);
 
     // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
-    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => matchRequest.subjects.some(it => it.name === "daz") ? true : null);
+    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => matchRequest.subjects.some(it => it.name === DAZ) ? true : null);
 
     const onNext = useCallback(() => {
         if (supportsDaz) {
-            setSubject({ name: "daz", grade: { min: 1, max: 13 }});
+            setSubject({ name: DAZ, grade: { min: 1, max: 13 }});
+        } else {
+            removeSubject(DAZ);
         }
+
         setCurrentIndex(3);
-    }, [setSubject, setCurrentIndex, supportsDaz]);
+    }, [setSubject, removeSubject, setCurrentIndex, supportsDaz]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
