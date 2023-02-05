@@ -6,13 +6,17 @@ import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { setMatching, setCurrentIndex } = useContext(RequestMatchContext);
-    const [supportDaz, setSupportDaz] = useState<'yes' | 'no'>();
+    const { setSubject, matchRequest, setCurrentIndex } = useContext(RequestMatchContext);
 
-    const onGoNext = useCallback(() => {
-        setMatching((prev) => ({ ...prev, setDazSupport: supportDaz === 'yes' }));
-        setCurrentIndex(3); // school classes
-    }, [setMatching, setCurrentIndex, supportDaz]);
+    // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
+    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => matchRequest.subjects.some(it => it.name === "daz") ? true : null);
+
+    const onNext = useCallback(() => {
+        if (supportsDaz) {
+            setSubject({ name: "daz", grade: { min: 1, max: 13 }});
+        }
+        setCurrentIndex(3);
+    }, [setSubject, setCurrentIndex, supportsDaz]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -22,13 +26,13 @@ const German: React.FC = () => {
             </Heading>
             <TwoColGrid>
                 <Column>
-                    <IconTagList iconPath={`lf-yes.svg`} initial={supportDaz === 'yes'} variant="selection" text="Ja" onPress={() => setSupportDaz('yes')} />
+                    <IconTagList iconPath={`lf-yes.svg`} initial={supportsDaz ?? false} variant="selection" text="Ja" onPress={() => setSupportsDaz(true)} />
                 </Column>
                 <Column>
-                    <IconTagList iconPath={`lf-no.svg`} initial={supportDaz === 'no'} variant="selection" text="Nein" onPress={() => setSupportDaz('no')} />
+                    <IconTagList iconPath={`lf-no.svg`} initial={!(supportsDaz ?? true)} variant="selection" text="Nein" onPress={() => setSupportsDaz(false)} />
                 </Column>
             </TwoColGrid>
-            <Button onPress={onGoNext} isDisabled={!supportDaz}>
+            <Button onPress={onNext} isDisabled={supportsDaz === null}>
                 Weiter
             </Button>
             <Button variant="outline" onPress={() => setCurrentIndex(1)}>
