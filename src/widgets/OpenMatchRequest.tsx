@@ -24,7 +24,7 @@ const OpenMatchRequest = ({ cancelLoading, subjects, showCancelMatchRequestModal
                         {t('matching.request.check.subjects')}
                     </Text>
                     <Row space={space['0.5']}>
-                        {subjects && subjects.map((sub) => <Tag text={t(`lernfair.subjects.${sub.name}`)} variant="secondary-light" marginBottom={0} />)}
+                        {subjects && subjects.map((sub) => <Tag text={t(`lernfair.subjects.${sub.name}`) + (sub.mandatory ? " (priorisiert)" : "")} variant="secondary-light" marginBottom={0} />)}
                     </Row>
                 </Column>
                 <Button

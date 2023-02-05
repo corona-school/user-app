@@ -1,17 +1,16 @@
 import { VStack, useTheme, Heading, Column, Button } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import IconTagList from '../../../widgets/IconTagList';
+import { containsDAZ, DAZ } from '../../../widgets/SubjectSelector';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
-
-const DAZ = "Deutsch als Zweitsprache";
 
 const German: React.FC = () => {
     const { space } = useTheme();
     const { setSubject, matchRequest, setCurrentIndex, removeSubject } = useContext(RequestMatchContext);
 
     // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
-    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => matchRequest.subjects.some(it => it.name === DAZ) ? true : null);
+    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => containsDAZ(matchRequest.subjects) ? true : null);
 
     const onNext = useCallback(() => {
         if (supportsDaz) {

@@ -1,14 +1,13 @@
 import { Button } from 'native-base';
 import { useTheme } from 'native-base';
-import { Text, VStack, Heading, Column } from 'native-base';
+import { Text, VStack, Heading } from 'native-base';
 import { useContext } from 'react';
-import IconTagList from '../../../widgets/IconTagList';
-import TwoColGrid from '../../../widgets/TwoColGrid';
+import { DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const Priority: React.FC = () => {
     const { space } = useTheme();
-    const { matching, setMatching, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Priorisierung</Heading>
@@ -19,26 +18,9 @@ const Priority: React.FC = () => {
                 welches Fach dir am wichtigsten ist.
             </Text>
 
-            <TwoColGrid>
-                {matching.subjects.map((subject: { label: string; key: string }) => (
-                    <Column>
-                        <IconTagList
-                            iconPath={`subjects/icon_${subject.key}.svg`}
-                            initial={matching.priority === subject}
-                            variant="selection"
-                            text={subject.label}
-                            onPress={() => {
-                                setMatching((prev) => ({
-                                    ...prev,
-                                    priority: subject,
-                                }));
-                            }}
-                        />
-                    </Column>
-                ))}
-            </TwoColGrid>
+            <SubjectSelector subjects={matchRequest.subjects.filter(it => it.mandatory && it.name !== DAZ).map(it => it.name)} selectable={matchRequest.subjects.filter(it => it.name !== DAZ).map(it => it.name)} addSubject={it => setSubject({ name: it, mandatory: true })} removeSubject={it => setSubject({ name: it, mandatory: false })} limit={1} />
             <Button
-                isDisabled={!matching.priority.key}
+                isDisabled={matchRequest.subjects.every(it => !it.mandatory)}
                 onPress={() => setCurrentIndex(5)} // 5 = details
             >
                 Weiter

@@ -63,22 +63,29 @@ const SUBJECT_TO_ICON: { [subject in (typeof SUBJECTS)[number]]: string } = {
     Wirtschaft: "wirtschaft"
 }
 
-export const SubjectSelector = ({ subjects, setSubject, removeSubject }: { subjects: Subject[], setSubject: (subject: Subject) => void, removeSubject: (name: string) => void }) => {
+export const DAZ = "Deutsch als Zweitsprache";
+
+export const containsDAZ = (subjects: Subject[]) => subjects.some(it => it.name === DAZ);
+
+export const SubjectSelector = ({ subjects, addSubject, removeSubject, limit, selectable }: { subjects: Subject["name"][], selectable?: Subject["name"][], addSubject: (name: string) => void, removeSubject: (name: string) => void, limit?: number }) => {
     const { t } = useTranslation();
 
     return (
         <TwoColGrid>
-            {SUBJECTS.filter(it => it !== "Deutsch als Zweitsprache").map((subject) => (
+            {((selectable ?? SUBJECTS.filter(it => it !== DAZ)) as string[]).map((subject) => (
                 <Column>
                     <IconTagList
                         key={subject}
-                        initial={subjects.some(it => it.name === subject)}
+                        initial={subjects.includes(subject)}
                         variant="selection"
                         text={t(`lernfair.subjects.${subject}`)}
-                        iconPath={`subjects/icon_${SUBJECT_TO_ICON[subject]}.svg`}
+                        iconPath={`subjects/icon_${(SUBJECT_TO_ICON as any)[subject as any] as string}.svg`}
                         onPress={() => {
-                            if (!subjects.some(it => it.name === subject)) {
-                                setSubject({ name: subject, grade: { min: 1, max: 13 }})
+                            if (!subjects.includes(subject)) {
+                                if (limit && subjects.length >= limit) {
+                                    removeSubject(subjects[0]);
+                                }
+                                addSubject(subject)
                             } else {
                                 removeSubject(subject);
                             }

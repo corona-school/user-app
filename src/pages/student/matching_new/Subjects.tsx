@@ -2,7 +2,7 @@ import { VStack, useTheme, Heading, Button } from 'native-base';
 import { useContext } from 'react';
 import { RequestMatchContext } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
-import { SubjectSelector } from '../../../widgets/SubjectSelector';
+import { DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
 
 
 const Subjects: React.FC = () => {
@@ -13,7 +13,7 @@ const Subjects: React.FC = () => {
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
-            <SubjectSelector subjects={matchRequest.subjects} setSubject={setSubject} removeSubject={removeSubject} />
+            <SubjectSelector subjects={matchRequest.subjects.filter(it => it.name !== DAZ).map(it => it.name)} addSubject={it => setSubject({ name: it, grade: { min: 1, max: 13 }})} removeSubject={removeSubject} />
             <Button
                 isDisabled={matchRequest.subjects.length === 0}
                 onPress={() => setCurrentIndex(2)} // 2 = german

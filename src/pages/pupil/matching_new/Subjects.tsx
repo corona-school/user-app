@@ -2,58 +2,31 @@ import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base';
 import { useContext } from 'react';
 import { subjects } from '../../../types/lernfair/Subject';
 import IconTagList from '../../../widgets/IconTagList';
+import { containsDAZ, DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matching, setMatching, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
+
+    const isDAZ = containsDAZ(matchRequest.subjects);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern brauchst du Hilfe?</Heading>
-            {matching.setDazPriority && <Text>Du kannst maximal 1 Fach auswählen.</Text>}
-            <TwoColGrid>
-                {subjects.map((subject: { label: string; key: string }) => (
-                    <Column>
-                        <IconTagList
-                            iconPath={`subjects/icon_${subject.key}.svg`}
-                            initial={matching.subjects.includes(subject)}
-                            variant="selection"
-                            text={subject.label}
-                            onPress={() => {
-                                if (!matching.subjects.includes(subject)) {
-                                    if (matching.setDazPriority) {
-                                        setMatching((prev) => ({
-                                            ...prev,
-                                            subjects: [subject],
-                                        }));
-                                    } else {
-                                        setMatching((prev) => ({
-                                            ...prev,
-                                            subjects: [...prev.subjects, subject],
-                                        }));
-                                    }
-                                } else {
-                                    var subs = [...matching.subjects];
-                                    subs.splice(subs.indexOf(subject), 1);
-                                    setMatching((prev) => ({ ...prev, subjects: subs }));
-                                }
-                            }}
-                        />
-                    </Column>
-                ))}
-            </TwoColGrid>
+            {isDAZ && <Text>Du kannst maximal 1 Fach auswählen.</Text>}
+            <SubjectSelector subjects={matchRequest.subjects.filter(it => it.name !== DAZ).map(it => it.name)} addSubject={it => setSubject({ name: it, mandatory: false })} removeSubject={removeSubject} limit={isDAZ ? 1 : undefined} />
             <Button
-                isDisabled={matching.subjects.length === 0}
+                isDisabled={matchRequest.subjects.length === 0}
                 onPress={() => setCurrentIndex(4)} // 4 = priorities
             >
                 Weiter
             </Button>
             <Button
                 variant="outline"
-                onPress={() => setCurrentIndex(2)} // 4 = priorities
+                onPress={() => setCurrentIndex(2)} // 2 = german
             >
                 Zurück
             </Button>
