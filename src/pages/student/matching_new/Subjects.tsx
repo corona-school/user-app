@@ -2,7 +2,8 @@ import { VStack, useTheme, Heading, Button } from 'native-base';
 import { useContext } from 'react';
 import { RequestMatchContext } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
-import { DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
+import { SubjectSelector } from '../../../widgets/SubjectSelector';
+import { DAZ } from '../../../types/subject';
 
 
 const Subjects: React.FC = () => {

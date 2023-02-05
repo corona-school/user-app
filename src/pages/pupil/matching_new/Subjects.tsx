@@ -1,6 +1,7 @@
 import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base';
 import { useContext } from 'react';
-import { containsDAZ, DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
+import { containsDAZ, DAZ } from '../../../types/subject';
+import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const Subjects: React.FC = () => {

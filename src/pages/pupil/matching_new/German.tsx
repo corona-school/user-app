@@ -1,8 +1,8 @@
 import { VStack, useTheme, Heading, Column, Button } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
-import { containsDAZ, DAZ } from '../../../widgets/SubjectSelector';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 

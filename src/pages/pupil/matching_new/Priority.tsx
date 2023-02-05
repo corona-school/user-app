@@ -2,7 +2,8 @@ import { Button } from 'native-base';
 import { useTheme } from 'native-base';
 import { Text, VStack, Heading } from 'native-base';
 import { useContext } from 'react';
-import { DAZ, SubjectSelector } from '../../../widgets/SubjectSelector';
+import { DAZ } from '../../../types/subject';
+import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const Priority: React.FC = () => {

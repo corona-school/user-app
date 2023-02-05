@@ -24,6 +24,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
 type Props = {};
 
@@ -312,7 +313,7 @@ const CreateCourse: React.FC<Props> = () => {
     const _getCourseData = useCallback(
         () => ({
             description,
-            subject,
+            subject: (SUBJECT_TO_COURSE_SUBJECT as any)[subject!],
             schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
