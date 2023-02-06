@@ -1,10 +1,8 @@
-import { t } from 'i18next';
-import { Box, Button, Column, Heading, Row, useTheme, VStack } from 'native-base';
+import { Box, Button, Column, Heading, HStack, Row, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { subjects } from '../../../types/lernfair/Subject';
 import IconTagList from '../../../widgets/IconTagList';
-import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
 const Subjects: React.FC = () => {
@@ -16,9 +14,9 @@ const Subjects: React.FC = () => {
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
-            <TwoColGrid>
+            <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
                 {subjects.map((subject: { label: string; key: string }) => (
-                    <Column>
+                    <Box margin={space['0.5']} maxW="40%" flexBasis="300px" flexGrow={1}>
                         <IconTagList
                             initial={matching.subjects.includes(subject)}
                             variant="selection"
@@ -37,10 +35,10 @@ const Subjects: React.FC = () => {
                                 }
                             }}
                         />
-                    </Column>
+                    </Box>
                 ))}
-            </TwoColGrid>
-            <Box alignItems="center" marginTop={space['0.5']}>
+            </HStack>
+            <Box alignItems="center">
                 <Row space={space['1']} justifyContent="center">
                     <Column w="100%">
                         <Button h="100%" variant="outline" onPress={() => setCurrentIndex(0)}>

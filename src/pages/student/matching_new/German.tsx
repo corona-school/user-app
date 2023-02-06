@@ -23,14 +23,30 @@ const German: React.FC = () => {
             <Heading>
                 Kannst du dir vorstellen Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?
             </Heading>
-            <TwoColGrid>
-                <Column>
-                    <IconTagList iconPath={`lf-yes.svg`} initial={supportDaz === 'yes'} variant="selection" text="Ja" onPress={() => setSupportDaz('yes')} />
-                </Column>
-                <Column>
-                    <IconTagList iconPath={`lf-no.svg`} initial={supportDaz === 'no'} variant="selection" text="Nein" onPress={() => setSupportDaz('no')} />
-                </Column>
-            </TwoColGrid>
+            <Box alignItems="center">
+                <Box maxWidth="600px" width="100%">
+                    <TwoColGrid>
+                        <Column>
+                            <IconTagList
+                                iconPath={`lf-yes.svg`}
+                                initial={supportDaz === 'yes'}
+                                variant="selection"
+                                text="Ja"
+                                onPress={() => setSupportDaz('yes')}
+                            />
+                        </Column>
+                        <Column>
+                            <IconTagList
+                                iconPath={`lf-no.svg`}
+                                initial={supportDaz === 'no'}
+                                variant="selection"
+                                text="Nein"
+                                onPress={() => setSupportDaz('no')}
+                            />
+                        </Column>
+                    </TwoColGrid>
+                </Box>
+            </Box>
             <Box alignItems="center" marginTop={space['0.5']}>
                 <Row paddingX={space['1']} space={space['1']} justifyContent="center">
                     <Column width="100%">
