@@ -34,7 +34,7 @@ const lernfair = {
         biologie: 'Biologie',
         chemie: 'Chemie',
         deutsch: 'Deutsch',
-        'daz': 'Deutsch als Zweitsprache',
+        'deutsch-2': 'Deutsch als Zweitsprache',
         englisch: 'Englisch',
         erdkunde: 'Erdkunde',
         französisch: 'Französisch',

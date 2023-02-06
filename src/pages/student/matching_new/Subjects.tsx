@@ -7,7 +7,7 @@ import { RequestMatchContext } from './RequestMatch';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, removeSubject, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matching, setMatching, setCurrentIndex } = useContext(RequestMatchContext);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -15,18 +15,23 @@ const Subjects: React.FC = () => {
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
 
             <TwoColGrid>
-                {subjects.map((subject) => (
+                {subjects.map((subject: { label: string; key: string }) => (
                     <Column>
                         <IconTagList
-                            initial={matchRequest.subjects.some(it => it.name === subject.key)}
+                            initial={matching.subjects.includes(subject)}
                             variant="selection"
                             text={subject.label}
                             iconPath={`subjects/icon_${subject.key}.svg`}
                             onPress={() => {
-                                if (!matchRequest.subjects.some(it => it.name === subject.key)) {
-                                    setSubject({ name: subject.key, grade: { min: 1, max: 13 }})
+                                if (!matching.subjects.includes(subject)) {
+                                    setMatching((prev) => ({
+                                        ...prev,
+                                        subjects: [...prev.subjects, subject],
+                                    }));
                                 } else {
-                                    removeSubject(subject.key);
+                                    var subs = [...matching.subjects];
+                                    subs.splice(subs.indexOf(subject), 1);
+                                    setMatching((prev) => ({ ...prev, subjects: subs }));
                                 }
                             }}
                         />
@@ -34,7 +39,7 @@ const Subjects: React.FC = () => {
                 ))}
             </TwoColGrid>
             <Button
-                isDisabled={matchRequest.subjects.length === 0}
+                isDisabled={matching.subjects.length === 0}
                 onPress={() => setCurrentIndex(2)} // 2 = german
             >
                 Weiter
