@@ -81,6 +81,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
               }
             }
           }
+          myRoles
 		}
 		`)
     );
@@ -88,6 +89,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
+    const roles = data?.myRoles ?? [];
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
@@ -120,13 +122,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
     if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length == 0 && pupil?.matches.length == 0)
         infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
-    if (pupil?.openMatchRequestCount && pupil?.openMatchRequestCount > 0)
+    if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
         infos.push({
             label: 'statusSchüler',
             btnfn: [() => navigate('/group'), deleteMatchRequest],
             lang: { date: DateTime.fromISO(pupil?.firstMatchRequest).toFormat('dd.MM.yyyy') },
         });
-    if (student?.openMatchRequestCount && student?.openMatchRequestCount > 0)
+    if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
         infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
     if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
         infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
