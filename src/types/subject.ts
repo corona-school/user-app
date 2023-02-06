@@ -83,7 +83,7 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in (typeof SUBJECTS)[number]]
     Physik: Course_Subject_Enum.Physik,
     Politik: Course_Subject_Enum.Politik,
     Pädagogik: Course_Subject_Enum.PDagogik,
-    Religion: Course_Subject_Enum.Altgriechisch, // TODO: missing?!
+    Religion: Course_Subject_Enum.Religion,
     Russisch: Course_Subject_Enum.Russisch,
     Sachkunde: Course_Subject_Enum.Sachkunde,
     Spanisch: Course_Subject_Enum.Spanisch,
