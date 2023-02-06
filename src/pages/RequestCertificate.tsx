@@ -47,11 +47,7 @@ const RequestCertificate: React.FC<Props> = () => {
     const { setShow, setContent, setVariant } = useModal();
     const { trackPageView } = useMatomo();
     const navigate = useNavigate();
-    const location = useLocation() as {
-        state: { type: 'group' | 'matching'; edit?: boolean };
-    };
-    const certType = location?.state?.type;
-
+    
     const { space } = useTheme();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [pupilIndex, setPupilIndex] = useState<number>(0);
@@ -68,20 +64,10 @@ const RequestCertificate: React.FC<Props> = () => {
     const showSuccessModal = useCallback(() => {}, []);
 
     const onFinish = useCallback(() => {
-        // TODO reuest certificate
-
-        if (certType === 'group') {
-            // TODO request certificate
-        } else {
-            if (location?.state?.edit) {
-                // TODO update certificate
-            } else {
-                // TODO request certificate
-            }
-        }
+        // TODO backend request
 
         showSuccessModal();
-    }, [certType, location?.state?.edit, showSuccessModal]);
+    }, [showSuccessModal]);
 
     const onNext = useCallback(() => {
         if (currentIndex + 1 < 2) setCurrentIndex((prev) => prev + 1);
@@ -111,20 +97,17 @@ const RequestCertificate: React.FC<Props> = () => {
             }}
         >
             <WithNavigation showBack>
-                {!certType && <Text>Es ist ein Fehler aufgetreten</Text>}
-                {certType && (
-                    <VStack paddingX={space['1']} space={space['1']}>
-                        <InstructionProgress
-                            currentIndex={currentIndex}
-                            instructions={[
-                                { label: 'Beantragen', title: '' },
-                                { label: 'Angaben', title: '' },
-                            ]}
-                        />
-                        {currentIndex === 0 && <RequestCertificateOverview onNext={onNext} onBack={onBack} />}
-                        {currentIndex === 1 && <RequestCertificateData onNext={onNext} onBack={onBack} certificateType={certType} />}
-                    </VStack>
-                )}
+                <VStack paddingX={space['1']} space={space['1']}>
+                    <InstructionProgress
+                        currentIndex={currentIndex}
+                        instructions={[
+                            { label: 'Beantragen', title: '' },
+                            { label: 'Angaben', title: '' },
+                        ]}
+                    />
+                    {currentIndex === 0 && <RequestCertificateOverview onNext={onNext} onBack={onBack} />}
+                    {currentIndex === 1 && <RequestCertificateData onNext={onNext} onBack={onBack} certificateType={"matching"} />}
+                </VStack>
             </WithNavigation>
         </RequestCertificateContext.Provider>
     );
