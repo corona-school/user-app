@@ -16,7 +16,7 @@ const Subjects: React.FC = () => {
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
             <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
                 {subjects.map((subject: { label: string; key: string }) => (
-                    <Box margin={space['0.5']} maxW="40%" flexBasis="300px" flexGrow={1}>
+                    <Box margin={space['0.5']} maxW="250px" flexBasis="300px" flexGrow={1}>
                         <IconTagList
                             initial={matching.subjects.includes(subject)}
                             variant="selection"
@@ -38,7 +38,8 @@ const Subjects: React.FC = () => {
                     </Box>
                 ))}
             </HStack>
-            <Box alignItems="center">
+            <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
+            <Box alignItems="center" marginTop={space['0.5']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column w="100%">
                         <Button h="100%" variant="outline" onPress={() => setCurrentIndex(0)}>

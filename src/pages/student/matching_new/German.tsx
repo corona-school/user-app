@@ -47,8 +47,9 @@ const German: React.FC = () => {
                     </TwoColGrid>
                 </Box>
             </Box>
+            <Box borderBottomWidth={1} borderBottomColor="primary.grey" />
             <Box alignItems="center" marginTop={space['0.5']}>
-                <Row paddingX={space['1']} space={space['1']} justifyContent="center">
+                <Row space={space['1']} justifyContent="center">
                     <Column width="100%">
                         <Button height="100%" variant="outline" onPress={() => setCurrentIndex(1)}>
                             {t('lernfair.buttons.prev')}

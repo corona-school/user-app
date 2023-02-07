@@ -148,7 +148,8 @@ const SchoolClasses: React.FC<Props> = () => {
                     <Item subject={sub} onClassChanged={(val) => setSubjectClass(sub.key, val)} />
                 ))}
             </VStack>
-            <Box alignItems="center" marginTop={space['1']}>
+            <Box borderBottomWidth={1} marginTop={space['1']} borderBottomColor="primary.grey" />
+            <Box alignItems="center" marginTop={space['0.5']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column width="100%">
                         <Button height="100%" variant="outline" onPress={() => setCurrentIndex(2)}>
