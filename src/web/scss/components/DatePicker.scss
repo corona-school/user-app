@@ -11,5 +11,8 @@
         &:focus {
             outline: 2px solid var(--color-primary) !important;
         }
+        &::placeholder {
+            color: #82b1b0;
+        }
     }
 }
