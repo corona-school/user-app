@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import RepeatWeekly from './RepeatWeekly';
-import Form from './Form';
 import { useCreateAppointments } from '../../hooks/useCreateAppointment';
+import AppointmentData from './AppointmentData';
 
 export type StartDate = {
     date: string;
@@ -35,7 +35,7 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
 
     return (
         <Box>
-            <Form />
+            <AppointmentData />
             <Box py="8">
                 <Checkbox _checked={{ backgroundColor: 'danger.900' }} value="weekly" onChange={() => setWeekly(!weekly)}>
                     {t('appointment.create.weeklyRepeat')}
