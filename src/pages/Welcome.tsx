@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
             defaultButtonText={t('welcome.btn.signup')}
             defaultbuttonLink={() => navigate('/registration')}
             icon={<Logo />}
-            extraContent={deactivated && <AlertMessage content={'Dein Account wurde deaktiviert'} />}
+            extraContent={deactivated && <AlertMessage content={t('welcome.deactivationAlert')} />}
         />
     );
 };
