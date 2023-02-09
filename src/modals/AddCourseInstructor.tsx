@@ -2,6 +2,7 @@ import { gql } from './../gql';
 import { useLazyQuery } from '@apollo/client';
 import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Heading, Flex, Text } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
@@ -18,6 +19,7 @@ type Props = {
 
 const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onInstructorAdded }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const [searchString, setSearchString] = useState<string>('');
     const [pageIndex, setPageIndex] = useState<number>(1);
     const [selectedInstructor, setSelectedInstructor] = useState<LFInstructor>();
@@ -88,7 +90,7 @@ const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onIns
                     </Flex>
                 )) || (
                     <Flex flex="1" justifyContent="center" alignItems="center">
-                        <Text>Keine Suchergebnisse.</Text>
+                        <Text>{t('course.addCourseInstructor.notFound')}</Text>
                     </Flex>
                 )}
                 {selectedInstructor && (
@@ -103,10 +105,10 @@ const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onIns
                         paddingX={space['0.5']}
                     >
                         <Heading fontSize="md" color="lightText" flex="1">
-                            {selectedInstructor.firstname} hinzufügen
+                            {selectedInstructor.firstname} {t('course.addCourseInstructor.addbtn')}
                         </Heading>
                         <Button onPress={() => onInstructorAdded(selectedInstructor)} isDisabled={!selectedInstructor}>
-                            hinzufügen
+                            {t('course.addCourseInstructor.addbtn')}
                         </Button>
                     </Row>
                 )}
