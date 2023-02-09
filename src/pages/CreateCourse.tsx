@@ -883,16 +883,16 @@ const CreateCourse: React.FC<Props> = () => {
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Heading maxWidth="330px" marginX="auto" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                                                        {t('course.modal.headline')}
+                                                        {t('course.CourseDate.modal.headline')}
                                                     </Heading>
                                                     <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                                                        {t('course.modal.content')}
+                                                        {t('course.CourseDate.modal.content')}
                                                     </Text>
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Row marginBottom={space['0.5']}>
                                                         <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('course.modal.button')}
+                                                            {t('course.CourseDate.modal.button')}
                                                         </Button>
                                                     </Row>
                                                 </Box>

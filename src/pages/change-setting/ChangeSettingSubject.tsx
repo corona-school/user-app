@@ -157,7 +157,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                                                 initial={false}
                                                 iconPath={`subjects/icon_${getSubjectKey(subject?.name)}.svg`}
                                                 text={
-                                                    t(`lernfair.subjects.${getSubjectKey(subject?.name)}`) +
+                                                    t(`lernfair.subjects.${getSubjectKey(subject?.name)}` as unknown as TemplateStringsArray) +
                                                     ` ${(userType === 'student' && `${subject?.grade?.min}. - ${subject?.grade?.max}. Klasse`) || ''}`
                                                 }
                                             />
@@ -195,7 +195,7 @@ const ChangeSettingSubject: React.FC<Props> = () => {
                                                     <IconTagList
                                                         initial={false}
                                                         iconPath={`subjects/icon_${subject.key}.svg`}
-                                                        text={t(`lernfair.subjects.${subject.key}`)}
+                                                        text={t(`lernfair.subjects.${subject.key}` as unknown as TemplateStringsArray)}
                                                         onPress={() => {
                                                             if (userType === 'student') {
                                                                 setFocusedSelection({ name: subject.label });

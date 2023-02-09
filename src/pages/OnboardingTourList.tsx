@@ -67,9 +67,9 @@ const OnboardingTourList: React.FC<Props> = () => {
                                     key={`card-${index}`}
                                     marginBottom={space['1']}
                                     variant="dark"
-                                    title={t(`onboardingList.cards.card${index}.title`)}
+                                    title={t(`onboardingList.cards.card${index}.title` as unknown as TemplateStringsArray)}
                                     closeable={false}
-                                    content={<Text>{t(`onboardingList.cards.card${index}.content`)}</Text>}
+                                    content={<Text>{t(`onboardingList.cards.card${index}.content` as unknown as TemplateStringsArray)}</Text>}
                                     button={
                                         <Button
                                             width="100%"
@@ -77,10 +77,12 @@ const OnboardingTourList: React.FC<Props> = () => {
                                                 trackEvent({
                                                     category: 'onboarding',
                                                     action: 'click-event',
-                                                    name: 'Button-Klick Onboarding' + t(`onboardingList.cards.card${index}.title`),
-                                                    documentTitle: t(`onboardingList.cards.card${index}.title`),
+                                                    name:
+                                                        'Button-Klick Onboarding' +
+                                                        t(`onboardingList.cards.card${index}.title` as unknown as TemplateStringsArray),
+                                                    documentTitle: t(`onboardingList.cards.card${index}.title` as unknown as TemplateStringsArray),
                                                 });
-                                                navigate(t(`onboardingList.cards.card${index}.url`));
+                                                navigate(t(`onboardingList.cards.card${index}.url` as unknown as TemplateStringsArray));
                                             }}
                                         >
                                             {t(`onboardingList.buttontext`)}

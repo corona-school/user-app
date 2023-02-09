@@ -72,27 +72,27 @@ const registration = {
         },
     },
     steps: {
-        0: {
+        '0': {
             title: 'Deine Rolle',
             subtitle: 'Ich bin',
         },
-        1: {
+        '1': {
             title: 'Persönliche Daten',
             subtitle: 'Persönliche Daten',
         },
-        2: {
+        '2': {
             title: 'Klasse',
             subtitle: 'In welcher Klasse bist du?',
         },
-        3: {
+        '3': {
             title: 'Schulform',
             subtitle: 'Auf welche Schulform gehst du?',
         },
-        4: {
+        '4': {
             title: 'Bundesland',
             subtitle: 'Aus welchem Bundesland kommst du?',
         },
-        5: {
+        '5': {
             title: 'Einwilligungen',
             subtitle: 'Einwilligungen',
         },

@@ -170,7 +170,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
             {infos.map((config, index) => {
-                const buttontexts: String[] = t('helperwizard.' + config.label + '.buttons', { returnObjects: true });
+                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
                     <Column width="100%" maxWidth="500px">
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
@@ -178,15 +178,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                 <BooksIcon />
                             </Box>
                             <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {t('helperwizard.' + config.label + '.title', config.lang)}
+                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
                             </Heading>
 
                             <Text color={textColor} marginBottom="25px">
-                                {t('helperwizard.' + config.label + '.content', config.lang)}
+                                {t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
                             </Text>
                             {buttontexts.map((buttontext, index) => {
                                 const btnFn = config.btnfn[index];
-
                                 return (
                                     <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
                                         {buttontext}

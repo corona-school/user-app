@@ -390,7 +390,11 @@ const DashboardStudent: React.FC<Props> = () => {
                                             {t('dashboard.helpers.buttons.course')}
                                         </Button>
                                     ) : (
-                                        <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`)} />
+                                        <AlertMessage
+                                            content={t(
+                                                `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course` as unknown as TemplateStringsArray
+                                            )}
+                                        />
                                     )}
                                 </HSection>
                             )}
@@ -437,7 +441,11 @@ const DashboardStudent: React.FC<Props> = () => {
                                             {t('dashboard.helpers.buttons.requestMatch')}
                                         </Button>
                                     ) : (
-                                        <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`)} />
+                                        <AlertMessage
+                                            content={t(
+                                                `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray
+                                            )}
+                                        />
                                     )}
                                 </VStack>
                             )}

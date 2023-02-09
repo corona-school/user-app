@@ -66,7 +66,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet') });
+            toast.show({ description: t('matching.request.updateData') });
         } catch (e) {
             toast.show({ description: t('error') });
         }
@@ -96,7 +96,11 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
                                     <CSSWrapper className="profil-tab-link">
-                                        <IconTagList isDisabled iconPath={`states/icon_${state}.svg`} text={t(`lernfair.states.${state}`)} />
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`states/icon_${state}.svg`}
+                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                        />
                                     </CSSWrapper>
                                 )) || <Text>{t('profile.noInfo')}</Text>}
                             </Column>

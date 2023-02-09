@@ -203,7 +203,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                         {t('course.CourseDate.form.detailsContent')}
                     </FormControl.Label>
 
-                    <Text>{t(`Klassen ${(classRange && classRange[0]) || 1} - ${(classRange && classRange[1]) || 13}`)}</Text>
+                    <Text>
+                        {t(`Klassen ${(classRange && classRange[0]) || 1} - ${(classRange && classRange[1]) || 13}` as unknown as TemplateStringsArray)}
+                    </Text>
                     <Box>
                         <Slider
                             animateTransitions

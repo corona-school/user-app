@@ -185,7 +185,11 @@ const MatchingStudent: React.FC<Props> = () => {
                                 <Button width={ButtonContainer} marginBottom={space['1.5']} onPress={() => navigate('/request-match')}>
                                     {t('matching.request.check.requestmatchButton')}
                                 </Button>
-                            )) || <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`)} />}
+                            )) || (
+                                <AlertMessage
+                                    content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray)}
+                                />
+                            )}
                         </VStack>
 
                         <Tabs
@@ -203,7 +207,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                                             name={match?.pupil?.firstname}
                                                             subjects={match?.subjectsFormatted}
                                                             status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                            schooltype={t(`lernfair.schooltypes.${match?.pupil?.schooltype}`)}
+                                                            schooltype={t(
+                                                                `lernfair.schooltypes.${match?.pupil?.schooltype}` as unknown as TemplateStringsArray
+                                                            )}
                                                             schoolclass={match?.pupil?.grade}
                                                             button={
                                                                 !match.dissolved && (
