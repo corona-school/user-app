@@ -1,7 +1,8 @@
 const lernfair = {
     buttons: {
-        prev: 'zurück',
-        next: 'weiter',
+        prev: 'Zurück',
+        next: 'Weiter',
+        ok: 'Ok',
         register: 'Registrieren',
     },
     languages: {
