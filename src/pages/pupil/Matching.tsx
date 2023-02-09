@@ -22,6 +22,7 @@ const query: DocumentNode = gql`
             pupil {
                 subjectsFormatted {
                     name
+                    mandatory
                 }
                 openMatchRequestCount
                 id
