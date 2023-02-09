@@ -438,7 +438,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                             marginY={space['1']}
                                             onPress={requestMatch}
                                         >
-                                            {t('dashboard.helpers.buttons.requestMatch')}
+                                            {t('dashboard.helpers.buttons.requestMatchHuH')}
                                         </Button>
                                     ) : (
                                         <AlertMessage

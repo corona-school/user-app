@@ -11,7 +11,7 @@ const helpcenter = {
         tabName: 'Häufige Fragen',
     },
     assistance: {
-        title: 'Hilfestellung',
+        title: 'Hilfestellungen',
     },
     contact: {
         tabName: 'Kontakt',

@@ -105,7 +105,8 @@ const lernfair = {
         },
         'max-matches': {
             course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-            matching: 'Du bist bereits Teil eines Lernpaares und kannst daher kein weiteres beantragen.',
+            matching:
+                'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
         },
         'not-instructor': {
             course: 'Du bist leider nicht als Tutor verifiziert.',
