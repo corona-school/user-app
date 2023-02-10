@@ -4,17 +4,13 @@ import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast }
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
+import { Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
-type Props = {
-    state: string;
-    refetchQuery: DocumentNode;
-};
-
-const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
+const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -51,7 +47,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
     }, [modalType, state]);
 
     useEffect(() => {
-        setModalSelection(data);
+        setModalSelection(data as string);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalType]);
 

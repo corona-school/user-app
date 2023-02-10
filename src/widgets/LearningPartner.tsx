@@ -1,12 +1,23 @@
 import { View, Text, Row, useTheme, VStack, Button, Column } from 'native-base';
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { LFSubject } from '../types/lernfair/Subject';
+import { Subject } from '../gql/graphql';
 
-type Props = {
+const LearningPartner = ({
+    name,
+    subjects,
+    schooltype,
+    schoolclass,
+    isDark = false,
+    button,
+    status,
+    contactMail,
+    meetingId,
+}: {
     name: string;
-    subjects: LFSubject[];
+    subjects: Subject[];
     schooltype?: string;
     schoolclass?: number;
     isDark?: boolean;
@@ -14,10 +25,9 @@ type Props = {
     status?: string;
     contactMail?: string;
     meetingId?: string;
-};
-
-const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolclass, isDark = false, button, status, contactMail, meetingId }) => {
+}) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <View marginBottom={space['0.5']}>
@@ -34,8 +44,8 @@ const LearningPartner: React.FC<Props> = ({ name, subjects, schooltype, schoolcl
                             <Text color="lightText">
                                 <Text bold>Fächer:</Text>
                             </Text>
-                            {subjects.map((sub: LFSubject) => (
-                                <Tag text={sub.name} variant="secondary-light" marginBottom={0} />
+                            {subjects.map((sub) => (
+                                <Tag text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray)} variant="secondary-light" marginBottom={0} />
                             ))}
                         </Row>
                     )}

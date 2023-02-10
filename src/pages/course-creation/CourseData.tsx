@@ -20,8 +20,6 @@ import {
 } from 'native-base';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { subjects } from '../../types/lernfair/Subject';
-import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -30,6 +28,7 @@ import InstructorRow from '../../widgets/InstructorRow';
 import { LFInstructor, LFTag } from '../../types/lernfair/Course';
 import Tags from '../../modals/Tags';
 import Tag from '../../components/Tag';
+import { SubjectSelector } from '../../widgets/SubjectSelector';
 
 const MAX_TITLE = 50;
 
@@ -180,22 +179,12 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                 </FormControl>
                 <FormControl marginBottom={space['0.5']}>
                     <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.courseSubjectLabel')}</FormControl.Label>
-                    <Row flexWrap={'wrap'}>
-                        {subjects.map((sub: { key: string; label: string; formatted?: string }) => (
-                            <Column marginRight={space['1']} marginBottom={space['0.5']}>
-                                <IconTagList
-                                    initial={subject?.name === (sub.formatted || sub.label)}
-                                    text={sub.label}
-                                    onPress={() => {
-                                        setSubject && setSubject({ name: sub.formatted || sub.label });
-                                        // setClassRange &&
-                                        //   setClassRange([sub.grade?.min || 1, sub.grade?.max || 13])
-                                    }}
-                                    iconPath={`subjects/icon_${sub.key}.svg`}
-                                />
-                            </Column>
-                        ))}
-                    </Row>
+                    <SubjectSelector
+                        subjects={subject ? [subject] : []}
+                        addSubject={(it) => setSubject && setSubject(it)}
+                        removeSubject={() => setSubject && setSubject(null)}
+                        limit={1}
+                    />
                 </FormControl>
 
                 <FormControl>

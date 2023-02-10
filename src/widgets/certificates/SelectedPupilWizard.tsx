@@ -2,23 +2,27 @@ import { Text, useTheme, VStack, Checkbox, Button, Row, Column, Heading } from '
 import { useCallback, useContext, useState } from 'react';
 import DatePicker from '../../components/DatePicker';
 import TextInput from '../../components/TextInput';
+import { Subject } from '../../gql/graphql';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { LFMatch } from '../../types/lernfair/Match';
-import { getSubjectKey, LFSubject } from '../../types/lernfair/Subject';
 
 import IconTagList from '../IconTagList';
 import TwoColGrid from '../TwoColGrid';
 import UserProgress from '../UserProgress';
 
-type Props = {
+const SelectedPupilWizard = ({
+    match,
+    onNext,
+    onPrev,
+    currentIndex,
+    pupilCount,
+}: {
     match: LFMatch;
     onNext: () => any;
     onPrev: () => any;
     currentIndex: number;
     pupilCount: number;
-};
-
-const SelectedPupilWizard: React.FC<Props> = ({ match, onNext, onPrev, currentIndex, pupilCount }) => {
+}) => {
     const { space } = useTheme();
 
     const { setState } = useContext(RequestCertificateContext);
@@ -26,7 +30,7 @@ const SelectedPupilWizard: React.FC<Props> = ({ match, onNext, onPrev, currentIn
     const [from, setFrom] = useState<string>();
     const [to, setTo] = useState<string>();
     const [ongoing, setOngoing] = useState<boolean>(false);
-    const [selectedSubject, setSelectedSubject] = useState<LFSubject>({
+    const [selectedSubject, setSelectedSubject] = useState<Subject>({
         name: '',
     });
     const [hrsPerWeek, setHrsPerWeek] = useState<string>('');
@@ -70,13 +74,13 @@ const SelectedPupilWizard: React.FC<Props> = ({ match, onNext, onPrev, currentIn
                 <VStack space={space['0.5']}>
                     <Text bold>Fächer</Text>
                     <TwoColGrid>
-                        {match?.subjectsFormatted?.map((subject: LFSubject) => (
+                        {match?.subjectsFormatted?.map((subject) => (
                             <Column mb={space['0.5']}>
                                 <IconTagList
                                     initial={selectedSubject.name === subject.name}
                                     variant="selection"
                                     text={subject.name}
-                                    iconPath={`languages/icon_${getSubjectKey(subject.name)}.svg`}
+                                    iconPath={`subjects/icon_${subject.name}.svg`}
                                     onPress={() => setSelectedSubject(subject)}
                                 />
                             </Column>

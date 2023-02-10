@@ -1,17 +1,21 @@
 import { Text, Column, Box, Row, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
-import { LFSubject } from '../types/lernfair/Subject';
+import { Subject } from '../gql/graphql';
 
-type Props = {
+const OpenMatchRequest = ({
+    cancelLoading,
+    subjects,
+    showCancelMatchRequestModal,
+    index,
+    onEditRequest,
+}: {
     cancelLoading: boolean;
-    subjects: LFSubject[];
+    subjects: Subject[];
     showCancelMatchRequestModal: () => void;
     index: number;
     onEditRequest: () => void;
-};
-
-const OpenMatchRequest: React.FC<Props> = ({ cancelLoading, subjects, showCancelMatchRequestModal, index, onEditRequest }) => {
+}) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -32,7 +36,14 @@ const OpenMatchRequest: React.FC<Props> = ({ cancelLoading, subjects, showCancel
                         {t('matching.request.check.subjects')}
                     </Text>
                     <Row space={space['0.5']}>
-                        {subjects && subjects.map((sub: LFSubject) => <Tag text={sub.name} variant="secondary-light" marginBottom={0} />)}
+                        {subjects &&
+                            subjects.map((sub) => (
+                                <Tag
+                                    text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray) + (sub.mandatory ? ' (priorisiert)' : '')}
+                                    variant="secondary-light"
+                                    marginBottom={0}
+                                />
+                            ))}
                     </Row>
                 </Column>
                 <Button
