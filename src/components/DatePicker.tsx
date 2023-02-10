@@ -19,7 +19,7 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = 
         <>
             <div className="lf__datepicker">
                 <input
-                    placeholder={type === 'date' ? 'dd.mm.yyyy' : 'HH:mm'}
+                    placeholder={type === 'date' ? 'Wähle ein Datum...' : '00:00'}
                     type={inputType}
                     onFocus={(e) => setInputType(type)} // change to type in props
                     onBlur={(e) => setInputType('text')} // change back to text
