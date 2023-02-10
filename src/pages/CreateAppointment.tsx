@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import WithNavigation from '../components/WithNavigation';
-import { CreateAppointmentProvider } from '../hooks/useCreateAppointment';
+import { CreateAppointmentProvider } from '../context/AppointmentContext';
 import InstructionProgress from '../widgets/InstructionProgress';
 import AddAppointment from './create-appointment/AddAppointment';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
