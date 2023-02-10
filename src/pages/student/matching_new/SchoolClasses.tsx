@@ -41,7 +41,6 @@ const SchoolClasses: React.FC<Props> = () => {
     `)
     );
 
-
     const showModal = useCallback(() => {
         setVariant('dark');
 
@@ -77,7 +76,6 @@ const SchoolClasses: React.FC<Props> = () => {
     }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
 
     const submit = useCallback(async () => {
-
         const resSubs = await updateSubjects({ variables: { subjects: matchRequest.subjects } });
         if (resSubs.data && !resSubs.errors) {
             if (!isEdit) {
@@ -115,19 +113,21 @@ const SchoolClasses: React.FC<Props> = () => {
 };
 export default SchoolClasses;
 
-const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject, setSubject: (subject: Subject) => void }) => {
+const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubject: (subject: Subject) => void }) => {
     const { space, colors } = useTheme();
     const { t } = useTranslation();
 
-    const onValueChange = useCallback((range: [number, number]) => {
-        setSubject({ name: subject.name, grade: { min: range[0], max: range[1] }});
-    }, [subject.name, setSubject]);
-
+    const onValueChange = useCallback(
+        (range: [number, number]) => {
+            setSubject({ name: subject.name, grade: { min: range[0], max: range[1] } });
+        },
+        [subject.name, setSubject]
+    );
 
     return (
         <Card flexibleWidth padding={space['1']}>
             <VStack space={space['0.5']}>
-                <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}`)}</Heading>
+                <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray)}</Heading>
                 <Heading fontSize="md">
                     Klasse {subject.grade!.min}-{subject.grade!.max}
                 </Heading>

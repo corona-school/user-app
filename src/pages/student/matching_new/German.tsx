@@ -10,11 +10,11 @@ const German: React.FC = () => {
     const { setSubject, matchRequest, setCurrentIndex, removeSubject } = useContext(RequestMatchContext);
 
     // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
-    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => containsDAZ(matchRequest.subjects) ? true : null);
+    const [supportsDaz, setSupportsDaz] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? true : null));
 
     const onNext = useCallback(() => {
         if (supportsDaz) {
-            setSubject({ name: DAZ, grade: { min: 1, max: 13 }});
+            setSubject({ name: DAZ, grade: { min: 1, max: 13 } });
         } else {
             removeSubject(DAZ);
         }
@@ -33,7 +33,13 @@ const German: React.FC = () => {
                     <IconTagList iconPath={`lf-yes.svg`} initial={supportsDaz ?? false} variant="selection" text="Ja" onPress={() => setSupportsDaz(true)} />
                 </Column>
                 <Column>
-                    <IconTagList iconPath={`lf-no.svg`} initial={!(supportsDaz ?? true)} variant="selection" text="Nein" onPress={() => setSupportsDaz(false)} />
+                    <IconTagList
+                        iconPath={`lf-no.svg`}
+                        initial={!(supportsDaz ?? true)}
+                        variant="selection"
+                        text="Nein"
+                        onPress={() => setSupportsDaz(false)}
+                    />
                 </Column>
             </TwoColGrid>
             <Button onPress={onNext} isDisabled={supportsDaz === null}>

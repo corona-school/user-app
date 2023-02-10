@@ -10,8 +10,7 @@ import IconTagList from '../../../widgets/IconTagList';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
-
-const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null, refetchQuery: DocumentNode }) => {
+const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -63,7 +62,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet') });
+            toast.show({ description: t('matching.request.updateData') });
         } catch (e) {
             toast.show({ description: t('error') });
         }
@@ -93,7 +92,11 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
                                     <CSSWrapper className="profil-tab-link">
-                                        <IconTagList isDisabled iconPath={`states/icon_${state}.svg`} text={t(`lernfair.states.${state}`)} />
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`states/icon_${state}.svg`}
+                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                        />
                                     </CSSWrapper>
                                 )) || <Text>{t('profile.noInfo')}</Text>}
                             </Column>

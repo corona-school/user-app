@@ -27,7 +27,7 @@ const dashboard = {
     myappointments: {
         header: 'Meine Termine',
         linktext: 'Alle',
-        noappointments: 'Es wurden keine weitere Termine gefunden.',
+        noappointments: 'Es wurden keine Termine gefunden.',
     },
     homework: {
         header: 'Hausaufgabenhilfe',
@@ -45,10 +45,9 @@ const dashboard = {
         header: 'Angebote',
         match: 'Match auflösen',
         noMatching: 'Du hast noch keine Matches',
-        requestMatching: 'Match anfordern',
         requestCreated: 'Anfrage erstellt am:',
         clock: 'Uhr',
-        waitingTimeInfo: 'Bitte beachte dass die Suche nach einer/einem Lernpartner:in zu Wartezeiten von 3 - 6 Monaten kommen kann',
+        waitingTimeInfo: 'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in für dich zu Wartezeiten von 3 - 6 Monaten kommen kann.',
         removeRequest: 'Anfrage zurücknehmen',
     },
     helpers: {
@@ -67,8 +66,9 @@ const dashboard = {
         buttons: {
             course: 'Neuen Kurs eintragen',
             offer: 'Wichtige Meldungen',
-            requestMatch: 'Neues Match anfordern',
-            solveMatch: 'Match auflösen',
+            requestMatchHuH: 'Ein neues Lernpaar bilden',
+            requestMatchSuS: 'Auf die Warteliste setzen',
+            solveMatch: 'Lernpaar auflösen',
             recommend: 'Jetzt empfehlen',
         },
     },

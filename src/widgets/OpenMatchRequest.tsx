@@ -3,7 +3,19 @@ import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
 import { Subject } from '../gql/graphql';
 
-const OpenMatchRequest = ({ cancelLoading, subjects, showCancelMatchRequestModal, index, onEditRequest }: { cancelLoading: boolean, subjects: Subject[], showCancelMatchRequestModal: () => void, index: number, onEditRequest: () => void }) => {
+const OpenMatchRequest = ({
+    cancelLoading,
+    subjects,
+    showCancelMatchRequestModal,
+    index,
+    onEditRequest,
+}: {
+    cancelLoading: boolean;
+    subjects: Subject[];
+    showCancelMatchRequestModal: () => void;
+    index: number;
+    onEditRequest: () => void;
+}) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -24,7 +36,14 @@ const OpenMatchRequest = ({ cancelLoading, subjects, showCancelMatchRequestModal
                         {t('matching.request.check.subjects')}
                     </Text>
                     <Row space={space['0.5']}>
-                        {subjects && subjects.map((sub) => <Tag text={t(`lernfair.subjects.${sub.name}`) + (sub.mandatory ? " (priorisiert)" : "")} variant="secondary-light" marginBottom={0} />)}
+                        {subjects &&
+                            subjects.map((sub) => (
+                                <Tag
+                                    text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray) + (sub.mandatory ? ' (priorisiert)' : '')}
+                                    variant="secondary-light"
+                                    marginBottom={0}
+                                />
+                            ))}
                     </Row>
                 </Column>
                 <Button

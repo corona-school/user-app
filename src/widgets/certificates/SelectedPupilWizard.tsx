@@ -10,8 +10,13 @@ import IconTagList from '../IconTagList';
 import TwoColGrid from '../TwoColGrid';
 import UserProgress from '../UserProgress';
 
-
-const SelectedPupilWizard = ({ match, onNext, onPrev, currentIndex, pupilCount }: {
+const SelectedPupilWizard = ({
+    match,
+    onNext,
+    onPrev,
+    currentIndex,
+    pupilCount,
+}: {
     match: LFMatch;
     onNext: () => any;
     onPrev: () => any;

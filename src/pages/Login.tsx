@@ -184,24 +184,20 @@ export default function Login() {
     };
 
     const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email }) => {
-        const [pwEmail, setPwEmail] = useState<string>(email);
-
+        const [pwEmail] = useState<string>(email);
         return (
             <Modal isOpen={showModal} onClose={() => setShowPasswordModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Passwort zurücksetzen</Modal.Header>
                     <Modal.Body>
                         <VStack space={space['0.5']}>
-                            <Text>Möchtest du dein Passwort wirklich zurücksetzen?</Text>
-
-                            <TextInput type="text" value={pwEmail} placeholder={t('email')} onChangeText={setPwEmail} />
+                            <Text>{t('login.passwordReset.description', { email: pwEmail })}</Text>
                         </VStack>
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
                             <Button isDisabled={pwEmail.length < 6 || _resetPW?.loading} onPress={() => resetPassword(pwEmail)}>
-                                Passwort zurücksetzen
+                                {t('login.passwordReset.btn')}
                             </Button>
                         </Row>
                     </Modal.Footer>
@@ -218,17 +214,15 @@ export default function Login() {
             <Modal isOpen={showModal} onClose={() => setShowNoAccountModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Login</Modal.Header>
+                    <Modal.Header>{t('login.accountNotFound.title')}</Modal.Header>
                     <Modal.Body>
                         <VStack space={space['0.5']}>
-                            <Text>
-                                Es konnte kein Account mit der E-Mail Adresse <Text bold>{email}</Text> gefunden werden
-                            </Text>
+                            <Text>{t('login.accountNotFound.alert_html', { email: email })}</Text>
                         </VStack>
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>OK</Button>
+                            <Button onPress={() => setShowNoAccountModal(false)}>{t('lernfair.buttons.ok')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -294,16 +288,15 @@ export default function Login() {
                             {t('login.error')}
                         </Text>
                     )}
-
                     {showPasswordResetResult && (
                         <Box maxWidth={ContainerWidth} width="100%">
                             <AlertMessage
                                 content={
                                     showPasswordResetResult === 'success'
-                                        ? 'Bitte checke deine E-Mails um dein Passwort zurückzusetzen'
+                                        ? t('login.passwordReset.alert.success')
                                         : showPasswordResetResult === 'error'
-                                        ? 'Leider konnte dein Passwort nicht zurückgesetzt werden'
-                                        : 'Für diese E-Mail Adresse ist kein Account registriert'
+                                        ? t('login.passwordReset.alert.error')
+                                        : t('login.passwordReset.alert.mailNotFound')
                                 }
                             />
                         </Box>

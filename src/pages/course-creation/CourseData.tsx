@@ -179,7 +179,12 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                 </FormControl>
                 <FormControl marginBottom={space['0.5']}>
                     <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.courseSubjectLabel')}</FormControl.Label>
-                    <SubjectSelector subjects={subject ? [subject] : []} addSubject={it => setSubject && setSubject(it)} removeSubject={() => setSubject && setSubject(null)} limit={1} />
+                    <SubjectSelector
+                        subjects={subject ? [subject] : []}
+                        addSubject={(it) => setSubject && setSubject(it)}
+                        removeSubject={() => setSubject && setSubject(null)}
+                        limit={1}
+                    />
                 </FormControl>
 
                 <FormControl>
@@ -187,7 +192,9 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                         {t('course.CourseDate.form.detailsContent')}
                     </FormControl.Label>
 
-                    <Text>{t(`Klassen ${(classRange && classRange[0]) || 1} - ${(classRange && classRange[1]) || 13}`)}</Text>
+                    <Text>
+                        {t(`Klassen ${(classRange && classRange[0]) || 1} - ${(classRange && classRange[1]) || 13}` as unknown as TemplateStringsArray)}
+                    </Text>
                     <Box>
                         <Slider
                             animateTransitions

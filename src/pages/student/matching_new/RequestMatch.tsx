@@ -9,7 +9,7 @@ import German from './German';
 import SchoolClasses from './SchoolClasses';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
-import { gql } from "../../../gql";
+import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
 
 const query = gql(`
@@ -50,11 +50,18 @@ const RequestMatching: React.FC = () => {
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
         subjects: [],
     });
-    const setSubject = useCallback((subject: Subject) => setMatchRequest(prev => {
-        let exists = prev.subjects.some(it => it.name === subject.name);
-        return { ...prev, subjects: exists ? prev.subjects.map(it => it.name === subject.name ? subject : it) : prev.subjects.concat(subject) }
-    }), [setMatchRequest]);
-    const removeSubject = useCallback((subjectName: string) => setMatchRequest(prev => ({ ...prev, subjects: prev.subjects.filter(it => it.name !== subjectName), })), [setMatchRequest]);
+    const setSubject = useCallback(
+        (subject: Subject) =>
+            setMatchRequest((prev) => {
+                let exists = prev.subjects.some((it) => it.name === subject.name);
+                return { ...prev, subjects: exists ? prev.subjects.map((it) => (it.name === subject.name ? subject : it)) : prev.subjects.concat(subject) };
+            }),
+        [setMatchRequest]
+    );
+    const removeSubject = useCallback(
+        (subjectName: string) => setMatchRequest((prev) => ({ ...prev, subjects: prev.subjects.filter((it) => it.name !== subjectName) })),
+        [setMatchRequest]
+    );
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
@@ -78,8 +85,8 @@ const RequestMatching: React.FC = () => {
     useEffect(() => {
         if (data) {
             setMatchRequest({
-                subjects: data.me.student!.subjectsFormatted.map(it => ({ name: it.name!, grade: { min: it.grade!.min, max: it.grade!.max }})),
-            })
+                subjects: data.me.student!.subjectsFormatted.map((it) => ({ name: it.name!, grade: { min: it.grade!.min, max: it.grade!.max } })),
+            });
         }
     }, [data]);
 

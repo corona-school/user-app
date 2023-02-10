@@ -42,7 +42,7 @@ type RequestMatchContextType = {
     isEdit: boolean;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
-    matchRequest: { subjects: [], message: "" },
+    matchRequest: { subjects: [], message: '' },
     setSubject: () => {},
     removeSubject: () => {},
     setMessage: () => {},
@@ -56,14 +56,21 @@ const RequestMatch: React.FC = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
         subjects: [],
-        message: ""
+        message: '',
     });
-    const setSubject = useCallback((subject: Subject) => setMatchRequest(prev => {
-        let exists = prev.subjects.some(it => it.name === subject.name);
-        return { ...prev, subjects: exists ? prev.subjects.map(it => it.name === subject.name ? subject : it) : prev.subjects.concat(subject) }
-    }), [setMatchRequest]);
-    const removeSubject = useCallback((subjectName: string) => setMatchRequest(prev => ({ ...prev, subjects: prev.subjects.filter(it => it.name !== subjectName), })), [setMatchRequest]);
-    const setMessage = useCallback((message: string) => setMatchRequest(prev => ({ ...prev, message })), [setMatchRequest]);
+    const setSubject = useCallback(
+        (subject: Subject) =>
+            setMatchRequest((prev) => {
+                let exists = prev.subjects.some((it) => it.name === subject.name);
+                return { ...prev, subjects: exists ? prev.subjects.map((it) => (it.name === subject.name ? subject : it)) : prev.subjects.concat(subject) };
+            }),
+        [setMatchRequest]
+    );
+    const removeSubject = useCallback(
+        (subjectName: string) => setMatchRequest((prev) => ({ ...prev, subjects: prev.subjects.filter((it) => it.name !== subjectName) })),
+        [setMatchRequest]
+    );
+    const setMessage = useCallback((message: string) => setMatchRequest((prev) => ({ ...prev, message })), [setMatchRequest]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
@@ -88,10 +95,11 @@ const RequestMatch: React.FC = () => {
     const { data, loading } = useQuery(query);
 
     useEffect(() => {
-        if (data) setMatchRequest({
-            subjects: data.me.pupil!.subjectsFormatted.map(it => ({ name: it.name, mandatory: it.mandatory })),
-            message: ""
-        });
+        if (data)
+            setMatchRequest({
+                subjects: data.me.pupil!.subjectsFormatted.map((it) => ({ name: it.name, mandatory: it.mandatory })),
+                message: '',
+            });
     }, [data]);
 
     return (

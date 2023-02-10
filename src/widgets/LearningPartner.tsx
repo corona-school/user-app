@@ -5,8 +5,17 @@ import Card from '../components/Card';
 import Tag from '../components/Tag';
 import { Subject } from '../gql/graphql';
 
-
-const LearningPartner = ({ name, subjects, schooltype, schoolclass, isDark = false, button, status, contactMail, meetingId }: {
+const LearningPartner = ({
+    name,
+    subjects,
+    schooltype,
+    schoolclass,
+    isDark = false,
+    button,
+    status,
+    contactMail,
+    meetingId,
+}: {
     name: string;
     subjects: Subject[];
     schooltype?: string;
@@ -36,7 +45,7 @@ const LearningPartner = ({ name, subjects, schooltype, schoolclass, isDark = fal
                                 <Text bold>Fächer:</Text>
                             </Text>
                             {subjects.map((sub) => (
-                                <Tag text={t(`lernfair.subjects.${sub.name}`)} variant="secondary-light" marginBottom={0} />
+                                <Tag text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray)} variant="secondary-light" marginBottom={0} />
                             ))}
                         </Row>
                     )}

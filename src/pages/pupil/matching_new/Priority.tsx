@@ -19,9 +19,15 @@ const Priority: React.FC = () => {
                 welches Fach dir am wichtigsten ist.
             </Text>
 
-            <SubjectSelector subjects={matchRequest.subjects.filter(it => it.mandatory && it.name !== DAZ).map(it => it.name)} selectable={matchRequest.subjects.filter(it => it.name !== DAZ).map(it => it.name)} addSubject={it => setSubject({ name: it, mandatory: true })} removeSubject={it => setSubject({ name: it, mandatory: false })} limit={1} />
+            <SubjectSelector
+                subjects={matchRequest.subjects.filter((it) => it.mandatory && it.name !== DAZ).map((it) => it.name)}
+                selectable={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                addSubject={(it) => setSubject({ name: it, mandatory: true })}
+                removeSubject={(it) => setSubject({ name: it, mandatory: false })}
+                limit={1}
+            />
             <Button
-                isDisabled={matchRequest.subjects.every(it => !it.mandatory)}
+                isDisabled={matchRequest.subjects.every((it) => !it.mandatory)}
                 onPress={() => setCurrentIndex(5)} // 5 = details
             >
                 Weiter

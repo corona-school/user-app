@@ -8,17 +8,22 @@ import SubjectSelector from './SubjectSelector';
 To select multiple subjects:
 
 <Story name="SubjectSelector multiple">
-    <SubjectSelector subjects={["Mathematik", "Englisch"]} addSubject={(name) => {}} removeSubject={(name) => {}} />
+    <SubjectSelector subjects={['Mathematik', 'Englisch']} addSubject={(name) => {}} removeSubject={(name) => {}} />
 </Story>
 
 To select one, set `limit=1`:
 
 <Story name="SubjectSelector single">
-    <SubjectSelector subjects={["Mathematik", "Englisch"]} addSubject={(name) => {}} removeSubject={(name) => {}} limit={1} />
+    <SubjectSelector subjects={['Mathematik', 'Englisch']} addSubject={(name) => {}} removeSubject={(name) => {}} limit={1} />
 </Story>
 
 The subjects offered for selection can also be changed:
 
 <Story name="SubjectSelector selectable">
-    <SubjectSelector subjects={["Mathematik", "Englisch"]} selectable={["Mathematik", "Englisch", "Französisch"]} addSubject={(name) => {}} removeSubject={(name) => {}} />
+    <SubjectSelector
+        subjects={['Mathematik', 'Englisch']}
+        selectable={['Mathematik', 'Englisch', 'Französisch']}
+        addSubject={(name) => {}}
+        removeSubject={(name) => {}}
+    />
 </Story>

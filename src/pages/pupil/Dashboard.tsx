@@ -386,7 +386,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 navigate('/request-match');
                                             }}
                                         >
-                                            {t('dashboard.offers.requestMatching')}
+                                            {t('dashboard.helpers.buttons.requestMatchSuS')}
                                         </Button>
                                     )}
                                     {data?.me?.pupil?.openMatchRequestCount > 0 && (

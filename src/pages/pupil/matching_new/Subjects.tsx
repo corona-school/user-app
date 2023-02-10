@@ -15,7 +15,12 @@ const Subjects: React.FC = () => {
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern brauchst du Hilfe?</Heading>
             {isDAZ && <Text>Du kannst maximal 1 Fach auswählen.</Text>}
-            <SubjectSelector subjects={matchRequest.subjects.filter(it => it.name !== DAZ).map(it => it.name)} addSubject={it => setSubject({ name: it, mandatory: false })} removeSubject={removeSubject} limit={isDAZ ? 1 : undefined} />
+            <SubjectSelector
+                subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                addSubject={(it) => setSubject({ name: it, mandatory: false })}
+                removeSubject={removeSubject}
+                limit={isDAZ ? 1 : undefined}
+            />
             <Button
                 isDisabled={matchRequest.subjects.length === 0}
                 onPress={() => setCurrentIndex(4)} // 4 = priorities

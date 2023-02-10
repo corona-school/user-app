@@ -10,7 +10,7 @@ const German: React.FC = () => {
     const { space } = useTheme();
     const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
     const [showSecond, setShowSecond] = useState<boolean>(false);
-    const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => containsDAZ(matchRequest.subjects) ? false : null);
+    const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
     const [learningSince, setLearningSince] = useState<'<1' | '1-2' | '2-4' | '>4'>();
 
     const onGoNext = useCallback(() => {
@@ -26,8 +26,7 @@ const German: React.FC = () => {
         switch (learningSince) {
             case '<1':
             case '1-2':
-                for (const subject of matchRequest.subjects)
-                    removeSubject(subject.name);
+                for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(5); // 5 = details, skip subjects, priorities
                 break;

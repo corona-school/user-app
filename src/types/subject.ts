@@ -1,68 +1,68 @@
-import { Course_Subject_Enum, Subject } from "../gql/graphql";
+import { Course_Subject_Enum, Subject } from '../gql/graphql';
 
 // Keep in sync with Backend!
 export const SUBJECTS = [
-    "Altgriechisch",
-    "Biologie",
-    "Chemie",
-    "Chinesisch",
-    "Deutsch",
-    "Deutsch als Zweitsprache",
-    "Englisch",
-    "Erdkunde",
-    "Französisch",
-    "Geschichte",
-    "Informatik",
-    "Italienisch",
-    "Kunst",
-    "Latein",
-    "Mathematik",
-    "Musik",
-    "Niederländisch",
-    "Pädagogik",
-    "Philosophie",
-    "Physik",
-    "Politik",
-    "Religion",
-    "Russisch",
-    "Sachkunde",
-    "Spanisch",
-    "Wirtschaft"
+    'Altgriechisch',
+    'Biologie',
+    'Chemie',
+    'Chinesisch',
+    'Deutsch',
+    'Deutsch als Zweitsprache',
+    'Englisch',
+    'Erdkunde',
+    'Französisch',
+    'Geschichte',
+    'Informatik',
+    'Italienisch',
+    'Kunst',
+    'Latein',
+    'Mathematik',
+    'Musik',
+    'Niederländisch',
+    'Pädagogik',
+    'Philosophie',
+    'Physik',
+    'Politik',
+    'Religion',
+    'Russisch',
+    'Sachkunde',
+    'Spanisch',
+    'Wirtschaft',
 ] as const;
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
-export const SUBJECT_TO_ICON: { [subject in (typeof SUBJECTS)[number]]: string } = {
-    "Deutsch als Zweitsprache": "deutsch_als_zweitsprace",
-    Deutsch: "deutsch",
-    Altgriechisch: "altgriechisch",
-    Biologie: "biologie",
-    Chemie: "chemie",
-    Chinesisch: "chinesisch",
-    Englisch: "englisch",
-    Erdkunde: "erdkunde",
-    Französisch: "franzoesisch",
-    Geschichte: "geschichte",
-    Informatik: "informatik",
-    Italienisch: "italienisch",
-    Kunst: "kunst",
-    Latein: "latein",
-    Mathematik: "mathematik",
-    Musik: "musik",
-    Niederländisch: "niederlaendisch",
-    Philosophie: "philosophie",
-    Physik: "physik",
-    Politik: "politik",
-    Pädagogik: "paedagogik",
-    Religion: "religion",
-    Russisch: "russisch",
-    Sachkunde: "sachkunde",
-    Spanisch: "spanisch",
-    Wirtschaft: "wirtschaft"
-}
+export const SUBJECT_TO_ICON: { [subject in typeof SUBJECTS[number]]: string } = {
+    'Deutsch als Zweitsprache': 'deutsch_als_zweitsprace',
+    Deutsch: 'deutsch',
+    Altgriechisch: 'altgriechisch',
+    Biologie: 'biologie',
+    Chemie: 'chemie',
+    Chinesisch: 'chinesisch',
+    Englisch: 'englisch',
+    Erdkunde: 'erdkunde',
+    Französisch: 'franzoesisch',
+    Geschichte: 'geschichte',
+    Informatik: 'informatik',
+    Italienisch: 'italienisch',
+    Kunst: 'kunst',
+    Latein: 'latein',
+    Mathematik: 'mathematik',
+    Musik: 'musik',
+    Niederländisch: 'niederlaendisch',
+    Philosophie: 'philosophie',
+    Physik: 'physik',
+    Politik: 'politik',
+    Pädagogik: 'paedagogik',
+    Religion: 'religion',
+    Russisch: 'russisch',
+    Sachkunde: 'sachkunde',
+    Spanisch: 'spanisch',
+    Wirtschaft: 'wirtschaft',
+};
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
-export const SUBJECT_TO_COURSE_SUBJECT: { [subject in (typeof SUBJECTS)[number]]: Course_Subject_Enum } = {
-    "Deutsch als Zweitsprache": Course_Subject_Enum.DeutschAlsZweitsprache,
+export const SUBJECT_TO_COURSE_SUBJECT: { [subject in typeof SUBJECTS[number]]: Course_Subject_Enum } = {
+    'Deutsch als Zweitsprache': Course_Subject_Enum.DeutschAlsZweitsprache,
     Deutsch: Course_Subject_Enum.Deutsch,
     Altgriechisch: Course_Subject_Enum.Altgriechisch,
     Biologie: Course_Subject_Enum.Biologie,
@@ -87,9 +87,9 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in (typeof SUBJECTS)[number]]
     Russisch: Course_Subject_Enum.Russisch,
     Sachkunde: Course_Subject_Enum.Sachkunde,
     Spanisch: Course_Subject_Enum.Spanisch,
-    Wirtschaft: Course_Subject_Enum.Wirtschaft
-}
+    Wirtschaft: Course_Subject_Enum.Wirtschaft,
+};
 
-export const DAZ = "Deutsch als Zweitsprache";
+export const DAZ = 'Deutsch als Zweitsprache';
 
-export const containsDAZ = (subjects: Subject[]) => subjects.some(it => it.name === DAZ);
+export const containsDAZ = (subjects: Subject[]) => subjects.some((it) => it.name === DAZ);

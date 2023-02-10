@@ -158,7 +158,7 @@ const Registration: React.FC = () => {
                 setContent(
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
-                            {t(`registration.result.error.message.${res.errors[0].message}`, {
+                            {t(`registration.result.error.message.${res.errors[0].message}` as unknown as TemplateStringsArray, {
                                 defaultValue: res.errors[0].message,
                             })}
                         </Text>
@@ -178,7 +178,7 @@ const Registration: React.FC = () => {
             setContent(
                 <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                     <Text color="lightText">
-                        {t(`registration.result.error.message.${e.message}`, {
+                        {t(`registration.result.error.message.${e.message}` as unknown as TemplateStringsArray, {
                             defaultValue: e.message,
                         })}
                     </Text>
@@ -215,7 +215,7 @@ const Registration: React.FC = () => {
           <BackButton onPress={goBack} />
         </Box> */}
                 <Logo />
-                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title`)}</Heading>
+                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider

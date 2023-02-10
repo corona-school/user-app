@@ -106,7 +106,7 @@ const course = {
             courseNamePlaceholder: 'Kursname eingeben',
             courseSubjectLabel: 'Fach',
             coursePhotoLabel: 'Foto',
-            courseAddOntherLeadText: 'Weitere Kursleiter hinzufügen',
+            courseAddOntherLeadText: 'Weitere Kursleiter:innen hinzufügen',
             shortDescriptionLabel: 'Kurzbeschreibung',
             shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …',
             descriptionLabel: 'Beschreibung',
@@ -174,6 +174,11 @@ const course = {
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
             button: 'weiter',
         },
+    },
+
+    addCourseInstructor: {
+        notFound: 'Keine Suchergebnisse',
+        addbtn: 'hinzufügen',
     },
 };
 
