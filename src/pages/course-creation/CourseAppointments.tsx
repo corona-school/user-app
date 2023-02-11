@@ -31,6 +31,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
         if (lectures.length === 0) {
             for (let i = 0; i < newLectures.length; i++) {
                 const lec = newLectures[i];
+                console.log(`New lecture`, lec);
                 if (!lec.date) return false;
                 if (!lec.time) return false;
                 if (!lec.duration) return false;
