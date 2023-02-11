@@ -467,7 +467,7 @@ const CreateCourse: React.FC<Props> = () => {
             let uploadFileId;
             try {
                 uploadFileId = await (
-                    await fetch(BACKEND_URL + '/api/file/upload', {
+                    await fetch(BACKEND_URL + '/api/files/upload', {
                         method: 'POST',
                         body: formData,
                     })
@@ -623,10 +623,12 @@ const CreateCourse: React.FC<Props> = () => {
 
         let uploadFileId;
         try {
-            uploadFileId = await fetch(BACKEND_URL + '/api/files/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            uploadFileId = await (
+                await fetch(BACKEND_URL + '/api/files/upload', {
+                    method: 'POST',
+                    body: formData,
+                })
+            ).text();
 
             if (!uploadFileId) {
                 errors.push('upload_image');
