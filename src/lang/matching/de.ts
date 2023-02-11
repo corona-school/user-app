@@ -103,6 +103,9 @@ const matching = {
                     },
                 },
             },
+            otherCourses: {
+                title: 'Kurse von Anderen',
+            },
         },
     },
     status: { dissolved: 'Das Match wurde aufgelöst.' },
