@@ -61,7 +61,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
 
     useEffect(() => {
         if (newLectures?.length === 0) {
-            setNewLectures && setNewLectures((prev) => [...prev, { time: '', duration: '', date: '' }]);
+            setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', duration: '', date: '' }]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -131,7 +131,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
                     marginBottom={space['2']}
                     isDisabled={!isValidInput}
                     onPress={() => {
-                        setNewLectures && setNewLectures((prev) => [...prev, { time: '', date: '', duration: '' }]);
+                        setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', date: '', duration: '' }]);
                     }}
                     alignItems="center"
                     flexDirection="row"
