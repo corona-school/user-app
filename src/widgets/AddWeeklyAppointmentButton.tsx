@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { Button, HStack } from 'native-base';
 import { useWeeklyAppointments } from '../context/AppointmentContext';
 import { WeeklyReducerActionType } from '../context/CreateAppointment';
@@ -6,18 +7,23 @@ import AppointmentDate from './appointment/AppointmentDate';
 
 type ButtonProps = {
     length: number;
+    nextDate: string;
 };
-const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length }) => {
+const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length, nextDate }) => {
     const { isMobile } = useLayoutHelper();
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
     const handleAddLecture = () => {
-        dispatchWeeklyAppointment({ type: WeeklyReducerActionType.ADD_WEEKLY_APPOINTMENT });
+        dispatchWeeklyAppointment({
+            index: length + 1,
+            type: WeeklyReducerActionType.ADD_WEEKLY_APPOINTMENT,
+            nextDate: nextDate,
+        });
     };
 
     return (
         <HStack space={2}>
-            <AppointmentDate current={false} date={'2023-02-07T15:00:00Z'} color="primary.500" />
+            <AppointmentDate current={false} date={nextDate} color="primary.500" />
             <Button
                 variant="outline"
                 borderStyle="dashed"

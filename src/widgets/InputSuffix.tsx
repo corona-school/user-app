@@ -3,19 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 type InputProps = {
-    appointmentLength: number;
+    appointmentsCount: number;
     inputValue?: string;
     handleInput?: (e: any) => void;
 };
 
-const InputSuffix: React.FC<InputProps> = ({ appointmentLength, inputValue, handleInput }) => {
+const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, handleInput }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
     return (
         <InputGroup>
             <InputLeftAddon borderColor="primary.100" width={isMobile ? '40%' : '25%'} alignItems="start">
-                <Text>{t('appointment.create.lecture') + ` #${appointmentLength}`}</Text>
+                <Text>{t('appointment.create.lecture') + ` #${appointmentsCount}`}</Text>
             </InputLeftAddon>
             <Input
                 name="title"

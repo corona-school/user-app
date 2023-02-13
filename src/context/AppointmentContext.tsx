@@ -29,7 +29,7 @@ const formReducer: Reducer<State, CreateAppointmentAction> = (state: State, acti
 const weeklyReducer: Reducer<Weeklies, WeeklyAppointmentAction> = (state: Weeklies, action: WeeklyAppointmentAction) => {
     switch (action.type) {
         case WeeklyReducerActionType.ADD_WEEKLY_APPOINTMENT: {
-            return [...state, { title: '', description: '' }];
+            return [...state, { index: action.index, title: '', description: '', nextDate: action.nextDate }];
         }
         case WeeklyReducerActionType.REMOVE_WEEKLY_APPOINTMENT: {
             state.pop();

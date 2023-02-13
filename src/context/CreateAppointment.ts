@@ -28,7 +28,9 @@ export enum WeeklyReducerActionType {
 }
 
 type AddWeeklyAppointmentAction = {
+    index: number;
     type: WeeklyReducerActionType.ADD_WEEKLY_APPOINTMENT;
+    nextDate: string;
 };
 
 type RemoveWeeklyAppointmentAction = {
@@ -56,8 +58,10 @@ export type WeeklyAppointmentAction =
     | ChangeWeeklyAppointmentTitle;
 
 export type WeeklyAppointment = {
+    index: number;
     title?: string;
     description?: string;
+    nextDate: string;
 };
 
 export type Weeklies = WeeklyAppointment[];

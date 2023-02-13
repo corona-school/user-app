@@ -10,7 +10,16 @@ import { useCreateAppointments, useWeeklyAppointments } from '../../context/Appo
 import { AppointmentType, FormReducerActionType } from '../../context/CreateAppointment';
 import { CreateAppointment } from '../../types/lernfair/Appointment';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
+type FormErrors = {
+    title?: string;
+    date?: string;
+    time?: string;
+    duration?: string;
+    description?: string;
+    dateNotInOneWeek?: string;
+};
 
 // type of appointments to send to the BE
 export type StartDate = {
@@ -23,18 +32,20 @@ type Props = {
 };
 
 const AppointmentCreation: React.FC<Props> = ({ back }) => {
-    const [error, setError] = useState({});
+    const [errors, setErrors] = useState<FormErrors>({});
+    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
+    const { weeklies } = useWeeklyAppointments();
     const { user } = useApollo();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
-    const { weeklies } = useWeeklyAppointments();
     const navigate = useNavigate();
     const toast = useToast();
 
+    const appointmentsCount = 2;
+
     const buttonWidth = useBreakpointValue({
-        base: '100%',
-        lg: '20%',
+        base: 'full',
+        lg: '25%',
     });
 
     const convertStartDate = (date: string, time: string) => {
@@ -61,22 +72,43 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         }
     `);
 
-    const validate = () => {
-        if (appointmentToCreate.title.length === 0) {
-            setError({ ...error, title: 'Title darf nicht leer sein' });
+    const validateInputs = () => {
+        const isDateMinOneWeekLater = (date: string): boolean => {
+            const startDate = DateTime.fromISO(date);
+            const diff = startDate.diffNow('days').days;
+            if (diff >= 7) return true;
             return false;
+        };
+
+        if (!appointmentToCreate.title.length) {
+            setErrors({ ...errors, title: 'Title darf nicht leer sein' });
+            return false;
+        } else {
+            delete errors.title;
         }
         if (!appointmentToCreate.date) {
-            setError({ ...error, date: 'Datum darf nicht leer sein' });
+            setErrors({ ...errors, date: 'Datum darf nicht leer sein' });
             return false;
+        } else {
+            delete errors.date;
+        }
+        if (isDateMinOneWeekLater(appointmentToCreate.date) === false) {
+            setErrors({ ...errors, dateNotInOneWeek: 'Datum muss in mind einer Woche sein' });
+            return false;
+        } else {
+            delete errors.date;
         }
         if (!appointmentToCreate.time.length) {
-            setError({ ...error, time: 'Zeit darf nicht leer sein' });
+            setErrors({ ...errors, time: 'Zeit darf nicht leer sein' });
             return false;
+        } else {
+            delete errors.time;
         }
         if (appointmentToCreate.duration === 0) {
-            setError({ ...error, duration: 'Dauer darf nicht leer sein' });
+            setErrors({ ...errors, duration: 'Dauer darf nicht leer sein' });
             return false;
+        } else {
+            delete errors.duration;
         }
         return true;
     };
@@ -86,33 +118,33 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             field: 'isRecurring',
         });
     };
-
     const handleCreateAppointment = () => {
         if (!appointmentToCreate) return;
-        validate() ? console.log('valid inputs') : console.log('there is an error');
         const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
+        const organizers = [user!.student!.id];
 
         // TODO add subcourseId or matchId
         const newAppointment: CreateAppointment = {
             title: appointmentToCreate.title,
             description: appointmentToCreate.description,
             start: start,
-            organizers: [user!.student!.id],
+            organizers: organizers,
             duration: appointmentToCreate.duration,
             appointmentType: AppointmentType.GROUP,
         };
 
-        // createAppointment({ variables: { newAppointment } });;
-        validate() && toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
-        validate() &&
+        if (validateInputs()) {
+            createAppointment({ variables: { newAppointment } });
+            toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
             setTimeout(() => {
                 navigate('/appointments');
             }, 2000);
+        } else {
+            return;
+        }
     };
-
     const handleCreateAppointmentWeekly = () => {
         if (!appointmentToCreate) return;
-        validate() ? console.log('valid inputs') : console.log('there is an error');
         const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
         const baseAppointment = {
             title: appointmentToCreate.title,
@@ -123,30 +155,39 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         };
         const weeklyTexts = weeklies;
 
-        // createAppointmentWithWeeklies({variables: {baseAppointment, weeklyTexts}})
-        console.log('create appointment with weeklies', baseAppointment, weeklyTexts);
-
-        toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
-        setTimeout(() => {
-            navigate('/appointments');
-        }, 2000);
+        if (validateInputs()) {
+            createAppointmentWithWeeklies({ variables: { baseAppointment, weeklyTexts } });
+            toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
+            setTimeout(() => {
+                navigate('/appointments');
+            }, 2000);
+        } else {
+            return;
+        }
     };
+
+    const calcNewAppointmentInOneWeek = useCallback(() => {
+        const startDate = DateTime.fromISO(appointmentToCreate.date);
+        const nextDate = startDate.plus({ days: 7 }).toISO();
+        return nextDate;
+    }, [appointmentToCreate.date]);
 
     return (
         <Box>
-            <AppointmentForm errors={error} />
+            <AppointmentForm errors={errors} appointmentsCount={appointmentsCount} />
             <Box py="8">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
+                    isDisabled={appointmentToCreate.date ? false : true}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && <WeeklyAppointments length={5} />}
-            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3} my="3">
-                <Button onPress={appointmentToCreate.isRecurring ? handleCreateAppointmentWeekly : handleCreateAppointment} width={buttonWidth}>
+            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsCount} nextDate={calcNewAppointmentInOneWeek()} />}
+            <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
+                <Button onPress={weeklies.length > 0 ? handleCreateAppointmentWeekly : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
