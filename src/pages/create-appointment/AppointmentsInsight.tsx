@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client';
 import { Box, Button, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,7 @@ type Props = {
     back: () => void;
 };
 
-const AppointmentsView: React.FC<Props> = ({ next, back }) => {
+const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -40,4 +39,4 @@ const AppointmentsView: React.FC<Props> = ({ next, back }) => {
     );
 };
 
-export default AppointmentsView;
+export default AppointmentsInsight;

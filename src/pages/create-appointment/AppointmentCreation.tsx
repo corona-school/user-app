@@ -1,50 +1,36 @@
-import { Box, Button, Checkbox, Stack, useBreakpointValue } from 'native-base';
+import { Box, Button, Checkbox, Stack, useBreakpointValue, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import RepeatWeekly from './RepeatWeekly';
+import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
 import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
-import { AppointmentType, FormReducerActionType, Weeklies } from '../../context/CreateAppointment';
+import { AppointmentType, FormReducerActionType } from '../../context/CreateAppointment';
+import { CreateAppointment } from '../../types/lernfair/Appointment';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 // type of appointments to send to the BE
-type CreateAppointment = {
-    title: string;
-    description: string;
-    start: string;
-    duration: number;
-    subcourseId?: number;
-    matchId?: number;
-    organizers?: number[];
-    participants_pupil?: number[];
-    participants_student?: number[];
-    participants_screener?: number[];
-    appointmentType?: AppointmentType;
-};
-
-type CreateAppointmentWeekly = {
-    baseAppointment: CreateAppointment;
-    weeklyText: Weeklies;
-};
-
 export type StartDate = {
     date: string;
     time: string;
 };
 
-type AddProps = {
-    next: () => void;
+type Props = {
     back: () => void;
 };
 
-const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
+const AppointmentCreation: React.FC<Props> = ({ back }) => {
+    const [error, setError] = useState({});
     const { user } = useApollo();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
-    const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
+    const { weeklies } = useWeeklyAppointments();
+    const navigate = useNavigate();
+    const toast = useToast();
 
     const buttonWidth = useBreakpointValue({
         base: '100%',
@@ -69,6 +55,31 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
         }
     `);
 
+    const [createAppointmentWithWeeklies] = useMutation(gql`
+        mutation createWeekly($baseAppointment: AppointmentCreateGroupInput!, $weeklyTexts: [AppointmentInputText!]!) {
+            appointmentGroupWeeklyCreate(baseAppointment: $baseAppointment, weeklyTexts: $weeklyTexts)
+        }
+    `);
+
+    const validate = () => {
+        if (appointmentToCreate.title.length === 0) {
+            setError({ ...error, title: 'Title darf nicht leer sein' });
+            return false;
+        }
+        if (!appointmentToCreate.date) {
+            setError({ ...error, date: 'Datum darf nicht leer sein' });
+            return false;
+        }
+        if (!appointmentToCreate.time.length) {
+            setError({ ...error, time: 'Zeit darf nicht leer sein' });
+            return false;
+        }
+        if (appointmentToCreate.duration === 0) {
+            setError({ ...error, duration: 'Dauer darf nicht leer sein' });
+            return false;
+        }
+        return true;
+    };
     const handleWeeklyCheck = () => {
         dispatchCreateAppointment({
             type: FormReducerActionType.TOGGLE_CHANGE,
@@ -78,6 +89,7 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
 
     const handleCreateAppointment = () => {
         if (!appointmentToCreate) return;
+        validate() ? console.log('valid inputs') : console.log('there is an error');
         const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
 
         // TODO add subcourseId or matchId
@@ -91,15 +103,38 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
         };
 
         // createAppointment({ variables: { newAppointment } });;
-
-        console.log('create appointment/s', newAppointment);
+        validate() && toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
+        validate() &&
+            setTimeout(() => {
+                navigate('/appointments');
+            }, 2000);
     };
 
-    const handleCreateAppointmentWeekly = () => {};
+    const handleCreateAppointmentWeekly = () => {
+        if (!appointmentToCreate) return;
+        validate() ? console.log('valid inputs') : console.log('there is an error');
+        const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
+        const baseAppointment = {
+            title: appointmentToCreate.title,
+            description: appointmentToCreate.description,
+            start: start,
+            duration: appointmentToCreate.duration,
+            subcourseId: 1,
+        };
+        const weeklyTexts = weeklies;
+
+        // createAppointmentWithWeeklies({variables: {baseAppointment, weeklyTexts}})
+        console.log('create appointment with weeklies', baseAppointment, weeklyTexts);
+
+        toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
+        setTimeout(() => {
+            navigate('/appointments');
+        }, 2000);
+    };
 
     return (
         <Box>
-            <AppointmentForm />
+            <AppointmentForm errors={error} />
             <Box py="8">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
@@ -109,7 +144,7 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring === true && <RepeatWeekly length={5} />}
+            {appointmentToCreate.isRecurring && <WeeklyAppointments length={5} />}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3} my="3">
                 <Button onPress={appointmentToCreate.isRecurring ? handleCreateAppointmentWeekly : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
@@ -122,4 +157,4 @@ const AddAppointment: React.FC<AddProps> = ({ next, back }) => {
     );
 };
 
-export default AddAppointment;
+export default AppointmentCreation;

@@ -7,14 +7,14 @@ import AppointmentDate from './appointment/AppointmentDate';
 type ButtonProps = {
     length: number;
 };
-const AddNew: React.FC<ButtonProps> = ({ length }) => {
+const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length }) => {
     const { isMobile } = useLayoutHelper();
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
     const handleAddLecture = () => {
-        console.log('add weekly appointment');
         dispatchWeeklyAppointment({ type: WeeklyReducerActionType.ADD_WEEKLY_APPOINTMENT });
     };
+
     return (
         <HStack space={2}>
             <AppointmentDate current={false} date={'2023-02-07T15:00:00Z'} color="primary.500" />
@@ -24,7 +24,7 @@ const AddNew: React.FC<ButtonProps> = ({ length }) => {
                 borderWidth="2"
                 borderColor="primary.500"
                 _text={{ color: 'primary.500' }}
-                width={isMobile ? '86%' : '45%'}
+                width={isMobile ? '86%' : '46%'}
                 onPress={() => handleAddLecture()}
             >
                 {`Lektion #${length + 1} hinzufügen`}
@@ -33,4 +33,4 @@ const AddNew: React.FC<ButtonProps> = ({ length }) => {
     );
 };
 
-export default AddNew;
+export default AddWeeklyAppointmentButton;

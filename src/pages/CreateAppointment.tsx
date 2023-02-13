@@ -5,9 +5,9 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import WithNavigation from '../components/WithNavigation';
 import { CreateAppointmentProvider } from '../context/AppointmentContext';
 import InstructionProgress from '../widgets/InstructionProgress';
-import AddAppointment from './create-appointment/AddAppointment';
+import AppointmentCreation from './create-appointment/AppointmentCreation';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
-import AppointmentsView from './create-appointment/AppointmentsView';
+import AppointmentsInsight from './create-appointment/AppointmentsInsight';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -38,8 +38,8 @@ const CreateAppointment = () => {
                             />
                         </View>
                         {currentIndex === 0 && <AppointmentAssignment next={onNext} back={onBack} />}
-                        {currentIndex === 1 && <AppointmentsView next={onNext} back={onBack} />}
-                        {currentIndex === 2 && <AddAppointment next={onNext} back={onBack} />}
+                        {currentIndex === 1 && <AppointmentsInsight next={onNext} back={onBack} />}
+                        {currentIndex === 2 && <AppointmentCreation back={onBack} />}
                     </Box>
                 </WithNavigation>
             </AsNavigationItem>
