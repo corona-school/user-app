@@ -6,7 +6,10 @@ import { FormReducerActionType } from '../../context/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 
-const AppointmentForm: React.FC = () => {
+type FormProps = {
+    errors: {};
+};
+const AppointmentForm: React.FC<FormProps> = ({ errors }) => {
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
 
     const { t } = useTranslation();
@@ -29,6 +32,7 @@ const AppointmentForm: React.FC = () => {
     };
 
     const handleTimeInput = (e: any) => {
+        console.log('time type', typeof e.target.value);
         dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: e.target.value });
     };
 
@@ -37,28 +41,42 @@ const AppointmentForm: React.FC = () => {
             {isMobile ? (
                 <VStack>
                     {/* TITLE */}
-                    <FormControl>
+                    <FormControl isInvalid={'title' in errors}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
-                        <InputSuffix appointmentLength={5} handleInput={handleTitleInput} />
-                        <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>{t('appointment.create.emptyFieldError')}</FormControl.ErrorMessage>
+                        <InputSuffix appointmentLength={5} inputValue={appointmentToCreate.title} handleInput={handleTitleInput} />
+                        {'title' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.emptyFieldError')}
+                            </FormControl.ErrorMessage>
+                        )}
                     </FormControl>
 
                     {/* DATE */}
-                    <FormControl>
+                    <FormControl isInvalid={'date' in errors}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker onChange={(e) => handleDateInput(e)} />
+                        <DatePicker onChange={(e) => handleDateInput(e)} value={appointmentToCreate.date} />
+                        {'date' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.emptyDateError')}
+                            </FormControl.ErrorMessage>
+                        )}
                     </FormControl>
 
                     {/* TIME */}
-                    <FormControl>
+                    <FormControl isInvalid={'time' in errors}>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
-                            <DatePicker type="time" onChange={(e) => handleTimeInput(e)} />
+                            <DatePicker type="time" onChange={(e) => handleTimeInput(e)} value={appointmentToCreate.time} min={'08:00'} />
                         </Box>
+                        {'time' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.emptyTimeError')}
+                            </FormControl.ErrorMessage>
+                        )}
                     </FormControl>
 
                     {/* DURATION */}
-                    <FormControl>
+                    <FormControl isInvalid={'duration' in errors}>
                         <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
                         <Select placeholder="Dauer der Unterrichtseinheit" onValueChange={(e) => handleDurationSelection(e)}>
                             <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
@@ -70,13 +88,18 @@ const AppointmentForm: React.FC = () => {
                             <Select.Item value="180" label={t('course.selectOptions._3hour')} />
                             <Select.Item value="240" label={t('course.selectOptions._4hour')} />
                         </Select>
+                        {'duration' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.emptySelectError')}
+                            </FormControl.ErrorMessage>
+                        )}
                     </FormControl>
 
                     {/* DESCRIPTION */}
-                    <FormControl>
+                    <FormControl isInvalid={'description' in errors}>
                         <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                         <TextArea
-                            // value={appointmentToCreate.description}
+                            value={appointmentToCreate.description}
                             onChangeText={(e) => handleDescriptionInput(e)}
                             placeholder={t('appointment.create.descriptionPlaceholder')}
                             _light={{ placeholderTextColor: 'primary.500' }}
@@ -86,48 +109,32 @@ const AppointmentForm: React.FC = () => {
                     </FormControl>
                 </VStack>
             ) : (
-                <HStack space={5} width="full">
-                    <VStack space={2} width={isMobile ? 'full' : '50%'}>
+                <VStack space={5} width="full">
+                    <HStack space={5}>
                         {/* TITLE */}
-                        <FormControl>
+                        <FormControl width={'50%'}>
                             <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
                             <InputSuffix appointmentLength={5} handleInput={handleTitleInput} />
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyFieldError')}
                             </FormControl.ErrorMessage>
                         </FormControl>
-
+                        {/* DATE */}
+                        <FormControl width={'50%'}>
+                            <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
+                            <DatePicker onChange={(e) => handleDateInput(e)} />
+                        </FormControl>
+                    </HStack>
+                    <HStack space={5}>
                         {/* TIME */}
-                        <FormControl>
+                        <FormControl width={'50%'}>
                             <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                             <Box width="full">
                                 <DatePicker type="time" onChange={(e) => handleTimeInput(e)} />
                             </Box>
                         </FormControl>
-
-                        {/* DESCRIPTION */}
-                        <FormControl>
-                            <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
-                            <TextArea
-                                placeholder="Füge eine prägnante und verständliche Beschreibung hinzu"
-                                _light={{
-                                    placeholderTextColor: '#82B1B0',
-                                }}
-                                onChangeText={(e) => handleDescriptionInput(e)}
-                                autoCompleteType={'normal'}
-                                h="100"
-                            />
-                        </FormControl>
-                    </VStack>
-                    <VStack space={2} width={isMobile ? 'full' : '50%'}>
-                        {/* DATE */}
-                        <FormControl>
-                            <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                            <DatePicker onChange={(e) => handleDateInput(e)} />
-                        </FormControl>
-
                         {/* DURATION */}
-                        <FormControl>
+                        <FormControl width={'50%'}>
                             <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
                             <Select placeholder="Dauer der Unterrichtseinheit" placeholderTextColor="#82B1B0" onValueChange={(e) => handleDurationSelection(e)}>
                                 <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
@@ -140,8 +147,23 @@ const AppointmentForm: React.FC = () => {
                                 <Select.Item value="240" label={t('course.selectOptions._4hour')} />
                             </Select>
                         </FormControl>
-                    </VStack>
-                </HStack>
+                    </HStack>
+                    <HStack space={5}>
+                        {/* DESCRIPTION */}
+                        <FormControl width={'50%'}>
+                            <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
+                            <TextArea
+                                placeholder="Füge eine prägnante und verständliche Beschreibung hinzu"
+                                _light={{
+                                    placeholderTextColor: '#82B1B0',
+                                }}
+                                onChangeText={(e) => handleDescriptionInput(e)}
+                                autoCompleteType={'normal'}
+                                h="100"
+                            />
+                        </FormControl>
+                    </HStack>
+                </VStack>
             )}
         </Box>
     );

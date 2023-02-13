@@ -1,3 +1,6 @@
+import { Weeklies, AppointmentType as TAppointmentType } from '../../context/CreateAppointment';
+
+// TODO delete AppointmentType
 export type AppointmentType = {
     id: number;
     title: string;
@@ -10,6 +13,46 @@ export type AppointmentType = {
     declinedBy: { id: number }[];
     isCancelled: boolean;
     appointmentType: string;
+};
+
+// TODO real type for Appointment
+export type Appointment = {
+    title: string;
+    description: string;
+    start: string;
+    duration: number;
+    subcourseId?: number;
+    matchId?: number;
+    organizers?: number[];
+    participants_pupil?: number[];
+    participants_student?: number[];
+    participants_screener?: number[];
+    appointmentType?: AppointmentType;
+};
+
+// type of appointments to send to the BE
+export type CreateAppointment = {
+    title: string;
+    description: string;
+    start: string;
+    duration: number;
+    subcourseId?: number;
+    matchId?: number;
+    organizers?: number[];
+    appointmentType?: TAppointmentType;
+};
+
+export type BaseAppointment = {
+    title: string;
+    description: string;
+    start: string;
+    duration: number;
+    subcourseId: number;
+};
+
+export type CreateAppointmentWithWeeklies = {
+    baseAppointment: CreateAppointment;
+    weeklyText: Weeklies;
 };
 
 export type Course = {

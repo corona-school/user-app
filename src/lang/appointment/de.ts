@@ -29,6 +29,9 @@ const appointment = {
         inputPlaceholder: 'z.B. Thema XYZ',
         weeklyRepeat: 'wöchentlich wiederholen...',
         emptyFieldError: 'Textfeld darf nicht leer sein',
+        emptySelectError: 'Auswahl darf nicht leer sein',
+        emptyDateError: 'Datum darf nicht leer sein',
+        emptyTimeError: 'Zeit darf nicht leer sein',
     },
     detail: {
         group: 'Gruppentermin mit {{instructor}}',

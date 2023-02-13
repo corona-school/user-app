@@ -4,10 +4,11 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 type InputProps = {
     appointmentLength: number;
+    inputValue?: string;
     handleInput?: (e: any) => void;
 };
 
-const InputSuffix: React.FC<InputProps> = ({ appointmentLength, handleInput }) => {
+const InputSuffix: React.FC<InputProps> = ({ appointmentLength, inputValue, handleInput }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -24,6 +25,7 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentLength, handleInput }) =
                 borderTopRightRadius={5}
                 placeholder={t('appointment.create.inputPlaceholder')}
                 _light={{ placeholderTextColor: 'primary.500' }}
+                value={inputValue}
             />
         </InputGroup>
     );
