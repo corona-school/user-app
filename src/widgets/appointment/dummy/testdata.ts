@@ -1,4 +1,4 @@
-import { AppointmentType } from '../../../types/lernfair/Appointment';
+import { AppointmentType, AppointmentTypes } from '../../../types/lernfair/Appointment';
 
 export const pupilsAppointments: AppointmentType[] = [
     {
@@ -24,7 +24,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 2,
@@ -53,7 +53,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 3,
@@ -91,7 +91,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 5,
@@ -116,7 +116,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 6,
@@ -141,7 +141,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 7,
@@ -170,7 +170,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 8,
@@ -195,7 +195,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 9,
@@ -220,7 +220,7 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Müller',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
     {
         id: 10,
@@ -245,6 +245,6 @@ export const pupilsAppointments: AppointmentType[] = [
                 lastname: 'Maier',
             },
         ],
-        appointmentType: 'GROUP',
+        appointmentType: AppointmentTypes.GROUP,
     },
 ];

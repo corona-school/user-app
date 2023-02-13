@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
+import { AppointmentTypes } from '../types/lernfair/Appointment';
 
 const Appointment = () => {
     const { id: appointmentId } = useParams();
@@ -27,7 +28,7 @@ const Appointment = () => {
                         { firstname: 'Anna', lastname: 'Maier' },
                         { firstname: 'Tom', lastname: 'Bauer' },
                     ],
-                    appointmentType: 'ONE_TO_ONE',
+                    appointmentType: AppointmentTypes.ONE_TO_ONE,
                 }}
                 course={{
                     name: 'Grundlagen Tutorium',

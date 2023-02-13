@@ -23,7 +23,7 @@ const CreateAppointment = () => {
         setCurrentIndex((prev) => prev + 2);
     }, [currentIndex]);
 
-    const onStepOne = (id?: number) => {
+    const goToStepTwo = (id?: number) => {
         if (id) setCourseId(id);
         onNext();
     };
@@ -38,7 +38,7 @@ const CreateAppointment = () => {
                             instructions={[{ label: 'Zuordnung wählen' }, { label: 'Termine einsehen' }, { label: 'Termin hinzufügen' }]}
                         />
                     </View>
-                    {currentIndex === 0 && <AppointmentAssignment next={onStepOne} skipStepTwo={skipStepTwo} />}
+                    {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
                     {currentIndex === 1 && <AppointmentsView courseId={courseId} next={onNext} back={onBack} />}
                 </Box>
             </WithNavigation>

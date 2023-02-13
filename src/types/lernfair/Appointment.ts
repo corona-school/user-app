@@ -10,7 +10,7 @@ export type AppointmentType = {
     meetingLink?: string;
     subcourseId: number;
     participants?: Attendee[];
-    appointmentType?: string;
+    appointmentType?: AppointmentTypes;
 };
 
 export type Appointment = {

@@ -1,7 +1,7 @@
 import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { getAppointmentDateTime } from '../../helper/appointment-helper';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { AppointmentType, Course } from '../../types/lernfair/Appointment';
 import MetaDetails from './MetaDetails';
 import Header from './Header';
@@ -21,13 +21,13 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     const [canceled, setCanceled] = useState<boolean>(false);
     const { date, startTime, endTime } = getAppointmentDateTime(appointment.start, appointment.duration);
 
-    const countAttendees = () => {
+    const countAttendees = useCallback(() => {
         // TODO change to appointment.appointment_participant_pupil, appointment.appointment_participant_student, appointment.appointment_participant_screener
         const participants = appointment.participants ? appointment.participants.length : 0;
         const organizers = appointment.organizers ? appointment.organizers.length : 0;
         return participants + organizers;
-    };
-    const attendeesCount = countAttendees();
+    }, [appointment.organizers, appointment.participants]);
+    const attendeesCount = useMemo(() => countAttendees(), [countAttendees]);
 
     const containerWidth = useBreakpointValue({
         base: 'full',

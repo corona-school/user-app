@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { AppointmentTypes, Attendee } from '../../types/lernfair/Appointment';
 
 type HeaderProps = {
-    appointmentType?: string;
+    appointmentType?: AppointmentTypes;
     organizers?: Attendee[];
     title: string;
 };
