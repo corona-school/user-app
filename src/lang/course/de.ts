@@ -177,8 +177,8 @@ const course = {
     },
 
     addCourseInstructor: {
-        notFound: 'Keine Suchergebnisse',
-        addbtn: 'hinzufügen',
+        search: 'Name oder E-Mail Adresse',
+        notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
     },
 };
 
