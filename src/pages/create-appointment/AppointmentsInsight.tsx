@@ -5,8 +5,10 @@ import { useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { gql } from '../../gql';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 
 type Props = {
+    courseId?: number;
     next: () => void;
     back: () => void;
 };
@@ -32,7 +34,7 @@ const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
     const { isMobile } = useLayoutHelper();
 
     // TODO get data
-    // const {data, loading} = useQuery(query, {variables: {courseId}})
+    // const {data, loading, error} = useQuery(query, {variables: {courseId}})
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -43,11 +45,16 @@ const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
         base: '100%',
         lg: '25%',
     });
+
+    // TODO add empty state from upcoming story
     return (
         <Box>
+            {/* {loading && <CenterLoadingSpinner />} */}
+            {/* {!error && data && ( */}
             <Box maxH={maxHeight} flex="1" mb="10">
                 <AppointmentList isStatic={true} />
             </Box>
+            {/* )} */}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                 <Button onPress={next} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}

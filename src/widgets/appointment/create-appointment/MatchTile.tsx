@@ -4,14 +4,15 @@ import Tag from '../../../components/Tag';
 import { LFPupil } from '../../../types/lernfair/User';
 
 type MatchTileProps = {
+    matchId?: number;
     schooltype: string;
     grade: string;
     pupil: LFPupil;
     subjects?: string[];
-    next: () => void;
+    next: (id?: number) => void;
 };
 
-const MatchTile: React.FC<MatchTileProps> = ({ schooltype, grade, pupil, subjects, next }) => {
+const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil, subjects, next }) => {
     const containerWidth = useBreakpointValue({
         base: 100,
         lg: 120,
@@ -24,7 +25,7 @@ const MatchTile: React.FC<MatchTileProps> = ({ schooltype, grade, pupil, subject
 
     return (
         <Box>
-            <Pressable onPress={next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={() => next(matchId)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         <Center bg="primary.900" width={containerWidth} height="100%" borderTopLeftRadius="15px" borderBottomLeftRadius="15px">

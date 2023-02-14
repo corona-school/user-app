@@ -56,7 +56,7 @@ const getCourseDay = (courseDate: string): CourseDay => {
 const getNextCourseId = (appointments: AppointmentType[]): number => {
     const now = DateTime.now();
     const nextCourse = appointments.find((appointment) => {
-        return DateTime.fromISO(appointment.startDate) > now;
+        return DateTime.fromISO(appointment.start) > now;
     });
     return nextCourse?.id ?? 0;
 };

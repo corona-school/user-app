@@ -1,32 +1,35 @@
 import { Weeklies, AppointmentType as TAppointmentType } from './CreateAppointment';
 
 // TODO delete AppointmentType
+import { Student } from '../../gql/graphql';
+import { ParticipantPupil, ParticipantScreener, ParticipantStudent } from './User';
+
 export type AppointmentType = {
     id: number;
     title: string;
-    organizers: Attendee[];
-    startDate: string;
+    organizers?: Attendee[];
+    start: string;
     duration: number;
-    meetingLink: string;
+    meetingLink?: string;
     subcourseId: number;
-    participants: Attendee[];
-    declinedBy: { id: number }[];
-    isCancelled: boolean;
-    appointmentType: string;
+    participants?: Attendee[];
+    appointmentType?: AppointmentTypes;
 };
 
 // TODO real type for Appointment
 export type Appointment = {
+    id: number;
     title: string;
     description: string;
     start: string;
     duration: number;
     subcourseId?: number;
     matchId?: number;
-    organizers?: number[];
-    participants_pupil?: number[];
-    participants_student?: number[];
-    participants_screener?: number[];
+    meetingLink?: string;
+    organizers?: Student[];
+    appointment_participant_pupil?: ParticipantPupil[];
+    appointment_participant_students?: ParticipantStudent[];
+    appointment_participant_screener?: ParticipantScreener[];
     appointmentType?: AppointmentType;
 };
 
@@ -63,6 +66,7 @@ export type Course = {
 export type Attendee = {
     firstname: string;
     lastname: string;
+    declined?: boolean;
 };
 
 export enum AppointmentTypes {

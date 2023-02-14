@@ -21,7 +21,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                     return (
                         <AppointmentDay
                             first={appointmentsOfWeek[0].id === appointment.id}
-                            courseStart={appointment.startDate}
+                            courseStart={appointment.start}
                             duration={appointment.duration}
                             courseTitle={appointment.title}
                             instructors={appointment.organizers}

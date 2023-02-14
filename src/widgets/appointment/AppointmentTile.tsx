@@ -47,7 +47,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                 </Text>
                             </HStack>
                             <Spacer />
-                            {!isStatic && (
+                            {!isStatic && instructors && participants && (
                                 <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                                     {instructors
                                         ?.map((i, idx) => (

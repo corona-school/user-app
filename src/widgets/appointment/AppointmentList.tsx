@@ -4,32 +4,6 @@ import CalendarYear from './appointment-list/CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
 
-// const appointmentsQuery = gql(`
-// query appointment($id: Int!) {
-//    appointment(id: $id) {
-//         id
-// 		title,
-//         organizers {
-//             firstname,
-//             lastname
-//         },
-//         startDate,
-//         duration,
-//         meetingLink
-//         subcourseId,
-//         participants {
-//             firstname,
-//             lastname
-//         },
-//         declinedBy {
-//             id
-//         },
-//         isCancelled,
-//         appointmentType
-//   }
-// }
-// `);
-
 type ListProps = {
     appointments?: any;
     isStatic: boolean;

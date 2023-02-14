@@ -12,8 +12,8 @@ import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
 import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
 
 type AssignmentProps = {
-    next: () => void;
-    back: () => void;
+    next: (id?: number) => void;
+    skipStepTwo: () => void;
 };
 
 const query = gql`
@@ -38,8 +38,6 @@ const query = gql`
                 }
                 subcoursesInstructing {
                     id
-                    participantsCount
-                    maxParticipants
                     published
                     lectures {
                         start
@@ -63,10 +61,9 @@ const query = gql`
     }
 `;
 
-const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
+const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo }) => {
     const { data, loading } = useQuery(query);
     const { t } = useTranslation();
-
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved), [data?.me?.student?.matches]);
 
     const publishedSubcourses = useMemo(
@@ -122,11 +119,13 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                         return (
                                             <MatchTile
                                                 key={match.id}
+                                                matchId={match.id}
                                                 schooltype={match?.pupil?.schooltype}
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
                                                 subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
-                                                next={next}
+                                                // TODO skip when no appointments for match
+                                                next={skipStepTwo}
                                             />
                                         );
                                     })
@@ -147,11 +146,12 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, back }) => {
                                         return (
                                             <GroupTile
                                                 key={subcourse.id}
-                                                startDate={first && first.start}
+                                                courseId={subcourse.id}
+                                                start={first && first.start}
                                                 courseTitle={subcourse.course.name}
                                                 tags={subcourse.course.tags}
                                                 courseStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                next={next}
+                                                next={subcourse.lectures.length === 0 ? skipStepTwo : next}
                                             />
                                         );
                                     })

@@ -27,6 +27,7 @@ export type LFStudent = {
 export interface Attendee {
     appointmentId: number;
     status: AttendanceStatus;
+    declined: boolean;
 }
 
 export interface ParticipantPupil extends Attendee {
@@ -45,6 +46,8 @@ export interface ParticipantStudent extends Attendee {
 
 export interface ParticipantScreener extends Attendee {
     screenerId: number;
+    firstname: string;
+    lastname: string;
 }
 
 export interface Organizer extends Attendee {

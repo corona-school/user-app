@@ -12,6 +12,7 @@ import AppointmentsInsight from './create-appointment/AppointmentsInsight';
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const { t } = useTranslation();
+    const [courseId, setCourseId] = useState<number>();
 
     const onNext = useCallback(() => {
         if (currentIndex >= 3) return;
@@ -22,12 +23,21 @@ const CreateAppointment = () => {
         setCurrentIndex((prev) => prev - 1);
     }, []);
 
+    const skipStepTwo = useCallback(() => {
+        setCurrentIndex((prev) => prev + 2);
+    }, [currentIndex]);
+
+    const goToStepTwo = (id?: number) => {
+        if (id) setCourseId(id);
+        onNext();
+    };
+
     return (
         <CreateAppointmentProvider>
             <AsNavigationItem path="create-appointments">
                 <WithNavigation>
-                    <Box width={'90%'} mx="4">
-                        <View position="sticky" mb="10" overflow="hidden">
+                    <Box mx="4">
+                        <View position="sticky" mb={2} overflow="hidden">
                             <InstructionProgress
                                 currentIndex={currentIndex}
                                 instructions={[
@@ -37,8 +47,8 @@ const CreateAppointment = () => {
                                 ]}
                             />
                         </View>
-                        {currentIndex === 0 && <AppointmentAssignment next={onNext} back={onBack} />}
-                        {currentIndex === 1 && <AppointmentsInsight next={onNext} back={onBack} />}
+                        {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
+                        {currentIndex === 1 && <AppointmentsInsight courseId={courseId} next={onNext} back={onBack} />}
                         {currentIndex === 2 && <AppointmentCreation back={onBack} />}
                     </Box>
                 </WithNavigation>
