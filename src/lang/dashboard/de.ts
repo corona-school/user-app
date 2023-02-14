@@ -55,7 +55,6 @@ const dashboard = {
             course: 'Meine Kurse',
             importantNews: 'Wichtige Meldungen',
             myLearningPartner: 'Meine Lernpartner:innen',
-            openedRequests: 'Offene Anfragen:',
             recommend: 'Empfehle uns weiter',
             recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
         },
