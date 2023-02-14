@@ -6,6 +6,15 @@ To develop locally, install all dependencies with `npm ci`, then use `npm start`
 
 `npm start` will start GraphQL Codegen in Watch mode - to check GraphQL queries and generate types for them - and the React Development server in two separate processes. For a better development experience one can also `npm run start-graphql` and `npm run start-dev-server` in two separate shells.
 
+## Query Parameters
+
+These Query Parameters can be supplied to any path of the User-App:
+
+**?temporary** opens the App in a temporary session where all credentials are stored in Session Storage instead of Local Storage and no Device Token is created.
+ Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
+
+**?token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
+
 ## Development Tools
 
 To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
