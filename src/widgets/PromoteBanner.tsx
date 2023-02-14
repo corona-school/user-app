@@ -29,11 +29,11 @@ const PromoteBanner: React.FC<BannerProps> = ({ canPromote, isPromoted, onClick,
                 <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
                     <CourseTrafficLamp status={courseStatus} paddingY={3} />
                     <Divider />
-                    <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems="center" space={1}>
+                    <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems={isMobile ? 'flex-start' : 'center'} space={1}>
                         <Stack direction="row" alignItems="center" mb="2">
                             <Box pr="2">{isPromoted ? <CheckIcon /> : <CallIcon />}</Box>
                             {isMobile && <Spacer />}
-                            <VStack maxW={isMobile ? '230' : 'full'}>
+                            <VStack maxW={isMobile ? '300' : 'full'}>
                                 <Text bold fontSize="md">
                                     {isPromoted ? t('single.bannerPromote.promotedTitle') : t('single.bannerPromote.freeTitle')}
                                 </Text>
