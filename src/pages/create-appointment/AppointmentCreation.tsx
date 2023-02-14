@@ -120,20 +120,20 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
     };
     const handleCreateAppointment = () => {
         if (!appointmentToCreate) return;
-        const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
-        const organizers = [user!.student!.id];
-
-        // TODO add subcourseId or matchId
-        const newAppointment: CreateAppointment = {
-            title: appointmentToCreate.title,
-            description: appointmentToCreate.description,
-            start: start,
-            organizers: organizers,
-            duration: appointmentToCreate.duration,
-            appointmentType: AppointmentType.GROUP,
-        };
-
         if (validateInputs()) {
+            const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
+            const organizers = [user!.student!.id];
+
+            // TODO add subcourseId or matchId
+            const newAppointment: CreateAppointment = {
+                title: appointmentToCreate.title,
+                description: appointmentToCreate.description,
+                start: start,
+                organizers: organizers,
+                duration: appointmentToCreate.duration,
+                appointmentType: AppointmentType.GROUP,
+            };
+
             createAppointment({ variables: { newAppointment } });
             toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
             setTimeout(() => {
@@ -145,17 +145,18 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
     };
     const handleCreateAppointmentWeekly = () => {
         if (!appointmentToCreate) return;
-        const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
-        const baseAppointment = {
-            title: appointmentToCreate.title,
-            description: appointmentToCreate.description,
-            start: start,
-            duration: appointmentToCreate.duration,
-            subcourseId: 1,
-        };
-        const weeklyTexts = weeklies;
-
         if (validateInputs()) {
+            const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
+
+            const baseAppointment = {
+                title: appointmentToCreate.title,
+                description: appointmentToCreate.description,
+                start: start,
+                duration: appointmentToCreate.duration,
+                subcourseId: 1,
+            };
+            const weeklyTexts = weeklies;
+
             createAppointmentWithWeeklies({ variables: { baseAppointment, weeklyTexts } });
             toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
             setTimeout(() => {

@@ -5,6 +5,7 @@ import { useCreateAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
+import { useCallback } from 'react';
 
 type FormProps = {
     errors: {};
@@ -19,9 +20,12 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
         lg: '50%',
     });
 
-    const handleTitleInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: e.target.value });
-    };
+    const handleTitleInput = useCallback(
+        (e: any) => {
+            dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: e.target.value });
+        },
+        [dispatchCreateAppointment]
+    );
 
     const handleDurationSelection = (e: any) => {
         dispatchCreateAppointment({ type: FormReducerActionType.SELECT_CHANGE, field: 'duration', value: e });
