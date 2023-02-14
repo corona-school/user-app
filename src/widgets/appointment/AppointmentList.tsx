@@ -6,10 +6,10 @@ import { getScrollToId } from '../../helper/appointment-helper';
 
 type ListProps = {
     appointments?: any;
-    isStatic: boolean;
+    isReadOnly: boolean;
 };
 
-const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
+const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
     const currentCourseRef = useRef<HTMLElement>(null);
     // TODO change to data from BE
     // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
@@ -41,8 +41,8 @@ const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
 
     return (
         <>
-            {isStatic ? (
-                <ScrollView ml={3} width={'100%'} pl={isStatic ? 0 : 3}>
+            {isReadOnly ? (
+                <ScrollView ml={3} width={'100%'} pl={isReadOnly ? 0 : 3}>
                     {appointmentsForOneYear.map((yearEntries) => {
                         const year = Number(yearEntries[yearIndex]);
                         const appointmentsInYear = yearEntries[appointmentsIndex];
@@ -53,7 +53,7 @@ const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
                                 appointmentsOfYear={appointmentsInYear}
                                 scrollToRef={currentCourseRef}
                                 scrollId={scrollToCourseId}
-                                isStatic={isStatic}
+                                isReadOnly={isReadOnly}
                             />
                         );
                     })}
@@ -70,7 +70,7 @@ const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
                                 appointmentsOfYear={appointmentsInYear}
                                 scrollToRef={currentCourseRef}
                                 scrollId={scrollToCourseId}
-                                isStatic={isStatic}
+                                isReadOnly={isReadOnly}
                             />
                         );
                     })}

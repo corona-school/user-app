@@ -11,7 +11,7 @@ type Props = {
     instructors?: Instructor[];
     participants?: Participant[];
     scrollToRef?: any;
-    isStatic?: boolean;
+    isReadOnly?: boolean;
     onPress: () => void;
 };
 
@@ -25,7 +25,7 @@ type Participant = {
     lastname: string;
 };
 
-const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, isStatic, onPress }) => {
+const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, isReadOnly, onPress }) => {
     const isCurrent = isCourseNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
@@ -36,7 +36,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
 
     return (
         <>
-            {!isStatic ? (
+            {!isReadOnly ? (
                 <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
                     <Box w={width} mt={3}>
                         <HStack>
@@ -47,7 +47,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                                 isCurrentlyTakingPlace={isCurrent}
                                 instructors={instructors}
                                 participants={participants}
-                                isStatic={isStatic}
+                                isReadOnly={isReadOnly}
                                 onPress={onPress}
                             />
                         </HStack>

@@ -9,10 +9,10 @@ type WeekProps = {
     lastOfMonth: boolean;
     scrollToRef?: any;
     scrollId?: number;
-    isStatic?: boolean;
+    isReadOnly?: boolean;
 };
 
-const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId, isStatic }) => {
+const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId, isReadOnly }) => {
     const navigate = useNavigate();
     return (
         <VStack>
@@ -27,7 +27,7 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                             instructors={appointment.organizers}
                             participants={appointment.participants}
                             scrollToRef={appointment.id === scrollId ? scrollToRef : null}
-                            isStatic={isStatic}
+                            isReadOnly={isReadOnly}
                             onPress={() => navigate(`/appointment/${appointment.id}`)}
                         />
                     );

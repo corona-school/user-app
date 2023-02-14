@@ -11,10 +11,10 @@ type MonthProps = {
     appointmentsOfMonth: Week;
     scrollToRef?: any;
     scrollId?: number;
-    isStatic?: boolean;
+    isReadOnly?: boolean;
 };
 
-const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId, isStatic }) => {
+const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId, isReadOnly }) => {
     const appointmentsForOneWeek = useMemo(() => Object.entries(appointmentsOfMonth), [appointmentsOfMonth]);
     const values = 1;
 
@@ -33,7 +33,7 @@ const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth,
                         lastOfMonth={idx === appointmentsForOneWeek.length - 1}
                         scrollToRef={scrollToRef}
                         scrollId={scrollId}
-                        isStatic={isStatic}
+                        isReadOnly={isReadOnly}
                     />
                 );
             })}

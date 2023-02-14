@@ -32,6 +32,7 @@ const appointment = {
         emptySelectError: 'Auswahl darf nicht leer sein',
         emptyDateError: 'Datum darf nicht leer sein',
         emptyTimeError: 'Zeit darf nicht leer sein',
+        courseImageAltText: 'Kursbild',
     },
     detail: {
         group: 'Gruppentermin mit {{instructor}}',

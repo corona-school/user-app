@@ -52,7 +52,7 @@ const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
             {/* {loading && <CenterLoadingSpinner />} */}
             {/* {!error && data && ( */}
             <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isStatic={true} />
+                <AppointmentList isReadOnly={true} />
             </Box>
             {/* )} */}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>

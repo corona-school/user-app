@@ -35,10 +35,13 @@ const CreateAppointment = () => {
         setNoAppointments(true);
     }, [currentIndex]);
 
-    const goToStepTwo = (id?: number) => {
-        if (id) setCourseId(id);
-        onNext();
-    };
+    const goToStepTwo = useCallback(
+        (id?: number) => {
+            if (id) setCourseId(id);
+            onNext();
+        },
+        [setCourseId, onNext]
+    );
 
     return (
         <CreateAppointmentProvider>

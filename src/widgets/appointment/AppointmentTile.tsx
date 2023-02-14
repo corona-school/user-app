@@ -10,7 +10,7 @@ type Props = {
     isCurrentlyTakingPlace: boolean;
     instructors?: Instructor[];
     participants?: Participant[];
-    isStatic?: boolean;
+    isReadOnly?: boolean;
     onPress?: () => void;
 };
 
@@ -24,7 +24,7 @@ type Participant = {
     lastname: string;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isStatic, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isReadOnly, onPress }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -33,7 +33,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <Pressable disabled={isStatic} onPress={onPress}>
+                <Pressable disabled={isReadOnly} onPress={onPress}>
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
@@ -47,7 +47,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                 </Text>
                             </HStack>
                             <Spacer />
-                            {!isStatic && instructors && participants && (
+                            {!isReadOnly && instructors && participants && (
                                 <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                                     {instructors
                                         ?.map((i, idx) => (
