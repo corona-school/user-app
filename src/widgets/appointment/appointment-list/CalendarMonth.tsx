@@ -1,7 +1,7 @@
 import { Info } from 'luxon';
 import { Box, Center, Divider, Text } from 'native-base';
 import { useMemo } from 'react';
-import { Week } from '../../types/lernfair/Appointment';
+import { Week } from '../../../types/lernfair/Appointment';
 import CalendarWeek from './CalendarWeek';
 
 type MonthProps = {
@@ -9,11 +9,12 @@ type MonthProps = {
     year: number;
     month: number;
     appointmentsOfMonth: Week;
-    scrollToRef: any;
-    scrollId: number;
+    scrollToRef?: any;
+    scrollId?: number;
+    isReadOnly?: boolean;
 };
 
-const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId }) => {
+const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth, scrollToRef, scrollId, isReadOnly }) => {
     const appointmentsForOneWeek = useMemo(() => Object.entries(appointmentsOfMonth), [appointmentsOfMonth]);
     const values = 1;
 
@@ -32,6 +33,7 @@ const CalendarMonth: React.FC<MonthProps> = ({ year, month, appointmentsOfMonth,
                         lastOfMonth={idx === appointmentsForOneWeek.length - 1}
                         scrollToRef={scrollToRef}
                         scrollId={scrollId}
+                        isReadOnly={isReadOnly}
                     />
                 );
             })}

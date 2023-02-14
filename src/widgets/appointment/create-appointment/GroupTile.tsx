@@ -6,15 +6,16 @@ import { LFTag, TrafficStatus } from '../../../types/lernfair/Course';
 import CourseTrafficLamp from '../../CourseTrafficLamp';
 
 type GroupTileProps = {
+    courseId?: number;
     imageURL?: string;
     tags?: LFTag[];
-    startDate?: string;
+    start?: string;
     courseTitle: string;
     courseStatus: TrafficStatus;
-    next: () => void;
+    next: (id?: number) => void;
 };
 
-const GroupTile: React.FC<GroupTileProps> = ({ imageURL, tags, startDate, courseTitle, courseStatus, next }) => {
+const GroupTile: React.FC<GroupTileProps> = ({ courseId, imageURL, tags, start, courseTitle, courseStatus, next }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -30,7 +31,7 @@ const GroupTile: React.FC<GroupTileProps> = ({ imageURL, tags, startDate, course
 
     return (
         <Box>
-            <Pressable onPress={next} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={() => next(courseId)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         <Box h="100%" w={containerWidth} padding={space['0.5']}>
@@ -55,10 +56,10 @@ const GroupTile: React.FC<GroupTileProps> = ({ imageURL, tags, startDate, course
                     <VStack space="1" my="2">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             <Text>
-                                {startDate
+                                {start
                                     ? t('appointment.createAppointment.assignment.date', {
-                                          date: DateTime.fromISO(startDate).toFormat('dd.MM.yy'),
-                                          time: DateTime.fromISO(startDate).toFormat('HH:mm'),
+                                          date: DateTime.fromISO(start).toFormat('dd.MM.yy'),
+                                          time: DateTime.fromISO(start).toFormat('HH:mm'),
                                       })
                                     : t('appointment.createAppointment.assignment.noAppointments')}
                             </Text>

@@ -1,40 +1,19 @@
-import { Box, useBreakpointValue } from 'native-base';
-import appointments, { getAppointmentsForMonth } from './dummy/appointments';
-import CalendarYear from './CalendarYear';
+import { Box, ScrollView, useBreakpointValue } from 'native-base';
+import appointments from './dummy/appointments';
+import CalendarYear from './appointment-list/CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
 
-// const appointmentsQuery = gql(`
-// query appointment($id: Int!) {
-//    appointment(id: $id) {
-//         id
-// 		title,
-//         organizers {
-//             firstname,
-//             lastname
-//         },
-//         startDate,
-//         duration,
-//         meetingLink
-//         subcourseId,
-//         participants {
-//             firstname,
-//             lastname
-//         },
-//         declinedBy {
-//             id
-//         },
-//         isCancelled,
-//         appointmentType
-//   }
-// }
-// `);
+type ListProps = {
+    appointments?: any;
+    isReadOnly: boolean;
+};
 
-const AppointmentList: React.FC = () => {
+const AppointmentList: React.FC<ListProps> = ({ isReadOnly: isStatic }) => {
     const currentCourseRef = useRef<HTMLElement>(null);
     // TODO change to data from BE
     // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
-    // const monthAppointments = getAppointmentsForMonth(appointments)
+
     const allAppointments = appointments.monthAppointments;
 
     const handleScroll = (element: HTMLElement) => {
@@ -61,15 +40,43 @@ const AppointmentList: React.FC = () => {
     const appointmentsIndex = 1;
 
     return (
-        <Box ml={3} width={listWidth} pl={3}>
-            {appointmentsForOneYear.map((yearEntries) => {
-                const year = Number(yearEntries[yearIndex]);
-                const appointmentsInYear = yearEntries[appointmentsIndex];
-                return (
-                    <CalendarYear key={year} year={year} appointmentsOfYear={appointmentsInYear} scrollToRef={currentCourseRef} scrollId={scrollToCourseId} />
-                );
-            })}
-        </Box>
+        <>
+            {isStatic ? (
+                <ScrollView ml={3} width={'100%'} pl={isStatic ? 0 : 3}>
+                    {appointmentsForOneYear.map((yearEntries) => {
+                        const year = Number(yearEntries[yearIndex]);
+                        const appointmentsInYear = yearEntries[appointmentsIndex];
+                        return (
+                            <CalendarYear
+                                key={year}
+                                year={year}
+                                appointmentsOfYear={appointmentsInYear}
+                                scrollToRef={currentCourseRef}
+                                scrollId={scrollToCourseId}
+                                isReadOnly={isStatic}
+                            />
+                        );
+                    })}
+                </ScrollView>
+            ) : (
+                <Box ml={3} width={listWidth} pl={3}>
+                    {appointmentsForOneYear.map((yearEntries) => {
+                        const year = Number(yearEntries[yearIndex]);
+                        const appointmentsInYear = yearEntries[appointmentsIndex];
+                        return (
+                            <CalendarYear
+                                key={year}
+                                year={year}
+                                appointmentsOfYear={appointmentsInYear}
+                                scrollToRef={currentCourseRef}
+                                scrollId={scrollToCourseId}
+                                isReadOnly={isStatic}
+                            />
+                        );
+                    })}
+                </Box>
+            )}
+        </>
     );
 };
 

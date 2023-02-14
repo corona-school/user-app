@@ -15,6 +15,11 @@ const appointment = {
             oneToOneTitle: 'Einzel',
             group: 'Gruppe',
             date: 'Ab {{date}} • {{time}} Uhr',
+            courseImageAltText: 'Kursbild',
+        },
+        view: {
+            addAppointment: 'Termin hinzufügen',
+            backButton: 'zur vorherigen Seite',
         },
     },
     appointmentDetail: {

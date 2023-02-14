@@ -11,6 +11,7 @@ type Props = {
     instructors?: Instructor[];
     participants?: Participant[];
     scrollToRef?: any;
+    isReadOnly?: boolean;
     onPress: () => void;
 };
 
@@ -21,9 +22,10 @@ type Instructor = {
 
 type Participant = {
     firstname: string;
+    lastname: string;
 };
 
-const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, onPress }) => {
+const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, isReadOnly, onPress }) => {
     const isCurrent = isCourseNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
@@ -32,31 +34,40 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
         lg: '100%',
     });
 
-    const marginRef = useBreakpointValue({
-        base: currentMonth ? 40 : 60,
-        lg: currentMonth ? 40 : 60,
-    });
-
     return (
-        <div ref={scrollToRef} key={courseStart} style={{ scrollMarginTop: marginRef }}>
-            <Box w={width} mt={3}>
-                <HStack>
-                    <Box width="10" mr={3}>
-                        {first && <AppointmentDate current={isCurrent} date={courseStart} />}
+        <>
+            {!isReadOnly ? (
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
+                    <Box w={width} mt={3}>
+                        <HStack>
+                            <AppointmentDate current={isCurrent} date={courseStart} />
+                            <AppointmentTile
+                                timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                                courseTitle={courseTitle}
+                                isCurrentlyTakingPlace={isCurrent}
+                                instructors={instructors}
+                                participants={participants}
+                                isReadOnly={isReadOnly}
+                                onPress={onPress}
+                            />
+                        </HStack>
                     </Box>
-                    <Box width="full">
-                        <AppointmentTile
-                            timeDescriptionText={getCourseTimeText(courseStart, duration)}
-                            courseTitle={courseTitle}
-                            isCurrentlyTakingPlace={isCurrent}
-                            instructors={instructors}
-                            participants={participants}
-                            onPress={onPress}
-                        />
+                </div>
+            ) : (
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
+                    <Box w={width} mt={3}>
+                        <HStack>
+                            <AppointmentDate current={isCurrent} date={courseStart} />
+                            <AppointmentTile
+                                timeDescriptionText={getCourseTimeText(courseStart, duration)}
+                                courseTitle={courseTitle}
+                                isCurrentlyTakingPlace={isCurrent}
+                            />
+                        </HStack>
                     </Box>
-                </HStack>
-            </Box>
-        </div>
+                </div>
+            )}
+        </>
     );
 };
 

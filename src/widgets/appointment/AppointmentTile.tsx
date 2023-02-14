@@ -10,7 +10,8 @@ type Props = {
     isCurrentlyTakingPlace: boolean;
     instructors?: Instructor[];
     participants?: Participant[];
-    onPress: () => void;
+    isReadOnly?: boolean;
+    onPress?: () => void;
 };
 
 type Instructor = {
@@ -20,9 +21,10 @@ type Instructor = {
 
 type Participant = {
     firstname: string;
+    lastname: string;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isReadOnly, onPress }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -31,7 +33,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <Pressable onPress={onPress}>
+                <Pressable disabled={isReadOnly} onPress={onPress}>
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
@@ -45,21 +47,23 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                 </Text>
                             </HStack>
                             <Spacer />
-                            <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
-                                {instructors
-                                    ?.map((i, idx) => (
-                                        <Avatar key={i.lastname + '-' + idx}>
-                                            <StudentAvatar style={{ marginTop: '-1' }} />
-                                        </Avatar>
-                                    ))
-                                    .concat(
-                                        participants?.map((p, index) => (
-                                            <Avatar key={p.firstname + '-' + index}>
-                                                <PupilAvatar style={{ marginTop: '-1' }} />
+                            {!isReadOnly && instructors && participants && (
+                                <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
+                                    {instructors
+                                        ?.map((i, idx) => (
+                                            <Avatar key={i.lastname + '-' + idx}>
+                                                <StudentAvatar style={{ marginTop: '-1' }} />
                                             </Avatar>
-                                        )) ?? []
-                                    )}
-                            </Avatar.Group>
+                                        ))
+                                        .concat(
+                                            participants?.map((p, index) => (
+                                                <Avatar key={p.firstname + '-' + index}>
+                                                    <PupilAvatar style={{ marginTop: '-1' }} />
+                                                </Avatar>
+                                            )) ?? []
+                                        )}
+                                </Avatar.Group>
+                            )}
                         </HStack>
                         <Box>
                             <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>

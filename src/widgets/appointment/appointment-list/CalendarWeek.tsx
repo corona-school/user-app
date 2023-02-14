@@ -1,17 +1,18 @@
 import { Divider, VStack } from 'native-base';
 import { useNavigate } from 'react-router-dom';
-import { AppointmentType } from '../../types/lernfair/Appointment';
-import AppointmentDay from './AppointmentDay';
+import { AppointmentType } from '../../../types/lernfair/Appointment';
+import AppointmentDay from '../AppointmentDay';
 
 type WeekProps = {
     key: React.Key;
     appointmentsOfWeek: AppointmentType[];
     lastOfMonth: boolean;
-    scrollToRef: any;
-    scrollId: number;
+    scrollToRef?: any;
+    scrollId?: number;
+    isReadOnly?: boolean;
 };
 
-const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId }) => {
+const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, scrollToRef, scrollId, isReadOnly }) => {
     const navigate = useNavigate();
     return (
         <VStack>
@@ -20,12 +21,13 @@ const CalendarWeek: React.FC<WeekProps> = ({ appointmentsOfWeek, lastOfMonth, sc
                     return (
                         <AppointmentDay
                             first={appointmentsOfWeek[0].id === appointment.id}
-                            courseStart={appointment.startDate}
+                            courseStart={appointment.start}
                             duration={appointment.duration}
                             courseTitle={appointment.title}
                             instructors={appointment.organizers}
                             participants={appointment.participants}
                             scrollToRef={appointment.id === scrollId ? scrollToRef : null}
+                            isReadOnly={isReadOnly}
                             onPress={() => navigate(`/appointment/${appointment.id}`)}
                         />
                     );

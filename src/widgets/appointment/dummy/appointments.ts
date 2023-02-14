@@ -6,15 +6,15 @@ import { pupilsAppointments } from './testdata';
 // TODO should add the logic in the BE
 const courses = pupilsAppointments;
 
-const getCourseEndDateISO = (startDate: string, duration: number) => {
-    const firstStart = DateTime.fromISO(startDate);
+const getCourseEndDateISO = (start: string, duration: number) => {
+    const firstStart = DateTime.fromISO(start);
     return firstStart.plus({ minutes: duration }).toISO();
 };
 
 const sortAppointments = (): AppointmentType[] => {
     return courses.sort((firstCourse, secondCourse) => {
-        const firstEndDate = getCourseEndDateISO(firstCourse.startDate, firstCourse.duration);
-        const secondEndDate = getCourseEndDateISO(secondCourse.startDate, secondCourse.duration);
+        const firstEndDate = getCourseEndDateISO(firstCourse.start, firstCourse.duration);
+        const secondEndDate = getCourseEndDateISO(secondCourse.start, secondCourse.duration);
         const first = DateTime.fromISO(firstEndDate).toMillis();
         const second = DateTime.fromISO(secondEndDate).toMillis();
         return first - second;
@@ -26,7 +26,7 @@ export const getAppointmentsForMonth = (appointments: AppointmentType[]) => {
     const dates: CalendarDates = {};
 
     for (let appointment of appointments) {
-        const date = DateTime.fromISO(appointment.startDate);
+        const date = DateTime.fromISO(appointment.start);
         let year = date.year;
         let month = date.month;
         let week = date.weekNumber;
@@ -47,12 +47,12 @@ const monthAppointments = getAppointmentsForMonth(sortedAppointments);
 
 const findNextCourse = (appointments: AppointmentType[]) => {
     const now = DateTime.now();
-    const next = appointments.find((appointment) => DateTime.fromISO(appointment.startDate) > now);
+    const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
     return next?.id ?? 0;
 };
 
 const findCurrentCourse = (appointments: AppointmentType[]) => {
-    const current = appointments.find((appointment) => isCourseNow(appointment.startDate, appointment.duration));
+    const current = appointments.find((appointment) => isCourseNow(appointment.start, appointment.duration));
     return current?.id;
 };
 

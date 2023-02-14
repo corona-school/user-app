@@ -5,11 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import AppointmentList from '../widgets/appointment/AppointmentList';
-import FloatingActionButton from '../widgets/FloatingActionButton';
+import AddAppointmentButton from '../widgets/AddAppointmentButton';
 import Hello from '../widgets/Hello';
+import { useUserType } from '../hooks/useApollo';
+import AppointmentList from '../widgets/appointment/AppointmentList';
 
 const Appointments: React.FC = () => {
+    const userType = useUserType();
+
     const navigate = useNavigate();
     const { space, sizes } = useTheme();
     const ContainerWidth = useBreakpointValue({
@@ -26,9 +29,9 @@ const Appointments: React.FC = () => {
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
-                <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />
+                {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    <AppointmentList />
+                    <AppointmentList isReadOnly={false} />
                 </VStack>
             </WithNavigation>
         </AsNavigationItem>

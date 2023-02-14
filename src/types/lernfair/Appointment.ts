@@ -1,15 +1,30 @@
+import { Student } from '../../gql/graphql';
+import { ParticipantPupil, ParticipantScreener, ParticipantStudent } from './User';
+
 export type AppointmentType = {
     id: number;
     title: string;
-    organizers: Attendee[];
-    startDate: string;
+    organizers?: Attendee[];
+    start: string;
     duration: number;
-    meetingLink: string;
+    meetingLink?: string;
     subcourseId: number;
-    participants: Attendee[];
-    declinedBy: { id: number }[];
-    isCancelled: boolean;
-    appointmentType: string;
+    participants?: Attendee[];
+    appointmentType?: AppointmentTypes;
+};
+
+export type Appointment = {
+    id: number;
+    title: string;
+    organizers?: Student[];
+    start: string;
+    duration: number;
+    meetingLink?: string;
+    subcourseId: number;
+    appointment_participant_pupil: ParticipantPupil[];
+    appointment_participant_students: ParticipantStudent[];
+    appointment_participant_screener: ParticipantScreener[];
+    appointmentType?: string;
 };
 
 export type Course = {
@@ -20,6 +35,7 @@ export type Course = {
 export type Attendee = {
     firstname: string;
     lastname: string;
+    declined?: boolean;
 };
 
 export enum AppointmentTypes {

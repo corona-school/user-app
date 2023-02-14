@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { AppointmentTypes, Attendee } from '../../types/lernfair/Appointment';
 
 type HeaderProps = {
-    appointmentType: string;
-    organizers: Attendee[];
+    appointmentType?: AppointmentTypes;
+    organizers?: Attendee[];
     title: string;
 };
 const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) => {
