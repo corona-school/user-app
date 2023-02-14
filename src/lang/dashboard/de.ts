@@ -57,7 +57,7 @@ const dashboard = {
             myLearningPartner: 'Meine Lernpartner:innen',
             openedRequests: 'Offene Anfragen:',
             recommend: 'Empfehle uns weiter',
-            recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
+            recommendFriends: 'Empfiehl Lern-Fair deinen Freunden',
         },
         contents: {
             recommendFriends:

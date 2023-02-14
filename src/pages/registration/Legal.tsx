@@ -69,7 +69,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                             Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}>Datenschutzbestimmungen</Link> zur Kenntnis genommen und
                             bin damit einverstanden, dass der Lern-Fair e.V. meine persönlichen Daten entsprechend des Zwecks, Umfangs und der Dauer wie in der
                             Datenschutzerklärung angegeben, verarbeitet und gespeichert werden. Mir ist insbesondere bewusst, dass die von mir angegebenen Daten
-                            zur Durchführung der Angebote an zugeteilte Nutzer:innen weitergegeben werden und deren Mailadressen ggf. von Anbietern außerhalb
+                            zur Durchführung der Angebote an zugeteilte Nutzer:innen weitergegeben werden und deren E-Mail-Adressen ggf. von Anbietern außerhalb
                             der EU zur Verfügung gestellt werden, die die Einhaltung des europäischen Datenschutzniveaus nicht gewährleisten können.{' '}
                             <Required />
                         </Text>

@@ -72,7 +72,7 @@ const onboardingList = {
             settings: {
                 title: 'Einstellungen',
                 content:
-                    'In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mailadresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.',
+                    'In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.',
             },
             notification: {
                 title: 'Benachrichtigung',
@@ -125,7 +125,7 @@ const onboardingList = {
             settings: {
                 title: 'Einstellungen',
                 content:
-                    'In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mailadresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.',
+                    'In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.',
             },
             notification: {
                 title: 'Benachrichtigung',
