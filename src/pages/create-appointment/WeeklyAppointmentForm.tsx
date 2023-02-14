@@ -4,7 +4,7 @@ import AppointmentDate from '../../widgets/appointment/AppointmentDate';
 import InputSuffix from '../../widgets/InputSuffix';
 import RemoveIcon from '../../assets/icons/lernfair/remove_circle_outline.svg';
 import { useWeeklyAppointments } from '../../context/AppointmentContext';
-import { WeeklyReducerActionType } from '../../context/CreateAppointment';
+import { WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 
 type WeeklyProps = {
     index: number;

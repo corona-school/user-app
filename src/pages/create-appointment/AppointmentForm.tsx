@@ -2,7 +2,7 @@ import { Box, FormControl, Select, Stack, TextArea, useBreakpointValue, VStack, 
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import { useCreateAppointments } from '../../context/AppointmentContext';
-import { FormReducerActionType } from '../../context/CreateAppointment';
+import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 

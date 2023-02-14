@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { Button, HStack } from 'native-base';
 import { useWeeklyAppointments } from '../context/AppointmentContext';
-import { WeeklyReducerActionType } from '../context/CreateAppointment';
+import { WeeklyReducerActionType } from '../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import AppointmentDate from './appointment/AppointmentDate';
 

@@ -7,7 +7,7 @@ import {
     WeeklyAppointmentAction,
     WeeklyReducerActionType,
     TAppointmentContext,
-} from './CreateAppointment';
+} from '../types/lernfair/CreateAppointment';
 
 const formReducer: Reducer<State, CreateAppointmentAction> = (state: State, action: CreateAppointmentAction) => {
     switch (action.type) {

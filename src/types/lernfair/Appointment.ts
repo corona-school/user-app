@@ -1,4 +1,4 @@
-import { Weeklies, AppointmentType as TAppointmentType } from '../../context/CreateAppointment';
+import { Weeklies, AppointmentType as TAppointmentType } from './CreateAppointment';
 
 // TODO delete AppointmentType
 export type AppointmentType = {

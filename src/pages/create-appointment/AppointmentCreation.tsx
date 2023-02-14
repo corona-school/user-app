@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
-import { AppointmentType, FormReducerActionType } from '../../context/CreateAppointment';
+import { AppointmentType, FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { CreateAppointment } from '../../types/lernfair/Appointment';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
