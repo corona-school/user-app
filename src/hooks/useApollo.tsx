@@ -64,11 +64,20 @@ export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({ children }
     );
 };
 
+// Sometimes Support / Tech-Team logs in on behalf of other users,
+//  in that case we do not want to create persistent sessions but use a temporary session instead
+// By storing the credentials in sessionStorage instead, reloading the tab will remove the session,
+//  and opening a new page will log in again with the default account
+const { searchParams } = new URL(window.location.href);
+const TEMPORARY_LOGIN = searchParams.has('temporary');
+
+const STORAGE = TEMPORARY_LOGIN ? sessionStorage : localStorage;
+
 // -------------- Global User State -------------------
 // ----- Session Token ---------------------
 //  Authenticates the user during a session
 const getSessionToken = () => {
-    const token = localStorage.getItem('lernfair:token');
+    const token = STORAGE.getItem('lernfair:token');
     if (token) return token;
 
     return refreshSessionToken();
@@ -76,12 +85,12 @@ const getSessionToken = () => {
 
 const refreshSessionToken = () => {
     let tok = Utility.createToken();
-    localStorage.setItem('lernfair:token', tok);
+    STORAGE.setItem('lernfair:token', tok);
     return tok;
 };
 
 const clearSessionToken = () => {
-    localStorage.removeItem('lernfair:token');
+    STORAGE.removeItem('lernfair:token');
 };
 
 // ----- Device Token -----------------------
@@ -90,9 +99,9 @@ const clearSessionToken = () => {
 //  user sessions, users can create long lived tokens with which they can log in
 // Users can create and delete these tokens as they want (e.g. logout from a certain device)
 
-const getDeviceToken = () => localStorage.getItem('lernfair:device-token');
-const setDeviceToken = (token: string) => localStorage.setItem('lernfair:device-token', token);
-const clearDeviceToken = () => localStorage.removeItem('lernfair:device-token');
+const getDeviceToken = () => STORAGE.getItem('lernfair:device-token');
+const setDeviceToken = (token: string) => STORAGE.setItem('lernfair:device-token', token);
+const clearDeviceToken = () => STORAGE.removeItem('lernfair:device-token');
 
 // ---------------- Custom ApolloLink For Request Logging -------
 class RequestLoggerLink extends ApolloLink {
@@ -243,7 +252,7 @@ const useApolloInternal = () => {
         if (getDeviceToken()) return;
 
         const { searchParams } = new URL(window.location.href);
-        if (searchParams.has('temporary')) {
+        if (TEMPORARY_LOGIN) {
             log('GraphQL', 'Device token was not created as disabled via query parameter');
             return;
         }
