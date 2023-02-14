@@ -61,7 +61,7 @@ const AssignmentTile: React.FC<TileProps> = (props) => {
                                     width="100%"
                                     height="100%"
                                     bg="gray.400"
-                                    alt={'Kursbild'}
+                                    alt={t('appointment.createAppointment.assignment.courseImageAltText')}
                                     source={{
                                         uri: props.imageURL,
                                     }}

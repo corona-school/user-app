@@ -23,10 +23,13 @@ const CreateAppointment = () => {
         setCurrentIndex((prev) => prev + 2);
     }, [currentIndex]);
 
-    const goToStepTwo = (id?: number) => {
-        if (id) setCourseId(id);
-        onNext();
-    };
+    const goToStepTwo = useCallback(
+        (id?: number) => {
+            if (id) setCourseId(id);
+            onNext();
+        },
+        [setCourseId, onNext]
+    );
 
     return (
         <AsNavigationItem path="create-appointments">

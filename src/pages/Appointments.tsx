@@ -31,7 +31,7 @@ const Appointments: React.FC = () => {
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    <AppointmentList isStatic={false} />
+                    <AppointmentList isReadOnly={false} />
                 </VStack>
             </WithNavigation>
         </AsNavigationItem>

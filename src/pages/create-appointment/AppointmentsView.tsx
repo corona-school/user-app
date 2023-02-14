@@ -11,54 +11,7 @@ type Props = {
     back: () => void;
 };
 
-// query myappointments {
-//     me {
-//       student {
-//         subcoursesInstructing {
-//             id
-//             lectures {
-//               id
-//               title
-//               description
-//               start
-//               duration
-//               meetingLink
-//               subcourseId
-//               matchId
-//               appointmentType
-//               organizers {
-//                 firstname
-//                 lastname
-//               }
-//               appointment_participant_pupil {
-//                 id
-//                 firstname
-//                 lastname
-//                 isPupil
-//                 declined
-//               }
-//               appointment_participant_student {
-//                 id
-//                 firstname
-//                 lastname
-//                 isStudent
-//                 declined
-//               }
-//               appointment_participant_screener {
-//                 id
-//                 firstname
-//                 lastname
-//                 declined
-//               }
-//             }
-//               course{
-//             name
-//           }
-//         }
-//       }
-//     }
-//   }
-
+// TODO adjust to query appointments instead of lectures
 const query = gql`
     query lectures($courseId: Int!) {
         subcourse(subcourseId: $courseId) {
@@ -87,7 +40,6 @@ const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
-    // TODO query appointments in calendar dates format
     const { data, loading, error } = useQuery(query, {
         variables: { courseId },
     });
@@ -103,12 +55,13 @@ const AppointmentsView: React.FC<Props> = ({ courseId, next, back }) => {
     });
 
     // TODO add empty state from upcoming story
+    // TODO pass data to AppointmentList
     return (
         <Box>
             {loading && <CenterLoadingSpinner />}
             {!error && data && (
                 <Box maxH={maxHeight} flex="1" mb="10">
-                    <AppointmentList isStatic={true} />
+                    <AppointmentList isReadOnly={true} />
                 </Box>
             )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>

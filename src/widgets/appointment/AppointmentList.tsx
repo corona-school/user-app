@@ -6,10 +6,10 @@ import { getScrollToId } from '../../helper/appointment-helper';
 
 type ListProps = {
     appointments?: any;
-    isStatic: boolean;
+    isReadOnly: boolean;
 };
 
-const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
+const AppointmentList: React.FC<ListProps> = ({ isReadOnly: isStatic }) => {
     const currentCourseRef = useRef<HTMLElement>(null);
     // TODO change to data from BE
     // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
@@ -53,7 +53,7 @@ const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
                                 appointmentsOfYear={appointmentsInYear}
                                 scrollToRef={currentCourseRef}
                                 scrollId={scrollToCourseId}
-                                isStatic={isStatic}
+                                isReadOnly={isStatic}
                             />
                         );
                     })}
@@ -70,7 +70,7 @@ const AppointmentList: React.FC<ListProps> = ({ isStatic }) => {
                                 appointmentsOfYear={appointmentsInYear}
                                 scrollToRef={currentCourseRef}
                                 scrollId={scrollToCourseId}
-                                isStatic={isStatic}
+                                isReadOnly={isStatic}
                             />
                         );
                     })}
