@@ -68,7 +68,9 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                             </FormControl.ErrorMessage>
                         )}
                         {'dateNotInOneWeek' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>Datum muss in 7 Tagen sein</FormControl.ErrorMessage>
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.wrongDateError')}
+                            </FormControl.ErrorMessage>
                         )}
                     </FormControl>
                 </Stack>

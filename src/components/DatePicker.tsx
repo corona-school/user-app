@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { InputHTMLAttributes, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../web/scss/components/DatePicker.scss';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,8 +8,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = true }) => {
-    // TODO add state to handle type
     const [inputType, setInputType] = useState('text');
+    const { t } = useTranslation();
     const _min = useMemo(() => {
         let date = DateTime.now();
         date = date.plus({ days: 7 });
@@ -19,10 +20,10 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = 
         <>
             <div className="lf__datepicker">
                 <input
-                    placeholder={type === 'date' ? 'Wähle ein Datum...' : '00:00'}
+                    placeholder={type === 'date' ? t('input.datepickerPlaceholder') : t('input.timepickerPlaceholder')}
                     type={inputType}
-                    onFocus={(e) => setInputType(type)} // change to type in props
-                    onBlur={(e) => setInputType('text')} // change back to text
+                    onFocus={(e) => setInputType(type)}
+                    onBlur={(e) => setInputType('text')}
                     onChange={onChange}
                     value={value}
                     min={(type === 'date' && useMin && _min) || undefined}

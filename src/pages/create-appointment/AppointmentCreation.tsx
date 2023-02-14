@@ -81,31 +81,31 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         };
 
         if (!appointmentToCreate.title.length) {
-            setErrors({ ...errors, title: 'Title darf nicht leer sein' });
+            setErrors({ ...errors, title: t('appointment.errors.title') });
             return false;
         } else {
             delete errors.title;
         }
         if (!appointmentToCreate.date) {
-            setErrors({ ...errors, date: 'Datum darf nicht leer sein' });
+            setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
         } else {
             delete errors.date;
         }
         if (isDateMinOneWeekLater(appointmentToCreate.date) === false) {
-            setErrors({ ...errors, dateNotInOneWeek: 'Datum muss in mind einer Woche sein' });
+            setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
             return false;
         } else {
             delete errors.date;
         }
         if (!appointmentToCreate.time.length) {
-            setErrors({ ...errors, time: 'Zeit darf nicht leer sein' });
+            setErrors({ ...errors, time: t('appointment.errors.time') });
             return false;
         } else {
             delete errors.time;
         }
         if (appointmentToCreate.duration === 0) {
-            setErrors({ ...errors, duration: 'Dauer darf nicht leer sein' });
+            setErrors({ ...errors, duration: t('appointment.errors.duration') });
             return false;
         } else {
             delete errors.duration;
@@ -166,7 +166,6 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             return;
         }
     };
-
     const calcNewAppointmentInOneWeek = useCallback(() => {
         const startDate = DateTime.fromISO(appointmentToCreate.date);
         const nextDate = startDate.plus({ days: 7 }).toISO();

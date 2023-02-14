@@ -9,7 +9,7 @@ import {
     TAppointmentContext,
 } from '../types/lernfair/CreateAppointment';
 
-const formReducer: Reducer<State, CreateAppointmentAction> = (state: State, action: CreateAppointmentAction) => {
+const createAppointmentFormReducer: Reducer<State, CreateAppointmentAction> = (state: State, action: CreateAppointmentAction) => {
     switch (action.type) {
         case FormReducerActionType.TEXT_CHANGE: {
             return { ...state, [action.field]: action.value };
@@ -65,7 +65,7 @@ export const AppointmentContext = createContext<TAppointmentContext>({
 
 export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
-    const [appointmentToCreate, dispatchCreateAppointment] = useReducer(formReducer, {
+    const [appointmentToCreate, dispatchCreateAppointment] = useReducer(createAppointmentFormReducer, {
         title: '',
         description: '',
         date: '',

@@ -25,4 +25,9 @@ const onboarding = {
     },
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
 };
-export default onboarding;
+
+const input = {
+    datepickerPlaceholder: 'Wähle ein Datum...',
+    timepickerPlaceholder: '00:00',
+};
+export default { onboarding, input };

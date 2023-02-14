@@ -28,7 +28,7 @@ const Appointment = () => {
                         { firstname: 'Anna', lastname: 'Maier' },
                         { firstname: 'Tom', lastname: 'Bauer' },
                     ],
-                    appointmentType: AppointmentTypes.ONE_TO_ONE,
+                    appointmentType: AppointmentTypes.GROUP,
                 }}
                 course={{
                     name: 'Grundlagen Tutorium',
