@@ -107,6 +107,12 @@ const matching = {
             otherCourses: {
                 title: 'Kurse von Anderen',
             },
+            alert: {
+                successfulEditing: 'Dein Kurs wurde erfolgreich bearbeitet.',
+                successfulCreation:
+                    'Dein Kurs wurde erfolgreich erstellt. Solltest du ihn nicht direkt zur Prüfung freigegeben haben, vergiss das bitte nicht. Nur so können wir deinen Kurs rechtzeitig veröffentlichen.',
+                // successfulCreationNotSubmitted: 'Dein Kurs wurde erfolgreich erstellt, aber noch nicht zur Prüfung freigegeben. Bitte vergiss nicht, das noch zu tun, damit wir deinen Kurs rechtzeitig veröffentlichen können.',
+            },
         },
     },
     status: { dissolved: 'Das Match wurde aufgelöst.' },

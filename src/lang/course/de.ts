@@ -119,12 +119,12 @@ const course = {
             maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',
-            otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+            otherOptionStart: 'Schüler:innen können sich nach dem ersten Kurstermin anmelden',
             otherOptionStartToolTip:
                 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
             otherOptionContact: 'Kontaktaufnahme erlauben',
             otherOptionContactToolTip:
-                'Wenn du die Kontaktaufnahme erlaubst können dich die Schüler:innen die Interesse am Kurs haben oder bereits angemeldet sind Kontakt per E-Mail mit dir aufnehmen',
+                'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
             button: {
                 continue: 'Weiter',
                 cancel: 'Abbrechen',
@@ -143,7 +143,7 @@ const course = {
             yes: 'Ja',
             no: 'Nein',
             headline: 'Angaben überprüfen',
-            content: 'Bitte überpüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
+            content: 'Bitte überprüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
             infoHeadline: 'Allgemeine Informationen zu deinem Kurs',
             courseName: 'Kursname:',
             courseSubject: 'Fach',
@@ -175,10 +175,13 @@ const course = {
             button: 'weiter',
         },
     },
-
     addCourseInstructor: {
         notFound: 'Keine Suchergebnisse',
         addbtn: 'hinzufügen',
+    },
+    empty: {
+        courses: 'Es wurden keine Kurse gefunden.',
+        coursescheck: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
     },
 };
 

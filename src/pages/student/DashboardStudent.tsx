@@ -370,7 +370,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 );
                                             })
                                         ) : (
-                                            <AlertMessage content={t('empty.courses')} />
+                                            <AlertMessage content={t('course.empty.courses')} />
                                         )}
                                     </CSSWrapper>
                                     {data?.me?.student?.canCreateCourse?.allowed ? (
@@ -427,7 +427,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     />
                                                 </CSSWrapper>
                                             ))) ||
-                                            (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('empty.matchings')} /> : '')}
+                                            (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
                                     </CSSWrapper>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (

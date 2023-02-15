@@ -199,8 +199,8 @@ const StudentGroup: React.FC = () => {
                                         <AlertMessage
                                             content={
                                                 locState.wasEdited
-                                                    ? 'Dein Kurs wurde erfolgreich bearbeitet.'
-                                                    : 'Dein Kurs wurde erfolgreich erstellt. Er befindet sich nun in Prüfung.'
+                                                    ? t('matching.group.helper.alert.successfulEditing')
+                                                    : t('matching.group.helper.alert.successfulCreation')
                                             }
                                         />
                                     )}
@@ -242,7 +242,7 @@ const StudentGroup: React.FC = () => {
                                                         {((publishedSubcourses?.length ?? 0) > 0 &&
                                                             publishedSubcourses?.map((subcourse, index) => {
                                                                 return renderSubcourse(subcourse, index);
-                                                            })) || <AlertMessage content={t('empty.courses')} />}
+                                                            })) || <AlertMessage content={t('course.empty.courses')} />}
                                                     </CSSWrapper>
                                                 </>
                                             ),
@@ -254,7 +254,7 @@ const StudentGroup: React.FC = () => {
                                                     <CSSWrapper className="course-list__wrapper">
                                                         {((submittedSubcourses?.length ?? 0) > 0 &&
                                                             submittedSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('empty.coursescheck')} />
+                                                            <AlertMessage content={t('course.empty.coursescheck')} />
                                                         )}
                                                     </CSSWrapper>
                                                 </>
@@ -267,7 +267,7 @@ const StudentGroup: React.FC = () => {
                                                     <CSSWrapper className="course-list__wrapper">
                                                         {((unpublishedOrDraftedSubcourses?.length ?? 0) > 0 &&
                                                             unpublishedOrDraftedSubcourses!.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('empty.coursescheck')} />
+                                                            <AlertMessage content={t('course.empty.coursescheck')} />
                                                         )}
                                                     </CSSWrapper>
                                                 </>
@@ -279,7 +279,7 @@ const StudentGroup: React.FC = () => {
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
                                                         {pastSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index, false)) || (
-                                                            <AlertMessage content={t('empty.courses')} />
+                                                            <AlertMessage content={t('course.empty.courses')} />
                                                         )}
                                                     </CSSWrapper>
                                                 </>

@@ -10,12 +10,6 @@ const shared = {
     back: 'Zurück',
     important: 'Wichtig',
     error: 'Es ist ein Fehler aufgetreten.',
-    empty: {
-        courses: 'Es wurden keine Kurse gefunden.',
-        coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
-        matchings: 'Es wurden keine Matchings gefunden.',
-        norequests: 'Es wurden keine Anfragen gefunden.',
-    },
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
 };
 export default shared;
