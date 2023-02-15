@@ -26,6 +26,7 @@ import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import CreateCourseAppointments from './course-creation/CreateCourseAppointments';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
@@ -865,7 +866,8 @@ const CreateCourse: React.FC = () => {
                                     onRemoveInstructor={removeInstructor}
                                 />
                             )}
-                            {currentIndex === 1 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
+                            {/* {currentIndex === 1 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />} */}
+                            {currentIndex === 1 && <CreateCourseAppointments next={onNext} back={onBack} />}
                             {currentIndex === 2 && (
                                 <>
                                     <CoursePreview
