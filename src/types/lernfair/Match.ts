@@ -1,4 +1,4 @@
-import { LFSubject } from './Subject';
+import { Subject } from '../../gql/graphql';
 import { LFPupil, LFStudent } from './User';
 
 export type LFMatch = {
@@ -6,7 +6,7 @@ export type LFMatch = {
     dissolved: boolean;
     pupil: any;
     student: any;
-    subjectsFormatted: LFSubject[];
+    subjectsFormatted: Subject[];
     uuid: string;
     studentEmail: string;
     pupilEmail: string;

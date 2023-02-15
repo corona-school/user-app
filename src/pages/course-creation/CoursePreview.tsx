@@ -5,11 +5,10 @@ import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { LFLecture } from '../../types/lernfair/Course';
-import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import Utility from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentInfoRow from '../../widgets/AppointmentInfoRow';
-import IconTagList from '../../widgets/IconTagList';
+import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 
 type Props = {
@@ -76,19 +75,11 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 <Text fontSize="md">{courseName}</Text>
             </Row>
 
-            {subject?.name && (
+            {subject && (
                 <>
                     <Heading fontSize="md">{t('course.CourseDate.Preview.courseSubject')}</Heading>
                     <Box paddingBottom={space['0.5']}>
-                        {subject && (
-                            <>
-                                <IconTagList
-                                    iconPath={`subjects/icon_${getSubjectKey(subject.name)}.svg`}
-                                    isDisabled
-                                    text={getSubjectLabel(subject.name, true)}
-                                />
-                            </>
-                        )}
+                        <SubjectSelector addSubject={() => {}} removeSubject={() => {}} subjects={[]} selectable={[subject]} variant="normal" />
                     </Box>
                 </>
             )}

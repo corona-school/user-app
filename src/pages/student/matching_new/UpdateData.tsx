@@ -4,17 +4,13 @@ import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast, 
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
+import { Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
-type Props = {
-    state: string;
-    refetchQuery: DocumentNode;
-};
-
-const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
+const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -51,7 +47,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
     }, [modalType, state]);
 
     useEffect(() => {
-        setModalSelection(data);
+        setModalSelection(data as string);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalType]);
 
@@ -66,7 +62,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet') });
+            toast.show({ description: t('matching.request.updateData') });
         } catch (e) {
             toast.show({ description: t('error') });
         }
@@ -96,7 +92,11 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
                                     <CSSWrapper className="profil-tab-link">
-                                        <IconTagList isDisabled iconPath={`states/icon_${state}.svg`} text={t(`lernfair.states.${state}`)} />
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`states/icon_${state}.svg`}
+                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                        />
                                     </CSSWrapper>
                                 )) || <Text>{t('profile.noInfo')}</Text>}
                             </Column>

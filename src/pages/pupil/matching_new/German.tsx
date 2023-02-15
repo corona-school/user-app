@@ -1,5 +1,6 @@
 import { VStack, useTheme, Heading, Column, Button } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
 import TwoColGrid from '../../../widgets/TwoColGrid';
@@ -7,15 +8,16 @@ import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { setMatching, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
     const [showSecond, setShowSecond] = useState<boolean>(false);
-    const [isNativeLanguage, setIsNativeLanguage] = useState<'yes' | 'no'>();
+    const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
     const [learningSince, setLearningSince] = useState<'<1' | '1-2' | '2-4' | '>4'>();
 
     const onGoNext = useCallback(() => {
-        if (isNativeLanguage === 'no') {
+        if (isNativeLanguage === false) {
             setShowSecond(true);
         } else {
+            removeSubject(DAZ);
             setCurrentIndex(3);
         }
     }, [isNativeLanguage, setCurrentIndex]);
@@ -24,19 +26,21 @@ const German: React.FC = () => {
         switch (learningSince) {
             case '<1':
             case '1-2':
-                setMatching((prev) => ({ ...prev, setDazPriority: true }));
+                for (const subject of matchRequest.subjects) removeSubject(subject.name);
+                setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(5); // 5 = details, skip subjects, priorities
                 break;
             case '2-4':
-                setMatching((prev) => ({ ...prev, setDazPriority: true }));
+                setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(3); // 3 = subjects
                 break;
             case '>4':
             default:
+                removeSubject(DAZ);
                 setCurrentIndex(3);
                 break;
         }
-    }, [learningSince, setCurrentIndex, setMatching]);
+    }, [matchRequest, learningSince, setCurrentIndex, setSubject]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -47,24 +51,24 @@ const German: React.FC = () => {
                     <TwoColGrid>
                         <Column>
                             <IconTagList
-                                initial={isNativeLanguage === 'yes'}
+                                initial={isNativeLanguage === true}
                                 variant="selection"
                                 text="Ja"
                                 iconPath={`lf-yes.svg`}
-                                onPress={() => setIsNativeLanguage('yes')}
+                                onPress={() => setIsNativeLanguage(true)}
                             />
                         </Column>
                         <Column>
                             <IconTagList
-                                initial={isNativeLanguage === 'no'}
+                                initial={isNativeLanguage === false}
                                 variant="selection"
                                 text="Nein"
                                 iconPath={`lf-no.svg`}
-                                onPress={() => setIsNativeLanguage('no')}
+                                onPress={() => setIsNativeLanguage(false)}
                             />
                         </Column>
                     </TwoColGrid>
-                    <Button onPress={onGoNext} isDisabled={!isNativeLanguage}>
+                    <Button onPress={onGoNext} isDisabled={isNativeLanguage === null}>
                         Weiter
                     </Button>
                     <Button variant="outline" onPress={() => setCurrentIndex(1)}>

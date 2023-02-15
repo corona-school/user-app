@@ -4,40 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { subjects } from '../../../types/lernfair/Subject';
 import IconTagList from '../../../widgets/IconTagList';
 import { RequestMatchContext } from './RequestMatch';
+import { SubjectSelector } from '../../../widgets/SubjectSelector';
+import { DAZ } from '../../../types/subject';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { matching, setMatching, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, removeSubject, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
-            <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
-                {subjects.map((subject: { label: string; key: string }) => (
-                    <Box margin={space['0.5']} maxW="250px" flexBasis="300px" flexGrow={1}>
-                        <IconTagList
-                            initial={matching.subjects.includes(subject)}
-                            variant="selection"
-                            text={subject.label}
-                            iconPath={`subjects/icon_${subject.key}.svg`}
-                            onPress={() => {
-                                if (!matching.subjects.includes(subject)) {
-                                    setMatching((prev) => ({
-                                        ...prev,
-                                        subjects: [...prev.subjects, subject],
-                                    }));
-                                } else {
-                                    var subs = [...matching.subjects];
-                                    subs.splice(subs.indexOf(subject), 1);
-                                    setMatching((prev) => ({ ...prev, subjects: subs }));
-                                }
-                            }}
-                        />
-                    </Box>
-                ))}
-            </HStack>
+            <SubjectSelector
+                subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
+                removeSubject={removeSubject}
+            />
+            <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
             <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
             <Box alignItems="center" marginTop={space['0.5']}>
                 <Row space={space['1']} justifyContent="center">

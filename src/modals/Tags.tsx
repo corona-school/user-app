@@ -1,5 +1,6 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
 import { Text, VStack, Button, Flex, useTheme, Row, Column, Heading, Modal } from 'native-base';
 import { useMemo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
@@ -17,6 +18,7 @@ type Props = {
 
 const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDeleteTag }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const { data, loading: isLoading } = useQuery(
         gql(`
@@ -63,7 +65,7 @@ const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDel
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
-                        <Button onPress={onClose}>OK</Button>
+                        <Button onPress={onClose}>{t('lernfair.buttons.ok')}</Button>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>

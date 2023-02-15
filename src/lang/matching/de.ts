@@ -46,6 +46,7 @@ const matching = {
             noRequests: 'Wir suchen gerade nicht nach einem:r neuen Lernpartner:in für dich.',
             resolveMatch: 'Das Match wurde aufgelöst',
         },
+        updateData: 'Deine Daten wurden aktualisiert',
     },
     group: {
         tabs: {
@@ -103,6 +104,9 @@ const matching = {
                     },
                 },
             },
+            otherCourses: {
+                title: 'Kurse von Anderen',
+            },
         },
     },
     status: { dissolved: 'Das Match wurde aufgelöst.' },
@@ -119,8 +123,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Sonstiges',
-            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Wir hatten sprachliche Schwierigkeiten',
+            9: 'Sonstiges',
         },
         pupil: {
             1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
@@ -130,8 +134,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Sonstiges',
-            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Wir hatten sprachliche Schwierigkeiten',
+            9: 'Sonstiges',
         },
     },
 };

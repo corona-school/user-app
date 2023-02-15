@@ -4,7 +4,6 @@ import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMem
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import WithNavigation from '../components/WithNavigation';
-import { LFSubject } from '../types/lernfair/Subject';
 
 import InstructionProgress from '../widgets/InstructionProgress';
 
@@ -25,6 +24,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
 type Props = {};
 
@@ -40,8 +40,8 @@ export type Lecture = {
 type ICreateCourseContext = {
     courseName?: string;
     setCourseName?: Dispatch<SetStateAction<string>>;
-    subject?: LFSubject;
-    setSubject?: Dispatch<SetStateAction<LFSubject>>;
+    subject?: string | null;
+    setSubject?: Dispatch<SetStateAction<string | null>>;
     classRange?: [number, number];
     setClassRange?: Dispatch<SetStateAction<[number, number]>>;
     description?: string;
@@ -77,7 +77,7 @@ const CreateCourse: React.FC<Props> = () => {
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
-    const [subject, setSubject] = useState<LFSubject>({ name: '' });
+    const [subject, setSubject] = useState<string | null>(null);
     const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<LFTag[]>([]);
@@ -257,7 +257,7 @@ const CreateCourse: React.FC<Props> = () => {
 
         setCourseId(prefillCourse.course.id || '');
         setCourseName(prefillCourse.course.name);
-        setSubject({ name: prefillCourse.course.subject });
+        setSubject(prefillCourse.course.subject);
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
@@ -313,14 +313,14 @@ const CreateCourse: React.FC<Props> = () => {
     const _getCourseData = useCallback(
         () => ({
             description,
-            subject: subject.name,
+            subject: (SUBJECT_TO_COURSE_SUBJECT as any)[subject!],
             schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
             category: 'revision',
             allowContact,
         }),
-        [allowContact, courseName, description, studentData?.me?.student?.schooltype, subject.name]
+        [allowContact, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -466,10 +466,12 @@ const CreateCourse: React.FC<Props> = () => {
 
             let uploadFileId;
             try {
-                uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
+                uploadFileId = await (
+                    await fetch(BACKEND_URL + '/api/files/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                ).text();
 
                 if (!uploadFileId) {
                     errors.push('upload_image');
@@ -621,10 +623,12 @@ const CreateCourse: React.FC<Props> = () => {
 
         let uploadFileId;
         try {
-            uploadFileId = await fetch(BACKEND_URL + '/api/files/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            uploadFileId = await (
+                await fetch(BACKEND_URL + '/api/files/upload', {
+                    method: 'POST',
+                    body: formData,
+                })
+            ).text();
 
             if (!uploadFileId) {
                 errors.push('upload_image');
@@ -883,16 +887,16 @@ const CreateCourse: React.FC<Props> = () => {
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Heading maxWidth="330px" marginX="auto" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                                                        {t('course.modal.headline')}
+                                                        {t('course.CourseDate.modal.headline')}
                                                     </Heading>
                                                     <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                                                        {t('course.modal.content')}
+                                                        {t('course.CourseDate.modal.content')}
                                                     </Text>
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Row marginBottom={space['0.5']}>
                                                         <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('course.modal.button')}
+                                                            {t('course.CourseDate.modal.button')}
                                                         </Button>
                                                     </Row>
                                                 </Box>

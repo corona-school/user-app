@@ -62,7 +62,7 @@ const InfoScreen: React.FC<Props> = ({
                             paddingBottom={space['0.5']}
                             color={variant === 'dark' ? 'lightText' : 'primary.700'}
                         >
-                            {t(title)}
+                            {t(title as unknown as TemplateStringsArray)}
                         </Heading>
                     )}
                     {content && (
@@ -74,7 +74,7 @@ const InfoScreen: React.FC<Props> = ({
                     {outlineButtonText && isOutlineButtonLink === false && (
                         <Box alignItems="center" marginBottom={3} width={buttonWidth}>
                             <Button variant={variant === 'dark' ? 'outlinelight' : 'outline'} width={buttonWidth} minWidth="190px" onPress={outlinebuttonLink}>
-                                {t(outlineButtonText)}
+                                {t(outlineButtonText as unknown as TemplateStringsArray)}
                             </Button>
                         </Box>
                     )}
@@ -82,14 +82,14 @@ const InfoScreen: React.FC<Props> = ({
                     {isdefaultButtonFirst && defaultButtonText && (
                         <Box alignItems="center" width={buttonWidth}>
                             <Button marginX="auto" minWidth="190px" width={buttonWidth} onPress={defaultbuttonLink}>
-                                {t(defaultButtonText)}
+                                {t(defaultButtonText as unknown as TemplateStringsArray)}
                             </Button>
                         </Box>
                     )}
                     {defaultButtonText && !isdefaultButtonFirst && (
                         <Box alignItems="center" width={buttonWidth}>
                             <Button width={buttonWidth} minWidth="190px" onPress={defaultbuttonLink}>
-                                {t(defaultButtonText)}
+                                {t(defaultButtonText as unknown as TemplateStringsArray)}
                             </Button>
                         </Box>
                     )}

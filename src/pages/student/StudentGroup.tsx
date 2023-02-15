@@ -54,6 +54,29 @@ const StudentGroup: React.FC = () => {
                         }
                     }
                 }
+
+                subcoursesPublic(excludeKnown: true, take: 20) {
+                    id
+                    participantsCount
+                    maxParticipants
+                    firstLecture {
+                        start
+                        duration
+                    }
+                    lectures {
+                        start
+                        duration
+                    }
+                    course {
+                        name
+                        description
+                        image
+                        tags {
+                            id
+                            name
+                        }
+                    }
+                }
             }
         `)
     );
@@ -105,6 +128,10 @@ const StudentGroup: React.FC = () => {
         [data?.me?.student?.subcoursesInstructing, pastSubcourses]
     );
 
+    const subcoursesPublic = useMemo(() => {
+        return data?.subcoursesPublic ? sortByDate([...data.subcoursesPublic]) : [];
+    }, [data?.subcoursesPublic]);
+
     const { trackPageView, trackEvent } = useMatomo();
 
     useEffect(() => {
@@ -114,7 +141,12 @@ const StudentGroup: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const renderSubcourse = (subcourse: typeof publishedSubcourses[number], index: number, showDate: boolean = true) => {
+    const renderSubcourse = (
+        subcourse: typeof publishedSubcourses[number] | typeof subcoursesPublic[number],
+        index: number,
+        showDate: boolean = true,
+        readonly: boolean = false
+    ) => {
         return (
             <CSSWrapper className="course-list__item">
                 <AppointmentCard
@@ -128,7 +160,7 @@ const StudentGroup: React.FC = () => {
                     tags={subcourse.course.tags}
                     date={(showDate && subcourse.firstLecture?.start) || ''}
                     countCourse={subcourse.lectures.length}
-                    onPressToCourse={() => navigate(`/single-course/${subcourse.id}`)}
+                    onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
                     image={subcourse.course.image ?? undefined}
                     title={subcourse.course.name}
                 />
@@ -256,6 +288,16 @@ const StudentGroup: React.FC = () => {
                                     ]}
                                 />
                             </VStack>
+                            {subcoursesPublic.length > 0 && (
+                                <VStack>
+                                    <Heading marginBottom={space['1.5']}>{t('matching.group.helper.otherCourses.title')}</Heading>
+                                    <CSSWrapper className="course-list__wrapper">
+                                        {subcoursesPublic.map((subcourse, index) => {
+                                            return renderSubcourse(subcourse, index, true, true);
+                                        })}
+                                    </CSSWrapper>
+                                </VStack>
+                            )}
                         </VStack>
                     )}
                 </VStack>

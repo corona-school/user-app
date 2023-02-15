@@ -9,6 +9,7 @@ const shared = {
     next: 'Weiter',
     back: 'Zurück',
     important: 'Wichtig',
+    error: 'Es ist ein Fehler aufgetreten.',
     empty: {
         courses: 'Es wurden keine Kurse gefunden.',
         coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
