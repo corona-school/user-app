@@ -1,40 +1,40 @@
-import { Box, Button, Stack, useBreakpointValue } from 'native-base';
+import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import { gql } from '../../gql';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+// import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 
 type Props = {
-    courseId?: number;
+    id: number;
+    isCourse: boolean;
     next: () => void;
     back: () => void;
 };
 
-// TODO add query to get appointments for course
-const query = gql(`
-    query courseLectures($subcourseId: Int!) {
-        subcourse(subcourseId: $subcourseId) {
+const courseQuery = gql`
+    query courseLectures($id: Int!) {
+        subcourse(subcourseId: $id) {
+            course {
+                name
+            }
             lectures {
                 id
-                title
-                description
                 start
                 duration
-                appointmentType
             }
         }
     }
-`);
+`;
 
-const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
+// TODO add query to get appointments for a match by id
+
+const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
+    const { data, loading, error } = useQuery(courseQuery, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-
-    // TODO get data
-    // const {data, loading, error} = useQuery(query, {variables: {courseId}})
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -49,7 +49,22 @@ const AppointmentsInsight: React.FC<Props> = ({ next, back }) => {
     // TODO add empty state from upcoming story
     return (
         <Box>
-            {/* {loading && <CenterLoadingSpinner />} */}
+            {loading && <CenterLoadingSpinner />}
+            {isCourse ? (
+                <Box py={6}>
+                    <Text>
+                        {t('appointment.create.insightCourseHeader')}
+                        <Text fontWeight="bold">{data?.subcourse?.course?.name ? data?.subcourse?.course?.name : 'Kursname'}.</Text>
+                    </Text>
+                </Box>
+            ) : (
+                <Stack direction="row" py={6}>
+                    <Text>
+                        {/* // TODO add match partner name */}
+                        {t('appointment.create.insightMatchHeader')} <Text fontWeight="bold">Leon Jackson.</Text>
+                    </Text>
+                </Stack>
+            )}
             {/* {!error && data && ( */}
             <Box maxH={maxHeight} flex="1" mb="10">
                 <AppointmentList isReadOnly={true} />
