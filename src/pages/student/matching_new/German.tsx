@@ -10,7 +10,6 @@ import { RequestMatchContext } from './RequestMatch';
 const German: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { setMatching, setCurrentIndex } = useContext(RequestMatchContext);
     const { setSubject, matchRequest, setCurrentIndex, removeSubject } = useContext(RequestMatchContext);
 
     // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
@@ -55,7 +54,7 @@ const German: React.FC = () => {
                         </Button>
                     </Column>
                     <Column width="100%">
-                        <Button onPress={onGoNext} isDisabled={!supportDaz}>
+                        <Button onPress={onNext} isDisabled={!supportsDaz}>
                             {t('lernfair.buttons.next')}
                         </Button>
                     </Column>

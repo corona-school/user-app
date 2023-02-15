@@ -1,8 +1,6 @@
 import { Box, Button, Column, Heading, HStack, Row, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { subjects } from '../../../types/lernfair/Subject';
-import IconTagList from '../../../widgets/IconTagList';
 import { RequestMatchContext } from './RequestMatch';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { DAZ } from '../../../types/subject';
@@ -22,7 +20,6 @@ const Subjects: React.FC = () => {
                 removeSubject={removeSubject}
             />
             <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-            <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
             <Box alignItems="center" marginTop={space['0.5']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column w="100%">
@@ -32,7 +29,7 @@ const Subjects: React.FC = () => {
                     </Column>
                     <Column w="100%">
                         <Button
-                            isDisabled={matching.subjects.length === 0}
+                            isDisabled={matchRequest.subjects.length === 0}
                             onPress={() => setCurrentIndex(2)} // 2 = german
                         >
                             {t('lernfair.buttons.next')}

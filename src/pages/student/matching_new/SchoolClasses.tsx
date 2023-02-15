@@ -8,9 +8,7 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
-import { getSubjectLabel } from '../../../types/lernfair/Subject';
 import { useTranslation } from 'react-i18next';
-import TwoColGrid from '../../../widgets/TwoColGrid';
 import { Subject } from '../../../gql/graphql';
 
 type Props = {};
