@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RequestMatchContext } from './RequestMatch';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { DAZ } from '../../../types/subject';
 
 const Subjects: React.FC = () => {
@@ -20,23 +21,11 @@ const Subjects: React.FC = () => {
                 removeSubject={removeSubject}
             />
             <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-            <Box alignItems="center" marginTop={space['0.5']}>
-                <Row space={space['1']} justifyContent="center">
-                    <Column w="100%">
-                        <Button h="100%" variant="outline" onPress={() => setCurrentIndex(0)}>
-                            {t('lernfair.buttons.prev')}
-                        </Button>
-                    </Column>
-                    <Column w="100%">
-                        <Button
-                            isDisabled={matchRequest.subjects.length === 0}
-                            onPress={() => setCurrentIndex(2)} // 2 = german
-                        >
-                            {t('lernfair.buttons.next')}
-                        </Button>
-                    </Column>
-                </Row>
-            </Box>
+            <NextPrevButtons
+                isDisabledNext={matchRequest.subjects.length === 0}
+                onPressPrev={() => setCurrentIndex(0)}
+                onPressNext={() => setCurrentIndex(2)}
+            />
         </VStack>
     );
 };

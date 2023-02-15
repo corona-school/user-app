@@ -4,6 +4,7 @@ import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -46,20 +47,7 @@ const German: React.FC = () => {
                 </Column>
             </TwoColGrid>
             <Box borderBottomWidth={1} borderBottomColor="primary.grey" />
-            <Box alignItems="center" marginTop={space['0.5']}>
-                <Row space={space['1']} justifyContent="center">
-                    <Column width="100%">
-                        <Button height="100%" variant="outline" onPress={() => setCurrentIndex(1)}>
-                            {t('lernfair.buttons.prev')}
-                        </Button>
-                    </Column>
-                    <Column width="100%">
-                        <Button onPress={onNext} isDisabled={!supportsDaz}>
-                            {t('lernfair.buttons.next')}
-                        </Button>
-                    </Column>
-                </Row>
-            </Box>
+            <NextPrevButtons isDisabledNext={!supportsDaz} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
         </VStack>
     );
 };

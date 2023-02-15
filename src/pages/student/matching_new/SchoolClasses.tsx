@@ -10,6 +10,7 @@ import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../../../gql/graphql';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 
 type Props = {};
 
@@ -106,18 +107,7 @@ const SchoolClasses: React.FC<Props> = () => {
                 ))}
             </VStack>
             <Box borderBottomWidth={1} marginTop={space['1']} borderBottomColor="primary.grey" />
-            <Box alignItems="center" marginTop={space['0.5']}>
-                <Row space={space['1']} justifyContent="center">
-                    <Column width="100%">
-                        <Button height="100%" variant="outline" onPress={() => setCurrentIndex(2)}>
-                            {t('lernfair.buttons.prev')}
-                        </Button>
-                    </Column>
-                    <Column width="100%">
-                        <Button onPress={submit}>{t('lernfair.buttons.next')}</Button>
-                    </Column>
-                </Row>
-            </Box>
+            <NextPrevButtons onPressPrev={() => setCurrentIndex(2)} onPressNext={submit} />
         </VStack>
     );
 };
