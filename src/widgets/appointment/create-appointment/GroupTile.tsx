@@ -6,13 +6,13 @@ import { LFTag, TrafficStatus } from '../../../types/lernfair/Course';
 import CourseTrafficLamp from '../../CourseTrafficLamp';
 
 type GroupTileProps = {
-    courseId?: number;
+    courseId: number;
     imageURL?: string;
     tags?: LFTag[];
     start?: string;
     courseTitle: string;
     courseStatus: TrafficStatus;
-    next: (id?: number) => void;
+    next: (id: number, isCourse?: boolean) => void;
 };
 
 const GroupTile: React.FC<GroupTileProps> = ({ courseId, imageURL, tags, start, courseTitle, courseStatus, next }) => {
@@ -31,7 +31,7 @@ const GroupTile: React.FC<GroupTileProps> = ({ courseId, imageURL, tags, start, 
 
     return (
         <Box>
-            <Pressable onPress={() => next(courseId)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={() => next(courseId, true)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         <Box h="100%" w={containerWidth} padding={space['0.5']}>
