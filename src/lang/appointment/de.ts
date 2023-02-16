@@ -10,6 +10,8 @@ const appointment = {
     },
     create: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
+        insightMatchHeader: 'Deine bestehenden Termine mit {{matchPartner}}.',
+        insightCourseHeader: 'Deine bestehenden Termine für {{courseTitle}}.',
         noAppointments: 'Keine Termine vorhanden',
         oneToOneTitle: 'Einzel',
         assignmentProgress: 'Zuordnung wählen',

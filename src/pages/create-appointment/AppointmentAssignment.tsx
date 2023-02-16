@@ -12,7 +12,7 @@ import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
 import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
 
 type AssignmentProps = {
-    next: (id?: number) => void;
+    next: (id: number, isCourse?: boolean) => void;
     skipStepTwo: () => void;
 };
 
@@ -124,7 +124,6 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
                                                 subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
-                                                // TODO skip when no appointments for match
                                                 next={skipStepTwo}
                                             />
                                         );
@@ -146,7 +145,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                         return (
                                             <GroupTile
                                                 key={subcourse.id}
-                                                courseId={subcourse.id}
+                                                courseId={subcourse.id || 0}
                                                 start={first && first.start}
                                                 courseTitle={subcourse.course.name}
                                                 tags={subcourse.course.tags}
