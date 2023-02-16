@@ -80,12 +80,6 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             return false;
         };
 
-        if (!appointmentToCreate.title.length) {
-            setErrors({ ...errors, title: t('appointment.errors.title') });
-            return false;
-        } else {
-            delete errors.title;
-        }
         if (!appointmentToCreate.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;

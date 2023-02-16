@@ -28,7 +28,7 @@ const appointment = {
         durationLabel: 'Dauer',
         descriptionLabel: 'Beschreibung (optional)',
         descriptionPlaceholder: 'Das ist eine Beschreibung',
-        inputPlaceholder: 'z.B. Thema XYZ',
+        inputPlaceholder: 'Thema (optional)',
         weeklyRepeat: 'wöchentlich wiederholen...',
         emptyFieldError: 'Title darf nicht leer sein',
         emptySelectError: 'Auswahl darf nicht leer sein',
