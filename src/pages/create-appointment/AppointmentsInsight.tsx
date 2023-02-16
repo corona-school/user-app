@@ -5,7 +5,6 @@ import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-// import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 
 type Props = {
     id: number;
@@ -52,16 +51,13 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
             {loading && <CenterLoadingSpinner />}
             {isCourse ? (
                 <Box py={6}>
-                    <Text>
-                        {t('appointment.create.insightCourseHeader')}
-                        <Text fontWeight="bold">{data?.subcourse?.course?.name ? data?.subcourse?.course?.name : 'Kursname'}.</Text>
-                    </Text>
+                    <Text>{t('appointment.create.insightCourseHeader', { courseTitle: data?.subcourse?.course?.name })}</Text>
                 </Box>
             ) : (
                 <Stack direction="row" py={6}>
                     <Text>
                         {/* // TODO add match partner name */}
-                        {t('appointment.create.insightMatchHeader')} <Text fontWeight="bold">Leon Jackson.</Text>
+                        {t('appointment.create.insightMatchHeader', { matchPartner: 'Leon Jackson' })}
                     </Text>
                 </Stack>
             )}
