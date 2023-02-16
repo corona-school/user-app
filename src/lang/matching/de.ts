@@ -31,7 +31,7 @@ const matching = {
             content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
             contentHeadline: 'Wichtig',
             contenHeadlineContent: 'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
-            requestmatchButton: 'Match anfordern',
+            requestmatchButton: 'Lernpaar bilden',
             tabs: {
                 tab1: 'Matches',
                 tab2: 'Anfragen',
@@ -43,10 +43,16 @@ const matching = {
             cancel: 'Abbrechen',
             subjects: 'Fächer:',
             noMatches: 'Du hast keine Matches',
-            noRequests: 'Wir suchen gerade nicht nach einem:r neuen Lernpartner:in für dich.',
+            noRequests:
+                'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
             resolveMatch: 'Das Match wurde aufgelöst',
         },
         updateData: 'Deine Daten wurden aktualisiert',
+        daz: {
+            heading: 'Deutsch als Zweitsprache',
+            description:
+                ' Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?',
+        },
     },
     group: {
         tabs: {
