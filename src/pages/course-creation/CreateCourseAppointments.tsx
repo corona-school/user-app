@@ -9,6 +9,8 @@ type Props = {
     next: () => void;
     back: () => void;
 };
+
+// TODO rename to CourseAppointments
 const CreateCourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -36,7 +38,7 @@ const CreateCourseAppointments: React.FC<Props> = ({ next, back }) => {
                 borderColor="primary.500"
                 _text={{ color: 'primary.500' }}
                 width="full"
-                onPress={() => navigate('create-course-appointment')}
+                onPress={() => navigate('/create-course-appointment')}
             >
                 {t('course.appointments.addOtherAppointment')}
             </Button>

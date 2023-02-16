@@ -72,7 +72,7 @@ const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
-    const state = location.state as { courseId?: number };
+    const state = location.state as { courseId?: number; currentStep?: number };
     const prefillCourseId = state?.courseId;
 
     const [courseId, setCourseId] = useState<string>('');
@@ -96,7 +96,7 @@ const CreateCourse: React.FC = () => {
 
     const [imageLoading, setImageLoading] = useState<boolean>(false);
 
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
     const { data: studentData, loading } = useQuery(gql`
