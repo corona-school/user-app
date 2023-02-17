@@ -40,8 +40,8 @@ const registration = {
             nomatch: 'Die Passwörter stimmen nicht überein',
         },
         email: {
-            invalid: 'Ungültige Email-Adresse',
-            unavailable: 'Diese Email-Adresse ist bereits vergeben',
+            invalid: 'Ungültige E-Mail-Adresse',
+            unavailable: 'Diese E-Mail-Adresse ist bereits vergeben',
         },
         userType: {
             missing: 'Bitte identifiziere deine Rolle',
@@ -117,7 +117,7 @@ const registration = {
         title: 'Überprüfe dein E-Mail-Postfach!',
         mailsendto: 'Wir haben eine E-Mail an {{email}} gesendet.',
         description:
-            'Bevor du unser Angebot nutzen kannst, musst du deine E-Mailadresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.',
+            'Bevor du unser Angebot nutzen kannst, musst du deine E-Mail-Adresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.',
         notreceived: 'Keine E-Mail erhalten? Schau bitte auch im Spam nach!',
         resend: {
             button: 'Bestätigungsmail erneut senden',

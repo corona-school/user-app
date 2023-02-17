@@ -26,7 +26,6 @@ const dashboard = {
     },
     myappointments: {
         header: 'Meine Termine',
-        linktext: 'Alle',
         noappointments: 'Es wurden keine Termine gefunden.',
     },
     homework: {
@@ -44,7 +43,7 @@ const dashboard = {
     offers: {
         header: 'Angebote',
         match: 'Match auflösen',
-        noMatching: 'Du hast noch keine Matches',
+        noMatching: 'Du hast gerade kein aktives Lernpaar',
         requestCreated: 'Anfrage erstellt am:',
         clock: 'Uhr',
         waitingTimeInfo: 'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in für dich zu Wartezeiten von 3 - 6 Monaten kommen kann.',
@@ -55,7 +54,7 @@ const dashboard = {
             course: 'Meine Kurse',
             importantNews: 'Wichtige Meldungen',
             myLearningPartner: 'Meine Lernpartner:innen',
-            openedRequests: 'Offene Anfragen:',
+            openedRequests: 'Offene Matchanfragen:',
             recommend: 'Empfehle uns weiter',
             recommendFriends: 'Empfiehl Lern-Fair deinen Freunden',
         },

@@ -135,8 +135,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Wir hatten sprachliche Schwierigkeiten',
-            9: 'Sonstiges',
+            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Sonstiges',
         },
         pupil: {
             1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
@@ -146,8 +146,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Wir hatten sprachliche Schwierigkeiten',
-            9: 'Sonstiges',
+            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Sonstiges',
         },
     },
 };

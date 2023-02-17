@@ -122,9 +122,6 @@ const lernfair = {
         'not-tutor': {
             matching: 'Du bist noch nicht für das Matching zugelassen.',
         },
-        undefined: {
-            matching: 'Es wurden keine Matchings gefunden.',
-        },
     },
 };
 
