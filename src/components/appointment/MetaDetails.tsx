@@ -34,16 +34,16 @@ const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, 
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <TimeIcon />
-                    <Text fontWeight="normal">{t('appointment.appointmentDetail.time', { start: startTime, end: endTime, duration: duration })}</Text>
+                    <Text fontWeight="normal">{t('appointment.detail.time', { start: startTime, end: endTime, duration: duration })}</Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <RepeatIcon />
-                    <Text fontWeight="normal">{t('appointment.appointmentDetail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
+                    <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
                 </HStack>
                 <HStack space={2} alignItems="center">
                     <PersonIcon />
                     <Text fontWeight="normal">
-                        {t('appointment.appointmentDetail.participants', {
+                        {t('appointment.detail.participants', {
                             participantsTotal: attendeesCount,
                         })}
                     </Text>
@@ -52,7 +52,7 @@ const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, 
             </Stack>
             <Spacer py={3} />
             <Button width={buttonWidth} isDisabled={meetingLink ? false : true} onPress={() => window.open(meetingLink, '_blank')}>
-                {t('appointment.appointmentDetail.videochatButton')}
+                {t('appointment.detail.videochatButton')}
             </Button>
         </>
     );

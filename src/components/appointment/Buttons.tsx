@@ -23,16 +23,16 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, canceled }) => {
                 {user?.student && (
                     <>
                         <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth}>
-                            {t('appointment.appointmentDetail.deleteButton')}
+                            {t('appointment.detail.deleteButton')}
                         </Button>
                         <Button variant="outline" width={buttonWidth}>
-                            {t('appointment.appointmentDetail.editButton')}
+                            {t('appointment.detail.editButton')}
                         </Button>
                     </>
                 )}
                 {user?.pupil && (
                     <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth} onPress={onPress} isDisabled={canceled}>
-                        {t('appointment.appointmentDetail.cancelButton')}
+                        {t('appointment.detail.cancelButton')}
                     </Button>
                 )}
             </Stack>

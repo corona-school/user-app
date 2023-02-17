@@ -27,7 +27,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
         const organizers = appointment.organizers ? appointment.organizers.length : 0;
         return participants + organizers;
     }, [appointment.organizers, appointment.participants]);
-    const attendeesCount = useMemo(() => countAttendees(), [countAttendees]);
+    const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
     const containerWidth = useBreakpointValue({
         base: 'full',
@@ -35,7 +35,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     });
 
     const cancelAppointment = useCallback(() => {
-        toast.show({ description: t('appointment.appointmentDetail.canceledToast'), placement: 'top' });
+        toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
         // TODO mutation to set participant declined
     }, []);
