@@ -27,9 +27,9 @@ const Welcome: React.FC = () => {
             variant="dark"
             title={t('welcome.title')}
             content={t('welcome.subtitle')}
-            outlineButtonText={t('welcome.btn.login')}
+            outlineButtonText={t('signin')}
             outlinebuttonLink={() => navigate('/login')}
-            defaultButtonText={t('welcome.btn.signup')}
+            defaultButtonText={t('signup')}
             defaultbuttonLink={() => navigate('/registration')}
             icon={<Logo />}
             extraContent={deactivated && <AlertMessage content={t('welcome.deactivationAlert')} />}

@@ -168,7 +168,6 @@ const course = {
             headline: 'Fertig!',
             content:
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
-            button: 'weiter',
         },
     },
     addCourseInstructor: {

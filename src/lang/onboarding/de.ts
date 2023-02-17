@@ -2,7 +2,6 @@ const onboardingList = {
     header: 'Onboarding-Tour',
     title: 'Onboarding',
     buttontext: 'Tour starten',
-    next: 'weiter',
     skip: 'Überspringen',
     content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
     cards: {

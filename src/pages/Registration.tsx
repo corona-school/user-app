@@ -170,7 +170,7 @@ const Registration: React.FC = () => {
                         >
                             {t('registration.result.error.tryagain')}
                         </Button>
-                        <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                        <Button onPress={() => setShow(false)}>{t('back')}</Button>
                     </VStack>
                 );
             }
@@ -190,7 +190,7 @@ const Registration: React.FC = () => {
                     >
                         {t('registration.result.error.tryagain')}
                     </Button>
-                    <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                    <Button onPress={() => setShow(false)}>{t('back')}</Button>
                 </VStack>
             );
         }

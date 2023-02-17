@@ -119,12 +119,12 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                         <Row space={space['1']} justifyContent="center">
                             <Column width="100%">
                                 <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={goBack}>
-                                    {t('lernfair.buttons.prev')}
+                                    {t('back')}
                                 </Button>
                             </Column>
                             <Column width="100%">
                                 <Button width="100%" onPress={next}>
-                                    {t('lernfair.buttons.register')}
+                                    {t('signup')}
                                 </Button>
                             </Column>
                         </Row>

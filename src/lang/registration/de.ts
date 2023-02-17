@@ -1,13 +1,6 @@
 const registration = {
-    new: 'Neu registrieren',
-    register: 'Registrieren',
     password_repeat: 'Passwort wiederholen',
-    i_am: 'Ich bin',
-    parent: 'Elternteil',
     to_login: 'Ich habe bereits einen Account',
-    btn: {
-        next: 'Weiter',
-    },
     dsgvo: {
         accept: 'Hiermit stimme ich der',
         datapolicy: 'Datenschutzerklärung',
@@ -21,13 +14,6 @@ const registration = {
         point_0: '● Du brauchst Hilfe in der Schule',
         point_1: '● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
         point_2: '● Deine Familie kann keine Nachhilfe für dich bezahlen',
-        point_3: 'Sind beide Eltern/ Erziehungsberechtigten nicht erwerbstätig',
-        point_4: 'Sind beide Eltern/ Erziehungsberechtigten physisch oder psychisch (aufgrund einer Krankheit / eines Unfalls etc.) eingeschränkt?',
-        point_5: 'Bist du von einer physischen Krankheit betroffen, die es erschwert zur Schule zu gehen?',
-        point_6: 'Bist du oder sind deine Eltern nicht in Deutschland geboren?',
-        point_7: 'Können dir deine Eltern/ Erziehungsberechtigten aufgrund einer sprachlichen Barriere nicht bei den Hausaufgaben helfen?',
-        point_8: 'Können dir deine Eltern/ Erziehungsberechtigten wegen ihres Bildungsweges nicht bei den Hausaufgaben helfen?',
-        point_9: 'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de',
         btn: {
             yes: 'Ja, die Punkte treffen zu',
             no: 'Nein, die Punkte treffen nicht zu',
@@ -61,7 +47,6 @@ const registration = {
             btn: 'Zur Anwendung',
         },
         error: {
-            btn: 'Zurück',
             tryagain: 'Erneut versuchen',
             message: {
                 'Email is already used by another account': 'Diese Email ist bereits in Verwendung',

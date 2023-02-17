@@ -13,7 +13,6 @@ const single = {
         more_tutors: 'Weitere Tutor:innen',
         years: 'Jahre',
         hours: 'Stunden',
-        login: 'Anmelden',
         status: {
             free: 'Freie Plätze',
             last: 'Wenige freie Plätze',
