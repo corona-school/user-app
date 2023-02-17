@@ -156,7 +156,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                         updateState({ variables: { state: state.key } });
                     }}
                 >
-                    {t('profile.State.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

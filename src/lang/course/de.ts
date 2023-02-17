@@ -125,10 +125,6 @@ const course = {
             otherOptionContact: 'Kontaktaufnahme erlauben',
             otherOptionContactToolTip:
                 'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
-            button: {
-                continue: 'Weiter',
-                cancel: 'Abbrechen',
-            },
         },
         Wizard: {
             headline: 'Termin',
@@ -182,6 +178,11 @@ const course = {
     empty: {
         courses: 'Es wurden keine Kurse gefunden.',
         coursescheck: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
+    },
+    cancel: {
+        header: 'Kurs absagen',
+        description:
+            'Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?',
     },
 };
 

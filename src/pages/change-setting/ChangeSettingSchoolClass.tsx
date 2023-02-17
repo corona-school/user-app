@@ -189,7 +189,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
         )} */}
                 {showError && <AlertMessage content={t('profile.errormessage')} />}
                 <Button width={ButtonContainer} onPress={() => updateSchoolGrade({ variables: { grade: selectedGrade } })}>
-                    {t('profile.SchoolClass.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

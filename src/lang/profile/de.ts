@@ -20,8 +20,6 @@ const profile = {
         popup: {
             header: 'Name ändern',
             label: 'Dein Name',
-            save: 'Speichern',
-            exit: 'Abbrechen',
         },
     },
     AboutMe: {
@@ -30,8 +28,6 @@ const profile = {
         popup: {
             header: 'Über mich Text ändern',
             label: 'Dein Text',
-            save: 'Speichern',
-            exit: 'Abbrechen',
         },
     },
     FluentLanguagenalData: {
@@ -41,7 +37,6 @@ const profile = {
             header: 'Sprache ändern',
             title: 'Meine Sprachen',
             others: 'Weitere Sprachen',
-            button: 'Auswahl speichern',
             optional: {
                 label: 'Andere Schulform',
                 placeholder: 'Gebe deine Schulform an.',
@@ -57,7 +52,6 @@ const profile = {
             header: 'Bundesland ändern',
             title: 'Mein Bundesland',
             others: 'Bundesland wählen',
-            button: 'Auswahl speichern',
         },
     },
     SchoolType: {
@@ -67,7 +61,6 @@ const profile = {
             header: 'Schulform ändern',
             title: 'Meine Schulform',
             others: 'Weitere Schulformen',
-            button: 'Auswahl speichern',
             optional: {
                 label: 'Andere Schulform',
                 placeholder: 'Gebe deine Schulform an.',
@@ -81,7 +74,6 @@ const profile = {
             header: 'Schulklasse ändern',
             title: 'Gewählte Schulklasse',
             others: 'Weitere Klassen',
-            button: 'Auswahl speichern',
             optional: {
                 label: 'Andere Klasse',
                 placeholder: 'Gebe deine Klasse an.',
@@ -102,7 +94,6 @@ const profile = {
             header: 'Fächer ändern',
             title: 'Fächer, in denen ich mir Hilfe wünsche',
             others: 'Weitere Fächer wählen',
-            button: 'Auswahl speichern',
             optional: {
                 label: 'Anderes Fach',
                 placeholder: 'Welche Fächer möchtest du wählen?',

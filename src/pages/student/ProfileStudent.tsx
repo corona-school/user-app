@@ -96,9 +96,9 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.AboutMe.popup.exit')}
+                            {t('cancel')}
                         </Button>
-                        <Button onPress={onSaveAboutMe}>{t('profile.AboutMe.popup.save')}</Button>
+                        <Button onPress={onSaveAboutMe}>{t('save')}</Button>
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>

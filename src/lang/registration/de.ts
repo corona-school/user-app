@@ -101,17 +101,6 @@ const registration = {
     pupil: { label: 'Schüler:in' },
     student: {
         label: 'Helfer:in',
-        classSelection: {
-            btn: 'Speichern',
-            title: 'In welchen Klassen kannst du unterstützen?',
-            classes: 'Klassen',
-            range1: '1. - 4. Klasse',
-            range2: '5. - 8. Klasse',
-            range3: '9. - 10. Klasse',
-            range4: '11. - 13. Klasse',
-            moreData: 'Weitere Daten',
-            tokenError: 'Token ungültig',
-        },
     },
     verifyemail: {
         title: 'Überprüfe dein E-Mail-Postfach!',
