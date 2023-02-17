@@ -36,7 +36,7 @@ const single = {
         description: 'Beschreibung',
         help: 'Details',
         lessons: 'Lektionen',
-        participant: 'Teilnehmer',
+        participant: 'Teilnehmer:innen',
     },
     buttonPromote: {
         button: 'Kurs bewerben',
@@ -48,6 +48,7 @@ const single = {
         freeDescription: 'Nutze die Möglichkeit deinen Kurs einmalig zu bewerben.',
         promotedTitle: 'Kurs wurde erneut beworben!',
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
+        participant: 'Teilnehmer:innen',
     },
 };
 export default single;

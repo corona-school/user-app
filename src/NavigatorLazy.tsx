@@ -4,7 +4,6 @@ import ProfilePupil from './pages/pupil/ProfilePupil';
 
 import Settings from './pages/Settings';
 import OnboardingTourList from './pages/OnboardingTourList';
-import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject';
 import HelpCenter from './pages/Helpcenter';
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType';
 import ChangeSettingState from './pages/change-setting/ChangeSettingState';
@@ -119,7 +118,6 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route path="subjects" element={<ChangeSettingSubject />} />
                 <Route path="school-type" element={<ChangeSettingSchoolType />} />
                 <Route path="state" element={<ChangeSettingState />} />
                 <Route path="language" element={<ChangeSettingLanguage />} />

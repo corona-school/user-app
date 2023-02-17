@@ -78,7 +78,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                     Match anfordern
                 </Button>
                 {!data?.me?.pupil?.canRequestMatch?.allowed && (
-                    <AlertMessage content={t(`lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`)} />
+                    <AlertMessage content={t(`lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray)} />
                 )}
             </VStack>
         </VStack>

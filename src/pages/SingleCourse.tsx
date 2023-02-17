@@ -498,7 +498,9 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
 
     return (
         <>
-            {!canJoinData?.subcourse!.canJoin.allowed && <AlertMessage content={t(`lernfair.reason.${canJoinData?.subcourse!.canJoin?.reason}.coursetext`)} />}
+            {!canJoinData?.subcourse!.canJoin.allowed && (
+                <AlertMessage content={t(`lernfair.reason.${canJoinData?.subcourse!.canJoin?.reason}.coursetext` as unknown as TemplateStringsArray)} />
+            )}
             {canJoinData?.subcourse!.canJoin.allowed && (
                 <Button
                     onPress={() => {

@@ -123,7 +123,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                                 isDisabled
                                 textIcon={`${userState}`}
                                 iconPath={`states/icon_${userState}.svg`}
-                                text={t(`lernfair.states.${userState}`)}
+                                text={t(`lernfair.states.${userState}` as unknown as TemplateStringsArray)}
                             />
                         </Column>
                     </Row>

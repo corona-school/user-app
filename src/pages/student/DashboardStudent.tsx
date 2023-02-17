@@ -391,16 +391,17 @@ const DashboardStudent: React.FC<Props> = () => {
                                             {t('dashboard.helpers.buttons.course')}
                                         </Button>
                                     ) : (
-                                        <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course`)} />
+                                        <AlertMessage
+                                            content={t(
+                                                `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course` as unknown as TemplateStringsArray
+                                            )}
+                                        />
                                     )}
                                 </HSection>
                             )}
                             {(activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <Text marginTop={space['0.5']} marginBottom={space['1']}>
-                                        {t('dashboard.helpers.headlines.openedRequests')} {`${data?.me?.student?.openMatchRequestCount}`}
-                                    </Text>
                                     <CSSWrapper className="course-list__wrapper">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match: LFMatch, index: number) => (
@@ -435,10 +436,14 @@ const DashboardStudent: React.FC<Props> = () => {
                                             marginY={space['1']}
                                             onPress={requestMatch}
                                         >
-                                            {t('dashboard.helpers.buttons.requestMatch')}
+                                            {t('dashboard.helpers.buttons.requestMatchHuH')}
                                         </Button>
                                     ) : (
-                                        <AlertMessage content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching`)} />
+                                        <AlertMessage
+                                            content={t(
+                                                `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray
+                                            )}
+                                        />
                                     )}
                                 </VStack>
                             )}

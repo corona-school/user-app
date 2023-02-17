@@ -62,7 +62,7 @@ const course = {
             header: 'Kurs erstellen',
             title: 'Die Gruppenkurse',
             firstContent:
-                'Du benötigts individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+                'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
             here: 'hier',
             secContent: 'Mehr Informationen zur Gruppennachhilfe findest du',
             thrContent: 'auf unserer Webseite.',
@@ -97,7 +97,7 @@ const course = {
     CourseDate: {
         tabs: {
             course: 'Kurs',
-            appointments: 'Termine',
+            appointments: 'Termin(e)',
             checker: 'Angaben prüfen',
         },
         headline: 'Allgemeine Informationen zu deinem Kurs',
@@ -107,11 +107,11 @@ const course = {
             courseNamePlaceholder: 'Kursname eingeben',
             courseSubjectLabel: 'Fach',
             coursePhotoLabel: 'Foto',
-            courseAddOntherLeadText: 'Weitere Kursleiter hinzufügen',
+            courseAddOntherLeadText: 'Weitere Kursleiter:innen hinzufügen',
             shortDescriptionLabel: 'Kurzbeschreibung',
             shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …',
             descriptionLabel: 'Beschreibung',
-            descriptionPlaceholder: 'Präziserer Angaben um was es in deinem Kurs geht …',
+            descriptionPlaceholder: 'Präzisere Angaben um was es in deinem Kurs geht …',
             tagsLabel: 'Tags',
             tagsPlaceholder: 'Damit dein Kurs besser gefunden wird',
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
@@ -175,6 +175,11 @@ const course = {
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
             button: 'weiter',
         },
+    },
+
+    addCourseInstructor: {
+        search: 'Name oder E-Mail Adresse',
+        notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
     },
 };
 

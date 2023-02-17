@@ -53,7 +53,7 @@ const UserType: React.FC = () => {
                     <VStack paddingBottom={space['2']}>
                         {new Array(3).fill(0).map((_, i) => (
                             <Text fontSize={'md'} color={'lightText'} textAlign="center">
-                                {t(`registration.barrier.point_${i}`)}
+                                {t(`registration.barrier.point_${i}` as unknown as TemplateStringsArray)}
                             </Text>
                         ))}
                     </VStack>

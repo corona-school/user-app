@@ -96,7 +96,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                                 isDisabled
                                 initial={false}
                                 iconPath={`schooltypes/icon_${selections.toLowerCase()}.svg`}
-                                text={t(`lernfair.schooltypes.${selections.toLowerCase()}`)}
+                                text={t(`lernfair.schooltypes.${selections.toLowerCase()}` as unknown as TemplateStringsArray)}
                             />
                         </Column>
                     </Row>

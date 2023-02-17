@@ -309,7 +309,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                                     <IconTagList
                                                         isDisabled
                                                         iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
-                                                        text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                                                        text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>
                                             </Column>

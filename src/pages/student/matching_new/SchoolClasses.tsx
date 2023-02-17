@@ -1,22 +1,22 @@
 import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box } from 'native-base';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
 import { Slider } from '@miblanchard/react-native-slider';
 import { gql } from './../../../gql';
 import { useMutation } from '@apollo/client';
-import { ClassRange } from '../../../types/lernfair/SchoolClass';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
-import { getSubjectLabel } from '../../../types/lernfair/Subject';
+import { Subject } from '../../../gql/graphql';
+import { useTranslation } from 'react-i18next';
 
 type Props = {};
 
 const SchoolClasses: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const toast = useToast();
-    const { matching, setMatching, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
     const { setShow, setContent, setVariant } = useModal();
 
@@ -39,19 +39,6 @@ const SchoolClasses: React.FC<Props> = () => {
             studentCreateMatchRequest
         }
     `)
-    );
-
-    const setSubjectClass = useCallback(
-        (subjectKey: string, value: [number, number]) => {
-            setMatching((prev) => ({
-                ...prev,
-                schoolClasses: {
-                    ...prev.schoolClasses,
-                    [subjectKey]: value,
-                },
-            }));
-        },
-        [setMatching]
     );
 
     const showModal = useCallback(() => {
@@ -89,30 +76,7 @@ const SchoolClasses: React.FC<Props> = () => {
     }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
 
     const submit = useCallback(async () => {
-        const classes = { ...matching.schoolClasses };
-
-        for (const sub of matching.subjects) {
-            if (!classes[sub.key]) {
-                classes[sub.key] = [1, 13];
-            }
-        }
-
-        if (matching.setDazSupport) {
-            if (!matching.schoolClasses['daz']) {
-                classes['daz'] = [1, 13];
-            }
-        }
-
-        const subjects: { name: string; grade: ClassRange }[] = [];
-
-        for (const [subjectKey, selectedClasses] of Object.entries(classes)) {
-            subjects.push({
-                name: getSubjectLabel(subjectKey),
-                grade: { min: selectedClasses[0], max: selectedClasses[1] },
-            });
-        }
-
-        const resSubs = await updateSubjects({ variables: { subjects: subjects } });
+        const resSubs = await updateSubjects({ variables: { subjects: matchRequest.subjects } });
         if (resSubs.data && !resSubs.errors) {
             if (!isEdit) {
                 const resRequest = await createMatchRequest();
@@ -128,19 +92,15 @@ const SchoolClasses: React.FC<Props> = () => {
         } else {
             toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
-    }, [createMatchRequest, isEdit, matching.schoolClasses, matching.setDazSupport, matching.subjects, showModal, toast, updateSubjects]);
+    }, [createMatchRequest, isEdit, matchRequest, showModal, toast, updateSubjects]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Jahrgangsstufen</Heading>
             <Heading>In welchen Jahrgangsstufen möchtest du helfen?</Heading>
             <VStack space={space['1']}>
-                {matching.setDazSupport && (
-                    <Item subject={{ key: 'daz', label: 'Deutsch als Zweitsprache' }} onClassChanged={(val) => setSubjectClass('daz', val)} />
-                )}
-
-                {matching.subjects.map((sub: { label: string; key: string }) => (
-                    <Item subject={sub} onClassChanged={(val) => setSubjectClass(sub.key, val)} />
+                {matchRequest.subjects.map((subject) => (
+                    <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
 
@@ -153,22 +113,23 @@ const SchoolClasses: React.FC<Props> = () => {
 };
 export default SchoolClasses;
 
-const Item: React.FC<{
-    subject: {
-        label: string;
-        key: string;
-    };
-    onClassChanged: (value: [number, number]) => void;
-}> = ({ subject, onClassChanged }) => {
+const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubject: (subject: Subject) => void }) => {
     const { space, colors } = useTheme();
-    const [range, setRange] = useState<[number, number]>([1, 13]);
+    const { t } = useTranslation();
+
+    const onValueChange = useCallback(
+        (range: [number, number]) => {
+            setSubject({ name: subject.name, grade: { min: range[0], max: range[1] } });
+        },
+        [subject.name, setSubject]
+    );
 
     return (
         <Card flexibleWidth padding={space['1']}>
             <VStack space={space['0.5']}>
-                <Heading fontSize="md">{subject.label}</Heading>
+                <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray)}</Heading>
                 <Heading fontSize="md">
-                    Klasse {range[0]}-{range[1]}
+                    Klasse {subject.grade!.min}-{subject.grade!.max}
                 </Heading>
 
                 <Slider
@@ -177,12 +138,9 @@ const Item: React.FC<{
                     maximumValue={13}
                     minimumTrackTintColor={colors['primary']['500']}
                     thumbTintColor={colors['primary']['900']}
-                    value={range}
+                    value={[subject.grade!.min, subject.grade!.max]}
                     step={1}
-                    onValueChange={(value: number | number[]) => {
-                        setRange(value as [number, number]);
-                        onClassChanged(value as [number, number]);
-                    }}
+                    onValueChange={onValueChange as any}
                 />
             </VStack>
         </Card>

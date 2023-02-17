@@ -1,6 +1,6 @@
 const helperwizard = {
-    nextStep: 'Die nächsten Schritte',
-    // Schüler:innnen und Helfer:innen
+    nextStep: 'Deine nächsten Schritte',
+    // Schüler:innen und Helfer:innen
     verifizierung: {
         title: 'Verifiziere deine E-Mail-Adresse',
         content:
@@ -26,7 +26,7 @@ const helperwizard = {
             'Sobald du an der Reihe bist, werden wir dich per E-mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unserer Gruppen-Nachhilfe teilnehmen.',
         buttons: ['Gruppenkurse ansehen', 'Anfrage zurücknehmen'],
     },
-    interestconformation: {
+    interestconfirmation: {
         title: 'Brauchst du noch Unterstützung?',
         content:
             'Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von 14 Tagen bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.',

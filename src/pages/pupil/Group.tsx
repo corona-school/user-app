@@ -201,7 +201,7 @@ const PupilGroup: React.FC<Props> = () => {
                                 }}
                                 tabs={[
                                     {
-                                        title: t('matching.group.pupil.tabs.tab3.title'),
+                                        title: t('matching.group.pupil.tabs.tab2.title'),
                                         content: <AllSubcoursesTab />,
                                     },
                                     {

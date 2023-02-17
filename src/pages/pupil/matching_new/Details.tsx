@@ -4,7 +4,6 @@ import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpo
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
-import { LFSubject } from '../../../types/lernfair/Subject';
 import { RequestMatchContext } from './RequestMatch';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 
@@ -14,7 +13,7 @@ const Details: React.FC<Props> = () => {
     const { setShow, setContent, setVariant } = useModal();
     const { space, sizes } = useTheme();
     const toast = useToast();
-    const { matching, setMatching, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
+    const { matchRequest, setMessage, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
 
     const [update, _update] = useMutation(
@@ -79,20 +78,7 @@ const Details: React.FC<Props> = () => {
     }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
 
     const requestMatch = useCallback(async () => {
-        const subs: LFSubject[] = [];
-        for (const sub of matching.subjects) {
-            const data = { name: sub.label } as { name: string; mandatory?: boolean };
-            if (matching.priority === sub) {
-                data.mandatory = true;
-            }
-            subs.push(data);
-        }
-
-        if (matching.setDazPriority) {
-            subs.push({ name: 'Deutsch als Zweitsprache', mandatory: true });
-        }
-
-        const resSubs = await update({ variables: { subjects: subs } });
+        const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
 
         if (resSubs.data && !resSubs.errors) {
             if (!isEdit) {
@@ -108,7 +94,7 @@ const Details: React.FC<Props> = () => {
         } else {
             toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
-    }, [createMatchRequest, matching.priority, matching.setDazPriority, matching.subjects, showModal, toast, update, isEdit]);
+    }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -126,8 +112,8 @@ const Details: React.FC<Props> = () => {
             <TextArea
                 placeholder="Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 autoCompleteType={'off'}
-                value={matching.message}
-                onChangeText={(text) => setMatching((prev) => ({ ...prev, message: text }))}
+                value={matchRequest.message}
+                onChangeText={setMessage}
             />
             <Button isDisabled={_update.loading} onPress={requestMatch} w={buttonWidth}>
                 Weiter

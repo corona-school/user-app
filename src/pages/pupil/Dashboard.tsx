@@ -363,7 +363,7 @@ const Dashboard: React.FC<Props> = () => {
                                                                     <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
                                                                         {t('dashboard.helpers.buttons.solveMatch')}
                                                                     </Button>
-                                                                )) || <AlertMessage content={t('matching.request.check.resoloveMatch')} />
+                                                                )) || <AlertMessage content={t('matching.request.check.resolveMatch')} />
                                                             }
                                                             contactMail={match?.studentEmail}
                                                             meetingId={match?.uuid}
@@ -385,7 +385,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 navigate('/request-match');
                                             }}
                                         >
-                                            {t('dashboard.offers.requestMatching')}
+                                            {t('dashboard.helpers.buttons.requestMatchSuS')}
                                         </Button>
                                     )}
                                     {data?.me?.pupil?.openMatchRequestCount > 0 && (

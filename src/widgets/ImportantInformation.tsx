@@ -81,6 +81,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
               }
             }
           }
+          myRoles
 		}
 		`)
     );
@@ -88,6 +89,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
+    const roles = data?.myRoles ?? [];
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
@@ -107,36 +109,54 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
     }
 
-    let infos: { label: string; btnfn: (() => void)[]; lang: {} }[] = [];
+    let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {} }[] = [];
+
+    // -------- Verification -----------
     if (student && !student?.verifiedAt)
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
     if (pupil && !pupil?.verifiedAt)
         infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
+
+    // -------- Screening -----------
     if (
         student?.canRequestMatch?.reason === 'not-screened' ||
         student?.canCreateCourse?.reason === 'not-screened' ||
         (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
     )
         infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
-    if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length == 0 && pupil?.matches.length == 0)
-        infos.push({ label: 'willkommen', btnfn: [() => navigate('/group'), () => navigate('/matching')], lang: {} });
-    if (pupil?.openMatchRequestCount && pupil?.openMatchRequestCount > 0)
+
+    // -------- Welcome -----------
+    if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
+        infos.push({
+            label: 'willkommen',
+            btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
+            lang: {},
+        });
+
+    // -------- Open Match Request -----------
+    if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
         infos.push({
             label: 'statusSchüler',
             btnfn: [() => navigate('/group'), deleteMatchRequest],
             lang: { date: DateTime.fromISO(pupil?.firstMatchRequest).toFormat('dd.MM.yyyy') },
         });
-    if (student?.openMatchRequestCount && student?.openMatchRequestCount > 0)
+    if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
         infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+
+    // -------- Password Login Promotion -----------
     if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
         infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
+
+    // -------- Interest Confirmation -----------
     const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
     if (pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending')
         infos.push({
-            label: 'interestconformation',
+            label: 'interestconfirmation',
             btnfn: [confirmInterest, refuseInterest],
             lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
         });
+
+    // -------- New Match -----------
     pupil?.matches?.forEach((match: any) => {
         if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
             infos.push({
@@ -153,6 +173,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: { nameSchüler: match.pupil.firstname },
             });
     });
+
+    // -------- Certificate of Conduct -----------
     if (student && student?.certificateOfConductDeactivationDate)
         infos.push({
             label: 'zeugnis',
@@ -168,7 +190,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
             {infos.map((config, index) => {
-                const buttontexts: String[] = t('helperwizard.' + config.label + '.buttons', { returnObjects: true });
+                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
                     <Column width="100%" maxWidth="500px" key={config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
@@ -176,14 +198,15 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                 <BooksIcon />
                             </Box>
                             <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {t('helperwizard.' + config.label + '.title', config.lang)}
+                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
                             </Heading>
 
                             <Text color={textColor} marginBottom="25px">
-                                {t('helperwizard.' + config.label + '.content', config.lang)}
+                                {t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
                             </Text>
                             {buttontexts.map((buttontext, index) => {
                                 const btnFn = config.btnfn[index];
+                                if (!btnFn) return null;
 
                                 return (
                                     <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>

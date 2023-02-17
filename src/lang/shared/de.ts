@@ -1,5 +1,5 @@
-const onboarding = {
-    email: 'Email',
+const shared = {
+    email: 'E-Mail',
     password: 'Passwort',
     hallo: 'Hallo',
     visitcourse: 'zum Kurs',
@@ -23,6 +23,7 @@ const onboarding = {
         matchings: 'Es wurden keine Matchings gefunden.',
         norequests: 'Es wurden keine Anfragen gefunden.',
     },
+    error: 'Es ist ein Fehler aufgetreten.',
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
 };
-export default onboarding;
+export default shared;

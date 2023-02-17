@@ -17,7 +17,7 @@ const registration = {
     check_legal: 'Hiermit stimme ich der <1>Datenschutzerklärung</1> zu.',
     barrier: {
         title: 'Wichtig',
-        text: 'Unsere Angebote richten sich an bildungsbenachtiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit "ja" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.',
+        text: 'Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit "ja" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.',
         point_0: '● Du brauchst Hilfe in der Schule',
         point_1: '● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
         point_2: '● Deine Familie kann keine Nachhilfe für dich bezahlen',
@@ -72,27 +72,27 @@ const registration = {
         },
     },
     steps: {
-        0: {
+        '0': {
             title: 'Deine Rolle',
             subtitle: 'Ich bin',
         },
-        1: {
+        '1': {
             title: 'Persönliche Daten',
             subtitle: 'Persönliche Daten',
         },
-        2: {
+        '2': {
             title: 'Klasse',
             subtitle: 'In welcher Klasse bist du?',
         },
-        3: {
+        '3': {
             title: 'Schulform',
             subtitle: 'Auf welche Schulform gehst du?',
         },
-        4: {
+        '4': {
             title: 'Bundesland',
             subtitle: 'Aus welchem Bundesland kommst du?',
         },
-        5: {
+        '5': {
             title: 'Einwilligungen',
             subtitle: 'Einwilligungen',
         },
@@ -112,6 +112,19 @@ const registration = {
             moreData: 'Weitere Daten',
             tokenError: 'Token ungültig',
         },
+    },
+    verifyemail: {
+        title: 'Überprüfe dein E-Mail-Postfach!',
+        mailsendto: 'Wir haben eine E-Mail an {{email}} gesendet.',
+        description:
+            'Bevor du unser Angebot nutzen kannst, musst du deine E-Mailadresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.',
+        notreceived: 'Keine E-Mail erhalten? Schau bitte auch im Spam nach!',
+        resend: {
+            button: 'Bestätigungsmail erneut senden',
+            successAlert: 'Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.',
+            failedAlert: 'Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut.',
+        },
+        backToWelcomeButton: 'Zum Login-Bereich',
     },
 };
 

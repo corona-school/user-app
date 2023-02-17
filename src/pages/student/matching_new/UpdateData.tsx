@@ -1,20 +1,17 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
 import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
+import { StudentState, Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
-type Props = {
-    state: string;
-    refetchQuery: DocumentNode;
-};
-
-const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
+const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -23,14 +20,14 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
 
     const [showModal, setShowModal] = useState<boolean>();
     const [modalType, setModalType] = useState<'states'>();
-    const [modalSelection, setModalSelection] = useState<string>();
+    const [modalSelection, setModalSelection] = useState<Student_State_Enum>();
 
     const [meUpdateState] = useMutation(
-        gql`
+        gql(`
             mutation changeStudentStateData($data: StudentState!) {
                 meUpdate(update: { student: { state: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
 
@@ -51,6 +48,9 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
     }, [modalType, state]);
 
     useEffect(() => {
+        if (!data) {
+            return;
+        }
         setModalSelection(data);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalType]);
@@ -61,12 +61,12 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
         try {
             switch (modalType) {
                 case 'states':
-                    await meUpdateState({ variables: { data: modalSelection } });
+                    await meUpdateState({ variables: { data: modalSelection as unknown as StudentState } });
                     break;
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet'), placement: 'top' });
+            toast.show({ description: t('matching.request.updateData'), placement: 'top' });
         } catch (e) {
             toast.show({ description: t('error'), placement: 'top' });
         }
@@ -96,7 +96,11 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
                                     <CSSWrapper className="profil-tab-link">
-                                        <IconTagList isDisabled iconPath={`states/icon_${state}.svg`} text={t(`lernfair.states.${state}`)} />
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`states/icon_${state}.svg`}
+                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                        />
                                     </CSSWrapper>
                                 )) || <Text>{t('profile.noInfo')}</Text>}
                             </Column>
@@ -113,7 +117,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                 isOpen={showModal}
                 onClose={() => {
                     setShowModal(false);
-                    setModalSelection('');
+                    setModalSelection(undefined);
                 }}
             >
                 <Modal.Content>
@@ -126,7 +130,7 @@ const UpdateData: React.FC<Props> = ({ state, refetchQuery }) => {
                                     <IconTagList
                                         initial={modalSelection === item.key}
                                         text={item.label}
-                                        onPress={() => setModalSelection(item.key)}
+                                        onPress={() => setModalSelection(item.key as unknown as Student_State_Enum)}
                                         iconPath={`${modalType}/icon_${item.key}.svg`}
                                     />
                                 </Column>
