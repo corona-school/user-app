@@ -1,7 +1,6 @@
 import { Box, CloseIcon, Heading, Modal, Pressable, Text, Row, Button, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { getIconForNotificationPreferenceModal, getNotificationCategoriesData } from '../../../helper/notification-helper';
-import shared from '../../../lang/shared/de';
 
 type Props = {
     onPressClose?: () => any;
@@ -30,11 +29,9 @@ const InformationModal: React.FC<Props> = ({ onPressClose, category }) => {
                     </Box>
                     <Box paddingY={space['1']}>
                         <Heading maxWidth="330px" marginX="auto" fontSize="md" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                            {/* @ts-ignore */}
                             {t(modaldata.title)}
                         </Heading>
                         <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                            {/* @ts-ignore */}
                             {t(modaldata.modal.body)}
                         </Text>
                     </Box>
