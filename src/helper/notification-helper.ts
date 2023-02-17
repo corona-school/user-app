@@ -30,7 +30,13 @@ const getTimeDifference = (timestamp: string) => {
     return { minutesDiff, hoursDiff, daysDiff, weeksDiff, timeDiffString };
 };
 
-type TimeText = { text: string; options?: TOptions };
+type PossibleTextConstants =
+    | 'notification.timedifference.now'
+    | 'notification.timedifference.beforeMinutes'
+    | 'notification.timedifference.dayBeforeYesterday'
+    | 'notification.timedifference.yesterday';
+
+type TimeText = { text: PossibleTextConstants; options?: TOptions };
 
 const getTimeText = (timestring: string): TimeText | string => {
     const diff = getTimeDifference(timestring);
