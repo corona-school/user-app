@@ -69,6 +69,7 @@ const query = gql`
                         tags {
                             name
                         }
+                        image
                     }
                 }
             }
@@ -83,6 +84,7 @@ const query = gql`
                 tags {
                     name
                 }
+                image
             }
         }
     }
