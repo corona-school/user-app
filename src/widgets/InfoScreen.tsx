@@ -17,6 +17,7 @@ type Props = {
     defaultbuttonLink?: () => any | any;
 
     extraContent?: ReactNode | ReactNode[];
+    footer?: ReactNode;
 };
 
 const InfoScreen: React.FC<Props> = ({
@@ -31,6 +32,7 @@ const InfoScreen: React.FC<Props> = ({
     defaultButtonText,
     defaultbuttonLink,
     extraContent,
+    footer,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
@@ -74,7 +76,7 @@ const InfoScreen: React.FC<Props> = ({
                     {outlineButtonText && isOutlineButtonLink === false && (
                         <Box alignItems="center" marginBottom={3} width={buttonWidth}>
                             <Button variant={variant === 'dark' ? 'outlinelight' : 'outline'} width={buttonWidth} minWidth="190px" onPress={outlinebuttonLink}>
-                                {t(outlineButtonText as unknown as TemplateStringsArray)}
+                                {outlineButtonText}
                             </Button>
                         </Box>
                     )}
@@ -82,14 +84,14 @@ const InfoScreen: React.FC<Props> = ({
                     {isdefaultButtonFirst && defaultButtonText && (
                         <Box alignItems="center" width={buttonWidth}>
                             <Button marginX="auto" minWidth="190px" width={buttonWidth} onPress={defaultbuttonLink}>
-                                {t(defaultButtonText as unknown as TemplateStringsArray)}
+                                {defaultButtonText}
                             </Button>
                         </Box>
                     )}
                     {defaultButtonText && !isdefaultButtonFirst && (
                         <Box alignItems="center" width={buttonWidth}>
                             <Button width={buttonWidth} minWidth="190px" onPress={defaultbuttonLink}>
-                                {t(defaultButtonText as unknown as TemplateStringsArray)}
+                                {defaultButtonText}
                             </Button>
                         </Box>
                     )}
@@ -104,6 +106,11 @@ const InfoScreen: React.FC<Props> = ({
                             >
                                 {outlineButtonText}
                             </Link>
+                        </Box>
+                    )}
+                    {footer && (
+                        <Box alignItems="center" width={buttonWidth}>
+                            {footer}
                         </Box>
                     )}
                 </Row>

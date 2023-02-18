@@ -6,6 +6,8 @@ const welcome = {
         signup: 'Neu registrieren',
     },
     deactivationAlert: 'Dein Account wurde deaktiviert',
+    needHelp: 'Brauchst du Hilfe?',
+    contactSupport: 'Kontaktiere den Support',
 };
 
 export default welcome;
