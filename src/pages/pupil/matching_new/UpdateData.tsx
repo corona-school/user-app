@@ -7,6 +7,7 @@ import CSSWrapper from '../../../components/CSSWrapper';
 import { schooltypes } from '../../../types/lernfair/SchoolType';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -196,25 +197,13 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     </Row>
                 </ProfileSettingItem>
 
-                <Button
-                    onPress={() => {
-                        setCurrentIndex(2);
-                    }}
-                    isDisabled={isLoading}
-                >
-                    Weiter
-                </Button>
-                {!isEdit && (
-                    <Button
-                        variant="outline"
-                        onPress={() => {
-                            setCurrentIndex(0);
-                        }}
-                        isDisabled={isLoading}
-                    >
-                        Zurück
-                    </Button>
-                )}
+                <NextPrevButtons
+                    isDisabledNext={isLoading}
+                    onPressNext={() => setCurrentIndex(2)}
+                    onPressPrev={() => setCurrentIndex(0)}
+                    isDisabledPrev={isLoading}
+                    onlyNext={isEdit}
+                />
             </VStack>
             <Modal
                 isOpen={showModal}

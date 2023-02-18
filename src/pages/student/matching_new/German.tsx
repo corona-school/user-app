@@ -1,12 +1,17 @@
-import { VStack, useTheme, Heading, Column, Button } from 'native-base';
+import { t } from 'i18next';
+import { VStack, useTheme, Heading, Column, Button, Box, Row } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
+import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const { setSubject, matchRequest, setCurrentIndex, removeSubject } = useContext(RequestMatchContext);
 
     // If the user already provides Daz, preselect to 'true' otherwise let the user decide again
@@ -28,26 +33,13 @@ const German: React.FC = () => {
             <Heading>
                 Kannst du dir vorstellen Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?
             </Heading>
-            <TwoColGrid>
-                <Column>
-                    <IconTagList iconPath={`lf-yes.svg`} initial={supportsDaz ?? false} variant="selection" text="Ja" onPress={() => setSupportsDaz(true)} />
-                </Column>
-                <Column>
-                    <IconTagList
-                        iconPath={`lf-no.svg`}
-                        initial={!(supportsDaz ?? true)}
-                        variant="selection"
-                        text="Nein"
-                        onPress={() => setSupportsDaz(false)}
-                    />
-                </Column>
-            </TwoColGrid>
-            <Button onPress={onNext} isDisabled={supportsDaz === null}>
-                Weiter
-            </Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(1)}>
-                Zurück
-            </Button>
+            <YesNoSelector
+                initialYes={supportsDaz ?? false}
+                initialNo={!(supportsDaz ?? true)}
+                onPressYes={() => setSupportsDaz(true)}
+                onPressNo={() => setSupportsDaz(false)}
+            />
+            <NextPrevButtons isDisabledNext={!supportsDaz} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
         </VStack>
     );
 };

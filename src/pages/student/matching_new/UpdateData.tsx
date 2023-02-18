@@ -1,12 +1,13 @@
 import { gql, useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast, Box } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
 import { Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -105,9 +106,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                 </ProfileSettingItem>
 
                 {/*                      1 = subjects */}
-                <Button onPress={() => setCurrentIndex(1)} isDisabled={isLoading}>
-                    Weiter
-                </Button>
+                <NextPrevButtons onPressNext={() => setCurrentIndex(1)} onlyNext />
             </VStack>
             <Modal
                 isOpen={showModal}

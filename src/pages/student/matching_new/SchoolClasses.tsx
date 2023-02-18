@@ -1,5 +1,5 @@
-import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box } from 'native-base';
-import { useCallback, useContext, useMemo } from 'react';
+import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box, Column, Row } from 'native-base';
+import { useCallback, useContext, useState } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
 import { Slider } from '@miblanchard/react-native-slider';
@@ -8,13 +8,15 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
-import { Subject } from '../../../gql/graphql';
 import { useTranslation } from 'react-i18next';
+import { Subject } from '../../../gql/graphql';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 
 type Props = {};
 
 const SchoolClasses: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
     const toast = useToast();
     const { matchRequest, setSubject, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
@@ -98,16 +100,13 @@ const SchoolClasses: React.FC<Props> = () => {
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">Jahrgangsstufen</Heading>
             <Heading>In welchen Jahrgangsstufen möchtest du helfen?</Heading>
+
             <VStack space={space['1']}>
                 {matchRequest.subjects.map((subject) => (
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-
-            <Button onPress={submit}>Weiter</Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(2)}>
-                Zurück
-            </Button>
+            <NextPrevButtons onPressPrev={() => setCurrentIndex(2)} onPressNext={submit} />
         </VStack>
     );
 };

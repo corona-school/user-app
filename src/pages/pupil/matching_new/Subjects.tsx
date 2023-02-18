@@ -1,6 +1,7 @@
 import { VStack, useTheme, Heading, Text, Column, Button } from 'native-base';
 import { useContext } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -21,18 +22,11 @@ const Subjects: React.FC = () => {
                 removeSubject={removeSubject}
                 limit={isDAZ ? 1 : undefined}
             />
-            <Button
-                isDisabled={matchRequest.subjects.length === 0}
-                onPress={() => setCurrentIndex(4)} // 4 = priorities
-            >
-                Weiter
-            </Button>
-            <Button
-                variant="outline"
-                onPress={() => setCurrentIndex(2)} // 2 = german
-            >
-                Zurück
-            </Button>
+            <NextPrevButtons
+                isDisabledNext={matchRequest.subjects.length === 0}
+                onPressPrev={() => setCurrentIndex(2)}
+                onPressNext={() => setCurrentIndex(4)}
+            />
         </VStack>
     );
 };

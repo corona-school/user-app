@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import { RequestMatchContext } from './RequestMatch';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 
 type Props = {};
 
@@ -112,13 +113,7 @@ const Details: React.FC<Props> = () => {
                 value={matchRequest.message}
                 onChangeText={setMessage}
             />
-            <Button isDisabled={_update.loading} onPress={requestMatch} w={buttonWidth}>
-                Weiter
-            </Button>
-
-            <Button variant="outline" onPress={() => setCurrentIndex(4)} w={buttonWidth}>
-                Zurück
-            </Button>
+            <NextPrevButtons isDisabledNext={_update.loading} onPressNext={requestMatch} onPressPrev={() => setCurrentIndex(4)} />
         </VStack>
     );
 };
