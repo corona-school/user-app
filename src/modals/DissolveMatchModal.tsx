@@ -65,7 +65,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <Button onPress={onPressBack} variant="secondary">
-                                    Abbrechen
+                                    {t('cancel')}
                                 </Button>
                                 <Button
                                     isDisabled={!reason}

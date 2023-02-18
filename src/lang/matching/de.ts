@@ -40,10 +40,11 @@ const matching = {
             removeRequest: 'Anfrage zurücknehmen',
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
-            cancel: 'Abbrechen',
             subjects: 'Fächer:',
             noMatches: 'Du hast keine Matches',
-            noRequests:
+            noRequestsTutee:
+                'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
+            noRequestsTutor:
                 'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
             resolveMatch: 'Das Match wurde aufgelöst',
         },
@@ -89,7 +90,8 @@ const matching = {
         helper: {
             header: 'Gruppenkurse',
             title: 'Gruppenkurse',
-            content: 'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen.',
+            content:
+                'Mit den Kursen in der Gruppen-Nachhilfe hilfst du einer Kleingruppe an Schüler:innen, die sich alle in einem bestimmten Thema verbessern wollen. Das Thema kannst du selbst festlegen - ob Bruchrechnung, past tense oder Gedichtanalyse… Hohe Nachfrage herrscht vor allem in den Hauptfächern. Auch den Zeitpunkt legst du selbst fest: Von einem Einzeltermin bis zu einem ca. 12-wöchigen Kurs ist alles möglich. Die Schüler:innen buchen die von dir vorgegebenen Termine.',
             contentHeadline: 'Wichtig',
             contentHeadlineContent: 'Gruppenkurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
             button: 'Kurs anlegen',
