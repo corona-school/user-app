@@ -20,7 +20,6 @@ const Subjects: React.FC = () => {
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
                 removeSubject={removeSubject}
             />
-            <Box marginTop={space['0.5']} borderBottomWidth={1} borderBottomColor="primary.grey" />
             <NextPrevButtons
                 isDisabledNext={matchRequest.subjects.length === 0}
                 onPressPrev={() => setCurrentIndex(0)}

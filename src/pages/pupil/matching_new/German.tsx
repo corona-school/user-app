@@ -3,7 +3,9 @@ import { useCallback, useContext, useState } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
+import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
@@ -48,32 +50,13 @@ const German: React.FC = () => {
             {!showSecond && (
                 <>
                     <Heading>Ist Deutsch deine Muttersprache?</Heading>
-                    <TwoColGrid>
-                        <Column>
-                            <IconTagList
-                                initial={isNativeLanguage === true}
-                                variant="selection"
-                                text="Ja"
-                                iconPath={`lf-yes.svg`}
-                                onPress={() => setIsNativeLanguage(true)}
-                            />
-                        </Column>
-                        <Column>
-                            <IconTagList
-                                initial={isNativeLanguage === false}
-                                variant="selection"
-                                text="Nein"
-                                iconPath={`lf-no.svg`}
-                                onPress={() => setIsNativeLanguage(false)}
-                            />
-                        </Column>
-                    </TwoColGrid>
-                    <Button onPress={onGoNext} isDisabled={isNativeLanguage === null}>
-                        Weiter
-                    </Button>
-                    <Button variant="outline" onPress={() => setCurrentIndex(1)}>
-                        Zurück
-                    </Button>
+                    <YesNoSelector
+                        initialYes={isNativeLanguage === true}
+                        initialNo={isNativeLanguage === false}
+                        onPressNo={() => setIsNativeLanguage(false)}
+                        onPressYes={() => setIsNativeLanguage(true)}
+                    />
+                    <NextPrevButtons isDisabledNext={isNativeLanguage === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onGoNext} />
                 </>
             )}
             {showSecond && (
@@ -122,12 +105,7 @@ const German: React.FC = () => {
                         <AlertMessage content="Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft." />
                     )}
 
-                    <Button onPress={onSecondNext} isDisabled={!learningSince}>
-                        Weiter
-                    </Button>
-                    <Button variant="outline" onPress={() => setShowSecond(false)}>
-                        Zurück
-                    </Button>
+                    <NextPrevButtons isDisabledNext={!learningSince} onPressPrev={() => setShowSecond(false)} onPressNext={onSecondNext} />
                 </>
             )}
         </VStack>

@@ -7,6 +7,7 @@ import CSSWrapper from '../../../components/CSSWrapper';
 import { Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -105,15 +106,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                 </ProfileSettingItem>
 
                 {/*                      1 = subjects */}
-                <Box alignItems="center" marginTop={space['0.5']}>
-                    <Button
-                        w="30%"
-                        maxW="220px"
-                        onPress={() => setCurrentIndex(1)} // 2 = german
-                    >
-                        {t('lernfair.buttons.next')}
-                    </Button>
-                </Box>
+                <NextPrevButtons onPressNext={() => setCurrentIndex(1)} onlyNext />
             </VStack>
             <Modal
                 isOpen={showModal}

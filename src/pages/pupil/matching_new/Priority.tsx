@@ -3,6 +3,7 @@ import { useTheme } from 'native-base';
 import { Text, VStack, Heading } from 'native-base';
 import { useContext } from 'react';
 import { DAZ } from '../../../types/subject';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -26,15 +27,11 @@ const Priority: React.FC = () => {
                 removeSubject={(it) => setSubject({ name: it, mandatory: false })}
                 limit={1}
             />
-            <Button
-                isDisabled={matchRequest.subjects.every((it) => !it.mandatory)}
-                onPress={() => setCurrentIndex(5)} // 5 = details
-            >
-                Weiter
-            </Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(3)}>
-                Zurück
-            </Button>
+            <NextPrevButtons
+                isDisabledNext={matchRequest.subjects.every((it) => !it.mandatory)}
+                onPressPrev={() => setCurrentIndex(3)}
+                onPressNext={() => setCurrentIndex(5)}
+            />
         </VStack>
     );
 };

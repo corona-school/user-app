@@ -106,7 +106,6 @@ const SchoolClasses: React.FC<Props> = () => {
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-            <Box borderBottomWidth={1} marginTop={space['1']} borderBottomColor="primary.grey" />
             <NextPrevButtons onPressPrev={() => setCurrentIndex(2)} onPressNext={submit} />
         </VStack>
     );
