@@ -24,6 +24,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
 type Props = {};
@@ -68,7 +69,7 @@ type ICreateCourseContext = {
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
-const CreateCourse: React.FC<Props> = () => {
+const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
@@ -767,10 +768,11 @@ const CreateCourse: React.FC<Props> = () => {
                     const arr = [...addedInstructors];
                     arr.splice(index, 1);
                     setAddedInstructors(arr);
-                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.' });
+                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der/Die Kursleiter:in konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }
@@ -794,10 +796,11 @@ const CreateCourse: React.FC<Props> = () => {
                 if (res.data.lectureDelete && !res.errors) {
                     lecs.splice(index, 1);
                     setLectures(lecs);
-                    toast.show({ description: 'Der Termin wurde entfernt.' });
+                    toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der Termin konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }
@@ -807,7 +810,12 @@ const CreateCourse: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')} showBack isLoading={loading || isLoading}>
+            <WithNavigation
+                headerTitle={isEditing ? t('course.edit') : t('course.header')}
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={<NotificationAlert />}
+            >
                 <CreateCourseContext.Provider
                     value={{
                         courseName,

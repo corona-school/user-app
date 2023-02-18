@@ -4,6 +4,7 @@ import { Box, useTheme } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
+import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import WithNavigation from '../../../components/WithNavigation';
 import German from './German';
 import SchoolClasses from './SchoolClasses';
@@ -92,7 +93,7 @@ const RequestMatching: React.FC = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation showBack isLoading={loading || isLoading}>
+            <WithNavigation showBack isLoading={loading || isLoading} headerLeft={<NotificationAlert />}>
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>

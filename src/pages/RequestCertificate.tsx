@@ -2,6 +2,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Text, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import useModal from '../hooks/useModal';
 import { LFSubCourse } from '../types/lernfair/Course';
@@ -110,7 +111,7 @@ const RequestCertificate: React.FC<Props> = () => {
                 setWizardIndex,
             }}
         >
-            <WithNavigation showBack>
+            <WithNavigation showBack headerLeft={<NotificationAlert />}>
                 {!certType && <Text>Es ist ein Fehler aufgetreten</Text>}
                 {certType && (
                     <VStack paddingX={space['1']} space={space['1']}>

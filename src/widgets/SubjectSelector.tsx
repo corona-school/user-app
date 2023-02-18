@@ -1,9 +1,8 @@
-import { Column } from 'native-base';
+import { Box, HStack, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
-import { SUBJECTS, DAZ, SUBJECT_TO_ICON } from '../types/subject';
+import { DAZ, SUBJECTS, SUBJECT_TO_ICON } from '../types/subject';
 import IconTagList from './IconTagList';
-import TwoColGrid from './TwoColGrid';
 
 export const SubjectSelector = ({
     subjects,
@@ -21,11 +20,12 @@ export const SubjectSelector = ({
     variant?: 'normal' | 'selection';
 }) => {
     const { t } = useTranslation();
+    const { space } = useTheme();
 
     return (
-        <TwoColGrid>
+        <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
             {((selectable ?? SUBJECTS.filter((it) => it !== DAZ)) as string[]).map((subject) => (
-                <Column>
+                <Box margin={space['0.5']} maxW="250px" flexBasis="300px" flexGrow={1}>
                     <IconTagList
                         key={subject}
                         initial={subjects.includes(subject)}
@@ -43,8 +43,8 @@ export const SubjectSelector = ({
                             }
                         }}
                     />
-                </Column>
+                </Box>
             ))}
-        </TwoColGrid>
+        </HStack>
     );
 };

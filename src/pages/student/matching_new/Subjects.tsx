@@ -1,12 +1,14 @@
-import { VStack, useTheme, Heading, Button } from 'native-base';
+import { Box, Button, Column, Heading, HStack, Row, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
-import { RequestMatchContext } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
+import { RequestMatchContext } from './RequestMatch';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { DAZ } from '../../../types/subject';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const { matchRequest, removeSubject, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
 
     return (
@@ -18,15 +20,11 @@ const Subjects: React.FC = () => {
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
                 removeSubject={removeSubject}
             />
-            <Button
-                isDisabled={matchRequest.subjects.length === 0}
-                onPress={() => setCurrentIndex(2)} // 2 = german
-            >
-                Weiter
-            </Button>
-            <Button variant="outline" onPress={() => setCurrentIndex(0)}>
-                Zurück
-            </Button>
+            <NextPrevButtons
+                isDisabledNext={matchRequest.subjects.length === 0}
+                onPressPrev={() => setCurrentIndex(0)}
+                onPressNext={() => setCurrentIndex(2)}
+            />
         </VStack>
     );
 };

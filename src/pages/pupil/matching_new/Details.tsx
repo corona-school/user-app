@@ -1,10 +1,12 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpointValue } from 'native-base';
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import { RequestMatchContext } from './RequestMatch';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 
 type Props = {};
 
@@ -15,18 +17,20 @@ const Details: React.FC<Props> = () => {
     const { matchRequest, setMessage, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
 
-    const [update, _update] = useMutation(gql`
+    const [update, _update] = useMutation(
+        gql(`
         mutation updatePupil($subjects: [SubjectInput!]) {
             meUpdate(update: { pupil: { subjects: $subjects } })
         }
-    `);
+    `)
+    );
 
     const [createMatchRequest] = useMutation(
-        gql`
+        gql(`
             mutation PupilCreateMatchRequest {
                 pupilCreateMatchRequest
             }
-        `
+        `)
     );
 
     const buttonWidth = useBreakpointValue({
@@ -83,13 +87,13 @@ const Details: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
     }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
 
@@ -112,13 +116,7 @@ const Details: React.FC<Props> = () => {
                 value={matchRequest.message}
                 onChangeText={setMessage}
             />
-            <Button isDisabled={_update.loading} onPress={requestMatch} w={buttonWidth}>
-                Weiter
-            </Button>
-
-            <Button variant="outline" onPress={() => setCurrentIndex(4)} w={buttonWidth}>
-                Zurück
-            </Button>
+            <NextPrevButtons isDisabledNext={_update.loading} onPressNext={requestMatch} onPressPrev={() => setCurrentIndex(4)} />
         </VStack>
     );
 };

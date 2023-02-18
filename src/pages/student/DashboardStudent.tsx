@@ -5,7 +5,7 @@ import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
-import NotificationAlert from '../../components/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
@@ -142,6 +142,7 @@ const DashboardStudent: React.FC<Props> = () => {
             setToastShown(true);
             toast.show({
                 description: 'Das Match wurde aufgelöst',
+                placement: 'top',
             });
         }
     }, [_dissolve?.data?.matchDissolve, toast, toastShown]);

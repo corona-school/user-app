@@ -76,7 +76,7 @@ const STORAGE = TEMPORARY_LOGIN ? sessionStorage : localStorage;
 // -------------- Global User State -------------------
 // ----- Session Token ---------------------
 //  Authenticates the user during a session
-const getSessionToken = () => {
+export const getSessionToken = () => {
     const token = STORAGE.getItem('lernfair:token');
     if (token) return token;
 
@@ -469,6 +469,11 @@ export const useUserType = () => {
     if (user?.pupil) return 'pupil';
     if (user?.student) return 'student';
     throw new Error(`useUserType cannot determine user`);
+};
+
+export const useUserAuth = () => {
+    const { sessionState, user } = useContext(ExtendedApolloContext)!;
+    return { sessionState, userId: user?.userID };
 };
 
 export default useApollo;

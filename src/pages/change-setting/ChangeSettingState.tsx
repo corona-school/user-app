@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import { useUserType } from '../../hooks/useApollo';
 import { states } from '../../types/lernfair/State';
@@ -112,7 +113,7 @@ const ChangeSettingState: React.FC<Props> = () => {
     if (loading) <CenterLoadingSpinner />;
 
     return (
-        <WithNavigation headerTitle={t('profile.State.single.header')} showBack>
+        <WithNavigation headerTitle={t('profile.State.single.header')} showBack headerLeft={<NotificationAlert />}>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.State.single.selectedStates')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

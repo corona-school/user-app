@@ -1,5 +1,5 @@
 import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
-import NotificationAlert from '../../components/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
@@ -14,6 +14,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
+import useLernfair from '../../hooks/useLernfair';
 
 type Props = {};
 
@@ -136,6 +137,7 @@ const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { rootPath } = useLernfair();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
     const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
@@ -236,7 +238,7 @@ const ProfilePupil: React.FC<Props> = () => {
                             paddingY={space['2']}
                             borderBottomRadius={16}
                         >
-                            <Box position="relative"></Box>
+                            <Box position="relative" />
                             <Heading
                                 // paddingTop={3}
                                 // paddingBottom={9}

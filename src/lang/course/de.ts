@@ -1,5 +1,6 @@
 const course = {
     header: 'Kurs erstellen',
+    edit: 'Kurs bearbeiten',
     uploadImage: 'Foto hochladen',
     noticeDate: 'Bitte fülle alle Felder korrekt aus',
     selectPlaceHolderDuration: 'Dauer auswählen',

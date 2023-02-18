@@ -34,7 +34,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                             <Radio.Group name="dissolve-reason" value={reason} onChange={setReason}>
                                 <VStack space={space['1']}>
                                     {reasons.map((_: number, index: number) => (
-                                        <Radio value={`${index + 1}`}>
+                                        <Radio key={index} value={`${index + 1}`}>
                                             {t(`matching.dissolveReasons.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
                                         </Radio>
                                     ))}
