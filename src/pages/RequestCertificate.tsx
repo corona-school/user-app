@@ -45,7 +45,7 @@ export const RequestCertificateContext = createContext<IRequestCertificateContex
 });
 
 const RequestCertificate: React.FC<Props> = () => {
-    const { setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
     const navigate = useNavigate();
     const location = useLocation() as {

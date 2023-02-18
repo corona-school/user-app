@@ -98,7 +98,7 @@ const mutStudent = gql`
 const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { setVariant, setShow, setContent } = useModal();
+    const { show, hide } = useModal();
     const navigate = useNavigate();
 
     const location = useLocation();
@@ -120,7 +120,6 @@ const Registration: React.FC = () => {
     const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent);
 
     const attemptRegister = useCallback(async () => {
-        setVariant('dark');
         try {
             const validMail = email.toLowerCase();
             const data = {
@@ -153,9 +152,10 @@ const Registration: React.FC = () => {
             const res = await register(data);
 
             if (!res.errors) {
-                setContent(<VerifyEmailModal email={email} />);
+                show({ variant: 'dark' }, <VerifyEmailModal email={email} />);
             } else {
-                setContent(
+                show(
+                    { variant: 'dark' },
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
                             {t(`registration.result.error.message.${res.errors[0].message}` as unknown as TemplateStringsArray, {
@@ -164,18 +164,19 @@ const Registration: React.FC = () => {
                         </Text>
                         <Button
                             onPress={() => {
-                                setShow(false);
+                                hide();
                                 attemptRegister();
                             }}
                         >
                             {t('registration.result.error.tryagain')}
                         </Button>
-                        <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                        <Button onPress={hide}>{t('registration.result.error.btn')}</Button>
                     </VStack>
                 );
             }
         } catch (e: any) {
-            setContent(
+            show(
+                { variant: 'light' },
                 <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                     <Text color="lightText">
                         {t(`registration.result.error.message.${e.message}` as unknown as TemplateStringsArray, {
@@ -184,18 +185,17 @@ const Registration: React.FC = () => {
                     </Text>
                     <Button
                         onPress={() => {
-                            setShow(false);
+                            hide();
                             attemptRegister();
                         }}
                     >
                         {t('registration.result.error.tryagain')}
                     </Button>
-                    <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                    <Button onPress={hide}>{t('registration.result.error.btn')}</Button>
                 </VStack>
             );
         }
-        setShow(true);
-    }, [setVariant, setShow, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, setContent, space, t]);
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, space, t]);
 
     return (
         <Flex alignItems="center" w="100%" h="100vh">

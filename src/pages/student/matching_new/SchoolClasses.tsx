@@ -20,7 +20,7 @@ const SchoolClasses: React.FC<Props> = () => {
     const toast = useToast();
     const { matchRequest, setSubject, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
-    const { setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
 
     const buttonWidth = useBreakpointValue({
         base: '100%',
@@ -44,9 +44,8 @@ const SchoolClasses: React.FC<Props> = () => {
     );
 
     const showModal = useCallback(() => {
-        setVariant('dark');
-
-        setContent(
+        show(
+            { variant: 'dark' },
             <VStack paddingX={space['2']} paddingTop={space['2']} space={space['1']} alignItems="center" height="100%">
                 <Box maxWidth="600px" height="100%" justifyContent="center" alignItems="center" textAlign="center">
                     <PartyIcon />
@@ -66,7 +65,7 @@ const SchoolClasses: React.FC<Props> = () => {
                             navigate('/matching', {
                                 state: { tabID: 1 },
                             });
-                            setShow(false);
+                            hide();
                         }}
                     >
                         Fertig
@@ -74,8 +73,7 @@ const SchoolClasses: React.FC<Props> = () => {
                 </Box>
             </VStack>
         );
-        setShow(true);
-    }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
+    }, [buttonWidth, navigate, show, hide, space]);
 
     const submit = useCallback(async () => {
         const resSubs = await updateSubjects({ variables: { subjects: matchRequest.subjects } });

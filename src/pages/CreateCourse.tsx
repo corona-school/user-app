@@ -230,7 +230,7 @@ const CreateCourse: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
-    const { setShow, setContent } = useModal();
+    const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
@@ -700,24 +700,14 @@ const CreateCourse: React.FC = () => {
     const pickPhoto = useCallback(
         (photo: string) => {
             setPickedPhoto(photo);
-            setShow(false);
-            setContent(<></>);
+            hide();
         },
-        [setContent, setShow]
+        [hide]
     );
 
     const showUnsplash = useCallback(() => {
-        setContent(
-            <Unsplash
-                onPhotoSelected={pickPhoto}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [pickPhoto, setContent, setShow]);
+        show({ variant: 'light' }, <Unsplash onPhotoSelected={pickPhoto} onClose={hide} />);
+    }, [pickPhoto, show, hide]);
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
@@ -730,25 +720,14 @@ const CreateCourse: React.FC = () => {
                     setNewInstructors((prev) => [...prev, instructor]);
                 }
             }
-            setShow(false);
-            setContent(<></>);
+            hide();
         },
-        [addedInstructors, newInstructors, prefillCourseId, setContent, setShow]
+        [addedInstructors, newInstructors, prefillCourseId, hide]
     );
 
     const showAddInstructor = useCallback(() => {
-        setContent(
-            <AddCourseInstructor
-                addedInstructors={addedInstructors}
-                onInstructorAdded={addInstructor}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [addInstructor, setContent, setShow, addedInstructors]);
+        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={addedInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
+    }, [addInstructor, show, hide]);
 
     const removeInstructor = useCallback(
         async (index: number, isSubmitted: boolean) => {

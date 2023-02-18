@@ -17,12 +17,12 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { setShow } = useModal();
+    const { hide } = useModal();
 
     const goToWelcome = useCallback(() => {
         navigate('/welcome');
-        setShow(false);
-    }, [navigate, setShow]);
+        hide();
+    }, [navigate, hide]);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
 
