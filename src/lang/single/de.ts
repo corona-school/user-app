@@ -38,5 +38,17 @@ const single = {
         lessons: 'Lektionen',
         participant: 'Teilnehmer:innen',
     },
+    buttonPromote: {
+        button: 'Kurs bewerben',
+        toast: 'Kurs beworben',
+        toastFail: 'Kurs konnte nicht beworben werden',
+    },
+    bannerPromote: {
+        freeTitle: 'Auf freie Plätze aufmerksam machen?',
+        freeDescription: 'Nutze die Möglichkeit deinen Kurs einmalig zu bewerben.',
+        promotedTitle: 'Kurs wurde erneut beworben!',
+        promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
+        participant: 'Teilnehmer:innen',
+    },
 };
 export default single;

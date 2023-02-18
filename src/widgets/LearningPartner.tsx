@@ -45,7 +45,12 @@ const LearningPartner = ({
                                 <Text bold>Fächer:</Text>
                             </Text>
                             {subjects.map((sub) => (
-                                <Tag text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray)} variant="secondary-light" marginBottom={0} />
+                                <Tag
+                                    text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray)}
+                                    variant="secondary-light"
+                                    marginBottom={0}
+                                    key={sub.name}
+                                />
                             ))}
                         </Row>
                     )}
