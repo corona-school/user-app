@@ -9,7 +9,7 @@ const welcome = {
     needHelp: 'Brauchst du Hilfe?',
     contactSupport: 'Kontaktiere uns',
     legacyNotice:
-        'Alles neu? Den neuen Userbereich findest du unter <b>app.lern-fair.de</b>, dieser ersetzt den vorherigen Userbereich unter <b>my.lern-fair.de</b>.',
+        'Alles neu? Den neuen User-Bereich findest du unter <b>app.lern-fair.de</b>, dieser ersetzt den vorherigen User-Bereich unter <b>my.lern-fair.de</b>.',
 };
 
 export default welcome;
