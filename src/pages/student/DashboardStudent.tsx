@@ -401,9 +401,6 @@ const DashboardStudent: React.FC<Props> = () => {
                             {(activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <Text marginTop={space['0.5']} marginBottom={space['1']}>
-                                        {t('dashboard.helpers.headlines.openedRequests')} {`${data?.me?.student?.openMatchRequestCount}`}
-                                    </Text>
                                     <CSSWrapper className="course-list__wrapper">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match: LFMatch, index: number) => (
