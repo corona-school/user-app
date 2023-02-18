@@ -108,6 +108,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                 <Box alignItems="center" marginTop={space['0.5']}>
                     <Button
                         w="30%"
+                        maxW="220px"
                         onPress={() => setCurrentIndex(1)} // 2 = german
                     >
                         {t('lernfair.buttons.next')}

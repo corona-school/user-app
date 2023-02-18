@@ -6,6 +6,7 @@ import { containsDAZ, DAZ } from '../../../types/subject';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
+import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
@@ -32,21 +33,13 @@ const German: React.FC = () => {
             <Heading>
                 Kannst du dir vorstellen Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?
             </Heading>
-            <TwoColGrid>
-                <Column>
-                    <IconTagList iconPath={`lf-yes.svg`} initial={supportsDaz ?? false} variant="selection" text="Ja" onPress={() => setSupportsDaz(true)} />
-                </Column>
-                <Column>
-                    <IconTagList
-                        iconPath={`lf-no.svg`}
-                        initial={!(supportsDaz ?? true)}
-                        variant="selection"
-                        text="Nein"
-                        onPress={() => setSupportsDaz(false)}
-                    />
-                </Column>
-            </TwoColGrid>
-            <Box borderBottomWidth={1} borderBottomColor="primary.grey" />
+            <YesNoSelector
+                initialYes={supportsDaz ?? false}
+                initialNo={!(supportsDaz ?? true)}
+                onPressYes={() => setSupportsDaz(true)}
+                onPressNo={() => setSupportsDaz(false)}
+            />
+            <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
             <NextPrevButtons isDisabledNext={!supportsDaz} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
         </VStack>
     );
