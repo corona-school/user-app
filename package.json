@@ -86,7 +86,8 @@
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1"
+        "workbox-webpack-plugin": "^6.4.1",
+        "i18next-browser-languagedetector": "^7.0.1"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^6.5.14",
@@ -192,8 +193,7 @@
     },
     "dependencies": {
         "compression": "^1.7.4",
-        "express": "^4.18.2",
-        "i18next-browser-languagedetector": "^7.0.1"
+        "express": "^4.18.2"
     },
     "pre-commit": [
         "prettier"
