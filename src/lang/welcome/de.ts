@@ -8,6 +8,8 @@ const welcome = {
     deactivationAlert: 'Dein Account wurde deaktiviert',
     needHelp: 'Brauchst du Hilfe?',
     contactSupport: 'Kontaktiere den Support',
+    legacyNotice:
+        'Alles neu? Den neuen Userbereich findest du unter <b>app.lern-fair.de</b>, dieser ersetzt den vorherigen Userbereich unter <b>my.lern-fair.de</b>.',
 };
 
 export default welcome;
