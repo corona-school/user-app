@@ -27,7 +27,7 @@ const FullPageModal = () => {
                     <Box padding={space['1']} marginBottom={space['1']} display="flex" flexDirection="row" width="100%">
                         {headline && (
                             <Box flexDirection="column" paddingTop="5px" flexGrow="1">
-                                <Heading>{headline}</Heading>
+                                <Heading textAlign="center">{headline}</Heading>
                             </Box>
                         )}
                         {closeable && (
