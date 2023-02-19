@@ -1,0 +1,23 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import { SuccessModal } from './SuccessModal';
+import { Box } from 'native-base';
+
+<Meta title="Modals/SuccessModal" component={SuccessModal} />
+
+# SuccessModal
+
+```
+const { show } = useModal();
+
+function ifDone() {
+    show({ variant: 'dark', closeable: true }, <SuccessModal title="Titel" content="Content" />);
+}
+```
+
+opens this in full screen:
+
+<Story name="AppointmentList">
+    <Box bgColor="primary.900">
+        <SuccessModal title="Titel" content="Content" />
+    </Box>
+</Story>
