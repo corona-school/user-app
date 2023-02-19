@@ -1,5 +1,4 @@
-import { AddIcon, Button, Checkbox, Column, DeleteIcon, Row, useTheme } from 'native-base';
-import { Text, VStack } from 'native-base';
+import { AddIcon, Button, Checkbox, Column, DeleteIcon, Heading, Row, useTheme, Text, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import TextInput from '../../components/TextInput';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
@@ -14,16 +13,10 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
     const { state, setState, setWizardIndex } = useContext(RequestCertificateContext);
     const [addOther, setAddOther] = useState<string>('');
 
-    const requestCertificate = useCallback(() => {
-        // TODO make api call
-
-        // TODO call onNext if successful
-        // else show fail message
-        onNext();
-    }, [onNext]);
-
     return (
         <VStack space={space['1']}>
+            <Heading>Tätigkeit</Heading>
+            <Text>Wähle aus, mit welchen Tätigkeiten du deine Lernpartner:innen unterstützt hast</Text>
             <Checkbox.Group value={state.actions} onChange={(actions) => setState((prev) => ({ ...prev, actions }))}>
                 <VStack space={space['0.5']}>
                     <Checkbox value="preparation">Vorbereitung, Planung und Gestaltung von Unterrichtsstunden</Checkbox>
@@ -43,7 +36,7 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
             {state.otherActions.map((o: string, index) => (
                 <Column paddingBottom={space['0.5']} borderBottomColor={'primary.500'} borderBottomWidth={1}>
                     <Row alignItems="center">
-                        <Text flex="1">{o}</Text>
+                        <Text flex="1">{o ?? ''}</Text>
                         <Button
                             w={'56px'}
                             h={'56px'}
@@ -80,7 +73,7 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
                     <AddIcon size="lg" color="white" />
                 </Button>
             </Row>
-            <Button onPress={requestCertificate}>Jetzt anfordern</Button>
+            <Button onPress={onNext}>Jetzt anfordern</Button>
             <Button variant="link" onPress={() => setWizardIndex((prev) => prev - 1)}>
                 Zurück
             </Button>
