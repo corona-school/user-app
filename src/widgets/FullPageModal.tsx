@@ -24,16 +24,16 @@ const FullPageModal = () => {
         <CSSWrapper className={`fullpagemodal ${visible ? 'show' : ''}`}>
             <Box bgColor={bgColor} w="100%" h="100%" testID="fullpagemodal">
                 {(closeable || headline) && (
-                    <Box padding={space['1']} marginBottom={space['1']} display="flex" flexDirection="row" width="100%">
-                        {headline && (
-                            <Box flexDirection="column" paddingTop="5px" flexGrow="1">
-                                <Heading textAlign="center">{headline}</Heading>
-                            </Box>
-                        )}
+                    <Box padding={space['1']} marginBottom={space['1']} display="flex" flexDirection="row-reverse" width="100%">
                         {closeable && (
                             <Button onPress={hide}>
                                 <CloseIcon color="primary.800" />
                             </Button>
+                        )}
+                        {headline && (
+                            <Box flexDirection="column" paddingTop="5px" flexGrow="1">
+                                <Heading textAlign="center">{headline}</Heading>
+                            </Box>
                         )}
                     </Box>
                 )}

@@ -16,6 +16,83 @@ type Props = {
     variant?: 'normal' | 'dark';
 };
 
+export const IMPORTANT_INFORMATION_QUERY = gql(`
+query GetOnboardingInfos {
+  me {
+    email
+    secrets {
+      type
+    }
+    student {
+      createdAt
+      verifiedAt
+      matches {
+        dissolved
+        createdAt
+        pupilEmail
+        pupil {
+          firstname
+          lastname
+        }
+      }
+      firstMatchRequest
+      openMatchRequestCount
+      certificateOfConductDeactivationDate
+      canRequestMatch {
+        allowed
+        reason
+      }
+      canCreateCourse {
+        allowed
+        reason
+      }
+    }
+    pupil {
+      createdAt
+      verifiedAt
+      subjectsFormatted {
+        name
+      }
+      subcoursesJoined {
+          id
+      }
+      matches {
+        dissolved
+        createdAt
+        studentEmail
+        subjectsFormatted {
+          name
+        }
+        student {
+          firstname
+          lastname
+        }
+      }
+      firstMatchRequest
+      openMatchRequestCount
+      tutoringInterestConfirmation {
+        id
+        token
+        status
+      }
+      participationCertificatesToSign {
+         uuid
+         ongoingLessons
+         state
+         categories
+         startDate
+         endDate
+         hoursPerWeek
+         hoursTotal
+         medium
+         student { firstname lastname }
+      }
+    }
+  }
+  myRoles
+}
+`);
+
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -24,84 +101,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const { show, hide } = useModal();
 
-    const { data } = useQuery(
-        gql(`
-		query GetOnboardingInfos {
-          me {
-            email
-            secrets {
-              type
-            }
-            student {
-              createdAt
-              verifiedAt
-			  matches {
-				dissolved
-				createdAt
-				pupilEmail
-				pupil {
-				  firstname
-				  lastname
-				}
-			  }
-              firstMatchRequest
-              openMatchRequestCount
-              certificateOfConductDeactivationDate
-              canRequestMatch {
-                allowed
-                reason
-              }
-              canCreateCourse {
-                allowed
-                reason
-              }
-            }
-            pupil {
-              createdAt
-              verifiedAt
-			  subjectsFormatted {
-				name
-			  }
-              subcoursesJoined {
-                  id
-              }
-			  matches {
-				dissolved
-				createdAt
-				studentEmail
-				subjectsFormatted {
-				  name
-				}
-				student {
-				  firstname
-				  lastname
-				}
-			  }
-              firstMatchRequest
-			  openMatchRequestCount
-              tutoringInterestConfirmation {
-                id
-				token
-                status
-              }
-              participationCertificatesToSign {
-                 id
-                 ongoingLessons
-                 state
-                 categories
-                 startDate
-                 endDate
-                 hoursPerWeek
-                 hoursTotal
-                 medium
-                 student { firstname lastname }
-              }
-            }
-          }
-          myRoles
-		}
-		`)
-    );
+    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
@@ -127,7 +127,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
 
     const infos = useMemo(() => {
-        let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {} }[] = [];
+        let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {}; key?: string }[] = [];
 
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
@@ -214,9 +214,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     () => {
                         show({ variant: 'light', closeable: true, headline: 'Bescheinigung bestätigen' }, <ConfirmCertificate certificate={certificate} />);
                     },
-                    () => {
-                        show({ variant: 'light', closeable: true }, <Container>Test</Container>);
-                    },
                 ],
                 lang: {
                     nameHelfer: certificate.student.firstname,
@@ -224,6 +221,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     endDate: DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy'),
                     hoursPerWeek: certificate.hoursPerWeek,
                 },
+                key: `bescheinigung.${certificate.uuid}`,
             });
         }
 
@@ -237,7 +235,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             {infos.map((config, index) => {
                 const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
-                    <Column width="100%" maxWidth="500px" key={config.label}>
+                    <Column width="100%" maxWidth="500px" key={config.key ?? config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />

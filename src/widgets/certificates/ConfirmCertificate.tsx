@@ -6,10 +6,16 @@ import { Participation_Certificate } from '../../gql/graphql';
 import { YesNoSelector } from '../YesNoSelector';
 import SignatureCanvas from 'react-signature-canvas';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { gql } from '../../gql';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import useModal from '../../hooks/useModal';
+import { SuccessModal } from '../../modals/SuccessModal';
+import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
 
 type CertificateToConfirm = Pick<
     Participation_Certificate,
-    'categories' | 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'medium' | 'ongoingLessons' | 'startDate' | 'state'
+    'uuid' | 'categories' | 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'medium' | 'ongoingLessons' | 'startDate' | 'state'
 > & { student: { firstname?: string | null; lastname?: string | null } };
 
 function ConfirmData({
@@ -28,7 +34,7 @@ function ConfirmData({
     goSign: () => void;
 }) {
     const { space } = useTheme();
-    const [confirmed, setConfirmed] = useState(false);
+    const [confirmed, setConfirmed] = useState<boolean | null>(null);
 
     return (
         <>
@@ -51,11 +57,23 @@ function ConfirmData({
             </Text>
             <YesNoSelector
                 align="center"
-                onPressNo={() => {}}
+                onPressNo={() => {
+                    setConfirmed(false);
+                }}
                 onPressYes={() => {
                     setConfirmed(true);
                 }}
+                initialNo={confirmed === false}
+                initialYes={confirmed === true}
             />
+            {confirmed === false && (
+                <Card bg="primary.900" padding={space['1']} marginTop={space['1']}>
+                    <Text color="white" fontWeight="bold">
+                        Bitte {certificate.student.firstname} die Informationen anzupassen
+                    </Text>
+                    <Text color="white">{certificate.student.firstname} kann in seinem Userbereich die informationen anpassen.</Text>
+                </Card>
+            )}
             {confirmed && (
                 <>
                     <Text fontWeight="bold" textAlign="center" paddingTop="50px">
@@ -96,7 +114,17 @@ function ConfirmData({
     );
 }
 
-function Sign({ isMinor, location }: { isMinor: boolean; location: string }) {
+function Sign({
+    certificate,
+    isMinor,
+    location,
+    signCertificate,
+}: {
+    certificate: CertificateToConfirm;
+    isMinor: boolean;
+    location: string;
+    signCertificate: (it: { certificateId: string; signatureParent?: string; signaturePupil?: string; location: string }) => void;
+}) {
     const signCanvas = useRef<any>(); // https://www.npmjs.com/package/react-signature-canvas
     // NOTE: In some obscure cases (e.g. scaling the canvas) the canvas gets emptied and this state is invalid
     //       Always additionally check signCanvas.current.isEmpty()
@@ -108,12 +136,13 @@ function Sign({ isMinor, location }: { isMinor: boolean; location: string }) {
         const signatureBase64 = signCanvas.current.toDataURL('image/png', 1.0);
 
         const signature = {
+            certificateId: certificate.uuid,
             signatureParent: isMinor ? signatureBase64 : undefined,
             signaturePupil: !isMinor ? signatureBase64 : undefined,
             location,
         };
-        // signCertificate(certificate, signature);
-        // close();
+
+        signCertificate(signature);
     }
 
     const updateSigned = useCallback(() => setIsSigned(!signCanvas.current.isEmpty()), [setIsSigned, signCanvas]);
@@ -167,10 +196,34 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
     const [location, setLocation] = useState('');
     const [isMinor, setIsMinor] = useState<boolean | null>(null);
     const [sign, setSign] = useState(false);
+    const { show } = useModal();
+
+    const [signCertificate, { loading, data, error }] = useMutation(
+        gql(
+            `mutation SignCertificate($certificateId: String! $location: String! $signatureParent: String $signaturePupil: String) {
+            participationCertificateSign(certificateId: $certificateId signatureLocation: $location signatureParent: $signatureParent signaturePupil: $signaturePupil)
+        }`
+        ),
+        { refetchQueries: [IMPORTANT_INFORMATION_QUERY] }
+    );
+
+    useEffect(() => {
+        if (data) {
+            show(
+                { variant: 'dark', closeable: true },
+                <SuccessModal title="Zertifikat bestätigt" content="Vielen Dank das du uns geholfen hast, die Arbeit unsererer Helfer:innen zu würdigen." />
+            );
+        }
+
+        if (error) {
+            throw new Error(`Failed to sign certificate with`, error);
+        }
+    }, [data, error]);
 
     return (
         <Box padding={space['1']} height="100%" overflow="scroll" width="100%" maxWidth="600px" alignSelf="center">
-            {!sign && (
+            {loading && <CenterLoadingSpinner />}
+            {!loading && !sign && (
                 <ConfirmData
                     goSign={() => setSign(true)}
                     certificate={certificate}
@@ -180,7 +233,9 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
                     setLocation={setLocation}
                 />
             )}
-            {sign && <Sign isMinor location={location} />}
+            {!loading && sign && (
+                <Sign certificate={certificate} isMinor={isMinor!} location={location} signCertificate={(it) => signCertificate({ variables: it })} />
+            )}
             <Box height="300px" />
         </Box>
     );
