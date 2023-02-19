@@ -24,7 +24,7 @@ export const NextPrevButtons = ({
     return (
         <>
             {/*<Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />*/}
-            <Box alignItems="center" marginTop={space['1']}>
+            <Box alignItems="center" marginTop={space['0.5']}>
                 <Row w="100%" space={space['1']} justifyContent="center">
                     {!onlyNext && (
                         <Button maxW="220px" flex={1} h="100%" isDisabled={isDisabledPrev} variant="outline" onPress={onPressPrev}>

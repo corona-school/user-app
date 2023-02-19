@@ -1,4 +1,4 @@
-import { VStack, useTheme, Heading, Column, Button } from 'native-base';
+import { VStack, useTheme, Heading, Column, Button, Box } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
@@ -55,7 +55,9 @@ const German: React.FC = () => {
                         initialNo={isNativeLanguage === false}
                         onPressNo={() => setIsNativeLanguage(false)}
                         onPressYes={() => setIsNativeLanguage(true)}
+                        align="left"
                     />
+                    <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
                     <NextPrevButtons isDisabledNext={isNativeLanguage === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onGoNext} />
                 </>
             )}
