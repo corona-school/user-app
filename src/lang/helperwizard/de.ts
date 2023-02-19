@@ -41,8 +41,8 @@ const helperwizard = {
     angeforderteBescheinigung: {
         title: '{{nameHelfer}} braucht eine Bestätigung von dir',
         content:
-            '{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du auf “Ja” klickst, können wir {{nameHelfer}} diesen Wunsch erfüllen. Ist es richtig, dass ihr schon so lange zusammen lernt? \nStart: {{date}} \nEnde: {{date}} \nAnzahl Stunden pro Woche: {{stunden}}',
-        buttons: ['Ja, Angaben bestätigen', 'Nein, Problem melden'],
+            '{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.',
+        buttons: ['Angaben bestätigen'],
     },
 
     // Nur Helfer:innen

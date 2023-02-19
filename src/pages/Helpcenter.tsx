@@ -28,7 +28,7 @@ const HelpCenter: React.FC = () => {
     const [messageSent, setMessageSent] = useState<boolean>();
     const [showError, setShowError] = useState<boolean>();
 
-    const { show, setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -56,23 +56,22 @@ const HelpCenter: React.FC = () => {
     }, [contactSupport, message, subject]);
 
     useEffect(() => {
-        if (!show && data) {
-            setVariant('light');
-            setContent(
+        if (data) {
+            show(
+                { variant: 'light' },
                 <InfoScreen
                     title={t('helpcenter.contact.popupTitle')}
                     icon={<InfoIcon />}
                     content={t('helpcenter.contact.popupContent')}
                     defaultButtonText={t('helpcenter.contact.popupBtn')}
                     defaultbuttonLink={() => {
-                        setShow(false);
+                        hide();
                         navigate('/start');
                     }}
                 />
             );
-            setShow(true);
         }
-    }, [show, data, setContent, setShow, setVariant, t, navigate]);
+    }, [data, show, hide, t, navigate]);
 
     // Breakpoints
     const ContainerWidth = useBreakpointValue({

@@ -13,7 +13,7 @@ const UserType: React.FC = () => {
     const { t } = useTranslation();
     const { userType, setUserType, setCurrentIndex } = useContext(RegistrationContext);
     const { space, sizes } = useTheme();
-    const { setContent, setShow, setVariant } = useModal();
+    const { show, hide } = useModal();
 
     const ModalContainerWidth = useBreakpointValue({
         base: '93%',
@@ -31,14 +31,14 @@ const UserType: React.FC = () => {
             } else {
                 navigate('/registration-rejected');
             }
-            setShow(false);
+            hide();
         },
-        [navigate, setShow, setCurrentIndex]
+        [navigate, hide, setCurrentIndex]
     );
 
     const showBarrier = useCallback(() => {
-        setVariant('dark');
-        setContent(() => (
+        show(
+            { variant: 'dark' },
             <VStack space={space['1']} p={space['1']} flex="1" alignItems="center" justifyContent="center" marginX="auto" width={ModalContainerWidth}>
                 <Box alignItems="center" marginY={space['4']} overflowY={overflowBar} height="100vh">
                     <Box marginTop={space['3']} marginBottom={space['1']}>
@@ -72,9 +72,8 @@ const UserType: React.FC = () => {
                     </VStack>
                 </Box>
             </VStack>
-        ));
-        setShow(true);
-    }, [ModalContainerWidth, onBarrierSolved, overflowBar, setContent, setShow, setVariant, space, t]);
+        );
+    }, [ModalContainerWidth, onBarrierSolved, overflowBar, show, hide, space, t]);
 
     return (
         <VStack w="100%">

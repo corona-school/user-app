@@ -1,31 +1,12 @@
-import { Box } from 'native-base';
-import { createContext, ReactNode, useMemo } from 'react';
+import { Box, Button, CloseIcon, Heading, useTheme } from 'native-base';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
-import useModal from '../hooks/useModal';
+import { LFModalContext } from '../hooks/useModal';
 import '../web/scss/widgets/FullPageModal.scss';
 
-type Props = {};
-export type IModalTheme = 'light' | 'dark' | 'image';
-type IModalContent = {
-    show: boolean;
-    content: ReactNode;
-    variant?: IModalTheme;
-    setShow: (show: boolean) => any;
-    setContent: (content: ReactNode) => any;
-    setVariant: (variant: IModalTheme) => any;
-};
-
-export const ModalContext = createContext<IModalContent>({
-    show: false,
-    content: null,
-    variant: 'light',
-    setShow: () => null,
-    setContent: () => null,
-    setVariant: () => null,
-});
-
-const FullPageModal: React.FC<Props> = () => {
-    const { show, content, variant } = useModal();
+const FullPageModal = () => {
+    const { variant, visible, content, closeable, hide, headline } = useContext(LFModalContext);
+    const { space } = useTheme();
 
     const bgColor = useMemo(() => {
         switch (variant) {
@@ -40,13 +21,26 @@ const FullPageModal: React.FC<Props> = () => {
     }, [variant]);
 
     return (
-        <CSSWrapper className={`fullpagemodal ${show ? 'show' : ''}`}>
+        <CSSWrapper className={`fullpagemodal ${visible ? 'show' : ''}`}>
             <Box bgColor={bgColor} w="100%" h="100%" testID="fullpagemodal">
-                <Box testID="fullpagemodal__content" h="100%">
-                    {content}
-                </Box>
+                {(closeable || headline) && (
+                    <Box padding={space['1']} marginBottom={space['1']} display="flex" flexDirection="row-reverse" width="100%">
+                        {closeable && (
+                            <Button onPress={hide}>
+                                <CloseIcon color="primary.800" />
+                            </Button>
+                        )}
+                        {headline && (
+                            <Box flexDirection="column" paddingTop="5px" flexGrow="1">
+                                <Heading textAlign="center">{headline}</Heading>
+                            </Box>
+                        )}
+                    </Box>
+                )}
+                <Box h="100%">{content}</Box>
             </Box>
         </CSSWrapper>
     );
 };
+
 export default FullPageModal;

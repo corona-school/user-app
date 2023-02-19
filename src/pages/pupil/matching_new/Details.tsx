@@ -11,7 +11,7 @@ import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 type Props = {};
 
 const Details: React.FC<Props> = () => {
-    const { setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const { space, sizes } = useTheme();
     const toast = useToast();
     const { matchRequest, setMessage, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
@@ -39,9 +39,8 @@ const Details: React.FC<Props> = () => {
     });
 
     const showModal = useCallback(() => {
-        setVariant('dark');
-
-        setContent(
+        show(
+            { variant: 'dark' },
             <VStack paddingX={space['2']} paddingTop={space['2']} space={space['1']} alignItems="center">
                 <PartyIcon />
                 <Heading fontSize={'2xl'} color="lightText" textAlign="center">
@@ -54,7 +53,7 @@ const Details: React.FC<Props> = () => {
                 </Text>
                 <Button
                     onPress={() => {
-                        setShow(false);
+                        hide();
                         navigate('/group');
                     }}
                     w={buttonWidth}
@@ -68,15 +67,14 @@ const Details: React.FC<Props> = () => {
                         navigate('/matching', {
                             state: { tabID: 1 },
                         });
-                        setShow(false);
+                        hide();
                     }}
                 >
                     Fertig
                 </Button>
             </VStack>
         );
-        setShow(true);
-    }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
+    }, [buttonWidth, navigate, show, hide, space]);
 
     const requestMatch = useCallback(async () => {
         const resSubs = await update({ variables: { subjects: matchRequest.subjects } });

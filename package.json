@@ -45,6 +45,7 @@
         "graphql": "^16.5.0",
         "html-webpack-plugin": "^5.5.0",
         "i18next": "^21.10.0",
+        "i18next-browser-languagedetector": "^7.0.1",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
@@ -87,7 +88,8 @@
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1",
-        "i18next-browser-languagedetector": "^7.0.1"
+        "react-signature-canvas": "^1.0.6",
+        "@types/react-signature-canvas": "^1.0.2"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^6.5.14",
