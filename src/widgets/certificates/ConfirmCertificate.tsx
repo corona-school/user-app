@@ -40,14 +40,14 @@ function ConfirmData({
         <>
             <Card bg="primary.900" width="100%">
                 <Text color="white" fontWeight="bold">
-                    Informationen von {certificate.student.firstname}
+                    Lernunterstützung von {certificate.student.firstname}
                 </Text>
                 <Text color="white">
                     <ul>
                         <li>ab dem {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}</li>
                         <li>bis zum {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}</li>
-                        <li>ca. {certificate.hoursPerWeek} Studen pro Woche</li>
-                        <li>ca. {certificate.hoursTotal} Studen insgesamt</li>
+                        <li>ca. {certificate.hoursPerWeek} Stunden pro Woche</li>
+                        <li>ca. {certificate.hoursTotal} Stunden insgesamt</li>
                     </ul>
                 </Text>
             </Card>
@@ -96,7 +96,7 @@ function ConfirmData({
                                 Bitte deine Eltern um Bestätigung
                             </Text>
                             <Text color="white">
-                                Auf der folgenden Seite müssen deine Eltern unterschreiben, um zu bestätigen das {certificate.student.firstname} dich
+                                Auf der folgenden Seite müssen deine Eltern unterschreiben, um zu bestätigen dass {certificate.student.firstname} dich
                                 unterstützt hat.
                             </Text>
                         </Card>
