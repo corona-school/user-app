@@ -37,7 +37,7 @@ const German: React.FC = () => {
                 onPressYes={() => setSupportsDaz(true)}
                 onPressNo={() => setSupportsDaz(false)}
             />
-            <NextPrevButtons isDisabledNext={!supportsDaz} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
+            <NextPrevButtons isDisabledNext={supportsDaz === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
         </VStack>
     );
 };

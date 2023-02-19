@@ -8,9 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { ConfirmCertificate } from './certificates/ConfirmCertificate';
+import { SuccessModal } from '../modals/SuccessModal';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -110,17 +111,38 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
-        { variables: { email: email || 'email never empty' } }
+        { variables: { email: email || 'email never empty' }, refetchQueries: [IMPORTANT_INFORMATION_QUERY] }
     );
-    const [confirmInterest] = useMutation(gql(`mutation Confirm($token: String!){ tutoringInterestConfirm(token:$token) }`), {
+    const [confirmInterest, { data: confirmedInterest }] = useMutation(gql(`mutation Confirm($token: String!){ tutoringInterestConfirm(token:$token) }`), {
         variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
     });
-    const [refuseInterest] = useMutation(gql(`mutation Refuse($token: String!){ tutoringInterestRefuse(token:$token) }`), {
-        variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
-    });
-    const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`));
 
-    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
+    useEffect(() => {
+        if (confirmedInterest) {
+            show({ variant: 'dark', closeable: true }, <SuccessModal title="Interesse bestätigt!" content="Wir melden uns bald wieder!" />);
+        }
+    }, [show, confirmedInterest]);
+
+    const [refuseInterest, { data: refusedInterest }] = useMutation(gql(`mutation Refuse($token: String!){ tutoringInterestRefuse(token:$token) }`), {
+        variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
+    });
+
+    useEffect(() => {
+        if (refusedInterest) {
+            show(
+                { variant: 'dark', closeable: true },
+                <SuccessModal title="Danke für deine Antwort!" content="Durch deine Antwort können wir Anderen schneller Hilfe vermitteln" />
+            );
+        }
+    }, [show, refusedInterest]);
+
+    const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`), { refetchQueries: [IMPORTANT_INFORMATION_QUERY] });
+
+    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`), {
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
+    });
     async function openRemissionRequest() {
         const { data } = await downloadRemissionRequest();
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
@@ -155,12 +177,22 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: {},
             });
 
+        // -------- Interest Confirmation -----------
+        const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
+        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        if (showInterestConfirmation)
+            infos.push({
+                label: 'interestconfirmation',
+                btnfn: [confirmInterest, refuseInterest],
+                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
+            });
+
         // -------- Open Match Request -----------
-        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
+        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
                 label: 'statusSchüler',
                 btnfn: [() => navigate('/group'), deleteMatchRequest],
-                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest).toFormat('dd.MM.yyyy') },
+                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
             });
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
@@ -168,15 +200,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
             infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
-
-        // -------- Interest Confirmation -----------
-        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
-        if (pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending')
-            infos.push({
-                label: 'interestconfirmation',
-                btnfn: [confirmInterest, refuseInterest],
-                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
-            });
 
         // -------- New Match -----------
         pupil?.matches?.forEach((match: any) => {
