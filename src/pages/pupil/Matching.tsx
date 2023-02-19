@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
@@ -135,7 +136,7 @@ const Matching: React.FC<Props> = () => {
         };
 
         if (res.pupilDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht' });
+            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
@@ -150,14 +151,14 @@ const Matching: React.FC<Props> = () => {
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst' });
+            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
     return (
         <>
             <AsNavigationItem path="matching">
-                <WithNavigation headerTitle={t('matching.request.check.header')}>
+                <WithNavigation headerTitle={t('matching.request.check.header')} headerLeft={<NotificationAlert />}>
                     <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                     <Box paddingX={space['1']}>
                         <Tabs
@@ -209,7 +210,7 @@ const Matching: React.FC<Props> = () => {
                                                                     subjects={data?.me?.pupil?.subjectsFormatted}
                                                                     onEditRequest={() => setShowEditModal(true)}
                                                                 />
-                                                            ))) || <AlertMessage content={t('matching.request.check.noRequests')} />}
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -232,7 +233,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
                             <Modal.Footer>
                                 <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                                    {t('matching.request.check.cancel')}
+                                    {t('cancel')}
                                 </Button>
                                 <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
                             </Modal.Footer>
@@ -251,7 +252,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.Footer>
                                 <Row>
                                     <Button onPress={() => setShowEditModal(false)} variant={'secondary-light'}>
-                                        Abbrechen
+                                        {t('cancel')}
                                     </Button>
                                     <Button
                                         onPress={() =>
@@ -260,7 +261,7 @@ const Matching: React.FC<Props> = () => {
                                             })
                                         }
                                     >
-                                        Bearbeiten
+                                        {t('edit')}
                                     </Button>
                                 </Row>
                             </Modal.Footer>

@@ -5,7 +5,7 @@ import HSection from '../../widgets/HSection';
 import SignInCard from '../../widgets/SignInCard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
-import NotificationAlert from '../../components/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
@@ -75,7 +75,7 @@ const query = gql`
             }
         }
 
-        subcoursesPublic(take: 10, skip: 0, excludeKnown: true) {
+        subcoursesPublic(take: 10, skip: 0, excludeKnown: true, onlyJoinable: true) {
             id
             minGrade
             maxGrade
@@ -218,6 +218,7 @@ const Dashboard: React.FC<Props> = () => {
             setToastShown(true);
             toast.show({
                 description: 'Das Match wurde aufgelöst',
+                placement: 'top',
             });
         }
     }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
@@ -319,7 +320,7 @@ const Dashboard: React.FC<Props> = () => {
                                         if (!course) return <></>;
 
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%">
+                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${course.course.description}+${lecture.start}`}>
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
@@ -333,7 +334,6 @@ const Dashboard: React.FC<Props> = () => {
 
                                                         navigate(`/single-course/${course.id}`);
                                                     }}
-                                                    key={`appointment-${course.id}`}
                                                     description={course.course.description}
                                                     tags={course.course.tags}
                                                     date={lecture.start}
@@ -350,11 +350,10 @@ const Dashboard: React.FC<Props> = () => {
                                 <HSection marginBottom={space['1.5']} title={t('dashboard.learningpartner.header')} showAll={activeMatches > 2} wrap>
                                     <Flex direction="row" flexWrap="wrap" marginRight="-10px">
                                         {activeMatches.map(
-                                            (match: LFMatch, index: number) =>
+                                            (match: LFMatch) =>
                                                 (
-                                                    <Box width={CardGrid} marginRight="10px" marginBottom="10px">
+                                                    <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
                                                         <LearningPartner
-                                                            key={index}
                                                             isDark={true}
                                                             name={`${match?.student?.firstname} ${match?.student?.lastname}`}
                                                             subjects={match?.subjectsFormatted}
@@ -422,7 +421,7 @@ const Dashboard: React.FC<Props> = () => {
                             >
                                 {(data?.subcoursesPublic?.length &&
                                     data?.subcoursesPublic?.slice(0, 4).map((sc: LFSubCourse, i: number) => (
-                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%">
+                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%" key={sc.id}>
                                             <SignInCard
                                                 showTrafficLight
                                                 trafficLightStatus={getTrafficStatus(sc?.participantsCount || 0, sc?.maxParticipants || 0)}

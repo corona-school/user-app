@@ -24,6 +24,7 @@ import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
 type Props = {};
@@ -68,7 +69,7 @@ type ICreateCourseContext = {
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
-const CreateCourse: React.FC<Props> = () => {
+const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
@@ -229,7 +230,7 @@ const CreateCourse: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
-    const { setShow, setContent } = useModal();
+    const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
@@ -699,24 +700,14 @@ const CreateCourse: React.FC<Props> = () => {
     const pickPhoto = useCallback(
         (photo: string) => {
             setPickedPhoto(photo);
-            setShow(false);
-            setContent(<></>);
+            hide();
         },
-        [setContent, setShow]
+        [hide]
     );
 
     const showUnsplash = useCallback(() => {
-        setContent(
-            <Unsplash
-                onPhotoSelected={pickPhoto}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [pickPhoto, setContent, setShow]);
+        show({ variant: 'light' }, <Unsplash onPhotoSelected={pickPhoto} onClose={hide} />);
+    }, [pickPhoto, show, hide]);
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
@@ -729,25 +720,14 @@ const CreateCourse: React.FC<Props> = () => {
                     setNewInstructors((prev) => [...prev, instructor]);
                 }
             }
-            setShow(false);
-            setContent(<></>);
+            hide();
         },
-        [addedInstructors, newInstructors, prefillCourseId, setContent, setShow]
+        [addedInstructors, newInstructors, prefillCourseId, hide]
     );
 
     const showAddInstructor = useCallback(() => {
-        setContent(
-            <AddCourseInstructor
-                addedInstructors={addedInstructors}
-                onInstructorAdded={addInstructor}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [addInstructor, setContent, setShow, addedInstructors]);
+        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={addedInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
+    }, [addInstructor, show, hide]);
 
     const removeInstructor = useCallback(
         async (index: number, isSubmitted: boolean) => {
@@ -767,10 +747,11 @@ const CreateCourse: React.FC<Props> = () => {
                     const arr = [...addedInstructors];
                     arr.splice(index, 1);
                     setAddedInstructors(arr);
-                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.' });
+                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der/Die Kursleiter:in konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }
@@ -794,10 +775,11 @@ const CreateCourse: React.FC<Props> = () => {
                 if (res.data.lectureDelete && !res.errors) {
                     lecs.splice(index, 1);
                     setLectures(lecs);
-                    toast.show({ description: 'Der Termin wurde entfernt.' });
+                    toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
                 } else {
                     toast.show({
                         description: 'Der Termin konnte nicht entfernt werden.',
+                        placement: 'top',
                     });
                 }
             }
@@ -807,7 +789,12 @@ const CreateCourse: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerTitle={isEditing ? 'Kurs bearbeiten' : t('course.header')} showBack isLoading={loading || isLoading}>
+            <WithNavigation
+                headerTitle={isEditing ? t('course.edit') : t('course.header')}
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={<NotificationAlert />}
+            >
                 <CreateCourseContext.Provider
                     value={{
                         courseName,
@@ -896,7 +883,7 @@ const CreateCourse: React.FC<Props> = () => {
                                                 <Box paddingY={space['1']}>
                                                     <Row marginBottom={space['0.5']}>
                                                         <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('course.CourseDate.modal.button')}
+                                                            {t('next')}
                                                         </Button>
                                                     </Row>
                                                 </Box>

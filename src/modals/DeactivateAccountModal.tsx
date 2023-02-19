@@ -53,6 +53,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const showError = useCallback(() => {
         toast.show({
             description: t('profile.Deactivate.error'),
+            placement: 'top',
         });
     }, [t, toast]);
 
@@ -104,7 +105,9 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                         <Radio.Group name="reasons" onChange={setReason}>
                             <VStack space={space['0.5']}>
                                 {reasons.map((_, index: number) => (
-                                    <Radio value={`${index + 1}`}>{t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}</Radio>
+                                    <Radio key={index} value={`${index + 1}`}>
+                                        {t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
+                                    </Radio>
                                 ))}
                             </VStack>
                         </Radio.Group>

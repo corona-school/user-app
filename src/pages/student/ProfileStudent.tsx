@@ -6,7 +6,6 @@ import {
     Flex,
     FormControl,
     Heading,
-    Input,
     Modal,
     Row,
     Text,
@@ -16,7 +15,7 @@ import {
     useToast,
     VStack,
 } from 'native-base';
-import NotificationAlert from '../../components/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
@@ -96,9 +95,9 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.AboutMe.popup.exit')}
+                            {t('cancel')}
                         </Button>
-                        <Button onPress={onSaveAboutMe}>{t('profile.AboutMe.popup.save')}</Button>
+                        <Button onPress={onSaveAboutMe}>{t('save')}</Button>
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
@@ -128,7 +127,7 @@ const ProfileStudent: React.FC<Props> = () => {
     const { data, loading } = useQuery(query, {
         fetchPolicy: 'no-cache',
     });
-    const [requestCertificate, _requestCertificate] = useMutation(
+    const [requestCertificate] = useMutation(
         gql(`
             mutation GetCertificate($lang: String!, $uuid: String!) {
                 participationCertificateAsPDF(language: $lang, uuid: $uuid)
@@ -191,10 +190,10 @@ const ProfileStudent: React.FC<Props> = () => {
             });
 
             if (res?.data?.participationCertificateAsPDF) {
-                toast.show({ description: 'Dein Zertifikat wird heruntergeladen' });
+                toast.show({ description: 'Dein Zertifikat wird heruntergeladen', placement: 'top' });
                 window.open(`${process.env.REACT_APP_APOLLO_CLIENT_URI}${res?.data?.participationCertificateAsPDF}`, '_blank');
             } else {
-                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten' });
+                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten', placement: 'top' });
             }
         },
         [focusedCertificateUuid, requestCertificate, toast]

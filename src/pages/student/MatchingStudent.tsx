@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
@@ -138,7 +139,7 @@ const MatchingStudent: React.FC<Props> = () => {
         };
 
         if (res.studentDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht' });
+            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
@@ -153,7 +154,7 @@ const MatchingStudent: React.FC<Props> = () => {
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst' });
+            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
@@ -168,7 +169,7 @@ const MatchingStudent: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />}>
+            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
@@ -246,7 +247,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                     })
                                                                 }
                                                             />
-                                                        ))) || <AlertMessage content={t('matching.request.check.noRequests')} />}
+                                                        ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -272,7 +273,7 @@ const MatchingStudent: React.FC<Props> = () => {
                     <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                            {t('matching.request.check.cancel')}
+                            {t('cancel')}
                         </Button>
                         <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
                     </Modal.Footer>

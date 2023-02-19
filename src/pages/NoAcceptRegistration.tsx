@@ -44,7 +44,7 @@ const NoAcceptRegistration: React.FC<Props> = () => {
                 }}
                 defaultButtonText="Weitere Infos erhalten"
                 defaultbuttonLink={() => {
-                    window.open('https://www.lern-fair.de/', '_blank');
+                    window.open('https://digitale-lernangebote.de/', '_blank');
                 }}
                 icon={<Logo />}
             />

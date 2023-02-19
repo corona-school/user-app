@@ -1,5 +1,5 @@
 import { useTranslation, getI18n } from 'react-i18next';
-import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column } from 'native-base';
+import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container } from 'native-base';
 import Card from '../components/Card';
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
 import { useMutation, useQuery } from '@apollo/client';
@@ -8,10 +8,91 @@ import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import useModal from '../hooks/useModal';
+import { ConfirmCertificate } from './certificates/ConfirmCertificate';
+import { SuccessModal } from '../modals/SuccessModal';
 
 type Props = {
     variant?: 'normal' | 'dark';
 };
+
+export const IMPORTANT_INFORMATION_QUERY = gql(`
+query GetOnboardingInfos {
+  me {
+    email
+    secrets {
+      type
+    }
+    student {
+      createdAt
+      verifiedAt
+      matches {
+        dissolved
+        createdAt
+        pupilEmail
+        pupil {
+          firstname
+          lastname
+        }
+      }
+      firstMatchRequest
+      openMatchRequestCount
+      certificateOfConductDeactivationDate
+      canRequestMatch {
+        allowed
+        reason
+      }
+      canCreateCourse {
+        allowed
+        reason
+      }
+    }
+    pupil {
+      createdAt
+      verifiedAt
+      subjectsFormatted {
+        name
+      }
+      subcoursesJoined {
+          id
+      }
+      matches {
+        dissolved
+        createdAt
+        studentEmail
+        subjectsFormatted {
+          name
+        }
+        student {
+          firstname
+          lastname
+        }
+      }
+      firstMatchRequest
+      openMatchRequestCount
+      tutoringInterestConfirmation {
+        id
+        token
+        status
+      }
+      participationCertificatesToSign {
+         uuid
+         ongoingLessons
+         state
+         categories
+         startDate
+         endDate
+         hoursPerWeek
+         hoursTotal
+         medium
+         student { firstname lastname }
+      }
+    }
+  }
+  myRoles
+}
+`);
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { space } = useTheme();
@@ -19,72 +100,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const navigate = useNavigate();
     const textColor = variant === 'dark' ? 'lightText' : 'darkText';
 
-    const { data } = useQuery(
-        gql(`
-		query GetOnboardingInfos {
-          me {
-            email
-            secrets {
-              type
-            }
-            student {
-              createdAt
-              verifiedAt
-			  matches {
-				dissolved
-				createdAt
-				pupilEmail
-				pupil {
-				  firstname
-				  lastname
-				}
-			  }
-              firstMatchRequest
-              openMatchRequestCount
-              certificateOfConductDeactivationDate
-              canRequestMatch {
-                allowed
-                reason
-              }
-              canCreateCourse {
-                allowed
-                reason
-              }
-            }
-            pupil {
-              createdAt
-              verifiedAt
-			  subjectsFormatted {
-				name
-			  }
-              subcoursesJoined {
-                  id
-              }
-			  matches {
-				dissolved
-				createdAt
-				studentEmail
-				subjectsFormatted {
-				  name
-				}
-				student {
-				  firstname
-				  lastname
-				}
-			  }
-              firstMatchRequest
-			  openMatchRequestCount
-              tutoringInterestConfirmation {
-                id
-				token
-                status
-              }
-            }
-          }
-          myRoles
-		}
-		`)
-    );
+    const { show, hide } = useModal();
+
+    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
@@ -93,97 +111,145 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
-        { variables: { email: email || 'email never empty' } }
+        { variables: { email: email || 'email never empty' }, refetchQueries: [IMPORTANT_INFORMATION_QUERY] }
     );
-    const [confirmInterest] = useMutation(gql(`mutation Confirm($token: String!){ tutoringInterestConfirm(token:$token) }`), {
+    const [confirmInterest, { data: confirmedInterest }] = useMutation(gql(`mutation Confirm($token: String!){ tutoringInterestConfirm(token:$token) }`), {
         variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
     });
-    const [refuseInterest] = useMutation(gql(`mutation Refuse($token: String!){ tutoringInterestRefuse(token:$token) }`), {
-        variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
-    });
-    const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`));
 
-    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
+    useEffect(() => {
+        if (confirmedInterest) {
+            show({ variant: 'dark', closeable: true }, <SuccessModal title="Interesse bestätigt!" content="Wir melden uns bald wieder!" />);
+        }
+    }, [show, confirmedInterest]);
+
+    const [refuseInterest, { data: refusedInterest }] = useMutation(gql(`mutation Refuse($token: String!){ tutoringInterestRefuse(token:$token) }`), {
+        variables: { token: pupil?.tutoringInterestConfirmation?.token || 'token never empty' },
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
+    });
+
+    useEffect(() => {
+        if (refusedInterest) {
+            show(
+                { variant: 'dark', closeable: true },
+                <SuccessModal title="Danke für deine Antwort!" content="Durch deine Antwort können wir Anderen schneller Hilfe vermitteln" />
+            );
+        }
+    }, [show, refusedInterest]);
+
+    const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`), { refetchQueries: [IMPORTANT_INFORMATION_QUERY] });
+
+    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`), {
+        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
+    });
     async function openRemissionRequest() {
         const { data } = await downloadRemissionRequest();
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
     }
 
-    let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {} }[] = [];
+    const infos = useMemo(() => {
+        let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {}; key?: string }[] = [];
 
-    // -------- Verification -----------
-    if (student && !student?.verifiedAt)
-        infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
-    if (pupil && !pupil?.verifiedAt)
-        infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
-
-    // -------- Screening -----------
-    if (
-        student?.canRequestMatch?.reason === 'not-screened' ||
-        student?.canCreateCourse?.reason === 'not-screened' ||
-        (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
-    )
-        infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
-
-    // -------- Welcome -----------
-    if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
-        infos.push({
-            label: 'willkommen',
-            btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
-            lang: {},
-        });
-
-    // -------- Open Match Request -----------
-    if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
-        infos.push({
-            label: 'statusSchüler',
-            btnfn: [() => navigate('/group'), deleteMatchRequest],
-            lang: { date: DateTime.fromISO(pupil?.firstMatchRequest).toFormat('dd.MM.yyyy') },
-        });
-    if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-        infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
-
-    // -------- Password Login Promotion -----------
-    if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
-        infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
-
-    // -------- Interest Confirmation -----------
-    const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
-    if (pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending')
-        infos.push({
-            label: 'interestconfirmation',
-            btnfn: [confirmInterest, refuseInterest],
-            lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
-        });
-
-    // -------- New Match -----------
-    pupil?.matches?.forEach((match: any) => {
-        if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+        // -------- Verification -----------
+        if (student && !student?.verifiedAt)
             infos.push({
-                label: 'kontaktSchüler',
-                btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-                lang: { nameHelfer: match.student.firstname, subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) },
+                label: 'verifizierung',
+                btnfn: [sendMail],
+                lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
             });
-    });
-    student?.matches?.forEach((match: any) => {
-        if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
-            infos.push({
-                label: 'kontaktStudent',
-                btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
-                lang: { nameSchüler: match.pupil.firstname },
-            });
-    });
+        if (pupil && !pupil?.verifiedAt)
+            infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
 
-    // -------- Certificate of Conduct -----------
-    if (student && student?.certificateOfConductDeactivationDate)
-        infos.push({
-            label: 'zeugnis',
-            btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
-            lang: {
-                cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
-            },
+        // -------- Screening -----------
+        if (
+            student?.canRequestMatch?.reason === 'not-screened' ||
+            student?.canCreateCourse?.reason === 'not-screened' ||
+            (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
+        )
+            infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
+
+        // -------- Welcome -----------
+        if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
+            infos.push({
+                label: 'willkommen',
+                btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
+                lang: {},
+            });
+
+        // -------- Interest Confirmation -----------
+        const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
+        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        if (showInterestConfirmation)
+            infos.push({
+                label: 'interestconfirmation',
+                btnfn: [confirmInterest, refuseInterest],
+                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
+            });
+
+        // -------- Open Match Request -----------
+        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
+            infos.push({
+                label: 'statusSchüler',
+                btnfn: [() => navigate('/group'), deleteMatchRequest],
+                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
+            });
+        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
+            infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+
+        // -------- Password Login Promotion -----------
+        if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
+            infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
+
+        // -------- New Match -----------
+        pupil?.matches?.forEach((match: any) => {
+            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+                infos.push({
+                    label: 'kontaktSchüler',
+                    btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
+                    lang: { nameHelfer: match.student.firstname, subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) },
+                });
         });
-    // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
+        student?.matches?.forEach((match: any) => {
+            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+                infos.push({
+                    label: 'kontaktStudent',
+                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+                    lang: { nameSchüler: match.pupil.firstname },
+                });
+        });
+
+        // -------- Certificate of Conduct -----------
+        if (student && student?.certificateOfConductDeactivationDate)
+            infos.push({
+                label: 'zeugnis',
+                btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
+                lang: {
+                    cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
+                },
+            });
+
+        // -------- Confirm Tutoring Certificate -----
+        for (const certificate of data?.me.pupil?.participationCertificatesToSign.filter((it) => it.state === 'awaiting-approval') ?? []) {
+            infos.push({
+                label: 'angeforderteBescheinigung',
+                btnfn: [
+                    () => {
+                        show({ variant: 'light', closeable: true, headline: 'Bescheinigung bestätigen' }, <ConfirmCertificate certificate={certificate} />);
+                    },
+                ],
+                lang: {
+                    nameHelfer: certificate.student.firstname,
+                    startDate: DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy'),
+                    endDate: DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy'),
+                    hoursPerWeek: certificate.hoursPerWeek,
+                },
+                key: `bescheinigung.${certificate.uuid}`,
+            });
+        }
+
+        return infos;
+    }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
     if (!infos.length) return null;
 
@@ -192,7 +258,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             {infos.map((config, index) => {
                 const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
-                    <Column width="100%" maxWidth="500px">
+                    <Column width="100%" maxWidth="500px" key={config.key ?? config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />

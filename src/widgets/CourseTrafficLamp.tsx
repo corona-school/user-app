@@ -3,7 +3,7 @@ import { View, Text, Column, Row, Circle, InfoIcon, Pressable, useTheme, Contain
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
-import { ModalContext } from './FullPageModal';
+import useModal from '../hooks/useModal';
 
 type Props = {
     status: TrafficStatus;
@@ -18,7 +18,7 @@ type Props = {
 const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, infoPopupContent, infoPopupLastContent, hideText, paddingY, showBorder }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { setShow, setContent, setVariant } = useContext(ModalContext);
+    const { show, hide } = useModal();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 
@@ -47,15 +47,11 @@ const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, i
                     {infoPopupTitle && (
                         <Pressable
                             onPress={() => {
-                                setVariant('light');
-                                setContent(
+                                show(
+                                    { variant: 'light' },
                                     <Container maxWidth="100%" padding={space['1']}>
                                         <Box marginBottom={space['2']}>
-                                            <Pressable
-                                                onPress={() => {
-                                                    setShow(false);
-                                                }}
-                                            >
+                                            <Pressable onPress={hide}>
                                                 <CloseIcon color="primary.800" />
                                             </Pressable>
                                         </Box>
@@ -97,7 +93,6 @@ const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, i
                                         </Box>
                                     </Container>
                                 );
-                                setShow(true);
                             }}
                         >
                             <InfoIcon marginRight={3} size="5" color="danger.100" />

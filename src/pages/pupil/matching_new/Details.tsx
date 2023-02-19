@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpointValue } from 'native-base';
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,24 +11,26 @@ import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 type Props = {};
 
 const Details: React.FC<Props> = () => {
-    const { setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const { space, sizes } = useTheme();
     const toast = useToast();
     const { matchRequest, setMessage, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
 
-    const [update, _update] = useMutation(gql`
+    const [update, _update] = useMutation(
+        gql(`
         mutation updatePupil($subjects: [SubjectInput!]) {
             meUpdate(update: { pupil: { subjects: $subjects } })
         }
-    `);
+    `)
+    );
 
     const [createMatchRequest] = useMutation(
-        gql`
+        gql(`
             mutation PupilCreateMatchRequest {
                 pupilCreateMatchRequest
             }
-        `
+        `)
     );
 
     const buttonWidth = useBreakpointValue({
@@ -36,9 +39,8 @@ const Details: React.FC<Props> = () => {
     });
 
     const showModal = useCallback(() => {
-        setVariant('dark');
-
-        setContent(
+        show(
+            { variant: 'dark' },
             <VStack paddingX={space['2']} paddingTop={space['2']} space={space['1']} alignItems="center">
                 <PartyIcon />
                 <Heading fontSize={'2xl'} color="lightText" textAlign="center">
@@ -51,7 +53,7 @@ const Details: React.FC<Props> = () => {
                 </Text>
                 <Button
                     onPress={() => {
-                        setShow(false);
+                        hide();
                         navigate('/group');
                     }}
                     w={buttonWidth}
@@ -65,15 +67,14 @@ const Details: React.FC<Props> = () => {
                         navigate('/matching', {
                             state: { tabID: 1 },
                         });
-                        setShow(false);
+                        hide();
                     }}
                 >
                     Fertig
                 </Button>
             </VStack>
         );
-        setShow(true);
-    }, [buttonWidth, navigate, setContent, setShow, setVariant, space]);
+    }, [buttonWidth, navigate, show, hide, space]);
 
     const requestMatch = useCallback(async () => {
         const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
@@ -84,13 +85,13 @@ const Details: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten' });
+            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
         }
     }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
 

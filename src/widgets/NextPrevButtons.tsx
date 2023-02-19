@@ -28,11 +28,11 @@ export const NextPrevButtons = ({
                 <Row w="100%" space={space['1']} justifyContent="center">
                     {!onlyNext && (
                         <Button maxW="220px" flex={1} h="100%" isDisabled={isDisabledPrev} variant="outline" onPress={onPressPrev}>
-                            {altPrevText ?? t('lernfair.buttons.prev')}
+                            {altPrevText ?? t('back')}
                         </Button>
                     )}
                     <Button maxW="220px" flex={1} isDisabled={isDisabledNext} onPress={onPressNext}>
-                        {altNextText ?? t('lernfair.buttons.next')}
+                        {altNextText ?? t('next')}
                     </Button>
                 </Row>
             </Box>
