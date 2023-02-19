@@ -1,4 +1,5 @@
 import { Text, Modal, Row, Button, useTheme } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     isOpen?: boolean;
@@ -8,23 +9,21 @@ type Props = {
 
 const CancelSubCourseModal: React.FC<Props> = ({ isOpen, onClose, onCourseCancel }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     return (
         <Modal onClose={onClose} isOpen={isOpen}>
             <Modal.Content>
                 <Modal.CloseButton />
-                <Modal.Header>Kurs absagen</Modal.Header>
+                <Modal.Header>{t('course.cancel.header')}</Modal.Header>
                 <Modal.Body>
-                    <Text>
-                        Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert.
-                        Bist du dir sicher, dass du den Kurs absagen möchtest?
-                    </Text>
+                    <Text>{t('course.cancel.description')}</Text>
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
                         <Button variant="outline" onPress={onCourseCancel}>
-                            Kurs absagen
+                            {t('course.cancel.header')}
                         </Button>
-                        <Button onPress={onClose}>Abbrechen</Button>
+                        <Button onPress={onClose}>{t('cancel')}</Button>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>

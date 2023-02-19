@@ -95,12 +95,12 @@ const PersonalData: React.FC = () => {
                                 setCurrentIndex(0);
                             }}
                         >
-                            {t('lernfair.buttons.prev')}
+                            {t('back')}
                         </Button>
                     </Column>
                     <Column width="100%">
                         <Button width="100%" onPress={checkEmail}>
-                            {t('lernfair.buttons.next')}
+                            {t('next')}
                         </Button>
                     </Column>
                 </Row>

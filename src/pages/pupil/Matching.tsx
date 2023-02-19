@@ -210,7 +210,7 @@ const Matching: React.FC<Props> = () => {
                                                                     subjects={data?.me?.pupil?.subjectsFormatted}
                                                                     onEditRequest={() => setShowEditModal(true)}
                                                                 />
-                                                            ))) || <AlertMessage content={t('matching.request.check.noRequests')} />}
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -233,7 +233,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
                             <Modal.Footer>
                                 <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                                    {t('matching.request.check.cancel')}
+                                    {t('cancel')}
                                 </Button>
                                 <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
                             </Modal.Footer>
@@ -252,7 +252,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.Footer>
                                 <Row>
                                     <Button onPress={() => setShowEditModal(false)} variant={'secondary-light'}>
-                                        Abbrechen
+                                        {t('cancel')}
                                     </Button>
                                     <Button
                                         onPress={() =>
@@ -261,7 +261,7 @@ const Matching: React.FC<Props> = () => {
                                             })
                                         }
                                     >
-                                        Bearbeiten
+                                        {t('edit')}
                                     </Button>
                                 </Row>
                             </Modal.Footer>

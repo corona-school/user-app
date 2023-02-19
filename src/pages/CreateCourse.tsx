@@ -904,7 +904,7 @@ const CreateCourse: React.FC = () => {
                                                 <Box paddingY={space['1']}>
                                                     <Row marginBottom={space['0.5']}>
                                                         <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('course.CourseDate.modal.button')}
+                                                            {t('next')}
                                                         </Button>
                                                     </Row>
                                                 </Box>

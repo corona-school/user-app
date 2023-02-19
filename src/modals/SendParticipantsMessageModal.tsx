@@ -19,7 +19,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Content>
                 <Modal.CloseButton />
-                <Modal.Header>Nachricht senden</Modal.Header>
+                <Modal.Header>{t('sendMessage')}</Modal.Header>
                 <Modal.Body>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>{t('helpcenter.contact.subject.label')}</FormControl.Label>
@@ -27,16 +27,16 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>{t('helpcenter.contact.message.label')}</FormControl.Label>
-                        <TextArea onChangeText={setMessage} h={20} placeholder={'Deine Nachricht an die Teilnehmer:innen'} autoCompleteType={{}} />
+                        <TextArea onChangeText={setMessage} h={20} placeholder={'Deine Nachricht'} autoCompleteType={{}} />
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
                         <Button variant="outline" onPress={onClose} isDisabled={isDisabled}>
-                            Abbrechen
+                            {t('cancel')}
                         </Button>
                         <Button onPress={() => onSend(subject, message)} isDisabled={isDisabled}>
-                            Senden
+                            {t('send')}
                         </Button>
                     </Row>
                 </Modal.Footer>

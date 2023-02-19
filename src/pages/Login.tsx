@@ -222,7 +222,7 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>{t('lernfair.buttons.ok')}</Button>
+                            <Button onPress={() => setShowNoAccountModal(false)}>{t('ok')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -303,7 +303,7 @@ export default function Login() {
                     )}
                     {showPasswordField && (
                         <Button marginY={4} variant="link" onPress={() => setShowPasswordModal(true)}>
-                            {t('login.btn.password')}
+                            {t('login.forgotPassword')}
                         </Button>
                     )}
 
@@ -313,7 +313,7 @@ export default function Login() {
                             width="100%"
                             isDisabled={loginResult.loading || !email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
                         >
-                            {t('login.btn.login')}
+                            {t('signin')}
                         </Button>
                     </Box>
 
@@ -321,7 +321,7 @@ export default function Login() {
                         <Text textAlign="center">{t('login.noaccount')}</Text>
 
                         <Button onPress={loginRegisterLink} variant="link">
-                            {t('login.btn.register')}
+                            {t('login.signupNew')}
                         </Button>
                     </Box>
                 </Row>

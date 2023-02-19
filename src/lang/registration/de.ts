@@ -1,13 +1,6 @@
 const registration = {
-    new: 'Neu registrieren',
-    register: 'Registrieren',
     password_repeat: 'Passwort wiederholen',
-    i_am: 'Ich bin',
-    parent: 'Elternteil',
     to_login: 'Ich habe bereits einen Account',
-    btn: {
-        next: 'Weiter',
-    },
     dsgvo: {
         accept: 'Hiermit stimme ich der',
         datapolicy: 'Datenschutzerklärung',
@@ -21,13 +14,6 @@ const registration = {
         point_0: '● Du brauchst Hilfe in der Schule',
         point_1: '● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
         point_2: '● Deine Familie kann keine Nachhilfe für dich bezahlen',
-        point_3: 'Sind beide Eltern/ Erziehungsberechtigten nicht erwerbstätig',
-        point_4: 'Sind beide Eltern/ Erziehungsberechtigten physisch oder psychisch (aufgrund einer Krankheit / eines Unfalls etc.) eingeschränkt?',
-        point_5: 'Bist du von einer physischen Krankheit betroffen, die es erschwert zur Schule zu gehen?',
-        point_6: 'Bist du oder sind deine Eltern nicht in Deutschland geboren?',
-        point_7: 'Können dir deine Eltern/ Erziehungsberechtigten aufgrund einer sprachlichen Barriere nicht bei den Hausaufgaben helfen?',
-        point_8: 'Können dir deine Eltern/ Erziehungsberechtigten wegen ihres Bildungsweges nicht bei den Hausaufgaben helfen?',
-        point_9: 'Wenn du dir noch immer unsicher bist und noch Fragen hast, dann wende dich bitte an sorgen-eule@lern-fair.de',
         btn: {
             yes: 'Ja, die Punkte treffen zu',
             no: 'Nein, die Punkte treffen nicht zu',
@@ -40,8 +26,8 @@ const registration = {
             nomatch: 'Die Passwörter stimmen nicht überein',
         },
         email: {
-            invalid: 'Ungültige Email-Adresse',
-            unavailable: 'Diese Email-Adresse ist bereits vergeben',
+            invalid: 'Ungültige E-Mail-Adresse',
+            unavailable: 'Diese E-Mail-Adresse ist bereits vergeben',
         },
         userType: {
             missing: 'Bitte identifiziere deine Rolle',
@@ -61,7 +47,6 @@ const registration = {
             btn: 'Zur Anwendung',
         },
         error: {
-            btn: 'Zurück',
             tryagain: 'Erneut versuchen',
             message: {
                 'Email is already used by another account': 'Diese Email ist bereits in Verwendung',
@@ -101,23 +86,12 @@ const registration = {
     pupil: { label: 'Schüler:in' },
     student: {
         label: 'Helfer:in',
-        classSelection: {
-            btn: 'Speichern',
-            title: 'In welchen Klassen kannst du unterstützen?',
-            classes: 'Klassen',
-            range1: '1. - 4. Klasse',
-            range2: '5. - 8. Klasse',
-            range3: '9. - 10. Klasse',
-            range4: '11. - 13. Klasse',
-            moreData: 'Weitere Daten',
-            tokenError: 'Token ungültig',
-        },
     },
     verifyemail: {
         title: 'Überprüfe dein E-Mail-Postfach!',
         mailsendto: 'Wir haben eine E-Mail an {{email}} gesendet.',
         description:
-            'Bevor du unser Angebot nutzen kannst, musst du deine E-Mailadresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.',
+            'Bevor du unser Angebot nutzen kannst, musst du deine E-Mail-Adresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.',
         notreceived: 'Keine E-Mail erhalten? Schau bitte auch im Spam nach!',
         resend: {
             button: 'Bestätigungsmail erneut senden',

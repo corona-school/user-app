@@ -169,7 +169,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                         updateLanguage({ variables: { languages: selections } });
                     }}
                 >
-                    {t('profile.FluentLanguagenalData.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

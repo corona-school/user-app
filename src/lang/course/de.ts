@@ -111,25 +111,21 @@ const course = {
             shortDescriptionLabel: 'Kurzbeschreibung',
             shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …',
             descriptionLabel: 'Beschreibung',
-            descriptionPlaceholder: 'Präzisere Angaben um was es in deinem Kurs geht …',
+            descriptionPlaceholder: 'Beschreibung des Kurses',
             tagsLabel: 'Tags',
             tagsPlaceholder: 'Damit dein Kurs besser gefunden wird',
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
             detailsHeadline: 'Details',
             detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
-            maxMembersLabel: 'Max Teilnehmerzahl',
+            maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',
-            otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+            otherOptionStart: 'Schüler:innen können sich nach dem ersten Kurstermin anmelden',
             otherOptionStartToolTip:
                 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
             otherOptionContact: 'Kontaktaufnahme erlauben',
             otherOptionContactToolTip:
-                'Wenn du die Kontaktaufnahme erlaubst können dich die Schüler:innen die Interesse am Kurs haben oder bereits angemeldet sind Kontakt per E-Mail mit dir aufnehmen',
-            button: {
-                continue: 'Weiter',
-                cancel: 'Abbrechen',
-            },
+                'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
         },
         Wizard: {
             headline: 'Termin',
@@ -144,7 +140,7 @@ const course = {
             yes: 'Ja',
             no: 'Nein',
             headline: 'Angaben überprüfen',
-            content: 'Bitte überpüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
+            content: 'Bitte überprüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
             infoHeadline: 'Allgemeine Informationen zu deinem Kurs',
             courseName: 'Kursname:',
             courseSubject: 'Fach',
@@ -173,13 +169,20 @@ const course = {
             headline: 'Fertig!',
             content:
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
-            button: 'weiter',
         },
     },
-
     addCourseInstructor: {
         search: 'Name oder E-Mail Adresse',
         notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
+    },
+    empty: {
+        courses: 'Es wurden keine Kurse gefunden.',
+        coursescheck: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
+    },
+    cancel: {
+        header: 'Kurs absagen',
+        description:
+            'Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?',
     },
 };
 

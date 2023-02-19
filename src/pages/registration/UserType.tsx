@@ -109,7 +109,7 @@ const UserType: React.FC = () => {
                                     navigate('/welcome');
                                 }}
                             >
-                                {t('lernfair.buttons.prev')}
+                                {t('back')}
                             </Button>
                         </Column>
                         <Column width="100%">
@@ -119,7 +119,7 @@ const UserType: React.FC = () => {
                                     userType === 'pupil' ? showBarrier() : setCurrentIndex(1);
                                 }}
                             >
-                                {t('lernfair.buttons.next')}
+                                {t('next')}
                             </Button>
                         </Column>
                     </Row>
