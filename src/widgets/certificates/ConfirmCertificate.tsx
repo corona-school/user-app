@@ -45,7 +45,7 @@ function ConfirmData({
                 <Text color="white">
                     <ul>
                         <li>ab dem {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}</li>
-                        <li>bis zum {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}</li>
+                        <li>bis zum {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}</li>
                         <li>ca. {certificate.hoursPerWeek} Studen pro Woche</li>
                         <li>ca. {certificate.hoursTotal} Studen insgesamt</li>
                     </ul>
