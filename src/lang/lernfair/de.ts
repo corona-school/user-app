@@ -1,10 +1,4 @@
 const lernfair = {
-    buttons: {
-        prev: 'Zurück',
-        next: 'Weiter',
-        ok: 'Ok',
-        register: 'Registrieren',
-    },
     languages: {
         albanisch: 'Albanisch',
         arabisch: 'Arabisch',
@@ -110,7 +104,7 @@ const lernfair = {
                 'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
         },
         'not-instructor': {
-            course: 'Du bist leider nicht als Tutor verifiziert.',
+            course: 'Du bist noch nicht als Kursleiter:in freigeschaltet.',
         },
         'not-screened': {
             matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
@@ -121,9 +115,6 @@ const lernfair = {
         },
         'not-tutor': {
             matching: 'Du bist noch nicht für das Matching zugelassen.',
-        },
-        undefined: {
-            matching: 'Es wurden keine Matchings gefunden.',
         },
     },
 };

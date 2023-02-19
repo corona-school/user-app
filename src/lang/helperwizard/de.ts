@@ -10,7 +10,7 @@ const helperwizard = {
     passwort: {
         title: 'Passwort einrichten',
         content:
-            'Es ist endlich soweit, wir stellen unser Login-System um! Du kannst bei uns ab sofort ein Passwort vergeben und dich damit zukünftig einloggen. Also worauf wartest du?',
+            'Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.',
         buttons: ['Passwort einrichten'],
     },
     // Nur Schüler:innen
@@ -35,7 +35,7 @@ const helperwizard = {
     kontaktSchüler: {
         title: 'Neue Lernpartner:in',
         content:
-            'Es ist endlich soweit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ',
+            'Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
     angeforderteBescheinigung: {
@@ -59,9 +59,9 @@ const helperwizard = {
         buttons: ['Führungszeugnis einreichen', 'Vorduck herunterladen'],
     },
     statusStudent: {
-        title: 'Wir sind auf der Suche für dich!',
+        title: 'Jemand wartet auf dich!',
         content:
-            'Danke, dass du eine Schüler:in bei Lern-Fair unterstützen möchest! Wir suchen derzeit ein:e Schüler:in in den von dir angegebenen Fächern bzw. Jahrgangsstufen für dich. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passendenden Schüler:in zurück. Wenn du Lust hast mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpatenschaft anfragen.',
+            'Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in. Wenn du Lust und Zeit hast, mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpartnerschaft anfragen. Wenn du hin und wieder Kleingruppen unterrichten möchtest, kannst du einen einmaligen oder fortlaufenden Gruppenkurs anbieten.',
         buttons: ['Problem melden'],
     },
     kontaktStudent: {

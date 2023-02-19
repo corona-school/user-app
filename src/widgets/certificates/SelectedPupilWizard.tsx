@@ -1,5 +1,6 @@
 import { Text, useTheme, VStack, Checkbox, Button, Row, Column, Heading } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import TextInput from '../../components/TextInput';
 import { Subject } from '../../gql/graphql';
@@ -24,7 +25,7 @@ const SelectedPupilWizard = ({
     pupilCount: number;
 }) => {
     const { space } = useTheme();
-
+    const { t } = useTranslation();
     const { setState } = useContext(RequestCertificateContext);
 
     const [from, setFrom] = useState<string>();
@@ -132,10 +133,10 @@ const SelectedPupilWizard = ({
                         onNext();
                     }}
                 >
-                    {currentIndex + 1 < pupilCount ? 'Nächste:r Schüler:in' : 'Weiter'}
+                    {currentIndex + 1 < pupilCount ? 'Nächste:r Schüler:in' : t('back')}
                 </Button>
                 <Button variant="link" onPress={onPrev}>
-                    Zurück
+                    {t('back')}
                 </Button>
             </VStack>
         </>

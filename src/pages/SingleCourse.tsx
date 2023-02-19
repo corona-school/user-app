@@ -147,6 +147,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const toast = useToast();
     const { sizes } = useTheme();
+    const { t } = useTranslation();
 
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -176,7 +177,7 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
     return (
         <>
             <Button onPress={() => setShowCancelModal(true)} width={ButtonContainer} variant="outline">
-                Kurs absagen
+                {t('course.cancel.header')}
             </Button>
             <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
         </>
@@ -269,7 +270,7 @@ function StudentSetMeetingUrlAction({ subcourse, refresh }: { subcourse: Pick<Su
 
 function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const toast = useToast();
-    const t = useTranslation();
+    const { t } = useTranslation();
     const { sizes } = useTheme();
 
     const [showMessageModal, setShowMessageModal] = useState(false);
@@ -330,7 +331,7 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
     return (
         <>
             <Button onPress={() => setShowMessageModal(true)} width={ButtonContainer} variant="outline">
-                Teilnehmer:innen kontaktieren
+                {t('single.contact.participants')}
             </Button>
             <SendParticipantsMessageModal
                 isOpen={showMessageModal}
@@ -349,6 +350,7 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
 function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'> & { course?: Pick<Course, 'id'> | null }; refresh: () => void }) {
     const toast = useToast();
     const { sizes } = useTheme();
+    const { t } = useTranslation();
 
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -373,7 +375,7 @@ function StudentSubmitAction({ subcourse, refresh }: { subcourse: Pick<Subcourse
     return (
         <>
             <Button with={ButtonContainer} onPress={doSubmit} disabled={loading}>
-                Zur Prüfung freigeben
+                {t('course.CourseDate.Preview.publishCourse')}
             </Button>
         </>
     );
@@ -510,7 +512,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
                     marginBottom={space['0.5']}
                     isDisabled={loading}
                 >
-                    {t('single.button.login')}
+                    {t('signin')}
                 </Button>
             )}
             <Modal
@@ -522,7 +524,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
             >
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Kurseinformationen</Modal.Header>
+                    <Modal.Header></Modal.Header>
                     <Modal.Body>
                         <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs angemeldet.</Text>
                         <Row justifyContent="center">
@@ -585,7 +587,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     Kurs verlassen
                 </Button>
 
-                <AlertMessage content={t('single.buttoninfo.successMember')} />
+                <AlertMessage content={t('single.card.alreadyRegistered')} />
             </VStack>
             <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
                 <Modal.Content>
@@ -605,7 +607,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                                         setSignedOutSureModal(false);
                                     }}
                                 >
-                                    Abbrechen
+                                    {t('cancel')}
                                 </Button>
                             </Column>
                             <Column>
@@ -684,7 +686,7 @@ function PupilLeaveWaitingListAction({ subcourse, refresh }: { subcourse: Pick<S
     return (
         <>
             <VStack space={space['0.5']}>
-                <AlertMessage content={t('single.buttoninfo.waitingListMember')} />
+                <AlertMessage content={t('single.card.alreadyRegistered')} />
                 <Button
                     onPress={() => {
                         leaveWaitingList();
@@ -705,7 +707,7 @@ function PupilLeaveWaitingListAction({ subcourse, refresh }: { subcourse: Pick<S
             >
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Kursinformationen</Modal.Header>
+                    <Modal.Header></Modal.Header>
                     <Modal.Body>
                         <Text marginBottom={space['1']}>Du hast die Warteliste erfolgreich verlassen.</Text>
                         <Row justifyContent="center">
@@ -767,7 +769,7 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
             <Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Kursinformationen</Modal.Header>
+                    <Modal.Header></Modal.Header>
                     <Modal.Body>
                         <Text marginBottom={space['1']}>Du bist auf der Warteliste!</Text>
                         <Row justifyContent="center">
@@ -790,8 +792,8 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
 
 function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id'> }) {
     const [showMessageModal, setShowMessageModal] = useState(false);
-
     const { sizes } = useTheme();
+    const { t } = useTranslation();
     const toast = useToast();
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -815,7 +817,7 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
     return (
         <>
             <Button onPress={() => setShowMessageModal(true)} disabled={loading} width={ButtonContainer}>
-                Kursleiter:innen kontaktieren
+                {t('single.contact.instructor')}
             </Button>
             <SendParticipantsMessageModal isOpen={showMessageModal} onClose={() => setShowMessageModal(false)} onSend={doContact} isDisabled={loading} />
         </>

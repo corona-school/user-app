@@ -135,7 +135,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                         });
                     }}
                 >
-                    {t('profile.SchoolType.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

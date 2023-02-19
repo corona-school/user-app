@@ -77,9 +77,9 @@ function PupilNameModal({ firstname, lastname, onSave, onClose }: { firstname: s
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.UserName.popup.exit')}
+                            {t('cancel')}
                         </Button>
-                        <Button onPress={onSaveName}>{t('profile.UserName.popup.save')}</Button>
+                        <Button onPress={onSaveName}>{t('save')}</Button>
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
@@ -115,7 +115,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.AboutMe.popup.exit')}
+                            {t('cancel')}
                         </Button>
                         <Button
                             onPress={() => {
@@ -124,7 +124,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
                                 onClose();
                             }}
                         >
-                            {t('profile.AboutMe.popup.save')}
+                            {t('save')}
                         </Button>
                     </Button.Group>
                 </Modal.Footer>
