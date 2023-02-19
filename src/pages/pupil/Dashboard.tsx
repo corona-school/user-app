@@ -75,7 +75,7 @@ const query = gql`
             }
         }
 
-        subcoursesPublic(take: 10, skip: 0, excludeKnown: true) {
+        subcoursesPublic(take: 10, skip: 0, excludeKnown: true, onlyJoinable: true) {
             id
             minGrade
             maxGrade
