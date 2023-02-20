@@ -31,7 +31,7 @@ const NewList: React.FC<Props> = ({}) => {
         return handleScroll(scrollViewRef.current);
     }, []);
 
-    const shouldRenderWeekDivider = (currentAppointment: AppointmentType, previousAppointment?: AppointmentType) => {
+    const showWeekDivider = (currentAppointment: AppointmentType, previousAppointment?: AppointmentType) => {
         if (!previousAppointment) {
             return false;
         }
@@ -41,7 +41,7 @@ const NewList: React.FC<Props> = ({}) => {
         return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
     };
 
-    const shouldRenderMonthDivider = (currentAppointment: AppointmentType, previousAppointment?: AppointmentType) => {
+    const showMonthDivider = (currentAppointment: AppointmentType, previousAppointment?: AppointmentType) => {
         if (!previousAppointment) {
             return false;
         }
@@ -55,15 +55,15 @@ const NewList: React.FC<Props> = ({}) => {
         <VStack flex={1}>
             {appointments.map((appointment, index) => {
                 const previousAppointment = appointments[index - 1];
-                const weekDivider = shouldRenderWeekDivider(appointment, previousAppointment);
-                const monthDivider = shouldRenderMonthDivider(appointment, previousAppointment);
+                const weekDivider = showWeekDivider(appointment, previousAppointment);
+                const monthDivider = showMonthDivider(appointment, previousAppointment);
 
                 return (
                     <Box key={appointment.id}>
                         {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
                         {monthDivider && (
                             <Center mt="3">
-                                <Text px={4}>`${DateTime.fromISO(appointment.start).monthLong} ${DateTime.fromISO(appointment.start).year}`</Text>
+                                <Text px={4}>{`${DateTime.fromISO(appointment.start).monthLong} ${DateTime.fromISO(appointment.start).year}`}</Text>
                                 <Divider my={3} width="95%" />
                             </Center>
                         )}
