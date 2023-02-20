@@ -3,6 +3,8 @@ import appointments from './dummy/appointments';
 import CalendarYear from './appointment-list/CalendarYear';
 import { useEffect, useMemo, useRef } from 'react';
 import { getScrollToId } from '../../helper/appointment-helper';
+import AppointmentEmptyState from '../AppointmentsEmptyState';
+import { useTranslation } from 'react-i18next';
 
 type ListProps = {
     appointments?: any;
@@ -11,6 +13,7 @@ type ListProps = {
 
 const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
     const currentCourseRef = useRef<HTMLElement>(null);
+    const { t } = useTranslation();
     // TODO change to data from BE
     // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
 
@@ -36,12 +39,16 @@ const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
     }, []);
 
     const appointmentsForOneYear = useMemo(() => Object.entries(allAppointments), [allAppointments]);
+    // TODO remove - only for testing empty state
+    // const appointmentsForOneYear: CalendarDates[] = [];
     const yearIndex = 0;
     const appointmentsIndex = 1;
 
     return (
         <>
-            {isReadOnly ? (
+            {appointmentsForOneYear.length === 0 ? (
+                <AppointmentEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+            ) : isReadOnly ? (
                 <ScrollView ml={3} width={'100%'} pl={isReadOnly ? 0 : 3}>
                     {appointmentsForOneYear.map((yearEntries) => {
                         const year = Number(yearEntries[yearIndex]);
@@ -57,6 +64,7 @@ const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
                             />
                         );
                     })}
+                    <AppointmentEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} isEnd={true} />
                 </ScrollView>
             ) : (
                 <Box ml={3} width={listWidth} pl={3}>
@@ -74,6 +82,7 @@ const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
                             />
                         );
                     })}
+                    <AppointmentEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} isEnd={true} />
                 </Box>
             )}
         </>
