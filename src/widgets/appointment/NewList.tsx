@@ -63,7 +63,7 @@ const NewList: React.FC<Props> = ({}) => {
                         {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
                         {monthDivider && (
                             <Center mt="3">
-                                <Text px={4}>{DateTime.fromISO(appointment.start).monthLong + ' ' + DateTime.fromISO(appointment.start).year}</Text>
+                                <Text px={4}>`${DateTime.fromISO(appointment.start).monthLong} ${DateTime.fromISO(appointment.start).year}`</Text>
                                 <Divider my={3} width="95%" />
                             </Center>
                         )}
