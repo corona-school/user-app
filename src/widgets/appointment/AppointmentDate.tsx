@@ -13,7 +13,7 @@ const AppointmentDate: React.FC<Props> = ({ current, date, color }) => {
     }, [date]);
 
     return (
-        <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center">
+        <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
             <Text fontSize="xs" color={color ? color : 'black'}>
                 {day().courseDay}.
             </Text>

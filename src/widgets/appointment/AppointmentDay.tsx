@@ -4,7 +4,7 @@ import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
 type Props = {
-    first: boolean;
+    first?: boolean;
     courseStart: string;
     duration: number;
     courseTitle: string;
@@ -54,7 +54,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                     </Box>
                 </div>
             ) : (
-                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: 5 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />
