@@ -275,7 +275,10 @@ const ProfileStudent: React.FC<Props> = () => {
                             </ProfileSettingItem>
                         </ProfileSettingRow>
                         <ProfileSettingRow title={'Meine Bescheinigungen'}>
-                            <VStack space={space['1']} display="flex" flexDirection="row" flexWrap="wrap">
+                            <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
+                                Neue Bescheinigung beantragen
+                            </Button>
+                            <VStack display="flex" flexDirection="row" flexWrap="wrap">
                                 {data?.me.student?.participationCertificates.map((certificate) => (
                                     <MatchCertificateCard certificate={certificate} />
                                 ))}

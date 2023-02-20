@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Text, useTheme, VStack, Button, Heading } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -7,6 +7,8 @@ import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import Card from '../../components/Card';
 import CardOverlay from '../../components/CardOverlay';
 import { Pressable } from 'react-native';
+import { gql } from '../../gql';
+import { Match } from '../../gql/graphql';
 
 type Props = {
     onNext: () => any;
@@ -14,10 +16,10 @@ type Props = {
 
 const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
     const { space } = useTheme();
-    const [_selections, setSelections] = useState<string[]>([]);
     const { setState } = useContext(RequestCertificateContext);
 
-    const { data, loading } = useQuery(gql`
+    const { data, loading } = useQuery(
+        gql(`
         query GetPupilsForCertificate {
             me {
                 student {
@@ -25,11 +27,12 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                         name
                     }
                     matches {
+                        uuid
+                        createdAt
                         subjectsFormatted {
                             name
                         }
                         pupil {
-                            id
                             firstname
                             lastname
                         }
@@ -37,17 +40,17 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                 }
             }
         }
-    `);
+    `)
+    );
+
+    const [selections, setSelections] = useState<
+        (Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: { firstname?: string | null; lastname?: string | null } })[]
+    >([]);
 
     const next = useCallback(() => {
-        if (!data?.me?.student?.matches) return [];
-        const selections: LFMatch[] | undefined = _selections?.map((id: string) => {
-            return data.me.student.matches.find((match: LFMatch) => match.pupil.id === id);
-        });
-        if (!selections) return;
         setState((prev) => ({ ...prev, pupilMatches: selections }));
         onNext();
-    }, [_selections, data?.me?.student?.matches, onNext, setState]);
+    }, [selections, data?.me?.student?.matches, onNext, setState]);
 
     if (loading) return <CenterLoadingSpinner />;
 
@@ -56,16 +59,16 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
             <Text>Bei welchen Schüler:innen möchtest du eine Bescheinigung beantragen?</Text>
 
             <VStack space={space['1']}>
-                {data?.me?.student?.matches?.map((match: LFMatch) => {
-                    const isSelected = _selections.includes(match.pupil.id);
+                {data?.me?.student?.matches?.map((match) => {
+                    const isSelected = selections.includes(match);
                     return (
                         <CardOverlay selected={isSelected}>
                             <Pressable
                                 onPress={() => {
                                     if (isSelected) {
-                                        setSelections((prev) => prev.filter((id) => id !== match.pupil.id));
+                                        setSelections((prev) => prev.filter((it) => it !== match));
                                     } else {
-                                        setSelections((prev) => [...prev, match.pupil.id]);
+                                        setSelections((prev) => [...prev, match]);
                                     }
                                 }}
                             >
@@ -81,7 +84,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                 })}
             </VStack>
 
-            <Button isDisabled={_selections.length === 0} onPress={next}>
+            <Button isDisabled={selections.length === 0} onPress={next}>
                 Weiter
             </Button>
         </VStack>
