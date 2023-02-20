@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { Text, useTheme, VStack, Checkbox, Button, Row, Column, Heading } from 'native-base';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import TextInput from '../../components/TextInput';
@@ -16,7 +16,7 @@ const SelectedPupilWizard = ({
     currentIndex,
     pupilCount,
 }: {
-    match: Pick<Match, 'uuid' | 'subjectsFormatted'> & { pupil: Pick<Pupil, 'firstname' | 'lastname'> };
+    match: Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: Pick<Pupil, 'firstname' | 'lastname'> };
     onNext: () => any;
     onPrev: () => any;
     currentIndex: number;
@@ -28,7 +28,7 @@ const SelectedPupilWizard = ({
 
     const existingEntry = state.requestData[match.uuid] ?? {};
 
-    const [startDate, setStartDate] = useState<string>(/* existingEntry.startDate */);
+    const [startDate, setStartDate] = useState<string>(DateTime.fromISO(match.createdAt).toFormat('yyyy-MM-dd'));
     const [endDate, setEndDate] = useState<string>(/* existingEntry.endDate */);
     const [ongoingLessons, setOngoingLessons] = useState<boolean>(existingEntry.ongoingLessons ?? false);
     const [subjects, setSubjects] = useState<string[]>(existingEntry.subjects?.split(',') ?? []);
@@ -58,11 +58,15 @@ const SelectedPupilWizard = ({
 
                 <VStack space={space['0.5']}>
                     <Text bold>vom Zeitraum</Text>
-                    <DatePicker useMin={false} value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    <div className="lf__datepicker">
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    </div>
                 </VStack>
                 <VStack space={space['0.5']}>
                     <Text bold>bis zum</Text>
-                    <DatePicker useMin={false} min={undefined} value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    <div className="lf__datepicker">
+                        <input type="date" min={startDate} value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    </div>
                 </VStack>
 
                 <Checkbox value={'ongoing'} isChecked={ongoingLessons} onChange={setOngoingLessons}>
@@ -83,7 +87,17 @@ const SelectedPupilWizard = ({
                     <Text bold>Zeit</Text>
                     <Row alignItems="center">
                         <Column flex={0.4}>
-                            <TextInput keyboardType="numeric" onChangeText={setHoursPerWeek} />
+                            <TextInput
+                                keyboardType="numeric"
+                                value={hoursPerWeek}
+                                onChangeText={(perWeek) => {
+                                    setHoursPerWeek(perWeek);
+                                    if (endDate && startDate) {
+                                        const durationInWeeks = DateTime.fromISO(endDate).diff(DateTime.fromISO(startDate), 'weeks').weeks;
+                                        setHoursTotal('' + Math.round(+perWeek * durationInWeeks));
+                                    }
+                                }}
+                            />
                         </Column>
                         <Text flex="1" ml={space['1']}>
                             Stunden die Woche (durchschnittlich)
@@ -91,7 +105,7 @@ const SelectedPupilWizard = ({
                     </Row>
                     <Row alignItems="center">
                         <Column flex={0.4}>
-                            <TextInput keyboardType="numeric" onChangeText={setHoursTotal} />
+                            <TextInput keyboardType="numeric" value={hoursTotal} onChangeText={setHoursTotal} />
                         </Column>
                         <Text flex="1" ml={space['1']}>
                             Stunden insgesamt
@@ -103,8 +117,8 @@ const SelectedPupilWizard = ({
                     isDisabled={!startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length}
                     onPress={() => {
                         const request = {
-                            // startDate: DateTime.fromISO(startDate).toMillis(),
-                            endDate: DateTime.fromISO(endDate!).toMillis(),
+                            startDate,
+                            endDate,
                             ongoingLessons,
                             hoursPerWeek: +hoursPerWeek,
                             hoursTotal: +hoursTotal,

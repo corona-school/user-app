@@ -28,6 +28,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                     }
                     matches {
                         uuid
+                        createdAt
                         subjectsFormatted {
                             name
                         }
@@ -43,7 +44,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
     );
 
     const [selections, setSelections] = useState<
-        (Pick<Match, 'uuid' | 'subjectsFormatted'> & { pupil: { firstname?: string | null; lastname?: string | null } })[]
+        (Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: { firstname?: string | null; lastname?: string | null } })[]
     >([]);
 
     const next = useCallback(() => {

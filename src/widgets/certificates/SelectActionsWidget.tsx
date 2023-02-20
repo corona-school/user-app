@@ -19,14 +19,18 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
             <Text>Wähle aus, mit welchen Tätigkeiten du deine Lernpartner:innen unterstützt hast</Text>
             <Checkbox.Group value={state.actions} onChange={(actions) => setState((prev) => ({ ...prev, actions }))}>
                 <VStack space={space['0.5']}>
-                    <Checkbox value="preparation">Vorbereitung, Planung und Gestaltung von Unterrichtsstunden</Checkbox>
-                    <Checkbox value="organisation">Bearbeitung und Vermittlung von Unterrichtsinhalten</Checkbox>
-                    <Checkbox value="digital">Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten</Checkbox>
-                    <Checkbox value="detail">Vertiefung und Wiederholung von Unterrichtsinhalten</Checkbox>
-                    <Checkbox value="group">Gemeinsame Bearbeitung von Übungs- und Hausaufgaben</Checkbox>
-                    <Checkbox value="correction">Korrektur von Übungs- und Hausaufgaben</Checkbox>
-                    <Checkbox value="testprep">Digitale Unterstützung bei der Prüfungsvorbereitung</Checkbox>
-                    <Checkbox value="digital-help">Digitale Unterstützung beim Lernen</Checkbox>
+                    <Checkbox value="Vorbereitung, Planung und Gestaltung von Unterrichtsstunden">
+                        Vorbereitung, Planung und Gestaltung von Unterrichtsstunden
+                    </Checkbox>
+                    <Checkbox value="Bearbeitung und Vermittlung von Unterrichtsinhalten">Bearbeitung und Vermittlung von Unterrichtsinhalten</Checkbox>
+                    <Checkbox value="Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten">
+                        Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten
+                    </Checkbox>
+                    <Checkbox value="Vertiefung und Wiederholung von Unterrichtsinhalten">Vertiefung und Wiederholung von Unterrichtsinhalten</Checkbox>
+                    <Checkbox value="Gemeinsame Bearbeitung von Übungs- und Hausaufgaben">Gemeinsame Bearbeitung von Übungs- und Hausaufgaben</Checkbox>
+                    <Checkbox value="Korrektur von Übungs- und Hausaufgaben">Korrektur von Übungs- und Hausaufgaben</Checkbox>
+                    <Checkbox value="Digitale Unterstützung bei der Prüfungsvorbereitung">Digitale Unterstützung bei der Prüfungsvorbereitung</Checkbox>
+                    <Checkbox value="Digitale Unterstützung beim Lernen">Digitale Unterstützung beim Lernen</Checkbox>
                     <Text bold mb="1" mt="3">
                         Sonstiges
                     </Text>

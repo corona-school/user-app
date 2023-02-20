@@ -20,7 +20,7 @@ type IRequestCertificateData = {
     subject?: string | boolean;
     actions: string[];
     otherActions: string[];
-    pupilMatches: (Pick<Match, 'uuid' | 'subjectsFormatted'> & { pupil: { firstname?: string | null; lastname?: string | null } })[];
+    pupilMatches: (Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: { firstname?: string | null; lastname?: string | null } })[];
     requestData: { [matchUuid: string]: Pick<CertificateCreationInput, 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'ongoingLessons' | 'subjects'> };
     courses: LFSubCourse[];
 };
@@ -85,8 +85,8 @@ const RequestCertificate: React.FC<Props> = () => {
                     matchId: match.uuid,
                     certificateData: {
                         ...certificateData,
-                        activities: '', // state.actions,
-                        medium: '',
+                        activities: [...state.actions, ...state.otherActions].join('\n'),
+                        medium: 'Video-Chat',
                         state: 'awaiting-approval',
                     },
                 },
