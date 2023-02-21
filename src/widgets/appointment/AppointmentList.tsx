@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { Box, Center, Divider, Text, VStack } from 'native-base';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentDay from './AppointmentDay';
@@ -11,31 +11,25 @@ type Props = {
     isReadOnly?: boolean;
 };
 
+const isCourseNow = (courseStart: string, duration: number): boolean => {
+    const now = DateTime.now();
+    const start = DateTime.fromISO(courseStart);
+    const end = start.plus({ minutes: duration });
+    return start <= now && now < end;
+};
+const getScrollToId = (appointments: Appointment[]): number => {
+    const now = DateTime.now();
+    const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
+    const current = appointments.find((appointment) => isCourseNow(appointment.start, appointment.duration));
+    const nextId = next?.id ?? 0;
+    const currentId = current?.id;
+
+    return currentId || nextId || 0;
+};
+
 const AppointmentList: React.FC<Props> = ({ appointments = appointmentsData, isReadOnly = false }) => {
     const scrollViewRef = useRef(null);
     const navigate = useNavigate();
-
-    const isCourseNow = (courseStart: string, duration: number): boolean => {
-        const now = DateTime.now();
-        const start = DateTime.fromISO(courseStart);
-        const end = start.plus({ minutes: duration });
-        return start <= now && now < end;
-    };
-
-    const getScrollToId = (appointments: Appointment[]): number => {
-        const now = DateTime.now();
-        const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
-        const current = appointments.find((appointment) => isCourseNow(appointment.start, appointment.duration));
-        const nextId = next?.id ?? 0;
-        const currentId = current?.id;
-
-        if (currentId) {
-            return currentId;
-        } else if (!currentId) {
-            return nextId;
-        }
-        return 0;
-    };
 
     const handleScroll = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
@@ -61,15 +55,10 @@ const AppointmentList: React.FC<Props> = ({ appointments = appointmentsData, isR
         return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
     };
 
-    const scrollToCourseId = useMemo(() => {
-        const id = getScrollToId(appointments);
-        return id;
-    }, []);
-
     useEffect(() => {
         if (scrollViewRef.current === null) return;
         return handleScroll(scrollViewRef.current);
-    }, []);
+    }, [appointments]);
 
     return (
         <VStack flex={1} maxW={isReadOnly ? 'full' : '90%'}>
@@ -99,7 +88,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = appointmentsData, isR
                                 courseTitle={appointment.title}
                                 organizers={appointment.organizers}
                                 onPress={() => navigate(`/appointment/${appointment.id}`)}
-                                scrollToRef={appointment.id === scrollToCourseId ? scrollViewRef : null}
+                                scrollToRef={appointment.id === getScrollToId(appointments) ? scrollViewRef : null}
                                 isReadOnly={isReadOnly}
                             />
                         </Box>

@@ -62,7 +62,7 @@ const AppointmentDay: React.FC<Props> = ({ courseStart, duration, courseTitle, o
     return (
         <>
             {!isReadOnly ? (
-                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 5 : 10 }}>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />
@@ -79,7 +79,7 @@ const AppointmentDay: React.FC<Props> = ({ courseStart, duration, courseTitle, o
                     </Box>
                 </div>
             ) : (
-                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 5 : 10 }}>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />
