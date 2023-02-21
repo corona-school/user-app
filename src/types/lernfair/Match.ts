@@ -1,5 +1,5 @@
+import { Appointment } from './Appointment';
 import { LFSubject } from './Subject';
-import { LFPupil, LFStudent } from './User';
 
 export type LFMatch = {
     id: number;
@@ -10,4 +10,17 @@ export type LFMatch = {
     uuid: string;
     studentEmail: string;
     pupilEmail: string;
+};
+
+// TODO remove
+export type Match = {
+    id: number;
+    dissolved: boolean;
+    pupil: any;
+    student: any;
+    subjectsFormatted: LFSubject[];
+    uuid: string;
+    studentEmail: string;
+    pupilEmail: string;
+    appointments: Appointment[];
 };

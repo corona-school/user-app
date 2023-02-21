@@ -1,3 +1,4 @@
+import { Pupil, Screener, Student } from '../../gql/graphql';
 import { State } from './State';
 
 export enum UserType {
@@ -24,37 +25,4 @@ export type LFStudent = {
     lastname: string;
 };
 
-export interface Attendee {
-    appointmentId: number;
-    status: AttendanceStatus;
-    declined: boolean;
-}
-
-export interface ParticipantPupil extends Attendee {
-    pupilId: number;
-    firstname: string;
-    lastname: string;
-    isPupil: true;
-}
-
-export interface ParticipantStudent extends Attendee {
-    studentId: number;
-    firstname: string;
-    lastname: string;
-    isStudent: true;
-}
-
-export interface ParticipantScreener extends Attendee {
-    screenerId: number;
-    firstname: string;
-    lastname: string;
-}
-
-export interface Organizer extends Attendee {
-    studentId: number;
-    firstname: string;
-    lastname: string;
-    isStudent: true;
-}
-
-export type Participant = ParticipantPupil | ParticipantStudent;
+export type Participant = Student | Pupil | Screener;
