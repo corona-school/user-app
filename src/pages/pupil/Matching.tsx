@@ -168,26 +168,27 @@ const Matching: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {activeMatches.map((match: LFMatch, index: number) => (
-                                                    <Column width={CardGrid} marginRight="15px" key={index}>
-                                                        <LearningPartner
-                                                            key={index}
-                                                            isDark={true}
-                                                            name={`${match?.student?.firstname} ${match?.student?.lastname}`}
-                                                            subjects={match?.subjectsFormatted}
-                                                            status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                            button={
-                                                                !match.dissolved && (
-                                                                    <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                        {t('dashboard.helpers.buttons.solveMatch')}
-                                                                    </Button>
-                                                                )
-                                                            }
-                                                            contactMail={match?.studentEmail}
-                                                            meetingId={match?.uuid}
-                                                        />
-                                                    </Column>
-                                                )) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                {(activeMatches?.length > 0 &&
+                                                    activeMatches.map((match: LFMatch, index: number) => (
+                                                        <Column width={CardGrid} marginRight="15px" key={index}>
+                                                            <LearningPartner
+                                                                key={index}
+                                                                isDark={true}
+                                                                name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                                                                subjects={match?.subjectsFormatted}
+                                                                status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
+                                                                button={
+                                                                    !match.dissolved && (
+                                                                        <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
+                                                                            {t('dashboard.helpers.buttons.solveMatch')}
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                                contactMail={match?.studentEmail}
+                                                                meetingId={match?.uuid}
+                                                            />
+                                                        </Column>
+                                                    ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
                                             </Flex>
                                         </VStack>
                                     ),

@@ -10,7 +10,7 @@ const matching = {
         contentBox3: 'bieten wir zusätzlich Gruppen-Kurse an.',
         button: 'Unterstützung anfragen',
         ctaCardHeader: 'Gruppen-Kurse',
-        ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
+        ctaCardContent: 'Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…',
         ctaCardButton: 'Zu den Gruppen-Kursen',
     },
     pending: {
@@ -31,15 +31,15 @@ const matching = {
             content: 'Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
             requestmatchButton: 'Lernpaar bilden',
             tabs: {
-                tab1: 'Matches',
-                tab2: 'Anfragen',
+                tab1: 'Aktuelle Lernpartner:innen',
+                tab2: 'Suche',
             },
             request: 'Anfrage',
             removeRequest: 'Anfrage zurücknehmen',
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
             subjects: 'Fächer:',
-            noMatches: 'Du hast keine Matches',
+            noMatches: 'Du hast (noch) keine Lernpartner:in.',
             noRequestsTutee:
                 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
             noRequestsTutor:
