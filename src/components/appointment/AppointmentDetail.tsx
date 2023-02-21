@@ -61,8 +61,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
 
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            {/* // TODO handle empty array */}
-            <Avatars organizers={[]} participants={[]} />
+            <Avatars organizers={appointment.organizers || []} participants={appointment.participants || []} />
             <Header appointmentType={appointment.appointmentType} organizers={[]} title={appointment.title} />
             <MetaDetails
                 date={date}
@@ -75,7 +74,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
                 organizers={appointment.organizers}
                 participants={appointment.participants}
                 declinedBy={appointment.declinedBy}
-                // meetingLink={appointment.meetingLink}
             />
             <Description appointmentType={appointment.appointmentType} courseName={course?.name} courseDescription={course?.description} />
             <Buttons onPress={cancelAppointment} canceled={canceled} />

@@ -3,7 +3,7 @@ import Tabs from '../../components/Tabs';
 import { gql, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-import { LFMatch, Match } from '../../types/lernfair/Match';
+import { LFMatch } from '../../types/lernfair/Match';
 import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
@@ -118,7 +118,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                     <CenterLoadingSpinner />
                                 ) : (
                                     activeMatches &&
-                                    activeMatches.map((match: Match) => {
+                                    activeMatches.map((match: LFMatch) => {
                                         return (
                                             <MatchTile
                                                 key={match.id}
@@ -127,7 +127,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
                                                 subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
-                                                next={match.appointments.length === 0 ? skipStepTwo : next}
+                                                next={match.appointments && match.appointments.length === 0 ? skipStepTwo : next}
                                             />
                                         );
                                     })

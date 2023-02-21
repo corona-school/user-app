@@ -24,8 +24,7 @@ const AppointmentDay: React.FC<Props> = ({ courseStart, duration, courseTitle, o
         const start = DateTime.fromISO(courseStart);
         const sameMonth = now.hasSame(start, 'month');
         const sameYear = now.hasSame(start, 'year');
-        if (sameMonth && sameYear) return true;
-        return false;
+        return sameMonth && sameYear;
     }, []);
 
     const isCourseNow = (courseStart: string, duration: number): boolean => {
