@@ -161,7 +161,7 @@ const course = {
         nocourses: 'Du bietest zur Zeit keinen Kurs an.',
         noremission: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
         nodrafts: 'Du hast derzeit keinen Kurs-Entwurf.',
-        nopastcourses: 'Du hast bisher noch keine Kurse bei uns angeboten.',
+        nopastcourses: 'Du hast bisher noch keinen Kurs bei uns angeboten.',
     },
     cancel: {
         header: 'Kurs absagen',

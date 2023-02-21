@@ -278,9 +278,10 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {pastSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index, false)) || (
-                                                            <AlertMessage content={t('course.empty.nopastcourses')} />
-                                                        )}
+                                                        {((pastSubcourses?.length ?? 0) > 0 &&
+                                                            pastSubcourses?.map((subcourse, index) => {
+                                                                return renderSubcourse(subcourse, index, false);
+                                                            })) || <AlertMessage content={t('course.empty.nopastcourses')} />}
                                                     </CSSWrapper>
                                                 </>
                                             ),
