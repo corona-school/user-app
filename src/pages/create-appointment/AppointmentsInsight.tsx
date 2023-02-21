@@ -1,10 +1,10 @@
-import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
+import { Box, Button, Stack, useBreakpointValue, Text, ScrollView } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
 
 type Props = {
     id: number;
@@ -13,7 +13,7 @@ type Props = {
     back: () => void;
 };
 
-const courseQuery = gql`
+const courseAppointmentsQuery = gql`
     query courseLectures($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
@@ -28,10 +28,23 @@ const courseQuery = gql`
     }
 `;
 
-// TODO add query to get appointments for a match by id
+const matchAppointmentsQuery = gql`
+    query match($id: Int!) {
+        match(matchId: $id) {
+            id
+            appointments {
+                id
+                title
+                description
+                start
+                duration
+            }
+        }
+    }
+`;
 
 const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
-    const { data, loading, error } = useQuery(courseQuery, { variables: { id } });
+    const { data, loading, error } = useQuery(isCourse ? courseAppointmentsQuery : matchAppointmentsQuery, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -61,11 +74,13 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
                     </Text>
                 </Stack>
             )}
-            {/* {!error && data && ( */}
-            <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} />
-            </Box>
-            {/* )} */}
+            {!error && data && (
+                <Box maxH={maxHeight} flex="1" mb="10">
+                    <ScrollView ml={3} width={'100%'} pl={0}>
+                        <AppointmentList isReadOnly={true} />
+                    </ScrollView>
+                </Box>
+            )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                 <Button onPress={next} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
