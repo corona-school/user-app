@@ -5,14 +5,39 @@
         width: 100%;
         padding: 14px;
         border: none;
-        background-color: var(--color-primary_light);
         border-radius: 5px;
+        position: relative;
+        background-color: var(--color-primary_light);
 
         &:focus {
             outline: 2px solid var(--color-primary) !important;
         }
         &::placeholder {
             color: #82b1b0;
+        }
+        &[type='date']::-webkit-calendar-picker-indicator {
+            background-position: right;
+            background-size: auto;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+        &[type='time']::-webkit-calendar-picker-indicator {
+            background-position: right;
+            background-size: auto;
+            cursor: pointer;
+            width: auto;
+            height: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
         }
     }
 }

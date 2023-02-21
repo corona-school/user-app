@@ -76,16 +76,10 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         const isDateMinOneWeekLater = (date: string): boolean => {
             const startDate = DateTime.fromISO(date);
             const diff = startDate.diffNow('days').days;
-            if (diff >= 7) return true;
+            if (diff >= 6) return true;
             return false;
         };
 
-        if (!appointmentToCreate.title.length) {
-            setErrors({ ...errors, title: t('appointment.errors.title') });
-            return false;
-        } else {
-            delete errors.title;
-        }
         if (!appointmentToCreate.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;

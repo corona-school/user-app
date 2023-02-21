@@ -48,14 +48,9 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
             <VStack space={5} width="full">
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TITLE */}
-                    <FormControl isInvalid={'title' in errors} width={inputWidth}>
+                    <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
                         <InputSuffix appointmentsCount={appointmentsCount + 1} inputValue={appointmentToCreate.title} handleInput={handleTitleInput} />
-                        {'title' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.emptyFieldError')}
-                            </FormControl.ErrorMessage>
-                        )}
                     </FormControl>
 
                     {/* DATE */}
