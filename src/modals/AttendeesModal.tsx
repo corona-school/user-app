@@ -14,6 +14,9 @@ type ModalProps = {
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
+    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy?.indexOf(a.id) - declinedBy?.indexOf(b.id));
+    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy?.indexOf(a.id) - declinedBy?.indexOf(b.id));
+
     return (
         <>
             <Modal.Content width="350" marginX="auto" background="primary.900">
@@ -27,23 +30,19 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                     <Box maxH="380">
                         <ScrollView>
                             <Box mt="2">
-                                {organizers?.map((organizer) => {
-                                    const userType = 'isStudent' in organizer ? 'student' : 'pupil';
-
+                                {sortedOrganizers?.map((organizer) => {
                                     return (
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
-                                            userType={userType}
+                                            isStudent={organizer.isStudent}
                                             declined={declinedBy?.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
                                 })}
-                                {participants?.map((participant) => {
-                                    const userType = 'isStudent' in participant ? 'student' : 'pupil';
+                                {sortedParticipants?.map((participant) => {
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}
-                                            userType={userType}
                                             declined={declinedBy?.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
