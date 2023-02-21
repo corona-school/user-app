@@ -108,7 +108,7 @@ const CertificateList: React.FC = () => {
 
             {(certificate.uuid || true) && (
                 <VStack space={space['1']} paddingX={space['1']}>
-                    <Heading>{certificateType === 'group' ? 'Gruppenkurse' : '1:1 Lernunterstützung'}</Heading>
+                    <Heading>{certificateType === 'group' ? 'Gruppen-Kurse' : 'Lernunterstützung'}</Heading>
                     <Text>
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                         sed diam voluptua.

@@ -51,7 +51,7 @@ const Filter: React.FC = () => {
                     <br />
                     <Heading>Lange Wartezeit: 3-6 Monate</Heading>
                     <Text>
-                        Zur Zeit brauchen sehr viele Schüler:innen 1:1-Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
+                        Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
                         Monate warten, bevor wir dir eine:n Lernpartner:in für dich finden können.
                     </Text>
 
@@ -74,7 +74,7 @@ const Filter: React.FC = () => {
                     <Text>Leider können wir dich derzeit nicht mit einem:r Lernpartner:in versorgen.</Text>
 
                     <Heading fontSize="md" mt={space['1']}>
-                        Kennst du schon unsere Gruppenkurse?
+                        Kennst du schon unsere Gruppen-Kurse?
                     </Heading>
 
                     <Text>
@@ -87,7 +87,7 @@ const Filter: React.FC = () => {
 
                     <NextPrevButtons
                         altPrevText="Zu Edu-Cloud"
-                        altNextText="Zu den Gruppenkursen"
+                        altNextText="Zu den Gruppen-Kursen"
                         onPressPrev={() => window.open('https://edu-cloud.org', '_blank')}
                         onPressNext={() => navigate('/group')}
                     />

@@ -1,17 +1,17 @@
 const matching = {
     blocker: {
-        header: '1:1-Lernunterstützung',
+        header: 'Lernunterstützung',
         title: 'Unterstützung anfragen',
         firstContent:
-            'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+            'Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
         headlineContent: 'Wichtig',
-        contentBox1: 'Da es bei der 1:1-Lernunterstützung zu',
+        contentBox1: 'Da es bei der Lernunterstützung zu',
         contentBox2: 'langen Wartezeiten von 3-6 Monaten',
-        contentBox3: 'bieten wir zusätzlich Gruppen-Nachhilfe an.',
+        contentBox3: 'bieten wir zusätzlich Gruppen-Kurse an.',
         button: 'Unterstützung anfragen',
-        ctaCardHeader: 'Gruppen-Lernunterstützung',
+        ctaCardHeader: 'Gruppen-Kurse',
         ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
-        ctaCardButton: 'Zu den Gruppenkursen',
+        ctaCardButton: 'Zu den Gruppen-Kursen',
     },
     pending: {
         modal: {
@@ -26,11 +26,9 @@ const matching = {
             dissolve: 'Match auflösen',
         },
         check: {
-            header: '1:1-Lernunterstützung',
+            header: 'Lernunterstützung',
             title: 'Match anfordern',
-            content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
-            contentHeadline: 'Wichtig',
-            contenHeadlineContent: 'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
+            content: 'Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
             requestmatchButton: 'Lernpaar bilden',
             tabs: {
                 tab1: 'Matches',
@@ -74,7 +72,7 @@ const matching = {
             nofound: 'Es wurden keine Kurse gefunden. Bitte passe deine Suche an.',
         },
         pupil: {
-            header: 'Gruppen-Lernunterstützung',
+            header: 'Gruppen-Kurse',
             title: 'Angebote',
             content:
                 'Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
@@ -88,12 +86,12 @@ const matching = {
             },
         },
         helper: {
-            header: 'Gruppenkurse',
-            title: 'Gruppenkurse',
+            header: 'Gruppen-Kurse',
+            title: 'Gruppen-Kurse',
             content:
-                'Mit den Kursen in der Gruppen-Nachhilfe hilfst du einer Kleingruppe an Schüler:innen, die sich alle in einem bestimmten Thema verbessern wollen. Das Thema kannst du selbst festlegen - ob Bruchrechnung, past tense oder Gedichtanalyse… Hohe Nachfrage herrscht vor allem in den Hauptfächern. Auch den Zeitpunkt legst du selbst fest: Von einem Einzeltermin bis zu einem ca. 12-wöchigen Kurs ist alles möglich. Die Schüler:innen buchen die von dir vorgegebenen Termine.',
+                'Mit den Gruppen-Kursen hilfst du einer Kleingruppe an Schüler:innen, die sich alle in einem bestimmten Thema verbessern wollen. Das Thema kannst du selbst festlegen - ob Bruchrechnung, past tense oder Gedichtanalyse… Hohe Nachfrage herrscht vor allem in den Hauptfächern. Auch den Zeitpunkt legst du selbst fest: Von einem Einzeltermin bis zu einem ca. 12-wöchigen Kurs ist alles möglich. Die Schüler:innen buchen die von dir vorgegebenen Termine.',
             contentHeadline: 'Wichtig',
-            contentHeadlineContent: 'Gruppenkurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
+            contentHeadlineContent: 'Gruppen-Kurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',

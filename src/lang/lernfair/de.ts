@@ -96,7 +96,7 @@ const lernfair = {
             matching: 'Du hast bereits die maximale Anzahl an offenen Anfragen erreicht.',
         },
         'not-participant': {
-            coursetext: 'Du bist nicht für Gruppenkurse freigeschaltet',
+            coursetext: 'Du bist nicht für Gruppen-Kurse freigeschaltet',
         },
         'max-matches': {
             course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
@@ -111,7 +111,7 @@ const lernfair = {
             course: 'Es wurden keine Kurse gefunden.',
         },
         'not-tutee': {
-            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die 1:1-Lernunterstützung registriert bist.',
+            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
         },
         'not-tutor': {
             matching: 'Du bist noch nicht für das Matching zugelassen.',
