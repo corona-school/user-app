@@ -1,10 +1,11 @@
 import { Divider, Heading, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AppointmentTypes, Attendee } from '../../types/lernfair/Appointment';
+import { Student } from '../../gql/graphql';
+import { AppointmentTypes } from '../../types/lernfair/Appointment';
 
 type HeaderProps = {
     appointmentType?: AppointmentTypes;
-    organizers?: Attendee[];
+    organizers?: Student[];
     title: string;
 };
 const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) => {

@@ -1,4 +1,4 @@
-import { Button, HStack, Spacer, Stack, Text, useBreakpointValue } from 'native-base';
+import { Button, HStack, Modal, Pressable, Spacer, Stack, Text, useBreakpointValue } from 'native-base';
 import InformationBadge from '../notifications/preferences/InformationBadge';
 import DateIcon from '../../assets/icons/lernfair/appointments/appointment_date.svg';
 import TimeIcon from '../../assets/icons/lernfair/appointments/appointment_time.svg';
@@ -6,6 +6,10 @@ import PersonIcon from '../../assets/icons/lernfair/appointments/appointment_per
 import RepeatIcon from '../../assets/icons/lernfair/appointments/appointment_repeat.svg';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
+import AttendeesModal from '../../modals/AttendeesModal';
+import { useState } from 'react';
+import { Student } from '../../gql/graphql';
+import { Participant } from '../../types/lernfair/User';
 
 type MetaProps = {
     date: string;
@@ -15,9 +19,26 @@ type MetaProps = {
     count: number;
     total: number;
     attendeesCount?: number;
+    organizers?: Student[];
+    participants?: Participant[];
+    declinedBy?: number[];
+
     meetingLink?: string;
 };
-const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, count, total, attendeesCount, meetingLink }) => {
+const MetaDetails: React.FC<MetaProps> = ({
+    date,
+    startTime,
+    endTime,
+    duration,
+    count,
+    total,
+    attendeesCount,
+    organizers,
+    participants,
+    declinedBy,
+    meetingLink,
+}) => {
+    const [showModal, setShowModal] = useState<boolean>(false);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
 
@@ -27,6 +48,10 @@ const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, 
     });
     return (
         <>
+            <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+                <AttendeesModal organizers={organizers} participants={participants} declinedBy={declinedBy} onClose={() => setShowModal(false)} />
+            </Modal>
+
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? 5 : 7}>
                 <HStack space={2} alignItems="center">
                     <DateIcon />
@@ -47,7 +72,9 @@ const MetaDetails: React.FC<MetaProps> = ({ date, startTime, endTime, duration, 
                             participantsTotal: attendeesCount,
                         })}
                     </Text>
-                    <InformationBadge />
+                    <Pressable onPress={() => setShowModal(true)}>
+                        <InformationBadge />
+                    </Pressable>
                 </HStack>
             </Stack>
             <Spacer py={3} />
