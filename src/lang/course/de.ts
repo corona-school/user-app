@@ -158,8 +158,10 @@ const course = {
         notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
     },
     empty: {
-        courses: 'Es wurden keine Kurse gefunden.',
-        coursescheck: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
+        nocourses: 'Du bietest zur Zeit keinen Kurs an.',
+        noremission: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
+        nodrafts: 'Du hast derzeit keinen Kurs-Entwurf.',
+        nopastcourses: 'Du hast bisher noch keine Kurse bei uns angeboten.',
     },
     cancel: {
         header: 'Kurs absagen',

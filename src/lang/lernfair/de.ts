@@ -107,8 +107,8 @@ const lernfair = {
             course: 'Du bist noch nicht als Kursleiter:in freigeschaltet.',
         },
         'not-screened': {
-            matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
-            course: 'Es wurden keine Kurse gefunden.',
+            matching: 'Du bist nicht für das Matching freigeschalten. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+            course: 'Du bist nicht als Kursleter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
         },
         'not-tutee': {
             matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
