@@ -1,31 +1,56 @@
-import { Box, HStack, useBreakpointValue, VStack } from 'native-base';
-import { getCourseTimeText, isCourseNow, isCurrentMonth } from '../../helper/appointment-helper';
+import { DateTime } from 'luxon';
+import { Box, HStack, useBreakpointValue } from 'native-base';
+import { useCallback } from 'react';
+import { getI18n } from 'react-i18next';
+import { Student } from '../../gql/graphql';
+import { Participant } from '../../types/lernfair/User';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
 type Props = {
-    first?: boolean;
     courseStart: string;
     duration: number;
     courseTitle: string;
-    instructors?: Instructor[];
+    organizers?: Student[];
     participants?: Participant[];
     scrollToRef?: any;
     isReadOnly?: boolean;
     onPress: () => void;
 };
 
-type Instructor = {
-    firstname: string;
-    lastname: string;
-};
+const AppointmentDay: React.FC<Props> = ({ courseStart, duration, courseTitle, organizers, participants, scrollToRef, isReadOnly, onPress }) => {
+    const isCurrentMonth = useCallback((courseStart: string): boolean => {
+        const now = DateTime.now();
+        const start = DateTime.fromISO(courseStart);
+        const sameMonth = now.hasSame(start, 'month');
+        const sameYear = now.hasSame(start, 'year');
+        if (sameMonth && sameYear) return true;
+        return false;
+    }, []);
 
-type Participant = {
-    firstname: string;
-    lastname: string;
-};
+    const isCourseNow = (courseStart: string, duration: number): boolean => {
+        const now = DateTime.now();
+        const start = DateTime.fromISO(courseStart);
+        const end = start.plus({ minutes: duration });
 
-const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseTitle, instructors, participants, scrollToRef, isReadOnly, onPress }) => {
+        return start <= now && now < end;
+    };
+
+    const getCourseTimeText = (courseStart: string, duration: number): string => {
+        const now = DateTime.now();
+        const start = DateTime.fromISO(courseStart);
+        const end = start.plus({ minutes: duration });
+
+        const startTime = start.setLocale('de-DE').toFormat('T');
+        const endTime = end.setLocale('de-DE').toFormat('T');
+        const i18n = getI18n();
+
+        if (start <= now && now < end) {
+            return i18n.t('appointment.clock.nowToEnd', { end: endTime });
+        }
+        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
+    };
+
     const isCurrent = isCourseNow(courseStart, duration);
     const currentMonth = isCurrentMonth(courseStart);
 
@@ -37,7 +62,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
     return (
         <>
             {!isReadOnly ? (
-                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 60 }}>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 5 : 10 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />
@@ -45,7 +70,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                                 timeDescriptionText={getCourseTimeText(courseStart, duration)}
                                 courseTitle={courseTitle}
                                 isCurrentlyTakingPlace={isCurrent}
-                                instructors={instructors}
+                                organizers={organizers}
                                 participants={participants}
                                 isReadOnly={isReadOnly}
                                 onPress={onPress}
@@ -54,7 +79,7 @@ const AppointmentDay: React.FC<Props> = ({ first, courseStart, duration, courseT
                     </Box>
                 </div>
             ) : (
-                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: 5 }}>
+                <div key={courseStart} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 5 : 10 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={courseStart} />

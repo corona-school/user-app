@@ -3,28 +3,20 @@ import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
+import { Student } from '../../gql/graphql';
+import { Participant } from '../../types/lernfair/User';
 
 type Props = {
     timeDescriptionText: string;
     courseTitle: string;
     isCurrentlyTakingPlace: boolean;
-    instructors?: Instructor[];
+    organizers?: Student[];
     participants?: Participant[];
     isReadOnly?: boolean;
     onPress?: () => void;
 };
 
-type Instructor = {
-    firstname: string;
-    lastname: string;
-};
-
-type Participant = {
-    firstname: string;
-    lastname: string;
-};
-
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, instructors, participants, isReadOnly, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, organizers, participants, isReadOnly, onPress }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -47,9 +39,9 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                 </Text>
                             </HStack>
                             <Spacer />
-                            {!isReadOnly && instructors && participants && (
+                            {!isReadOnly && organizers && participants && (
                                 <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
-                                    {instructors
+                                    {organizers
                                         ?.map((i, idx) => (
                                             <Avatar key={i.lastname + '-' + idx}>
                                                 <StudentAvatar style={{ marginTop: '-1' }} />
@@ -60,7 +52,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                                 <Avatar key={p.firstname + '-' + index}>
                                                     <PupilAvatar style={{ marginTop: '-1' }} />
                                                 </Avatar>
-                                            )) ?? []
+                                            ))
                                         )}
                                 </Avatar.Group>
                             )}
@@ -71,9 +63,9 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                             </Heading>
 
                             <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {instructors
-                                    ?.map((instructor) => {
-                                        return `${instructor.firstname} ${instructor.lastname}`;
+                                {organizers
+                                    ?.map((organizers) => {
+                                        return `${organizers.firstname} ${organizers.lastname}`;
                                     })
                                     .join(', ')}
                             </Text>
