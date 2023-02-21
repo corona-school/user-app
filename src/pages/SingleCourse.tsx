@@ -23,6 +23,7 @@ import { Course, Subcourse } from '../gql/graphql';
 import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { SelectParticipants } from '../widgets/SelectParticipants';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -298,6 +299,8 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
         `)
     );
 
+    const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -312,7 +315,7 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                             subject,
                             message,
                             subcourseId: subcourse.id,
-                            participants: participantsData.subcourse!.participants.map((it) => it.id),
+                            participants: selectedParticipants.length ? selectedParticipants : participantsData.subcourse!.participants.map((it) => it.id),
                         },
                     });
                     toast.show({ description: 'Nachricht erfolgreich versendet', placement: 'top' });
@@ -325,7 +328,7 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                 }
             }
         },
-        [subcourse.id, sendMessage, toast, participantsData]
+        [subcourse.id, sendMessage, toast, participantsData, selectedParticipants]
     );
 
     return (
@@ -334,10 +337,18 @@ function StudentContactParticiantsAction({ subcourse, refresh }: { subcourse: Pi
                 {t('single.contact.participants')}
             </Button>
             <SendParticipantsMessageModal
+                isInstructor={true}
                 isOpen={showMessageModal}
                 onClose={() => setShowMessageModal(false)}
                 onSend={onSendMessage}
                 isDisabled={_sendMessage.loading}
+                details={
+                    <SelectParticipants
+                        participants={participantsData?.subcourse!.participants ?? []}
+                        selectedParticipants={selectedParticipants}
+                        setSelectedParticipants={setSelectedParticipants}
+                    />
+                }
             />
         </>
     );
@@ -819,7 +830,13 @@ function PupilContactInstructors({ subcourse }: { subcourse: Pick<Subcourse, 'id
             <Button onPress={() => setShowMessageModal(true)} disabled={loading} width={ButtonContainer}>
                 {t('single.contact.instructor')}
             </Button>
-            <SendParticipantsMessageModal isOpen={showMessageModal} onClose={() => setShowMessageModal(false)} onSend={doContact} isDisabled={loading} />
+            <SendParticipantsMessageModal
+                isInstructor={false}
+                isOpen={showMessageModal}
+                onClose={() => setShowMessageModal(false)}
+                onSend={doContact}
+                isDisabled={loading}
+            />
         </>
     );
 }
