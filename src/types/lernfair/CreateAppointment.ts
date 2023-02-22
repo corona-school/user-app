@@ -1,4 +1,5 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import { CreateAppointment } from './Appointment';
 
 export enum AppointmentType {
     GROUP = 'group',
@@ -71,11 +72,17 @@ export type TAppointmentContext = {
     dispatchCreateAppointment: Dispatch<CreateAppointmentAction>;
     weeklies: WeeklyAppointment[];
     dispatchWeeklyAppointment: Dispatch<WeeklyAppointmentAction>;
+    appointmentsToBeCreated: CreateAppointment[];
+    setAppointmentsToBeCreated: Dispatch<SetStateAction<CreateAppointment[]>>;
+    appointmentsToBeCanceled: number[];
+    setAppointmentsToBeCanceled: Dispatch<SetStateAction<number[]>>;
+    appointmentsToBeUpdated: CreateAppointment[];
+    setAppointmentsToBeUpdated: Dispatch<SetStateAction<CreateAppointment[]>>;
 };
 
 export type StateWithoutWeeklies = {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     date: string;
     time: string;
     duration: number;
@@ -83,8 +90,8 @@ export type StateWithoutWeeklies = {
 };
 
 export type StateWithWeeklies = {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     date: string;
     time: string;
     duration: number;

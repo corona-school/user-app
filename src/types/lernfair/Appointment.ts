@@ -2,7 +2,7 @@ import { Weeklies, AppointmentType as TAppointmentType } from './CreateAppointme
 
 // TODO delete AppointmentType
 import { Student } from '../../gql/graphql';
-import { ParticipantPupil, ParticipantScreener, ParticipantStudent } from './User';
+import { Participant } from './User';
 
 export type AppointmentType = {
     id: number;
@@ -27,9 +27,7 @@ export type Appointment = {
     matchId?: number;
     meetingLink?: string;
     organizers?: Student[];
-    appointment_participant_pupil?: ParticipantPupil[];
-    appointment_participant_students?: ParticipantStudent[];
-    appointment_participant_screener?: ParticipantScreener[];
+    participants?: Participant[];
     appointmentType?: AppointmentType;
 };
 
@@ -43,14 +41,6 @@ export type CreateAppointment = {
     matchId?: number;
     organizers?: number[];
     appointmentType?: TAppointmentType;
-};
-
-export type BaseAppointment = {
-    title: string;
-    description: string;
-    start: string;
-    duration: number;
-    subcourseId: number;
 };
 
 export type CreateAppointmentWithWeeklies = {

@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
-import { useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
+import { useCreateAppointment, useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { AppointmentType, FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { CreateAppointment } from '../../types/lernfair/Appointment';
 import { useNavigate } from 'react-router-dom';
@@ -29,11 +29,13 @@ export type StartDate = {
 
 type Props = {
     back: () => void;
+    isCourseAppointment?: boolean;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => {
     const [errors, setErrors] = useState<FormErrors>({});
-    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
+    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateAppointments();
     const { weeklies } = useWeeklyAppointments();
     const { user } = useApollo();
     const { t } = useTranslation();
@@ -60,15 +62,9 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         return newDate.toISO();
     };
 
-    const [createAppointment] = useMutation(gql`
-        mutation createAppointment($appointment: AppointmentCreateInputFull!) {
-            appointmentCreate(appointment: $appointment)
-        }
-    `);
-
-    const [createAppointmentWithWeeklies] = useMutation(gql`
-        mutation createWeekly($baseAppointment: AppointmentCreateGroupInput!, $weeklyTexts: [AppointmentInputText!]!) {
-            appointmentGroupWeeklyCreate(baseAppointment: $baseAppointment, weeklyTexts: $weeklyTexts)
+    const [createAppointments] = useMutation(gql`
+        mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
+            appointmentsCreate(appointments: $appointments)
         }
     `);
 
@@ -112,54 +108,45 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             field: 'isRecurring',
         });
     };
-    const handleCreateAppointment = () => {
+
+    const handleCreateAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
-            const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
             const organizers = [user!.student!.id];
 
-            // TODO add subcourseId or matchId
             const newAppointment: CreateAppointment = {
-                title: appointmentToCreate.title,
-                description: appointmentToCreate.description,
-                start: start,
+                title: appointmentToCreate.title ? appointmentToCreate.title : '',
+                description: appointmentToCreate.description ? appointmentToCreate.description : '',
+                start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 organizers: organizers,
                 duration: appointmentToCreate.duration,
                 appointmentType: AppointmentType.GROUP,
             };
+            setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
 
-            createAppointment({ variables: { newAppointment } });
-            toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
+            // if (weeklies.length > 0) {
+            //     for (const weekly of weeklies) {
+            //         appointmentsToCreate.push({
+            //             title: weekly.title ? weekly.title : '',
+            //             description: weekly.description ? weekly.description : '',
+            //             start: weekly.nextDate,
+            //             organizers: organizers,
+            //             duration: appointmentToCreate.duration,
+            //             appointmentType: AppointmentType.GROUP,
+            //         });
+            //     }
+            // }
+
+            // createAppointments({ variables: { appointmentsToBeCreated } });
+            if (isCourseAppointment) navigate('/create-course', { state: { currentStep: 1, newCourseAppointments: true } });
+            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
             setTimeout(() => {
                 navigate('/appointments');
             }, 2000);
-        } else {
-            return;
         }
+        // console.log('appointments to create', appointmentsToCreate, 'is course appointment? ', isCourseAppointment);
     };
-    const handleCreateAppointmentWeekly = () => {
-        if (!appointmentToCreate) return;
-        if (validateInputs()) {
-            const start = convertStartDate(appointmentToCreate.date, appointmentToCreate.time);
 
-            const baseAppointment = {
-                title: appointmentToCreate.title,
-                description: appointmentToCreate.description,
-                start: start,
-                duration: appointmentToCreate.duration,
-                subcourseId: 1,
-            };
-            const weeklyTexts = weeklies;
-
-            createAppointmentWithWeeklies({ variables: { baseAppointment, weeklyTexts } });
-            toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
-            setTimeout(() => {
-                navigate('/appointments');
-            }, 2000);
-        } else {
-            return;
-        }
-    };
     const calcNewAppointmentInOneWeek = useCallback(() => {
         const startDate = DateTime.fromISO(appointmentToCreate.date);
         const nextDate = startDate.plus({ days: 7 }).toISO();
@@ -181,7 +168,7 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             </Box>
             {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsCount} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
-                <Button onPress={weeklies.length > 0 ? handleCreateAppointmentWeekly : handleCreateAppointment} width={buttonWidth}>
+                <Button onPress={handleCreateAppointments} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>

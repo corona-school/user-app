@@ -13,6 +13,7 @@ import { IssueReporter } from './IssueReporter';
 import { NotificationsProvider } from './components/NotificationsProvider';
 import { ToastNotifications } from './components/ToastNotifications';
 import { BrowserRouter } from 'react-router-dom';
+import { CreateAppointmentProvider } from './context/AppointmentContext';
 
 function App() {
     return (
@@ -24,8 +25,10 @@ function App() {
                             <IssueReporter>
                                 <MatomoProvider value={matomo}>
                                     <NotificationsProvider>
-                                        <Navigator />
-                                        <ToastNotifications />
+                                        <CreateAppointmentProvider>
+                                            <Navigator />
+                                            <ToastNotifications />
+                                        </CreateAppointmentProvider>
                                     </NotificationsProvider>
                                 </MatomoProvider>
                             </IssueReporter>

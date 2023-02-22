@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 
@@ -14,7 +14,11 @@ type Props = {
 const CreateCourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state as { newCourseAppointments?: boolean };
+
     const { isMobile } = useLayoutHelper();
+
     const maxHeight = useBreakpointValue({
         base: 400,
         lg: 600,
@@ -38,7 +42,7 @@ const CreateCourseAppointments: React.FC<Props> = ({ next, back }) => {
                 borderColor="primary.500"
                 _text={{ color: 'primary.500' }}
                 width="full"
-                onPress={() => navigate('/create-course-appointment')}
+                onPress={() => navigate('/create-course-appointment', { state: { newCourseAppointments: false } })}
             >
                 {t('course.appointments.addOtherAppointment')}
             </Button>

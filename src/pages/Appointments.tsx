@@ -11,6 +11,7 @@ import { useUserType } from '../hooks/useApollo';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
+import { useCreateAppointments } from '../context/AppointmentContext';
 
 // TODO get my appointments and pass data to AppointmentList
 const myAppointmentsQuery = gql(`

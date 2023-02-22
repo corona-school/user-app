@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import WithNavigation from '../components/WithNavigation';
-import { CreateAppointmentProvider } from '../context/AppointmentContext';
 import InstructionProgress from '../widgets/InstructionProgress';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
@@ -52,27 +51,25 @@ const CreateAppointment = () => {
     );
 
     return (
-        <CreateAppointmentProvider>
-            <AsNavigationItem path="create-appointments">
-                <WithNavigation>
-                    <Box mx="4">
-                        <View position="sticky" mb={2} overflow="hidden">
-                            <InstructionProgress
-                                currentIndex={currentIndex}
-                                instructions={[
-                                    { label: t('appointment.create.assignmentProgress') },
-                                    { label: t('appointment.create.appointmentViewProgress') },
-                                    { label: t('appointment.create.appointmentAdd') },
-                                ]}
-                            />
-                        </View>
-                        {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
-                        {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
-                        {currentIndex === 2 && <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} />}
-                    </Box>
-                </WithNavigation>
-            </AsNavigationItem>
-        </CreateAppointmentProvider>
+        <AsNavigationItem path="create-appointments">
+            <WithNavigation>
+                <Box mx="4">
+                    <View position="sticky" mb={2} overflow="hidden">
+                        <InstructionProgress
+                            currentIndex={currentIndex}
+                            instructions={[
+                                { label: t('appointment.create.assignmentProgress') },
+                                { label: t('appointment.create.appointmentViewProgress') },
+                                { label: t('appointment.create.appointmentAdd') },
+                            ]}
+                        />
+                    </View>
+                    {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
+                    {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
+                    {currentIndex === 2 && <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} />}
+                </Box>
+            </WithNavigation>
+        </AsNavigationItem>
     );
 };
 

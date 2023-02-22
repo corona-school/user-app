@@ -1,4 +1,5 @@
-import { createContext, ReactNode, Reducer, useContext, useReducer } from 'react';
+import { createContext, ReactNode, Reducer, useContext, useReducer, useState } from 'react';
+import { CreateAppointment } from '../types/lernfair/Appointment';
 import {
     CreateAppointmentAction,
     FormReducerActionType,
@@ -61,10 +62,15 @@ export const AppointmentContext = createContext<TAppointmentContext>({
     dispatchCreateAppointment: () => undefined,
     weeklies: [],
     dispatchWeeklyAppointment: () => undefined,
+    appointmentsToBeCreated: [],
+    setAppointmentsToBeCreated: () => undefined,
+    appointmentsToBeCanceled: [],
+    setAppointmentsToBeCanceled: () => undefined,
+    appointmentsToBeUpdated: [],
+    setAppointmentsToBeUpdated: () => undefined,
 });
 
 export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
     const [appointmentToCreate, dispatchCreateAppointment] = useReducer(createAppointmentFormReducer, {
         title: '',
         description: '',
@@ -73,15 +79,33 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
         duration: 0,
         isRecurring: false,
     });
+    const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
+
+    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<CreateAppointment[]>([]);
+    const [appointmentsToBeCanceled, setAppointmentsToBeCanceled] = useState<number[]>([]);
+    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<CreateAppointment[]>([]);
 
     return (
-        <AppointmentContext.Provider value={{ appointmentToCreate, weeklies, dispatchCreateAppointment, dispatchWeeklyAppointment }}>
+        <AppointmentContext.Provider
+            value={{
+                appointmentToCreate,
+                weeklies,
+                appointmentsToBeCreated,
+                appointmentsToBeCanceled,
+                appointmentsToBeUpdated,
+                dispatchCreateAppointment,
+                dispatchWeeklyAppointment,
+                setAppointmentsToBeCreated,
+                setAppointmentsToBeCanceled,
+                setAppointmentsToBeUpdated,
+            }}
+        >
             {children}
         </AppointmentContext.Provider>
     );
 };
 
-export const useCreateAppointments = () => {
+export const useCreateAppointment = () => {
     const { appointmentToCreate, dispatchCreateAppointment } = useContext(AppointmentContext);
     return { appointmentToCreate, dispatchCreateAppointment };
 };
@@ -90,3 +114,22 @@ export function useWeeklyAppointments() {
     const { weeklies, dispatchWeeklyAppointment } = useContext(AppointmentContext);
     return { weeklies, dispatchWeeklyAppointment };
 }
+
+export const useCreateAppointments = () => {
+    const {
+        appointmentsToBeCreated,
+        appointmentsToBeCanceled,
+        appointmentsToBeUpdated,
+        setAppointmentsToBeCanceled,
+        setAppointmentsToBeCreated,
+        setAppointmentsToBeUpdated,
+    } = useContext(AppointmentContext);
+    return {
+        appointmentsToBeCreated,
+        appointmentsToBeCanceled,
+        appointmentsToBeUpdated,
+        setAppointmentsToBeCanceled,
+        setAppointmentsToBeCreated,
+        setAppointmentsToBeUpdated,
+    };
+};
