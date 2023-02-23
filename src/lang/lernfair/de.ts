@@ -114,7 +114,7 @@ const lernfair = {
             matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
         },
         'not-tutor': {
-            matching: 'Du bist noch nicht für das Matching zugelassen.',
+            matching: 'Du bist noch nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
         },
     },
 };

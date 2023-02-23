@@ -24,7 +24,7 @@ const helperwizard = {
         title: 'Du bist auf der Warteliste!',
         content:
             'Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.',
-        buttons: ['Gruppen-Kurse ansehen', 'Anfrage zurücknehmen'],
+        buttons: ['Kurse ansehen', 'Anfrage zurücknehmen'],
     },
     interestconfirmation: {
         title: 'Brauchst du noch Unterstützung?',

@@ -3,7 +3,7 @@ const login = {
     error: 'Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben',
     forgotPassword: 'Passwort vergessen?',
     signupNew: 'Neu registrieren',
-    noaccount: 'Du hast noch keinen Account?',
+    noaccount: 'Du hast noch keinen Account? Hier geht es zur Registrierung!',
     email: {
         sent: 'Wir haben dir eine E-Mail zum Login geschickt',
     },

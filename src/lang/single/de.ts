@@ -28,7 +28,7 @@ const single = {
     },
     card: {
         expandCardButton: 'Mehr Kurs-Infos',
-        alreadyRegistered: 'Du bist bereits Teilnehmer:in dieses Kurses',
+        alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         time: {
             notStarted: 'Startet:',
