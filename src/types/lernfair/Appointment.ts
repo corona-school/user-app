@@ -1,12 +1,12 @@
-import { Weeklies, AppointmentType as TAppointmentType } from './CreateAppointment';
+import { AppointmentType as TAppointmentType } from './CreateAppointment';
 
-import { Student } from '../../gql/graphql';
-import { Participant } from './User';
+import { Organizer, Participant } from './User';
 
 export enum AppointmentTypes {
-    GROUP = 'GROUP',
-    ONE_TO_ONE = 'ONE_TO_ONE',
-    TRAINING = 'TRAINING',
+    GROUP = 'group',
+    MATCH = 'match',
+    OTHER_INTERNAL = 'other_internal',
+    LEGACY_LECTURE = 'legacy_lecture',
 }
 
 export type Appointment = {
@@ -19,7 +19,7 @@ export type Appointment = {
     subcourseId?: number;
     matchId?: number | null;
     meetingLink?: string | null;
-    organizers?: Student[];
+    organizers?: Organizer[];
     participants?: Participant[];
     isCancelled?: boolean;
     declinedBy?: number[];
@@ -38,25 +38,7 @@ export type CreateAppointment = {
     appointmentType?: TAppointmentType;
 };
 
-export type BaseAppointment = {
-    title: string;
-    description: string;
-    start: string;
-    duration: number;
-    subcourseId: number;
-};
-
-export type CreateAppointmentWithWeeklies = {
-    baseAppointment: CreateAppointment;
-    weeklyText: Weeklies;
-};
-
 export type Course = {
     name: string;
     description: string;
 };
-
-export enum Assignment {
-    GROUP = 'Subcourse',
-    MATCH = 'Match',
-}

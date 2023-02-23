@@ -3,20 +3,21 @@ import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
-import { Student } from '../../gql/graphql';
-import { Participant } from '../../types/lernfair/User';
+import { Organizer, Participant } from '../../types/lernfair/User';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     timeDescriptionText: string;
-    courseTitle: string;
+    title: string;
     isCurrentlyTakingPlace: boolean;
-    organizers?: Student[];
+    organizers?: Organizer[];
     participants?: Participant[];
     isReadOnly?: boolean;
     onPress?: () => void;
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, isCurrentlyTakingPlace, organizers, participants, isReadOnly, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, title, isCurrentlyTakingPlace, organizers, participants, isReadOnly, onPress }) => {
+    const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -59,7 +60,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                         </HStack>
                         <Box>
                             <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {courseTitle}
+                                {title}
                             </Heading>
 
                             <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
@@ -70,7 +71,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, courseTitle, is
                                     .join(', ')}
                             </Text>
                         </Box>
-                        {isCurrentlyTakingPlace && <Button mt={2}>Videochat beitreten</Button>}
+                        {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton')}</Button>}
                     </VStack>
                 </Pressable>
             </Card>

@@ -8,8 +8,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { Student } from '../../gql/graphql';
-import { Participant } from '../../types/lernfair/User';
+import { Organizer, Participant } from '../../types/lernfair/User';
 
 type MetaProps = {
     date: string;
@@ -19,7 +18,7 @@ type MetaProps = {
     count: number;
     total: number;
     attendeesCount?: number;
-    organizers?: Student[];
+    organizers?: Organizer[];
     participants?: Participant[];
     declinedBy?: number[];
 

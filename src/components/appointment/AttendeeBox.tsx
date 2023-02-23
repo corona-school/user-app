@@ -8,15 +8,15 @@ import { AttendanceStatus } from '../../types/lernfair/User';
 
 type BoxProps = {
     name: string;
-    isStudent?: boolean;
+    isOrganizer?: boolean;
     declined?: AttendanceStatus;
 };
 
-const AttendeeBox: React.FC<BoxProps> = ({ name, isStudent, declined }) => {
+const AttendeeBox: React.FC<BoxProps> = ({ name, isOrganizer, declined }) => {
     const { t } = useTranslation();
 
     const getUserIcon = () => {
-        if (isStudent) {
+        if (isOrganizer) {
             return declined === AttendanceStatus.DECLINED ? <StudentAvatarCancelled /> : <StudentIcon />;
         }
         return declined === AttendanceStatus.DECLINED ? <PupilAvatarCanceled /> : <PupilIcon />;
@@ -33,7 +33,7 @@ const AttendeeBox: React.FC<BoxProps> = ({ name, isStudent, declined }) => {
                         {name}
                     </Text>
                     <Text fontSize="xs" fontWeight="light" ellipsizeMode="tail" numberOfLines={1} color="white">
-                        {isStudent ? t('appointment.attendeesModal.helper') : t('appointment.attendeesModal.pupil')}
+                        {isOrganizer ? t('appointment.attendeesModal.helper') : t('appointment.attendeesModal.pupil')}
                     </Text>
                 </VStack>
             </HStack>

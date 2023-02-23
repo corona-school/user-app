@@ -12,7 +12,6 @@ import { gql, useQuery } from '@apollo/client';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
-// TODO get my appointments and pass data to list
 const myAppointmentsQuery = gql`
     query myAppointments {
         me {
@@ -53,7 +52,7 @@ const Appointments: React.FC = () => {
                 {loading && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />
+                    {!error && <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />}
                 </VStack>
             </WithNavigation>
         </AsNavigationItem>

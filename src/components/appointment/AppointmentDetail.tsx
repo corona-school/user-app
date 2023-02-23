@@ -59,9 +59,13 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
         // TODO mutation to set participant declined
     }, []);
 
+    const attendees = useMemo(() => {
+        return appointment.organizers && appointment.participants ? [...appointment.organizers, ...appointment.participants] : [];
+    }, [appointment.organizers, appointment.participants]);
+
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            <Avatars organizers={appointment.organizers || []} participants={appointment.participants || []} />
+            <Avatars attendees={attendees} />
             <Header appointmentType={appointment.appointmentType} organizers={[]} title={appointment.title} />
             <MetaDetails
                 date={date}

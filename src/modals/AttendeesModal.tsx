@@ -1,11 +1,10 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AttendanceStatus, Participant } from '../types/lernfair/User';
+import { AttendanceStatus, Organizer, Participant } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
-import { Student } from '../gql/graphql';
 
 type ModalProps = {
-    organizers?: Student[];
+    organizers?: Organizer[];
     participants?: Participant[];
     declinedBy?: number[];
     onClose?: () => void;
@@ -14,8 +13,8 @@ type ModalProps = {
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
-    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy?.indexOf(a.id) - declinedBy?.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy?.indexOf(a.id) - declinedBy?.indexOf(b.id));
+    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
 
     return (
         <>
@@ -34,7 +33,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
-                                            isStudent={organizer.isStudent}
+                                            isOrganizer={organizer.isOrganizer}
                                             declined={declinedBy?.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );

@@ -5,6 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 
 type Props = {
     id: number;
@@ -74,10 +75,11 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
                     </Text>
                 </Stack>
             )}
-            {!error && data && (
+            {!error && (
                 <Box maxH={maxHeight} flex="1" mb="10">
                     <ScrollView ml={3} width={'100%'} pl={0}>
-                        <AppointmentList isReadOnly={true} />
+                        {/* // TODO change to appointments from query */}
+                        <AppointmentList isReadOnly={true} appointments={appointmentsData} />
                     </ScrollView>
                 </Box>
             )}
