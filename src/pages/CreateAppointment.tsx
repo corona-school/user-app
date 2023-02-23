@@ -7,12 +7,14 @@ import InstructionProgress from '../widgets/InstructionProgress';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
 import AppointmentsInsight from './create-appointment/AppointmentsInsight';
+import { useNavigate } from 'react-router-dom';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [noAppointments, setNoAppointments] = useState<boolean>(false);
     const [id, setId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const { t } = useTranslation();
 
@@ -66,7 +68,9 @@ const CreateAppointment = () => {
                     </View>
                     {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
                     {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
-                    {currentIndex === 2 && <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} />}
+                    {currentIndex === 2 && (
+                        <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} navigateTo={() => navigate('/appointments')} id={id} />
+                    )}
                 </Box>
             </WithNavigation>
         </AsNavigationItem>

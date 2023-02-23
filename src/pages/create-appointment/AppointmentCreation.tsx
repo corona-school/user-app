@@ -7,9 +7,8 @@ import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useCreateAppointment, useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
-import { AppointmentType, FormReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { CreateAppointment } from '../../types/lernfair/Appointment';
-import { useNavigate } from 'react-router-dom';
+import { AppointmentType, FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
+import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
 
 type FormErrors = {
@@ -21,7 +20,6 @@ type FormErrors = {
     dateNotInOneWeek?: string;
 };
 
-// type of appointments to send to the BE
 export type StartDate = {
     date: string;
     time: string;
@@ -29,18 +27,23 @@ export type StartDate = {
 
 type Props = {
     back: () => void;
-    isCourseAppointment?: boolean;
+    navigateTo: () => void;
+    // course id oder match id
+    id?: number;
+    // if create appointment for course
+    isCourse?: boolean;
+    // if create course appointment
+    isCourseCreation?: boolean;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, isCourseCreation }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateAppointments();
-    const { weeklies } = useWeeklyAppointments();
+    const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
     const { user } = useApollo();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-    const navigate = useNavigate();
     const toast = useToast();
 
     const appointmentsCount = 2;
@@ -49,6 +52,12 @@ const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => 
         base: 'full',
         lg: '25%',
     });
+
+    const [createAppointments] = useMutation(gql`
+        mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
+            appointmentsCreate(appointments: $appointments)
+        }
+    `);
 
     const convertStartDate = (date: string, time: string) => {
         const dt = DateTime.fromISO(date);
@@ -61,13 +70,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => 
         });
         return newDate.toISO();
     };
-
-    const [createAppointments] = useMutation(gql`
-        mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
-            appointmentsCreate(appointments: $appointments)
-        }
-    `);
-
     const validateInputs = () => {
         const isDateMinOneWeekLater = (date: string): boolean => {
             const startDate = DateTime.fromISO(date);
@@ -109,42 +111,89 @@ const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => 
         });
     };
 
-    const handleCreateAppointments = () => {
+    const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
             const organizers = [user!.student!.id];
-
-            const newAppointment: CreateAppointment = {
+            const newAppointment: CreateAppointmentInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 organizers: organizers,
                 duration: appointmentToCreate.duration,
-                appointmentType: AppointmentType.GROUP,
+                appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
             };
-            setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
+            if (isCourseCreation && weeklies.length === 0) {
+                setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
+            } else if (isCourseCreation && weeklies.length > 0) {
+                let weeklyAppointments: CreateAppointmentInput[] = [];
 
-            // if (weeklies.length > 0) {
-            //     for (const weekly of weeklies) {
-            //         appointmentsToCreate.push({
-            //             title: weekly.title ? weekly.title : '',
-            //             description: weekly.description ? weekly.description : '',
-            //             start: weekly.nextDate,
-            //             organizers: organizers,
-            //             duration: appointmentToCreate.duration,
-            //             appointmentType: AppointmentType.GROUP,
-            //         });
-            //     }
-            // }
+                for (const weekly of weeklies) {
+                    const newWeeklyAppointment = {
+                        title: weekly.title ? weekly.title : '',
+                        description: weekly.description ? weekly.description : '',
+                        start: weekly.nextDate,
+                        organizers: organizers,
+                        duration: appointmentToCreate.duration,
+                        appointmentType: AppointmentType.GROUP,
+                    };
+                    weeklyAppointments.push(newWeeklyAppointment);
+                }
+                setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment, ...weeklyAppointments]);
+            }
 
-            // createAppointments({ variables: { appointmentsToBeCreated } });
-            if (isCourseAppointment) navigate('/create-course', { state: { currentStep: 1, newCourseAppointments: true } });
+            createAppointments({ variables: { appointmentsToBeCreated } });
+            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
             setTimeout(() => {
-                navigate('/appointments');
+                navigateTo();
             }, 2000);
         }
-        // console.log('appointments to create', appointmentsToCreate, 'is course appointment? ', isCourseAppointment);
+    };
+
+    const handleCreateAppointment = () => {
+        if (!appointmentToCreate) return;
+        if (validateInputs()) {
+            let newAppointments: CreateAppointmentInput[] = [];
+            const organizers = [user!.student!.id];
+            const newAppointment: CreateAppointmentInput = {
+                title: appointmentToCreate.title ? appointmentToCreate.title : '',
+                description: appointmentToCreate.description ? appointmentToCreate.description : '',
+                start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
+                organizers: organizers,
+                duration: appointmentToCreate.duration,
+                appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
+                ...(isCourse ? { subcourseId: id } : { matchId: id }),
+            };
+            newAppointments.push(newAppointment);
+            if (weeklies.length > 0) {
+                let weeklyAppointments: CreateAppointmentInput[] = [];
+
+                for (const weekly of weeklies) {
+                    const newWeeklyAppointment = {
+                        title: weekly.title ? weekly.title : '',
+                        description: weekly.description ? weekly.description : '',
+                        start: weekly.nextDate,
+                        organizers: organizers,
+                        duration: appointmentToCreate.duration,
+                        appointmentType: AppointmentType.GROUP,
+                    };
+                    weeklyAppointments.push(newWeeklyAppointment);
+                }
+                newAppointments.push(...weeklyAppointments);
+            }
+            // createAppointments({ variables: { appointmentsToBeCreated } });
+
+            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+
+            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
+            setTimeout(() => {
+                navigateTo();
+            }, 2000);
+        }
     };
 
     const calcNewAppointmentInOneWeek = useCallback(() => {
@@ -168,7 +217,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, isCourseAppointment }) => 
             </Box>
             {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsCount} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
-                <Button onPress={handleCreateAppointments} width={buttonWidth}>
+                <Button onPress={isCourseCreation ? handleCreateCourseAppointments : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>

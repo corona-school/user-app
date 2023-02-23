@@ -13,8 +13,9 @@ const CreateCourseAppointment = () => {
             <WithNavigation headerTitle="Termin erstellen" showBack headerLeft={<NotificationAlert />}>
                 <Box mx="4">
                     <AppointmentCreation
-                        back={() => navigate('/create-course', { state: { currentStep: 1, newCourseAppointments: false } })}
-                        isCourseAppointment={true}
+                        back={() => navigate('/create-course', { state: { currentStep: 1 } })}
+                        navigateTo={() => navigate('/create-course', { state: { currentStep: 1 } })}
+                        isCourseCreation={true}
                     />
                 </Box>
             </WithNavigation>
