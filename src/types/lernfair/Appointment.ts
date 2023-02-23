@@ -32,7 +32,7 @@ export type Appointment = {
 };
 
 // type of appointments to send to the BE
-export type CreateAppointment = {
+export type CreateAppointmentInput = {
     title: string;
     description: string;
     start: string;
@@ -44,7 +44,7 @@ export type CreateAppointment = {
 };
 
 export type CreateAppointmentWithWeeklies = {
-    baseAppointment: CreateAppointment;
+    baseAppointment: CreateAppointmentInput;
     weeklyText: Weeklies;
 };
 

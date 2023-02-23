@@ -1,5 +1,5 @@
 import { createContext, ReactNode, Reducer, useContext, useReducer, useState } from 'react';
-import { CreateAppointment } from '../types/lernfair/Appointment';
+import { CreateAppointmentInput } from '../types/lernfair/Appointment';
 import {
     CreateAppointmentAction,
     FormReducerActionType,
@@ -13,16 +13,26 @@ import {
 const createAppointmentFormReducer: Reducer<State, CreateAppointmentAction> = (state: State, action: CreateAppointmentAction) => {
     switch (action.type) {
         case FormReducerActionType.TEXT_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'title']: action.value };
         }
         case FormReducerActionType.SELECT_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'duration']: action.value };
         }
         case FormReducerActionType.DATE_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'date']: action.value };
         }
         case FormReducerActionType.TOGGLE_CHANGE: {
-            return { ...state, [action.field]: !state[action.field] };
+            return { ...state, [action.field || 'isRecurring']: !state[action.field || 'isRecurring'] };
+        }
+        case FormReducerActionType.CLEAR_DATA: {
+            return {
+                title: '',
+                description: '',
+                date: '',
+                time: '',
+                duration: 0,
+                isRecurring: false,
+            };
         }
     }
 };
@@ -47,6 +57,9 @@ const weeklyReducer: Reducer<Weeklies, WeeklyAppointmentAction> = (state: Weekli
             const nextState = [...state];
             nextState.splice(action.index, 1, mutatedWeekly);
             return [...nextState];
+        }
+        case WeeklyReducerActionType.CLEAR_WEEKLIES: {
+            return [];
         }
     }
 };
@@ -81,9 +94,9 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
     });
     const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
 
-    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<CreateAppointment[]>([]);
+    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<CreateAppointmentInput[]>([]);
     const [appointmentsToBeCanceled, setAppointmentsToBeCanceled] = useState<number[]>([]);
-    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<CreateAppointment[]>([]);
+    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<CreateAppointmentInput[]>([]);
 
     return (
         <AppointmentContext.Provider
