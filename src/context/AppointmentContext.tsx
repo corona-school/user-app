@@ -128,7 +128,7 @@ export function useWeeklyAppointments() {
     return { weeklies, dispatchWeeklyAppointment };
 }
 
-export const useCreateAppointments = () => {
+export const useCreateCourseAppointments = () => {
     const {
         appointmentsToBeCreated,
         appointmentsToBeCanceled,

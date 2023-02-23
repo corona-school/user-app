@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
-import { useCreateAppointment, useCreateAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
+import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { AppointmentType, FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
@@ -39,7 +39,7 @@ type Props = {
 const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, isCourseCreation }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
-    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateAppointments();
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
     const { user } = useApollo();
     const { t } = useTranslation();
@@ -111,6 +111,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
         });
     };
 
+    // add course appointments to create to state
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
@@ -142,7 +143,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                 setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment, ...weeklyAppointments]);
             }
 
-            createAppointments({ variables: { appointmentsToBeCreated } });
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
@@ -153,6 +153,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
         }
     };
 
+    // write new appointments directly (mutation)
     const handleCreateAppointment = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {

@@ -2,7 +2,6 @@ import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useCreateAppointments } from '../../context/AppointmentContext';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 
@@ -14,7 +13,6 @@ type Props = {
 const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { appointmentsToBeCreated } = useCreateAppointments();
 
     const { isMobile } = useLayoutHelper();
 
@@ -29,7 +27,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     });
 
     // TODO query course appointments by ID
-    console.log('neue kurstermine', appointmentsToBeCreated);
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
