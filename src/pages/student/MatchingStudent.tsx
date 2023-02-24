@@ -194,7 +194,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {(activeMatches?.length > 0 &&
+                                                {activeMatches?.length > 0 ? (
                                                     activeMatches.map((match: LFMatch, index: number) => (
                                                         <Column width={CardGrid} marginRight="15px">
                                                             <LearningPartner
@@ -218,7 +218,10 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                 meetingId={match?.uuid}
                                                             />
                                                         </Column>
-                                                    ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                    ))
+                                                ) : (
+                                                    <AlertMessage content={t('matching.request.check.noMatches')} />
+                                                )}
                                             </Flex>
                                         </VStack>
                                     ),

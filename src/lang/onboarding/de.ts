@@ -177,7 +177,7 @@ const onboardingList = {
             matchSolve: {
                 title: 'Lernpaar auflösen',
                 content:
-                    'Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt Einzek unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.',
+                    'Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt Einzel unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.',
             },
             finisher: {
                 title: 'Geschafft',
