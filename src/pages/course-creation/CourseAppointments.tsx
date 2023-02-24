@@ -1,8 +1,10 @@
-import { Box, Button, Divider, ScrollView, Stack, useBreakpointValue } from 'native-base';
+import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useCreateCourseAppointments } from '../../context/AppointmentContext';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 
@@ -14,6 +16,7 @@ type Props = {
 const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { appointmentsToBeCreated } = useCreateCourseAppointments();
 
     const { isMobile } = useLayoutHelper();
 
@@ -28,10 +31,33 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     });
 
     // TODO query course appointments by ID
+    const _convertAppointments = () => {
+        let convertedAppointments: Appointment[] = [];
+        for (const appointment of appointmentsToBeCreated) {
+            const converted = {
+                id: 1,
+                title: appointment.title,
+                description: appointment.description,
+                start: appointment.start,
+                duration: appointment.duration,
+                appointmentType: AppointmentTypes.GROUP,
+            };
+            convertedAppointments.push(converted);
+        }
+        return convertedAppointments;
+    };
+
+    const _allAppointmentsToShow = () => {
+        const convertedAppointments = _convertAppointments();
+        const all = appointmentsData.concat(convertedAppointments);
+        return all;
+    };
+    const allAppointmentsToShow = _allAppointmentsToShow();
+
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} appointments={appointmentsData} />
+                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
             </Box>
 
             <Button

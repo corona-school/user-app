@@ -3,6 +3,8 @@ import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpoint
 import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
+import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
 import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
@@ -22,6 +24,7 @@ type Props = {
 const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+    const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const {
         courseName,
         subject,
@@ -63,6 +66,29 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
 
         return time >= 60 ? time / 60 + ' Stunden' : time + ' Minuten';
     }, []);
+
+    const _convertAppointments = () => {
+        let convertedAppointments: Appointment[] = [];
+        for (const appointment of appointmentsToBeCreated) {
+            const converted = {
+                id: 1,
+                title: appointment.title,
+                description: appointment.description,
+                start: appointment.start,
+                duration: appointment.duration,
+                appointmentType: AppointmentTypes.GROUP,
+            };
+            convertedAppointments.push(converted);
+        }
+        return convertedAppointments;
+    };
+
+    const _allAppointmentsToShow = () => {
+        const convertedAppointments = _convertAppointments();
+        const all = appointmentsData.concat(convertedAppointments);
+        return all;
+    };
+    const allAppointmentsToShow = _allAppointmentsToShow();
 
     return (
         <VStack space={space['1']}>
@@ -142,7 +168,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} appointments={appointmentsData} />
+                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>
