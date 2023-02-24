@@ -12,7 +12,7 @@ const single = {
         tutor: 'Tutor:innen',
         more_tutors: 'Weitere Tutor:innen',
         years: 'Jahre',
-        hours: 'Stunden',
+        hours: 'Stunde(n)',
         status: {
             free: 'Freie Plätze',
             last: 'Wenige freie Plätze',
@@ -43,12 +43,12 @@ const single = {
     buttonPromote: {
         button: 'Kurs bewerben',
         toast: 'Kurs beworben',
-        toastFail: 'Kurs konnte nicht beworben werden',
+        toastFail: 'Dein Kurs konnte nicht beworben werden',
     },
     bannerPromote: {
         freeTitle: 'Auf freie Plätze aufmerksam machen?',
-        freeDescription: 'Nutze die Möglichkeit deinen Kurs einmalig zu bewerben.',
-        promotedTitle: 'Kurs wurde erneut beworben!',
+        freeDescription: 'Nutze die Möglichkeit, deinen Kurs einmalig zu bewerben.',
+        promotedTitle: 'Dein Kurs wurde erneut beworben!',
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
         participant: 'Teilnehmer:innen',
     },
