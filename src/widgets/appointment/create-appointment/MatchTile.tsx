@@ -4,12 +4,12 @@ import Tag from '../../../components/Tag';
 import { LFPupil } from '../../../types/lernfair/User';
 
 type MatchTileProps = {
-    matchId?: number;
+    matchId: number;
     schooltype: string;
     grade: string;
     pupil: LFPupil;
     subjects?: string[];
-    next: (id?: number) => void;
+    next: (id: number, isCourse?: boolean) => void;
 };
 
 const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil, subjects, next }) => {
@@ -25,7 +25,7 @@ const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil
 
     return (
         <Box>
-            <Pressable onPress={() => next(matchId)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+            <Pressable onPress={() => next(matchId, false)} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                 <HStack w="100%">
                     <Box mr="3" h="100%">
                         <Center bg="primary.900" width={containerWidth} height="100%" borderTopLeftRadius="15px" borderBottomLeftRadius="15px">

@@ -24,37 +24,34 @@ export type LFStudent = {
     lastname: string;
 };
 
-export interface Attendee {
-    appointmentId: number;
-    status: AttendanceStatus;
-    declined: boolean;
-}
+export type Student = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    isStudent: true;
+};
 
-export interface ParticipantPupil extends Attendee {
-    pupilId: number;
+export type Pupil = {
+    id: number;
     firstname: string;
     lastname: string;
     isPupil: true;
-}
+};
 
-export interface ParticipantStudent extends Attendee {
-    studentId: number;
+export type Screener = {
+    id: number;
     firstname: string;
     lastname: string;
-    isStudent: true;
-}
+    isScreener: true;
+};
 
-export interface ParticipantScreener extends Attendee {
-    screenerId: number;
+export type Organizer = {
+    id: number;
     firstname: string;
     lastname: string;
-}
+    isOrganizer: true;
+};
 
-export interface Organizer extends Attendee {
-    studentId: number;
-    firstname: string;
-    lastname: string;
-    isStudent: true;
-}
+export type Participant = Student | Pupil | Screener;
 
-export type Participant = ParticipantPupil | ParticipantStudent;
+export type Attendee = Participant | Organizer;

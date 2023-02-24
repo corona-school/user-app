@@ -1,17 +1,23 @@
 import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { getAppointmentDateTime } from '../../helper/appointment-helper';
 import { useCallback, useMemo, useState } from 'react';
-import { AppointmentType, Course } from '../../types/lernfair/Appointment';
+import { Appointment, Course } from '../../types/lernfair/Appointment';
 import MetaDetails from './MetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
 import Buttons from './Buttons';
+import { DateTime } from 'luxon';
 
 type AppointmentDetailProps = {
-    appointment: AppointmentType;
+    appointment: Appointment;
     course?: Course;
+};
+
+type AppointmentDates = {
+    date: string;
+    startTime: string;
+    endTime: string;
 };
 
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, course }) => {
@@ -19,20 +25,33 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     const toast = useToast();
     const { space, sizes } = useTheme();
     const [canceled, setCanceled] = useState<boolean>(false);
-    const { date, startTime, endTime } = getAppointmentDateTime(appointment.start, appointment.duration);
-
-    const countAttendees = useCallback(() => {
-        // TODO change to appointment.appointment_participant_pupil, appointment.appointment_participant_student, appointment.appointment_participant_screener
-        const participants = appointment.participants ? appointment.participants.length : 0;
-        const organizers = appointment.organizers ? appointment.organizers.length : 0;
-        return participants + organizers;
-    }, [appointment.organizers, appointment.participants]);
-    const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
-
     const containerWidth = useBreakpointValue({
         base: 'full',
         lg: sizes['containerWidth'],
     });
+
+    const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
+        const start = DateTime.fromISO(appointmentStart).setLocale('de');
+        const date = start.setLocale('de').toFormat('cccc, dd. LLLL yyyy');
+        const startTime = start.setLocale('de').toFormat('HH:mm');
+        const end = start.plus({ minutes: duration });
+        const endTime = end.setLocale('de').toFormat('HH:mm');
+
+        return { date, startTime, endTime };
+    }, []);
+
+    const { date, startTime, endTime } = useMemo(
+        () => getAppointmentDateTime(appointment.start, appointment.duration),
+        [appointment.duration, appointment.start, getAppointmentDateTime]
+    );
+
+    const countAttendees = useCallback(() => {
+        const participants = appointment.participants ? appointment.participants.length : 0;
+        const organizers = appointment.organizers ? appointment.organizers.length : 0;
+        return participants + organizers;
+    }, [appointment.organizers, appointment.participants]);
+
+    const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
     const cancelAppointment = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
@@ -40,10 +59,14 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
         // TODO mutation to set participant declined
     }, []);
 
+    const attendees = useMemo(() => {
+        return appointment.organizers && appointment.participants ? [...appointment.organizers, ...appointment.participants] : [];
+    }, [appointment.organizers, appointment.participants]);
+
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            <Avatars organizers={appointment.organizers} participants={appointment.participants} />
-            <Header appointmentType={appointment.appointmentType} organizers={appointment.organizers} title={appointment.title} />
+            <Avatars attendees={attendees} />
+            <Header appointmentType={appointment.appointmentType} organizers={[]} title={appointment.title} />
             <MetaDetails
                 date={date}
                 startTime={startTime}
@@ -52,7 +75,9 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
                 count={1}
                 total={5}
                 attendeesCount={attendeesCount}
-                meetingLink={appointment.meetingLink}
+                organizers={appointment.organizers}
+                participants={appointment.participants}
+                declinedBy={appointment.declinedBy}
             />
             <Description appointmentType={appointment.appointmentType} courseName={course?.name} courseDescription={course?.description} />
             <Buttons onPress={cancelAppointment} canceled={canceled} />
