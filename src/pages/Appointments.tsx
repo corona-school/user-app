@@ -34,11 +34,6 @@ const Appointments: React.FC = () => {
     const { data, loading, error, refetch } = useQuery(myAppointmentsQuery);
 
     const navigate = useNavigate();
-    const { space, sizes } = useTheme();
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
 
     const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -51,9 +46,7 @@ const Appointments: React.FC = () => {
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
-                <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    {!error && <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />}
-                </VStack>
+                {!error && <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />}
             </WithNavigation>
         </AsNavigationItem>
     );

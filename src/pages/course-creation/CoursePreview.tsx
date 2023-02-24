@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue, ScrollView } from 'native-base';
+import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
 import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
@@ -142,9 +142,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <ScrollView ml={3} width={'100%'} pl={0}>
-                    <AppointmentList isReadOnly={true} appointments={appointmentsData} />
-                </ScrollView>
+                <AppointmentList isReadOnly={true} appointments={appointmentsData} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>

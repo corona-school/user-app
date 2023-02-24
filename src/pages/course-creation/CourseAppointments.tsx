@@ -31,9 +31,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <ScrollView ml={3} width={'100%'} pl={0}>
-                    <AppointmentList isReadOnly={true} appointments={appointmentsData} />
-                </ScrollView>
+                <AppointmentList isReadOnly={true} appointments={appointmentsData} />
             </Box>
 
             <Button

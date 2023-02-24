@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Box, Center, Divider, Text, VStack } from 'native-base';
+import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue, VStack } from 'native-base';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -26,12 +26,16 @@ const getScrollToId = (appointments: Appointment[]): number => {
     return currentId || nextId || 0;
 };
 
-const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = false }) => {
+const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => {
     const containerRef = useRef(null);
     const scrollViewRef = useRef(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const navigate = useNavigate();
 
+    const maxListWidth = useBreakpointValue({
+        base: 'full',
+        lg: isReadOnly ? 'full' : '90%',
+    });
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
@@ -77,7 +81,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = fals
         return () => {
             if (containerRef.current) observer.unobserve(containerRef.current);
         };
-    }, []);
+    }, [options]);
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;
@@ -87,42 +91,47 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = fals
     }, [appointments, isVisible]);
 
     return (
-        <VStack flex={1} maxW={isReadOnly ? 'full' : '90%'}>
-            {appointments.map((appointment, index) => {
-                const previousAppointment = appointments[index - 1];
-                const weekDivider = showWeekDivider(appointment, previousAppointment);
-                const monthDivider = showMonthDivider(appointment, previousAppointment);
+        <>
+            {isReadOnly && <div ref={containerRef} />}
 
-                return (
-                    <Box key={appointment.id} ml={3}>
-                        {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
-                        {monthDivider && (
-                            <>
-                                <Center mt="3">
-                                    <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
-                                        DateTime.fromISO(appointment.start).year
-                                    }`}</Text>
-                                </Center>
-                                <Divider my={3} width="95%" />
-                            </>
-                        )}
-                        <Box ml={5}>
-                            <AppointmentDay
-                                key={`appointment-${index}`}
-                                start={appointment.start}
-                                duration={appointment.duration}
-                                title={appointment.title}
-                                organizers={appointment.organizers}
-                                onPress={() => navigate(`/appointment/${appointment.id}`)}
-                                scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
-                                isReadOnly={isReadOnly}
-                            />
-                        </Box>
-                    </Box>
-                );
-            })}
-            <div ref={containerRef} />
-        </VStack>
+            <ScrollView scrollEnabled={isReadOnly}>
+                <Stack flex={1} maxW={maxListWidth}>
+                    {appointments.map((appointment, index) => {
+                        const previousAppointment = appointments[index - 1];
+                        const weekDivider = showWeekDivider(appointment, previousAppointment);
+                        const monthDivider = showMonthDivider(appointment, previousAppointment);
+
+                        return (
+                            <Box key={`${appointment.id + index}`} ml={3}>
+                                {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
+                                {monthDivider && (
+                                    <>
+                                        <Center mt="3">
+                                            <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                                                DateTime.fromISO(appointment.start).year
+                                            }`}</Text>
+                                        </Center>
+                                        <Divider my={3} width="95%" />
+                                    </>
+                                )}
+                                <Box ml={5}>
+                                    <AppointmentDay
+                                        key={`appointment-${appointment.title}-start-${appointment.id}`}
+                                        start={appointment.start}
+                                        duration={appointment.duration}
+                                        title={appointment.title}
+                                        organizers={appointment.organizers}
+                                        onPress={() => navigate(`/appointment/${appointment.id}`)}
+                                        scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
+                                        isReadOnly={isReadOnly}
+                                    />
+                                </Box>
+                            </Box>
+                        );
+                    })}
+                </Stack>
+            </ScrollView>
+        </>
     );
 };
 
