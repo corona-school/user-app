@@ -1,14 +1,17 @@
+import { useApolloClient } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Text, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
+import { gql } from '../gql';
+import { CertificateCreationInput, Match } from '../gql/graphql';
 import useModal from '../hooks/useModal';
+import { SuccessModal } from '../modals/SuccessModal';
 import { LFSubCourse } from '../types/lernfair/Course';
-import { LFMatch } from '../types/lernfair/Match';
 import InstructionProgress from '../widgets/InstructionProgress';
-import RequestCertificateData from './certificates/RequestCertificateData';
+import RequestCertificateMatchingWizard from './certificates/RequestCertificateMatchingWizard';
 import RequestCertificateOverview from './certificates/RequestCertificateOverview';
 
 type Props = {};
@@ -17,8 +20,8 @@ type IRequestCertificateData = {
     subject?: string | boolean;
     actions: string[];
     otherActions: string[];
-    pupilMatches: LFMatch[];
-    requestData: {};
+    pupilMatches: (Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: { firstname?: string | null; lastname?: string | null } })[];
+    requestData: { [matchUuid: string]: Pick<CertificateCreationInput, 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'ongoingLessons' | 'subjects'> };
     courses: LFSubCourse[];
 };
 type IRequestCertificateContext = {
@@ -44,14 +47,16 @@ export const RequestCertificateContext = createContext<IRequestCertificateContex
     setWizardIndex: () => null,
 });
 
+const REQUEST_CERTIFICATE = gql(
+    `mutation RequestCertificate($matchId: String! $certificateData: CertificateCreationInput!) {
+        participationCertificateCreate(matchId: $matchId, certificateData: $certificateData)
+    }`
+);
+
 const RequestCertificate: React.FC<Props> = () => {
     const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
     const navigate = useNavigate();
-    const location = useLocation() as {
-        state: { type: 'group' | 'matching'; edit?: boolean };
-    };
-    const certType = location?.state?.type;
 
     const { space } = useTheme();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -66,23 +71,39 @@ const RequestCertificate: React.FC<Props> = () => {
         courses: [],
     });
 
-    const showSuccessModal = useCallback(() => {}, []);
+    const client = useApolloClient();
 
-    const onFinish = useCallback(() => {
-        // TODO reuest certificate
+    const onFinish = useCallback(async () => {
+        console.log('State', state);
 
-        if (certType === 'group') {
-            // TODO request certificate
-        } else {
-            if (location?.state?.edit) {
-                // TODO update certificate
-            } else {
-                // TODO request certificate
-            }
+        for (const match of state.pupilMatches) {
+            const certificateData = state.requestData[match.uuid];
+
+            const result = await client.mutate({
+                mutation: REQUEST_CERTIFICATE,
+                variables: {
+                    matchId: match.uuid,
+                    certificateData: {
+                        ...certificateData,
+                        activities: [...state.actions, ...state.otherActions].join('\n'),
+                        medium: 'Video-Chat',
+                        state: 'awaiting-approval',
+                    },
+                },
+            });
+
+            console.log('Requested Certificate', result);
         }
 
-        showSuccessModal();
-    }, [certType, location?.state?.edit, showSuccessModal]);
+        navigate(-1);
+        show(
+            { variant: 'dark', closeable: true },
+            <SuccessModal
+                title="Geschafft"
+                content="Wir haben deine Anfrage erhalten und leiten die Informationen an deine:n Schüler:in weiter, um uns eine Bestätigung durch den/die Erziehungsberechtigte:n einzuholen. Anschließend erhälst du eine automatisierte E-Mail von uns mit deiner Bescheinigung"
+            />
+        );
+    }, [state, show]);
 
     const onNext = useCallback(() => {
         if (currentIndex + 1 < 2) setCurrentIndex((prev) => prev + 1);
@@ -90,6 +111,10 @@ const RequestCertificate: React.FC<Props> = () => {
     }, [currentIndex, onFinish]);
 
     const onBack = useCallback(() => {
+        if (currentIndex <= 0) {
+            navigate(-1);
+            return;
+        }
         setCurrentIndex((prev) => prev - 1);
     }, []);
 
@@ -112,20 +137,19 @@ const RequestCertificate: React.FC<Props> = () => {
             }}
         >
             <WithNavigation showBack headerLeft={<NotificationAlert />}>
-                {!certType && <Text>Es ist ein Fehler aufgetreten</Text>}
-                {certType && (
-                    <VStack paddingX={space['1']} space={space['1']}>
-                        <InstructionProgress
-                            currentIndex={currentIndex}
-                            instructions={[
-                                { label: 'Beantragen', title: '' },
-                                { label: 'Angaben', title: '' },
-                            ]}
-                        />
-                        {currentIndex === 0 && <RequestCertificateOverview onNext={onNext} onBack={onBack} />}
-                        {currentIndex === 1 && <RequestCertificateData onNext={onNext} onBack={onBack} certificateType={certType} />}
-                    </VStack>
-                )}
+                <VStack paddingX={space['1']} space={space['1']}>
+                    <InstructionProgress
+                        currentIndex={currentIndex}
+                        instructions={[
+                            { label: 'Beantragen', title: '' },
+                            { label: 'Angaben', title: '' },
+                            { label: 'Tätigkeit', title: '' },
+                            { label: 'Modus', title: '' },
+                        ]}
+                    />
+                    {currentIndex === 0 && <RequestCertificateOverview onNext={onNext} onBack={onBack} />}
+                    {currentIndex === 1 && <RequestCertificateMatchingWizard onNext={onNext} />}
+                </VStack>
             </WithNavigation>
         </RequestCertificateContext.Provider>
     );

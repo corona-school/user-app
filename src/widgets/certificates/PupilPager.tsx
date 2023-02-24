@@ -33,14 +33,16 @@ const PupilPager: React.FC<Props> = ({ onFinished, onBack }) => {
 
     return (
         <Flex>
-            {state?.pupilMatches &&
-                state?.pupilMatches.length > 0 &&
-                state?.pupilMatches?.map(
-                    (match: LFMatch, i: number) =>
-                        i === pupilIndex && (
-                            <SelectedPupilWizard match={match} onNext={next} onPrev={prev} pupilCount={state?.pupilMatches.length} currentIndex={pupilIndex} />
-                        )
-                )}
+            {state?.pupilMatches && state.pupilMatches.length > 0 && state.pupilMatches[pupilIndex] && (
+                <SelectedPupilWizard
+                    key={pupilIndex}
+                    match={state.pupilMatches[pupilIndex]}
+                    onNext={next}
+                    onPrev={prev}
+                    pupilCount={state?.pupilMatches.length}
+                    currentIndex={pupilIndex}
+                />
+            )}
         </Flex>
     );
 };

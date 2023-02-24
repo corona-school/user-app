@@ -49,7 +49,7 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
 
     return (
         <>
-            <Card padding={space['1']} margin={space['1']} minWidth="300px">
+            <Card padding={space['1']} marginBottom={space['1']} marginRight={space['1']} minWidth="300px">
                 <VStack>
                     <Row justifyContent="flex-end" alignItems="center">
                         <Box mr={space['0.5']}>
