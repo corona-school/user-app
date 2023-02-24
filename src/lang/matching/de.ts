@@ -3,11 +3,11 @@ const matching = {
         header: 'Lernunterstützung',
         title: 'Unterstützung anfragen',
         firstContent:
-            'Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+            'Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.',
         headlineContent: 'Wichtig',
-        contentBox1: 'Da es bei der Lernunterstützung zu',
-        contentBox2: 'langen Wartezeiten von 3-6 Monaten',
-        contentBox3: 'bieten wir zusätzlich Gruppen-Kurse an.',
+        contentBox1: 'Es kommt bei der Lernunterstützung zu',
+        contentBox2: 'langen Wartezeiten von 3-6 Monaten.',
+        contentBox3: 'Schau dir daher auch unsere Gruppen-Kurse an.',
         button: 'Unterstützung anfragen',
         ctaCardHeader: 'Gruppen-Kurse',
         ctaCardContent: 'Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…',
@@ -27,9 +27,9 @@ const matching = {
         },
         check: {
             header: 'Lernunterstützung',
-            title: 'Match anfordern',
-            content: 'Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
-            requestmatchButton: 'Lernpaar bilden',
+            title: 'Lernunterstützung',
+            content:
+                'In der Lernunterstützung hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden. Wenn du eine Lernunterstützung nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.',
             tabs: {
                 tab1: 'Aktuelle Lernpartner:innen',
                 tab2: 'Suche',
