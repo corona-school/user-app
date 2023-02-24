@@ -17,7 +17,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 const navItems: NavigationItems = {
     start: { label: 'Start', icon: LFHomeIcon },
     // appointments: { label: 'Termine', icon: LFAppointmentIcon },
-    group: { label: 'Gruppe', icon: LFGroupIcon },
+    group: { label: 'Kurse', icon: LFGroupIcon },
     matching: { label: 'Einzel', icon: LFMatchingIcon },
     hilfebereich: { label: 'Hilfe', icon: LFHelpIcon },
 };

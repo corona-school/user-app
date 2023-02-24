@@ -1,7 +1,7 @@
 const helpcenter = {
     title: 'Du brauchst Hilfe?',
     subtitle:
-        'Schau doch mal hier in unseren häufig gestellten Fragen, ob du eine Antwort auf deine Frage findest. Solltest du nicht fündig werden, kannst du dich auch in einer persönlichen Nachricht an unser Lern-Fair Team wenden.',
+        'Im Hilfestellungsbereich sind viele technische und pädagogische Hilfestellungen für die Gestaltung der Lernunterstützung hinterlegt. Solltest du nicht fündig werden, kannst du dich auch in einer persönlichen Nachricht an unser Lern-Fair Team wenden.',
     onboarding: {
         title: 'Onboarding',
         content: 'Hier geht es zum Onboarding.',

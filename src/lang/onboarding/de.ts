@@ -48,12 +48,11 @@ const onboardingList = {
                 },
             },
             matching: {
-                title: '1:1 Lernunterstützung',
-                content:
-                    'Wenn du Einzel-Hilfe brauchst, dann ist die 1:1 Lernunterstützung das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in.',
+                title: 'Lernunterstützung',
+                content: 'Wenn du Einzel-Hilfe brauchst, dann ist die Lernunterstützung das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in.',
             },
             groupCourse: {
-                title: 'Gruppen-Nachhilfe',
+                title: 'Nachhilfe-Kurse',
                 content: 'In kleinen Gruppen gibt es Hilfe zu verschiedenen Themen.',
             },
             appointments: {
@@ -100,14 +99,14 @@ const onboardingList = {
                 },
             },
             matching: {
-                title: '1:1 Matching',
+                title: 'Matching',
                 content:
-                    'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern.',
+                    'Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern.',
             },
             groupCourse: {
-                title: 'Gruppenkurse',
+                title: 'Gruppen-Kurse',
                 content:
-                    'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen. Unter „Meine Kurse“ werden alle deine Gruppenkurse angezeigt. Hier hast du auch die Möglichkeit, neue Kurse zu erstellen.',
+                    'Gruppen-Kurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen. Unter „Meine Kurse“ werden alle deine Gruppen-Kurse angezeigt. Hier hast du auch die Möglichkeit, neue Kurse zu erstellen.',
             },
             appointment: {
                 title: 'Termine',
@@ -139,8 +138,8 @@ const onboardingList = {
         },
         helperMatching: {
             welcome: {
-                title: 'Onboarding-Tour 1:1-Lernunterstützung',
-                content: 'Wir zeigen dir hier alle wichtigen Informationen, die du über die 1:1-Lernunterstützung wissen musst.',
+                title: 'Onboarding-Tour Lernunterstützung',
+                content: 'Wir zeigen dir hier alle wichtigen Informationen, die du über die Lernunterstützung wissen musst.',
                 question:
                     'Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?',
                 answer: 'Wir zeigen dir die wichtigsten Funktionen.',
@@ -156,7 +155,7 @@ const onboardingList = {
             matching: {
                 title: 'Lernpartner:in anfordern',
                 content:
-                    'Über den Button “Lernpartner:in” anfordern auf dem Dashboard oder im Bereich 1:1-Lernunterstützung kannst du eine:n neue:n Lernpartner:in anfordern.',
+                    'Über den Button “Lernpartner:in” anfordern auf dem Dashboard oder im Bereich Einzel kannst du eine:n neue:n Lernpartner:in anfordern.',
             },
             request: {
                 title: 'Anfrage stellen',
@@ -166,7 +165,7 @@ const onboardingList = {
                 title: 'Zuteilung des Lernpaars',
                 content: 'Nachdem du deine Anfrage gestellt hast, begeben wir uns auf die Suche nach einem/einer passenden Lernpartner:in für dich.',
                 contentsec:
-                    'Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich 1:1 Lernunterstützung sind alle deine Anfragen aufgeführt.',
+                    'Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich Einzel sind alle deine Anfragen aufgeführt.',
             },
             contact: {
                 title: 'Kontaktaufnahme',
@@ -178,11 +177,11 @@ const onboardingList = {
             matchSolve: {
                 title: 'Lernpaar auflösen',
                 content:
-                    'Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt 1:1-Lernunterstützung unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.',
+                    'Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt Einzel unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.',
             },
             finisher: {
                 title: 'Geschafft',
-                firstContent: 'Glückwunsch, du hast die Onboarding-Tour zur 1:1-Lernunterstützung abgeschlossen.',
+                firstContent: 'Glückwunsch, du hast die Onboarding-Tour zur Lernunterstützung abgeschlossen.',
                 headlineContent: 'Hast du alles verstanden?',
                 answer: 'Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.',
                 linkText: 'Zum Hilfebereich',

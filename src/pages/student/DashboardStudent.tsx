@@ -373,7 +373,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 );
                                             })
                                         ) : (
-                                            <AlertMessage content={t('course.empty.courses')} />
+                                            <AlertMessage content={t('course.empty.nocourses')} />
                                         )}
                                     </CSSWrapper>
                                     {data?.me?.student?.canCreateCourse?.allowed ? (

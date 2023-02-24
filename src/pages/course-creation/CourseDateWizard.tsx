@@ -107,7 +107,9 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete, showInvalidDa
                 </Select>
             </FormControl>
 
-            {showInvalidDateMessage && <AlertMessage content={'Das angegebene Datum ist ungültig'} />}
+            {showInvalidDateMessage && (
+                <AlertMessage content={'Das angegebene Datum ist ungültig. Der nächste Termin muss mindestens sieben Tage im Voraus liegen.'} />
+            )}
         </VStack>
     );
 };

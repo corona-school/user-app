@@ -17,14 +17,14 @@ const helperwizard = {
     willkommen: {
         title: 'Willkommen bei Lern-Fair 👋',
         content:
-            'Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir in unserer Gruppen-Nachhilfe viele Kurse zu verschiedenen Themen aus Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere 1:1-Lernunterstützung setzen',
-        buttons: ['Kurse ansehen', '1:1-Lernunterstützung beantragen'],
+            'Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen',
+        buttons: ['Kurse ansehen', 'Lernunterstützung beantragen'],
     },
     statusSchüler: {
         title: 'Du bist auf der Warteliste!',
         content:
-            'Sobald du an der Reihe bist, werden wir dich per E-mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unserer Gruppen-Nachhilfe teilnehmen.',
-        buttons: ['Gruppenkurse ansehen', 'Anfrage zurücknehmen'],
+            'Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.',
+        buttons: ['Kurse ansehen', 'Anfrage zurücknehmen'],
     },
     interestconfirmation: {
         title: 'Brauchst du noch Unterstützung?',
