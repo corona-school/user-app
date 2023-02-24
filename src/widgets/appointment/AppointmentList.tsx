@@ -27,8 +27,8 @@ const getScrollToId = (appointments: Appointment[]): number => {
 };
 
 const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => {
-    const containerRef = useRef(null);
-    const scrollViewRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const scrollViewRef = useRef<HTMLElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -81,19 +81,17 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
         return () => {
             if (containerRef.current) observer.unobserve(containerRef.current);
         };
-    }, [options]);
+    }, [containerRef.current, options]);
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;
         if (isVisible) return handleScroll(scrollViewRef.current);
         if (!isReadOnly) return handleScroll(scrollViewRef.current);
         return;
-    }, [appointments, isVisible]);
+    }, [appointments, isReadOnly, isVisible]);
 
     return (
         <>
-            {isReadOnly && <div ref={containerRef} />}
-
             <ScrollView scrollEnabled={isReadOnly}>
                 <Stack flex={1} maxW={maxListWidth}>
                     {appointments.map((appointment, index) => {
@@ -131,6 +129,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
                     })}
                 </Stack>
             </ScrollView>
+            {isReadOnly && <div ref={containerRef} />}
         </>
     );
 };
