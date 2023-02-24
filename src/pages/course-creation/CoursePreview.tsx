@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import AlertMessage from '../../widgets/AlertMessage';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
 import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 
@@ -40,6 +41,11 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     const ButtonContainerDirection = useBreakpointValue({
         base: 'column',
         lg: 'row',
+    });
+
+    const maxHeight = useBreakpointValue({
+        base: 400,
+        lg: 600,
     });
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -134,6 +140,9 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
             <Heading fontSize="xl" marginBottom={space['1']}>
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
+            <Box maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isReadOnly={true} />
+            </Box>
             {isError && (
                 <Box mt={space['1']}>
                     <AlertMessage content={t('course.error.course')} />
