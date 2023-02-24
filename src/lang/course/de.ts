@@ -133,7 +133,7 @@ const course = {
             image: 'Bild',
             notags: 'Es wurden keine Tags angegeben.',
             jahrgangsstufe: 'Jahrgangsstufe',
-            membersCountLabel: 'Teilnehmerzahl:',
+            membersCountLabel: 'Teilnehmer:innenzahl:',
             membersCountMaxLabel: 'Max',
             startDateLabel: 'Beitreten nach Kursbeginn:',
             allowContactLabel: 'Kontaktaufnahme erlauben:',
@@ -154,7 +154,7 @@ const course = {
         },
     },
     addCourseInstructor: {
-        search: 'Name oder E-Mail Adresse',
+        search: 'Name oder E-Mail-Adresse',
         notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
     },
     empty: {

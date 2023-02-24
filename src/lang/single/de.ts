@@ -47,7 +47,7 @@ const single = {
     },
     bannerPromote: {
         freeTitle: 'Auf freie Plätze aufmerksam machen?',
-        freeDescription: 'Nutze die Möglichkeit, deinen Kurs einmalig zu bewerben.',
+        freeDescription: 'Benachrichtige (einmalig) passende Schüler:innen.',
         promotedTitle: 'Dein Kurs wurde erneut beworben!',
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
         participant: 'Teilnehmer:innen',

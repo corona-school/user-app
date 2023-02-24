@@ -7,7 +7,6 @@ const registration = {
         lastword: 'zu.',
         pleaseaccept: 'Bitte akzeptiere unsere',
     },
-    check_legal: 'Hiermit stimme ich der <1>Datenschutzerklärung</1> zu.',
     barrier: {
         title: 'Wichtig',
         text: 'Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit "ja" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.',
