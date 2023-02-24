@@ -1,34 +1,28 @@
-import { Weeklies, AppointmentType as TAppointmentType } from './CreateAppointment';
+import { AppointmentType as TAppointmentType } from './CreateAppointment';
+import { Organizer, Participant } from './User';
 
-// TODO delete AppointmentType
-import { Student } from '../../gql/graphql';
-import { Participant } from './User';
+export enum AppointmentTypes {
+    GROUP = 'group',
+    MATCH = 'match',
+    OTHER_INTERNAL = 'other_internal',
+    LEGACY_LECTURE = 'legacy_lecture',
+}
 
-export type AppointmentType = {
-    id: number;
-    title: string;
-    organizers?: Attendee[];
-    start: string;
-    duration: number;
-    meetingLink?: string;
-    subcourseId: number;
-    participants?: Attendee[];
-    appointmentType?: AppointmentTypes;
-};
-
-// TODO real type for Appointment
 export type Appointment = {
+    __typename?: 'Lecture' | undefined;
     id: number;
     title: string;
     description: string;
     start: string;
     duration: number;
     subcourseId?: number;
-    matchId?: number;
-    meetingLink?: string;
-    organizers?: Student[];
+    matchId?: number | null;
+    meetingLink?: string | null;
+    organizers?: Organizer[];
     participants?: Participant[];
-    appointmentType?: AppointmentType;
+    isCancelled?: boolean;
+    declinedBy?: number[];
+    appointmentType: AppointmentTypes;
 };
 
 // type of appointments to send to the BE
@@ -43,49 +37,7 @@ export type CreateAppointmentInput = {
     appointmentType?: TAppointmentType;
 };
 
-export type CreateAppointmentWithWeeklies = {
-    baseAppointment: CreateAppointmentInput;
-    weeklyText: Weeklies;
-};
-
 export type Course = {
     name: string;
     description: string;
 };
-
-export type Attendee = {
-    firstname: string;
-    lastname: string;
-    declined?: boolean;
-};
-
-export enum AppointmentTypes {
-    GROUP = 'GROUP',
-    ONE_TO_ONE = 'ONE_TO_ONE',
-    TRAINING = 'TRAINING',
-}
-
-export type CalendarDates = {
-    [year: number]: {
-        [month: number]: {
-            [week: number]: AppointmentType[];
-        };
-    };
-};
-
-export type Year = {
-    [year: number]: Month;
-};
-
-export type Month = {
-    [month: number]: Week;
-};
-
-export type Week = {
-    [week: number]: AppointmentType[];
-};
-
-export enum Assignment {
-    GROUP = 'Subcourse',
-    MATCH = 'Match',
-}

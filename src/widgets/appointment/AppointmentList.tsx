@@ -1,19 +1,40 @@
-import { Box, ScrollView, useBreakpointValue } from 'native-base';
-import appointments from './dummy/appointments';
-import CalendarYear from './appointment-list/CalendarYear';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { getScrollToId } from '../../helper/appointment-helper';
+import { DateTime } from 'luxon';
+import { Box, Center, Divider, Text, VStack } from 'native-base';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Appointment } from '../../types/lernfair/Appointment';
+import AppointmentDay from './AppointmentDay';
 
-type ListProps = {
-    appointments?: any;
-    isReadOnly: boolean;
+type Props = {
+    appointments: Appointment[];
+    isReadOnly?: boolean;
 };
 
-const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
-    // TODO: observer überarbeiten
+const isAppointmentNow = (start: string, duration: number): boolean => {
+    const now = DateTime.now();
+    const startDate = DateTime.fromISO(start);
+    const end = startDate.plus({ minutes: duration });
+    return startDate <= now && now < end;
+};
+const getScrollToId = (appointments: Appointment[]): number => {
+    const now = DateTime.now();
+    const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
+    const current = appointments.find((appointment) => isAppointmentNow(appointment.start, appointment.duration));
+    const nextId = next?.id ?? 0;
+    const currentId = current?.id;
+
+    return currentId || nextId || 0;
+};
+
+const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = false }) => {
     const containerRef = useRef(null);
-    const currentCourseRef = useRef<HTMLElement>(null);
+    const scrollViewRef = useRef(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const scrollId = useMemo(() => {
+        return getScrollToId(appointments);
+    }, [appointments]);
 
     const options = {
         root: null,
@@ -26,24 +47,29 @@ const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
         setIsVisible(entry.isIntersecting);
     };
 
-    // TODO change to data from BE
-    // const { data: appointments, loading, error } = useQuery(appointmentsQuery);
-
-    const allAppointments = appointments.monthAppointments;
-
     const handleScroll = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
     };
 
-    const listWidth = useBreakpointValue({
-        base: '100%',
-        lg: isReadOnly ? '100%' : '80%',
-    });
+    const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+        if (!previousAppointment) {
+            return false;
+        }
 
-    const scrollToCourseId = useMemo(() => {
-        const id = getScrollToId();
-        return id;
-    }, []);
+        const currentDate = DateTime.fromISO(currentAppointment.start);
+        const previousDate = DateTime.fromISO(previousAppointment.start);
+        return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
+    };
+
+    const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+        if (!previousAppointment) {
+            return true;
+        }
+
+        const currentDate = DateTime.fromISO(currentAppointment.start);
+        const previousDate = DateTime.fromISO(previousAppointment.start);
+        return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(callbackFn, options);
@@ -54,55 +80,49 @@ const AppointmentList: React.FC<ListProps> = ({ isReadOnly }) => {
     }, []);
 
     useEffect(() => {
-        if (currentCourseRef.current === null) return;
-        if (isVisible) return handleScroll(currentCourseRef.current);
-        if (!isReadOnly) return handleScroll(currentCourseRef.current);
+        if (scrollViewRef.current === null) return;
+        if (isVisible) return handleScroll(scrollViewRef.current);
+        if (!isReadOnly) return handleScroll(scrollViewRef.current);
         return;
-    }, [isVisible]);
-
-    const appointmentsForOneYear = useMemo(() => Object.entries(allAppointments), [allAppointments]);
-    const yearIndex = 0;
-    const appointmentsIndex = 1;
+    }, [appointments, isVisible]);
 
     return (
-        <>
-            {isReadOnly ? (
-                <ScrollView ml={3} width={'100%'} pl={isReadOnly ? 0 : 3}>
-                    {appointmentsForOneYear.map((yearEntries) => {
-                        const year = Number(yearEntries[yearIndex]);
-                        const appointmentsInYear = yearEntries[appointmentsIndex];
-                        return (
-                            <CalendarYear
-                                key={year}
-                                year={year}
-                                appointmentsOfYear={appointmentsInYear}
-                                scrollToRef={currentCourseRef}
-                                scrollId={scrollToCourseId}
+        <VStack flex={1} maxW={isReadOnly ? 'full' : '90%'}>
+            {appointments.map((appointment, index) => {
+                const previousAppointment = appointments[index - 1];
+                const weekDivider = showWeekDivider(appointment, previousAppointment);
+                const monthDivider = showMonthDivider(appointment, previousAppointment);
+
+                return (
+                    <Box key={appointment.id} ml={3}>
+                        {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
+                        {monthDivider && (
+                            <>
+                                <Center mt="3">
+                                    <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                                        DateTime.fromISO(appointment.start).year
+                                    }`}</Text>
+                                </Center>
+                                <Divider my={3} width="95%" />
+                            </>
+                        )}
+                        <Box ml={5}>
+                            <AppointmentDay
+                                key={`appointment-${index}`}
+                                start={appointment.start}
+                                duration={appointment.duration}
+                                title={appointment.title}
+                                organizers={appointment.organizers}
+                                onPress={() => navigate(`/appointment/${appointment.id}`)}
+                                scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                 isReadOnly={isReadOnly}
                             />
-                        );
-                    })}
-                </ScrollView>
-            ) : (
-                <Box ml={3} width={listWidth} pl={3}>
-                    {appointmentsForOneYear.map((yearEntries) => {
-                        const year = Number(yearEntries[yearIndex]);
-                        const appointmentsInYear = yearEntries[appointmentsIndex];
-                        return (
-                            <CalendarYear
-                                key={year}
-                                year={year}
-                                appointmentsOfYear={appointmentsInYear}
-                                scrollToRef={currentCourseRef}
-                                scrollId={scrollToCourseId}
-                                isReadOnly={isReadOnly}
-                            />
-                        );
-                    })}
-                </Box>
-            )}
+                        </Box>
+                    </Box>
+                );
+            })}
             <div ref={containerRef} />
-        </>
+        </VStack>
     );
 };
 

@@ -1,9 +1,10 @@
-import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
+import { Box, Button, Divider, ScrollView, Stack, useBreakpointValue } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 
 type Props = {
     next: () => void;
@@ -30,7 +31,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} />
+                <ScrollView ml={3} width={'100%'} pl={0}>
+                    <AppointmentList isReadOnly={true} appointments={appointmentsData} />
+                </ScrollView>
             </Box>
 
             <Button

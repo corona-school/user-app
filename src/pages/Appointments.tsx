@@ -8,10 +8,10 @@ import WithNavigation from '../components/WithNavigation';
 import AddAppointmentButton from '../widgets/AddAppointmentButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
-import AppointmentList from '../widgets/appointment/AppointmentList';
 import { gql, useQuery } from '@apollo/client';
+import AppointmentList from '../widgets/appointment/AppointmentList';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
-// TODO get my appointments and pass data to AppointmentList
 const myAppointmentsQuery = gql`
     query myAppointments {
         me {
@@ -29,10 +29,9 @@ const myAppointmentsQuery = gql`
         }
     }
 `;
-
 const Appointments: React.FC = () => {
     const userType = useUserType();
-    const { data, loading, error } = useQuery(myAppointmentsQuery);
+    const { data, loading, error, refetch } = useQuery(myAppointmentsQuery);
 
     const navigate = useNavigate();
     const { space, sizes } = useTheme();
@@ -50,9 +49,10 @@ const Appointments: React.FC = () => {
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
+                {loading && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    <AppointmentList isReadOnly={false} appointments={[[]]} />
+                    {!error && <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />}
                 </VStack>
             </WithNavigation>
         </AsNavigationItem>
