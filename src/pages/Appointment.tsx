@@ -14,20 +14,13 @@ const Appointment = () => {
                 appointment={{
                     id: 1,
                     title: 'Termin #1',
-                    organizers: [
-                        { firstname: 'Anna', lastname: 'Maier' },
-                        { firstname: 'Anna', lastname: 'Maier' },
-                    ],
+                    description: 'Test',
                     start: '2023-02-28T15:00:00Z',
                     duration: 60,
                     meetingLink: '',
                     subcourseId: 3,
-                    participants: [
-                        { firstname: 'Anna', lastname: 'Maier' },
-                        { firstname: 'Tom', lastname: 'Bauer' },
-                        { firstname: 'Anna', lastname: 'Maier' },
-                        { firstname: 'Tom', lastname: 'Bauer' },
-                    ],
+                    organizers: [],
+                    participants: [],
                     appointmentType: AppointmentTypes.GROUP,
                 }}
                 course={{

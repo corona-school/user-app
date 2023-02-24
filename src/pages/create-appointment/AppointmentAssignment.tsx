@@ -35,6 +35,9 @@ const query = gql`
                         }
                     }
                     pupilEmail
+                    appointments {
+                        id
+                    }
                 }
                 subcoursesInstructing {
                     id
@@ -124,7 +127,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                                 grade={match?.pupil?.grade}
                                                 pupil={{ firstname: match?.pupil?.firstname, lastname: match?.pupil?.lastname }}
                                                 subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
-                                                next={skipStepTwo}
+                                                next={match.appointments && match.appointments.length === 0 ? skipStepTwo : next}
                                             />
                                         );
                                     })
