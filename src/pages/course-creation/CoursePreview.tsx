@@ -1,14 +1,10 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { DateTime } from 'luxon';
 import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
 import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
-import { LFLecture } from '../../types/lernfair/Course';
 import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
-import Utility from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
-import AppointmentInfoRow from '../../widgets/AppointmentInfoRow';
 import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 
@@ -33,8 +29,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         classRange: courseClasses,
         joinAfterStart,
         allowContact,
-        lectures,
-        newLectures,
         pickedPhoto,
     } = useContext(CreateCourseContext);
 
@@ -67,7 +61,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>
             <Text>{t('course.CourseDate.Preview.content')}</Text>
-
             <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
             <Row alignItems="end" space={space['0.5']}>
                 <Text bold fontSize="md">
@@ -75,7 +68,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 </Text>
                 <Text fontSize="md">{courseName}</Text>
             </Row>
-
             {subject?.name && (
                 <>
                     <Heading fontSize="md">{t('course.CourseDate.Preview.courseSubject')}</Heading>
@@ -92,7 +84,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                     </Box>
                 </>
             )}
-
             <Row flexDirection="column" paddingBottom={space['0.5']}>
                 <Heading fontSize="md" paddingBottom={space['0.5']}>
                     {t('course.CourseDate.Preview.jahrgangsstufe')}
@@ -102,7 +93,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                     {t('course.CourseDate.Preview.classHeadline')} {courseClasses && courseClasses[0]} - {courseClasses && courseClasses[1]}
                 </Text>
             </Row>
-
             <Row flexDirection="column" paddingBottom={space['0.5']}>
                 <Heading fontSize="md" paddingBottom={space['0.5']}>
                     {t('course.CourseDate.Preview.image')}
@@ -112,10 +102,8 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                     <Image src={pickedPhoto} h="100%" />
                 </Box>
             </Row>
-
             <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
             <Text paddingBottom={space['0.5']}>{description}</Text>
-
             <Heading fontSize="md">{t('course.CourseDate.Preview.tagHeadline')}</Heading>
             <Row space={space['0.5']}>{(tags && tags.map((t) => <Tag text={t.name} />)) || <Text>{t('course.CourseDate.Preview.notags')}</Text>}</Row>
             <VStack>
@@ -146,42 +134,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
             <Heading fontSize="xl" marginBottom={space['1']}>
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
-            {lectures && lectures.map((lecture: LFLecture, index: number) => <AppointmentInfoRow index={index} lecture={lecture} />)}
-            {newLectures &&
-                newLectures.length > 0 &&
-                newLectures[0].date &&
-                newLectures.map((lec, i) => (
-                    <VStack marginBottom={space['1']}>
-                        <Heading mb={space['0.5']} fontSize="lg">
-                            {t('course.CourseDate.Preview.appointmentLabel')} {`${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
-                        </Heading>
-                        <VStack>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentDate')}
-                                </Text>
-
-                                <Text fontSize="md">{Utility.handleDateString(lec.date, 'yyyy-MM-dd', undefined, DateTime.DATE_MED)}</Text>
-                            </Row>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentTime')}
-                                </Text>
-                                <Text fontSize="md">
-                                    {Utility.handleDateString(lec.time, 'hh:mm', undefined, DateTime.TIME_24_SIMPLE)}
-                                    {' Uhr'}
-                                </Text>
-                            </Row>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentDuration')}
-                                </Text>
-                                <Text fontSize="md">{convertTime(lec.duration)}</Text>
-                            </Row>
-                        </VStack>
-                    </VStack>
-                ))}
-
             {isError && (
                 <Box mt={space['1']}>
                     <AlertMessage content={t('course.error.course')} />
