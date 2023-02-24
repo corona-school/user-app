@@ -13,7 +13,7 @@ import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
 
 type AssignmentProps = {
     next: (id: number, isCourse?: boolean) => void;
-    skipStepTwo: () => void;
+    skipStepTwo: (id: number, isCourse?: boolean) => void;
 };
 
 const query = gql`

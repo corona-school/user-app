@@ -32,13 +32,27 @@ const CreateAppointment = () => {
         setCurrentIndex((prev) => prev - 2);
     }, []);
 
-    const skipStepTwo = useCallback(() => {
-        setCurrentIndex((prev) => prev + 2);
-        setNoAppointments(true);
-    }, [currentIndex]);
+    const skipStepTwo = useCallback(
+        (id: number, isCourse?: boolean) => {
+            console.log('isCourse? ', isCourse, id);
+            if (isCourse) {
+                setId(id);
+                setIsCourse(true);
+            }
+            if (!isCourse) {
+                setId(id);
+                setIsCourse(false);
+            }
+            setCurrentIndex((prev) => prev + 2);
+            setNoAppointments(true);
+        },
+        [currentIndex]
+    );
 
     const goToStepTwo = useCallback(
         (id: number, isCourse?: boolean) => {
+            console.log('isCourse? ', isCourse, id);
+
             if (isCourse) {
                 setId(id);
                 setIsCourse(true);
@@ -69,7 +83,12 @@ const CreateAppointment = () => {
                     {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
                     {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
                     {currentIndex === 2 && (
-                        <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} navigateTo={() => navigate('/appointments')} id={id} />
+                        <AppointmentCreation
+                            back={noAppointments ? returnToStepOne : onBack}
+                            navigateTo={() => navigate('/appointments')}
+                            id={id}
+                            isCourse={isCourse}
+                        />
                     )}
                 </Box>
             </WithNavigation>

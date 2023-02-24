@@ -179,13 +179,13 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                         start: weekly.nextDate,
                         organizers: organizers,
                         duration: appointmentToCreate.duration,
-                        appointmentType: AppointmentType.GROUP,
+                        appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
                 newAppointments.push(...weeklyAppointments);
             }
-            // createAppointments({ variables: { appointmentsToBeCreated } });
+            // createAppointments({ variables: { newAppointments } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
