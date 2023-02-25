@@ -30,7 +30,7 @@ export function SelectParticipants({
             </Box>
             <Modal isOpen={open}>
                 <Modal.Content maxWidth="800px">
-                    <Modal.Header>Teilnehmer:in Auswählen</Modal.Header>
+                    <Modal.Header>Teilnehmer:in auswählen</Modal.Header>
                     <Modal.Body>
                         <Box display="flex" flexDirection="row" flexWrap="wrap">
                             {participants.map((participant) => {

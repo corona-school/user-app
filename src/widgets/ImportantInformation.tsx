@@ -197,6 +197,12 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
+        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
+            infos.push({
+                label: 'statusStudent2',
+                btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
+                lang: {},
+            });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
             infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
