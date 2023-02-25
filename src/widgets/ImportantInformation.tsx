@@ -158,26 +158,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const infos = useMemo(() => {
         let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {}; key?: string }[] = [];
-        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
-
-        // -------- Configurable Important Information -----------
-        importantInformations
-            .filter(
-                (info: any) =>
-                    info.language.includes(getI18n().language) &&
-                    ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
-            )
-            .forEach((info: any) => {
-                configurableInfos.push({
-                    title: info.title,
-                    desciption: info.description,
-                    btnfn: info.navigateTo
-                        ? () => {
-                              window.location.href = info.navigateTo;
-                          }
-                        : null,
-                });
-            });
 
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
@@ -278,6 +258,30 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
+
+    const configurableInfos = useMemo(() => {
+        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+
+        // -------- Configurable Important Information -----------
+        importantInformations
+            .filter(
+                (info: any) =>
+                    info.language.includes(getI18n().language) &&
+                    ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
+            )
+            .forEach((info: any) => {
+                configurableInfos.push({
+                    title: info.title,
+                    desciption: info.description,
+                    btnfn: info.navigateTo
+                        ? () => {
+                              window.location.href = info.navigateTo;
+                          }
+                        : null,
+                });
+            });
+        return configurableInfos;
+    }, [importantInformations, pupil, student]);
 
     if (!infos.length && !configurableInfos.length) return null;
 
