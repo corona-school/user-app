@@ -32,7 +32,8 @@ app.use(compression());
 app.use(Express.static(__dirname + '/build', {
     immutable: true,
     maxAge: '365 days',
-    fallthrough: true
+    fallthrough: true,
+    index: false
 }));
 
 // Entrypoint of the PWA - Do not cache to be able to invalidate logic changes fast
