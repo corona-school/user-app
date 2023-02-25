@@ -19,6 +19,13 @@ type Props = {
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
 query GetOnboardingInfos {
+  important_informations {
+    title
+    description
+    navigateTo
+    language
+    recipients
+  }
   me {
     email
     secrets {
@@ -108,6 +115,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const student = data?.me?.student;
     const email = data?.me?.email;
     const roles = data?.myRoles ?? [];
+    const importantInformations = data?.important_informations ?? [];
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
@@ -257,14 +265,66 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
-    if (!infos.length) return null;
+    const configurableInfos = useMemo(() => {
+        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+
+        // -------- Configurable Important Information -----------
+        importantInformations
+            .filter(
+                (info: any) =>
+                    info.language.includes(getI18n().language) &&
+                    ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
+            )
+            .forEach((info: any) => {
+                configurableInfos.push({
+                    title: info.title,
+                    desciption: info.description,
+                    btnfn: info.navigateTo
+                        ? () => {
+                              window.location.href = info.navigateTo;
+                          }
+                        : null,
+                });
+            });
+        return configurableInfos;
+    }, [importantInformations, pupil, student]);
+
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
+            {configurableInfos.map((info, index) => {
+                return (
+                    <Column width="97%" maxWidth="500px">
+                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
+                            <Box marginBottom="20px">
+                                <BooksIcon />
+                            </Box>
+                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
+                                {info.title}
+                            </Heading>
+                            <Text color={textColor} marginBottom="25px">
+                                {info.desciption}
+                            </Text>
+                            {info.btnfn && (
+                                <Button
+                                    onPress={() => {
+                                        if (info.btnfn) info.btnfn();
+                                    }}
+                                    key={index}
+                                    marginBottom={'5px'}
+                                >
+                                    mehr erfahren
+                                </Button>
+                            )}
+                        </Card>
+                    </Column>
+                );
+            })}
             {infos.map((config, index) => {
                 const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
-                    <Column width="100%" maxWidth="500px" key={config.key ?? config.label}>
+                    <Column width="97%" maxWidth="500px" key={config.key ?? config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />
