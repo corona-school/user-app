@@ -460,7 +460,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                             variant="outline"
                                             onPress={() =>
                                                 window.open(
-                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zu%20Hause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%20Alles%2C%20was%20du%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung%21%20Registriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3'
+                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zu%20Hause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%20Alles%2C%20was%20du%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung%21%20Registriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3',
+                                                    '_blank'
                                                 )
                                             }
                                         >

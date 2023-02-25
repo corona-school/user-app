@@ -85,7 +85,7 @@ const onboardingList = {
         },
         helper: {
             welcome: {
-                title: 'Herzlich willkommen bei Lern-Fair',
+                title: 'Herzlich Willkommen bei Lern-Fair',
                 content: 'Wir freuen uns, dass du bildungs-benachteiligte Kinder aktiv unterstützen möchtest.',
                 question: 'Möchtest du sehen, was unsere Plattform alles zu bieten hat?',
                 answer: 'Wir zeigen dir die wichtigsten Funktionen.',
