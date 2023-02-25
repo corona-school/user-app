@@ -4,6 +4,7 @@ import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } fr
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import { useUserType } from '../../hooks/useApollo';
 import { schooltypes } from '../../types/lernfair/SchoolType';
@@ -85,7 +86,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     }, []);
 
     return (
-        <WithNavigation headerTitle={t('profile.SchoolType.single.header')} showBack isLoading={loading}>
+        <WithNavigation headerTitle={t('profile.SchoolType.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.SchoolType.single.title')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
@@ -134,7 +135,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                         });
                     }}
                 >
-                    {t('profile.SchoolType.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

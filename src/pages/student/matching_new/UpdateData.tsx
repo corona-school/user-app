@@ -1,10 +1,11 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from './../../../gql';
+import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
 import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast, Box } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
-import { Student_State_Enum } from '../../../gql/graphql';
+import { StudentState, Student_State_Enum } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
@@ -20,14 +21,14 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
 
     const [showModal, setShowModal] = useState<boolean>();
     const [modalType, setModalType] = useState<'states'>();
-    const [modalSelection, setModalSelection] = useState<string>();
+    const [modalSelection, setModalSelection] = useState<Student_State_Enum>();
 
     const [meUpdateState] = useMutation(
-        gql`
+        gql(`
             mutation changeStudentStateData($data: StudentState!) {
                 meUpdate(update: { student: { state: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
 
@@ -48,7 +49,10 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
     }, [modalType, state]);
 
     useEffect(() => {
-        setModalSelection(data as string);
+        if (!data) {
+            return;
+        }
+        setModalSelection(data);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalType]);
 
@@ -58,14 +62,14 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
         try {
             switch (modalType) {
                 case 'states':
-                    await meUpdateState({ variables: { data: modalSelection } });
+                    await meUpdateState({ variables: { data: modalSelection as unknown as StudentState } });
                     break;
                 default:
                     break;
             }
-            toast.show({ description: t('matching.request.updateData') });
+            toast.show({ description: t('matching.request.updateData'), placement: 'top' });
         } catch (e) {
-            toast.show({ description: t('error') });
+            toast.show({ description: t('error'), placement: 'top' });
         }
         setShowModal(false);
         setIsLoading(false);
@@ -112,7 +116,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                 isOpen={showModal}
                 onClose={() => {
                     setShowModal(false);
-                    setModalSelection('');
+                    setModalSelection(undefined);
                 }}
             >
                 <Modal.Content>
@@ -125,7 +129,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                                     <IconTagList
                                         initial={modalSelection === item.key}
                                         text={item.label}
-                                        onPress={() => setModalSelection(item.key)}
+                                        onPress={() => setModalSelection(item.key as unknown as Student_State_Enum)}
                                         iconPath={`${modalType}/icon_${item.key}.svg`}
                                     />
                                 </Column>

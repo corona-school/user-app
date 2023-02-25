@@ -1,5 +1,6 @@
 const course = {
     header: 'Kurs erstellen',
+    edit: 'Kurs bearbeiten',
     uploadImage: 'Foto hochladen',
     noticeDate: 'Bitte fülle alle Felder korrekt aus',
     selectPlaceHolderDuration: 'Dauer auswählen',
@@ -41,37 +42,19 @@ const course = {
     blocker: {
         student: {
             header: 'Kurs erstellen',
-            title: 'Die Gruppenkurse',
+            title: 'Die Gruppen-Kurse',
             firstContent:
                 'Du hilfst einer:m bildungsbenachteiligten Schüler:in im Gruppen-Format dabei, Wissenslücken zu schließen. Die Frequenz, Häufigkeit und Dauer der digitalen Treffen ist ganz euch überlassen!',
             here: 'hier',
-            secContent: 'Mehr Informationen zur Gruppennachhilfe findest du',
+            secContent: 'Mehr Informationen zu unseren Nachhilfe-Kursen findest du',
             thrContent: 'auf unserer Webseite.',
             contentHeadline: 'Wichtig',
             content:
-                'Aktuell bist du für die Gruppenkurse noch nicht freigeschaltet, aber scrolle hier durch die nächsten Prozessschritte, um herauszufinden, wie du das änderst:',
+                'Aktuell bist du für die Gruppen-Kurse noch nicht freigeschaltet, aber scrolle hier durch die nächsten Prozessschritte, um herauszufinden, wie du das änderst:',
             cta: {
-                title: 'Onboarding-Tour Gruppenkurs',
+                title: 'Onboarding-Tour Gruppen-Kurse',
                 content:
-                    'Wenn du dir noch nicht sicher bist, ob das Format der Gruppen-Nachhilfe tatsächlich zu dir passt, klick dich durch das Onboarding für den Gruppen-Nachhilfe Bereich und erhalte so eine genauere Idee von der Tätigkeit.',
-                button: 'Tour starten',
-            },
-        },
-        pupil: {
-            header: 'Kurs erstellen',
-            title: 'Die Gruppenkurse',
-            firstContent:
-                'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
-            here: 'hier',
-            secContent: 'Mehr Informationen zur Gruppennachhilfe findest du',
-            thrContent: 'auf unserer Webseite.',
-            contentHeadline: 'Wichtig',
-            content:
-                'Aktuell bist du für die Gruppenkurse noch nicht freigeschaltet, aber scrolle hier durch die nächsten Prozessschritte, um herauszufinden, wie du das änderst:',
-            cta: {
-                title: 'Onboarding-Tour Gruppenkurs',
-                content:
-                    'Wenn du dir noch nicht sicher bist, ob das Format der Gruppen-Nachhilfe tatsächlich zu dir passt, klick dich durch das Onboarding für den Gruppen-Nachhilfe Bereich und erhalte so eine genauere Idee von der Tätigkeit.',
+                    'Wenn du dir noch nicht sicher bist, ob das Format der Nachhilfe-Kurse tatsächlich zu dir passt, klick dich durch das Onboarding für die Gruppen-Nachhilfe und erhalte so eine genauere Idee von der Tätigkeit.',
                 button: 'Tour starten',
             },
         },
@@ -110,25 +93,21 @@ const course = {
             shortDescriptionLabel: 'Kurzbeschreibung',
             shortDescriptionPlaceholder: 'Kurzer Satz, um was es in deinem Kurs geht …',
             descriptionLabel: 'Beschreibung',
-            descriptionPlaceholder: 'Präzisere Angaben um was es in deinem Kurs geht …',
+            descriptionPlaceholder: 'Beschreibung des Kurses',
             tagsLabel: 'Tags',
             tagsPlaceholder: 'Damit dein Kurs besser gefunden wird',
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
             detailsHeadline: 'Details',
             detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
-            maxMembersLabel: 'Max Teilnehmerzahl',
+            maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',
-            otherOptionStart: 'Teilnehmende dürfen nach Kursbeginn beitreten',
+            otherOptionStart: 'Schüler:innen können sich nach dem ersten Kurstermin anmelden',
             otherOptionStartToolTip:
                 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
             otherOptionContact: 'Kontaktaufnahme erlauben',
             otherOptionContactToolTip:
-                'Wenn du die Kontaktaufnahme erlaubst können dich die Schüler:innen die Interesse am Kurs haben oder bereits angemeldet sind Kontakt per E-Mail mit dir aufnehmen',
-            button: {
-                continue: 'Weiter',
-                cancel: 'Abbrechen',
-            },
+                'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
         },
         Wizard: {
             headline: 'Termin',
@@ -143,7 +122,7 @@ const course = {
             yes: 'Ja',
             no: 'Nein',
             headline: 'Angaben überprüfen',
-            content: 'Bitte überpüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
+            content: 'Bitte überprüfe deine Angaben noch einmal, bevor du deinen Kurs veröffentlichst.',
             infoHeadline: 'Allgemeine Informationen zu deinem Kurs',
             courseName: 'Kursname:',
             courseSubject: 'Fach',
@@ -172,13 +151,22 @@ const course = {
             headline: 'Fertig!',
             content:
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
-            button: 'weiter',
         },
     },
-
     addCourseInstructor: {
         search: 'Name oder E-Mail Adresse',
         notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',
+    },
+    empty: {
+        nocourses: 'Du bietest zur Zeit keinen Kurs an.',
+        noremission: 'Du hast derzeit keinen Kurs zur Prüfung freigegeben.',
+        nodrafts: 'Du hast derzeit keinen Kurs-Entwurf.',
+        nopastcourses: 'Du hast bisher noch keinen Kurs bei uns angeboten.',
+    },
+    cancel: {
+        header: 'Kurs absagen',
+        description:
+            'Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?',
     },
 };
 

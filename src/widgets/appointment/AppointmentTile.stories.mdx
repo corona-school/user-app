@@ -1,0 +1,18 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import AppointmentTile from './AppointmentTile';
+import Appointment from './Appointment';
+
+<Meta title="Appointment/Tile" component={Appointment} />
+
+# Example Component
+
+<Story name="AppointmentTile">
+    <Appointment courseStart="2023-01-03T16:00:00.547Z" duration={15} courseTitle="Grundlagen Tutorium" instructors={['Thomas Maier']} />
+    <Appointment
+        courseStart={new Date().toISOString()}
+        duration={15}
+        courseTitle="UX Design"
+        instructors={['Andreas Müller', 'Claudia Max']}
+        participants={['Max', 'Tim', 'Tom', 'Nina', 'Emma']}
+    />
+</Story>

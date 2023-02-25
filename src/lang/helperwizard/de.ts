@@ -10,21 +10,21 @@ const helperwizard = {
     passwort: {
         title: 'Passwort einrichten',
         content:
-            'Es ist endlich soweit, wir stellen unser Login-System um! Du kannst bei uns ab sofort ein Passwort vergeben und dich damit zukünftig einloggen. Also worauf wartest du?',
+            'Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.',
         buttons: ['Passwort einrichten'],
     },
     // Nur Schüler:innen
     willkommen: {
         title: 'Willkommen bei Lern-Fair 👋',
         content:
-            'Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir in unserer Gruppen-Nachhilfe viele Kurse zu verschiedenen Themen aus Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere 1:1-Lernunterstützung setzen',
-        buttons: ['Kurse ansehen', '1:1-Lernunterstützung beantragen'],
+            'Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen',
+        buttons: ['Kurse ansehen', 'Lernunterstützung beantragen'],
     },
     statusSchüler: {
         title: 'Du bist auf der Warteliste!',
         content:
-            'Sobald du an der Reihe bist, werden wir dich per E-mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unserer Gruppen-Nachhilfe teilnehmen.',
-        buttons: ['Gruppenkurse ansehen', 'Anfrage zurücknehmen'],
+            'Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.',
+        buttons: ['Kurse ansehen', 'Anfrage zurücknehmen'],
     },
     interestconfirmation: {
         title: 'Brauchst du noch Unterstützung?',
@@ -35,14 +35,14 @@ const helperwizard = {
     kontaktSchüler: {
         title: 'Neue Lernpartner:in',
         content:
-            'Es ist endlich soweit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ',
+            'Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
     angeforderteBescheinigung: {
         title: '{{nameHelfer}} braucht eine Bestätigung von dir',
         content:
-            '{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du auf “Ja” klickst, können wir {{nameHelfer}} diesen Wunsch erfüllen. Ist es richtig, dass ihr schon so lange zusammen lernt? \nStart: {{date}} \nEnde: {{date}} \nAnzahl Stunden pro Woche: {{stunden}}',
-        buttons: ['Ja, Angaben bestätigen', 'Nein, Problem melden'],
+            '{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.',
+        buttons: ['Angaben bestätigen'],
     },
 
     // Nur Helfer:innen
@@ -59,9 +59,9 @@ const helperwizard = {
         buttons: ['Führungszeugnis einreichen', 'Vorduck herunterladen'],
     },
     statusStudent: {
-        title: 'Wir sind auf der Suche für dich!',
+        title: 'Jemand wartet auf dich!',
         content:
-            'Danke, dass du eine Schüler:in bei Lern-Fair unterstützen möchest! Wir suchen derzeit ein:e Schüler:in in den von dir angegebenen Fächern bzw. Jahrgangsstufen für dich. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passendenden Schüler:in zurück. Wenn du Lust hast mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpatenschaft anfragen.',
+            'Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in. Wenn du Lust und Zeit hast, mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpartnerschaft anfragen. Wenn du hin und wieder Kleingruppen unterrichten möchtest, kannst du einen einmaligen oder fortlaufenden Gruppenkurs anbieten.',
         buttons: ['Problem melden'],
     },
     kontaktStudent: {

@@ -65,7 +65,7 @@ const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDel
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
-                        <Button onPress={onClose}>{t('lernfair.buttons.ok')}</Button>
+                        <Button onPress={onClose}>{t('ok')}</Button>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>

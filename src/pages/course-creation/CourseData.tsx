@@ -310,7 +310,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                 </Row>
                 <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
                     <Button width={ButtonContainer} isDisabled={!isValidInput} marginBottom={space['1']} onPress={onNext}>
-                        {t('course.CourseDate.form.button.continue')}
+                        {t('next')}
                     </Button>
                     <Button
                         marginBottom={space['1']}
@@ -326,7 +326,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                             onCancel();
                         }}
                     >
-                        {t('course.CourseDate.form.button.cancel')}
+                        {t('cancel')}
                     </Button>
                 </Row>
             </VStack>

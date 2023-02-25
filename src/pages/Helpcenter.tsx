@@ -14,12 +14,11 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import Hello from '../widgets/Hello';
 import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
-
-type Props = {};
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
 
-const HelpCenter: React.FC<Props> = () => {
+const HelpCenter: React.FC = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
     const [dsgvo, setDSGVO] = useState<boolean>(false);
@@ -29,7 +28,7 @@ const HelpCenter: React.FC<Props> = () => {
     const [messageSent, setMessageSent] = useState<boolean>();
     const [showError, setShowError] = useState<boolean>();
 
-    const { show, setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -57,23 +56,22 @@ const HelpCenter: React.FC<Props> = () => {
     }, [contactSupport, message, subject]);
 
     useEffect(() => {
-        if (!show && data) {
-            setVariant('light');
-            setContent(
+        if (data) {
+            show(
+                { variant: 'light' },
                 <InfoScreen
                     title={t('helpcenter.contact.popupTitle')}
                     icon={<InfoIcon />}
                     content={t('helpcenter.contact.popupContent')}
                     defaultButtonText={t('helpcenter.contact.popupBtn')}
                     defaultbuttonLink={() => {
-                        setShow(false);
+                        hide();
                         navigate('/start');
                     }}
                 />
             );
-            setShow(true);
         }
-    }, [show, data, setContent, setShow, setVariant, t, navigate]);
+    }, [data, show, hide, t, navigate]);
 
     // Breakpoints
     const ContainerWidth = useBreakpointValue({
@@ -125,7 +123,7 @@ const HelpCenter: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="hilfebereich">
-            <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />}>
+            <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />} headerLeft={<NotificationAlert />}>
                 <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
                     <Box maxWidth={ContentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
                         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>

@@ -49,6 +49,8 @@ import MatchingStudent from './pages/student/MatchingStudent';
 import RequestMatch from './pages/pupil/matching_new/RequestMatch';
 import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
+import NotficationControlPanel from './pages/notification/NotficationControlPanel';
+import Appointments from './pages/Appointments';
 
 export default function NavigatorLazy() {
     return (
@@ -86,6 +88,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/notifications"
+                element={
+                    <RequireAuth>
+                        <NotficationControlPanel />
                     </RequireAuth>
                 }
             />
@@ -237,6 +248,15 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             ></Route>
+
+            <Route
+                path="/appointments"
+                element={
+                    <RequireAuth>
+                        <Appointments />
+                    </RequireAuth>
+                }
+            />
 
             <Route
                 path="/matching"

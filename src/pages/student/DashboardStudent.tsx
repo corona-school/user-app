@@ -5,7 +5,7 @@ import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
-import NotificationAlert from '../../components/NotificationAlert';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
@@ -69,6 +69,7 @@ const query = gql`
                         tags {
                             name
                         }
+                        image
                     }
                 }
             }
@@ -83,6 +84,7 @@ const query = gql`
                 tags {
                     name
                 }
+                image
             }
         }
     }
@@ -142,6 +144,7 @@ const DashboardStudent: React.FC<Props> = () => {
             setToastShown(true);
             toast.show({
                 description: 'Das Match wurde aufgelöst',
+                placement: 'top',
             });
         }
     }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
@@ -370,7 +373,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 );
                                             })
                                         ) : (
-                                            <AlertMessage content={t('empty.courses')} />
+                                            <AlertMessage content={t('course.empty.nocourses')} />
                                         )}
                                     </CSSWrapper>
                                     {data?.me?.student?.canCreateCourse?.allowed ? (
@@ -424,7 +427,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     />
                                                 </CSSWrapper>
                                             ))) ||
-                                            (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('empty.matchings')} /> : '')}
+                                            (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
                                     </CSSWrapper>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (
@@ -457,7 +460,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                             variant="outline"
                                             onPress={() =>
                                                 window.open(
-                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zuhause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%0AAlles%20was%20du%20daf%C3%BCr%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung!%20%0ARegistriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3'
+                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zu%20Hause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%20Alles%2C%20was%20du%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung%21%20Registriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3'
                                                 )
                                             }
                                         >

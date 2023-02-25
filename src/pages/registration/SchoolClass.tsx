@@ -40,12 +40,12 @@ const SchoolClass: React.FC = () => {
                                 setCurrentIndex(1);
                             }}
                         >
-                            {t('lernfair.buttons.prev')}
+                            {t('back')}
                         </Button>
                     </Column>
                     <Column width="100%">
                         <Button width="100%" onPress={() => setCurrentIndex(3)}>
-                            {t('lernfair.buttons.next')}
+                            {t('next')}
                         </Button>
                     </Column>
                 </Row>

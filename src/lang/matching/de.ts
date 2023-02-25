@@ -1,17 +1,17 @@
 const matching = {
     blocker: {
-        header: '1:1-Lernunterstützung',
+        header: 'Lernunterstützung',
         title: 'Unterstützung anfragen',
         firstContent:
-            'Du benötigst individuelle Unterstützung? Dann ist die 1:1 Lernunterstützung genau richtig. Hier kannst du eine:n neue:n Student:in anfordern, die dich beim Lernen unterstützt.',
+            'Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.',
         headlineContent: 'Wichtig',
-        contentBox1: 'Da es bei der 1:1-Lernunterstützung zu',
-        contentBox2: 'langen Wartezeiten von 3-6 Monaten',
-        contentBox3: 'bieten wir zusätzlich Gruppen-Nachhilfe an.',
+        contentBox1: 'Es kommt bei der Lernunterstützung zu',
+        contentBox2: 'langen Wartezeiten von 3-6 Monaten.',
+        contentBox3: 'Schau dir daher auch unsere Gruppen-Kurse an.',
         button: 'Unterstützung anfragen',
-        ctaCardHeader: 'Gruppen-Lernunterstützung',
-        ctaCardContent: 'Kurzfristige Unterstützung bei spezifischen Problemen und Fragen',
-        ctaCardButton: 'Zu den Gruppenkursen',
+        ctaCardHeader: 'Gruppen-Kurse',
+        ctaCardContent: 'Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…',
+        ctaCardButton: 'Zu den Gruppen-Kursen',
     },
     pending: {
         modal: {
@@ -26,27 +26,32 @@ const matching = {
             dissolve: 'Match auflösen',
         },
         check: {
-            header: '1:1-Lernunterstützung',
-            title: 'Match anfordern',
-            content: 'Die 1:1 Lernunterstützung ist eine 1:1 Betreuung für Schüler:innen, die individuelle Hilfe benötigen.',
-            contentHeadline: 'Wichtig',
-            contenHeadlineContent: 'Es kann bis zu einer Woche dauern, ehe wir ein Match für dich gefunden haben.',
-            requestmatchButton: 'Match anfordern',
+            header: 'Lernunterstützung',
+            title: 'Lernunterstützung',
+            content:
+                'In der Lernunterstützung hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden. Wenn du eine Lernunterstützung nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.',
             tabs: {
-                tab1: 'Matches',
-                tab2: 'Anfragen',
+                tab1: 'Aktuelle Lernpartner:innen',
+                tab2: 'Suche',
             },
             request: 'Anfrage',
             removeRequest: 'Anfrage zurücknehmen',
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
-            cancel: 'Abbrechen',
             subjects: 'Fächer:',
-            noMatches: 'Du hast keine Matches',
-            noRequests: 'Wir suchen gerade nicht nach einem:r neuen Lernpartner:in für dich.',
+            noMatches: 'Du hast (noch) keine Lernpartner:in.',
+            noRequestsTutee:
+                'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
+            noRequestsTutor:
+                'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
             resolveMatch: 'Das Match wurde aufgelöst',
         },
         updateData: 'Deine Daten wurden aktualisiert',
+        daz: {
+            heading: 'Deutsch als Zweitsprache',
+            description:
+                ' Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?',
+        },
     },
     group: {
         tabs: {
@@ -67,7 +72,7 @@ const matching = {
             nofound: 'Es wurden keine Kurse gefunden. Bitte passe deine Suche an.',
         },
         pupil: {
-            header: 'Gruppen-Lernunterstützung',
+            header: 'Gruppen-Kurse',
             title: 'Angebote',
             content:
                 'Auf diese Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.',
@@ -81,11 +86,12 @@ const matching = {
             },
         },
         helper: {
-            header: 'Gruppenkurse',
-            title: 'Gruppenkurse',
-            content: 'Gruppenkurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen.',
+            header: 'Gruppen-Kurse',
+            title: 'Gruppen-Kurse',
+            content:
+                'Mit den Gruppen-Kursen hilfst du einer Kleingruppe an Schüler:innen, die sich alle in einem bestimmten Thema verbessern wollen. Das Thema kannst du selbst festlegen - ob Bruchrechnung, past tense oder Gedichtanalyse… Hohe Nachfrage herrscht vor allem in den Hauptfächern. Auch den Zeitpunkt legst du selbst fest: Von einem Einzeltermin bis zu einem ca. 12-wöchigen Kurs ist alles möglich. Die Schüler:innen buchen die von dir vorgegebenen Termine.',
             contentHeadline: 'Wichtig',
-            contentHeadlineContent: 'Gruppenkurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
+            contentHeadlineContent: 'Gruppen-Kurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',
@@ -107,6 +113,12 @@ const matching = {
             otherCourses: {
                 title: 'Kurse von Anderen',
             },
+            alert: {
+                successfulEditing: 'Dein Kurs wurde erfolgreich bearbeitet.',
+                successfulCreation:
+                    'Dein Kurs wurde erfolgreich erstellt. Solltest du ihn nicht direkt zur Prüfung freigegeben haben, vergiss das bitte nicht. Nur so können wir deinen Kurs rechtzeitig veröffentlichen.',
+                // successfulCreationNotSubmitted: 'Dein Kurs wurde erfolgreich erstellt, aber noch nicht zur Prüfung freigegeben. Bitte vergiss nicht, das noch zu tun, damit wir deinen Kurs rechtzeitig veröffentlichen können.',
+            },
         },
     },
     status: { dissolved: 'Das Match wurde aufgelöst.' },
@@ -123,8 +135,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Wir hatten sprachliche Schwierigkeiten',
-            9: 'Sonstiges',
+            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Sonstiges',
         },
         pupil: {
             1: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
@@ -134,8 +146,8 @@ const matching = {
             5: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             6: 'Wir konnten keine gemeinsamen Termine finden',
             7: 'Wir hatten technische Schwierigkeiten',
-            8: 'Wir hatten sprachliche Schwierigkeiten',
-            9: 'Sonstiges',
+            9: 'Wir hatten sprachliche Schwierigkeiten',
+            8: 'Sonstiges',
         },
     },
 };

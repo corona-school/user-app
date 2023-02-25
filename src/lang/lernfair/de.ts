@@ -1,10 +1,4 @@
 const lernfair = {
-    buttons: {
-        prev: 'Zurück',
-        next: 'Weiter',
-        ok: 'Ok',
-        register: 'Registrieren',
-    },
     languages: {
         albanisch: 'Albanisch',
         arabisch: 'Arabisch',
@@ -39,7 +33,7 @@ const lernfair = {
         'Deutsch als Zweitsprache': 'Deutsch als Zweitsprache',
         Englisch: 'Englisch',
         Erdkunde: 'Erdkunde',
-        Französisch: 'Französisch',
+        Französisch: 'Französisch',
         Geschichte: 'Geschichte',
         Informatik: 'Informatik',
         Italienisch: 'Italienisch',
@@ -102,7 +96,7 @@ const lernfair = {
             matching: 'Du hast bereits die maximale Anzahl an offenen Anfragen erreicht.',
         },
         'not-participant': {
-            coursetext: 'Du bist nicht für Gruppenkurse freigeschaltet',
+            coursetext: 'Du bist nicht für Gruppen-Kurse freigeschaltet',
         },
         'max-matches': {
             course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
@@ -110,20 +104,17 @@ const lernfair = {
                 'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
         },
         'not-instructor': {
-            course: 'Du bist leider nicht als Tutor verifiziert.',
+            course: 'Du bist noch nicht als Kursleiter:in freigeschaltet.',
         },
         'not-screened': {
-            matching: 'Bitte schließe zuerst das Kennenlerngespräch ab.',
-            course: 'Es wurden keine Kurse gefunden.',
+            matching: 'Du bist nicht für das Matching freigeschalten. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+            course: 'Du bist nicht als Kursleter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
         },
         'not-tutee': {
-            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die 1:1-Lernunterstützung registriert bist.',
+            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
         },
         'not-tutor': {
-            matching: 'Du bist noch nicht für das Matching zugelassen.',
-        },
-        undefined: {
-            matching: 'Es wurden keine Matchings gefunden.',
+            matching: 'Du bist noch nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
         },
     },
 };

@@ -27,6 +27,7 @@ import { DateTime } from 'luxon';
 import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg';
 import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     tags?: LFTag[];
@@ -78,6 +79,7 @@ const AppointmentCard: React.FC<Props> = ({
     videoButton,
 }) => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
 
     const date = _date && DateTime.fromISO(_date);
@@ -207,7 +209,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         <Column>
                                             {remainingTime && (
                                                 <Row>
-                                                    <Text color={textColor}>Startet: </Text>
+                                                    <Text color={textColor}> {t('single.card.time.notStarted')} </Text>
                                                     <Text bold color="primary.400">
                                                         {remainingTime}
                                                     </Text>
@@ -216,14 +218,14 @@ const AppointmentCard: React.FC<Props> = ({
                                             {ongoingTime && (
                                                 <Row>
                                                     <Text bold color="primary.400">
-                                                        Läuft seit {ongoingTime}
+                                                        {t('single.card.time.ongoing')} {ongoingTime}
                                                     </Text>
                                                 </Row>
                                             )}
                                             {ended && (
                                                 <Row>
                                                     <Text bold color="primary.400">
-                                                        Schon vorbei
+                                                        {t('single.card.time.ended')}
                                                     </Text>
                                                 </Row>
                                             )}
@@ -274,7 +276,7 @@ const AppointmentCard: React.FC<Props> = ({
                             >
                                 {isTeaser && (
                                     <Button width="100%" onPress={onPressToCourse}>
-                                        Zum Kurs
+                                        {t('single.card.expandCardButton')}
                                     </Button>
                                 )}
 
@@ -308,14 +310,14 @@ const AppointmentCard: React.FC<Props> = ({
                             <Row space={1} marginTop={space['0.5']}>
                                 {date && (
                                     <Text>
-                                        {'Ab'} {date.toFormat('dd.MM.yyyy')}
+                                        {t('from')} {date.toFormat('dd.MM.yyyy')}
                                     </Text>
                                 )}
                                 {date && countCourse && (
                                     <>
                                         <Text>•</Text>
                                         <Text>
-                                            {countCourse} {'Termine'}
+                                            {countCourse} {t('course.CourseDate.tabs.appointments')}
                                         </Text>
                                     </>
                                 )}
@@ -334,7 +336,7 @@ const AppointmentCard: React.FC<Props> = ({
                         </Box>
                         {isHorizontalCardCourseChecked && (
                             <Box position="absolute" right="20px" bottom="13px">
-                                <Tooltip label="Du bist bereits angemeldet.">
+                                <Tooltip label={t('single.card.alreadyRegistered')}>
                                     <CheckCircleIcon color="danger.100" size="20px" />
                                 </Tooltip>
                             </Box>

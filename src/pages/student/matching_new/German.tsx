@@ -29,17 +29,15 @@ const German: React.FC = () => {
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Deutsch als Zweitsprache</Heading>
-            <Heading>
-                Kannst du dir vorstellen Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?
-            </Heading>
+            <Heading fontSize="2xl">{t('matching.request.daz.heading')}</Heading>
+            <Heading>{t('matching.request.daz.description')}</Heading>
             <YesNoSelector
                 initialYes={supportsDaz ?? false}
                 initialNo={!(supportsDaz ?? true)}
                 onPressYes={() => setSupportsDaz(true)}
                 onPressNo={() => setSupportsDaz(false)}
             />
-            <NextPrevButtons isDisabledNext={!supportsDaz} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
+            <NextPrevButtons isDisabledNext={supportsDaz === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onNext} />
         </VStack>
     );
 };
