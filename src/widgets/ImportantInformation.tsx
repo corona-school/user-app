@@ -22,6 +22,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { data } = useQuery(
         gql(`
 		query GetOnboardingInfos {
+          important_informations {
+            title
+            description
+            navigateTo
+            language
+            recipients
+          }
           me {
             email
             secrets {
@@ -90,6 +97,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const student = data?.me?.student;
     const email = data?.me?.email;
     const roles = data?.myRoles ?? [];
+    const importantInformations = data?.important_informations ?? [];
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
@@ -110,6 +118,26 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
 
     let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {} }[] = [];
+    let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+
+    // -------- Configurable Important Information -----------
+    importantInformations
+        .filter(
+            (info: any) =>
+                info.language.includes(getI18n().language) &&
+                ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
+        )
+        .forEach((info: any) => {
+            configurableInfos.push({
+                title: info.title,
+                desciption: info.description,
+                btnfn: info.navigateTo
+                    ? () => {
+                          window.location.href = info.navigateTo;
+                      }
+                    : null,
+            });
+        });
 
     // -------- Verification -----------
     if (student && !student?.verifiedAt)
@@ -185,7 +213,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         });
     // if (!data?.me?.student) infos.push({ label: 'angeforderteBescheinigung', btnfn: [], lang: {} });
 
-    if (!infos.length) return null;
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
@@ -214,6 +242,34 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     </Button>
                                 );
                             })}
+                        </Card>
+                    </Column>
+                );
+            })}
+            {configurableInfos.map((info, index) => {
+                return (
+                    <Column width="100%" maxWidth="500px">
+                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
+                            <Box marginBottom="20px">
+                                <BooksIcon />
+                            </Box>
+                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
+                                {info.title}
+                            </Heading>
+                            <Text color={textColor} marginBottom="25px">
+                                {info.desciption}
+                            </Text>
+                            {info.btnfn && (
+                                <Button
+                                    onPress={() => {
+                                        if (info.btnfn) info.btnfn();
+                                    }}
+                                    key={index}
+                                    marginBottom={'5px'}
+                                >
+                                    Read More
+                                </Button>
+                            )}
                         </Card>
                     </Column>
                 );
