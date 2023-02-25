@@ -337,7 +337,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     key={index}
                                     marginBottom={'5px'}
                                 >
-                                    Read More
+                                    mehr erfahren
                                 </Button>
                             )}
                         </Card>
