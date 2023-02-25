@@ -287,38 +287,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
-            {infos.map((config, index) => {
-                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
-                return (
-                    <Column width="100%" maxWidth="500px" key={config.key ?? config.label}>
-                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                            <Box marginBottom="20px">
-                                <BooksIcon />
-                            </Box>
-                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
-                            </Heading>
-
-                            <Text color={textColor} marginBottom="25px">
-                                {t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
-                            </Text>
-                            {buttontexts.map((buttontext, index) => {
-                                const btnFn = config.btnfn[index];
-                                if (!btnFn) return null;
-
-                                return (
-                                    <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
-                                        {buttontext}
-                                    </Button>
-                                );
-                            })}
-                        </Card>
-                    </Column>
-                );
-            })}
             {configurableInfos.map((info, index) => {
                 return (
-                    <Column width="100%" maxWidth="500px">
+                    <Column width="97%" maxWidth="500px">
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />
@@ -340,6 +311,35 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     Read More
                                 </Button>
                             )}
+                        </Card>
+                    </Column>
+                );
+            })}
+            {infos.map((config, index) => {
+                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
+                return (
+                    <Column width="97%" maxWidth="500px" key={config.key ?? config.label}>
+                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
+                            <Box marginBottom="20px">
+                                <BooksIcon />
+                            </Box>
+                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
+                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            </Heading>
+
+                            <Text color={textColor} marginBottom="25px">
+                                {t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
+                            </Text>
+                            {buttontexts.map((buttontext, index) => {
+                                const btnFn = config.btnfn[index];
+                                if (!btnFn) return null;
+
+                                return (
+                                    <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
+                                        {buttontext}
+                                    </Button>
+                                );
+                            })}
                         </Card>
                     </Column>
                 );
