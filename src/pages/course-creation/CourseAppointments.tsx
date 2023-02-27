@@ -7,6 +7,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
+import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 
 type Props = {
     next: () => void;
@@ -57,7 +58,13 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+                {allAppointmentsToShow.length === 0 ? (
+                    <Box justifyContent="center">
+                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
+                    </Box>
+                ) : (
+                    <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+                )}
             </Box>
 
             <Button

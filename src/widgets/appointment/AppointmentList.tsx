@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue, VStack } from 'native-base';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue } from 'native-base';
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -10,6 +10,8 @@ import AppointmentDay from './AppointmentDay';
 type Props = {
     appointments: Appointment[];
     isReadOnly?: boolean;
+    isEndOfList?: boolean;
+    setEndOfList?: Dispatch<SetStateAction<boolean>>;
 };
 
 const isAppointmentNow = (start: string, duration: number): boolean => {
@@ -27,9 +29,9 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId || 0;
 };
-
-const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => {
+const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEndOfList, setEndOfList }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    // const startContainerRef = useRef<HTMLDivElement>(null);
     const scrollViewRef = useRef<HTMLElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -45,10 +47,6 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
         lg: 1200,
     });
 
-    const emptyStateMargin = useBreakpointValue({
-        base: 100,
-        lg: 400,
-    });
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
@@ -60,8 +58,10 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
     };
 
     const callbackFn = (entries: IntersectionObserverEntry[]) => {
+        if (isEndOfList) return;
         const [entry] = entries;
         setIsVisible(entry.isIntersecting);
+        setEndOfList && setEndOfList(entry.isIntersecting);
     };
 
     const handleScroll = (element: HTMLElement) => {
@@ -91,6 +91,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
     useEffect(() => {
         const observer = new IntersectionObserver(callbackFn, options);
         if (containerRef.current) observer.observe(containerRef.current);
+
         return () => {
             if (containerRef.current) observer.unobserve(containerRef.current);
         };
@@ -105,60 +106,53 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => 
 
     return (
         <>
+            {/* <div ref={startContainerRef} /> */}
             <ScrollView scrollEnabled={isReadOnly}>
                 <Stack flex={1} maxW={maxListWidth}>
-                    {appointments.length > 0 ? (
-                        <>
-                            {appointments.map((appointment, index) => {
-                                const previousAppointment = appointments[index - 1];
-                                const weekDivider = showWeekDivider(appointment, previousAppointment);
-                                const monthDivider = showMonthDivider(appointment, previousAppointment);
+                    <>
+                        {appointments.map((appointment, index) => {
+                            const previousAppointment = appointments[index - 1];
+                            const weekDivider = showWeekDivider(appointment, previousAppointment);
+                            const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-                                return (
-                                    <Box key={`${appointment.id + index}`} ml={3}>
-                                        {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
-                                        {monthDivider && (
-                                            <>
-                                                <Center mt="3">
-                                                    <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
-                                                        DateTime.fromISO(appointment.start).year
-                                                    }`}</Text>
-                                                </Center>
-                                                <Divider my={3} width="95%" />
-                                            </>
-                                        )}
-                                        <Box ml={5}>
-                                            <AppointmentDay
-                                                key={`appointment-${appointment.title}-start-${appointment.id}`}
-                                                start={appointment.start}
-                                                duration={appointment.duration}
-                                                title={appointment.title}
-                                                organizers={appointment.organizers}
-                                                onPress={() => navigate(`/appointment/${appointment.id}`)}
-                                                scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
-                                                isReadOnly={isReadOnly}
-                                            />
-                                        </Box>
+                            return (
+                                <Box key={`${appointment.id + index}`} ml={3}>
+                                    {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
+                                    {monthDivider && (
+                                        <>
+                                            <Center mt="3">
+                                                <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                                                    DateTime.fromISO(appointment.start).year
+                                                }`}</Text>
+                                            </Center>
+                                            <Divider my={3} width="95%" />
+                                        </>
+                                    )}
+                                    <Box ml={5}>
+                                        <AppointmentDay
+                                            key={`appointment-${appointment.title}-start-${appointment.id}`}
+                                            start={appointment.start}
+                                            duration={appointment.duration}
+                                            title={appointment.title}
+                                            organizers={appointment.organizers}
+                                            onPress={() => navigate(`/appointment/${appointment.id}`)}
+                                            scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
+                                            isReadOnly={isReadOnly}
+                                        />
                                     </Box>
-                                );
-                            })}
-                            {!isReadOnly && (
-                                <Box alignItems="center" justifyContent="center" h={emptyStateH}>
-                                    <AppointmentsEmptyState
-                                        title={t('appointment.empty.noFurtherAppointments')}
-                                        subtitle={t('appointment.empty.noFurtherDesc')}
-                                    />
                                 </Box>
-                            )}
-                        </>
-                    ) : (
-                        <Box mt={emptyStateMargin} h={emptyStateH}>
-                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                        </Box>
-                    )}
+                            );
+                        })}
+                        {/* //TODO only show when no future appointments (refetching by scrolling...) */}
+                        {!isReadOnly && isEndOfList && (
+                            <Box alignItems="center" justifyContent="center" h={emptyStateH}>
+                                <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
+                            </Box>
+                        )}
+                    </>
                 </Stack>
             </ScrollView>
-            {isReadOnly && <div ref={containerRef} />}
+            <div ref={containerRef} />
         </>
     );
 };
