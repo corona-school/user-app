@@ -1,172 +1,88 @@
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { DateTime } from 'luxon';
-import { VStack, Button, useTheme, Heading, Text, Row, Box, Pressable, useBreakpointValue } from 'native-base';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import AlertMessage from '../../widgets/AlertMessage';
-import AppointmentInfoRow from '../../widgets/AppointmentInfoRow';
-
-import { CreateCourseContext } from '../CreateCourse';
-import CourseDateWizard from './CourseDateWizard';
+import { useNavigate } from 'react-router-dom';
+import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 
 type Props = {
-    onNext: () => any;
-    onBack: () => any;
-    onDeleteAppointment?: (index: number, isSubmitted: boolean) => any;
+    next: () => void;
+    back: () => void;
 };
 
-const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointment }) => {
-    const { space, sizes } = useTheme();
+const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
-    const { newLectures = [], lectures = [], setNewLectures } = useContext(CreateCourseContext);
-    const [showError, setShowError] = useState<boolean>();
-    const [showValidDateMessage, setShowValidDateMessage] = useState<{
-        show: boolean;
-        index: number;
-    }>({ show: false, index: -1 });
+    const navigate = useNavigate();
+    const { appointmentsToBeCreated } = useCreateCourseAppointments();
 
-    const isValidInput = useMemo(() => {
-        if ([...lectures, ...newLectures].length === 0) return false;
+    const { isMobile } = useLayoutHelper();
 
-        if (lectures.length === 0) {
-            for (let i = 0; i < newLectures.length; i++) {
-                const lec = newLectures[i];
-                if (!lec.date) return false;
-                if (!lec.time) return false;
-                if (!lec.duration) return false;
-                const validDate = DateTime.fromISO(lec.date).diffNow('days').days >= 6;
-                !validDate &&
-                    setShowValidDateMessage({
-                        show: true,
-                        index: i,
-                    });
-                if (!validDate) return false;
-            }
-        }
-        setShowValidDateMessage({
-            show: false,
-            index: -1,
-        });
-        return true;
-    }, [lectures, newLectures]);
+    const maxHeight = useBreakpointValue({
+        base: 400,
+        lg: 600,
+    });
 
-    const tryNext = useCallback(() => {
-        if (isValidInput) {
-            onNext();
-        } else {
-            setShowError(true);
-        }
-    }, [isValidInput, onNext]);
-
-    useEffect(() => {
-        if (newLectures?.length === 0) {
-            setNewLectures && setNewLectures((prev) => [...prev, { time: '', duration: '', date: '' }]);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const ContainerWidth = useBreakpointValue({
+    const buttonWidth = useBreakpointValue({
         base: '100%',
-        lg: sizes['containerWidth'],
+        lg: '50%',
     });
 
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
+    // TODO query course appointments by ID
+    const _convertAppointments = () => {
+        let convertedAppointments: Appointment[] = [];
+        for (const appointment of appointmentsToBeCreated) {
+            const converted = {
+                id: 1,
+                title: appointment.title,
+                description: appointment.description,
+                start: appointment.start,
+                duration: appointment.duration,
+                appointmentType: AppointmentTypes.GROUP,
+            };
+            convertedAppointments.push(converted);
+        }
+        return convertedAppointments;
+    };
 
-    const ButtonContainerDirection = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
-
-    const { trackPageView } = useMatomo();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Kurs erstellen – Termine',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const futureLectures = useMemo(
-        () =>
-            lectures?.filter((lec) => {
-                const date = DateTime.fromISO(lec.start);
-                return date.toMillis() > DateTime.now().toMillis();
-            }),
-        [lectures]
-    );
+    const _allAppointmentsToShow = () => {
+        const convertedAppointments = _convertAppointments();
+        const all = appointmentsData.concat(convertedAppointments);
+        return all;
+    };
+    const allAppointmentsToShow = _allAppointmentsToShow();
 
     return (
-        <VStack space={space['1']}>
-            <Heading marginBottom={space['1.5']}>{t('course.appointments.headline')}</Heading>
+        <Box>
+            <Box maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+            </Box>
 
-            <Heading fontSize="lg">Bestehende Termine</Heading>
-            {futureLectures?.map((lec, index) => (
-                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
-            ))}
+            <Button
+                variant="outline"
+                borderStyle="dashed"
+                borderWidth="2"
+                borderColor="primary.500"
+                _text={{ color: 'primary.500' }}
+                width="full"
+                onPress={() => navigate('/create-course-appointment')}
+            >
+                {t('course.appointments.addOtherAppointment')}
+            </Button>
+            <Divider my="5" />
 
-            <Text fontSize="md" bold>
-                {t('course.appointments.content')}
-            </Text>
-
-            {newLectures?.map((lec, i) => (
-                <Row maxWidth={ContainerWidth}>
-                    <CourseDateWizard
-                        index={i}
-                        showInvalidDateMessage={showValidDateMessage.show && i === showValidDateMessage.index}
-                        onPressDelete={() => {
-                            const arr = [...newLectures];
-                            arr.splice(i, 1);
-                            setNewLectures && setNewLectures(arr);
-                        }}
-                    />
-                </Row>
-            ))}
-
-            <VStack>
-                <Pressable
-                    marginBottom={space['2']}
-                    isDisabled={!isValidInput}
-                    onPress={() => {
-                        setNewLectures && setNewLectures((prev) => [...prev, { time: '', date: '', duration: '' }]);
-                    }}
-                    alignItems="center"
-                    flexDirection="row"
-                >
-                    <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        bg={!isValidInput ? 'primary.grey' : 'primary.800'}
-                        w="40px"
-                        h="40px"
-                        marginRight="15px"
-                        borderRadius="10px"
-                    >
-                        <Text color="white" fontSize="32px">
-                            +
-                        </Text>
-                    </Box>
-                    <Text bold color={!isValidInput ? 'primary.grey' : 'primary.800'}>
-                        {t('course.appointments.addOtherAppointment')}
-                    </Text>
-                </Pressable>
-
-                {showError && <AlertMessage content={t('course.noticeDate')} />}
-            </VStack>
-
-            <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
-                <Button marginBottom={space['1']} width={ButtonContainer} onPress={tryNext}>
+            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
+                <Button onPress={next} width={buttonWidth}>
                     {t('course.appointments.check')}
                 </Button>
-
-                <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack}>
+                <Button variant="outline" onPress={back} width={buttonWidth}>
                     {t('course.appointments.prevPage')}
                 </Button>
-            </Row>
-        </VStack>
+            </Stack>
+        </Box>
     );
 };
+
 export default CourseAppointments;

@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { Box, Center, Divider, Text, useBreakpointValue, VStack } from 'native-base';
-import React, { useEffect, useMemo, useRef } from 'react';
+import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue, VStack } from 'native-base';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -28,10 +28,17 @@ const getScrollToId = (appointments: Appointment[]): number => {
     return currentId || nextId || 0;
 };
 
-const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = false }) => {
-    const scrollViewRef = useRef(null);
-    const { t } = useTranslation();
+const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const scrollViewRef = useRef<HTMLElement>(null);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const maxListWidth = useBreakpointValue({
+        base: 'full',
+        lg: isReadOnly ? 'full' : '90%',
+    });
 
     const emptyStateH = useBreakpointValue({
         base: '60%',
@@ -45,6 +52,17 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = fals
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
+
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+    };
+
+    const callbackFn = (entries: IntersectionObserverEntry[]) => {
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
+    };
 
     const handleScroll = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
@@ -71,59 +89,77 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly = fals
     };
 
     useEffect(() => {
+        const observer = new IntersectionObserver(callbackFn, options);
+        if (containerRef.current) observer.observe(containerRef.current);
+        return () => {
+            if (containerRef.current) observer.unobserve(containerRef.current);
+        };
+    }, [containerRef.current, options]);
+
+    useEffect(() => {
         if (scrollViewRef.current === null) return;
-        return handleScroll(scrollViewRef.current);
-    }, [appointments]);
+        if (isVisible) return handleScroll(scrollViewRef.current);
+        if (!isReadOnly) return handleScroll(scrollViewRef.current);
+        return;
+    }, [appointments, isReadOnly, isVisible]);
 
     return (
-        <VStack>
-            {appointments.length > 0 ? (
-                <>
-                    {appointments.map((appointment, index) => {
-                        const previousAppointment = appointments[index - 1];
-                        const weekDivider = showWeekDivider(appointment, previousAppointment);
-                        const monthDivider = showMonthDivider(appointment, previousAppointment);
+        <>
+            <ScrollView scrollEnabled={isReadOnly}>
+                <Stack flex={1} maxW={maxListWidth}>
+                    {appointments.length > 0 ? (
+                        <>
+                            {appointments.map((appointment, index) => {
+                                const previousAppointment = appointments[index - 1];
+                                const weekDivider = showWeekDivider(appointment, previousAppointment);
+                                const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-                        return (
-                            <Box key={appointment.id} ml={3} maxW={isReadOnly ? 'full' : '90%'}>
-                                {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
-                                {monthDivider && (
-                                    <>
-                                        <Center mt="3">
-                                            <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
-                                                DateTime.fromISO(appointment.start).year
-                                            }`}</Text>
-                                        </Center>
-                                        <Divider my={3} width="95%" />
-                                    </>
-                                )}
-                                <Box ml={5}>
-                                    <AppointmentDay
-                                        key={`appointment-${index}`}
-                                        start={appointment.start}
-                                        duration={appointment.duration}
-                                        title={appointment.title}
-                                        organizers={appointment.organizers}
-                                        onPress={() => navigate(`/appointment/${appointment.id}`)}
-                                        scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
-                                        isReadOnly={isReadOnly}
+                                return (
+                                    <Box key={`${appointment.id + index}`} ml={3}>
+                                        {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
+                                        {monthDivider && (
+                                            <>
+                                                <Center mt="3">
+                                                    <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                                                        DateTime.fromISO(appointment.start).year
+                                                    }`}</Text>
+                                                </Center>
+                                                <Divider my={3} width="95%" />
+                                            </>
+                                        )}
+                                        <Box ml={5}>
+                                            <AppointmentDay
+                                                key={`appointment-${appointment.title}-start-${appointment.id}`}
+                                                start={appointment.start}
+                                                duration={appointment.duration}
+                                                title={appointment.title}
+                                                organizers={appointment.organizers}
+                                                onPress={() => navigate(`/appointment/${appointment.id}`)}
+                                                scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
+                                                isReadOnly={isReadOnly}
+                                            />
+                                        </Box>
+                                    </Box>
+                                );
+                            })}
+                            {!isReadOnly && (
+                                <Box alignItems="center" justifyContent="center" h={emptyStateH}>
+                                    <AppointmentsEmptyState
+                                        title={t('appointment.empty.noFurtherAppointments')}
+                                        subtitle={t('appointment.empty.noFurtherDesc')}
                                     />
                                 </Box>
-                            </Box>
-                        );
-                    })}
-                    {!isReadOnly && (
-                        <Box alignItems="center" justifyContent="center" h={emptyStateH}>
-                            <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
+                            )}
+                        </>
+                    ) : (
+                        <Box mt={emptyStateMargin} h={emptyStateH}>
+                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
                         </Box>
                     )}
-                </>
-            ) : (
-                <Box mt={emptyStateMargin} h={emptyStateH}>
-                    <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                </Box>
-            )}
-        </VStack>
+                </Stack>
+            </ScrollView>
+            {isReadOnly && <div ref={containerRef} />}
+        </>
     );
 };
 
