@@ -7,9 +7,9 @@ type Props = {
     isEnd?: boolean;
 };
 
-const AppointmentEmptyState: React.FC<Props> = ({ title, subtitle, isEnd }) => {
+const AppointmentsEmptyState: React.FC<Props> = ({ title, subtitle }) => {
     return (
-        <Box alignItems="center" justifyContent="center" h={isEnd ? 800 : 'full'}>
+        <Box alignItems="center" justifyContent="center">
             <EmptyStateAppointments />
             <Heading>{title}</Heading>
             <Text maxW="300" textAlign="center" py="3">
@@ -18,4 +18,4 @@ const AppointmentEmptyState: React.FC<Props> = ({ title, subtitle, isEnd }) => {
         </Box>
     );
 };
-export default AppointmentEmptyState;
+export default AppointmentsEmptyState;

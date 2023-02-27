@@ -60,17 +60,17 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
         return newDate.toISO();
     };
 
-    const [createAppointment] = useMutation(gql`
-        mutation createAppointment($appointment: AppointmentCreateInputFull!) {
-            appointmentCreate(appointment: $appointment)
-        }
-    `);
+    // const [createAppointment] = useMutation(gql`
+    //     mutation createAppointment($appointment: AppointmentCreateInputFull!) {
+    //         appointmentCreate(appointment: $appointment)
+    //     }
+    // `);
 
-    const [createAppointmentWithWeeklies] = useMutation(gql`
-        mutation createWeekly($baseAppointment: AppointmentCreateGroupInput!, $weeklyTexts: [AppointmentInputText!]!) {
-            appointmentGroupWeeklyCreate(baseAppointment: $baseAppointment, weeklyTexts: $weeklyTexts)
-        }
-    `);
+    // const [createAppointmentWithWeeklies] = useMutation(gql`
+    //     mutation createWeekly($baseAppointment: AppointmentCreateGroupInput!, $weeklyTexts: [AppointmentInputText!]!) {
+    //         appointmentGroupWeeklyCreate(baseAppointment: $baseAppointment, weeklyTexts: $weeklyTexts)
+    //     }
+    // `);
 
     const validateInputs = () => {
         const isDateMinOneWeekLater = (date: string): boolean => {
@@ -128,7 +128,7 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
                 appointmentType: AppointmentType.GROUP,
             };
 
-            createAppointment({ variables: { newAppointment } });
+            // createAppointment({ variables: { newAppointment } });
             toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
             setTimeout(() => {
                 navigate('/appointments');
@@ -151,7 +151,7 @@ const AppointmentCreation: React.FC<Props> = ({ back }) => {
             };
             const weeklyTexts = weeklies;
 
-            createAppointmentWithWeeklies({ variables: { baseAppointment, weeklyTexts } });
+            // createAppointmentWithWeeklies({ variables: { baseAppointment, weeklyTexts } });
             toast.show({ description: 'Termine hinzugefügt', placement: 'top' });
             setTimeout(() => {
                 navigate('/appointments');
