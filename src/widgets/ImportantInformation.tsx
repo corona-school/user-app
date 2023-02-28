@@ -187,12 +187,18 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Interest Confirmation -----------
         const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
-        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        // TODO: Browser Support?
+        // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
                 label: 'interestconfirmation',
                 btnfn: [confirmInterest, refuseInterest],
-                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
+                lang: {
+                    subjectSchüler:
+                        /* formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') */ pupil?.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', '),
+                },
             });
 
         // -------- Open Match Request -----------
