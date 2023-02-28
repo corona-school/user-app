@@ -88,7 +88,7 @@ const lernfair = {
             // from backend/graphql/student/fields.ts
             instructor: {
                 'not-instructor': 'Du bist noch nicht als Kursleiter:in registriert.',
-                'not-screened': 'Du bist noch nicht als Kursleter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+                'not-screened': 'Du bist noch nicht als Kursleiter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
             },
             // from backend/common/courses/participants.ts
             pupil: {
