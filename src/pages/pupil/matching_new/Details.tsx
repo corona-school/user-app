@@ -48,7 +48,7 @@ const Details: React.FC<Props> = () => {
                 </Heading>
                 <Text color="lightText" maxW="600px" textAlign="center">
                     {(!isEdit &&
-                        'Danke für deine Anfrage. Du bist jetzt auf unserer Warteliste. Voraussichtlich musst du 3-6 Monate warten. Wenn du an der Reihe bist, werden wir dich per E-Mail informieren. Bis dahin kannst du gerne an unseren Nachhilfe-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.') ||
+                        'Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.') ||
                         'Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht.'}
                 </Text>
                 <Button

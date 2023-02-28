@@ -25,12 +25,12 @@ export function SelectParticipants({
                     {selectedParticipants.length !== 0 && selectedParticipants.map((it) => participants.find((p) => p.id === it)?.firstname).join(', ')}
                 </Text>
                 <Button variant="outline" onPress={() => setOpen(true)}>
-                    Teilnehmer auswählen
+                    Teilnehmer:in auswählen
                 </Button>
             </Box>
             <Modal isOpen={open}>
                 <Modal.Content maxWidth="800px">
-                    <Modal.Header>Teilnehmer Auswählen</Modal.Header>
+                    <Modal.Header>Teilnehmer:in auswählen</Modal.Header>
                     <Modal.Body>
                         <Box display="flex" flexDirection="row" flexWrap="wrap">
                             {participants.map((participant) => {

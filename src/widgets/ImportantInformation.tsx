@@ -19,6 +19,13 @@ type Props = {
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
 query GetOnboardingInfos {
+  important_informations {
+    title
+    description
+    navigateTo
+    language
+    recipients
+  }
   me {
     email
     secrets {
@@ -108,6 +115,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const student = data?.me?.student;
     const email = data?.me?.email;
     const roles = data?.myRoles ?? [];
+    const importantInformations = data?.important_informations ?? [];
 
     const [sendMail] = useMutation(
         gql(`mutation SendVerificationMail($email: String!) { tokenRequest(email:$email action: "user-verify-email" redirectTo: "/dashboard") }`),
@@ -179,12 +187,18 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Interest Confirmation -----------
         const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
-        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        // TODO: Browser Support?
+        // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
                 label: 'interestconfirmation',
                 btnfn: [confirmInterest, refuseInterest],
-                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
+                lang: {
+                    subjectSchüler:
+                        /* formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') */ pupil?.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', '),
+                },
             });
 
         // -------- Open Match Request -----------
@@ -197,17 +211,28 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
+        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
+            infos.push({
+                label: 'statusStudent2',
+                btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
+                lang: {},
+            });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
             infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
 
         // -------- New Match -----------
-        pupil?.matches?.forEach((match: any) => {
+        pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktSchüler',
                     btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-                    lang: { nameHelfer: match.student.firstname, subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) },
+                    lang: {
+                        nameHelfer: match.student.firstname,
+                        subjectHelfer: match.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+                    },
                 });
         });
         student?.matches?.forEach((match: any) => {
@@ -251,14 +276,66 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
-    if (!infos.length) return null;
+    const configurableInfos = useMemo(() => {
+        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+
+        // -------- Configurable Important Information -----------
+        importantInformations
+            .filter(
+                (info: any) =>
+                    info.language.includes(getI18n().language) &&
+                    ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
+            )
+            .forEach((info: any) => {
+                configurableInfos.push({
+                    title: info.title,
+                    desciption: info.description,
+                    btnfn: info.navigateTo
+                        ? () => {
+                              window.location.href = info.navigateTo;
+                          }
+                        : null,
+                });
+            });
+        return configurableInfos;
+    }, [importantInformations, pupil, student]);
+
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
+            {configurableInfos.map((info, index) => {
+                return (
+                    <Column width="97%" maxWidth="500px">
+                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
+                            <Box marginBottom="20px">
+                                <BooksIcon />
+                            </Box>
+                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
+                                {info.title}
+                            </Heading>
+                            <Text color={textColor} marginBottom="25px">
+                                {info.desciption}
+                            </Text>
+                            {info.btnfn && (
+                                <Button
+                                    onPress={() => {
+                                        if (info.btnfn) info.btnfn();
+                                    }}
+                                    key={index}
+                                    marginBottom={'5px'}
+                                >
+                                    mehr erfahren
+                                </Button>
+                            )}
+                        </Card>
+                    </Column>
+                );
+            })}
             {infos.map((config, index) => {
                 const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                 return (
-                    <Column width="100%" maxWidth="500px" key={config.key ?? config.label}>
+                    <Column width="97%" maxWidth="500px" key={config.key ?? config.label}>
                         <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
                             <Box marginBottom="20px">
                                 <BooksIcon />

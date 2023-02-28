@@ -27,9 +27,6 @@ const helpcenter = {
         subject: {
             label: 'Betreff',
         },
-        datapolicy: {
-            label: 'Hiermit stimme ich der Datenschutzerklärung zu.',
-        },
         success: 'Deine Nachricht wurde erfolgreich versendet',
         error: 'Deine Nachricht konnte leider nicht versendet werden',
     },
