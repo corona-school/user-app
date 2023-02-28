@@ -1,23 +1,70 @@
-import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
-import React from 'react';
+import { gql, useQuery } from '@apollo/client';
+import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { AppointmentType } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
+import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
+import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 
 type Props = {
     next: () => void;
     back: () => void;
 };
 
+const GET_COURSE_APPOINTMENTS = gql`
+    query courseAppointments($id: Int!) {
+        subcourse(subcourseId: $id) {
+            course {
+                name
+            }
+            appointments {
+                id
+                start
+                duration
+                title
+                description
+                appointmentType
+                meetingLink
+                isCanceled
+                subcourseId
+                matchId
+                participants(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isPupil
+                }
+                organizers(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isStudent
+                }
+                isOrganizer
+                isParticipant
+                declinedBy(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isStudent
+                    isPupil
+                }
+            }
+        }
+    }
+`;
+
 const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState<boolean>(false);
+
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
+    // TODO query on editing modus
+    // const { data, loading, error, fetchMore } = useQuery(GET_COURSE_APPOINTMENTS, {variables: { id: 1 },});
 
     const { isMobile } = useLayoutHelper();
 
@@ -31,7 +78,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
         lg: '50%',
     });
 
-    // TODO query course appointments by ID
     const _convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
         for (const appointment of appointmentsToBeCreated) {
@@ -41,7 +87,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                 description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
-                appointmentType: AppointmentTypes.GROUP,
+                appointmentType: AppointmentType.Group,
             };
             convertedAppointments.push(converted);
         }
@@ -49,46 +95,52 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     };
 
     const _allAppointmentsToShow = () => {
+        const appointments: Appointment[] = [];
         const convertedAppointments = _convertAppointments();
-        const all = appointmentsData.concat(convertedAppointments);
+        const all = appointments.concat(convertedAppointments);
         return all;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
 
     return (
-        <Box>
-            <Box maxH={maxHeight} flex="1" mb="10">
-                {allAppointmentsToShow.length === 0 ? (
-                    <Box justifyContent="center">
-                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
-                    </Box>
-                ) : (
-                    <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
-                )}
+        <>
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+                <CreateCourseAppointmentModal onCreate={() => setShowModal(false)} />
+            </Modal>
+            <Box>
+                <Box maxH={maxHeight} flex="1" mb="10">
+                    {allAppointmentsToShow.length === 0 ? (
+                        <Box justifyContent="center">
+                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
+                        </Box>
+                    ) : (
+                        <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+                    )}
+                </Box>
+
+                <Button
+                    variant="outline"
+                    borderStyle="dashed"
+                    borderWidth="2"
+                    borderColor="primary.500"
+                    _text={{ color: 'primary.500' }}
+                    width="full"
+                    onPress={() => setShowModal(true)}
+                >
+                    {t('course.appointments.addOtherAppointment')}
+                </Button>
+                <Divider my="5" />
+
+                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
+                    <Button onPress={next} width={buttonWidth}>
+                        {t('course.appointments.check')}
+                    </Button>
+                    <Button variant="outline" onPress={back} width={buttonWidth}>
+                        {t('course.appointments.prevPage')}
+                    </Button>
+                </Stack>
             </Box>
-
-            <Button
-                variant="outline"
-                borderStyle="dashed"
-                borderWidth="2"
-                borderColor="primary.500"
-                _text={{ color: 'primary.500' }}
-                width="full"
-                onPress={() => navigate('/create-course-appointment')}
-            >
-                {t('course.appointments.addOtherAppointment')}
-            </Button>
-            <Divider my="5" />
-
-            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
-                <Button onPress={next} width={buttonWidth}>
-                    {t('course.appointments.check')}
-                </Button>
-                <Button variant="outline" onPress={back} width={buttonWidth}>
-                    {t('course.appointments.prevPage')}
-                </Button>
-            </Stack>
-        </Box>
+        </>
     );
 };
 
