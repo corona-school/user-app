@@ -1,17 +1,19 @@
 import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
-import { Appointment, Course } from '../../types/lernfair/Appointment';
+import { Appointment } from '../../types/lernfair/Appointment';
 import MetaDetails from './MetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
 import Buttons from './Buttons';
 import { DateTime } from 'luxon';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import useApollo from '../../hooks/useApollo';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    course?: Course;
+    id?: number;
 };
 
 type AppointmentDates = {
@@ -20,15 +22,57 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, course }) => {
+const QUERY_MATCH = gql`
+    query match($matchId: Int!) {
+        match(matchId: $matchId) {
+            id
+            pupil {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+const QUERY_SUBCOURSE = gql`
+    query course($courseId: Int!) {
+        subcourse(subcourseId: $courseId) {
+            course {
+                name
+                description
+            }
+            instructors {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
+    const { user } = useApollo();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const { data } = useQuery(appointment.matchId ? QUERY_MATCH : QUERY_SUBCOURSE, { variables: { id } });
+
     const containerWidth = useBreakpointValue({
         base: 'full',
         lg: sizes['containerWidth'],
     });
+
+    const [cancelAppointment] = useMutation(gql`
+        mutation cancelAppointment($appointmentId: Float!) {
+            appointmentCancel(appointmentId: $appointmentId)
+        }
+    `);
+
+    const [declineAppointment] = useMutation(gql`
+        mutation declineAppointment($appointmentId: Float!) {
+            appointmentDecline(appointmentId: $appointmentId)
+        }
+    `);
 
     const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
         const start = DateTime.fromISO(appointmentStart).setLocale('de');
@@ -53,10 +97,17 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
 
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
-    const cancelAppointment = useCallback(() => {
+    const handleCancelClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        // TODO mutation to set participant declined
+        const cancelRes = cancelAppointment({ variables: { appointmentId: appointment.id } });
+        console.log(cancelRes);
+    }, []);
+
+    const handleDeclineClick = useCallback(() => {
+        toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
+        setCanceled(true);
+        const cancelRes = declineAppointment({ variables: { appointmentId: appointment.id } });
     }, []);
 
     const attendees = useMemo(() => {
@@ -66,7 +117,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
             <Avatars attendees={attendees} />
-            <Header appointmentType={appointment.appointmentType} organizers={[]} title={appointment.title} />
+            <Header appointmentType={appointment.appointmentType} organizers={appointment.organizers} title={appointment.title} />
             <MetaDetails
                 date={date}
                 startTime={startTime}
@@ -79,8 +130,12 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
                 participants={appointment.participants}
                 declinedBy={appointment.declinedBy}
             />
-            <Description appointmentType={appointment.appointmentType} courseName={course?.name} courseDescription={course?.description} />
-            <Buttons onPress={cancelAppointment} canceled={canceled} />
+            <Description
+                appointmentType={appointment.appointmentType}
+                courseName={data?.subcourse?.course?.name}
+                courseDescription={data?.subcourse?.course?.description ? data?.subcourse?.course?.description : ''}
+            />
+            <Buttons onPress={user?.student ? handleCancelClick : handleDeclineClick} canceled={canceled} />
         </Box>
     );
 };

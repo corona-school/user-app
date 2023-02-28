@@ -22,7 +22,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, canceled }) => {
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
                 {user?.student && (
                     <>
-                        <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth}>
+                        <Button _text={{ color: 'white' }} onPress={onPress} bgColor="amber.700" width={buttonWidth}>
                             {t('appointment.detail.deleteButton')}
                         </Button>
                         <Button variant="outline" width={buttonWidth}>
