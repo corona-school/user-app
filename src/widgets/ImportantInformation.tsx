@@ -227,7 +227,12 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 infos.push({
                     label: 'kontaktSchüler',
                     btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-                    lang: { nameHelfer: match.student.firstname, subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) },
+                    lang: {
+                        nameHelfer: match.student.firstname,
+                        subjectHelfer: match.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+                    },
                 });
         });
         student?.matches?.forEach((match: any) => {
