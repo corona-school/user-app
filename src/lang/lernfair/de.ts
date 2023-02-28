@@ -84,37 +84,36 @@ const lernfair = {
     schoolclass: '{{class}}. Klasse',
 
     reason: {
-        'subcourse-full': {
-            coursetext: 'Dieser Kurs ist leider grade ausgebucht.',
+        course: {
+            // from backend/graphql/student/fields.ts
+            instructor: {
+                'not-instructor': 'Du bist noch nicht als Kursleiter:in registriert.',
+                'not-screened': 'Du bist noch nicht als Kursleter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+            },
+            // from backend/common/courses/participants.ts
+            pupil: {
+                'subcourse-full': 'Dieser Kurs ist leider grade ausgebucht.',
+                'grade-to-high': 'Du kannst dich nicht anmelden, weil deine Klassenstufe zu groß ist.',
+                'grade-to-low': 'Du kannst dich nicht anmelden, weil deine Klassenstufe zu klein ist.',
+                'no-lectures': 'Du kannst dich nicht anmelden, da keine Lektionen angelegt sind.',
+                'already-started': 'Du kannst dich nicht anmelden, da der Kurs bereits gestartet hat.',
+                'not-participant': 'Du kannst dich nicht anmelden, weil du nicht für Gruppen-Kurse registriert bist. Bitte wende dich an den Support.',
+            },
         },
-        'grade-to-high': {
-            coursetext: 'Anmeldung derzeit nicht möglich.',
-        },
-        proposals: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',
-        'max-requests': {
-            course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-            matching: 'Du hast bereits die maximale Anzahl an offenen Anfragen erreicht.',
-        },
-        'not-participant': {
-            coursetext: 'Du bist nicht für Gruppen-Kurse freigeschaltet',
-        },
-        'max-matches': {
-            course: 'Du hast bereits die maximale Anzahl an Kursen erreicht',
-            matching:
-                'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
-        },
-        'not-instructor': {
-            course: 'Du bist noch nicht als Kursleiter:in freigeschaltet.',
-        },
-        'not-screened': {
-            matching: 'Du bist nicht für das Matching freigeschalten. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
-            course: 'Du bist nicht als Kursleter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
-        },
-        'not-tutee': {
-            matching: 'Du bist nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
-        },
-        'not-tutor': {
-            matching: 'Du bist noch nicht für das Matching zugelassen, da du nicht für die Lernunterstützung registriert bist.',
+        // from backend/commmon/match/requests.ts
+        matching: {
+            tutor: {
+                'not-screened': 'Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+                'not-tutor': 'Du kannst kein Lernpaar bilden, da du nicht für die Lernunterstützung registriert bist.',
+                'max-requests': 'Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen.',
+            },
+            pupil: {
+                'max-dissolved-matches': 'Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.',
+                'not-tutee': 'Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.',
+                'max-requests': 'Du bist bereits auf der Warteliste.',
+                'max-matches':
+                    'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
+            },
         },
     },
 };

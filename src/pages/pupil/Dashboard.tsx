@@ -447,7 +447,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 }}
                                             />
                                         </Column>
-                                    ))) || <AlertMessage content={t('lernfair.reason.proposals')} />}
+                                    ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
                     </VStack>
