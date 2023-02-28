@@ -7,9 +7,11 @@ import { DateTime } from 'luxon';
 import { gql, useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
-import { AppointmentType, FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
+import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
+import { AppointmentType } from '../../gql/graphql';
+import { useNavigate } from 'react-router-dom';
 
 type FormErrors = {
     title?: string;
@@ -26,17 +28,14 @@ export type StartDate = {
 };
 
 type Props = {
-    back: () => void;
-    navigateTo: () => void;
-    // course id oder match id
     id?: number;
-    // if create appointment for course
     isCourse?: boolean;
-    // if create course appointment
     isCourseCreation?: boolean;
+    back: () => void;
+    onCreate?: () => void;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, isCourseCreation }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCreation, onCreate }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
@@ -45,6 +44,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const appointmentsCount = 2;
 
@@ -122,7 +122,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 organizers: organizers,
                 duration: appointmentToCreate.duration,
-                appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
+                appointmentType: AppointmentType.Group,
             };
             if (isCourseCreation && weeklies.length === 0) {
                 setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
@@ -136,7 +136,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                         start: weekly.nextDate,
                         organizers: organizers,
                         duration: appointmentToCreate.duration,
-                        appointmentType: AppointmentType.GROUP,
+                        appointmentType: AppointmentType.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -147,9 +147,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            setTimeout(() => {
-                navigateTo();
-            }, 2000);
+            onCreate && onCreate();
         }
     };
 
@@ -157,7 +155,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
     const handleCreateAppointment = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
-            let newAppointments: CreateAppointmentInput[] = [];
+            let appointments: CreateAppointmentInput[] = [];
             const organizers = [user!.student!.id];
             const newAppointment: CreateAppointmentInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
@@ -165,10 +163,10 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 organizers: organizers,
                 duration: appointmentToCreate.duration,
-                appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
+                appointmentType: isCourse ? AppointmentType.Group : AppointmentType.Match,
                 ...(isCourse ? { subcourseId: id } : { matchId: id }),
             };
-            newAppointments.push(newAppointment);
+            appointments.push(newAppointment);
             if (weeklies.length > 0) {
                 let weeklyAppointments: CreateAppointmentInput[] = [];
 
@@ -179,21 +177,21 @@ const AppointmentCreation: React.FC<Props> = ({ back, navigateTo, id, isCourse, 
                         start: weekly.nextDate,
                         organizers: organizers,
                         duration: appointmentToCreate.duration,
-                        appointmentType: isCourse ? AppointmentType.GROUP : AppointmentType.ONE_ON_ONE,
+                        appointmentType: isCourse ? AppointmentType.Group : AppointmentType.Match,
+                        ...(isCourse ? { subcourseId: id } : { matchId: id }),
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
-                newAppointments.push(...weeklyAppointments);
+                appointments.push(...weeklyAppointments);
             }
-            // createAppointments({ variables: { newAppointments } });
+
+            createAppointments({ variables: { appointments } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            setTimeout(() => {
-                navigateTo();
-            }, 2000);
+            navigate('/appointments');
         }
     };
 

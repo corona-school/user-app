@@ -135,6 +135,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                             duration={appointment.duration}
                                             title={appointment.title}
                                             organizers={appointment.organizers}
+                                            participants={appointment.participants}
                                             onPress={() => navigate(`/appointment/${appointment.id}`)}
                                             scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                             isReadOnly={isReadOnly}

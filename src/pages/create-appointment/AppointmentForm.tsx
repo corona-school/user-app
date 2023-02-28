@@ -28,7 +28,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
     );
 
     const handleDurationSelection = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.SELECT_CHANGE, field: 'duration', value: e });
+        dispatchCreateAppointment({ type: FormReducerActionType.SELECT_CHANGE, field: 'duration', value: parseFloat(e) });
     };
 
     const handleDescriptionInput = (e: any) => {

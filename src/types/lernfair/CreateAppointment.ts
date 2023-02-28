@@ -1,13 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { CreateAppointmentInput } from './Appointment';
 
-export enum AppointmentType {
-    GROUP = 'group',
-    ONE_ON_ONE = '1on1',
-    OTHER_INTERNAL = 'other-internal',
-    LEGACY_LECTURE = 'legacy-lecture',
-}
-
 export enum FormReducerActionType {
     TEXT_CHANGE = 'text_change',
     DATE_CHANGE = 'date_change',

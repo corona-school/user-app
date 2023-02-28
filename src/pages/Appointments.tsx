@@ -24,6 +24,18 @@ const GET_MY_APPOINTMENTS = gql`
                 duration
                 subcourseId
                 matchId
+                organizers(skip: 0, take: 5) {
+                    id
+                    firstname
+                    lastname
+                }
+                participants(skip: 0, take: 50) {
+                    id
+                    firstname
+                    lastname
+                    isPupil
+                    isStudent
+                }
                 meetingLink
                 appointmentType
             }
@@ -41,8 +53,6 @@ const Appointments: React.FC = () => {
 
     const { data, loading, error, fetchMore } = useQuery(GET_MY_APPOINTMENTS, {
         variables: { take, skip },
-        fetchPolicy: 'cache-and-network',
-        notifyOnNetworkStatusChange: true,
     });
 
     const buttonPlace = useBreakpointValue({
@@ -77,14 +87,7 @@ const Appointments: React.FC = () => {
                 {loading && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 {!error && data?.me?.appointments.length > 0 ? (
-                    <AppointmentList
-                        isReadOnly={false}
-                        appointments={data?.me?.appointments}
-                        // isStart={isStart}
-                        // setIsStart={setIsStart}
-                        isEndOfList={isEndOfList}
-                        setEndOfList={setIsEndOfList}
-                    />
+                    <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} isEndOfList={isEndOfList} setEndOfList={setIsEndOfList} />
                 ) : (
                     <Box mt={3} h={1200}>
                         <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
