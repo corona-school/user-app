@@ -4,11 +4,11 @@ import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
+import { AppointmentType } from '../../gql/graphql';
+import { Appointment } from '../../types/lernfair/Appointment';
 import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 import IconTagList from '../../widgets/IconTagList';
 import { CreateCourseContext } from '../CreateCourse';
 
@@ -76,7 +76,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
-                appointmentType: AppointmentTypes.GROUP,
+                appointmentType: AppointmentType.Group,
             };
             convertedAppointments.push(converted);
         }
@@ -84,12 +84,14 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     };
 
     const _allAppointmentsToShow = () => {
+        const appointments: Appointment[] = [];
         const convertedAppointments = _convertAppointments();
-        const all = appointmentsData.concat(convertedAppointments);
+        const all = appointments.concat(convertedAppointments);
         return all;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
 
+    console.log('Kurstermine: ', appointmentsToBeCreated, subject);
     return (
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>

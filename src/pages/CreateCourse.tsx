@@ -12,7 +12,7 @@ import CourseData from './course-creation/CourseData';
 import CoursePreview from './course-creation/CoursePreview';
 import CourseAppointments from './course-creation/CourseAppointments';
 
-import { LFInstructor, LFSubCourse, LFTag } from '../types/lernfair/Course';
+import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
@@ -26,6 +26,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
+import { Appointment } from '../types/lernfair/Appointment';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'appointments' | 'tags';
 
@@ -88,7 +89,7 @@ const CreateCourse: React.FC = () => {
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
     const [imageLoading, setImageLoading] = useState<boolean>(false);
-    const { appointmentsToBeCreated } = useCreateCourseAppointments();
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
 
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
@@ -164,6 +165,7 @@ const CreateCourse: React.FC = () => {
             }
         }
     `);
+
     const [createAppointments, { reset: resetAppointments }] = useMutation(gql`
         mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
             appointmentsCreate(appointments: $appointments)
@@ -299,6 +301,7 @@ const CreateCourse: React.FC = () => {
             maxGrade: number;
             maxParticipants: number;
             joinAfterStart: boolean;
+            lectures?: LFLecture[];
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
@@ -356,6 +359,7 @@ const CreateCourse: React.FC = () => {
              * Subcourse Creation
              */
             const subcourse = _getSubcourseData();
+            subcourse.lectures = [];
 
             const subRes = await createSubcourse({
                 variables: {
@@ -392,25 +396,30 @@ const CreateCourse: React.FC = () => {
             /**
              * Appointment Creation
              */
-            const courseAppointmentsToBeCreatedWithSubcourseId = appointmentsToBeCreated.forEach((appointment) => {
-                appointment.subcourseId = subcourseId;
-            });
+            const addIdToAppointment = () => {
+                appointmentsToBeCreated.forEach((appointment) => {
+                    appointment.subcourseId = subcourseId;
+                });
+                return appointmentsToBeCreated;
+            };
 
-            const appointmentsRes = await createAppointments({
-                variables: {
-                    courseAppointmentsToBeCreatedWithSubcourseId,
-                },
-            });
+            const appointments = addIdToAppointment();
 
-            if (!appointmentsRes.data && appointmentsRes.errors) {
-                errors.push('appointments');
-                await resetAppointments();
-                await resetSubcourse();
-                await resetCourse();
-                finishCourseCreation(errors);
-                setIsLoading(false);
-                return;
-            }
+            console.log('Kurstermine mit subcourseID ', appointments);
+
+            createAppointments({ variables: { appointments } });
+            setAppointmentsToBeCreated([]);
+
+            // const appointmentsRes = await
+            // if (!appointmentsRes.data && appointmentsRes.errors) {
+            //     errors.push('appointments');
+            //     await resetAppointments();
+            //     await resetSubcourse();
+            //     await resetCourse();
+            //     finishCourseCreation(errors);
+            //     setIsLoading(false);
+            //     return;
+            // }
 
             /**
              * Image upload
