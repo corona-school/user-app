@@ -222,7 +222,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
 
         // -------- New Match -----------
-        pupil?.matches?.forEach((match: any) => {
+        pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktSchüler',
