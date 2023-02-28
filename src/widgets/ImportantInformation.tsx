@@ -187,12 +187,18 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Interest Confirmation -----------
         const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
-        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        // TODO: Browser Support?
+        // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
                 label: 'interestconfirmation',
                 btnfn: [confirmInterest, refuseInterest],
-                lang: { subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') },
+                lang: {
+                    subjectSchüler:
+                        /* formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') */ pupil?.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', '),
+                },
             });
 
         // -------- Open Match Request -----------
@@ -216,12 +222,17 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
 
         // -------- New Match -----------
-        pupil?.matches?.forEach((match: any) => {
+        pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktSchüler',
                     btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-                    lang: { nameHelfer: match.student.firstname, subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) },
+                    lang: {
+                        nameHelfer: match.student.firstname,
+                        subjectHelfer: match.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+                    },
                 });
         });
         student?.matches?.forEach((match: any) => {
