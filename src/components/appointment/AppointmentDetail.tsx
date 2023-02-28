@@ -10,6 +10,7 @@ import Buttons from './Buttons';
 import { DateTime } from 'luxon';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
+import { useNavigate } from 'react-router-dom';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -55,6 +56,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
     const { space, sizes } = useTheme();
     const { user } = useApollo();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const navigate = useNavigate();
     const { data } = useQuery(appointment.matchId ? QUERY_MATCH : QUERY_SUBCOURSE, { variables: { id } });
 
     const containerWidth = useBreakpointValue({
@@ -100,14 +102,14 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
     const handleCancelClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        const cancelRes = cancelAppointment({ variables: { appointmentId: appointment.id } });
-        console.log(cancelRes);
+        cancelAppointment({ variables: { appointmentId: appointment.id } });
+        navigate('/appointments');
     }, []);
 
     const handleDeclineClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        const cancelRes = declineAppointment({ variables: { appointmentId: appointment.id } });
+        declineAppointment({ variables: { appointmentId: appointment.id } });
     }, []);
 
     const attendees = useMemo(() => {
@@ -117,24 +119,25 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
     return (
         <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
             <Avatars attendees={attendees} />
-            <Header appointmentType={appointment.appointmentType} organizers={appointment.organizers} title={appointment.title} />
+            <Header
+                appointmentType={appointment.appointmentType}
+                organizers={appointment.organizers}
+                courseName={data?.subcourse?.course?.name}
+                appointmentTitle={appointment.title}
+            />
             <MetaDetails
                 date={date}
                 startTime={startTime}
                 endTime={endTime}
                 duration={appointment.duration}
-                count={1}
-                total={5}
+                count={appointment.position ? appointment.position : 0}
+                total={appointment.total ? appointment.total : 0}
                 attendeesCount={attendeesCount}
                 organizers={appointment.organizers}
                 participants={appointment.participants}
                 declinedBy={appointment.declinedBy}
             />
-            <Description
-                appointmentType={appointment.appointmentType}
-                courseName={data?.subcourse?.course?.name}
-                courseDescription={data?.subcourse?.course?.description ? data?.subcourse?.course?.description : ''}
-            />
+            <Description description={appointment.description} />
             <Buttons onPress={user?.student ? handleCancelClick : handleDeclineClick} canceled={canceled} />
         </Box>
     );

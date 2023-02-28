@@ -1,5 +1,5 @@
 import { Box, Button, Stack, useBreakpointValue, Text, ScrollView } from 'native-base';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
@@ -10,10 +10,11 @@ type Props = {
     isCourse: boolean;
     next: () => void;
     back: () => void;
+    setAppointmentsTotal: Dispatch<SetStateAction<number>>;
 };
 
 const GET_COURSE_APPOINTMENTS = gql`
-    query courseAppointments($id: Int!) {
+    query subcourseAppointments($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
                 name
@@ -24,6 +25,8 @@ const GET_COURSE_APPOINTMENTS = gql`
                 duration
                 title
                 description
+                position
+                total
                 organizers(skip: 0, take: 10) {
                     firstname
                     lastname
@@ -56,6 +59,8 @@ const GET_MATCH_APPOINTMENTS = gql`
                 isCanceled
                 subcourseId
                 matchId
+                position
+                total
                 participants(skip: 0, take: 10) {
                     id
                     firstname
@@ -80,7 +85,7 @@ const GET_MATCH_APPOINTMENTS = gql`
     }
 `;
 
-const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
+const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setAppointmentsTotal }) => {
     const { data, loading, error } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -95,6 +100,9 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
         lg: '25%',
     });
 
+    useEffect(() => {
+        isCourse ? setAppointmentsTotal(data?.subcourse?.appointments?.length) : setAppointmentsTotal(data?.match?.appointments?.length);
+    });
     return (
         <Box>
             {loading && <CenterLoadingSpinner />}

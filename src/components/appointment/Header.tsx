@@ -6,9 +6,10 @@ import { Organizer } from '../../types/lernfair/User';
 type HeaderProps = {
     appointmentType?: AppointmentType;
     organizers?: Organizer[];
-    title: string;
+    appointmentTitle: string;
+    courseName: string;
 };
-const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) => {
+const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, appointmentTitle, courseName }) => {
     const { t } = useTranslation();
 
     return (
@@ -20,11 +21,11 @@ const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, title }) =
                     })}
                 </Text>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
-                    {t('appointment.detail.appointmentTitle', { appointmentTitle: title })}
+                    {t('appointment.detail.appointmentTitle', { appointmentTitle: appointmentTitle })}
                 </Heading>
                 {appointmentType === AppointmentType.Group && (
                     <Text color="primary.600" fontWeight="normal">
-                        {t('appointment.detail.courseTitle', { courseTitle: title })}
+                        {t('appointment.detail.courseName', { courseName: courseName })}
                     </Text>
                 )}
             </VStack>

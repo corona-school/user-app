@@ -1,14 +1,11 @@
 import { Divider, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AppointmentType } from '../../gql/graphql';
 
 type DescriptionProps = {
-    appointmentType?: AppointmentType;
-    courseName?: string;
-    courseDescription?: string;
+    description?: string;
 };
 
-const Description: React.FC<DescriptionProps> = ({ appointmentType, courseName, courseDescription }) => {
+const Description: React.FC<DescriptionProps> = ({ description }) => {
     const { t } = useTranslation();
 
     return (
@@ -16,12 +13,10 @@ const Description: React.FC<DescriptionProps> = ({ appointmentType, courseName, 
             <Divider thickness="0.25" my={5} />
             <VStack p={3}>
                 <Text color="primary.900" mb="2">
-                    {t(appointmentType === AppointmentType.Group ? 'appointment.detail.courseDescriptionHeader' : 'appointment.detail.descriptionHeader', {
-                        courseTitle: courseName,
-                    })}
+                    {t('appointment.detail.descriptionHeader')}
                 </Text>
                 <Text color="primary.600" fontWeight="normal">
-                    {appointmentType === AppointmentType.Group ? courseDescription : ''}
+                    {description}
                 </Text>
             </VStack>
             <Divider thickness="0.25" my={5} />

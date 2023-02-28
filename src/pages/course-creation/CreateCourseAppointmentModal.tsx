@@ -3,15 +3,15 @@ import React from 'react';
 import AppointmentCreation from '../create-appointment/AppointmentCreation';
 
 type ModalProps = {
-    onCreate: () => void;
+    closeModal: () => void;
 };
-const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ onCreate }) => {
+const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ closeModal }) => {
     return (
         <>
             <Modal.Content minW="80%" marginX="auto" p={5}>
                 <Modal.CloseButton />
                 <Modal.Body>
-                    <AppointmentCreation isCourseCreation={true} back={() => console.log('close modal')} onCreate={onCreate} />
+                    <AppointmentCreation isCourseCreation={true} back={closeModal} closeModal={closeModal} />
                 </Modal.Body>
             </Modal.Content>
         </>

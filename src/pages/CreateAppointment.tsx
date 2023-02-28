@@ -13,6 +13,7 @@ const CreateAppointment = () => {
     const [noAppointments, setNoAppointments] = useState<boolean>(false);
     const [id, setId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
+    const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
 
     const { t } = useTranslation();
 
@@ -36,10 +37,12 @@ const CreateAppointment = () => {
             if (isCourse) {
                 setId(id);
                 setIsCourse(true);
+                setAppointmentsTotal(0);
             }
             if (!isCourse) {
                 setId(id);
                 setIsCourse(false);
+                setAppointmentsTotal(0);
             }
             setCurrentIndex((prev) => prev + 2);
             setNoAppointments(true);
@@ -79,8 +82,17 @@ const CreateAppointment = () => {
                         />
                     </View>
                     {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
-                    {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
-                    {currentIndex === 2 && <AppointmentCreation back={noAppointments ? returnToStepOne : onBack} id={id} isCourse={isCourse} />}
+                    {currentIndex === 1 && (
+                        <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} setAppointmentsTotal={setAppointmentsTotal} />
+                    )}
+                    {currentIndex === 2 && (
+                        <AppointmentCreation
+                            back={noAppointments ? returnToStepOne : onBack}
+                            id={id}
+                            isCourse={isCourse}
+                            appointmentsTotal={appointmentsTotal}
+                        />
+                    )}
                 </Box>
             </WithNavigation>
         </AsNavigationItem>

@@ -105,7 +105,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <CreateCourseAppointmentModal onCreate={() => setShowModal(false)} />
+                <CreateCourseAppointmentModal closeModal={() => setShowModal(false)} />
             </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">

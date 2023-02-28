@@ -31,11 +31,12 @@ type Props = {
     id?: number;
     isCourse?: boolean;
     isCourseCreation?: boolean;
+    appointmentsTotal?: number;
     back: () => void;
-    onCreate?: () => void;
+    closeModal?: () => void;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCreation, onCreate }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCreation, appointmentsTotal, closeModal }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
@@ -45,8 +46,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
     const navigate = useNavigate();
-
-    const appointmentsCount = 2;
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -147,7 +146,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            onCreate && onCreate();
+            closeModal && closeModal();
         }
     };
 
@@ -203,7 +202,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
 
     return (
         <Box>
-            <AppointmentForm errors={errors} appointmentsCount={appointmentsCount} />
+            <AppointmentForm errors={errors} appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} />
             <Box py="8">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
@@ -214,7 +213,9 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsCount} nextDate={calcNewAppointmentInOneWeek()} />}
+            {appointmentToCreate.isRecurring && (
+                <WeeklyAppointments appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} nextDate={calcNewAppointmentInOneWeek()} />
+            )}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button onPress={isCourseCreation ? handleCreateCourseAppointments : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}

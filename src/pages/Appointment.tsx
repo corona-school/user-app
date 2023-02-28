@@ -16,6 +16,8 @@ const APPOINTMENT = gql`
             isCanceled
             subcourseId
             matchId
+            position
+            total
             participants(skip: 0, take: 10) {
                 id
                 firstname

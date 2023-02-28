@@ -11,6 +11,8 @@ export type Appointment = {
     duration: number;
     subcourseId?: number;
     matchId?: number | null;
+    position?: number;
+    total?: number;
     meetingLink?: string | null;
     organizers?: Organizer[];
     participants?: Participant[];
