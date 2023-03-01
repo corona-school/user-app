@@ -29,7 +29,7 @@ const GET_MY_APPOINTMENTS = gql`
                     firstname
                     lastname
                 }
-                participants(skip: 0, take: 50) {
+                participants(skip: 0, take: 30) {
                     id
                     firstname
                     lastname
@@ -45,7 +45,7 @@ const GET_MY_APPOINTMENTS = gql`
 
 const Appointments: React.FC = () => {
     const userType = useUserType();
-    const take = 10;
+    const take = 20;
     const skip = 0;
     const [isEndOfList, setIsEndOfList] = useState(false);
     const { t } = useTranslation();

@@ -31,7 +31,6 @@ const getScrollToId = (appointments: Appointment[]): number => {
 };
 const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEndOfList, setEndOfList }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    // const startContainerRef = useRef<HTMLDivElement>(null);
     const scrollViewRef = useRef<HTMLElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -106,7 +105,6 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
 
     return (
         <>
-            {/* <div ref={startContainerRef} /> */}
             <ScrollView scrollEnabled={isReadOnly}>
                 <Stack flex={1} maxW={maxListWidth}>
                     <>
@@ -144,7 +142,6 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                 </Box>
                             );
                         })}
-                        {/* //TODO only show when no future appointments (refetching by scrolling...) */}
                         {!isReadOnly && isEndOfList && (
                             <Box alignItems="center" justifyContent="center" h={emptyStateH}>
                                 <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />

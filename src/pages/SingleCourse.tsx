@@ -7,7 +7,7 @@ import WithNavigation from '../components/WithNavigation';
 
 import Utility, { getTrafficStatus } from '../Utility';
 import { gql } from '../gql';
-import { useMutation, useQuery } from '@apollo/client';
+import { gql as _gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -23,6 +23,7 @@ import { Course, Subcourse } from '../gql/graphql';
 import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import AppointmentList from '../widgets/appointment/AppointmentList';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -832,8 +833,6 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    console.log(userType);
-
     const singleSubcourseQuery = gql(`
     query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
@@ -877,7 +876,40 @@ const SingleCourse: React.FC = () => {
         }
     }
     `);
+
+    const SINGLE_SUBCOURSE_APPOINTMENTS = _gql`
+    query singleCourseAppointments($subcourseId:Int!) {
+        subcourse(subcourseId: $subcourseId) {
+            course {
+                name
+            }
+            appointments {
+              id
+              title
+              description
+              start
+              duration
+              position
+              total
+              organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+              }
+              participants(skip: 0, take: 50) {
+                id
+                firstname
+                lastname
+                isPupil
+                isStudent
+              }
+            }
+        }
+    }
+    `;
+
     const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
+    const { data: courseAppointments } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -937,6 +969,11 @@ const SingleCourse: React.FC = () => {
         lg: 'row',
     });
 
+    const maxHeight = useBreakpointValue({
+        base: 400,
+        lg: 600,
+    });
+
     useEffect(() => {
         trackPageView({
             documentTitle: course?.name,
@@ -944,7 +981,19 @@ const SingleCourse: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const subcourseAppointments = courseAppointments?.subcourse?.appointments;
+
     const tabs: Tab[] = [
+        {
+            title: t('single.tabs.lessons'),
+            content: (
+                <>
+                    <Box maxH={maxHeight} flex="1" mb="10">
+                        <AppointmentList appointments={subcourseAppointments} />
+                    </Box>
+                </>
+            ),
+        },
         {
             title: t('single.tabs.description'),
             content: (
@@ -952,30 +1001,6 @@ const SingleCourse: React.FC = () => {
                     <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
                         {course?.description}
                     </Text>
-                </>
-            ),
-        },
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <>
-                    {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture, i) => (
-                            <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
-                                <Heading paddingBottom={space['0.5']} fontSize="md">
-                                    {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
-                                </Heading>
-                                <Text paddingBottom={space['0.5']}>
-                                    {DateTime.fromISO(lecture.start).toFormat('dd.MM.yyyy')}
-                                    <Text marginX="3px">•</Text>
-                                    {DateTime.fromISO(lecture.start).toFormat('HH:mm')} {t('single.global.clock')}
-                                </Text>
-                                <Text>
-                                    <Text bold>{t('single.global.duration')}: </Text>{' '}
-                                    {(typeof lecture?.duration !== 'number' ? parseInt(lecture?.duration) : lecture?.duration) / 60} {t('single.global.hours')}
-                                </Text>
-                            </Row>
-                        ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
             ),
         },
