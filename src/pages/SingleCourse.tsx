@@ -9,7 +9,7 @@ import Utility, { getTrafficStatus } from '../Utility';
 import { gql } from '../gql';
 import { gql as _gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
@@ -24,6 +24,7 @@ import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import AppointmentList from '../widgets/appointment/AppointmentList';
+import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -909,7 +910,7 @@ const SingleCourse: React.FC = () => {
     `;
 
     const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
-    const { data: courseAppointments } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
+    const { data: courseAppointments, error: courseAppointmentsError } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -981,7 +982,10 @@ const SingleCourse: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const subcourseAppointments = courseAppointments?.subcourse?.appointments;
+    const subcourseAppointments = useMemo(() => {
+        if (courseAppointments && !courseAppointmentsError) return courseAppointments?.subcourse?.appointments;
+        return [];
+    }, []);
 
     const tabs: Tab[] = [
         {
@@ -989,7 +993,16 @@ const SingleCourse: React.FC = () => {
             content: (
                 <>
                     <Box maxH={maxHeight} flex="1" mb="10">
-                        <AppointmentList appointments={subcourseAppointments} />
+                        {subcourseAppointments.length === 0 ? (
+                            <Box justifyContent="center">
+                                <AppointmentsEmptyState
+                                    title={t('appointment.empty.noAppointments')}
+                                    subtitle={t('appointment.empty.createNewAppointmentDesc')}
+                                />
+                            </Box>
+                        ) : (
+                            <AppointmentList isReadOnly={false} appointments={subcourseAppointments} />
+                        )}
                     </Box>
                 </>
             ),
