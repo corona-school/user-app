@@ -74,7 +74,6 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
         [data?.me?.student?.subcoursesInstructing]
     );
 
-    // sorted courses should come from BE
     const subcoursesToShow = useMemo(() => {
         if (!publishedSubcourses) return [];
 
@@ -90,7 +89,6 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
         const coursesWitoutLectures = sortedCourses.filter((course) => course.lectures.length === 0);
         let coursesNewerThanThirtyDays: LFSubCourse[] = coursesWithLectures;
 
-        // should be done in BE
         for (const course of coursesWithLectures) {
             const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
             const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;

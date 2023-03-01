@@ -315,8 +315,12 @@ const CreateCourse: React.FC = () => {
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
             setIsLoading(true);
-
             const errors: CreateCourseError[] = [];
+            if (appointmentsToBeCreated.length === 0) {
+                errors.push('appointments');
+                finishCourseCreation(errors);
+                return;
+            }
 
             /**
              * Course Creation
@@ -412,7 +416,8 @@ const CreateCourse: React.FC = () => {
 
             const appointmentsRes = await createAppointments({ variables: { appointments } });
 
-            if (!appointmentsRes.data && appointmentsRes.errors) {
+            // errors === undefined
+            if (appointmentsRes.errors) {
                 errors.push('appointments');
                 await resetAppointments();
                 await resetSubcourse();
@@ -422,7 +427,7 @@ const CreateCourse: React.FC = () => {
                 return;
             }
 
-            setAppointmentsToBeCreated([]);
+            if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
 
             /**
              * Image upload

@@ -144,8 +144,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                 </Box>
                             );
                         })}
-                        {/* //TODO only show when no future appointments (refetching by scrolling...) */}
-                        {!isReadOnly && isEndOfList && (
+                        {!isReadOnly && appointments.length >= 1 && isEndOfList && (
                             <Box alignItems="center" justifyContent="center" h={emptyStateH}>
                                 <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
                             </Box>
