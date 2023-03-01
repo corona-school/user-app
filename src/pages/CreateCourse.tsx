@@ -166,11 +166,12 @@ const CreateCourse: React.FC = () => {
         }
     `);
 
-    const [createAppointments, { reset: resetAppointments }] = useMutation(gql`
-        mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
-            appointmentsCreate(appointments: $appointments)
+    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(gql`
+        mutation appointmentsGroupCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
+            appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
         }
     `);
+
     const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(gql`
         mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
             subcourseEdit(subcourse: $course, subcourseId: $id) {
@@ -414,7 +415,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('appointments');
             }
 
-            const appointmentsRes = await createAppointments({ variables: { appointments } });
+            const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
 
             // errors === undefined
             if (appointmentsRes.errors) {

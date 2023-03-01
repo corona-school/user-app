@@ -57,12 +57,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <AttendeesModal
-                    organizers={sortOrganizers(organizers, declinedBy)}
-                    participants={participants}
-                    declinedBy={declinedBy}
-                    onClose={() => setShowModal(false)}
-                />
+                <AttendeesModal organizers={organizers} participants={participants} declinedBy={declinedBy} onClose={() => setShowModal(false)} />
             </Modal>
 
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? 5 : 7}>
