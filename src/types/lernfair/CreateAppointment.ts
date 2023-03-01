@@ -1,4 +1,5 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import { CreateAppointmentInput } from './Appointment';
 
 export enum AppointmentType {
     GROUP = 'group',
@@ -12,12 +13,13 @@ export enum FormReducerActionType {
     DATE_CHANGE = 'date_change',
     SELECT_CHANGE = 'select_change',
     TOGGLE_CHANGE = 'toggle_change',
+    CLEAR_DATA = 'clear_data',
 }
 
 export type CreateAppointmentAction = {
     type: FormReducerActionType;
     value?: any;
-    field: keyof State;
+    field?: keyof State;
 };
 
 export enum WeeklyReducerActionType {
@@ -25,6 +27,7 @@ export enum WeeklyReducerActionType {
     CHANGE_WEEKLY_APPOINTMENT_TITLE = 'change_weekly_appointment_title',
     CHANGE_WEEKLY_APPOINTMENT_DESCRIPTION = 'change_weekly_appointment_description',
     REMOVE_WEEKLY_APPOINTMENT = 'remove_weekly_appointment',
+    CLEAR_WEEKLIES = 'clear_weeklies',
 }
 
 type AddWeeklyAppointmentAction = {
@@ -51,11 +54,16 @@ type ChangeWeeklyAppointmentDescription = {
     field: 'description';
 };
 
+type ClearWeeklies = {
+    type: WeeklyReducerActionType.CLEAR_WEEKLIES;
+};
+
 export type WeeklyAppointmentAction =
     | AddWeeklyAppointmentAction
     | RemoveWeeklyAppointmentAction
     | ChangeWeeklyAppointmentDescription
-    | ChangeWeeklyAppointmentTitle;
+    | ChangeWeeklyAppointmentTitle
+    | ClearWeeklies;
 
 export type WeeklyAppointment = {
     index: number;
@@ -71,11 +79,17 @@ export type TAppointmentContext = {
     dispatchCreateAppointment: Dispatch<CreateAppointmentAction>;
     weeklies: WeeklyAppointment[];
     dispatchWeeklyAppointment: Dispatch<WeeklyAppointmentAction>;
+    appointmentsToBeCreated: CreateAppointmentInput[];
+    setAppointmentsToBeCreated: Dispatch<SetStateAction<CreateAppointmentInput[]>>;
+    appointmentsToBeCanceled: number[];
+    setAppointmentsToBeCanceled: Dispatch<SetStateAction<number[]>>;
+    appointmentsToBeUpdated: CreateAppointmentInput[];
+    setAppointmentsToBeUpdated: Dispatch<SetStateAction<CreateAppointmentInput[]>>;
 };
 
 export type StateWithoutWeeklies = {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     date: string;
     time: string;
     duration: number;
@@ -83,8 +97,8 @@ export type StateWithoutWeeklies = {
 };
 
 export type StateWithWeeklies = {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     date: string;
     time: string;
     duration: number;

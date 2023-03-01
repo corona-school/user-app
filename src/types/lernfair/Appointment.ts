@@ -1,5 +1,4 @@
 import { AppointmentType as TAppointmentType } from './CreateAppointment';
-
 import { Organizer, Participant } from './User';
 
 export enum AppointmentTypes {
@@ -27,7 +26,7 @@ export type Appointment = {
 };
 
 // type of appointments to send to the BE
-export type CreateAppointment = {
+export type CreateAppointmentInput = {
     title: string;
     description: string;
     start: string;

@@ -1,7 +1,7 @@
 import { Box, FormControl, Select, Stack, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
-import { useCreateAppointments } from '../../context/AppointmentContext';
+import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
@@ -12,7 +12,7 @@ type FormProps = {
     appointmentsCount: number;
 };
 const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => {
-    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointments();
+    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const inputWidth = useBreakpointValue({

@@ -54,6 +54,7 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
+import CreateCourseAppointment from './pages/CreateCourseAppointment';
 
 export default function NavigatorLazy() {
     return (
@@ -229,6 +230,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <CreateCourse />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/create-course-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
                     </RequireAuth>
                 }
             />

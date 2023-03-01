@@ -1,4 +1,5 @@
-import { createContext, ReactNode, Reducer, useContext, useReducer } from 'react';
+import { createContext, ReactNode, Reducer, useContext, useReducer, useState } from 'react';
+import { CreateAppointmentInput } from '../types/lernfair/Appointment';
 import {
     CreateAppointmentAction,
     FormReducerActionType,
@@ -12,16 +13,26 @@ import {
 const createAppointmentFormReducer: Reducer<State, CreateAppointmentAction> = (state: State, action: CreateAppointmentAction) => {
     switch (action.type) {
         case FormReducerActionType.TEXT_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'title']: action.value };
         }
         case FormReducerActionType.SELECT_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'duration']: action.value };
         }
         case FormReducerActionType.DATE_CHANGE: {
-            return { ...state, [action.field]: action.value };
+            return { ...state, [action.field || 'date']: action.value };
         }
         case FormReducerActionType.TOGGLE_CHANGE: {
-            return { ...state, [action.field]: !state[action.field] };
+            return { ...state, [action.field || 'isRecurring']: !state[action.field || 'isRecurring'] };
+        }
+        case FormReducerActionType.CLEAR_DATA: {
+            return {
+                title: '',
+                description: '',
+                date: '',
+                time: '',
+                duration: 0,
+                isRecurring: false,
+            };
         }
     }
 };
@@ -47,6 +58,9 @@ const weeklyReducer: Reducer<Weeklies, WeeklyAppointmentAction> = (state: Weekli
             nextState.splice(action.index, 1, mutatedWeekly);
             return [...nextState];
         }
+        case WeeklyReducerActionType.CLEAR_WEEKLIES: {
+            return [];
+        }
     }
 };
 export const AppointmentContext = createContext<TAppointmentContext>({
@@ -61,10 +75,15 @@ export const AppointmentContext = createContext<TAppointmentContext>({
     dispatchCreateAppointment: () => undefined,
     weeklies: [],
     dispatchWeeklyAppointment: () => undefined,
+    appointmentsToBeCreated: [],
+    setAppointmentsToBeCreated: () => undefined,
+    appointmentsToBeCanceled: [],
+    setAppointmentsToBeCanceled: () => undefined,
+    appointmentsToBeUpdated: [],
+    setAppointmentsToBeUpdated: () => undefined,
 });
 
 export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
     const [appointmentToCreate, dispatchCreateAppointment] = useReducer(createAppointmentFormReducer, {
         title: '',
         description: '',
@@ -73,15 +92,33 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
         duration: 0,
         isRecurring: false,
     });
+    const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
+
+    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<CreateAppointmentInput[]>([]);
+    const [appointmentsToBeCanceled, setAppointmentsToBeCanceled] = useState<number[]>([]);
+    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<CreateAppointmentInput[]>([]);
 
     return (
-        <AppointmentContext.Provider value={{ appointmentToCreate, weeklies, dispatchCreateAppointment, dispatchWeeklyAppointment }}>
+        <AppointmentContext.Provider
+            value={{
+                appointmentToCreate,
+                weeklies,
+                appointmentsToBeCreated,
+                appointmentsToBeCanceled,
+                appointmentsToBeUpdated,
+                dispatchCreateAppointment,
+                dispatchWeeklyAppointment,
+                setAppointmentsToBeCreated,
+                setAppointmentsToBeCanceled,
+                setAppointmentsToBeUpdated,
+            }}
+        >
             {children}
         </AppointmentContext.Provider>
     );
 };
 
-export const useCreateAppointments = () => {
+export const useCreateAppointment = () => {
     const { appointmentToCreate, dispatchCreateAppointment } = useContext(AppointmentContext);
     return { appointmentToCreate, dispatchCreateAppointment };
 };
@@ -90,3 +127,22 @@ export function useWeeklyAppointments() {
     const { weeklies, dispatchWeeklyAppointment } = useContext(AppointmentContext);
     return { weeklies, dispatchWeeklyAppointment };
 }
+
+export const useCreateCourseAppointments = () => {
+    const {
+        appointmentsToBeCreated,
+        appointmentsToBeCanceled,
+        appointmentsToBeUpdated,
+        setAppointmentsToBeCanceled,
+        setAppointmentsToBeCreated,
+        setAppointmentsToBeUpdated,
+    } = useContext(AppointmentContext);
+    return {
+        appointmentsToBeCreated,
+        appointmentsToBeCanceled,
+        appointmentsToBeUpdated,
+        setAppointmentsToBeCanceled,
+        setAppointmentsToBeCreated,
+        setAppointmentsToBeUpdated,
+    };
+};

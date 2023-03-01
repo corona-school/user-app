@@ -1,5 +1,5 @@
-import { useBreakpointValue, useTheme, VStack } from 'native-base';
-import React from 'react';
+import { Box, useBreakpointValue, useTheme, VStack } from 'native-base';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
@@ -11,11 +11,12 @@ import { useUserType } from '../hooks/useApollo';
 import { gql, useQuery } from '@apollo/client';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 
-const myAppointmentsQuery = gql`
-    query myAppointments {
+const GET_MY_APPOINTMENTS = gql`
+    query myAppointments($take: Float, $skip: Float) {
         me {
-            appointments(take: 100) {
+            appointments(take: $take, skip: $skip) {
                 id
                 title
                 description
@@ -29,31 +30,66 @@ const myAppointmentsQuery = gql`
         }
     }
 `;
+
 const Appointments: React.FC = () => {
     const userType = useUserType();
-    const { data, loading, error, refetch } = useQuery(myAppointmentsQuery);
-
+    const take = 10;
+    const skip = 0;
+    const [isEndOfList, setIsEndOfList] = useState(false);
+    const { t } = useTranslation();
     const navigate = useNavigate();
-    const { space, sizes } = useTheme();
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
+
+    const { data, loading, error, fetchMore } = useQuery(GET_MY_APPOINTMENTS, {
+        variables: { take, skip },
+        fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
     });
 
     const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
         lg: 'top-right',
     });
-    const { t } = useTranslation();
+
+    const loadMoreAppointments = () => {
+        fetchMore({
+            variables: { take, skip: skip + take },
+            updateQuery: (previousAppointments, { fetchMoreResult }) => {
+                const newAppointments = fetchMoreResult.me.appointments;
+                return newAppointments.length
+                    ? {
+                          ...previousAppointments,
+                          me: {
+                              appointments: [...previousAppointments.me.appointments, ...newAppointments],
+                          },
+                      }
+                    : previousAppointments;
+            },
+        });
+    };
+
+    useEffect(() => {
+        if (isEndOfList) loadMoreAppointments();
+    }, [isEndOfList]);
 
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
-                <VStack maxWidth={ContainerWidth} marginBottom={space['1']}>
-                    {!error && <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} />}
-                </VStack>
+                {!error && data?.me?.appointments.length > 0 ? (
+                    <AppointmentList
+                        isReadOnly={false}
+                        appointments={data?.me?.appointments}
+                        // isStart={isStart}
+                        // setIsStart={setIsStart}
+                        isEndOfList={isEndOfList}
+                        setEndOfList={setIsEndOfList}
+                    />
+                ) : (
+                    <Box mt={3} h={1200}>
+                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                    </Box>
+                )}
             </WithNavigation>
         </AsNavigationItem>
     );

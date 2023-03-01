@@ -1,5 +1,13 @@
 const appointment = {
     title: 'Termine',
+    empty: {
+        noAppointments: 'Keine Termine',
+        noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet',
+        noFurtherAppointments: 'Keine weiteren Termine',
+        noFurtherDesc: 'Scrolle nach oben, um vergangene Termine zu sehen',
+        createNewAppointmentDesc: 'Erstelle nun den ersten Kurstermin',
+        noPublishedAppointmentsDesc: 'Es wurden noch keine Termine veröffentlicht',
+    },
     tile: { videoButton: 'Videochat beitreten', clock: 'Uhr' },
     clock: { startToEnd: '{{start}} - {{end}} Uhr', nowToEnd: 'Jetzt - {{end}} Uhr' },
     deleteModal: {
@@ -27,7 +35,7 @@ const appointment = {
         timeLabel: 'Uhrzeit',
         durationLabel: 'Dauer',
         descriptionLabel: 'Beschreibung (optional)',
-        descriptionPlaceholder: 'Das ist eine Beschreibung',
+        descriptionPlaceholder: 'Füge eine prägnante und verständliche Beschreibung hinzu...',
         inputPlaceholder: 'Thema (optional)',
         weeklyRepeat: 'wöchentlich wiederholen...',
         emptyFieldError: 'Title darf nicht leer sein',

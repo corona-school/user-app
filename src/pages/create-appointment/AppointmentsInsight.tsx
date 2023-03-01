@@ -77,10 +77,8 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
             )}
             {!error && (
                 <Box maxH={maxHeight} flex="1" mb="10">
-                    <ScrollView ml={3} width={'100%'} pl={0}>
-                        {/* // TODO change to appointments from query */}
-                        <AppointmentList isReadOnly={true} appointments={appointmentsData} />
-                    </ScrollView>
+                    {/* // TODO change to appointments from query */}
+                    <AppointmentList isReadOnly={true} appointments={appointmentsData} />
                 </Box>
             )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
