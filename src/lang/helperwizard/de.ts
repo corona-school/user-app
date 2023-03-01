@@ -29,7 +29,7 @@ const helperwizard = {
     interestconfirmation: {
         title: 'Brauchst du noch Unterstützung?',
         content:
-            'Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von 14 Tagen bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.',
+            'Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.',
         buttons: ['Ja', 'Nein'],
     },
     kontaktSchüler: {
@@ -59,7 +59,7 @@ const helperwizard = {
         buttons: ['Führungszeugnis einreichen', 'Vorduck herunterladen'],
     },
     statusStudent: {
-        title: 'Jemand wartet auf dich!',
+        title: 'Wir suchen nach einem:r Lernpartner:in für dich!',
         content:
             'Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.',
         buttons: ['Problem melden'],
@@ -75,6 +75,19 @@ const helperwizard = {
         content:
             'Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
+    },
+    // temporary
+    homeworkHelpStudent: {
+        title: 'Hausaufgabenhilfe',
+        content:
+            'Wir testen ein neues Angebot: <b>die Hausaufgabenhilfe</b>. Hier bekommen Schüler:innen einmalig, spontane, direkte Hilfe. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür <b>im März von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben.',
+        buttons: ['Zur Hausaufgabenhilfe (Zoom-Registrierung)'],
+    },
+    homeworkHelpPupil: {
+        title: 'Hilfe bei deinen Hausaufgaben',
+        content:
+            'Lern-Fair testet im März ein neues Angebot: <b>die Hausaufgabenhilfe</b>.<br>Dort erhältst du <b>im März von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deinen Hausaufgaben.',
+        buttons: ['Zur Hausaufgabenhilfe'],
     },
 };
 export default helperwizard;
