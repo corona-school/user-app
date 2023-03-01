@@ -277,14 +277,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
             infos.push({
                 label: 'homeworkHelpPupil',
-                btnfn: [() => window.open('http://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
+                btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
                 lang: {},
             });
 
         if (roles.includes('TUTOR'))
             infos.push({
                 label: 'homeworkHelpStudent',
-                btnfn: [() => window.open('http://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
+                btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
                 lang: {},
             });
 
