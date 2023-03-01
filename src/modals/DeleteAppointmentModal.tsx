@@ -19,10 +19,10 @@ const DeleteAppointmentModal: React.FC<ModalProps> = ({ onDelete, close }) => {
                         <WarningIcon />
                     </Box>
                     <VStack space="3" marginY={space['1']} alignItems="center">
-                        <Text width="280" textAlign={'center'} color="white" fontSize="sm">
+                        <Text width="280" textAlign={'center'} color="white">
                             {t('appointment.deleteModal.title')}
                         </Text>
-                        <Text width="224" textAlign={'center'} color="lightText" fontWeight="thin" fontSize="xs">
+                        <Text width="224" textAlign={'center'} color="lightText" fontWeight="light">
                             {t('appointment.deleteModal.description')}
                         </Text>
                     </VStack>

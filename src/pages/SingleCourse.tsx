@@ -910,7 +910,7 @@ const SingleCourse: React.FC = () => {
     `;
 
     const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
-    const { data: courseAppointments, error: courseAppointmentsError } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
+    const { data: courseAppointments } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -982,8 +982,9 @@ const SingleCourse: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    console.log('Kurstermine', courseAppointments);
     const subcourseAppointments = useMemo(() => {
-        if (courseAppointments && !courseAppointmentsError) return courseAppointments?.subcourse?.appointments;
+        if (courseAppointments) return courseAppointments?.subcourse?.appointments;
         return [];
     }, []);
 

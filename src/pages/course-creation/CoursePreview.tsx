@@ -90,8 +90,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         return all;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
-
-    console.log('Kurstermine: ', appointmentsToBeCreated, subject);
     return (
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>

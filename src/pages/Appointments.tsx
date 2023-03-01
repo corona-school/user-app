@@ -89,7 +89,7 @@ const Appointments: React.FC = () => {
                 {!error && data?.me?.appointments.length > 0 ? (
                     <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} isEndOfList={isEndOfList} setEndOfList={setIsEndOfList} />
                 ) : (
-                    <Box mt={3} h={1200}>
+                    <Box h={800} justifyContent="center">
                         <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
                     </Box>
                 )}
