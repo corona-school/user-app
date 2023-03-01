@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
+import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -24,8 +25,8 @@ type AppointmentDates = {
 };
 
 const QUERY_MATCH = gql`
-    query match($matchId: Int!) {
-        match(matchId: $matchId) {
+    query match($id: Int!) {
+        match(matchId: $id) {
             id
             pupil {
                 firstname
@@ -36,8 +37,8 @@ const QUERY_MATCH = gql`
 `;
 
 const QUERY_SUBCOURSE = gql`
-    query course($courseId: Int!) {
-        subcourse(subcourseId: $courseId) {
+    query course($id: Int!) {
+        subcourse(subcourseId: $id) {
             course {
                 name
                 description
@@ -56,6 +57,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
     const { space, sizes } = useTheme();
     const { user } = useApollo();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const navigate = useNavigate();
     const { data } = useQuery(appointment.matchId ? QUERY_MATCH : QUERY_SUBCOURSE, { variables: { id } });
 
@@ -117,29 +119,35 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
     }, [appointment.organizers, appointment.participants]);
 
     return (
-        <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            <Avatars attendees={attendees} />
-            <Header
-                appointmentType={appointment.appointmentType}
-                organizers={appointment.organizers}
-                courseName={data?.subcourse?.course?.name}
-                appointmentTitle={appointment.title}
-            />
-            <MetaDetails
-                date={date}
-                startTime={startTime}
-                endTime={endTime}
-                duration={appointment.duration}
-                count={appointment.position ? appointment.position : 0}
-                total={appointment.total ? appointment.total : 0}
-                attendeesCount={attendeesCount}
-                organizers={appointment.organizers}
-                participants={appointment.participants}
-                declinedBy={appointment.declinedBy}
-            />
-            <Description description={appointment.description} />
-            <Buttons onPress={user?.student ? handleCancelClick : handleDeclineClick} canceled={canceled} />
-        </Box>
+        <>
+            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+                <DeleteAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} />
+            </Modal>
+            <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
+                <Avatars attendees={attendees} />
+                <Header
+                    appointmentType={appointment.appointmentType}
+                    organizers={appointment.organizers}
+                    courseName={data?.subcourse?.course?.name}
+                    appointmentTitle={appointment.title}
+                />
+                <MetaDetails
+                    date={date}
+                    startTime={startTime}
+                    endTime={endTime}
+                    duration={appointment.duration}
+                    count={appointment.position ? appointment.position : 0}
+                    total={appointment.total ? appointment.total : 0}
+                    attendeesCount={attendeesCount}
+                    organizers={appointment.organizers}
+                    participants={appointment.participants}
+                    declinedBy={appointment.declinedBy}
+                />
+                <Description description={appointment.description} />
+
+                <Buttons onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick} canceled={canceled} />
+            </Box>
+        </>
     );
 };
 
