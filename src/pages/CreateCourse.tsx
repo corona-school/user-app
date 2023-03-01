@@ -26,7 +26,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
-import { Appointment } from '../types/lernfair/Appointment';
+import { CreateAppointmentInput } from '../types/lernfair/Appointment';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'appointments' | 'tags';
 
@@ -396,30 +396,33 @@ const CreateCourse: React.FC = () => {
             /**
              * Appointment Creation
              */
-            const addIdToAppointment = () => {
-                appointmentsToBeCreated.forEach((appointment) => {
-                    appointment.subcourseId = subcourseId;
-                });
-                return appointmentsToBeCreated;
+            const addIdToAppointment = (a: CreateAppointmentInput[], sId: number) => {
+                const appointments = a.map((appointment) => ({
+                    ...appointment,
+                    subcourseId,
+                }));
+                return appointments;
             };
 
-            const appointments = addIdToAppointment();
+            const appointments = addIdToAppointment(appointmentsToBeCreated, subcourseId);
 
-            console.log('Kurstermine mit subcourseID ', appointments);
+            if (appointments.length === 0) {
+                errors.push('appointments');
+            }
 
-            createAppointments({ variables: { appointments } });
+            const appointmentsRes = await createAppointments({ variables: { appointments } });
+
+            if (!appointmentsRes.data && appointmentsRes.errors) {
+                errors.push('appointments');
+                await resetAppointments();
+                await resetSubcourse();
+                await resetCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
+            }
+
             setAppointmentsToBeCreated([]);
-
-            // const appointmentsRes = await
-            // if (!appointmentsRes.data && appointmentsRes.errors) {
-            //     errors.push('appointments');
-            //     await resetAppointments();
-            //     await resetSubcourse();
-            //     await resetCourse();
-            //     finishCourseCreation(errors);
-            //     setIsLoading(false);
-            //     return;
-            // }
 
             /**
              * Image upload
@@ -487,6 +490,7 @@ const CreateCourse: React.FC = () => {
             setCourseImage,
             setCourseTags,
             tags,
+            appointmentsToBeCreated,
         ]
     );
 
