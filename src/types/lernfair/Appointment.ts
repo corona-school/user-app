@@ -1,6 +1,4 @@
-import { AppointmentType } from '../../gql/graphql';
-
-import { Organizer, Participant } from './User';
+import { AppointmentType, Organizer, Participant } from '../../gql/graphql';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -18,7 +16,7 @@ export type Appointment = {
     participants?: Participant[];
     isCancelled?: boolean;
     declinedBy?: number[];
-    appointmentType: AppointmentType;
+    appointmentType?: AppointmentType;
 };
 
 // type of appointments to send to the BE

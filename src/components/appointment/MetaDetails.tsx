@@ -8,7 +8,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { Organizer, Participant } from '../../types/lernfair/User';
+import { Organizer, Participant } from '../../gql/graphql';
 
 type MetaProps = {
     date: string;

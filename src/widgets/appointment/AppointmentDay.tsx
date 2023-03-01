@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useCallback } from 'react';
 import { getI18n } from 'react-i18next';
-import { Organizer, Participant } from '../../types/lernfair/User';
+import { Organizer, Participant } from '../../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
@@ -59,7 +59,7 @@ const AppointmentDay: React.FC<Props> = ({ start, duration, title, organizers, p
 
     return (
         <>
-            {!isReadOnly ? (
+            {!isReadOnly && organizers && participants ? (
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <Box w={width} mt={3}>
                         <HStack>

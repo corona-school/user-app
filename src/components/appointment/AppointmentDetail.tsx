@@ -24,8 +24,8 @@ type AppointmentDates = {
 };
 
 const QUERY_MATCH = gql`
-    query match($matchId: Int!) {
-        match(matchId: $matchId) {
+    query match($id: Int!) {
+        match(matchId: $id) {
             id
             pupil {
                 firstname
@@ -36,8 +36,8 @@ const QUERY_MATCH = gql`
 `;
 
 const QUERY_SUBCOURSE = gql`
-    query course($courseId: Int!) {
-        subcourse(subcourseId: $courseId) {
+    query course($id: Int!) {
+        subcourse(subcourseId: $id) {
             course {
                 name
                 description

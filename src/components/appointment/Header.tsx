@@ -1,7 +1,6 @@
 import { Divider, Heading, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AppointmentType } from '../../gql/graphql';
-import { Organizer } from '../../types/lernfair/User';
+import { AppointmentType, Organizer } from '../../gql/graphql';
 
 type HeaderProps = {
     appointmentType?: AppointmentType;
