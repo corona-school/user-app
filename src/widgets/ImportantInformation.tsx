@@ -1,4 +1,4 @@
-import { useTranslation, getI18n } from 'react-i18next';
+import { useTranslation, getI18n, Trans } from 'react-i18next';
 import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container } from 'native-base';
 import Card from '../components/Card';
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
@@ -273,6 +273,21 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         }
 
+        // -------- TEMP: Test of Homework help -----
+        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
+            infos.push({
+                label: 'homeworkHelpPupil',
+                btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
+                lang: {},
+            });
+
+        if (roles.includes('TUTOR'))
+            infos.push({
+                label: 'homeworkHelpStudent',
+                btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
+                lang: {},
+            });
+
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
@@ -345,7 +360,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             </Heading>
 
                             <Text color={textColor} marginBottom="25px">
-                                {t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
+                                <Trans i18nKey={`helperwizard.${config.label}.content` as any} values={config.lang} components={{ b: <b />, br: <br /> }} />
                             </Text>
                             {buttontexts.map((buttontext, index) => {
                                 const btnFn = config.btnfn[index];
