@@ -76,7 +76,7 @@ const helperwizard = {
             'Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
-    // temporary
+    // temporary information during Lern-Fair Live homework help test phase in March 2023
     homeworkHelpStudent: {
         title: 'Hausaufgabenhilfe',
         content:
