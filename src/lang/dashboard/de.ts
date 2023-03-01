@@ -55,7 +55,7 @@ const dashboard = {
             importantNews: 'Wichtige Meldungen',
             myLearningPartner: 'Meine Lernpartner:innen',
             openedRequests: 'Suche nach Lernpartner:innen',
-            recommend: 'Empfehle uns weiter',
+            recommend: 'Empfiehl uns weiter',
             recommendFriends: 'Empfiehl Lern-Fair deinen Freunden',
         },
         contents: {
@@ -71,5 +71,6 @@ const dashboard = {
             recommend: 'Jetzt empfehlen',
         },
     },
+    noproposalsPupil: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',
 };
 export default dashboard;

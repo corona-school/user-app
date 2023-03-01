@@ -395,7 +395,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     ) : (
                                         <AlertMessage
                                             content={t(
-                                                `lernfair.reason.${data?.me?.student?.canCreateCourse?.reason}.course` as unknown as TemplateStringsArray
+                                                `lernfair.reason.course.instructor.${data?.me?.student?.canCreateCourse?.reason}` as unknown as TemplateStringsArray
                                             )}
                                         />
                                     )}
@@ -443,7 +443,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     ) : (
                                         <AlertMessage
                                             content={t(
-                                                `lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray
+                                                `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
                                             )}
                                         />
                                     )}

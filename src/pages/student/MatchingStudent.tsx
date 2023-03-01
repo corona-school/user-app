@@ -182,7 +182,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                 </Button>
                             )) || (
                                 <AlertMessage
-                                    content={t(`lernfair.reason.${data?.me?.student?.canRequestMatch?.reason}.matching` as unknown as TemplateStringsArray)}
+                                    content={t(
+                                        `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                    )}
                                 />
                             )}
                         </VStack>
