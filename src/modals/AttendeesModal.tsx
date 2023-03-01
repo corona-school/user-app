@@ -5,21 +5,18 @@ import AttendeeBox from '../components/appointment/AttendeeBox';
 import { Organizer, Participant } from '../gql/graphql';
 
 type ModalProps = {
-    organizers?: Organizer[];
-    participants?: Participant[];
-    declinedBy?: number[];
+    organizers: Organizer[];
+    participants: Participant[];
+    declinedBy: number[];
     onClose?: () => void;
 };
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
-    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-
     return (
         <>
-            <Modal.Content width="350" marginX="auto" background="primary.900">
+            <Modal.Content minH={200} width="350" marginX="auto" background="primary.900">
                 <Modal.CloseButton />
                 <Modal.Body background="primary.900">
                     <Box>
@@ -30,7 +27,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                     <Box maxH="380">
                         <ScrollView>
                             <Box mt="2">
-                                {sortedOrganizers?.map((organizer) => {
+                                {organizers?.map((organizer) => {
                                     return (
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
@@ -39,7 +36,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                         />
                                     );
                                 })}
-                                {sortedParticipants?.map((participant) => {
+                                {participants?.map((participant) => {
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}

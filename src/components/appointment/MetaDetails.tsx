@@ -18,9 +18,9 @@ type MetaProps = {
     count: number;
     total: number;
     attendeesCount?: number;
-    organizers?: Organizer[];
-    participants?: Participant[];
-    declinedBy?: number[];
+    organizers: Organizer[];
+    participants: Participant[];
+    declinedBy: number[];
 
     meetingLink?: string;
 };
@@ -45,10 +45,24 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
+    const sortOrganizers = (attendees: Organizer[], declinedBy: number[]) => {
+        return attendees.sort((a: Organizer, b: Organizer) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    };
+
+    const sortParticipants = (attendees: Participant[], declinedBy: number[]) => {
+        return attendees.sort((a: Participant, b: Participant) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    };
+
     return (
         <>
-            <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <AttendeesModal organizers={organizers} participants={participants} declinedBy={declinedBy} onClose={() => setShowModal(false)} />
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+                <AttendeesModal
+                    organizers={sortOrganizers(organizers, declinedBy)}
+                    participants={participants}
+                    declinedBy={declinedBy}
+                    onClose={() => setShowModal(false)}
+                />
             </Modal>
 
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? 5 : 7}>
