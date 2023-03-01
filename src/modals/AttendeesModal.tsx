@@ -13,12 +13,12 @@ type ModalProps = {
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
-    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const sortedOrganizers = organizers && declinedBy && [...organizers].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const sortedParticipants = participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
 
     return (
         <>
-            <Modal.Content width="350" marginX="auto" background="primary.900">
+            <Modal.Content width="350" background="primary.900">
                 <Modal.CloseButton />
                 <Modal.Body background="primary.900">
                     <Box>

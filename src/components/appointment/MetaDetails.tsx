@@ -47,7 +47,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     });
     return (
         <>
-            <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
                 <AttendeesModal organizers={organizers} participants={participants} declinedBy={declinedBy} onClose={() => setShowModal(false)} />
             </Modal>
 

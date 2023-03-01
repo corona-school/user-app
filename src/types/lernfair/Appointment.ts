@@ -29,8 +29,7 @@ export type CreateAppointmentInput = {
     duration: number;
     subcourseId?: number;
     matchId?: number;
-    organizers?: number[];
-    appointmentType?: AppointmentType;
+    meetingLink: string;
 };
 
 export type Course = {
