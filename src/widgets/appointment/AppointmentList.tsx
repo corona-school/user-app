@@ -144,7 +144,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                 </Box>
                             );
                         })}
-                        {!isReadOnly && appointments.length >= 1 && isEndOfList && (
+                        {!isReadOnly && appointments.length >= 10 && isEndOfList && (
                             <Box alignItems="center" justifyContent="center" h={emptyStateH}>
                                 <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
                             </Box>

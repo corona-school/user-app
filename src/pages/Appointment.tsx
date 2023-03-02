@@ -11,11 +11,8 @@ const APPOINTMENT = gql`
             duration
             title
             description
-            appointmentType
-            meetingLink
+
             isCanceled
-            subcourseId
-            matchId
             position
             total
             participants(skip: 0, take: 10) {
@@ -46,6 +43,7 @@ const Appointment = () => {
     const appointmentId = parseFloat(id ? id : '');
     const { data, error } = useQuery(APPOINTMENT, { variables: { appointmentId } });
 
+    console.log('appointment details', data?.appointment);
     return (
         <WithNavigation showBack>
             {!error && data?.appointment && (

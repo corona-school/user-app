@@ -17,8 +17,16 @@ export type Appointment = {
     organizers?: Organizer[];
     participants?: Participant[];
     isCancelled?: boolean;
-    declinedBy?: number[];
+    declinedBy?: AttendeesDeclined[];
     appointmentType: AppointmentType;
+};
+
+export type AttendeesDeclined = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    isStudent: boolean;
+    isPupil: boolean;
 };
 
 // type of appointments to send to the BE
@@ -30,6 +38,7 @@ export type CreateAppointmentInput = {
     subcourseId?: number;
     matchId?: number;
     meetingLink: string;
+    appointmentType: AppointmentType;
 };
 
 export type Course = {
