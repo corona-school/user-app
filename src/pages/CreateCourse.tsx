@@ -167,7 +167,7 @@ const CreateCourse: React.FC = () => {
     `);
 
     const [createGroupAppointments, { reset: resetAppointments }] = useMutation(gql`
-        mutation appointmentsGroupCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
+        mutation groupAppointmentsCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
             appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
         }
     `);

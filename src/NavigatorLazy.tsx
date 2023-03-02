@@ -55,6 +55,7 @@ import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
 import CreateCourseAppointment from './pages/CreateCourseAppointment';
+import EditAppointment from './pages/EditAppointment';
 
 export default function NavigatorLazy() {
     return (
@@ -285,6 +286,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/edit-appointment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
                     </RequireAuth>
                 }
             />

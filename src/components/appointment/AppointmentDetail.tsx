@@ -145,7 +145,11 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                 />
                 <Description description={appointment.description} />
 
-                <Buttons onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick} canceled={canceled} />
+                <Buttons
+                    onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick}
+                    onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
+                    canceled={canceled}
+                />
             </Box>
         </>
     );

@@ -835,7 +835,7 @@ const SingleCourse: React.FC = () => {
     console.log(userType);
 
     const singleSubcourseQuery = gql(`
-    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
+    query getSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount

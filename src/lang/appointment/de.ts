@@ -1,5 +1,8 @@
 const appointment = {
     title: 'Termine',
+    saveChanges: 'Änderungen speichern',
+    deleteAppointment: 'Termin löschen',
+    goBack: 'zur vorherigen Seite',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
