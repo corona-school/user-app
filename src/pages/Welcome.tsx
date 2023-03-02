@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
-import { Button, Text } from 'native-base';
+import { Button, Text, Link } from 'native-base';
 
 const Welcome: React.FC = () => {
     const navigate = useNavigate();
@@ -62,6 +62,11 @@ const Welcome: React.FC = () => {
                     >
                         {t('welcome.contactSupport')}
                     </Button>
+                    <Text textAlign="center" paddingTop="70px" color="white">
+                        <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
+                        <Text>{'  '}</Text>
+                        <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
+                    </Text>
                 </>
             }
         />

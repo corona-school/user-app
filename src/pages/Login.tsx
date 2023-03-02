@@ -3,7 +3,7 @@ import { gql } from '../gql';
 import { useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
-import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link } from 'native-base';
 import useApollo from '../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
@@ -323,6 +323,11 @@ export default function Login() {
                         <Button onPress={loginRegisterLink} variant="link">
                             {t('login.signupNew')}
                         </Button>
+                        <Text textAlign="center" paddingTop="70px">
+                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
+                            <Text>{'  '}</Text>
+                            <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
+                        </Text>
                     </Box>
                 </Row>
             </VStack>
