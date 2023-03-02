@@ -835,7 +835,7 @@ const SingleCourse: React.FC = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
     const singleSubcourseQuery = gql(`
-    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
+    query getSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount
@@ -874,16 +874,6 @@ const SingleCourse: React.FC = () => {
             isInstructor
             isParticipant
             isOnWaitingList
-        }
-    }
-    `);
-
-    const SINGLE_SUBCOURSE_APPOINTMENTS = _gql`
-    query singleCourseAppointments($subcourseId:Int!) {
-        subcourse(subcourseId: $subcourseId) {
-            course {
-                name
-            }
             appointments {
               id
               title
@@ -896,6 +886,7 @@ const SingleCourse: React.FC = () => {
                 id
                 firstname
                 lastname
+                isStudent
               }
               participants(skip: 0, take: 50) {
                 id
@@ -907,10 +898,9 @@ const SingleCourse: React.FC = () => {
             }
         }
     }
-    `;
+    `);
 
     const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
-    const { data: courseAppointments } = useQuery(SINGLE_SUBCOURSE_APPOINTMENTS, { variables: { subcourseId } });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -982,19 +972,13 @@ const SingleCourse: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log('Kurstermine', courseAppointments);
-    const subcourseAppointments = useMemo(() => {
-        if (courseAppointments) return courseAppointments?.subcourse?.appointments;
-        return [];
-    }, []);
-
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),
             content: (
                 <>
                     <Box maxH={maxHeight} flex="1" mb="10">
-                        {subcourseAppointments.length === 0 ? (
+                        {subcourse?.appointments.length === 0 ? (
                             <Box justifyContent="center">
                                 <AppointmentsEmptyState
                                     title={t('appointment.empty.noAppointments')}
@@ -1002,7 +986,7 @@ const SingleCourse: React.FC = () => {
                                 />
                             </Box>
                         ) : (
-                            <AppointmentList isReadOnly={false} appointments={subcourseAppointments} />
+                            <AppointmentList isReadOnly={false} appointments={[]} />
                         )}
                     </Box>
                 </>
