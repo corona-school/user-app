@@ -1079,7 +1079,7 @@ const SingleCourse: React.FC = () => {
                             <StudentSetMeetingUrlAction subcourse={subcourse} refresh={refetch} />
                         )}
 
-                        {subcourse && userType === 'pupil' && course?.allowContact && <PupilContactInstructors subcourse={subcourse} />}
+                        {subcourse && userType === 'pupil' && subcourse.isParticipant && course?.allowContact && <PupilContactInstructors subcourse={subcourse} />}
                         {subcourse && userType === 'pupil' && !subcourse.isParticipant && <PupilJoinCourseAction subcourse={subcourse} refresh={refetch} />}
                         {subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}
 
