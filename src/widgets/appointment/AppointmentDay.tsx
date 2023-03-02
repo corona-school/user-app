@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useCallback } from 'react';
 import { getI18n } from 'react-i18next';
-import { Organizer, Participant } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 
@@ -11,7 +11,7 @@ type Props = {
     duration: number;
     title: string;
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     scrollToRef?: any;
     isReadOnly?: boolean;
     onPress: () => void;

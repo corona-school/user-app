@@ -8,7 +8,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { Organizer, Participant } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 
 type MetaProps = {
     date: string;
@@ -19,7 +19,7 @@ type MetaProps = {
     total: number;
     attendeesCount?: number;
     organizers: Organizer[];
-    participants: Participant[];
+    participants: AppointmentParticipant[];
     declinedBy: number[];
 
     meetingLink?: string;
@@ -45,14 +45,6 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
-
-    const sortOrganizers = (attendees: Organizer[], declinedBy: number[]) => {
-        return attendees.sort((a: Organizer, b: Organizer) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    };
-
-    const sortParticipants = (attendees: Participant[], declinedBy: number[]) => {
-        return attendees.sort((a: Participant, b: Participant) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    };
 
     return (
         <>

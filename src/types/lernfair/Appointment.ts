@@ -1,4 +1,4 @@
-import { AppointmentType, Organizer, Participant } from '../../gql/graphql';
+import { AppointmentParticipant, AppointmentType, Organizer } from '../../gql/graphql';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -13,7 +13,7 @@ export type Appointment = {
     total?: number;
     meetingLink?: string | null;
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     isCancelled?: boolean;
     declinedBy?: number[];
     appointmentType?: AppointmentType;

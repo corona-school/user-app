@@ -1,4 +1,4 @@
-import { Organizer, Participant } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { State } from './State';
 
 export enum UserType {
@@ -25,4 +25,4 @@ export type LFStudent = {
     lastname: string;
 };
 
-export type Attendee = Participant | Organizer;
+export type Attendee = AppointmentParticipant | Organizer;

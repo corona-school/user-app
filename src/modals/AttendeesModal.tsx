@@ -2,11 +2,11 @@ import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { AttendanceStatus } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
-import { Organizer, Participant } from '../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 
 type ModalProps = {
     organizers: Organizer[];
-    participants: Participant[];
+    participants: AppointmentParticipant[];
     declinedBy: number[];
     onClose?: () => void;
 };
@@ -15,7 +15,8 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
     const { t } = useTranslation();
 
     const sortedOrganizers = organizers && declinedBy && [...organizers].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const sortedParticipants =
+        participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.id ? a.id : 0) - declinedBy.indexOf(b.id ? b.id : 0));
 
     return (
         <>
@@ -43,7 +44,11 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}
-                                            declined={declinedBy?.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            declined={
+                                                declinedBy?.includes(participant.id ? participant.id : 0)
+                                                    ? AttendanceStatus.DECLINED
+                                                    : AttendanceStatus.ACCEPTED
+                                            }
                                         />
                                     );
                                 })}

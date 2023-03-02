@@ -4,14 +4,14 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Organizer, Participant } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 
 type Props = {
     timeDescriptionText: string;
     title: string;
     isCurrentlyTakingPlace: boolean;
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     isReadOnly?: boolean;
     onPress?: () => void;
 };

@@ -25,6 +25,7 @@ import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
+import { Appointment } from '../types/lernfair/Appointment';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -914,6 +915,31 @@ const SingleCourse: React.FC = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
 
+    const convertSubcourseAppointments = (): Appointment[] => {
+        if (!subcourse?.appointments) return [];
+        let appointments: Appointment[] = [];
+
+        for (const appointment of subcourse?.appointments) {
+            const newSubcourseAppointment = {
+                id: appointment.id,
+                title: appointment.title ? appointment.title : '',
+                description: appointment.description ? appointment.description : '',
+                start: appointment.start,
+                duration: appointment.duration,
+                subcourseId: subcourseId,
+                position: appointment.position,
+                total: appointment.total,
+                meetingLink: '',
+                organizers: appointment.organizers,
+                // TODO add participants
+                // participants: appointment?.participants ? appointment.participants : [],
+            };
+            appointments.push(newSubcourseAppointment);
+        }
+
+        return appointments;
+    };
+
     const doPromote = async () => {
         await promote();
         if (error) {
@@ -986,7 +1012,7 @@ const SingleCourse: React.FC = () => {
                                 />
                             </Box>
                         ) : (
-                            <AppointmentList isReadOnly={false} appointments={[]} />
+                            <AppointmentList isReadOnly={true} appointments={convertSubcourseAppointments()} />
                         )}
                     </Box>
                 </>
