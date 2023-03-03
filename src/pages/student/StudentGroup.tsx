@@ -17,6 +17,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
+import CourseGroups from './CourseGroups';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -231,19 +232,17 @@ const StudentGroup: React.FC = () => {
                             </VStack>
 
                             <VStack>
-                                <Heading marginBottom={space['1.5']}>{t('matching.group.helper.course.title')}</Heading>
                                 <Tabs
                                     tabs={[
                                         {
                                             title: t('matching.group.helper.course.tabs.tab1.title'),
                                             content: (
                                                 <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((publishedSubcourses?.length ?? 0) > 0 &&
-                                                            publishedSubcourses?.map((subcourse, index) => {
-                                                                return renderSubcourse(subcourse, index);
-                                                            })) || <AlertMessage content={t('course.empty.nocourses')} />}
-                                                    </CSSWrapper>
+                                                    <CourseGroups
+                                                        currentCourses={publishedSubcourses}
+                                                        draftCourses={unpublishedOrDraftedSubcourses}
+                                                        pastCourses={pastSubcourses}
+                                                    />
                                                 </>
                                             ),
                                         },
@@ -252,36 +251,10 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {((submittedSubcourses?.length ?? 0) > 0 &&
-                                                            submittedSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('course.empty.noremission')} />
-                                                        )}
-                                                    </CSSWrapper>
-                                                </>
-                                            ),
-                                        },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab3.title'),
-                                            content: (
-                                                <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((unpublishedOrDraftedSubcourses?.length ?? 0) > 0 &&
-                                                            unpublishedOrDraftedSubcourses!.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('course.empty.nodrafts')} />
-                                                        )}
-                                                    </CSSWrapper>
-                                                </>
-                                            ),
-                                        },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab4.title'),
-                                            content: (
-                                                <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((pastSubcourses?.length ?? 0) > 0 &&
-                                                            pastSubcourses?.map((subcourse, index) => {
-                                                                return renderSubcourse(subcourse, index, false);
-                                                            })) || <AlertMessage content={t('course.empty.nopastcourses')} />}
+                                                        {((publishedSubcourses?.length ?? 0) > 0 &&
+                                                            publishedSubcourses?.map((subcourse, index) => {
+                                                                return renderSubcourse(subcourse, index);
+                                                            })) || <AlertMessage content={t('course.empty.nocourses')} />}
                                                     </CSSWrapper>
                                                 </>
                                             ),

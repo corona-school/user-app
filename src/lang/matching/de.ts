@@ -97,16 +97,13 @@ const matching = {
                 title: 'Meine Kurse',
                 tabs: {
                     tab1: {
-                        title: 'Kurse',
+                        title: 'Meine Kurse',
+                        current: 'Aktuelle Kurse (veröffentlicht)',
+                        draft: 'Entwurf oder in Prüfung',
+                        past: 'Vergangene und abgesagte Kurse',
                     },
                     tab2: {
-                        title: 'In Prüfung',
-                    },
-                    tab3: {
-                        title: 'Entwürfe / Unveröffentlicht',
-                    },
-                    tab4: {
-                        title: 'Vergangene Kurse',
+                        title: 'Alle Kurse',
                     },
                 },
             },
