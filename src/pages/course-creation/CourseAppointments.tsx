@@ -8,11 +8,14 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
+import AppointmentEditModal from '../edit-appointment/AppointmentEditModal';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 
 type Props = {
     next: () => void;
     back: () => void;
+    isEditing: boolean;
+    courseId?: number;
 };
 
 const GET_COURSE_APPOINTMENTS = gql`
@@ -58,13 +61,15 @@ const GET_COURSE_APPOINTMENTS = gql`
     }
 `;
 
-const CourseAppointments: React.FC<Props> = ({ next, back }) => {
+const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     // TODO query on editing modus
-    // const { data, loading, error, fetchMore } = useQuery(GET_COURSE_APPOINTMENTS, {variables: { id: 1 },});
+    const { data } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id: courseId } });
+    console.log('edit course', isEditing, courseId, data?.subcourse);
 
     const { isMobile } = useLayoutHelper();
 
@@ -107,14 +112,22 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
                 <CreateCourseAppointmentModal closeModal={() => setShowModal(false)} total={appointmentsToBeCreated.length} />
             </Modal>
+            <Modal isOpen={showEditModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+                <AppointmentEditModal />
+            </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">
-                    {allAppointmentsToShow.length === 0 ? (
+                    {!isEditing && allAppointmentsToShow.length === 0 ? (
                         <Box justifyContent="center">
                             <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
                         </Box>
                     ) : (
-                        <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+                        <AppointmentList
+                            isReadOnly={isEditing ? false : true}
+                            appointments={isEditing ? data?.subcourse?.appointments : allAppointmentsToShow}
+                            isEditing={isEditing}
+                            setShowEditModal={() => setShowEditModal}
+                        />
                     )}
                 </Box>
 

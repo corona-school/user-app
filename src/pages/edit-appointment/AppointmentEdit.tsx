@@ -111,9 +111,16 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
 
         appointmentsToBeUpdated.push(convertedUpdatedAppointment);
         console.log('updated', appointmentsToBeUpdated);
-        // updateAppointments({ variables: { appointmentsToBeUpdated } });
-        // navigate('/appointments');
-    }, []);
+        updateAppointments({ variables: { appointmentsToBeUpdated } });
+        navigate('/appointments');
+    }, [
+        updatedAppointment.date,
+        updatedAppointment.description,
+        updatedAppointment.duration,
+        updatedAppointment.id,
+        updatedAppointment.time,
+        updatedAppointment.title,
+    ]);
 
     return (
         <>

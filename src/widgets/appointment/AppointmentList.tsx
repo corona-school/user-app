@@ -12,6 +12,8 @@ type Props = {
     isReadOnly?: boolean;
     isEndOfList?: boolean;
     setEndOfList?: Dispatch<SetStateAction<boolean>>;
+    isEditing?: boolean;
+    setShowEditModal?: Dispatch<SetStateAction<boolean>>;
 };
 
 const isAppointmentNow = (start: string, duration: number): boolean => {
@@ -29,7 +31,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId || 0;
 };
-const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEndOfList, setEndOfList }) => {
+const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEndOfList, setEndOfList, isEditing, setShowEditModal }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     // const startContainerRef = useRef<HTMLDivElement>(null);
     const scrollViewRef = useRef<HTMLElement>(null);
@@ -136,7 +138,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                             title={appointment.title}
                                             organizers={appointment.organizers}
                                             participants={appointment.participants}
-                                            onPress={() => navigate(`/appointment/${appointment.id}`)}
+                                            onPress={isEditing && setShowEditModal ? setShowEditModal(true) : navigate(`/appointment/${appointment.id}`)}
                                             scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                             isReadOnly={isReadOnly}
                                         />

@@ -40,7 +40,6 @@ const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, u
                             appointmentsCount={appointmentsCount + 1}
                             inputValue={updatedAppointment.title}
                             handleInput={(e) => {
-                                console.log('new title', e.target.value);
                                 setUpdatedAppointment({ ...updatedAppointment, title: e.target.value });
                             }}
                         />
@@ -118,7 +117,6 @@ const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, u
                     <TextArea
                         value={updatedAppointment.description}
                         onChangeText={(e) => {
-                            console.log('change description', e);
                             setUpdatedAppointment({ ...updatedAppointment, description: e });
                         }}
                         placeholder={t('appointment.create.descriptionPlaceholder')}

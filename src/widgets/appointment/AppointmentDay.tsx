@@ -14,7 +14,7 @@ type Props = {
     participants?: Participant[];
     scrollToRef?: any;
     isReadOnly?: boolean;
-    onPress: () => void;
+    onPress: any;
 };
 
 const AppointmentDay: React.FC<Props> = ({ start, duration, title, organizers, participants, scrollToRef, isReadOnly, onPress }) => {

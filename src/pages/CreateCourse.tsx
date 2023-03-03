@@ -794,7 +794,7 @@ const CreateCourse: React.FC = () => {
                                     onRemoveInstructor={removeInstructor}
                                 />
                             )}
-                            {currentIndex === 1 && <CourseAppointments next={onNext} back={onBack} />}
+                            {currentIndex === 1 && <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} courseId={prefillCourseId} />}
                             {currentIndex === 2 && (
                                 <>
                                     <CoursePreview
