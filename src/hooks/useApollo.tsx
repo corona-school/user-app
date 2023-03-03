@@ -106,10 +106,10 @@ const clearDeviceToken = () => STORAGE.removeItem('lernfair:device-token');
 // ---------------- Custom ApolloLink For Request Logging -------
 class RequestLoggerLink extends ApolloLink {
     request(operation: Operation, forward?: NextLink | undefined) {
-        const queryName = operation.query.loc?.source.body ?? operation.query.loc?.source.name;
+        const queryName = operation.operationName;
         const variableNames = Object.keys(operation.variables);
-        let serializedVariables = "REDACTED";
-        if (['token', 'password', 'authToken'].every(it => !variableNames.includes(it))) {
+        let serializedVariables = 'REDACTED';
+        if (['token', 'password', 'authToken'].every((it) => !variableNames.includes(it))) {
             serializedVariables = JSON.stringify(operation.variables, null, 2);
         }
         log('GraphQL Query', `running operation: ${queryName} variables: ${serializedVariables}`, operation);
@@ -119,7 +119,7 @@ class RequestLoggerLink extends ApolloLink {
             if (response.errors) {
                 log('GraphQL Query', `operation finished with errors: ${queryName}, errors: ${JSON.stringify(response.errors, null, 2)}`, response);
             } else {
-                log('GraphQL Query', `operation finished with success: ${queryName}`, response);    
+                log('GraphQL Query', `operation finished with success: ${queryName}`, response);
             }
             return response;
         });
