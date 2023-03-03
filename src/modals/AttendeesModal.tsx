@@ -23,7 +23,6 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
         return mapToIds(declinedBy);
     }, [declinedBy?.length]);
 
-    console.log('P', participants, 'O', organizers);
     const sortedOrganizers =
         organizers &&
         declinedBy &&
@@ -40,8 +39,6 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                 declinedBy.findIndex((declinedAttendee) => a.id === declinedAttendee.id) -
                 declinedBy.findIndex((declinedAttendee) => b.id === declinedAttendee.id)
         );
-
-    console.log(declinedBy);
 
     return (
         <>

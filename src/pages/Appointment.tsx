@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
+import { AppointmentType } from '../gql/graphql';
 
 const APPOINTMENT = gql`
     query appointment($appointmentId: Float!) {
@@ -11,7 +12,9 @@ const APPOINTMENT = gql`
             duration
             title
             description
-
+            matchId
+            subcourseId
+            appointmentType
             isCanceled
             position
             total
@@ -24,6 +27,7 @@ const APPOINTMENT = gql`
                 id
                 firstname
                 lastname
+                isStudent
             }
             isOrganizer
             isParticipant
@@ -43,13 +47,12 @@ const Appointment = () => {
     const appointmentId = parseFloat(id ? id : '');
     const { data, error } = useQuery(APPOINTMENT, { variables: { appointmentId } });
 
-    console.log('appointment details', data?.appointment);
     return (
         <WithNavigation showBack>
             {!error && data?.appointment && (
                 <AppointmentDetail
                     appointment={data?.appointment}
-                    id={data?.appointment?.subcourseId != null ? data?.appointment?.subcourseId : data?.appointment?.matchId}
+                    id={data?.appointment?.appointmentType === AppointmentType.Group ? data?.appointment?.subcourseId : data?.appointment?.matchId}
                 />
             )}
         </WithNavigation>

@@ -119,7 +119,6 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
             )}
             {!error && (
                 <Box maxH={maxHeight} flex="1" mb="10">
-                    {/* // TODO change to appointments from query */}
                     <AppointmentList isReadOnly={true} appointments={isCourse ? data?.subcourse?.appointments : data?.match?.appointments} />
                 </Box>
             )}

@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { AppointmentCreateGroupInput, AppointmentType } from '../../gql/graphql';
+import { AppointmentType } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -68,16 +68,16 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     }, []);
 
     const _convertAppointments = () => {
-        let convertedAppointments: AppointmentCreateGroupInput[] = [];
+        let convertedAppointments: Appointment[] = [];
         for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+            const converted: Appointment = {
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: AppointmentType.Group,
                 subcourseId: 1,
-                title: appointment.title,
-                description: appointment.description,
+                title: appointment?.title ?? '',
+                description: appointment?.description ?? '',
             };
             convertedAppointments.push(converted);
         }
@@ -87,7 +87,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     const _allAppointmentsToShow = () => {
         const appointments: Appointment[] = [];
         const convertedAppointments = _convertAppointments();
-        const all = appointments.concat(convertedAppointments as Appointment[]);
+        const all = appointments.concat(convertedAppointments);
         return all;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();

@@ -1,6 +1,5 @@
 import { AppointmentType } from '../../gql/graphql';
-
-import { Organizer, Participant } from './User';
+import { Participant, Organizer } from './User';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -39,9 +38,4 @@ export type CreateAppointmentInput = {
     matchId?: number;
     meetingLink: string;
     appointmentType: AppointmentType;
-};
-
-export type Course = {
-    name: string;
-    description: string;
 };

@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import { AppointmentCreateGroupInput } from '../../gql/graphql';
-import { CreateAppointmentInput } from './Appointment';
 
 export enum FormReducerActionType {
     TEXT_CHANGE = 'text_change',
@@ -77,8 +76,8 @@ export type TAppointmentContext = {
     setAppointmentsToBeCreated: Dispatch<SetStateAction<AppointmentCreateGroupInput[]>>;
     appointmentsToBeCanceled: number[];
     setAppointmentsToBeCanceled: Dispatch<SetStateAction<number[]>>;
-    appointmentsToBeUpdated: CreateAppointmentInput[];
-    setAppointmentsToBeUpdated: Dispatch<SetStateAction<CreateAppointmentInput[]>>;
+    appointmentsToBeUpdated: AppointmentCreateGroupInput[];
+    setAppointmentsToBeUpdated: Dispatch<SetStateAction<AppointmentCreateGroupInput[]>>;
 };
 
 export type StateWithoutWeeklies = {

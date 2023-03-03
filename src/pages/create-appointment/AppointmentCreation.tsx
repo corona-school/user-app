@@ -218,9 +218,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && (
-                <WeeklyAppointments appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} nextDate={calcNewAppointmentInOneWeek()} />
-            )}
+            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button onPress={isCourseCreation ? handleCreateCourseAppointments : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}
