@@ -2,7 +2,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 const getLastTimeCheckedQuery = gql`
-    query {
+    query GetLastTimeCheckedNotifications {
         me {
             lastTimeCheckedNotifications
         }
