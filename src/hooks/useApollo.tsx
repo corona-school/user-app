@@ -109,7 +109,7 @@ class RequestLoggerLink extends ApolloLink {
         const queryName = operation.operationName;
         const variableNames = Object.keys(operation.variables);
         let serializedVariables = 'REDACTED';
-        if (['token', 'password', 'authToken'].every((it) => !variableNames.includes(it))) {
+        if (['token', 'password', 'authToken', 'legacyToken'].every((it) => !variableNames.includes(it))) {
             serializedVariables = JSON.stringify(operation.variables, null, 2);
         }
         log('GraphQL Query', `running operation: ${queryName} variables: ${serializedVariables}`, operation);
