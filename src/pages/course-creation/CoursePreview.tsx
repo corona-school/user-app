@@ -70,13 +70,14 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     const _convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
         for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+            const converted: Appointment = {
                 id: 1,
-                title: appointment.title,
-                description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: AppointmentType.Group,
+                subcourseId: 1,
+                title: appointment?.title ?? '',
+                description: appointment?.description ?? '',
             };
             convertedAppointments.push(converted);
         }

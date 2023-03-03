@@ -10,7 +10,7 @@ import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointment
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
-import { AppointmentType } from '../../gql/graphql';
+import { AppointmentCreateGroupInput, AppointmentType } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 
 type FormErrors = {
@@ -119,18 +119,19 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
-            const newAppointment: CreateAppointmentInput = {
+            const newAppointment: AppointmentCreateGroupInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
-                subcourseId: id,
+                subcourseId: id!,
+                appointmentType: AppointmentType.Group,
             };
             if (isCourseCreation && weeklies.length === 0) {
                 setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
             } else if (isCourseCreation && weeklies.length > 0) {
-                let weeklyAppointments: CreateAppointmentInput[] = [];
+                let weeklyAppointments: AppointmentCreateGroupInput[] = [];
 
                 for (const weekly of weeklies) {
                     const newWeeklyAppointment = {
@@ -139,7 +140,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                         start: weekly.nextDate,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
-                        subcourseId: id,
+                        subcourseId: id!,
+                        appointmentType: AppointmentType.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -165,8 +167,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
-
-                ...(isCourse ? { subcourseId: id } : { matchId: id, appointmentType: AppointmentType.Match }),
+                ...(isCourse ? { subcourseId: id, appointmentType: AppointmentType.Group } : { matchId: id, appointmentType: AppointmentType.Match }),
             };
 
             appointments.push(newAppointment);
@@ -181,7 +182,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                         start: weekly.nextDate,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
-                        ...(isCourse ? { subcourseId: id } : { matchId: id, appointmentType: AppointmentType.Match }),
+                        ...(isCourse ? { subcourseId: id, appointmentType: AppointmentType.Group } : { matchId: id, appointmentType: AppointmentType.Match }),
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -217,9 +218,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && (
-                <WeeklyAppointments appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} nextDate={calcNewAppointmentInOneWeek()} />
-            )}
+            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button onPress={isCourseCreation ? handleCreateCourseAppointments : handleCreateAppointment} width={buttonWidth}>
                     {t('appointment.create.addAppointmentButton')}

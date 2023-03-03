@@ -83,11 +83,11 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
         for (const appointment of appointmentsToBeCreated) {
             const converted = {
                 id: 1,
-                title: appointment.title,
-                description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: AppointmentType.Group,
+                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
+                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
             };
             convertedAppointments.push(converted);
         }

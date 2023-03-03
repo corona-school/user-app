@@ -2,19 +2,43 @@ import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { AttendanceStatus, Organizer, Participant } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
+import { AttendeesDeclined } from '../types/lernfair/Appointment';
+import { useMemo } from 'react';
 
 type ModalProps = {
     organizers?: Organizer[];
     participants?: Participant[];
-    declinedBy?: number[];
+    declinedBy: AttendeesDeclined[];
     onClose?: () => void;
 };
+
+function mapToIds(declinedAttendees: AttendeesDeclined[]): number[] {
+    return declinedAttendees.map((a) => a.id);
+}
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
-    const sortedOrganizers = organizers && declinedBy && [...organizers].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const declinedIds = useMemo(() => {
+        return mapToIds(declinedBy);
+    }, [declinedBy?.length]);
+
+    const sortedOrganizers =
+        organizers &&
+        declinedBy &&
+        [...organizers].sort(
+            (a, b) =>
+                declinedBy.findIndex((declinedAttendee) => a.id === declinedAttendee.id) -
+                declinedBy.findIndex((declinedAttendee) => b.id === declinedAttendee.id)
+        );
+    const sortedParticipants =
+        participants &&
+        declinedBy &&
+        [...participants].sort(
+            (a, b) =>
+                declinedBy.findIndex((declinedAttendee) => a.id === declinedAttendee.id) -
+                declinedBy.findIndex((declinedAttendee) => b.id === declinedAttendee.id)
+        );
 
     return (
         <>
@@ -34,7 +58,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
                                             isOrganizer={organizer.isOrganizer}
-                                            declined={declinedBy?.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            declined={declinedIds.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
                                 })}
@@ -42,7 +66,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}
-                                            declined={declinedBy?.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            declined={declinedIds.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
                                 })}

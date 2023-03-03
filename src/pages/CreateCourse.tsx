@@ -26,7 +26,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
-import { CreateAppointmentInput } from '../types/lernfair/Appointment';
+import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'appointments' | 'tags';
 
@@ -401,7 +401,7 @@ const CreateCourse: React.FC = () => {
             /**
              * Appointment Creation
              */
-            const addIdToAppointment = (a: CreateAppointmentInput[], sId: number) => {
+            const addIdToAppointment = (a: AppointmentCreateGroupInput[], sId: number) => {
                 const appointments = a.map((appointment) => ({
                     ...appointment,
                     subcourseId,

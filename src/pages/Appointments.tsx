@@ -22,8 +22,6 @@ const GET_MY_APPOINTMENTS = gql`
                 description
                 start
                 duration
-                subcourseId
-                matchId
                 organizers(skip: 0, take: 5) {
                     id
                     firstname
@@ -36,8 +34,6 @@ const GET_MY_APPOINTMENTS = gql`
                     isPupil
                     isStudent
                 }
-                meetingLink
-                appointmentType
             }
         }
     }
