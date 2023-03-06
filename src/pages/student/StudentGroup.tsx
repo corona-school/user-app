@@ -104,7 +104,7 @@ const StudentGroup: React.FC = () => {
     const unpublishedOrDraftedSubcourses = useMemo(
         () =>
             data?.me.student!.subcoursesInstructing.filter(
-                (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published)
+                (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published) || it.course.courseState === 'submitted'
             ),
         [data?.me.student!.subcoursesInstructing]
     );
