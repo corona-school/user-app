@@ -101,11 +101,6 @@ const StudentGroup: React.FC = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const submittedSubcourses = useMemo(
-        () => data?.me.student!.subcoursesInstructing.filter((it) => it.course.courseState === 'submitted'),
-        [data?.me.student!.subcoursesInstructing]
-    );
-
     const unpublishedOrDraftedSubcourses = useMemo(
         () =>
             data?.me.student!.subcoursesInstructing.filter(
@@ -251,8 +246,8 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CSSWrapper className="course-list__wrapper">
-                                                        {((publishedSubcourses?.length ?? 0) > 0 &&
-                                                            publishedSubcourses?.map((subcourse, index) => {
+                                                        {((data?.me.student!.subcoursesInstructing?.length ?? 0) > 0 &&
+                                                            data?.me.student!.subcoursesInstructing?.map((subcourse, index) => {
                                                                 return renderSubcourse(subcourse, index);
                                                             })) || <AlertMessage content={t('course.empty.nocourses')} />}
                                                     </CSSWrapper>

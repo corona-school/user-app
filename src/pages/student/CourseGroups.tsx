@@ -1,7 +1,6 @@
 import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import CSSWrapper from '../../components/CSSWrapper';
 import { getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
@@ -23,23 +22,21 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
         showDate: boolean = true,
         readonly: boolean = false
     ) => (
-        <CSSWrapper className="course-list__item">
-            <AppointmentCard
-                showTrafficLight
-                trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-                isFullHeight
-                isSpaceMarginBottom={false}
-                key={index}
-                variant="card"
-                description={subcourse.course.description}
-                tags={subcourse.course.tags}
-                date={(showDate && subcourse.firstLecture?.start) || ''}
-                countCourse={subcourse.lectures.length}
-                onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-                image={subcourse.course.image ?? undefined}
-                title={subcourse.course.name}
-            />
-        </CSSWrapper>
+        <AppointmentCard
+            showTrafficLight
+            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            isFullHeight
+            isSpaceMarginBottom={false}
+            key={index}
+            variant="card"
+            description={subcourse.course.description}
+            tags={subcourse.course.tags}
+            date={(showDate && subcourse.firstLecture?.start) || ''}
+            countCourse={subcourse.lectures.length}
+            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+            image={subcourse.course.image ?? undefined}
+            title={subcourse.course.name}
+        />
     );
     return (
         <Stack space={5}>
