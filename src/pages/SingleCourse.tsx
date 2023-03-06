@@ -84,15 +84,21 @@ function JoinMeetingAction({
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
 
     const getMeetingLink = useCallback(async () => {
+        // In some browsers the window MUST be opened as a direct reaction to an user action, otherwise it is just not opened
+        // c.f. https://stackoverflow.com/questions/20696041/window-openurl-blank-not-working-on-imac-safari
+        const windowRef = window.open(undefined, '_blank');
+
         try {
             const res = await joinMeeting({ variables: { subcourseId: subcourse.id } });
 
             if (res.data?.subcourseJoinMeeting) {
-                window.open(res.data!.subcourseJoinMeeting, '_blank');
+                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
             } else {
                 setShowMeetingNotStarted(true);
+                windowRef?.close();
             }
         } catch (e) {
+            windowRef?.close();
             setShowMeetingNotStarted(true);
         }
     }, [subcourse, joinMeeting]);
