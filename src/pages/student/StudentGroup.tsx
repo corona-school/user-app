@@ -241,19 +241,20 @@ const StudentGroup: React.FC = () => {
                                                 </>
                                             ),
                                         },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab2.title'),
-                                            content: (
-                                                <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((data?.me.student!.subcoursesInstructing?.length ?? 0) > 0 &&
-                                                            data?.me.student!.subcoursesInstructing?.map((subcourse, index) => {
-                                                                return renderSubcourse(subcourse, index);
-                                                            })) || <AlertMessage content={t('course.empty.nocourses')} />}
-                                                    </CSSWrapper>
-                                                </>
-                                            ),
-                                        },
+                                        // TODO will be done in another PR
+                                        // {
+                                        //     title: t('matching.group.helper.course.tabs.tab2.title'),
+                                        //     content: (
+                                        //         <>
+                                        //             <CSSWrapper className="course-list__wrapper">
+                                        //                 {((data?.me.student!.subcoursesInstructing?.length ?? 0) > 0 &&
+                                        //                     data?.me.student!.subcoursesInstructing?.map((subcourse, index) => {
+                                        //                         return renderSubcourse(subcourse, index);
+                                        //                     })) || <AlertMessage content={t('course.empty.nocourses')} />}
+                                        //             </CSSWrapper>
+                                        //         </>
+                                        //     ),
+                                        // },
                                     ]}
                                 />
                             </VStack>
