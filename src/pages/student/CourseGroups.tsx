@@ -55,7 +55,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                     {((draftCourses?.length ?? 0) > 0 &&
                         draftCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
-                        })) || <AlertMessage content={t('course.empty.nocourses')} />}
+                        })) || <AlertMessage content={t('course.empty.noremissionordraft')} />}
                 </HSection>
             </Box>
             <Box>
@@ -64,7 +64,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                     {((pastCourses?.length ?? 0) > 0 &&
                         pastCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
-                        })) || <AlertMessage content={t('course.empty.nocourses')} />}
+                        })) || <AlertMessage content={t('course.empty.nopastcourses')} />}
                 </HSection>
             </Box>
         </Stack>
