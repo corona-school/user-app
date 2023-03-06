@@ -9,7 +9,7 @@ import Utility, { getTrafficStatus } from '../Utility';
 import { gql } from '../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
@@ -185,7 +185,7 @@ function StudentCancelSubcourseAction({ subcourse, refresh }: { subcourse: Pick<
     );
 }
 
-function StudentEditCourseAction({ subcourse }: { subcourse: Pick<Subcourse, 'id'> }) {
+function StudentEditCourseAction({ subcourse, isInPast }: { subcourse: Pick<Subcourse, 'id'>; isInPast: boolean }) {
     const navigate = useNavigate();
     const { sizes } = useTheme();
 
@@ -204,6 +204,7 @@ function StudentEditCourseAction({ subcourse }: { subcourse: Pick<Subcourse, 'id
                 }}
                 width={ButtonContainer}
                 variant="outline"
+                isDisabled={isInPast}
             >
                 Kurs editieren
             </Button>
@@ -898,7 +899,12 @@ const SingleCourse: React.FC = () => {
         }
     }
     `);
-    const { data, loading, refetch } = useQuery(singleSubcourseQuery, { variables: { subcourseId, isStudent: userType === 'student' } });
+    const { data, loading, refetch } = useQuery(singleSubcourseQuery, {
+        variables: {
+            subcourseId,
+            isStudent: userType === 'student',
+        },
+    });
 
     const [promote, { error }] = useMutation(
         gql(`
@@ -964,6 +970,13 @@ const SingleCourse: React.FC = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const isInPast = useMemo(
+        () =>
+            !subcourse ||
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+        [subcourse]
+    );
 
     const tabs: Tab[] = [
         {
@@ -1052,7 +1065,7 @@ const SingleCourse: React.FC = () => {
                         )}
                     </Row>
                     <Box my={2}>
-                        {subcourse && subcourse.published && (
+                        {subcourse && subcourse.published && !isInPast && (
                             <PromoteBanner
                                 onClick={doPromote}
                                 canPromote={canPromoteCourse()}
@@ -1071,7 +1084,7 @@ const SingleCourse: React.FC = () => {
                             <JoinMeetingAction subcourse={subcourse} refresh={refetch} />
                         )}
 
-                        {subcourse && userType === 'student' && subcourse.isInstructor && <StudentEditCourseAction subcourse={subcourse} />}
+                        {subcourse && userType === 'student' && subcourse.isInstructor && <StudentEditCourseAction subcourse={subcourse} isInPast={isInPast} />}
                         {subcourse && userType === 'student' && subcourse.isInstructor && subcourse.published && (
                             <StudentContactParticiantsAction subcourse={subcourse} refresh={refetch} />
                         )}
@@ -1079,7 +1092,9 @@ const SingleCourse: React.FC = () => {
                             <StudentSetMeetingUrlAction subcourse={subcourse} refresh={refetch} />
                         )}
 
-                        {subcourse && userType === 'pupil' && subcourse.isParticipant && course?.allowContact && <PupilContactInstructors subcourse={subcourse} />}
+                        {subcourse && userType === 'pupil' && subcourse.isParticipant && course?.allowContact && (
+                            <PupilContactInstructors subcourse={subcourse} />
+                        )}
                         {subcourse && userType === 'pupil' && !subcourse.isParticipant && <PupilJoinCourseAction subcourse={subcourse} refresh={refetch} />}
                         {subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}
 

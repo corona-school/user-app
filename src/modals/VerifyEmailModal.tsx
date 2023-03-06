@@ -19,11 +19,6 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
     const navigate = useNavigate();
     const { hide } = useModal();
 
-    const goToWelcome = useCallback(() => {
-        navigate('/welcome');
-        hide();
-    }, [navigate, hide]);
-
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
 
     const ContentContainerWidth = useBreakpointValue({
@@ -86,7 +81,6 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
                         />
                     </Box>
                 )}
-                <Button onPress={goToWelcome}>{t('registration.verifyemail.backToWelcomeButton')}</Button>
             </VStack>
         </Flex>
     );

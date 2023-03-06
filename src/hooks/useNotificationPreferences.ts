@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
 
 const notificationPreferencesQuery = gql`
-    query {
+    query GetNotificationPreferences {
         me {
             notificationPreferences
         }
