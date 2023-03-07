@@ -231,15 +231,19 @@ const Dashboard: React.FC<Props> = () => {
         const courseId = highlightedAppointment?.course.id;
         if (!courseId) return;
 
+        const windowRef = window.open(undefined, '_blank');
+
         try {
             const res = await joinMeeting({ variables: { courseId } });
 
-            if (res.data.subcourseJoinMeeting) {
-                window.open(res.data.subcourseJoinMeeting, '_blank');
+            if (res.data?.subcourseJoinMeeting) {
+                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
             } else {
                 setShowMeetingNotStarted(true);
+                windowRef?.close();
             }
         } catch (e) {
+            windowRef?.close();
             setShowMeetingNotStarted(true);
         }
     }, [highlightedAppointment?.course.id, joinMeeting]);

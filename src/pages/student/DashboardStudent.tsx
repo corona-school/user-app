@@ -221,9 +221,11 @@ const DashboardStudent: React.FC<Props> = () => {
         const subcourseId = highlightedAppointment?.subcourse.id;
         if (!subcourseId) return;
 
+        const windowRef = window.open(undefined, '_blank');
+
         try {
             const res = await joinMeeting({ variables: { subcourseId } });
-            window.open(res.data.subcourseJoinMeeting, '_blank');
+            if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
         } catch (e) {
             log('DashboardStudent', `Student failed to join Meeting: ${(e as Error)?.message}`, e);
         }
