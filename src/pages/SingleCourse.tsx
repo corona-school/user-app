@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, CloseIcon, Column, Heading, Image, Link, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -82,17 +82,25 @@ function JoinMeetingAction({
     }, [subcourse]);
 
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
+    const [showJoinedModal, setShowJoinedModal] = useState<boolean>(false);
 
     const getMeetingLink = useCallback(async () => {
+        // In some browsers the window MUST be opened as a direct reaction to an user action, otherwise it is just not opened
+        // c.f. https://stackoverflow.com/questions/20696041/window-openurl-blank-not-working-on-imac-safari
+        const windowRef = window.open(undefined, '_blank');
+
         try {
             const res = await joinMeeting({ variables: { subcourseId: subcourse.id } });
 
             if (res.data?.subcourseJoinMeeting) {
-                window.open(res.data!.subcourseJoinMeeting, '_blank');
+                setShowJoinedModal(true);
+                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
             } else {
                 setShowMeetingNotStarted(true);
+                windowRef?.close();
             }
         } catch (e) {
+            windowRef?.close();
             setShowMeetingNotStarted(true);
         }
     }, [subcourse, joinMeeting]);
@@ -107,6 +115,17 @@ function JoinMeetingAction({
                 </Tooltip>
                 {showMeetingNotStarted && <AlertMessage content="Der Videochat wurde noch nicht gestartet." />}
             </VStack>
+            <Modal isOpen={showJoinedModal} onClose={() => setShowJoinedModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Body>
+                        <Box padding={space['2']}>
+                            Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:
+                            <Button href={_joinMeeting.data?.subcourseJoinMeeting}>Videochat erneut öffnen</Button>
+                        </Box>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
         </>
     );
 }
