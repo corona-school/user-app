@@ -50,18 +50,15 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
 
     const next = useCallback(() => {
         if (isInputValid()) {
-            if (checks.includes('newsletter')) {
-                setNewsletter(true);
-            }
             onRegister();
         }
-    }, [checks, isInputValid, onRegister, setNewsletter]);
+    }, [isInputValid, onRegister]);
 
     return (
         <VStack marginTop="10px">
             <Heading>{t(`registration.steps.5.subtitle`)}</Heading>
 
-            <Checkbox.Group onChange={setChecks} value={checks} mt={space['1']}>
+            <Checkbox.Group onChange={(values) => setChecks(values || [])} value={checks} mt={space['1']}>
                 <VStack space={space['0.5']}>
                     <Heading fontSize="md">Datenschutz</Heading>
                     <Checkbox value={'dsgvo'} alignItems="flex-start">
@@ -106,7 +103,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                     <Heading fontSize="md" mt={space['2']}>
                         Newsletter
                     </Heading>
-                    <Checkbox value="newsletter" alignItems="flex-start" mr={space['0.5']}>
+                    <Checkbox value="newsletter" alignItems="flex-start" mr={space['0.5']} onChange={(e) => setNewsletter(e)}>
                         <Text>Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.</Text>
                     </Checkbox>
 
