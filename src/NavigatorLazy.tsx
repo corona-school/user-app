@@ -95,7 +95,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/notifications"
                 element={
-                    <RequireAuth>
+                    <RequireAuth isRetainPath>
                         <NotficationControlPanel />
                     </RequireAuth>
                 }
