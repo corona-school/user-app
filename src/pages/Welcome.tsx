@@ -13,8 +13,9 @@ const Welcome: React.FC = () => {
     const { trackPageView } = useMatomo();
 
     const location = useLocation();
-    const locState = location.state as { deactivated?: boolean };
+    const locState = location.state as { deactivated?: boolean; from?: { pathname: string } };
     const deactivated = locState?.deactivated;
+    const retainPath = locState.from?.pathname;
 
     const fromLegacy =
         document.referrer.includes('my.lern-fair.de') ||
@@ -34,7 +35,7 @@ const Welcome: React.FC = () => {
             title={t('welcome.title')}
             content={t('welcome.subtitle')}
             outlineButtonText={t('signin')}
-            outlinebuttonLink={() => navigate('/login')}
+            outlinebuttonLink={() => navigate('/login', { state: { retainPath: retainPath } })}
             defaultButtonText={t('signup')}
             defaultbuttonLink={() => navigate('/registration')}
             icon={<Logo />}
