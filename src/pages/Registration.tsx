@@ -115,7 +115,7 @@ const Registration: React.FC = () => {
     const [schoolType, setSchoolType] = useState<string>('grundschule');
     const [schoolClass, setSchoolClass] = useState<number>(1);
     const [userState, setUserState] = useState<string>('bw');
-    const [newsletter, setNewsletter] = useState<boolean>(true);
+    const [newsletter, setNewsletter] = useState<boolean>(false);
 
     const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent);
 
