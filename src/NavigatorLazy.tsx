@@ -277,7 +277,14 @@ export default function NavigatorLazy() {
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+                path="/reset-password"
+                element={
+                    <WithNavigation showBack hideMenu>
+                        <ResetPassword />
+                    </WithNavigation>
+                }
+            />
             <Route
                 path="/datenschutz"
                 element={

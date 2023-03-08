@@ -105,22 +105,11 @@ const ResetPassword: React.FC<Props> = () => {
         <>
             <Flex overflowY={'auto'} height="100vh">
                 <>
-                    <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
-                        <Image
-                            alt="Lernfair"
-                            position="absolute"
-                            zIndex="-1"
-                            borderBottomRadius={15}
-                            width="100%"
-                            height="100%"
-                            source={{
-                                uri: require('../assets/images/globals/lf-bg.png'),
-                            }}
-                        />
+                    <Box paddingY={space['2']} justifyContent="center" alignItems="center">
                         <Logo />
                         <Heading mt={space['1']}>Passwort neu setzen</Heading>
                     </Box>
-                    <VStack space={space['1']} paddingX={space['1']} mt={space['4']} marginX="auto" width={ContainerWidth} justifyContent="center">
+                    <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
                         {showResetPassword === 'success' && (
                             <>
                                 <PasswordInput placeholder={'Neues Passwort'} value={password} onChangeText={setPassword} />
@@ -131,7 +120,11 @@ const ResetPassword: React.FC<Props> = () => {
                                 {showPasswordLength && <AlertMessage content={t('registration.hint.password.length')} />}
                                 {showPasswordConfirmNoMatch && <AlertMessage content={t('registration.hint.password.nomatch')} />}
                                 <Row justifyContent="center">
-                                    <Button width={buttonWidth} onPress={resetPassword} isDisabled={!password.length}>
+                                    <Button
+                                        width={buttonWidth}
+                                        onPress={resetPassword}
+                                        isDisabled={!password.length || password.length != passwordRepeat.length}
+                                    >
                                         Passwort ändern
                                     </Button>
                                 </Row>
