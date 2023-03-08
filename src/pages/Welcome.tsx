@@ -26,6 +26,7 @@ const Welcome: React.FC = () => {
         trackPageView({
             documentTitle: 'Welcome Page',
         });
+        console.log('RETAIN', retainPath);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -37,7 +38,7 @@ const Welcome: React.FC = () => {
             outlineButtonText={t('signin')}
             outlinebuttonLink={() => navigate('/login', { state: { retainPath: retainPath } })}
             defaultButtonText={t('signup')}
-            defaultbuttonLink={() => navigate('/registration')}
+            defaultbuttonLink={() => navigate('/registration', { state: { retainPath: retainPath } })}
             icon={<Logo />}
             extraContent={
                 <>

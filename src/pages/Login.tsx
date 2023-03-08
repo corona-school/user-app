@@ -12,7 +12,7 @@ import TextInput from '../components/TextInput';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility';
+import { REDIRECT_PASSWORD } from '../Utility';
 
 export default function Login() {
     const { t } = useTranslation();
