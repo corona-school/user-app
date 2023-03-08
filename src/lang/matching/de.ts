@@ -82,6 +82,9 @@ const matching = {
                 },
                 tab2: {
                     title: 'Alle Kurse',
+                    language: 'Sprachkurse',
+                    focus: 'Fokus',
+                    courses: 'Fachkurse',
                 },
             },
         },

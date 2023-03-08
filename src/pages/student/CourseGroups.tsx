@@ -23,11 +23,11 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
         readonly: boolean = false
     ) => (
         <AppointmentCard
+            key={index}
             showTrafficLight
             trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
             isFullHeight
             isSpaceMarginBottom={false}
-            key={index}
             variant="card"
             description={subcourse.course.description}
             tags={subcourse.course.tags}
