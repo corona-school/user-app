@@ -84,7 +84,7 @@ const matching = {
                     title: 'Alle Kurse',
                     language: 'Sprachkurse',
                     focus: 'Fokus',
-                    courses: 'Fachkurse',
+                    courses: 'Fachliche Kurse',
                 },
             },
         },
