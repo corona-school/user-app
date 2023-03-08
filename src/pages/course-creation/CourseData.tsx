@@ -17,6 +17,7 @@ import {
     useBreakpointValue,
     Tooltip,
     InfoIcon,
+    Select,
 } from 'native-base';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +30,7 @@ import { LFInstructor, LFTag } from '../../types/lernfair/Course';
 import Tags from '../../modals/Tags';
 import Tag from '../../components/Tag';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
+import { Course_Category_Enum } from '../../gql/graphql';
 
 const MAX_TITLE = 50;
 
@@ -95,6 +97,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
     const {
         courseName,
         setCourseName,
+        courseCategory,
+        setCourseCategory,
         subject,
         setSubject,
         classRange,
@@ -177,16 +181,24 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                         })}
                     </Text>
                 </FormControl>
-                <FormControl marginBottom={space['0.5']}>
-                    <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.courseSubjectLabel')}</FormControl.Label>
-                    <SubjectSelector
-                        subjects={subject ? [subject] : []}
-                        addSubject={(it) => setSubject && setSubject(it)}
-                        removeSubject={() => setSubject && setSubject(null)}
-                        limit={1}
-                    />
+                <FormControl>
+                    <Select selectedValue={courseCategory} placeholder="Kurskategorie" onValueChange={(e) => setCourseCategory && setCourseCategory(e)}>
+                        <Select.Item value={Course_Category_Enum.Revision} label={'Nachhilfe'} />
+                        <Select.Item value={Course_Category_Enum.Language} label={'Deutsch'} />
+                        <Select.Item value={Course_Category_Enum.Focus} label={'Fokus'} />
+                    </Select>
                 </FormControl>
-
+                {courseCategory === Course_Category_Enum.Revision && (
+                    <FormControl marginBottom={space['0.5']}>
+                        <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.courseSubjectLabel')}</FormControl.Label>
+                        <SubjectSelector
+                            subjects={subject ? [subject] : []}
+                            addSubject={(it) => setSubject && setSubject(it)}
+                            removeSubject={() => setSubject && setSubject(null)}
+                            limit={1}
+                        />
+                    </FormControl>
+                )}
                 <FormControl>
                     <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }} isRequired>
                         {t('course.CourseDate.form.detailsContent')}
