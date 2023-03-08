@@ -26,7 +26,6 @@ const Welcome: React.FC = () => {
         trackPageView({
             documentTitle: 'Welcome Page',
         });
-        console.log('RETAIN', retainPath);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

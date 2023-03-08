@@ -14,6 +14,7 @@ const LoginToken: React.FC<Props> = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams?.get('secret_token');
     const redirectTo = searchParams?.get('redirectTo');
+    const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/start';
 
     const [loginToken, loginTokenResult] = useMutation(
         gql(`
@@ -29,7 +30,7 @@ const LoginToken: React.FC<Props> = () => {
             const res = await loginToken({ variables: { token: token! } });
             log('LoginToken', 'Successfully logged in with token');
             onLogin(res);
-            navigate(redirectTo || '/start');
+            navigate(redirectEncoded);
         } catch (error) {
             log('LoginToken', 'Failed to log in with token ', error);
             navigate('/login');
