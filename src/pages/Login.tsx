@@ -5,14 +5,14 @@ import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
 import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link } from 'native-base';
 import useApollo from '../hooks/useApollo';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import TextInput from '../components/TextInput';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility';
+import { REDIRECT_PASSWORD } from '../Utility';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -26,6 +26,11 @@ export default function Login() {
     const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
+
+    const location = useLocation();
+    const locState = location.state as { retainPath: string };
+    const retainPath = locState?.retainPath;
+
     const [login, loginResult] = useMutation(
         gql(`
         mutation login($password: String!, $email: String!) {
@@ -62,7 +67,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        if (sessionState === 'logged-in') navigate('/');
+        if (sessionState === 'logged-in') navigate(retainPath);
     }, [navigate, sessionState]);
 
     useEffect(() => {
@@ -97,7 +102,7 @@ export default function Login() {
         const res = await sendToken({
             variables: {
                 email: email!,
-                redirectTo: REDIRECT_LOGIN,
+                redirectTo: retainPath,
             },
         });
 

@@ -77,7 +77,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/single-course/:id"
                 element={
-                    <RequireAuth>
+                    <RequireAuth isRetainPath>
                         <SingleCourse />
                     </RequireAuth>
                 }
@@ -95,7 +95,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/notifications"
                 element={
-                    <RequireAuth>
+                    <RequireAuth isRetainPath>
                         <NotficationControlPanel />
                     </RequireAuth>
                 }
