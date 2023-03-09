@@ -315,7 +315,7 @@ const CreateCourse: React.FC = () => {
 
     const getSubject = useCallback(() => {
         if (courseCategory === Course_Category_Enum.Revision) return (SUBJECT_TO_COURSE_SUBJECT as any)[subject!];
-        if (courseCategory === Course_Category_Enum.Language) return subject;
+        if (courseCategory === Course_Category_Enum.Language) return Course_Subject_Enum.Deutsch;
     }, [courseCategory, subject]);
 
     const _getCourseData = useCallback(
