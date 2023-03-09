@@ -26,6 +26,10 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+import CourseBasics from './course-creation/CourseBasics';
+import CourseSubject from './course-creation/CourseSubject';
+import CourseAttendees from './course-creation/CourseAttendees';
+import FurtherInstructors from './course-creation/FurtherInstructors';
 
 type Props = {};
 
@@ -831,27 +835,31 @@ const CreateCourse: React.FC = () => {
                                 currentIndex={currentIndex}
                                 instructions={[
                                     {
-                                        label: t('course.CourseDate.tabs.course'),
+                                        label: 'Schritt 1',
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.appointments'),
+                                        label: 'Schritt 2',
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.checker'),
+                                        label: 'Schritt 3',
+                                    },
+                                    {
+                                        label: 'Schritt 4',
+                                    },
+                                    {
+                                        label: 'Schritt 5',
+                                    },
+                                    {
+                                        label: 'Schritt 6',
                                     },
                                 ]}
                             />
-                            {currentIndex === 0 && (
-                                <CourseData
-                                    onNext={onNext}
-                                    onCancel={onCancel}
-                                    onShowUnsplash={showUnsplash}
-                                    onShowAddInstructor={showAddInstructor}
-                                    onRemoveInstructor={removeInstructor}
-                                />
-                            )}
-                            {currentIndex === 1 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
-                            {currentIndex === 2 && (
+                            {currentIndex === 0 && <CourseBasics />}
+                            {currentIndex === 1 && <CourseSubject />}
+                            {currentIndex === 2 && <CourseAttendees />}
+                            {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
+                            {currentIndex === 4 && <FurtherInstructors />}
+                            {currentIndex === 5 && (
                                 <>
                                     <CoursePreview
                                         createAndSubmit={prefillCourseId ? undefined : () => finishCreation(/* also submit */ true)}
