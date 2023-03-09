@@ -17,6 +17,8 @@ const VerifyEmail: React.FC<Props> = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams?.get('secret_token') || '';
     const redirectTo = searchParams?.get('redirectTo');
+    const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
+
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
     const { onLogin } = useApollo();
 
@@ -105,7 +107,7 @@ const VerifyEmail: React.FC<Props> = () => {
                     {(showSuccess && (
                         <VStack>
                             <Heading>Dein Account wurde aktiviert!</Heading>
-                            <Button marginTop={space['1']} onPress={() => navigate(redirectTo || '/', { state: { token } })}>
+                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: { token } })}>
                                 Fortfahren
                             </Button>
                         </VStack>

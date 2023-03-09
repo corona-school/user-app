@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
 import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_OPTIN } from '../Utility';
 import useModal from '../hooks/useModal';
 
 type Props = {
     email?: string;
+    retainPath?: string;
 };
 
-const VerifyEmailModal: React.FC<Props> = ({ email }) => {
+const VerifyEmailModal: React.FC<Props> = ({ email, retainPath }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
         const res = await sendVerification({
             variables: {
                 email: email!,
-                redirectTo: REDIRECT_OPTIN,
+                redirectTo: retainPath ?? '/start',
             },
         });
 
