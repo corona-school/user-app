@@ -73,7 +73,7 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in typeof SUBJECTS[number]]: 
     Französisch: Course_Subject_Enum.FranzSisch,
     Geschichte: Course_Subject_Enum.Geschichte,
     Informatik: Course_Subject_Enum.Informatik,
-    Italienisch: Course_Subject_Enum.Informatik,
+    Italienisch: Course_Subject_Enum.Italienisch,
     Kunst: Course_Subject_Enum.Kunst,
     Latein: Course_Subject_Enum.Latein,
     Mathematik: Course_Subject_Enum.Mathematik,

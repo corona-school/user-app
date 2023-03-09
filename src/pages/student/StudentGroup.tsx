@@ -3,21 +3,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs from '../../components/Tabs';
 import { useEffect, useMemo } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
-import { getTrafficStatus, sortByDate } from '../../Utility';
+import { sortByDate } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
-import CSSWrapper from '../../components/CSSWrapper';
 import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
+import AllSubcourses from '../subcourse/AllSubcourses';
+import { Course_Category_Enum } from '../../gql/graphql';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -47,6 +47,7 @@ const StudentGroup: React.FC = () => {
                                 name
                                 description
                                 image
+                                category
                                 tags {
                                     id
                                     name
@@ -56,7 +57,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic(excludeKnown: true, take: 20) {
+                subcoursesPublic( excludeKnown: true, take: 20) {
                     id
                     participantsCount
                     maxParticipants
@@ -72,6 +73,7 @@ const StudentGroup: React.FC = () => {
                         name
                         description
                         image
+                        category
                         tags {
                             id
                             name
@@ -124,9 +126,18 @@ const StudentGroup: React.FC = () => {
         [data?.me?.student?.subcoursesInstructing, pastSubcourses]
     );
 
-    const subcoursesPublic = useMemo(() => {
-        return data?.subcoursesPublic ? sortByDate([...data.subcoursesPublic]) : [];
-    }, [data?.subcoursesPublic]);
+    const languageCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Language)),
+        [data?.me.student]
+    );
+    const focusCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Focus)),
+        [data?.me.student]
+    );
+    const revisionCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Revision)),
+        [data?.me.student]
+    );
 
     const { trackPageView, trackEvent } = useMatomo();
 
@@ -136,33 +147,6 @@ const StudentGroup: React.FC = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const renderSubcourse = (
-        subcourse: typeof publishedSubcourses[number] | typeof subcoursesPublic[number],
-        index: number,
-        showDate: boolean = true,
-        readonly: boolean = false
-    ) => {
-        return (
-            <CSSWrapper className="course-list__item">
-                <AppointmentCard
-                    showTrafficLight
-                    trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-                    isFullHeight
-                    isSpaceMarginBottom={false}
-                    key={index}
-                    variant="horizontal"
-                    description={subcourse.course.description}
-                    tags={subcourse.course.tags}
-                    date={(showDate && subcourse.firstLecture?.start) || ''}
-                    countCourse={subcourse.lectures.length}
-                    onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-                    image={subcourse.course.image ?? undefined}
-                    title={subcourse.course.name}
-                />
-            </CSSWrapper>
-        );
-    };
 
     const showSuccess = useMemo(() => {
         if (locState?.errors) {
@@ -241,33 +225,17 @@ const StudentGroup: React.FC = () => {
                                                 </>
                                             ),
                                         },
-                                        // TODO will be done in another PR
-                                        // {
-                                        //     title: t('matching.group.helper.course.tabs.tab2.title'),
-                                        //     content: (
-                                        //         <>
-                                        //             <CSSWrapper className="course-list__wrapper">
-                                        //                 {((data?.me.student!.subcoursesInstructing?.length ?? 0) > 0 &&
-                                        //                     data?.me.student!.subcoursesInstructing?.map((subcourse, index) => {
-                                        //                         return renderSubcourse(subcourse, index);
-                                        //                     })) || <AlertMessage content={t('course.empty.nocourses')} />}
-                                        //             </CSSWrapper>
-                                        //         </>
-                                        //     ),
-                                        // },
+                                        {
+                                            title: t('matching.group.helper.course.tabs.tab2.title'),
+                                            content: (
+                                                <>
+                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
+                                                </>
+                                            ),
+                                        },
                                     ]}
                                 />
                             </VStack>
-                            {subcoursesPublic.length > 0 && (
-                                <VStack>
-                                    <Heading marginBottom={space['1.5']}>{t('matching.group.helper.otherCourses.title')}</Heading>
-                                    <CSSWrapper className="course-list__wrapper">
-                                        {subcoursesPublic.map((subcourse, index) => {
-                                            return renderSubcourse(subcourse, index, true, true);
-                                        })}
-                                    </CSSWrapper>
-                                </VStack>
-                            )}
                         </VStack>
                     )}
                 </VStack>

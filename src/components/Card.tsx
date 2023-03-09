@@ -23,7 +23,7 @@ const Card: React.FC<Props> = ({ children, flexibleWidth = false, variant = 'nor
             bg={variant === 'normal' ? 'primary.100' : 'primary.900'}
             borderRadius={8}
             padding={padding ? padding : 0}
-            w={width ? width : flexibleWidth ? 'auto' : '190'}
+            w={width ? width : flexibleWidth ? 'auto' : '250'}
             {...p}
         >
             {children}

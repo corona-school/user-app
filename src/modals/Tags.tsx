@@ -14,21 +14,23 @@ type Props = {
     selections: LFTag[];
     onSelectTag: (tag: LFTag) => any;
     onDeleteTag: (index: number) => any;
+    category: string;
 };
 
-const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDeleteTag }) => {
+const Tags: React.FC<Props> = ({ isOpen, onClose, selections, onSelectTag, onDeleteTag, category }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
     const { data, loading: isLoading } = useQuery(
         gql(`
-        query GetCourseTags {
-            courseTags(category: "revision") {
+        query GetCourseTags($category: String!) {
+            courseTags(category: $category) {
                 id
                 name
             }
         }
-    `)
+    `),
+        { variables: { category } }
     );
 
     const unselectedTags = useMemo(() => data?.courseTags.filter((tag: LFTag) => !selections.includes(tag)), [data?.courseTags, selections]);

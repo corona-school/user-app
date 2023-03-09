@@ -30,8 +30,7 @@ import CourseBasics from './course-creation/CourseBasics';
 import CourseSubject from './course-creation/CourseSubject';
 import CourseAttendees from './course-creation/CourseAttendees';
 import FurtherInstructors from './course-creation/FurtherInstructors';
-
-type Props = {};
+import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
@@ -45,6 +44,8 @@ export type Lecture = {
 type ICreateCourseContext = {
     courseName?: string;
     setCourseName?: Dispatch<SetStateAction<string>>;
+    courseCategory?: string;
+    setCourseCategory?: Dispatch<SetStateAction<string>>;
     subject?: string | null;
     setSubject?: Dispatch<SetStateAction<string | null>>;
     classRange?: [number, number];
@@ -82,6 +83,7 @@ const CreateCourse: React.FC = () => {
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
+    const [courseCategory, setCourseCategory] = useState<string>('');
     const [subject, setSubject] = useState<string | null>(null);
     const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
     const [description, setDescription] = useState<string>('');
@@ -315,17 +317,22 @@ const CreateCourse: React.FC = () => {
         [isEditing, navigate]
     );
 
+    const getSubject = useCallback(() => {
+        if (courseCategory === Course_Category_Enum.Revision) return (SUBJECT_TO_COURSE_SUBJECT as any)[subject!];
+        if (courseCategory === Course_Category_Enum.Language) return Course_Subject_Enum.Deutsch;
+    }, [courseCategory, subject]);
+
     const _getCourseData = useCallback(
         () => ({
             description,
-            subject: (SUBJECT_TO_COURSE_SUBJECT as any)[subject!],
             schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
-            category: 'revision',
+            category: courseCategory,
             allowContact,
+            ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [allowContact, courseName, description, studentData?.me?.student?.schooltype, subject]
+        [allowContact, courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -803,6 +810,8 @@ const CreateCourse: React.FC = () => {
                     value={{
                         courseName,
                         setCourseName,
+                        courseCategory,
+                        setCourseCategory,
                         classRange: courseClasses,
                         setClassRange: setCourseClasses,
                         subject,
