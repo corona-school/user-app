@@ -10,9 +10,11 @@ import useApollo from '../hooks/useApollo';
 import AlertMessage from '../widgets/AlertMessage';
 import { log } from '../log';
 
-type Props = {};
+type Props = {
+    layout: 'new-pw' | 'reset-pw';
+};
 
-const ResetPassword: React.FC<Props> = () => {
+const ResetPassword: React.FC<Props> = ({ layout }) => {
     const { onLogin, client, sessionState } = useApollo();
     const [searchParams] = useSearchParams();
     const { t } = useTranslation();
@@ -105,10 +107,28 @@ const ResetPassword: React.FC<Props> = () => {
         <>
             <Flex overflowY={'auto'} height="100vh">
                 <>
-                    <Box paddingY={space['2']} justifyContent="center" alignItems="center">
-                        <Logo />
-                        <Heading mt={space['1']}>Passwort neu setzen</Heading>
-                    </Box>
+                    {layout === 'new-pw' ? (
+                        <Box paddingY={space['2']} justifyContent="center" alignItems="center">
+                            <Logo />
+                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                        </Box>
+                    ) : (
+                        <Box position="relative" paddingY={space['2']} mb={space['3']} justifyContent="center" alignItems="center">
+                            <Image
+                                alt="Lernfair"
+                                position="absolute"
+                                zIndex="-1"
+                                borderBottomRadius={15}
+                                width="100%"
+                                height="100%"
+                                source={{
+                                    uri: require('../assets/images/globals/lf-bg.png'),
+                                }}
+                            />
+                            <Logo />
+                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                        </Box>
+                    )}
                     <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
                         {showResetPassword === 'success' && (
                             <>
