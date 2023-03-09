@@ -182,7 +182,11 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                     </Text>
                 </FormControl>
                 <FormControl>
-                    <Select selectedValue={courseCategory} placeholder="Kurskategorie" onValueChange={(e) => setCourseCategory && setCourseCategory(e)}>
+                    <Select
+                        selectedValue={courseCategory}
+                        placeholder={t('course.CourseDate.form.courseCategory')}
+                        onValueChange={(e) => setCourseCategory && setCourseCategory(e)}
+                    >
                         <Select.Item value={Course_Category_Enum.Revision} label={'Nachhilfe'} />
                         <Select.Item value={Course_Category_Enum.Language} label={'Deutsch'} />
                         <Select.Item value={Course_Category_Enum.Focus} label={'Fokus'} />

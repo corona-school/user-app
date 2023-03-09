@@ -87,6 +87,7 @@ const course = {
         form: {
             courseNameHeadline: 'Kursname',
             courseNamePlaceholder: 'Kursname eingeben',
+            courseCategory: 'Kurskategorie',
             courseSubjectLabel: 'Fach',
             coursePhotoLabel: 'Foto',
             courseAddOntherLeadText: 'Weitere Kursleiter:innen hinzufügen',

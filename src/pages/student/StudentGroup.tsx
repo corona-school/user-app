@@ -3,12 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs from '../../components/Tabs';
 import { useEffect, useMemo } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
-import { getTrafficStatus, sortByDate } from '../../Utility';
+import { sortByDate } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -58,7 +57,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic(excludeKnown: true, take: 20) {
+                subcoursesPublic( excludeKnown: true, take: 20) {
                     id
                     participantsCount
                     maxParticipants
@@ -128,15 +127,15 @@ const StudentGroup: React.FC = () => {
     );
 
     const languageCourses = useMemo(
-        () => sortByDate(data?.me.student!.subcoursesInstructing?.filter((course) => course.course.category === Course_Category_Enum.Language)),
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Language)),
         [data?.me.student]
     );
     const focusCourses = useMemo(
-        () => sortByDate(data?.me.student!.subcoursesInstructing?.filter((course) => course.course.category === Course_Category_Enum.Focus)),
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Focus)),
         [data?.me.student]
     );
     const revisionCourses = useMemo(
-        () => sortByDate(data?.me.student!.subcoursesInstructing?.filter((course) => course.course.category === Course_Category_Enum.Revision)),
+        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Revision)),
         [data?.me.student]
     );
 
