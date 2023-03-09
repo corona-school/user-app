@@ -1,6 +1,7 @@
 import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import useApollo from '../../hooks/useApollo';
 import { getTrafficStatus } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -14,6 +15,7 @@ type GroupProps = {
 const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { user } = useApollo();
 
     const renderSubcourse = (
         subcourse: typeof languageCourses[number] | typeof languageCourses[number],
@@ -45,7 +47,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.language')}</Heading>
                     <HSection scrollable>
                         {languageCourses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, true);
+                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
                         })}
                     </HSection>
                 </Box>
@@ -55,7 +57,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.courses')}</Heading>
                     <HSection scrollable>
                         {courses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, true);
+                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
                         })}
                     </HSection>
                 </Box>
@@ -65,7 +67,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.focus')}</Heading>
                     <HSection scrollable>
                         {focusCourses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, true);
+                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
                         })}
                     </HSection>
                 </Box>

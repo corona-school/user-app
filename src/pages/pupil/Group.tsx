@@ -14,7 +14,7 @@ import { sortByDate } from '../../Utility';
 import { DateTime } from 'luxon';
 import Hello from '../../widgets/Hello';
 import MySubcourses from './MySubcourses';
-import AllSubcourses from './AllSubcourses';
+import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 
 type Props = {};

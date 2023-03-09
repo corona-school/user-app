@@ -16,7 +16,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
-import AllSubcourses from '../pupil/AllSubcourses';
+import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 
 const StudentGroup: React.FC = () => {
