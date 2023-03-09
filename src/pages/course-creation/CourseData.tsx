@@ -234,7 +234,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                     </Box>
                 </FormControl>
                 <FormControl marginBottom={space['0.5']}>
-                    <Heading>Weitere Kursleiter</Heading>
+                    <Heading>{t('course.CourseDate.form.furtherCourseInstructors')}</Heading>
                     <VStack mt={space['1']}>
                         {addedInstructors &&
                             addedInstructors.map((instructor: LFInstructor, index: number) => (
@@ -280,8 +280,8 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                             </Column>
                         ))}
                     </Row>
-                    <Button width={ButtonContainer} marginBottom={space['1']} onPress={() => setShowTagsModal(true)}>
-                        Tags bearbeiten
+                    <Button isDisabled={!courseCategory} width={ButtonContainer} marginBottom={space['1']} onPress={() => setShowTagsModal(true)}>
+                        {t('course.CourseDate.form.tagsEdit')}
                     </Button>
                 </FormControl>
                 <Heading>{t('course.CourseDate.form.detailsHeadline')}</Heading>
@@ -356,6 +356,7 @@ const CourseData: React.FC<Props> = ({ onNext, onCancel, onShowUnsplash, onShowA
                     arr.splice(index, 1);
                     setTags && setTags(arr);
                 }}
+                category={courseCategory ?? 'revision'}
             />
         </>
     );
