@@ -8,6 +8,7 @@ export type LFCourse = {
     description: string;
     tags?: LFTag[];
     image?: string;
+    category?: string;
     allowContact?: boolean;
 };
 export interface LFSubCourse {
