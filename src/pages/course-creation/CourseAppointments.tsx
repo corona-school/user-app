@@ -1,37 +1,45 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { DateTime } from 'luxon';
-import { VStack, Button, useTheme, Heading, Text, Row, Box, Pressable, useBreakpointValue } from 'native-base';
+import { VStack, useTheme, Heading, Text, Row, Box, Pressable, useBreakpointValue } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentInfoRow from '../../widgets/AppointmentInfoRow';
 
-import { CreateCourseContext } from '../CreateCourse';
+import { CreateCourseContext, Lecture } from '../CreateCourse';
+import ButtonRow from './ButtonRow';
 import CourseDateWizard from './CourseDateWizard';
 
 type Props = {
     onNext: () => any;
     onBack: () => any;
-    onDeleteAppointment?: (index: number, isSubmitted: boolean) => any;
+    onDeleteAppointment: (index: number, isSubmitted: boolean) => any;
 };
 
 const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointment }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const { newLectures = [], lectures = [], setNewLectures } = useContext(CreateCourseContext);
+    const { trackPageView } = useMatomo();
+    const { newLectures, lectures = [], setNewLectures } = useContext(CreateCourseContext);
+    const [newAppointments, setNewAppointments] = useState<Lecture[]>(newLectures || []);
+
     const [showError, setShowError] = useState<boolean>();
     const [showValidDateMessage, setShowValidDateMessage] = useState<{
         show: boolean;
         index: number;
     }>({ show: false, index: -1 });
 
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
+
     const isValidInput = useMemo(() => {
-        if ([...lectures, ...newLectures].length === 0) return false;
+        if ([...lectures, ...newAppointments].length === 0) return false;
 
         if (lectures.length === 0) {
-            for (let i = 0; i < newLectures.length; i++) {
-                const lec = newLectures[i];
-                console.log(`New lecture`, lec);
+            for (let i = 0; i < newAppointments.length; i++) {
+                const lec = newAppointments[i];
                 if (!lec.date) return false;
                 if (!lec.time) return false;
                 if (!lec.duration) return false;
@@ -49,39 +57,23 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
             index: -1,
         });
         return true;
-    }, [lectures, newLectures]);
+    }, [lectures, newAppointments]);
 
     const tryNext = useCallback(() => {
-        if (isValidInput) {
-            onNext();
-        } else {
-            setShowError(true);
-        }
-    }, [isValidInput, onNext]);
+        // if (isValidInput) {
+        setNewLectures && setNewLectures(newAppointments);
+        onNext();
+        // } else {
+        //     setShowError(true);
+        // }
+    }, [isValidInput, newAppointments, onNext, setNewLectures]);
 
     useEffect(() => {
-        if (newLectures?.length === 0) {
-            setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', duration: '', date: '' }]);
+        if (newAppointments?.length === 0) {
+            setNewAppointments((prev) => [...prev, { time: '08:00', duration: '', date: '' }]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
-
-    const ButtonContainerDirection = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
-
-    const { trackPageView } = useMatomo();
 
     useEffect(() => {
         trackPageView({
@@ -103,26 +95,26 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
         <VStack space={space['1']}>
             <Heading marginBottom={space['1.5']}>{t('course.appointments.headline')}</Heading>
 
-            <Heading fontSize="lg">Bestehende Termine</Heading>
+            <Heading fontSize="lg">{t('course.appointments.existingAppointments')}</Heading>
             {futureLectures?.map((lec, index) => (
-                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
+                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment(index, true)} />
             ))}
 
             <Text fontSize="md" bold>
                 {t('course.appointments.content')}
             </Text>
 
-            {newLectures?.map((lec, i) => (
+            {newAppointments?.map((lec, i) => (
                 <Row maxWidth={ContainerWidth}>
-                    <CourseDateWizard
+                    {/* <CourseDateWizard
                         index={i}
                         showInvalidDateMessage={showValidDateMessage.show && i === showValidDateMessage.index}
                         onPressDelete={() => {
-                            const arr = [...newLectures];
+                            const arr = [...newAppointments];
                             arr.splice(i, 1);
-                            setNewLectures && setNewLectures(arr);
+                            setNewAppointments(arr);
                         }}
-                    />
+                    /> */}
                 </Row>
             ))}
 
@@ -131,7 +123,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
                     marginBottom={space['2']}
                     isDisabled={!isValidInput}
                     onPress={() => {
-                        setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', date: '', duration: '' }]);
+                        setNewAppointments((prev) => [...prev, { time: '08:00', date: '', duration: '' }]);
                     }}
                     alignItems="center"
                     flexDirection="row"
@@ -155,18 +147,9 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
                     </Text>
                 </Pressable>
 
-                {showError && <AlertMessage content={t('course.noticeDate')} />}
+                {/* {showError && <AlertMessage content={t('course.noticeDate')} />} */}
             </VStack>
-
-            <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
-                <Button marginBottom={space['1']} width={ButtonContainer} onPress={tryNext}>
-                    {t('course.appointments.check')}
-                </Button>
-
-                <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack}>
-                    {t('course.appointments.prevPage')}
-                </Button>
-            </Row>
+            <ButtonRow onNext={tryNext} onBack={onBack} isDisabled={false} />
         </VStack>
     );
 };

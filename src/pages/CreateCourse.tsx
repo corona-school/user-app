@@ -693,7 +693,7 @@ const CreateCourse: React.FC = () => {
     ]);
 
     const onNext = useCallback(() => {
-        if (currentIndex >= 2) {
+        if (currentIndex >= 6) {
             return;
         } else {
             setCurrentIndex((prev) => prev + 1);
@@ -863,11 +863,13 @@ const CreateCourse: React.FC = () => {
                                     },
                                 ]}
                             />
-                            {currentIndex === 0 && <CourseBasics />}
-                            {currentIndex === 1 && <CourseSubject />}
-                            {currentIndex === 2 && <CourseAttendees />}
+                            {currentIndex === 0 && <CourseBasics onShowUnsplash={showUnsplash} onCancel={onCancel} onNext={onNext} />}
+                            {currentIndex === 1 && <CourseSubject onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
-                            {currentIndex === 4 && <FurtherInstructors />}
+                            {currentIndex === 4 && (
+                                <FurtherInstructors onRemove={removeInstructor} onShowAddInstructor={showAddInstructor} onNext={onNext} onBack={onBack} />
+                            )}
                             {currentIndex === 5 && (
                                 <>
                                     <CoursePreview

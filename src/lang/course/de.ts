@@ -66,6 +66,7 @@ const course = {
         check: 'Angaben prüfen',
         saveDraft: 'Als Entwurf speichern',
         prevPage: ' Zur vorherigen Seite',
+        existingAppointments: 'Bestehende Termine',
     },
     error: {
         course: 'Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.',
@@ -83,7 +84,8 @@ const course = {
             checker: 'Angaben prüfen',
         },
         headline: 'Allgemeine Informationen zu deinem Kurs',
-
+        subjectHeadline: 'Kursfach, -kategorie und Tags',
+        attendeesHeadline: 'Teilnehmer',
         form: {
             courseNameHeadline: 'Kursname',
             courseNamePlaceholder: 'Kursname eingeben',
