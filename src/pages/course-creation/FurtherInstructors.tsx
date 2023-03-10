@@ -1,5 +1,5 @@
-import { FormControl, Heading, Row, useTheme, VStack } from 'native-base';
-import { useCallback, useContext } from 'react';
+import { FormControl, Heading, Row, useTheme, VStack, Text, Tooltip, InfoIcon, Switch } from 'native-base';
+import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LFInstructor } from '../../types/lernfair/Course';
 import InstructorRow from '../../widgets/InstructorRow';
@@ -15,14 +15,18 @@ type InstructorProps = {
 };
 
 const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBack, onShowAddInstructor }) => {
-    const { space, sizes, colors } = useTheme();
+    const { space } = useTheme();
     const { t } = useTranslation();
 
-    const { addedInstructors, newInstructors } = useContext(CreateCourseContext);
+    const { joinAfterStart, setJoinAfterStart, allowContact, setAllowContact, addedInstructors, newInstructors } = useContext(CreateCourseContext);
+    const [join, setJoin] = useState<boolean>(joinAfterStart || false);
+    const [allow, setAllow] = useState<boolean>(allowContact || false);
 
     const onNextStep = useCallback(() => {
+        setJoinAfterStart && setJoinAfterStart(join);
+        setAllowContact && setAllowContact(allow);
         onNext();
-    }, []);
+    }, [allow, join, onNext, setAllowContact, setJoinAfterStart]);
 
     return (
         <>
@@ -39,10 +43,31 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                                 <InstructorRow instructor={instructor} onPressDelete={() => onRemove(index, false)} />
                             ))}
                     </VStack>
-                    <Row space={space['0.5']} mt={space['1']}>
+                    <Row space={space['0.5']} my={space['1']}>
                         <AddInstructorWidget onPress={onShowAddInstructor} />
                     </Row>
                 </FormControl>
+                <VStack space={space['0.5']}>
+                    <Heading fontSize="md">{t('course.CourseDate.form.otherHeadline')}</Heading>
+                    <Row>
+                        <Text flex="1">
+                            {t('course.CourseDate.form.otherOptionStart')}
+                            <Tooltip maxWidth={500} label={t('course.CourseDate.form.otherOptionStartToolTip')}>
+                                <InfoIcon position="relative" top="3px" paddingLeft="5px" color="danger.100" />
+                            </Tooltip>
+                        </Text>
+                        <Switch value={join} onValueChange={setJoin} />
+                    </Row>
+                    <Row marginBottom={space['2']}>
+                        <Text flex="1" justifyContent="center">
+                            {t('course.CourseDate.form.otherOptionContact')}
+                            <Tooltip maxWidth={500} label={t('course.CourseDate.form.otherOptionContactToolTip')}>
+                                <InfoIcon paddingLeft="5px" position="relative" top="3px" color="danger.100" />
+                            </Tooltip>
+                        </Text>
+                        <Switch value={allow} onValueChange={setAllow} />
+                    </Row>
+                </VStack>
             </VStack>
             <ButtonRow isDisabled={false} onNext={onNextStep} onBack={onBack} />
         </>

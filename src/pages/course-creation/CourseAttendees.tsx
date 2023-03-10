@@ -1,6 +1,6 @@
 import { FormControl, Heading, useBreakpointValue, useTheme, VStack, Text, Box, Input } from 'native-base';
 import { Slider } from '@miblanchard/react-native-slider';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
@@ -23,11 +23,17 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const isValidInput: boolean = useMemo(() => {
+        if (maxParticipants) return false;
+        return true;
+    }, [maxParticipants]);
+
     const onNextStep = useCallback(() => {
+        console.log('MAX', maxParticipants);
         setClassRange && setClassRange(courseClassRange);
         setMaxParticipantCount && setMaxParticipantCount(maxParticipants);
         onNext();
-    }, []);
+    }, [courseClassRange, maxParticipants, onNext, setClassRange, setMaxParticipantCount]);
     return (
         <>
             <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
@@ -80,7 +86,7 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
                     </Text>
                 </FormControl>
 
-                <ButtonRow isDisabled={false} onNext={onNextStep} onBack={onBack} />
+                <ButtonRow isDisabled={isValidInput} onNext={onNextStep} onBack={onBack} />
             </VStack>
         </>
     );

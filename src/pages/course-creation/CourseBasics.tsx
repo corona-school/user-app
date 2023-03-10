@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Heading, Input, Row, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, FormControl, Heading, Input, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useState, useContext, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
@@ -14,13 +14,17 @@ type BasicProps = {
 };
 
 const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }) => {
-    const { space, sizes, colors } = useTheme();
+    const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const { courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto, image } = useContext(CreateCourseContext);
+    const { courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto } = useContext(CreateCourseContext);
 
     const [name, setName] = useState<string>(courseName || '');
-    const [photo, setPhoto] = useState<string>('');
     const [courseDescription, setCourseDescription] = useState<string>(description || '');
+
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
 
     const ContentContainerWidth = useBreakpointValue({
         base: '100%',
@@ -67,6 +71,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                     {t('course.CourseDate.form.descriptionLabel')}
                 </FormControl.Label>
                 <TextArea
+                    minH={isMobile ? '30vw' : '20vw'}
                     placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
                     autoCompleteType={'normal'}
                     value={courseDescription}
