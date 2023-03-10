@@ -89,5 +89,11 @@ const helperwizard = {
             'Lern-Fair testet im März ein neues Angebot: <b>die Hausaufgabenhilfe</b>.<br>Dort erhältst du <b>im März von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deinen Hausaufgaben.',
         buttons: ['Zur Hausaufgabenhilfe'],
     },
+    pupilScreening: {
+        title: 'Ausstehendes Screening',
+        content:
+            'Wegen begrenzter Helfer:innen müssen wir derzeit alle nachhilfesuchenden Schüler:innen zuerst interviewen. Damit wird sichergestellt, dass du berechtigt bist. Klicke auf den Button, um ein kurzes Gespräch mit einem unserer Screener zu vereinbaren:',
+        buttons: ['Termin vereinbaren'],
+    },
 };
 export default helperwizard;
