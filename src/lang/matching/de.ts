@@ -82,6 +82,8 @@ const matching = {
                 },
                 tab2: {
                     title: 'Alle Kurse',
+                    current: 'Aktuelle Kurse',
+                    past: 'Vergangene Kurse',
                     language: 'Sprachkurse',
                     focus: 'Fokus',
                     courses: 'Fachliche Kurse',

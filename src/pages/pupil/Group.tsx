@@ -52,6 +52,39 @@ const query = gql`
         }
     }
 `;
+const queryPast = gql`
+    query PupilSubcourseOverview {
+        me {
+            pupil {
+                canJoinSubcourses {
+                    allowed
+                    reason
+                    limit
+                }
+                subcoursesJoined(onlyPast: true) {
+                    id
+                    isParticipant
+                    maxParticipants
+                    participantsCount
+                    firstLecture {
+                        start
+                    }
+                    lectures {
+                        start
+                    }
+                    course {
+                        name
+                        image
+                        category
+                        tags {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
@@ -60,6 +93,7 @@ const PupilGroup: React.FC<Props> = () => {
     const [lastSearch, setLastSearch] = useState<string>('');
     const [activeTab, setActiveTab] = useState<number>(0);
     const { data, loading } = useQuery(query);
+    const { data: dataPast, loading: loadingPast } = useQuery(queryPast);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -208,7 +242,13 @@ const PupilGroup: React.FC<Props> = () => {
                                     },
                                     {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
-                                        content: <MySubcourses courses={sortedSearchResults} loading={allSubcoursesSearchLoading} />,
+                                        content: (
+                                            <MySubcourses
+                                                currentCourses={sortedSearchResults}
+                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined}
+                                                loading={allSubcoursesSearchLoading}
+                                            />
+                                        ),
                                     },
                                 ]}
                             />
