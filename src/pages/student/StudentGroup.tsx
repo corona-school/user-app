@@ -57,7 +57,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic( excludeKnown: true, take: 20) {
+                subcoursesPublic(take: 20) {
                     id
                     participantsCount
                     maxParticipants
