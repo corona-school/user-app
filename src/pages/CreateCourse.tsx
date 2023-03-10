@@ -3,33 +3,31 @@ import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, 
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import WithNavigation from '../components/WithNavigation';
-
-import InstructionProgress from '../widgets/InstructionProgress';
-
-import CourseAppointments from './course-creation/CourseAppointments';
-import CourseData from './course-creation/CourseData';
-import CoursePreview from './course-creation/CoursePreview';
-
 import { DateTime } from 'luxon';
 import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
 import useModal from '../hooks/useModal';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { GraphQLError } from 'graphql';
+import { BACKEND_URL } from '../config';
+import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+
+import WithNavigation from '../components/WithNavigation';
+import InstructionProgress from '../widgets/InstructionProgress';
 import Unsplash from '../modals/Unsplash';
 import CourseBlocker from './student/CourseBlocker';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import AddCourseInstructor from '../modals/AddCourseInstructor';
-import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { BACKEND_URL } from '../config';
-import NotificationAlert from '../components/notifications/NotificationAlert';
-import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+import AddCourseInstructor from '../modals/AddCourseInstructor';
 import CourseBasics from './course-creation/CourseBasics';
 import CourseSubject from './course-creation/CourseSubject';
 import CourseAttendees from './course-creation/CourseAttendees';
 import FurtherInstructors from './course-creation/FurtherInstructors';
+import CourseAppointments from './course-creation/CourseAppointments';
+import CoursePreview from './course-creation/CoursePreview';
+import NotificationAlert from '../components/notifications/NotificationAlert';
+
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
@@ -79,6 +77,7 @@ const CreateCourse: React.FC = () => {
 
     const location = useLocation();
     const state = location.state as { courseId?: number };
+
     const prefillCourseId = state?.courseId;
 
     const [courseId, setCourseId] = useState<string>('');
@@ -265,6 +264,7 @@ const CreateCourse: React.FC = () => {
         setCourseId(prefillCourse.course.id || '');
         setCourseName(prefillCourse.course.name);
         setSubject(prefillCourse.course.subject);
+        setCourseCategory(prefillCourse.course.category);
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
@@ -798,6 +798,10 @@ const CreateCourse: React.FC = () => {
         [lectures, newLectures, removeLecture, toast]
     );
 
+    const goToStep = useCallback((index: number) => {
+        setCurrentIndex(index);
+    }, []);
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation
@@ -842,24 +846,25 @@ const CreateCourse: React.FC = () => {
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}
+                                goToStep={goToStep}
                                 instructions={[
                                     {
-                                        label: 'Schritt 1',
+                                        label: t('course.CourseDate.step.general'),
                                     },
                                     {
-                                        label: 'Schritt 2',
+                                        label: t('course.CourseDate.step.subject'),
                                     },
                                     {
-                                        label: 'Schritt 3',
+                                        label: t('course.CourseDate.step.attendees'),
                                     },
                                     {
-                                        label: 'Schritt 4',
+                                        label: t('course.CourseDate.step.appointments'),
                                     },
                                     {
-                                        label: 'Schritt 5',
+                                        label: t('course.CourseDate.step.instructors'),
                                     },
                                     {
-                                        label: 'Schritt 6',
+                                        label: t('course.CourseDate.step.checker'),
                                     },
                                 ]}
                             />

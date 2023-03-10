@@ -8,11 +8,11 @@ export type LFCourse = {
     description: string;
     tags?: LFTag[];
     image?: string;
-    category?: string;
+    category: string;
     allowContact?: boolean;
 };
 export interface LFSubCourse {
-    id?: number;
+    id: number;
     lectures: LFLecture[];
     image?: string;
     isParticipant?: boolean;

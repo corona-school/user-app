@@ -1,4 +1,5 @@
 import { Column, Pressable, Image, useTheme, Link, Button } from 'native-base';
+import { useTranslation } from 'react-i18next';
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png';
 
 type WidgetProps = {
@@ -10,7 +11,7 @@ type WidgetProps = {
 
 const ImageWidget: React.FC<WidgetProps> = ({ photo, onShowUnsplash, onDeletePhoto, prefill }) => {
     const { space } = useTheme();
-
+    const { t } = useTranslation();
     return (
         <>
             <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
@@ -25,7 +26,7 @@ const ImageWidget: React.FC<WidgetProps> = ({ photo, onShowUnsplash, onDeletePho
                     />
                 </Column>
                 <Column>
-                    <Link>Bild ändern</Link>
+                    <Link>{t('course.CourseDate.form.changeImage')}</Link>
                 </Column>
             </Pressable>
             {photo && (
