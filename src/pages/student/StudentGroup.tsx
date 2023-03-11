@@ -17,7 +17,7 @@ import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
-import { Course_Category_Enum } from '../../gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum } from '../../gql/graphql';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -127,15 +127,15 @@ const StudentGroup: React.FC = () => {
     );
 
     const languageCourses = useMemo(
-        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Language)),
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
         [data?.me.student]
     );
     const focusCourses = useMemo(
-        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Focus)),
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [data?.me.student]
     );
     const revisionCourses = useMemo(
-        () => sortByDate(data?.subcoursesPublic?.filter((course) => course.course.category === Course_Category_Enum.Revision)),
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Coursestate_Enum.Focus)),
         [data?.me.student]
     );
 
