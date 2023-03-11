@@ -17,7 +17,7 @@ import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
-import { Course_Category_Enum, Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Category_Enum } from '../../gql/graphql';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
