@@ -7,5 +7,12 @@ export default createInstance({
   disabled:
     process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'test' ||
-    DISABLE_MATOMO === 'true'
+    DISABLE_MATOMO === 'true',
+    configurations: {
+      "setCookieDomain": ["*.lern-fair.de"],
+      "setDomains": ["*.lern-fair.de","*.app.lern-fair.de"],
+      "enableCrossDomainLinking": [],
+      "setExcludedQueryParams": ["token", "secret_token", "legacyToken", "redirectTo"],
+      "disableCookies": [],
+    },
 })
