@@ -1,9 +1,7 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Box } from 'native-base';
-import { useNavigate } from 'react-router-dom';
+import { Text, Heading, useTheme, VStack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs, { Tab } from '../../components/Tabs';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -12,11 +10,12 @@ import SearchBar from '../../components/SearchBar';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus, sortByDate } from '../../Utility';
+import { sortByDate } from '../../Utility';
 import { DateTime } from 'luxon';
 import Hello from '../../widgets/Hello';
-import AlertMessage from '../../widgets/AlertMessage';
-import CSSWrapper from '../../components/CSSWrapper';
+import MySubcourses from './MySubcourses';
+import AllSubcourses from '../subcourse/AllSubcourses';
+import { Course_Category_Enum } from '../../gql/graphql';
 
 type Props = {};
 
@@ -43,6 +42,7 @@ const query = gql`
                     course {
                         name
                         image
+                        category
                         tags {
                             name
                         }
@@ -55,6 +55,11 @@ const query = gql`
 
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
+    const { trackPageView } = useMatomo();
+    const [lastSearch, setLastSearch] = useState<string>('');
+    const [activeTab, setActiveTab] = useState<number>(0);
+    const { data, loading } = useQuery(query);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -65,15 +70,6 @@ const PupilGroup: React.FC<Props> = () => {
         base: '100%',
         lg: sizes['contentContainerWidth'],
     });
-
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const { trackPageView } = useMatomo();
-
-    const [lastSearch, setLastSearch] = useState<string>('');
-    const [activeTab, setActiveTab] = useState<number>(0);
-
-    const { data, loading } = useQuery(query);
 
     const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(gql`
         query GetAllSubcourses($name: String) {
@@ -91,6 +87,7 @@ const PupilGroup: React.FC<Props> = () => {
                 course {
                     name
                     image
+                    category
                     tags {
                         name
                     }
@@ -164,13 +161,18 @@ const PupilGroup: React.FC<Props> = () => {
         }
     }, [activeTab, lastSearch, searchAllSubcoursesQuery]);
 
-    const SubcoursesTab: React.FC = () => {
-        return <></>;
-    };
-
-    const AllSubcoursesTab: React.FC = () => {
-        return <></>;
-    };
+    const languageCourses: LFSubCourse[] = useMemo(
+        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
+        [courses]
+    );
+    const focusCourses: LFSubCourse[] = useMemo(
+        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
+        [courses]
+    );
+    const revisionCourses: LFSubCourse[] = useMemo(
+        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus)),
+        [courses]
+    );
 
     return (
         <AsNavigationItem path="group">
@@ -202,44 +204,14 @@ const PupilGroup: React.FC<Props> = () => {
                                 tabs={[
                                     {
                                         title: t('matching.group.pupil.tabs.tab2.title'),
-                                        content: <AllSubcoursesTab />,
+                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
                                     },
                                     {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
-                                        content: <SubcoursesTab />,
+                                        content: <MySubcourses courses={sortedSearchResults} loading={allSubcoursesSearchLoading} />,
                                     },
                                 ]}
                             />
-                            <CSSWrapper className="course-list__wrapper">
-                                {(!allSubcoursesSearchLoading && (
-                                    <>
-                                        {(sortedSearchResults?.length &&
-                                            sortedSearchResults.map((course: LFSubCourse, index: number) => (
-                                                <CSSWrapper className="course-list__item" key={`subcourse-${index}`}>
-                                                    <AppointmentCard
-                                                        showTrafficLight={activeTab > 0}
-                                                        trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
-                                                        isHorizontalCardCourseChecked={course.isParticipant}
-                                                        isSpaceMarginBottom={false}
-                                                        isFullHeight
-                                                        variant="horizontal"
-                                                        description={course.course.description}
-                                                        tags={course.course.tags}
-                                                        date={course.firstLecture?.start}
-                                                        countCourse={course.lectures?.length}
-                                                        onPressToCourse={() => navigate(`/single-course/${course.id}`)}
-                                                        image={course.course.image}
-                                                        title={course.course.name}
-                                                    />
-                                                </CSSWrapper>
-                                            ))) || (
-                                            <Box paddingLeft={space['1']} width="100%">
-                                                <AlertMessage content={t('matching.group.error.nofound')} />
-                                            </Box>
-                                        )}
-                                    </>
-                                )) || <CenterLoadingSpinner />}
-                            </CSSWrapper>
                         </VStack>
                     </VStack>
                 )}
