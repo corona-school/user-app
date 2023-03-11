@@ -135,7 +135,7 @@ const StudentGroup: React.FC = () => {
         [data?.me.student]
     );
     const revisionCourses = useMemo(
-        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Coursestate_Enum.Focus)),
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus)),
         [data?.me.student]
     );
 
