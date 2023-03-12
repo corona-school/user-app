@@ -8,8 +8,10 @@ export default createInstance({
     configurations: {
         setCookieDomain: ['*.lern-fair.de'],
         setDomains: ['*.lern-fair.de', '*.app.lern-fair.de'],
-        enableCrossDomainLinking: [],
+        enableCrossDomainLinking: true,
         setExcludedQueryParams: ['token', 'secret_token', 'legacyToken', 'redirectTo'],
-        disableCookies: [],
+        disableCookies: true,
+        trackPageView: true,
+        enableLinkTracking: true,
     },
 });
