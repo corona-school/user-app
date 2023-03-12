@@ -219,7 +219,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
-            infos.push({ label: 'passwort', btnfn: [() => navigate('/reset-password')], lang: {} });
+            infos.push({ label: 'passwort', btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
         pupil?.matches?.forEach((match) => {
