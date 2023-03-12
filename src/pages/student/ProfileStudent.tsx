@@ -130,14 +130,13 @@ const ProfileStudent: React.FC<Props> = () => {
     });
 
     const profileCompleteness = useMemo(() => {
-        const max = 5.0;
+        const max = 4.0;
         let complete = 0.0;
 
         data?.me.firstname && data?.me.lastname && (complete += 1);
         (data?.me.student!.aboutMe?.length ?? 0) > 0 && (complete += 1);
         data?.me?.student?.languages?.length && (complete += 1);
         data?.me?.student?.state && (complete += 1);
-        (data?.me?.student?.subjectsFormatted?.length ?? 0) > 0 && (complete += 1);
         return Math.floor((complete / max) * 100);
     }, [data?.me?.firstname, data?.me?.lastname, data?.me?.student]);
 
