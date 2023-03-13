@@ -92,7 +92,7 @@ const helperwizard = {
     pupilScreening: {
         title: 'Ausstehendes Screening',
         content:
-            'Wegen begrenzter Helfer:innen müssen wir derzeit alle nachhilfesuchenden Schüler:innen zuerst interviewen. Damit wird sichergestellt, dass du berechtigt bist. Klicke auf den Button, um ein kurzes Gespräch mit einem unserer Screener zu vereinbaren:',
+            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nDamit wir dir eine:n Lernpartner:in vermitteln können, wollen wir in einem nächsten Schritt gerne auf Zoom mit dir sprechen. Bitte buche dir dazu einen Termin.',
         buttons: ['Termin vereinbaren'],
     },
 };
