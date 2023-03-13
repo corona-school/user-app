@@ -1,10 +1,10 @@
-import { Box, FormControl, Heading, Input, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, FormControl, Heading, Input, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useState, useContext, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import ImageWidget from './ImageWidget';
-import TextInput from './TextInput';
+import ResizableTextArea from './ResizableTextArea';
 
 const MAX_TITLE = 50;
 
@@ -43,7 +43,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
         setCourseName && setCourseName(name);
         setDescription && setDescription(courseDescription);
         onNext();
-    }, [courseDescription, name, setCourseName, setDescription]);
+    }, [courseDescription, name, onNext, setCourseName, setDescription]);
 
     return (
         <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
@@ -66,7 +66,11 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                 <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
                     {t('course.CourseDate.form.descriptionLabel')}
                 </FormControl.Label>
-                <TextInput value={courseDescription} placeholder={t('course.CourseDate.form.descriptionPlaceholder')} onChangeText={setCourseDescription} />
+                <ResizableTextArea
+                    value={courseDescription}
+                    placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
+                    onChangeText={setCourseDescription}
+                />
             </FormControl>
             <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onCancel={onCancel} />
         </VStack>

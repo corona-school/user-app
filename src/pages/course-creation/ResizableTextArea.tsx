@@ -7,7 +7,7 @@ interface InputProps {
     onChangeText: (text: string) => void;
 }
 
-const TextInput: React.FC<InputProps> = ({ value, placeholder, onChangeText }) => {
+const ResizableTextArea: React.FC<InputProps> = ({ value, placeholder, onChangeText }) => {
     const [height, setHeight] = useState<number>(0);
     const isMobile = useBreakpointValue({
         base: true,
@@ -27,4 +27,4 @@ const TextInput: React.FC<InputProps> = ({ value, placeholder, onChangeText }) =
     );
 };
 
-export default TextInput;
+export default ResizableTextArea;
