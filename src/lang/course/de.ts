@@ -79,15 +79,13 @@ const course = {
     },
     CourseDate: {
         headline: 'Allgemeine Informationen zu deinem Kurs',
-        subjectHeadline: 'Kategorie, Fach, Tags',
-        attendeesHeadline: 'Teilnehmer',
         step: {
-            general: 'Allgemein',
-            subject: 'Kategorie und Fach',
-            attendees: 'Teilnehmer',
-            appointments: '{{count}} Termin(e)',
-            instructors: 'Instructor & Sonstiges',
-            checker: 'Angaben prüfen',
+            general: 'Allgemeine Informationen',
+            subject: 'Einordnung',
+            attendees: 'Teilnehmer:innen',
+            appointments: 'Termin(e)',
+            instructors: 'Sonstiges',
+            checker: 'Überprüfung',
         },
         form: {
             courseNameHeadline: 'Kursname',

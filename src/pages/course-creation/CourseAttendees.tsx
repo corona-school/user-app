@@ -36,7 +36,7 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
     return (
         <>
             <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-                <Heading>{t('course.CourseDate.attendeesHeadline')}</Heading>
+                <Heading>{t('course.CourseDate.step.attendees')}</Heading>
                 <FormControl>
                     <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }} isRequired>
                         {t('course.CourseDate.form.detailsContent')}
