@@ -5,7 +5,7 @@ import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import ImageWidget from './ImageWidget';
 
-const MAX_TITLE = 50;
+const MAX_LENGTH_TITLE = 50;
 
 type BasicProps = {
     onShowUnsplash: () => any;
@@ -57,7 +57,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                 <Input
                     value={name}
                     placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
-                    onChangeText={(text) => setName(text.substring(0, MAX_TITLE))}
+                    onChangeText={(text) => setName(text.substring(0, MAX_LENGTH_TITLE))}
                 />
             </FormControl>
             <FormControl marginBottom={space['0.5']}>

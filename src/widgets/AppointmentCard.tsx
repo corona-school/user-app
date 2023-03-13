@@ -316,9 +316,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 {date && countCourse && (
                                     <>
                                         <Text>•</Text>
-                                        <Text>
-                                            {countCourse} {t('course.CourseDate.step.appointments')}
-                                        </Text>
+                                        <Text>{t('course.CourseDate.step.appointments', { count: countCourse })}</Text>
                                     </>
                                 )}
                             </Row>
