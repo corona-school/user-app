@@ -79,15 +79,13 @@ const course = {
     },
     CourseDate: {
         headline: 'Allgemeine Informationen zu deinem Kurs',
-        subjectHeadline: 'Kategorie, Fach, Tags',
-        attendeesHeadline: 'Teilnehmer',
         step: {
-            general: 'Allgemein',
-            subject: 'Kategorie und Fach',
-            attendees: 'Teilnehmer',
+            general: 'Allgemeine Informationen',
+            subject: 'Einordnung',
+            attendees: 'Teilnehmer:innen',
             appointments: 'Termin(e)',
-            instructors: 'Instructor & Sonstiges',
-            checker: 'Angaben prüfen',
+            instructors: 'Sonstiges',
+            checker: 'Überprüfung',
         },
         form: {
             courseNameHeadline: 'Kursname',
@@ -108,6 +106,7 @@ const course = {
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
             detailsHeadline: 'Details',
             detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
+            classRange: 'Klassen {{minRange}} - {{maxRange}}',
             maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',

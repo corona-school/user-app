@@ -21,7 +21,7 @@ import CourseBlocker from './student/CourseBlocker';
 import AsNavigationItem from '../components/AsNavigationItem';
 import AddCourseInstructor from '../modals/AddCourseInstructor';
 import CourseBasics from './course-creation/CourseBasics';
-import CourseSubject from './course-creation/CourseSubject';
+import CourseClassification from './course-creation/CourseClassification';
 import CourseAttendees from './course-creation/CourseAttendees';
 import FurtherInstructors from './course-creation/FurtherInstructors';
 import CourseAppointments from './course-creation/CourseAppointments';
@@ -869,7 +869,7 @@ const CreateCourse: React.FC = () => {
                                 ]}
                             />
                             {currentIndex === 0 && <CourseBasics onShowUnsplash={showUnsplash} onCancel={onCancel} onNext={onNext} />}
-                            {currentIndex === 1 && <CourseSubject onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
                             {currentIndex === 4 && (

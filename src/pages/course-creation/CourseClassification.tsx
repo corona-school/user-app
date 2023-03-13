@@ -13,7 +13,7 @@ type SubjectProps = {
     onNext: () => any;
     onBack: () => any;
 };
-const CourseSubject: React.FC<SubjectProps> = ({ onNext, onBack }) => {
+const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { courseCategory, setCourseCategory, subject, setSubject, tags, setTags } = useContext(CreateCourseContext);
@@ -59,7 +59,7 @@ const CourseSubject: React.FC<SubjectProps> = ({ onNext, onBack }) => {
     return (
         <>
             <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-                <Heading>{t('course.CourseDate.subjectHeadline')}</Heading>
+                <Heading>{t('course.CourseDate.step.subject')}</Heading>
                 <FormControl>
                     <Select selectedValue={category} placeholder={t('course.CourseDate.form.courseCategory')} onValueChange={(e) => setCategory(e)}>
                         <Select.Item value={Course_Category_Enum.Revision} label={'Nachhilfe'} />
@@ -113,4 +113,4 @@ const CourseSubject: React.FC<SubjectProps> = ({ onNext, onBack }) => {
     );
 };
 
-export default CourseSubject;
+export default CourseClassification;

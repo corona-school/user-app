@@ -29,7 +29,6 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
     }, [maxParticipants]);
 
     const onNextStep = useCallback(() => {
-        console.log('MAX', maxParticipants);
         setClassRange && setClassRange(courseClassRange);
         setMaxParticipantCount && setMaxParticipantCount(maxParticipants);
         onNext();
@@ -37,19 +36,13 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
     return (
         <>
             <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-                <Heading>{t('course.CourseDate.attendeesHeadline')}</Heading>
+                <Heading>{t('course.CourseDate.step.attendees')}</Heading>
                 <FormControl>
                     <FormControl.Label _text={{ color: 'primary.900', fontSize: 'md' }} isRequired>
                         {t('course.CourseDate.form.detailsContent')}
                     </FormControl.Label>
 
-                    <Text>
-                        {t(
-                            `Klassen ${(courseClassRange && courseClassRange[0]) || 1} - ${
-                                (courseClassRange && courseClassRange[1]) || 13
-                            }` as unknown as TemplateStringsArray
-                        )}
-                    </Text>
+                    <Text>{t('course.CourseDate.form.classRange', { minRange: courseClassRange[0], maxRange: courseClassRange[1] })}</Text>
                     <Box>
                         <Slider
                             animateTransitions
