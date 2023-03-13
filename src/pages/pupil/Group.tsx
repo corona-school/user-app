@@ -30,6 +30,7 @@ const query = gql`
                 }
                 subcoursesJoined {
                     id
+                    isParticipant
                     maxParticipants
                     participantsCount
                     firstLecture {
@@ -170,7 +171,12 @@ const PupilGroup: React.FC<Props> = () => {
         [courses]
     );
     const revisionCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus)),
+        () =>
+            sortByDate(
+                sortedSearchResults.filter(
+                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                )
+            ),
         [courses]
     );
 

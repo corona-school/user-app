@@ -23,25 +23,28 @@ const MySubcourses: React.FC<GroupProps> = ({ courses, loading }) => {
             {(!loading && (
                 <>
                     {(courses?.length &&
-                        courses.map((course: LFSubCourse, index: number) => (
-                            <CSSWrapper className="course-list__item" key={`subcourse-${index}`}>
-                                <AppointmentCard
-                                    showTrafficLight={true}
-                                    trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
-                                    isHorizontalCardCourseChecked={course.isParticipant}
-                                    isSpaceMarginBottom={false}
-                                    isFullHeight
-                                    variant="horizontal"
-                                    description={course.course.description}
-                                    tags={course.course.tags}
-                                    date={course.firstLecture?.start}
-                                    countCourse={course.lectures?.length}
-                                    onPressToCourse={() => navigate(`/single-course/${course.id}`)}
-                                    image={course.course.image}
-                                    title={course.course.name}
-                                />
-                            </CSSWrapper>
-                        ))) || (
+                        courses.map((course: LFSubCourse, index: number) => {
+                            return (
+                                <CSSWrapper className="course-list__item" key={`subcourse-${index}`}>
+                                    <AppointmentCard
+                                        showTrafficLight={true}
+                                        trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
+                                        isHorizontalCardCourseChecked={course.isParticipant}
+                                        isOnWaitinglist={course.isOnWaitingList}
+                                        isSpaceMarginBottom={false}
+                                        isFullHeight
+                                        variant="horizontal"
+                                        description={course.course.description}
+                                        tags={course.course.tags}
+                                        date={course.firstLecture?.start}
+                                        countCourse={course.lectures?.length}
+                                        onPressToCourse={() => navigate(`/single-course/${course.id}`)}
+                                        image={course.course.image}
+                                        title={course.course.name}
+                                    />
+                                </CSSWrapper>
+                            );
+                        })) || (
                         <Box paddingLeft={space['1']} width="100%">
                             <AlertMessage content={t('matching.group.error.nofound')} />
                         </Box>
