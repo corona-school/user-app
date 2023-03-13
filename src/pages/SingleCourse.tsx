@@ -1,4 +1,4 @@
-import { Box, Button, CloseIcon, Column, Heading, Image, Link, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -24,6 +24,7 @@ import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SelectParticipants } from '../widgets/SelectParticipants';
+import Waitinglist from './single-course/Waitinglist';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -873,8 +874,6 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    console.log(userType);
-
     const singleSubcourseQuery = gql(`
     query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
@@ -915,6 +914,14 @@ const SingleCourse: React.FC = () => {
             isInstructor
             isParticipant
             isOnWaitingList
+            pupilsWaitingCount
+            pupilsOnWaitinglist {
+                id
+                firstname
+                lastname
+                schooltype
+                grade
+            }
         }
     }
     `);
@@ -968,19 +975,9 @@ const SingleCourse: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
-
     const imageHeight = useBreakpointValue({
         base: '178px',
         lg: '260px',
-    });
-
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
     });
 
     useEffect(() => {
@@ -996,6 +993,8 @@ const SingleCourse: React.FC = () => {
             subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
+
+    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount, subcourse?.pupilsOnWaitinglist]);
 
     const tabs: Tab[] = [
         {
@@ -1037,10 +1036,23 @@ const SingleCourse: React.FC = () => {
     if (subcourse?.isInstructor || subcourse?.isParticipant) {
         tabs.push({
             title: t('single.tabs.participant'),
+            badge: subcourse?.participantsCount,
             content: (
                 <>
                     {subcourse?.isParticipant && <OtherParticipants subcourseId={subcourseId} />}
                     {subcourse?.isInstructor && <Participants subcourseId={subcourseId} />}
+                </>
+            ),
+        });
+    }
+
+    if (subcourse?.isInstructor) {
+        tabs.push({
+            title: t('single.tabs.waitinglist'),
+            badge: countPupilsOnWaitinglist,
+            content: (
+                <>
+                    <Waitinglist subcourseId={subcourseId} pupils={subcourse?.pupilsOnWaitinglist} refetch={refetch} />
                 </>
             ),
         });

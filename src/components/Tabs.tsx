@@ -1,9 +1,10 @@
-import { Text, Row, VStack, Box, Pressable, useTheme } from 'native-base';
+import { Text, Row, VStack, Box, Pressable, useTheme, Badge, Stack } from 'native-base';
 import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export type Tab = {
     title: string;
+    badge?: number;
     content: ReactNode | ReactNode[];
     hide?: boolean;
 };
@@ -33,16 +34,23 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
                 onPressTab && onPressTab(tab, index);
             }}
         >
-            <Box
+            <Stack
                 borderBottomWidth={(active && 3) || 1}
                 borderBottomColor={active ? 'primary.400' : 'transparent'}
                 paddingX={space['1']}
                 paddingY={space['0.5']}
+                direction={'row'}
+                space={space['0.5']}
             >
                 <Text fontSize="md" bold={active ? true : false} color={active ? 'primary.900' : 'primary.grey'}>
                     {tab?.title}
                 </Text>
-            </Box>
+                {tab.badge && (
+                    <Badge bg={'primary.700'} _text={{ color: 'white' }} rounded="sm">
+                        {tab.badge}
+                    </Badge>
+                )}
+            </Stack>
         </Pressable>
     );
 

@@ -1,3 +1,4 @@
+import { Pupil_Schooltype_Enum } from '../../gql/graphql';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -47,5 +48,15 @@ export type LFInstructor = {
     firstname: string;
     lastname: string;
 };
+
+export type LFPupilOnWaitinglist =
+    | {
+          id: number;
+          firstname: string;
+          lastname: string;
+          schooltype: Pupil_Schooltype_Enum;
+          grade: string;
+      }[]
+    | undefined;
 
 export type TrafficStatus = 'full' | 'last' | 'free';

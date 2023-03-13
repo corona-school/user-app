@@ -24,6 +24,7 @@ const single = {
     tabs: {
         description: 'Beschreibung',
         lessons: 'Lektionen',
+        waitinglist: 'Warteliste',
         participant: 'Teilnehmer:innen',
     },
     card: {
@@ -51,6 +52,9 @@ const single = {
         promotedTitle: 'Dein Kurs wurde erneut beworben!',
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
         participant: 'Teilnehmer:innen',
+    },
+    waitinglist: {
+        toast: 'Schüler wurde dem Kurs hinzugefügt.',
     },
 };
 export default single;
