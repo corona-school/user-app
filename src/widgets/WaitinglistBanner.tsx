@@ -73,6 +73,7 @@ const WaitinglistBanner: React.FC<BannerProps> = ({ courseStatus, subcourseId, o
                                 width={ButtonContainer}
                                 marginBottom={space['0.5']}
                                 isDisabled={loading}
+                                variant="outline"
                             >
                                 {t('single.waitinglist.leaveWaitinglist')}
                             </Button>

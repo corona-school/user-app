@@ -49,6 +49,27 @@ const query = gql`
                         }
                     }
                 }
+                subcoursesWaitingList {
+                    id
+                    isOnWaitingList
+                    maxParticipants
+                    participantsCount
+                    firstLecture {
+                        start
+                        duration
+                    }
+                    lectures {
+                        start
+                    }
+                    course {
+                        name
+                        image
+                        category
+                        tags {
+                            name
+                        }
+                    }
+                }
             }
         }
     }
@@ -114,7 +135,7 @@ const PupilGroup: React.FC<Props> = () => {
                 arr = allSubcoursesData?.subcoursesPublic || [];
                 break;
             case 1:
-                arr = data?.me?.pupil?.subcoursesJoined || [];
+                arr = data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) || [];
                 break;
         }
         return arr;

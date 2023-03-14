@@ -29,7 +29,7 @@ const MySubcourses: React.FC<GroupProps> = ({ courses, loading }) => {
                                     <AppointmentCard
                                         showTrafficLight={true}
                                         trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
-                                        isHorizontalCardCourseChecked={course.isParticipant}
+                                        isHorizontalCardCourseChecked={true}
                                         isOnWaitinglist={course.isOnWaitingList}
                                         isSpaceMarginBottom={false}
                                         isFullHeight
