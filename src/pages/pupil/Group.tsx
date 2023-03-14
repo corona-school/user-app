@@ -53,7 +53,7 @@ const query = gql`
     }
 `;
 const queryPast = gql`
-    query PupilSubcourseOverview {
+    query PupilPastSubcoursesOverview {
         me {
             pupil {
                 canJoinSubcourses {
