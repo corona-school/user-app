@@ -1,9 +1,10 @@
-import { Box, FormControl, Heading, Input, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, FormControl, Heading, Input, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useState, useContext, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import ImageWidget from './ImageWidget';
+import ResizableTextArea from './ResizableTextArea';
 
 const MAX_LENGTH_TITLE = 50;
 
@@ -20,11 +21,6 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
 
     const [name, setName] = useState<string>(courseName || '');
     const [courseDescription, setCourseDescription] = useState<string>(description || '');
-
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
 
     const ContentContainerWidth = useBreakpointValue({
         base: '100%',
@@ -47,7 +43,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
         setCourseName && setCourseName(name);
         setDescription && setDescription(courseDescription);
         onNext();
-    }, [courseDescription, name, setCourseName, setDescription]);
+    }, [courseDescription, name, onNext, setCourseName, setDescription]);
 
     return (
         <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
@@ -70,11 +66,9 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                 <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
                     {t('course.CourseDate.form.descriptionLabel')}
                 </FormControl.Label>
-                <TextArea
-                    minH={isMobile ? '30vw' : '20vw'}
-                    placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
-                    autoCompleteType={'normal'}
+                <ResizableTextArea
                     value={courseDescription}
+                    placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
                     onChangeText={setCourseDescription}
                 />
             </FormControl>
