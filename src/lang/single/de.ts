@@ -68,6 +68,7 @@ const single = {
         leaveSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
         joined: 'Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.',
         joinMember: 'Du bist auf der Warteliste für diesen Kurs.',
+        noPupilsOnWaitinglist: 'Keine Schüler:innen auf der Warteliste.',
         modal: {
             info: 'Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?',
             success: 'Du bist auf der Warteliste!',
@@ -78,6 +79,8 @@ const single = {
     joinPupilModal: {
         header: 'Schüler:innen nachrücken',
         add: 'Hinzufügen',
+        amount: 'Anzahl Schüler:innen',
+        success: 'Schüler:innen erfolgreich hinzugefügt',
     },
     pupil: {
         subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',

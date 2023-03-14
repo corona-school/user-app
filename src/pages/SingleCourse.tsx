@@ -997,7 +997,12 @@ const SingleCourse: React.FC = () => {
             badge: countPupilsOnWaitinglist,
             content: (
                 <>
-                    <Waitinglist subcourseId={subcourseId} pupils={subcourse?.pupilsOnWaitinglist} refetch={refetch} />
+                    <Waitinglist
+                        subcourseId={subcourseId}
+                        maxParticipants={subcourse?.maxParticipants}
+                        pupilsOnWaitinglist={subcourse?.pupilsOnWaitinglist}
+                        refetch={refetch}
+                    />
                 </>
             ),
         });

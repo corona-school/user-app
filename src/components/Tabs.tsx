@@ -45,11 +45,11 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
                 <Text fontSize="md" bold={active ? true : false} color={active ? 'primary.900' : 'primary.grey'}>
                     {tab?.title}
                 </Text>
-                {tab.badge && tab.badge !== 0 && (
+                {tab.badge && tab.badge !== 0 ? (
                     <Badge bg={'primary.500'} _text={{ color: 'white' }} rounded="sm">
                         {tab.badge}
                     </Badge>
-                )}
+                ) : null}
             </Stack>
         </Pressable>
     );
