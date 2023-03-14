@@ -1,4 +1,4 @@
-import { Box, useTheme } from 'native-base';
+import { Box, Heading, Stack, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -7,48 +7,66 @@ import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
+import HSection from '../../widgets/HSection';
 
 type GroupProps = {
-    courses: LFSubCourse[];
+    currentCourses: LFSubCourse[];
+    pastCourses: LFSubCourse[];
     loading: boolean;
 };
 
-const MySubcourses: React.FC<GroupProps> = ({ courses, loading }) => {
+const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loading }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { space } = useTheme();
 
+    const renderSubcourse = (
+        subcourse: typeof currentCourses[number] | typeof pastCourses[number],
+        index: number,
+        showDate: boolean = true,
+        readonly: boolean = false
+    ) => (
+        <AppointmentCard
+            showTrafficLight
+            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            isFullHeight
+            isSpaceMarginBottom={false}
+            isHorizontalCardCourseChecked={subcourse.isParticipant}
+            key={index}
+            variant="horizontal"
+            description={subcourse.course.description}
+            tags={subcourse.course.tags}
+            date={(showDate && subcourse.firstLecture?.start) || ''}
+            countCourse={subcourse.lectures.length}
+            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+            image={subcourse.course.image ?? undefined}
+            title={subcourse.course.name}
+        />
+    );
+
     return (
-        <CSSWrapper className="course-list__wrapper">
-            {(!loading && (
-                <>
-                    {(courses?.length &&
-                        courses.map((course: LFSubCourse, index: number) => (
-                            <CSSWrapper className="course-list__item" key={`subcourse-${index}`}>
-                                <AppointmentCard
-                                    showTrafficLight={true}
-                                    trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
-                                    isHorizontalCardCourseChecked={course.isParticipant}
-                                    isSpaceMarginBottom={false}
-                                    isFullHeight
-                                    variant="horizontal"
-                                    description={course.course.description}
-                                    tags={course.course.tags}
-                                    date={course.firstLecture?.start}
-                                    countCourse={course.lectures?.length}
-                                    onPressToCourse={() => navigate(`/single-course/${course.id}`)}
-                                    image={course.course.image}
-                                    title={course.course.name}
-                                />
-                            </CSSWrapper>
-                        ))) || (
-                        <Box paddingLeft={space['1']} width="100%">
-                            <AlertMessage content={t('matching.group.error.nofound')} />
-                        </Box>
-                    )}
-                </>
-            )) || <CenterLoadingSpinner />}
-        </CSSWrapper>
+        <Stack space={5}>
+            {currentCourses.length > 0 && (
+                <Box>
+                    <Heading>{t('matching.group.pupil.tabs.tab2.current')}</Heading>
+                    <HSection scrollable>
+                        {currentCourses?.map((subcourse: any, index: number) => {
+                            return renderSubcourse(subcourse, index, true, false);
+                        })}
+                    </HSection>
+                </Box>
+            )}
+            {pastCourses.length > 0 && (
+                <Box>
+                    <Heading>{t('matching.group.pupil.tabs.tab2.past')}</Heading>
+                    <HSection scrollable>
+                        {pastCourses?.map((subcourse: any, index: number) => {
+                            return renderSubcourse(subcourse, index, true, false);
+                        })}
+                    </HSection>
+                </Box>
+            )}
+        </Stack>
     );
 };
 
