@@ -196,15 +196,20 @@ const PupilGroup: React.FC<Props> = () => {
     }, [activeTab, lastSearch, searchAllSubcoursesQuery]);
 
     const languageCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((course) => course.course.category === Course_Category_Enum.Language)),
+        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
         [courses]
     );
     const focusCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((course) => course.course.category === Course_Category_Enum.Focus)),
+        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [courses]
     );
     const revisionCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((course) => course.course.category === Course_Category_Enum.Revision)),
+        () =>
+            sortByDate(
+                sortedSearchResults.filter(
+                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                )
+            ),
         [courses]
     );
 

@@ -155,7 +155,7 @@ const ProfilePupil: React.FC<Props> = () => {
     });
 
     const profileCompleteness = useMemo(() => {
-        const max = 7.0;
+        const max = 6.0;
         let complete = 0.0;
 
         data?.me?.firstname && data?.me?.lastname && (complete += 1);
@@ -164,7 +164,6 @@ const ProfilePupil: React.FC<Props> = () => {
         data?.me?.pupil?.state && (complete += 1);
         data?.me?.pupil?.schooltype && (complete += 1);
         data?.me?.pupil?.gradeAsInt && (complete += 1);
-        data?.me?.pupil?.subjectsFormatted?.length && (complete += 1);
 
         return Math.floor((complete / max) * 100);
     }, [
@@ -175,7 +174,6 @@ const ProfilePupil: React.FC<Props> = () => {
         data?.me?.pupil?.languages?.length,
         data?.me?.pupil?.schooltype,
         data?.me?.pupil?.state,
-        data?.me?.pupil?.subjectsFormatted?.length,
     ]);
 
     const ContainerWidth = useBreakpointValue({
