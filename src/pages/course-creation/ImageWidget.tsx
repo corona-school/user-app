@@ -4,8 +4,8 @@ import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png'
 
 type WidgetProps = {
     photo: string | undefined;
-    onShowUnsplash: () => any;
-    onDeletePhoto?: () => any;
+    onShowUnsplash: () => void;
+    onDeletePhoto?: () => void;
     prefill?: string;
 };
 
@@ -31,7 +31,7 @@ const ImageWidget: React.FC<WidgetProps> = ({ photo, onShowUnsplash, onDeletePho
             </Pressable>
             {photo && (
                 <Button variant="link" justifyContent="flex-start" pl="0" onPress={onDeletePhoto}>
-                    {prefill ? 'Bild zurücksetzen' : 'Bild löschen'}
+                    {prefill ? t('course.CourseDate.Image.resetPhoto') : t('course.CourseDate.Image.deletePhoto')}
                 </Button>
             )}
         </>

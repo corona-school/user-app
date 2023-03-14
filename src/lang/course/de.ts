@@ -126,6 +126,10 @@ const course = {
             durationPlaceholder: 'Bessere Absprache zu UX',
             repeatAppoint: 'Termin wiederholen',
         },
+        Image: {
+            resetPhoto: 'Bild zurücksetzen',
+            deletePhoto: 'Bild löschen',
+        },
         Preview: {
             yes: 'Ja',
             no: 'Nein',

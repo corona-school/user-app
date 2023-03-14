@@ -147,7 +147,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
 
                 {showError && <AlertMessage content={t('course.noticeDate')} />}
             </VStack>
-            <ButtonRow onNext={tryNext} onBack={onBack} isDisabled={false} />
+            <ButtonRow onNext={tryNext} onBack={onBack} />
         </VStack>
     );
 };

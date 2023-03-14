@@ -6,7 +6,7 @@ type ButtonProps = {
     onCancel?: () => any;
     onBack?: () => any;
     onNext: () => any;
-    isDisabled: boolean;
+    isDisabled?: boolean;
 };
 const ButtonRow: React.FC<ButtonProps> = ({ onCancel, onBack, onNext, isDisabled }) => {
     const ButtonContainerDirection = useBreakpointValue({

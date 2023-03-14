@@ -9,9 +9,9 @@ import ResizableTextArea from './ResizableTextArea';
 const MAX_LENGTH_TITLE = 50;
 
 type BasicProps = {
-    onShowUnsplash: () => any;
-    onCancel: () => any;
-    onNext: () => any;
+    onShowUnsplash: () => void;
+    onCancel: () => void;
+    onNext: () => void;
 };
 
 const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }) => {
