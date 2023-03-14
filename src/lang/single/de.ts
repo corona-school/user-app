@@ -75,6 +75,10 @@ const single = {
             cancel: 'Abbrechen',
         },
     },
+    joinPupilModal: {
+        header: 'Schüler:innen nachrücken',
+        add: 'Hinzufügen',
+    },
     pupil: {
         subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
         courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',

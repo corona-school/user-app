@@ -49,14 +49,14 @@ export type LFInstructor = {
     lastname: string;
 };
 
-export type LFPupilOnWaitinglist =
-    | {
-          id: number;
-          firstname: string;
-          lastname: string;
-          schooltype: Pupil_Schooltype_Enum;
-          grade: string;
-      }[]
-    | undefined;
+export type LFPupilOnWaitinglist = PupilOnWaitinglist[] | undefined;
+
+export type PupilOnWaitinglist = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    schooltype: Pupil_Schooltype_Enum;
+    grade: string;
+};
 
 export type TrafficStatus = 'full' | 'last' | 'free';

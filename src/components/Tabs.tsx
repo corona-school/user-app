@@ -45,8 +45,8 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
                 <Text fontSize="md" bold={active ? true : false} color={active ? 'primary.900' : 'primary.grey'}>
                     {tab?.title}
                 </Text>
-                {tab.badge && (
-                    <Badge bg={'primary.700'} _text={{ color: 'white' }} rounded="sm">
+                {tab.badge && tab.badge !== 0 && (
+                    <Badge bg={'primary.500'} _text={{ color: 'white' }} rounded="sm">
                         {tab.badge}
                     </Badge>
                 )}
