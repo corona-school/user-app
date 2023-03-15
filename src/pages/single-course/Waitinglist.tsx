@@ -31,7 +31,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
         lg: false,
     });
 
-    const [addPupilFromWaitinglist, { error }] = useMutation(
+    const [addPupilFromWaitinglist] = useMutation(
         gql(`mutation JoinFromWaitinglist($subcourseId: Float!, $pupilId: Float!) { 
             subcourseJoinFromWaitinglist(subcourseId: $subcourseId, pupilId: $pupilId) 
         }`)
@@ -55,15 +55,6 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
 
     const handleAddPupil = useCallback(
         async (pupilId: number) => {
-            // await addPupilFromWaitinglist({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
-            // if (error) {
-            //     console.error(error);
-            //     toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
-            // }
-            // setIsJoinPupilModalOpen(false);
-            // toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
-            // refetch();
-
             try {
                 await addPupilFromWaitinglist({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
                 setIsJoinPupilModalOpen(false);
