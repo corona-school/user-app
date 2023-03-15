@@ -229,7 +229,6 @@ function describeDevice() {
 const useApolloInternal = () => {
     const [sessionState, setSessionState] = useState<LFApollo['sessionState']>('unknown');
     const [user, setUser] = useState<UserType | null>(null);
-    const [isLoginError, setIsLoginError] = useState(false);
 
     log('GraphQL', 'Refresh', { sessionState, user });
 
