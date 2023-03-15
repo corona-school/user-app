@@ -15,7 +15,7 @@ type Props = {
 };
 
 const ResetPassword: React.FC<Props> = ({ layout }) => {
-    const { onLogin, client, sessionState } = useApollo();
+    const { sessionState } = useApollo();
     const [searchParams] = useSearchParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -63,40 +63,17 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
     }, [changePassword, password, passwordRepeat]);
 
     useEffect(() => {
-        (async function () {
-            // Ensure the user is logged in
-            // Either they already have a session ...
-            if (sessionState === 'logged-in') {
-                log('PasswordReset', 'Already logged in');
-                setShowResetPassword('success');
-                return;
-            }
-
-            const token = searchParams?.get('secret_token');
-            if (!token) {
-                log('PasswordReset', 'No token present');
-                setShowResetPassword('error');
-                return;
-            }
-
-            try {
-                const loginResult = await client.mutate({
-                    mutation: gql(`
-                        mutation LoginToken($token: String!) {
-                            loginToken(token: $token)
-                        }
-                    `),
-                    variables: { token },
-                });
-                log('PasswordReset', 'Logged in with token');
-                onLogin(loginResult);
-                setShowResetPassword('success');
-            } catch (error) {
-                log('Password Reset', 'Failed to log in with token', error);
-                setShowResetPassword('error');
-            }
-        })();
-    }, [searchParams, setShowResetPassword, client, onLogin, sessionState]);
+        if (sessionState === 'logged-in') {
+            log('PasswordReset', 'Already logged in');
+            setShowResetPassword('success');
+            return;
+        }
+        if (sessionState === 'error') {
+            log('PasswordReset', 'Already logged in');
+            setShowResetPassword('error');
+            return;
+        }
+    }, [setShowResetPassword, sessionState]);
 
     const onNext = () => {
         const redirectTo = searchParams?.get('redirectTo');

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { gql } from '../gql';
-import { useMutation } from '@apollo/client';
+import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
 import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link } from 'native-base';
@@ -16,7 +16,7 @@ import { REDIRECT_PASSWORD } from '../Utility';
 
 export default function Login() {
     const { t } = useTranslation();
-    const { onLogin, sessionState } = useApollo();
+    const { onLogin, sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
     const [email, setEmail] = useState<string>();
@@ -26,19 +26,11 @@ export default function Login() {
     const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
+    const [loginResult, setLoginResult] = useState<FetchResult>();
 
     const location = useLocation();
     const locState = location.state as { retainPath: string };
     const retainPath = locState?.retainPath;
-
-    const [login, loginResult] = useMutation(
-        gql(`
-        mutation login($password: String!, $email: String!) {
-            loginPassword(password: $password, email: $email)
-        }
-    `),
-        { errorPolicy: 'all' }
-    );
 
     const navigate = useNavigate();
     const { trackPageView, trackEvent } = useMatomo();
@@ -119,14 +111,10 @@ export default function Login() {
 
     const attemptLogin = useCallback(async () => {
         loginButton();
-        const result = await login({
-            variables: {
-                email: email!,
-                password: password!,
-            },
-        });
-        onLogin(result);
-    }, [email, login, onLogin, loginButton, password]);
+        const res = await loginWithPassword(email!, password!);
+        onLogin(res);
+        setLoginResult(res);
+    }, [email, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
         if (!email || email.length < 6) return;
@@ -288,7 +276,7 @@ export default function Login() {
                             </Row>
                         )) || <input type="password" style={{ display: 'none' }} />}
                     </Box>
-                    {loginResult.error && (
+                    {loginResult?.errors && (
                         <Text paddingTop={4} color="danger.700" maxWidth={360} bold textAlign="center">
                             {t('login.error')}
                         </Text>
@@ -316,7 +304,7 @@ export default function Login() {
                         <Button
                             onPress={showPasswordField ? attemptLogin : getLoginOption}
                             width="100%"
-                            isDisabled={loginResult.loading || !email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
                         >
                             {t('signin')}
                         </Button>

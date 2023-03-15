@@ -1,17 +1,10 @@
-import { gql } from './../gql';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { GraphQLError } from 'graphql';
 import { VStack, Heading, Button, Flex, Box, Image, useTheme, useBreakpointValue } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useApollo from '../hooks/useApollo';
-import { LFUserType } from '../types/lernfair/User';
 
-type Props = {};
-
-const VerifyEmail: React.FC<Props> = () => {
+const VerifyEmail: React.FC = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -20,70 +13,21 @@ const VerifyEmail: React.FC<Props> = () => {
     const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
 
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
-    const { onLogin } = useApollo();
-
-    const [loginToken, loginResult] = useMutation(
-        gql(`
-        mutation LoginTokenOnEmailVerification($token: String!) {
-            loginToken(token: $token)
-        }
-    `)
-    );
-
-    const [meQuery, { data: meData }] = useLazyQuery(
-        gql(`
-        query GetMyId {
-            me {
-                pupil {
-                    id
-                }
-                student {
-                    id
-                }
-            }
-        }
-    `)
-    );
-
-    const login = useCallback(async () => {
-        const res = (await loginToken({ variables: { token } })) as {
-            errors?: GraphQLError[];
-            data?: {
-                loginToken?: boolean;
-            };
-        };
-        onLogin(res);
-
-        if (!res.errors) {
-            if (res.data?.loginToken) {
-                await meQuery();
-                setShowSuccess(true);
-            } else {
-                navigate('/login');
-            }
-        } else {
-            navigate('/login');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loginToken, navigate, token]);
+    const { sessionState } = useApollo();
 
     useEffect(() => {
-        if (token) login();
-    }, [login, token]);
-
-    // determine user type based on data available
-    const userType: LFUserType = useMemo(() => {
-        if (meData?.me?.student?.id) return 'student';
-        else if (meData?.me?.pupil?.id) return 'pupil';
-        else return 'unknown';
-    }, [meData?.me]);
+        if (sessionState === 'logged-in') {
+            setShowSuccess(true);
+        }
+        if (sessionState === 'error') {
+            navigate('/login');
+        }
+    }, [navigate, sessionState, redirectEncoded]);
 
     const ContainerWidth = useBreakpointValue({
         base: '90%',
         lg: sizes['formsWidth'],
     });
-
-    if (loginResult.loading) return <CenterLoadingSpinner />;
 
     return (
         <Flex overflowY={'auto'} height="100vh">
