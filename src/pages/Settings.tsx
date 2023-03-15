@@ -73,7 +73,7 @@ const Settings: React.FC = () => {
                     </ProfileSettingRow>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/reset-password')} />
+                            <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
                         </Column>
 
                         <Column mb={tabspace}>

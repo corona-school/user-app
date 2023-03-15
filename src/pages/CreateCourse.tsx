@@ -3,29 +3,31 @@ import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, 
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import WithNavigation from '../components/WithNavigation';
-
-import InstructionProgress from '../widgets/InstructionProgress';
-
-import CourseAppointments from './course-creation/CourseAppointments';
-import CourseData from './course-creation/CourseData';
-import CoursePreview from './course-creation/CoursePreview';
-
 import { DateTime } from 'luxon';
 import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
 import useModal from '../hooks/useModal';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { GraphQLError } from 'graphql';
+import { BACKEND_URL } from '../config';
+import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+
+import WithNavigation from '../components/WithNavigation';
+import InstructionProgress from '../widgets/InstructionProgress';
 import Unsplash from '../modals/Unsplash';
 import CourseBlocker from './student/CourseBlocker';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import AddCourseInstructor from '../modals/AddCourseInstructor';
-import { GraphQLError } from 'graphql';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { BACKEND_URL } from '../config';
+import AddCourseInstructor from '../modals/AddCourseInstructor';
+import CourseBasics from './course-creation/CourseBasics';
+import CourseClassification from './course-creation/CourseClassification';
+import CourseAttendees from './course-creation/CourseAttendees';
+import FurtherInstructors from './course-creation/FurtherInstructors';
+import CourseAppointments from './course-creation/CourseAppointments';
+import CoursePreview from './course-creation/CoursePreview';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
@@ -75,6 +77,7 @@ const CreateCourse: React.FC = () => {
 
     const location = useLocation();
     const state = location.state as { courseId?: number };
+
     const prefillCourseId = state?.courseId;
 
     const [courseId, setCourseId] = useState<string>('');
@@ -261,6 +264,7 @@ const CreateCourse: React.FC = () => {
         setCourseId(prefillCourse.course.id || '');
         setCourseName(prefillCourse.course.name);
         setSubject(prefillCourse.course.subject);
+        setCourseCategory(prefillCourse.course.category);
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
@@ -689,7 +693,7 @@ const CreateCourse: React.FC = () => {
     ]);
 
     const onNext = useCallback(() => {
-        if (currentIndex >= 2) {
+        if (currentIndex >= 6) {
             return;
         } else {
             setCurrentIndex((prev) => prev + 1);
@@ -731,10 +735,6 @@ const CreateCourse: React.FC = () => {
         },
         [addedInstructors, newInstructors, prefillCourseId, hide]
     );
-
-    const showAddInstructor = useCallback(() => {
-        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={addedInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
-    }, [addInstructor, show, hide]);
 
     const removeInstructor = useCallback(
         async (index: number, isSubmitted: boolean) => {
@@ -794,6 +794,10 @@ const CreateCourse: React.FC = () => {
         [lectures, newLectures, removeLecture, toast]
     );
 
+    const goToStep = useCallback((index: number) => {
+        setCurrentIndex(index);
+    }, []);
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation
@@ -838,29 +842,36 @@ const CreateCourse: React.FC = () => {
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}
+                                goToStep={goToStep}
                                 instructions={[
                                     {
-                                        label: t('course.CourseDate.tabs.course'),
+                                        label: t('course.CourseDate.step.general'),
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.appointments'),
+                                        label: t('course.CourseDate.step.subject'),
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.checker'),
+                                        label: t('course.CourseDate.step.attendees'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.appointments'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.instructors'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.checker'),
                                     },
                                 ]}
                             />
-                            {currentIndex === 0 && (
-                                <CourseData
-                                    onNext={onNext}
-                                    onCancel={onCancel}
-                                    onShowUnsplash={showUnsplash}
-                                    onShowAddInstructor={showAddInstructor}
-                                    onRemoveInstructor={removeInstructor}
-                                />
+                            {currentIndex === 0 && <CourseBasics onShowUnsplash={showUnsplash} onCancel={onCancel} onNext={onNext} />}
+                            {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
+                            {currentIndex === 4 && (
+                                <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
-                            {currentIndex === 1 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
-                            {currentIndex === 2 && (
+                            {currentIndex === 5 && (
                                 <>
                                     <CoursePreview
                                         createAndSubmit={prefillCourseId ? undefined : () => finishCreation(/* also submit */ true)}
