@@ -95,6 +95,10 @@ query GetOnboardingInfos {
          medium
          student { firstname lastname }
       }
+      screenings {
+         invalidated
+         status
+      }
     }
   }
   myRoles
@@ -177,6 +181,18 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         )
             infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
 
+        // -------- Pupil Screening --------
+        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+            infos.push({
+                label: 'pupilScreening',
+                btnfn: [
+                    () => {
+                        window.open(process.env.REACT_APP_PUPIL_SCREENING_URL, '_blank');
+                    },
+                ],
+                lang: {},
+            });
+        }
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
@@ -340,7 +356,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     key={index}
                                     marginBottom={'5px'}
                                 >
-                                    mehr erfahren
+                                    Mehr erfahren
                                 </Button>
                             )}
                         </Card>
