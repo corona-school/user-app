@@ -18,7 +18,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
     const { user } = useApollo();
 
     const renderSubcourse = (
-        subcourse: typeof languageCourses[number] | typeof languageCourses[number],
+        subcourse: typeof languageCourses[number] | typeof courses[number] | typeof focusCourses[number],
         index: number,
         showDate: boolean = true,
         readonly: boolean = false
