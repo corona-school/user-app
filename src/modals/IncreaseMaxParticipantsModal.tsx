@@ -1,29 +1,23 @@
-import { Button, Modal, useTheme, VStack } from 'native-base';
+import { Button, Modal, useTheme, VStack, Text } from 'native-base';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import StepperInput from '../components/StepperInput';
 
 type Props = {
-    increase: (newMaxParticipants: number) => void;
+    increaseAmountOfParticipants: (participantsAmountToBeAdded: number) => void;
     maxParticipants: number;
 };
 
-const IncreaseMaxParticipantsModal: React.FC<Props> = ({ increase, maxParticipants }) => {
+const IncreaseMaxParticipantsModal: React.FC<Props> = ({ increaseAmountOfParticipants }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const [newMaxParticipants, setNewMaxParticipants] = useState<number>(0);
+    const [participantsAmountToBeAdded, setParticipantsAmountToBeAdded] = useState<number>(0);
 
     const increment = () => {
-        setNewMaxParticipants(newMaxParticipants + 1);
+        setParticipantsAmountToBeAdded(participantsAmountToBeAdded + 1);
     };
     const decrement = () => {
-        if (newMaxParticipants > 0) setNewMaxParticipants(newMaxParticipants - 1);
-    };
-
-    const handleTextChange = (input: string) => {
-        if (/^\d+$/.test(input)) {
-            setNewMaxParticipants(parseInt(input));
-        }
+        if (participantsAmountToBeAdded > 0) setParticipantsAmountToBeAdded(participantsAmountToBeAdded - 1);
     };
 
     return (
@@ -32,9 +26,10 @@ const IncreaseMaxParticipantsModal: React.FC<Props> = ({ increase, maxParticipan
                 <Modal.CloseButton />
                 <Modal.Header>{t('single.joinPupilModal.header')}</Modal.Header>
                 <Modal.Body>
-                    <VStack space={space['1']}>
-                        <StepperInput value={newMaxParticipants} increment={increment} decrement={decrement} handleInputChange={handleTextChange} />
-                        <Button onPress={() => increase(newMaxParticipants)}>{t('single.joinPupilModal.add')}</Button>
+                    <VStack space={space['1']} alignItems="left">
+                        <Text>{t('single.joinPupilModal.amount')}</Text>
+                        <StepperInput value={participantsAmountToBeAdded} increment={increment} decrement={decrement} />
+                        <Button onPress={() => increaseAmountOfParticipants(participantsAmountToBeAdded)}>{t('single.joinPupilModal.add')}</Button>
                     </VStack>
                 </Modal.Body>
             </Modal.Content>

@@ -63,6 +63,7 @@ const single = {
     },
     waitinglist: {
         toast: 'Schüler wurde dem Kurs hinzugefügt.',
+        error: 'Schüler:in konnte nicht hinzugefügt werden.',
         onwaitinglist: 'Auf Warteliste setzen',
         leaveWaitinglist: 'Warteliste verlassen',
         leaveSuccess: 'Du hast die Warteliste erfolgreich verlassen.',

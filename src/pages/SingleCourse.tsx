@@ -42,7 +42,7 @@ function ParticipantRow({
             <Column marginRight={space['1']}></Column>
             <Column>
                 <Heading fontSize="md">
-                    {participant.firstname} {!isPupil ?? participant.lastname}
+                    {participant.firstname} {isPupil ? null : participant.lastname}
                 </Heading>
                 <Text>
                     {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
@@ -939,7 +939,7 @@ const SingleCourse: React.FC = () => {
         [subcourse]
     );
 
-    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount, subcourse?.pupilsOnWaitinglist]);
+    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount]);
 
     const tabs: Tab[] = [
         {

@@ -6,7 +6,7 @@ import AddCircleIcon from '../../assets/icons/ic_add_circle.svg';
 import { useCallback, useState } from 'react';
 import { LFPupilOnWaitinglist, PupilOnWaitinglist } from '../../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
-import JoinPupilModal from '../../modals/JoinPupilModal';
+import AddPupilModal from '../../modals/AddPupilModal';
 import IncreaseMaxParticipantsModal from '../../modals/IncreaseMaxParticipantsModal';
 import AlertMessage from '../../widgets/AlertMessage';
 import { GetSingleSubcourseQuery } from '../../gql/graphql';
@@ -21,7 +21,7 @@ type WaitingListProps = {
 const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitinglist, maxParticipants, refetch }) => {
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
     const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
-    const [pupilToJoin, setPupilToJoin] = useState<PupilOnWaitinglist>();
+    const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
 
     const { space } = useTheme();
     const toast = useToast();
@@ -31,7 +31,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
         lg: false,
     });
 
-    const [joinFromWaitinglist] = useMutation(
+    const [addPupilFromWaitinglist, { error }] = useMutation(
         gql(`mutation JoinFromWaitinglist($subcourseId: Float!, $pupilId: Float!) { 
             subcourseJoinFromWaitinglist(subcourseId: $subcourseId, pupilId: $pupilId) 
         }`)
@@ -50,23 +50,37 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
 
     const handleOpenModal = (pupilOnWaitinglist: PupilOnWaitinglist) => {
         setIsJoinPupilModalOpen(true);
-        setPupilToJoin(pupilOnWaitinglist);
+        setPupilToAdd(pupilOnWaitinglist);
     };
 
-    const handleJoinPupil = useCallback(
+    const handleAddPupil = useCallback(
         async (pupilId: number) => {
-            await joinFromWaitinglist({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
-            setIsJoinPupilModalOpen(false);
-            toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
-            refetch();
+            // await addPupilFromWaitinglist({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
+            // if (error) {
+            //     console.error(error);
+            //     toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
+            // }
+            // setIsJoinPupilModalOpen(false);
+            // toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
+            // refetch();
+
+            try {
+                await addPupilFromWaitinglist({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
+                setIsJoinPupilModalOpen(false);
+                toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
+                refetch();
+            } catch (error) {
+                console.error(error);
+                toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
+            }
         },
-        [joinFromWaitinglist, refetch, subcourseId, toast]
+        [addPupilFromWaitinglist, refetch, subcourseId]
     );
 
-    const handleIncrease = useCallback(
-        async (newMaxParticiants: number) => {
+    const handleIncreaseAmount = useCallback(
+        async (participantsAmountToBeAdded: number) => {
             setIsIncreaseMaxParticipantsModalOpen(false);
-            await increaseMaxParticipants({ variables: { maxParticipants: maxParticipants + newMaxParticiants, subcourseId: subcourseId } });
+            await increaseMaxParticipants({ variables: { maxParticipants: maxParticipants + participantsAmountToBeAdded, subcourseId: subcourseId } });
             toast.show({ description: t('single.joinPupilModal.success'), placement: 'top' });
             refetch();
         },
@@ -76,6 +90,13 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
     return (
         <>
             <Box width={isMobile ? 'full' : '350'}>
+                {pupilsOnWaitinglist && pupilsOnWaitinglist?.length > 0 ? (
+                    <Button onPress={() => setIsIncreaseMaxParticipantsModalOpen(true)} mb={space['1']}>
+                        {t('single.joinPupilModal.header')}
+                    </Button>
+                ) : (
+                    <AlertMessage content={t('single.waitinglist.noPupilsOnWaitinglist')} />
+                )}
                 {pupilsOnWaitinglist?.map((pupil) => {
                     return (
                         <Row marginBottom={space['1.5']} alignItems="center">
@@ -89,7 +110,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                                 </Text>
                             </Column>
                             <Spacer />
-                            <Column marginRight={space['1']}>
+                            <Column>
                                 <Button variant="outline" onPress={() => handleOpenModal(pupil)}>
                                     <AddCircleIcon />
                                 </Button>
@@ -97,17 +118,12 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                         </Row>
                     );
                 })}
-                {pupilsOnWaitinglist && pupilsOnWaitinglist?.length > 0 ? (
-                    <Button onPress={() => setIsIncreaseMaxParticipantsModalOpen(true)}>{t('single.joinPupilModal.header')}</Button>
-                ) : (
-                    <AlertMessage content={t('single.waitinglist.noPupilsOnWaitinglist')} />
-                )}
             </Box>
-            <Modal isOpen={isJoinPupilModalOpen} onClose={() => setIsJoinPupilModalOpen(false)}>
-                <JoinPupilModal pupil={pupilToJoin} joinPupilToCourse={handleJoinPupil} />
+            <Modal isOpen={isJoinPupilModalOpen} onClose={() => setIsJoinPupilModalOpen(false)} w="full">
+                <AddPupilModal pupil={pupilToAdd} addPupilToCourse={handleAddPupil} />
             </Modal>
-            <Modal isOpen={isIncreaseMaxParticipantsModalOpen} onClose={() => setIsIncreaseMaxParticipantsModalOpen(false)}>
-                <IncreaseMaxParticipantsModal increase={handleIncrease} maxParticipants={maxParticipants} />
+            <Modal isOpen={isIncreaseMaxParticipantsModalOpen} onClose={() => setIsIncreaseMaxParticipantsModalOpen(false)} w="full">
+                <IncreaseMaxParticipantsModal increaseAmountOfParticipants={handleIncreaseAmount} maxParticipants={maxParticipants} />
             </Modal>
         </>
     );
