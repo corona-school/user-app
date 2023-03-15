@@ -16,7 +16,7 @@ const LoginToken: React.FC = () => {
             navigate(redirectEncoded);
         }
         if (sessionState === 'error') {
-            navigate('/login');
+            navigate('/login', { state: { error: 'token-invalid' } });
         }
     }, [navigate, sessionState, redirectEncoded]);
 

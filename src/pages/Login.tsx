@@ -3,7 +3,7 @@ import { gql } from '../gql';
 import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
-import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link } from 'native-base';
+import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link, Alert, HStack, useToast, CloseIcon } from 'native-base';
 import useApollo from '../hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
@@ -27,10 +27,10 @@ export default function Login() {
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
     const [loginResult, setLoginResult] = useState<FetchResult>();
+    const toast = useToast();
 
     const location = useLocation();
-    const locState = location.state as { retainPath: string };
-    const retainPath = locState?.retainPath;
+    const { retainPath, error } = location.state as { retainPath: string; error?: 'token-invalid' };
 
     const navigate = useNavigate();
     const { trackPageView, trackEvent } = useMatomo();
@@ -60,6 +60,29 @@ export default function Login() {
 
     useEffect(() => {
         if (sessionState === 'logged-in') navigate(retainPath);
+        if (error && error === 'token-invalid') {
+            toast.show({
+                render: ({ id }) => {
+                    return (
+                        <Alert w="100%" status="error" colorScheme="error" backgroundColor={'danger.50'}>
+                            <VStack space={2} flexShrink={1} w="100%">
+                                <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                                    <HStack space={2} flexShrink={1} alignItems="center">
+                                        <Alert.Icon />
+                                        <Text>{t('login.invalidTokenAlert.text')}</Text>
+                                        <Button onPress={() => toast.close(id)} variant="subtle" backgroundColor={'danger.50'}>
+                                            <CloseIcon size="sm" />
+                                        </Button>
+                                    </HStack>
+                                </HStack>
+                            </VStack>
+                        </Alert>
+                    );
+                },
+                duration: null,
+                placement: 'bottom',
+            });
+        }
     }, [navigate, sessionState]);
 
     useEffect(() => {
