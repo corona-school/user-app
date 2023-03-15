@@ -510,12 +510,6 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
         }
     );
 
-    useEffect(() => {
-        if (data?.subcourseJoin) {
-            setSignedInModal(true);
-        }
-    }, [data?.subcourseJoin]);
-
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -524,7 +518,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
     const handleSignInCourse = () => {
         joinSubcourse();
         setSignedInModal(false);
-        toast.show({ description: t('single.signIn.toast') });
+        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
         refresh();
     };
 
@@ -581,7 +575,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
     const handleCourseLeave = () => {
         setSignedOutSureModal(false);
         leaveSubcourse();
-        toast.show({ description: t('single.leave.toast') });
+        toast.show({ description: t('single.leave.toast'), placement: 'top' });
         refresh();
     };
 
