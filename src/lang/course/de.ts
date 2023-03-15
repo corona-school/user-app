@@ -66,6 +66,7 @@ const course = {
         check: 'Angaben prüfen',
         saveDraft: 'Als Entwurf speichern',
         prevPage: ' Zur vorherigen Seite',
+        existingAppointments: 'Bestehende Termine',
     },
     error: {
         course: 'Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.',
@@ -77,19 +78,22 @@ const course = {
         tags: 'Deine Tags konnten nicht hinzugefügt werden.',
     },
     CourseDate: {
-        tabs: {
-            course: 'Kurs',
-            appointments: 'Termin(e)',
-            checker: 'Angaben prüfen',
-        },
         headline: 'Allgemeine Informationen zu deinem Kurs',
-
+        step: {
+            general: 'Allgemeine Informationen',
+            subject: 'Einordnung',
+            attendees: 'Teilnehmer:innen',
+            appointments: 'Termin(e)',
+            instructors: 'Sonstiges',
+            checker: 'Überprüfung',
+        },
         form: {
             courseNameHeadline: 'Kursname',
             courseNamePlaceholder: 'Kursname eingeben',
             courseCategory: 'Kurskategorie',
             courseSubjectLabel: 'Fach',
             coursePhotoLabel: 'Foto',
+            changeImage: 'Bild ändern',
             furtherCourseInstructors: 'Weitere Kursleiter',
             courseAddOntherLeadText: 'Weitere Kursleiter:innen hinzufügen',
             shortDescriptionLabel: 'Kurzbeschreibung',
@@ -102,6 +106,7 @@ const course = {
             tagsInfo: 'Die einzelnen Tags müssen durch ein Komma (,) getrennt werden',
             detailsHeadline: 'Details',
             detailsContent: 'Für welche Klassen ist der Kurs geeignet?',
+            classRange: 'Klassen {{minRange}} - {{maxRange}}',
             maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',
@@ -120,6 +125,10 @@ const course = {
             duration: 'Dauer',
             durationPlaceholder: 'Bessere Absprache zu UX',
             repeatAppoint: 'Termin wiederholen',
+        },
+        Image: {
+            resetPhoto: 'Bild zurücksetzen',
+            deletePhoto: 'Bild löschen',
         },
         Preview: {
             yes: 'Ja',
