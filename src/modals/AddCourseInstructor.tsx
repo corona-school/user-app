@@ -1,10 +1,9 @@
 import { gql } from './../gql';
 import { useLazyQuery } from '@apollo/client';
-import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Heading, Flex, Text } from 'native-base';
+import { View, Row, Button, ArrowBackIcon, useTheme, VStack, Flex, Text } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
 import { LFInstructor } from '../types/lernfair/Course';
 import InstructorRow from '../widgets/InstructorRow';
@@ -12,9 +11,9 @@ import InstructorRow from '../widgets/InstructorRow';
 const RESULTS_PER_PAGE = 20;
 
 type Props = {
-    onClose: () => any;
+    onClose: () => void;
     addedInstructors: LFInstructor[];
-    onInstructorAdded: (instructor: LFInstructor) => any;
+    onInstructorAdded: (instructor: LFInstructor) => void;
 };
 
 const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onInstructorAdded }) => {

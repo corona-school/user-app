@@ -11,9 +11,9 @@ import { CreateCourseContext } from '../CreateCourse';
 import CourseDateWizard from './CourseDateWizard';
 
 type Props = {
-    onNext: () => any;
-    onBack: () => any;
-    onDeleteAppointment?: (index: number, isSubmitted: boolean) => any;
+    onNext: () => void;
+    onBack: () => void;
+    onDeleteAppointment?: (index: number, isSubmitted: boolean) => Promise<void>;
 };
 
 const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointment }) => {

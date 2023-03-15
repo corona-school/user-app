@@ -6,8 +6,8 @@ import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 
 type AttendeesProps = {
-    onNext: () => any;
-    onBack: () => any;
+    onNext: () => void;
+    onBack: () => void;
 };
 
 const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {

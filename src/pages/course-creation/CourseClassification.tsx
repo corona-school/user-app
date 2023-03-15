@@ -10,8 +10,8 @@ import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 
 type SubjectProps = {
-    onNext: () => any;
-    onBack: () => any;
+    onNext: () => void;
+    onBack: () => void;
 };
 const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
     const { space, sizes } = useTheme();

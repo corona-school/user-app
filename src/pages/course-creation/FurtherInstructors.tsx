@@ -8,13 +8,13 @@ import AddInstructorWidget from './AddInstructorWidget';
 import ButtonRow from './ButtonRow';
 
 type InstructorProps = {
-    onRemove: (index: number, isSubmitted: boolean) => any;
-    onNext: () => any;
-    onBack: () => any;
-    onShowAddInstructor: () => any;
+    onRemove: (index: number, isSubmitted: boolean) => Promise<void>;
+    onNext: () => void;
+    onBack: () => void;
+    addInstructor: (instructor: LFInstructor) => void;
 };
 
-const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBack, onShowAddInstructor }) => {
+const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBack, addInstructor }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -44,7 +44,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                             ))}
                     </VStack>
                     <Row space={space['0.5']} my={space['1']}>
-                        <AddInstructorWidget onPress={onShowAddInstructor} />
+                        <AddInstructorWidget addInstructor={addInstructor} />
                     </Row>
                 </FormControl>
                 <VStack space={space['0.5']}>

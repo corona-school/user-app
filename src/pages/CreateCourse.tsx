@@ -736,10 +736,6 @@ const CreateCourse: React.FC = () => {
         [addedInstructors, newInstructors, prefillCourseId, hide]
     );
 
-    const showAddInstructor = useCallback(() => {
-        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={addedInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
-    }, [addInstructor, show, hide]);
-
     const removeInstructor = useCallback(
         async (index: number, isSubmitted: boolean) => {
             if (!isSubmitted) {
@@ -873,7 +869,7 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
                             {currentIndex === 4 && (
-                                <FurtherInstructors onRemove={removeInstructor} onShowAddInstructor={showAddInstructor} onNext={onNext} onBack={onBack} />
+                                <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
                             {currentIndex === 5 && (
                                 <>
