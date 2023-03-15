@@ -69,7 +69,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
             return;
         }
         if (sessionState === 'error') {
-            log('PasswordReset', 'Already logged in');
+            log('PasswordReset', 'Session state changed to error');
             setShowResetPassword('error');
             return;
         }
