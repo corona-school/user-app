@@ -4,7 +4,7 @@ import { Box, Button, Column, Heading, Modal, Row, Spacer, Text, useBreakpointVa
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import AddCircleIcon from '../../assets/icons/ic_add_circle.svg';
 import { useCallback, useState } from 'react';
-import { LFPupilOnWaitinglist, PupilOnWaitinglist } from '../../types/lernfair/Course';
+import { LFPupilsOnWaitinglist, PupilOnWaitinglist } from '../../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import AddPupilModal from '../../modals/AddPupilModal';
 import IncreaseMaxParticipantsModal from '../../modals/IncreaseMaxParticipantsModal';
@@ -13,7 +13,7 @@ import { GetSingleSubcourseQuery } from '../../gql/graphql';
 
 type WaitingListProps = {
     subcourseId: number;
-    pupilsOnWaitinglist: LFPupilOnWaitinglist;
+    pupilsOnWaitinglist: LFPupilsOnWaitinglist;
     maxParticipants: number;
     refetch: () => Promise<ApolloQueryResult<GetSingleSubcourseQuery>>;
 };
@@ -61,7 +61,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                 toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
                 refetch();
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
             }
         },

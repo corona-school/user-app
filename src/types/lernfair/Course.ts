@@ -1,4 +1,4 @@
-import { Pupil_Schooltype_Enum } from '../../gql/graphql';
+import { Pupil } from '../../gql/graphql';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -49,14 +49,8 @@ export type LFInstructor = {
     lastname: string;
 };
 
-export type LFPupilOnWaitinglist = PupilOnWaitinglist[] | undefined;
+export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
 
-export type PupilOnWaitinglist = {
-    id: number;
-    firstname: string;
-    lastname: string;
-    schooltype: Pupil_Schooltype_Enum;
-    grade: string;
-};
+export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade'>;
 
 export type TrafficStatus = 'full' | 'last' | 'free';
