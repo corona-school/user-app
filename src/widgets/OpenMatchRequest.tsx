@@ -33,7 +33,7 @@ const OpenMatchRequest = ({
 
                 <Column mt="3" space={space['0.5']}>
                     <Text color="darkText" bold>
-                        {t('matching.request.check.subjects')}
+                        {t('matching.shared.subjects')}
                     </Text>
                     <Row space={space['0.5']}>
                         {subjects &&
@@ -66,7 +66,7 @@ const OpenMatchRequest = ({
                     }}
                     onPress={onEditRequest}
                 >
-                    Anfrage bearbeiten
+                    {t('matching.request.check.editRequest')}
                 </Button>
             </Box>
         </Column>

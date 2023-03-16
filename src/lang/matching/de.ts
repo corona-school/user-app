@@ -1,4 +1,17 @@
 const matching = {
+    shared: {
+        subjects: 'Fächer:',
+        schooltype: 'Schulform:',
+        class: 'Klasse:',
+        state: 'Status:',
+        videochat: 'Videochat',
+        contact: 'Kontaktieren',
+        dissolve: 'Match auflösen',
+        active: 'aktiv',
+        inactive: 'inaktiv',
+        activeMatches: 'Aktive Zuordnungen',
+        inactiveMatches: 'Aufgelöste Zuordnungen',
+    },
     blocker: {
         header: 'Lernunterstützung',
         title: 'Unterstützung anfragen',
@@ -22,23 +35,20 @@ const matching = {
         },
     },
     request: {
-        buttons: {
-            dissolve: 'Match auflösen',
-        },
         check: {
             header: 'Lernunterstützung',
             title: 'Lernunterstützung',
             content:
                 'In der Lernunterstützung hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Lernunterstützung nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.',
             tabs: {
-                tab1: 'Aktuelle Lernpartner:innen',
-                tab2: 'Suche',
+                tab1: 'Lernpaare',
+                tab2: 'Anfragen',
             },
             request: 'Anfrage',
             removeRequest: 'Anfrage zurücknehmen',
+            editRequest: 'Anfrage bearbeiten',
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
-            subjects: 'Fächer:',
             noMatches: 'Du hast (noch) keine Lernpartner:in.',
             noRequestsTutee:
                 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',

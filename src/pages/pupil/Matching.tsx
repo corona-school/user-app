@@ -1,6 +1,6 @@
 import { DocumentNode, gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Column, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +11,8 @@ import WithNavigation from '../../components/WithNavigation';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
-import LearningPartner from '../../widgets/LearningPartner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
+import Matches from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
 
 type Props = {};
@@ -21,18 +21,22 @@ const query: DocumentNode = gql`
     query PupilMatching {
         me {
             pupil {
+                id
                 subjectsFormatted {
                     name
                     mandatory
                 }
                 openMatchRequestCount
-                id
                 matches {
                     id
                     uuid
                     dissolved
                     subjectsFormatted {
                         name
+                    }
+                    pupil {
+                        schooltype
+                        grade
                     }
                     student {
                         firstname
@@ -70,11 +74,6 @@ const Matching: React.FC<Props> = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const CardGrid = useBreakpointValue({
-        base: '100%',
-        lg: '48%',
-    });
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql`
@@ -141,11 +140,12 @@ const Matching: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
 
-    // active matches should appear first
     const activeMatches: LFMatch[] = useMemo(() => {
-        return [...(data?.me?.pupil?.matches ?? [])].sort((match1: LFMatch, match2: LFMatch) => {
-            return (match1.dissolved ? 1 : 0) - (match2.dissolved ? 1 : 0);
-        });
+        return data?.me?.pupil?.matches.filter((match: LFMatch) => match.dissolved === false);
+    }, [data?.me?.pupil?.matches]);
+
+    const inactiveMatches: LFMatch[] = useMemo(() => {
+        return data?.me?.pupil?.matches.filter((match: LFMatch) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
     useEffect(() => {
@@ -166,34 +166,11 @@ const Matching: React.FC<Props> = () => {
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
                                     content: (
-                                        <VStack>
-                                            <Flex direction="row" flexWrap="wrap">
-                                                {activeMatches?.length > 0 ? (
-                                                    activeMatches.map((match: LFMatch, index: number) => (
-                                                        <Column width={CardGrid} marginRight="15px" key={index}>
-                                                            <LearningPartner
-                                                                key={index}
-                                                                isDark={true}
-                                                                name={`${match?.student?.firstname} ${match?.student?.lastname}`}
-                                                                subjects={match?.subjectsFormatted}
-                                                                status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                                button={
-                                                                    !match.dissolved && (
-                                                                        <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                            {t('dashboard.helpers.buttons.solveMatch')}
-                                                                        </Button>
-                                                                    )
-                                                                }
-                                                                contactMail={match?.studentEmail}
-                                                                meetingId={match?.uuid}
-                                                            />
-                                                        </Column>
-                                                    ))
-                                                ) : (
-                                                    <AlertMessage content={t('matching.request.check.noMatches')} />
-                                                )}
-                                            </Flex>
-                                        </VStack>
+                                        <Matches
+                                            activeMatches={activeMatches}
+                                            inactiveMatches={inactiveMatches}
+                                            showDissolveMatchModal={showDissolveMatchModal}
+                                        />
                                     ),
                                 },
                                 {

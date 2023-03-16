@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Column, Flex, Heading, Modal, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Flex, Heading, Modal, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,8 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
 import Hello from '../../widgets/Hello';
-import LearningPartner from '../../widgets/LearningPartner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
+import Matches from '../match/Matches';
 
 type Props = {};
 const query = gql`
@@ -73,12 +73,6 @@ const MatchingStudent: React.FC<Props> = () => {
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
-
-    const CardGrid = useBreakpointValue({
-        base: '100%',
-        lg: '48%',
-    });
-
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql`
             mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
@@ -144,11 +138,12 @@ const MatchingStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
 
-    // active matches should appear first
     const activeMatches: LFMatch[] = useMemo(() => {
-        return [...(data?.me?.student?.matches ?? [])].sort((match1: LFMatch, match2: LFMatch) => {
-            return (match1.dissolved ? 1 : 0) - (match2.dissolved ? 1 : 0);
-        });
+        return data?.me?.student?.matches.filter((match: LFMatch) => match.dissolved === false);
+    }, [data?.me?.student?.matches]);
+
+    const inactiveMatches: LFMatch[] = useMemo(() => {
+        return data?.me?.student?.matches.filter((match: LFMatch) => match.dissolved === true);
     }, [data?.me?.student?.matches]);
 
     useEffect(() => {
@@ -194,38 +189,11 @@ const MatchingStudent: React.FC<Props> = () => {
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
                                     content: (
-                                        <VStack>
-                                            <Flex direction="row" flexWrap="wrap">
-                                                {activeMatches?.length > 0 ? (
-                                                    activeMatches.map((match: LFMatch, index: number) => (
-                                                        <Column width={CardGrid} marginRight="15px">
-                                                            <LearningPartner
-                                                                key={index}
-                                                                isDark={true}
-                                                                name={match?.pupil?.firstname}
-                                                                subjects={match?.subjectsFormatted}
-                                                                status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                                schooltype={t(
-                                                                    `lernfair.schooltypes.${match?.pupil?.schooltype}` as unknown as TemplateStringsArray
-                                                                )}
-                                                                schoolclass={match?.pupil?.grade}
-                                                                button={
-                                                                    !match.dissolved && (
-                                                                        <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                            {t('dashboard.helpers.buttons.solveMatch')}
-                                                                        </Button>
-                                                                    )
-                                                                }
-                                                                contactMail={match?.pupilEmail}
-                                                                meetingId={match?.uuid}
-                                                            />
-                                                        </Column>
-                                                    ))
-                                                ) : (
-                                                    <AlertMessage content={t('matching.request.check.noMatches')} />
-                                                )}
-                                            </Flex>
-                                        </VStack>
+                                        <Matches
+                                            activeMatches={activeMatches}
+                                            inactiveMatches={inactiveMatches}
+                                            showDissolveMatchModal={showDissolveMatchModal}
+                                        />
                                     ),
                                 },
                                 {

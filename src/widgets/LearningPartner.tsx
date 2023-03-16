@@ -5,17 +5,7 @@ import Card from '../components/Card';
 import Tag from '../components/Tag';
 import { Subject } from '../gql/graphql';
 
-const LearningPartner = ({
-    name,
-    subjects,
-    schooltype,
-    schoolclass,
-    isDark = false,
-    button,
-    status,
-    contactMail,
-    meetingId,
-}: {
+type LearningPartnerProps = {
     name: string;
     subjects: Subject[];
     schooltype?: string;
@@ -25,6 +15,18 @@ const LearningPartner = ({
     status?: string;
     contactMail?: string;
     meetingId?: string;
+};
+
+const LearningPartner: React.FC<LearningPartnerProps> = ({
+    name,
+    subjects,
+    schooltype,
+    schoolclass,
+    isDark = false,
+    button,
+    status,
+    contactMail,
+    meetingId,
 }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -41,8 +43,8 @@ const LearningPartner = ({
 
                     {subjects && (
                         <Row flexWrap={'wrap'} space="5px" alignItems="center">
-                            <Text color="lightText">
-                                <Text bold>Fächer:</Text>
+                            <Text color={isDark ? 'lightText' : 'primary.900'}>
+                                <Text bold>{t('matching.shared.subjects')}</Text>
                             </Text>
                             {subjects.map((sub) => (
                                 <Tag
@@ -58,7 +60,7 @@ const LearningPartner = ({
                     {schooltype && (
                         <Row flexWrap={'wrap'} space="5px" alignItems="center">
                             <Text color={isDark ? 'lightText' : 'primary.900'}>
-                                <Text bold>Schulform:</Text> {schooltype}
+                                <Text bold>{t('matching.shared.schooltype')}</Text> {schooltype}
                             </Text>
                         </Row>
                     )}
@@ -66,7 +68,7 @@ const LearningPartner = ({
                     {schoolclass && (
                         <Row flexWrap={'wrap'} space="5px" alignItems="center">
                             <Text color={isDark ? 'lightText' : 'primary.900'}>
-                                <Text bold>Klasse:</Text> {schoolclass}
+                                <Text bold>{t('matching.shared.class')}</Text> {schoolclass}
                             </Text>
                         </Row>
                     )}
@@ -74,7 +76,7 @@ const LearningPartner = ({
                     {status && (
                         <Row flexWrap={'wrap'} space="5px" alignItems="center">
                             <Text color={isDark ? 'lightText' : 'primary.900'}>
-                                <Text bold>Status:</Text> {status}
+                                <Text bold>{t('matching.shared.state')}</Text> {status}
                             </Text>
                         </Row>
                     )}
@@ -83,10 +85,10 @@ const LearningPartner = ({
                         <Column mt={space['1']} space={space['1']}>
                             {meetingId && (
                                 <Button space={2} onPress={() => window.open(`https://meet.jit.si/CoronaSchool-${meetingId}`, '_blank')}>
-                                    Videochat
+                                    {t('matching.shared.videochat')}
                                 </Button>
                             )}
-                            {contactMail && <Button onPress={() => (window.location.href = `mailto:${contactMail}`)}>Kontaktieren</Button>}
+                            {contactMail && <Button onPress={() => (window.location.href = `mailto:${contactMail}`)}>{t('matching.shared.contact')}</Button>}
                             {button}
                         </Column>
                     )}
