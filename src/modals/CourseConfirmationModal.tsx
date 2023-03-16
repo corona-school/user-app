@@ -2,20 +2,20 @@ import { Modal, Text, Button, useTheme, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
 type ConfirmProps = {
-    header: string;
+    headline: string;
     confirmButtonText: string;
     description: string;
     onClose: () => void;
     onConfirm: () => void;
 };
-const CourseConfirm: React.FC<ConfirmProps> = ({ header, confirmButtonText, description, onClose, onConfirm }) => {
+const CourseConfirmationModal: React.FC<ConfirmProps> = ({ headline, confirmButtonText, description, onClose, onConfirm }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
 
     return (
         <>
             <Modal.Content>
-                <Modal.Header>{header}</Modal.Header>
+                <Modal.Header>{headline}</Modal.Header>
                 <Modal.CloseButton />
                 <Modal.Body>
                     <Text marginBottom={space['1']}>{description}</Text>
@@ -31,4 +31,4 @@ const CourseConfirm: React.FC<ConfirmProps> = ({ header, confirmButtonText, desc
     );
 };
 
-export default CourseConfirm;
+export default CourseConfirmationModal;

@@ -24,7 +24,7 @@ import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SelectParticipants } from '../widgets/SelectParticipants';
-import CourseConfirm from '../modals/CourseConfirm';
+import CourseConfirmationModal from '../modals/CourseConfirmationModal';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -514,7 +514,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
         if (data?.subcourseJoin) {
             refresh();
         }
-    }, [data?.subcourseJoin, refresh]);
+    }, [data?.subcourseJoin]);
 
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -525,7 +525,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
         joinSubcourse();
         setSignedInModal(false);
         toast.show({ description: t('single.signIn.toast'), placement: 'top' });
-    }, [data?.subcourseJoin, joinSubcourse, refresh]);
+    }, [data?.subcourseJoin, joinSubcourse]);
 
     return (
         <>
@@ -544,8 +544,8 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
                     refresh();
                 }}
             >
-                <CourseConfirm
-                    header={t('single.global.courseInfo')}
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
                     confirmButtonText={t('single.signIn.button')}
                     description={t('single.signIn.description')}
                     onClose={() => setSignedInModal(false)}
@@ -606,8 +606,8 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                 <AlertMessage content={t('single.card.alreadyRegistered')} />
             </VStack>
             <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
-                <CourseConfirm
-                    header={t('single.global.courseInfo')}
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
                     confirmButtonText={t('single.leave.signOut')}
                     description={t('single.leave.description')}
                     onClose={() => setSignedOutSureModal(false)}
