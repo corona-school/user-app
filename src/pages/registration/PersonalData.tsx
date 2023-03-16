@@ -48,7 +48,7 @@ const PersonalData: React.FC = () => {
         setShowPasswordLength(password.length < 6);
         setShowPasswordConfirmNoMatch(password !== passwordRepeat);
         setEmailValidate(!isEmail(email));
-        return password.length >= 6 && password === passwordRepeat && email.length >= 6 && /\S+@\S+\.\S+/.test(email) && firstname && lastname;
+        return password.length >= 6 && password === passwordRepeat && isEmail(email) && firstname && lastname;
     }, [email, firstname, lastname, password, passwordRepeat]);
 
     const checkEmail = useCallback(async () => {
