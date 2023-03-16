@@ -1,4 +1,4 @@
-import { Box, Button, CloseIcon, Column, Heading, Image, Link, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -510,17 +510,22 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
         }
     );
 
+    useEffect(() => {
+        if (data?.subcourseJoin) {
+            refresh();
+        }
+    }, [data?.subcourseJoin, refresh]);
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const handleSignInCourse = () => {
+    const handleSignInCourse = useCallback(() => {
         joinSubcourse();
         setSignedInModal(false);
         toast.show({ description: t('single.signIn.toast'), placement: 'top' });
-        refresh();
-    };
+    }, [data?.subcourseJoin, joinSubcourse, refresh]);
 
     return (
         <>
@@ -558,7 +563,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
 
     const [isSignedOutSureModal, setSignedOutSureModal] = useState(false);
 
-    const [leaveSubcourse, { loading }] = useMutation(
+    const [leaveSubcourse, { loading, data }] = useMutation(
         gql(`
             mutation LeaveSubcourse($subcourseId: Float!) {
                 subcourseLeave(subcourseId: $subcourseId)
@@ -567,17 +572,22 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
         { variables: { subcourseId: subcourse.id } }
     );
 
+    useEffect(() => {
+        if (data?.subcourseLeave) {
+            refresh();
+        }
+    }, [data?.subcourseLeave, refresh]);
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const handleCourseLeave = () => {
+    const handleCourseLeave = useCallback(async () => {
         setSignedOutSureModal(false);
         leaveSubcourse();
         toast.show({ description: t('single.leave.toast'), placement: 'top' });
-        refresh();
-    };
+    }, [leaveSubcourse, refresh, t, toast]);
 
     return (
         <>
@@ -601,7 +611,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     confirmButtonText={t('single.leave.signOut')}
                     description={t('single.leave.description')}
                     onClose={() => setSignedOutSureModal(false)}
-                    onConfirm={handleCourseLeave}
+                    onConfirm={() => handleCourseLeave()}
                 />
             </Modal>
         </>
@@ -729,6 +739,7 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
                                 <Button
                                     onPress={() => {
                                         setOnWaitingListModal(false);
+                                        refresh();
                                     }}
                                 >
                                     Fenster schließen
@@ -843,6 +854,8 @@ const SingleCourse: React.FC = () => {
             isStudent: userType === 'student',
         },
     });
+
+    console.log('Course Data', data);
 
     const [promote, { error }] = useMutation(
         gql(`
