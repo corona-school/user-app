@@ -32,7 +32,7 @@ export default function Login() {
     const location = useLocation();
     const locationState = location.state as { retainPath?: string; error?: 'token-invalid' };
     const retainPath = locationState?.retainPath ?? '/start';
-    const error = locationState.error;
+    const error = locationState?.error;
 
     const navigate = useNavigate();
     const { trackPageView, trackEvent } = useMatomo();
