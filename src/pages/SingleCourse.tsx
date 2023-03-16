@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, Image, Modal, Row, Stack, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Spacer, Stack, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -27,6 +27,7 @@ import { SelectParticipants } from '../widgets/SelectParticipants';
 import Waitinglist from './single-course/Waitinglist';
 import WaitinglistBanner from '../widgets/WaitinglistBanner';
 import { TrafficStatus } from '../types/lernfair/Course';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({
@@ -707,6 +708,7 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
+    const { isMobile } = useLayoutHelper();
     const toast = useToast();
     const [joinWaitingList, { loading }] = useMutation(
         gql(`
@@ -724,6 +726,14 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const ButtonWidth = useBreakpointValue({
+        base: 'full',
+        lg: '50%',
+    });
+    const ButtonDirection = useBreakpointValue({
+        base: 'column',
+        lg: 'row-reverse',
+    });
     const handleJoinWaitinglist = useCallback(() => {
         joinWaitingList();
         setIsModalOpen(false);
@@ -741,13 +751,18 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
                     <Modal.CloseButton />
                     <Modal.Header>{t('single.waitinglist.onwaitinglist')}</Modal.Header>
                     <Modal.Body>
-                        <Text marginBottom={space['1']}>{t('single.waitinglist.modal.info')}</Text>
-                        <Stack space={space['0.5']} direction="column" width="full" justifyContent="center">
-                            <Button onPress={() => handleJoinWaitinglist()}>{t('single.waitinglist.modal.button')}</Button>
-                            <Button variant="outline" onPress={() => setIsModalOpen(false)}>
-                                {t('single.waitinglist.modal.cancel')}
-                            </Button>
-                        </Stack>
+                        <Text marginBottom={space['2']}>{t('single.waitinglist.modal.info')}</Text>
+                        <Box maxW="full">
+                            <Stack space={space['0.5']} direction={ButtonDirection} justifyContent="center">
+                                <Button width={ButtonWidth} onPress={() => handleJoinWaitinglist()}>
+                                    {t('single.waitinglist.modal.button')}
+                                </Button>
+                                {!isMobile && <Spacer w="2" />}
+                                <Button width={ButtonWidth} variant="outline" onPress={() => setIsModalOpen(false)}>
+                                    {t('single.waitinglist.modal.cancel')}
+                                </Button>
+                            </Stack>
+                        </Box>
                     </Modal.Body>
                 </Modal.Content>
             </Modal>

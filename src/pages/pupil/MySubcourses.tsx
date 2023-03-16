@@ -1,11 +1,8 @@
-import { Box, Heading, Stack, useTheme } from 'native-base';
+import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import CSSWrapper from '../../components/CSSWrapper';
 import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
-import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
@@ -18,7 +15,6 @@ type GroupProps = {
 const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loading }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { space } = useTheme();
 
     const renderSubcourse = (
         subcourse: typeof currentCourses[number] | typeof pastCourses[number],
@@ -31,7 +27,8 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
             trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
             isFullHeight
             isSpaceMarginBottom={false}
-            isHorizontalCardCourseChecked={subcourse.isParticipant}
+            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+            isOnWaitinglist={subcourse?.isOnWaitingList}
             key={index}
             variant="horizontal"
             description={subcourse.course.description}
