@@ -89,5 +89,11 @@ const helperwizard = {
             'Lern-Fair testet im März ein neues Angebot: <b>die Hausaufgabenhilfe</b>.<br>Dort erhältst du <b>im März von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deinen Hausaufgaben.',
         buttons: ['Zur Hausaufgabenhilfe'],
     },
+    pupilScreening: {
+        title: 'Ausstehendes Screening',
+        content:
+            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nDamit wir dir eine:n Lernpartner:in vermitteln können, wollen wir in einem nächsten Schritt gerne auf Zoom mit dir sprechen. Bitte buche dir dazu einen Termin.',
+        buttons: ['Termin vereinbaren'],
+    },
 };
 export default helperwizard;

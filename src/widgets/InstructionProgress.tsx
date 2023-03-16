@@ -1,4 +1,5 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base';
+import { Pressable } from 'react-native';
 import InstructionMessage, { IInstructionMessage } from './InstructionMessage';
 
 type Instruction = {
@@ -11,9 +12,11 @@ type Props = {
     instructions?: Instruction[];
     currentIndex?: number;
     isDark?: boolean;
+    canPressSteps?: boolean;
+    goToStep?: (index: number) => void;
 };
 
-const InstructionProgress: React.FC<Props> = ({ isDark, instructions, currentIndex = 0 }) => {
+const InstructionProgress: React.FC<Props> = ({ isDark, instructions, currentIndex = 0, goToStep, canPressSteps }) => {
     const { space, sizes } = useTheme();
     return (
         <View>
@@ -62,11 +65,13 @@ const InstructionProgress: React.FC<Props> = ({ isDark, instructions, currentInd
                             flexBasis={sizes['6'] + 'px'}
                             mr={!isLast ? space['0.5'] : 0}
                         >
-                            <Circle bg={circlebgColor(isActive, isDark)} borderColor="primary.grey" borderWidth={isActive ? 0 : 1} size={sizes['1.5']}>
-                                <Text bold color={isActive ? 'lightText' : 'primary.grey'}>
-                                    {index + 1}
-                                </Text>
-                            </Circle>
+                            <Pressable disabled={!canPressSteps} onPress={() => goToStep && goToStep(index)}>
+                                <Circle bg={circlebgColor(isActive, isDark)} borderColor="primary.grey" borderWidth={isActive ? 0 : 1} size={sizes['1.5']}>
+                                    <Text bold color={isActive ? 'lightText' : 'primary.grey'}>
+                                        {index + 1}
+                                    </Text>
+                                </Circle>
+                            </Pressable>
                             {isActive && (
                                 <Text color={circleLabelColor(isActive, isDark)} bold ml={space['0.5']}>
                                     {instruction.label}
