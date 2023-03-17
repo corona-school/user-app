@@ -20,6 +20,7 @@ const single = {
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
         noLections: 'Es wurden keine Lektionen eingetragen.',
+        courseInfo: 'Kursinformationen',
     },
     tabs: {
         description: 'Beschreibung',
@@ -107,6 +108,13 @@ const single = {
             button: 'Support kontaktieren',
             info: 'Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support.',
         },
+    },
+    signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+    leave: {
+        course: 'Kurs verlassen',
+        signOut: 'Vom Kurs abmelden',
+        description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+        toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
     },
 };
 export default single;
