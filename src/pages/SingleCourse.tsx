@@ -1,4 +1,4 @@
-import { Box, Button, CloseIcon, Column, Heading, Image, Link, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -24,6 +24,7 @@ import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SelectParticipants } from '../widgets/SelectParticipants';
+import CourseConfirmationModal from '../modals/CourseConfirmationModal';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -482,6 +483,8 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
 function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const toast = useToast();
 
     const [isSignedInModal, setSignedInModal] = useState(false);
 
@@ -509,25 +512,20 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
 
     useEffect(() => {
         if (data?.subcourseJoin) {
-            setSignedInModal(true);
+            refresh();
         }
     }, [data?.subcourseJoin]);
 
-    const { space, sizes } = useTheme();
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
-
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
+    const handleSignInCourse = useCallback(() => {
+        joinSubcourse();
+        setSignedInModal(false);
+        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+    }, [data?.subcourseJoin, joinSubcourse]);
 
     return (
         <>
@@ -535,14 +533,7 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
                 <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinData?.subcourse!.canJoin?.reason}` as unknown as TemplateStringsArray)} />
             )}
             {canJoinData?.subcourse!.canJoin.allowed && (
-                <Button
-                    onPress={() => {
-                        joinSubcourse();
-                    }}
-                    width={ButtonContainer}
-                    marginBottom={space['0.5']}
-                    isDisabled={loading}
-                >
+                <Button onPress={() => setSignedInModal(true)} width={ButtonContainer} marginBottom={space['0.5']} isDisabled={loading}>
                     {t('signin')}
                 </Button>
             )}
@@ -553,25 +544,13 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
                     refresh();
                 }}
             >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs angemeldet.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedInModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.signIn.button')}
+                    description={t('single.signIn.description')}
+                    onClose={() => setSignedInModal(false)}
+                    onConfirm={handleSignInCourse}
+                />
             </Modal>
         </>
     );
@@ -579,11 +558,12 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
 
 function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const toast = useToast();
 
     const [isSignedOutSureModal, setSignedOutSureModal] = useState(false);
-    const [isSignedOutModal, setSignedOutModal] = useState(false);
 
-    const [leaveSubcourse, { loading }] = useMutation(
+    const [leaveSubcourse, { loading, data }] = useMutation(
         gql(`
             mutation LeaveSubcourse($subcourseId: Float!) {
                 subcourseLeave(subcourseId: $subcourseId)
@@ -592,16 +572,22 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
         { variables: { subcourseId: subcourse.id } }
     );
 
-    const { space, sizes } = useTheme();
+    useEffect(() => {
+        if (data?.subcourseLeave) {
+            refresh();
+        }
+    }, [data?.subcourseLeave, refresh]);
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
+    const handleCourseLeave = useCallback(async () => {
+        setSignedOutSureModal(false);
+        leaveSubcourse();
+        toast.show({ description: t('single.leave.toast'), placement: 'top' });
+    }, [leaveSubcourse, refresh, t, toast]);
 
     return (
         <>
@@ -615,73 +601,18 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     isDisabled={loading}
                     variant="outline"
                 >
-                    Kurs verlassen
+                    {t('single.leave.course')}
                 </Button>
-
                 <AlertMessage content={t('single.card.alreadyRegistered')} />
             </VStack>
             <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>Kurseinformationen</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>
-                            Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.
-                        </Text>
-                        <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
-                            <Column>
-                                <Button
-                                    height="100%"
-                                    colorScheme="blueGray"
-                                    variant="ghost"
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                    }}
-                                >
-                                    {t('cancel')}
-                                </Button>
-                            </Column>
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                        leaveSubcourse();
-                                        setSignedOutModal(true);
-                                    }}
-                                >
-                                    Vom Kurs abmelden
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
-            <Modal
-                isOpen={isSignedOutModal}
-                onClose={() => {
-                    setSignedOutModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>Kurseinformationen</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich vom Kurs abgemeldet.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.leave.signOut')}
+                    description={t('single.leave.description')}
+                    onClose={() => setSignedOutSureModal(false)}
+                    onConfirm={() => handleCourseLeave()}
+                />
             </Modal>
         </>
     );
@@ -808,6 +739,7 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
                                 <Button
                                     onPress={() => {
                                         setOnWaitingListModal(false);
+                                        refresh();
                                     }}
                                 >
                                     Fenster schließen
@@ -873,8 +805,6 @@ const SingleCourse: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    console.log(userType);
-
     const singleSubcourseQuery = gql(`
     query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
         subcourse(subcourseId: $subcourseId){
@@ -925,6 +855,8 @@ const SingleCourse: React.FC = () => {
         },
     });
 
+    console.log('Course Data', data);
+
     const [promote, { error }] = useMutation(
         gql(`
     mutation subcoursePromote($subcourseId: Float!) {
@@ -968,19 +900,9 @@ const SingleCourse: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
-
     const imageHeight = useBreakpointValue({
         base: '178px',
         lg: '260px',
-    });
-
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
     });
 
     useEffect(() => {
