@@ -14,8 +14,8 @@ import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/Banner';
 import PromoteBanner from '../../widgets/PromoteBanner';
+import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-import SubcourseData from './single-course/SubcourseData';
 
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
     const { space } = useTheme();

@@ -1,11 +1,11 @@
 import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Tag from '../../../components/Tag';
-import { Course, Instructor, Subcourse } from '../../../gql/graphql';
-import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import Utility, { getTrafficStatus } from '../../../Utility';
-import CourseTrafficLamp from '../../../widgets/CourseTrafficLamp';
+import Tag from '../../components/Tag';
+import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import Utility, { getTrafficStatus } from '../../Utility';
+import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
     course: Course;
@@ -30,6 +30,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse }) => {
     const seatsLeft: number = useMemo(() => {
         return subcourse?.maxParticipants - subcourse?.participantsCount;
     }, []);
+
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'}>

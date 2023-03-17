@@ -10,7 +10,7 @@ import WithNavigation from '../../components/WithNavigation';
 import { Lecture, Participant } from '../../gql/graphql';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
-import SubcourseData from './single-course/SubcourseData';
+import SubcourseData from '../subcourse/SubcourseData';
 
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
     const { space } = useTheme();
