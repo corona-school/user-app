@@ -24,6 +24,9 @@ const login = {
             'Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut.',
     },
     invalidMailMessage: 'Die eingegebene E-Mail-Adresse ist fehlerhaft.',
+    invalidTokenAlert: {
+        text: 'Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden.',
+    },
 };
 
 export default login;
