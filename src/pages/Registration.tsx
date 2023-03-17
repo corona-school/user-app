@@ -80,11 +80,10 @@ const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
-    const navigate = useNavigate();
 
     const location = useLocation();
-    const locState = location.state as { retainPath: string };
-    const retainPath = locState?.retainPath;
+    const locState = location.state as { retainPath?: string };
+    const retainPath = locState?.retainPath ?? '/start';
 
     const [currentIndex, setCurrentIndex] = useState<number>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/pupil' ? 1 : 0
