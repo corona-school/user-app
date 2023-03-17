@@ -44,7 +44,9 @@ export type LFApollo = {
     // Call in case a mutation was run that associates the session with a user
     onLogin: (result: FetchResult) => void;
 
-    sessionState: 'unknown' | 'logged-out' | 'logged-in';
+    loginWithPassword: (email: string, password: string) => Promise<FetchResult>;
+
+    sessionState: 'unknown' | 'logged-out' | 'logged-in' | 'error';
     // Once the session is 'logged-in', a query will be issued to determine the user session
     // When the query is finished, the user will be available:
     user: UserType | null;
@@ -292,7 +294,7 @@ const useApolloInternal = () => {
         async (deviceToken: string) => {
             log('GraphQL', 'device token present, trying to log in');
             try {
-                await client.mutate({
+                const res = await client.mutate({
                     mutation: gql(`
           mutation LoginWithDeviceToken($deviceToken: String!) {
             loginToken(token: $deviceToken)
@@ -305,10 +307,39 @@ const useApolloInternal = () => {
                 log('GraphQL', 'successfully logged in with device token');
                 setSessionState('logged-in');
                 setUser(null); // refresh user information
+                return res;
             } catch (error) {
                 log('GraphQL', 'Failed to log in with device token', error);
                 clearDeviceToken();
                 setSessionState('logged-out');
+                return;
+            }
+        },
+        [client, setSessionState]
+    );
+
+    // ---------- Secret Token --------------------
+    const loginWithSecretToken = useCallback(
+        async (secretToken: string) => {
+            log('GraphQL', 'secret token present, trying to log in');
+            try {
+                const res = await client.mutate({
+                    mutation: gql(`
+          mutation LoginWithDeviceToken($deviceToken: String!) {
+            loginToken(token: $deviceToken)
+          }
+        `),
+                    variables: { deviceToken: secretToken },
+                    context: { skipAuthRetry: true },
+                });
+
+                log('GraphQL', 'successfully logged in with secret token');
+                setSessionState('logged-in');
+                setUser(null); // refresh user information
+                return res;
+            } catch (error) {
+                log('GraphQL', 'Failed to log in with secret token', error);
+                setSessionState('error');
                 return;
             }
         },
@@ -330,6 +361,7 @@ const useApolloInternal = () => {
                     variables: { legacyToken },
                     context: { skipAuthRetry: true },
                 });
+
                 log('GraphQL', `Successfully logged in with a legacy token`);
                 await createDeviceToken();
                 setSessionState('logged-in');
@@ -385,11 +417,7 @@ const useApolloInternal = () => {
             const { searchParams, pathname } = new URL(window.location.href);
             const legacyToken = searchParams.get('token');
             const deviceToken = getDeviceToken();
-
-            if (pathname === '/login-token' || pathname === '/login') {
-                log('GraphQL', 'User opened log in page, do not determine session');
-                return;
-            }
+            const secretToken = searchParams.get('secret_token');
 
             // Maybe the session already works?
             try {
@@ -411,7 +439,12 @@ const useApolloInternal = () => {
                 return;
             }
 
-            setSessionState('logged-out');
+            if (secretToken) {
+                await loginWithSecretToken(secretToken);
+                return;
+            }
+
+            setSessionState('error');
             log('GraphQL', 'No Device Token present, need to log in again');
         })();
     }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser]);
@@ -469,7 +502,29 @@ const useApolloInternal = () => {
         [createDeviceToken, setSessionState]
     );
 
-    return useMemo(() => ({ client, logout, sessionState, user, onLogin }), [client, logout, user, sessionState, onLogin]);
+    // ------------ Login with password -------------
+    const loginWithPassword = useCallback(
+        async (email: string, password: string): Promise<FetchResult> => {
+            log('GraphQL', 'Logging in with email and password');
+
+            const result = await client.mutate({
+                mutation: gql(`mutation login($password: String!, $email: String!) { loginPassword(password: $password, email: $email) }`),
+                variables: {
+                    email: email,
+                    password: password,
+                },
+                errorPolicy: 'all',
+                context: { skipAuthRetry: true },
+            });
+            return result;
+        },
+        [client]
+    );
+
+    return useMemo(
+        () => ({ client, logout, sessionState, user, onLogin, loginWithPassword }),
+        [client, logout, user, sessionState, onLogin, loginWithPassword]
+    );
 };
 
 const useApollo = () => useContext(ExtendedApolloContext)!;

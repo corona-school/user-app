@@ -15,7 +15,7 @@ const Welcome: React.FC = () => {
     const location = useLocation();
     const locState = location.state as { deactivated?: boolean; from?: { pathname: string } };
     const deactivated = locState?.deactivated;
-    const retainPath = locState.from?.pathname;
+    const retainPath = locState?.from?.pathname ?? '/start';
 
     const fromLegacy =
         document.referrer.includes('my.lern-fair.de') ||
