@@ -15,7 +15,7 @@ const single = {
         hours: 'Stunde(n)',
         status: {
             free: 'Freie Plätze',
-            last: 'Wenige freie Plätze',
+            last: 'Nur noch {{seatsLeft}} freie Plätze',
             full: 'Ausgebucht',
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
@@ -40,6 +40,33 @@ const single = {
     contact: {
         instructor: 'Kursleiter:innen kontaktieren',
         participants: 'Teilnehmer:innen kontaktieren',
+    },
+    courseInfo: {
+        grade: 'Jahrgangsstufe: ',
+        class: 'Klasse {{minGrade}} - {{maxGrade}}',
+    },
+    actions: {
+        leaveSubcourse: 'Kurs verlassen',
+        joinWaitinglist: ' Auf Warteliste setzen',
+        leaveWaitinglist: 'Warteliste verlassen',
+        contactInstructor: 'Kursleiter:in kontaktieren',
+        videochat: 'Zum Videochat',
+        videochatShouldOpen: 'Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:',
+        openVideochatAgain: 'Videochat erneut öffnen',
+        startVideochat: 'Du kannst das Meeting erst eine Stunde vor Beginn des Termins starten.',
+    },
+    modals: {
+        headline: 'Kursinformationen',
+        signInSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
+        sureToLeave: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+        leaveCourse: 'Vom Kurs abmelden',
+        isOnWaitinglist: 'Du bist auf der Warteliste!',
+        leaveWaitinglistSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
+        close: 'Fenster schließen',
+        contactMessage: {
+            alertParticipants: ' Wir teilen deinen Teilnehmer:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+            alertInstructors: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+        },
     },
     buttonPromote: {
         button: 'Kurs bewerben',
