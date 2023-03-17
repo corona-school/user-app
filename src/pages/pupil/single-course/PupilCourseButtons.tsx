@@ -1,5 +1,5 @@
 import { ApolloQueryResult } from '@apollo/client';
-import { Box, Button, Column, HStack, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Column, Modal, Row, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
@@ -14,9 +14,6 @@ type CanJoin = {
 };
 
 type ActionButtonProps = {
-    isParticipant: boolean;
-    isOnWaitingList: boolean;
-    isPublished: boolean;
     courseFull: boolean;
     canJoinSubcourse: CanJoin;
     joinedSubcourse: boolean;
@@ -36,10 +33,7 @@ type ActionButtonProps = {
     refresh: () => Promise<ApolloQueryResult<void>>; //any
 };
 
-const SubcourseActionButtons: React.FC<ActionButtonProps> = ({
-    isParticipant,
-    isOnWaitingList,
-    isPublished,
+const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     courseFull,
     canJoinSubcourse,
     joinedSubcourse,
@@ -100,18 +94,21 @@ const SubcourseActionButtons: React.FC<ActionButtonProps> = ({
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {!isParticipant && canJoinSubcourse?.allowed && (
-                    <Button onPress={joinSubcourse} isDisabled={loadingSubcourseJoined}>
-                        {t('signin')}
-                    </Button>
-                )}
+                {!subcourse?.isParticipant &&
+                    (canJoinSubcourse?.allowed ? (
+                        <Button onPress={joinSubcourse} isDisabled={loadingSubcourseJoined}>
+                            {t('signin')}
+                        </Button>
+                    ) : (
+                        <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse?.reason}` as unknown as TemplateStringsArray)} />
+                    ))}
 
-                {isParticipant && (
+                {subcourse?.isParticipant && (
                     <Button onPress={() => setSignedOutSureModal(true)} isDisabled={loadingSubcourseLeft}>
                         {t('single.actions.leaveSubcourse')}
                     </Button>
                 )}
-                {!isParticipant && courseFull && !isOnWaitingList && (
+                {!subcourse?.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button
                         variant="outline"
                         onPress={() => {
@@ -123,7 +120,7 @@ const SubcourseActionButtons: React.FC<ActionButtonProps> = ({
                         {t('single.actions.joinWaitinglist')}
                     </Button>
                 )}
-                {isOnWaitingList && (
+                {subcourse.isOnWaitingList && (
                     <Button
                         variant="outline"
                         onPress={() => {
@@ -135,20 +132,16 @@ const SubcourseActionButtons: React.FC<ActionButtonProps> = ({
                         {t('single.actions.leaveWaitinglist')}
                     </Button>
                 )}
-                {isParticipant && (
+                {subcourse.isParticipant && (
                     <Button variant="outline" onPress={() => setShowMessageModal(true)}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {isParticipant && isPublished && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse?.isParticipant && subcourse?.published && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
             <VStack>
-                {/* {!isParticipant && !canJoinSubcourse?.allowed && (
-                <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse?.reason}` as unknown as TemplateStringsArray)} />
-            )} */}
-                {isParticipant && <AlertMessage content={t('single.card.alreadyRegistered')} />}
-                {isOnWaitingList && <AlertMessage content={t('single.card.waitingListMember')} />}
-                {/* <AlertMessage content={t('single.actions.startVideochat')} /> */}
+                {subcourse?.isParticipant && <AlertMessage content={t('single.card.alreadyRegistered')} />}
+                {subcourse?.isOnWaitingList && <AlertMessage content={t('single.card.waitingListMember')} />}
             </VStack>
 
             {/* JOINED SUBCOURSE MODAL */}
@@ -310,4 +303,4 @@ const SubcourseActionButtons: React.FC<ActionButtonProps> = ({
     );
 };
 
-export default SubcourseActionButtons;
+export default PupilCourseButtons;

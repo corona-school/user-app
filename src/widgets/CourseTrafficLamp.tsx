@@ -2,6 +2,7 @@ import { View, Text, Column, Row, Circle, InfoIcon, Pressable, useTheme, Contain
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     status: TrafficStatus;
@@ -27,6 +28,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
+    const userType = useUserType();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 

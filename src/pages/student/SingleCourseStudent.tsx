@@ -1,15 +1,20 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { Column, Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Lecture, Participant } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
+import { getTimeDifference } from '../../helper/notification-helper';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
-import PupilCourseButtons from './single-course/PupilCourseButtons';
+import { getTrafficStatus } from '../../Utility';
+import Banner from '../../widgets/Banner';
+import PromoteBanner from '../../widgets/PromoteBanner';
+import StudentCourseButtons from './single-course/StudentCourseButtons';
 import SubcourseData from './single-course/SubcourseData';
 
 function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
@@ -30,19 +35,19 @@ function ParticipantRow({ participant }: { participant: { firstname: string; las
     );
 }
 
-function OtherParticipants({ subcourseId }: { subcourseId: number }) {
+function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
     const { data } = useQuery(
         gql(`
-        query GetOtherParticipants($subcourseId: Int!) {
+        query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
-                otherParticipants{
+                participants {
                     firstname
+                    lastname
+                    schooltype
                     grade
                 }
             }
-
-            me { pupil { firstname lastname schooltype grade }}
         }
     `),
         { variables: { subcourseId } }
@@ -50,22 +55,21 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
     if (!data) return <CenterLoadingSpinner />;
 
-    const otherParticipants = data!.subcourse!.otherParticipants;
+    const participants = data!.subcourse!.participants;
 
-    if (otherParticipants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
+    if (participants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
 
     return (
         <>
-            <ParticipantRow participant={data.me.pupil as any} />
-            {otherParticipants.map((participant: Participant) => (
+            {participants.map((participant: Participant) => (
                 <ParticipantRow participant={participant} />
             ))}
         </>
     );
 }
 
-const singleSubcoursePupilQuery = gql(`
-query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
+const singleSubcourseStudentQuery = gql(`
+query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -110,14 +114,16 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
 }
 `);
 
-const SingleCoursePupil = () => {
+const SingleCourseStudent = () => {
+    const [showCancelModal, setShowCancelModal] = useState(false);
+
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
 
-    const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
+    const { data, loading, refetch } = useQuery(singleSubcourseStudentQuery, {
         variables: {
             subcourseId,
         },
@@ -126,73 +132,52 @@ const SingleCoursePupil = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
 
-    const { data: canJoinData } = useQuery(
+    const [publish, { loading: loadingPublished }] = useMutation(
         gql(`
-        query CanJoin($subcourseId: Int!) { 
-            subcourse(subcourseId: $subcourseId) {
-                canJoin { allowed reason }
-            }
+        mutation SubcoursePublish($subcourseId: Float!) {
+            subcoursePublish(subcourseId: $subcourseId)
         }
     `),
         { variables: { subcourseId: subcourseId } }
     );
 
-    const [joinSubcourse, { loading: loadingSubcourseJoined, data: joinedSubcourseData }] = useMutation(
+    const doPublish = useCallback(async () => {
+        await publish();
+        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
+        refetch();
+    }, []);
+
+    const [submit, { loading: loadingSubmitted }] = useMutation(
         gql(`
-            mutation SubcourseJoin($subcourseId: Float!) {
-                subcourseJoin(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
+        mutation CourseSubmit($courseId: Float!) { 
+            courseSubmit(courseId: $courseId)
         }
+    `),
+        { variables: { courseId: course?.id } }
     );
 
-    const [leaveSubcourse, { loading: loadingSubcourseLeft }] = useMutation(
-        gql(`
-            mutation LeaveSubcourse($subcourseId: Float!) {
-                subcourseLeave(subcourseId: $subcourseId)
-            }
-        `),
-        { variables: { subcourseId: subcourseId } }
+    const submitCourse = useCallback(async () => {
+        await submit();
+        toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
+        refetch();
+    }, []);
+    const [cancelSubcourse] = useMutation(
+        gql(`mutation CancelSubcourse($subcourseId: Float!) {
+        subcourseCancel(subcourseId: $subcourseId)
+      }`),
+        { variables: { subcourseId: course?.id } }
     );
 
-    const [joinWaitingList, { data: joinedWaitinglist, loading: loadingJoinedWaitinglist }] = useMutation(
-        gql(`
-            mutation JoinWaitingList($subcourseId: Float!) {
-                subcourseJoinWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
+    const cancelCourse = useCallback(async () => {
+        try {
+            await cancelSubcourse();
+            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
+            refetch();
+        } catch (e) {
+            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
         }
-    );
-
-    const [leaveWaitingList, { data: leftWaitinglist, loading: loadingLeftWaitinglist }] = useMutation(
-        gql(`
-            mutation LeaveWaitingList($subcourseId: Float!) {
-                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
-    );
-
-    const [contact, { loading: loadingContactInstructor }] = useMutation(
-        gql(`
-        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!) {
-            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: [] title: $title body: $body)
-        }
-    `)
-    );
-
-    async function doContact(title: string, body: string) {
-        await contact({ variables: { subcourseId: subcourseId, title, body } });
-        toast.show({ description: 'Benachrichtigung verschickt', placement: 'top' });
-    }
-
-    const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
+        setShowCancelModal(false);
+    }, [cancelSubcourse, toast, refetch]);
 
     const tabs: Tab[] = [
         {
@@ -236,11 +221,62 @@ const SingleCoursePupil = () => {
             title: t('single.tabs.participant'),
             content: (
                 <>
-                    <OtherParticipants subcourseId={subcourseId} />
+                    <Participants subcourseId={subcourseId} />
                 </>
             ),
         });
     }
+
+    const [promote, { error }] = useMutation(
+        gql(`
+    mutation subcoursePromote($subcourseId: Float!) {
+        subcoursePromote(subcourseId: $subcourseId)
+    }
+`),
+        { variables: { subcourseId: subcourseId } }
+    );
+
+    const doPromote = async () => {
+        await promote();
+        if (error) {
+            toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
+        } else {
+            toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
+        }
+        refetch();
+    };
+
+    const isInPast = useMemo(
+        () =>
+            !subcourse ||
+            subcourse.lectures.every((lecture: Lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+        [subcourse]
+    );
+
+    const isMatureForPromotion = (publishDate: string): boolean => {
+        const { daysDiff } = getTimeDifference(publishDate);
+        if (publishDate === null || daysDiff > 3) {
+            return true;
+        }
+        return false;
+    };
+
+    const canPromoteCourse = useMemo(() => {
+        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted')) return false;
+        const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
+        return canPromote;
+    }, [loading, subcourse]);
+
+    const getButtonClick = useMemo(() => {
+        switch (course?.courseState) {
+            case Course_Coursestate_Enum.Created:
+                return () => submitCourse();
+            case Course_Coursestate_Enum.Allowed:
+                return () => doPublish();
+            default:
+                return () => submitCourse();
+        }
+    }, [course?.courseState, doPublish, submit, submitCourse]);
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
@@ -249,30 +285,28 @@ const SingleCoursePupil = () => {
                     <SubcourseData course={course} subcourse={subcourse} />
                 </Stack>
                 <Stack>
-                    <PupilCourseButtons
-                        courseFull={courseFull}
-                        subcourse={subcourse}
-                        canJoinSubcourse={canJoinData?.subcourse?.canJoin}
-                        joinedSubcourse={joinedSubcourseData}
-                        joinedWaitinglist={joinedWaitinglist}
-                        leftWaitinglist={leftWaitinglist}
-                        loadingSubcourseJoined={loadingSubcourseJoined}
-                        loadingSubcourseLeft={loadingSubcourseLeft}
-                        loadingJoinedWaitinglist={loadingJoinedWaitinglist}
-                        loadingWaitinglistLeft={loadingLeftWaitinglist}
-                        loadingContactInstructor={loadingContactInstructor}
-                        joinSubcourse={() => joinSubcourse()}
-                        leaveSubcourse={() => leaveSubcourse()}
-                        joinWaitinglist={() => joinWaitingList()}
-                        leaveWaitinglist={() => leaveWaitingList()}
-                        doContactInstructor={doContact}
-                        refresh={refetch}
+                    <StudentCourseButtons subcourse={subcourse} isInPast={isInPast} refresh={refetch} />
+                </Stack>
+
+                <Stack>
+                    {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
+                        <PromoteBanner
+                            onClick={doPromote}
+                            isPromoted={subcourse?.alreadyPromoted || false}
+                            courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                        />
+                    )}
+                    <Banner
+                        courseState={course?.courseState}
+                        isPublished={subcourse?.published}
+                        handleButtonClick={subcourse?.published ? () => cancelCourse : getButtonClick}
                     />
                 </Stack>
+
                 <Tabs tabs={tabs} />
             </Stack>
         </WithNavigation>
     );
 };
 
-export default SingleCoursePupil;
+export default SingleCourseStudent;

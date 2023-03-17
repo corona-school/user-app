@@ -44,6 +44,7 @@ const single = {
     courseInfo: {
         grade: 'Jahrgangsstufe: ',
         class: 'Klasse {{minGrade}} - {{maxGrade}}',
+        editCourse: 'Kurs editieren',
     },
     actions: {
         leaveSubcourse: 'Kurs verlassen',
@@ -79,6 +80,33 @@ const single = {
         promotedTitle: 'Dein Kurs wurde erneut beworben!',
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
         participant: 'Teilnehmer:innen',
+    },
+    banner: {
+        state: 'Status: ',
+        created: {
+            draft: 'Entwurf',
+            button: 'Zur Prüfung freischalten',
+            info: 'Dein Kurs ist derzeit noch ein Entwurf. Schüler:innen können deinen Kurs nicht sehen. Bevor der Kurs veröffentlicht werden kann, muss dieser zur Prüfung für das Lern-Fair Team freigegeben werden.',
+        },
+        submitted: {
+            isChecked: 'In Prüfung',
+            info: 'Dein Kurs wird derzeit von uns überprüft. Wenn die Überprüfung erfolgreich war, wird dein Kurs automatisch von uns veröffentlicht. Schüler:innen können sich anschließend direkt zu deinem Kurs anmelden.',
+        },
+        allowedNotPublished: {
+            checked: 'Überprüfung erfolgreich',
+            button: 'Kurs veröffentlichen',
+            info: 'Dein Kurs wurde erfolgreich von uns überprüft. Du kannst den Kurs nun veröffentlichen und damit zur Anmeldung für Schüler:innen freigeben.',
+        },
+        allowedAndPublished: {
+            published: 'Veröffentlicht',
+            button: 'Kurs absagen',
+            info: 'Dein Kurs ist öffentlich sichtbar. Schüler:innen können sich zu deinem Kurs anmelden, wenn sie in der für deinen Kurs vorgesehenen Jahrgangsstufe sind.',
+        },
+        rejected: {
+            state: 'Abgelehnt',
+            button: 'Support kontaktieren',
+            info: 'Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support.',
+        },
     },
 };
 export default single;

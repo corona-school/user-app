@@ -52,6 +52,7 @@ import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
+import SingleCourseStudent from './pages/student/SingleCourseStudent';
 
 export default function NavigatorLazy() {
     return (
@@ -79,7 +80,7 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth isRetainPath>
-                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourse />} />
+                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
                     </RequireAuth>
                 }
             />

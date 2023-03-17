@@ -1087,7 +1087,6 @@ const SingleCourse: React.FC = () => {
                         {subcourse && subcourse.published && !isInPast && (
                             <PromoteBanner
                                 onClick={doPromote}
-                                canPromote={canPromoteCourse()}
                                 isPromoted={subcourse?.alreadyPromoted || false}
                                 courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                             />
