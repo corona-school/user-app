@@ -358,64 +358,36 @@ const Dashboard: React.FC<Props> = () => {
                             </HSection>
 
                             {/* Matches */}
-                            {data.myRoles?.includes('TUTEE') && ((activeMatches?.length ?? 0) > 0 ||
-                                data?.me?.pupil?.canRequestMatch?.allowed ||
-                                (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
-                                <HSection
-                                    marginBottom={space['1.5']}
-                                    title={t('dashboard.learningpartner.header')}
-                                    showAll={(activeMatches?.length ?? 0) > 2}
-                                    wrap
-                                >
-                                    <Flex direction="row" flexWrap="wrap" marginRight="-10px">
-                                        {activeMatches!.map(
-                                            (match) =>
-                                                (
-                                                    <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
-                                                        <LearningPartner
-                                                            isDark={true}
-                                                            name={`${match?.student?.firstname} ${match?.student?.lastname}`}
-                                                            subjects={match?.subjectsFormatted}
-                                                            status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                            button={
-                                                                (!match.dissolved && (
-                                                                    <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
-                                                                        {t('dashboard.helpers.buttons.solveMatch')}
-                                                                    </Button>
-                                                                )) || <AlertMessage content={t('matching.request.check.resolveMatch')} />
-                                                            }
-                                                            contactMail={match?.studentEmail}
-                                                            meetingId={match?.uuid}
-                                                        />
-                                                    </Box>
-                                                ) || <AlertMessage content={t('dashboard.offers.noMatching')} />
-                                        )}
-                                    </Flex>
-                                    {data?.me?.pupil?.canRequestMatch?.allowed && (
-                                        <Button
-                                            width={ButtonContainer}
-                                            onPress={() => {
-                                                trackEvent({
-                                                    category: 'dashboard',
-                                                    action: 'click-event',
-                                                    name: 'Schüler Dashboard – Matching anfragen',
-                                                    documentTitle: 'Schüler Dashboard',
-                                                });
-                                                navigate('/request-match');
-                                            }}
-                                        >
-                                            {t('dashboard.helpers.buttons.requestMatchSuS')}
-                                        </Button>
-                                    )}
-                                    {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
-                                        <VStack space={2} flexShrink={1} maxWidth="700px">
-                                            {data?.me?.pupil?.firstMatchRequest && (
-                                                <Text>
-                                                    {t('dashboard.offers.requestCreated')}{' '}
-                                                    {DateTime.fromISO(data?.me?.pupil?.firstMatchRequest).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                                                    {t('dashboard.offers.clock')}
-                                                </Text>
-                                            )}
+                            {data?.myRoles?.includes('TUTEE') &&
+                                ((activeMatches?.length ?? 0) > 0 ||
+                                    data?.me?.pupil?.canRequestMatch?.allowed ||
+                                    (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
+                                    <HSection
+                                        marginBottom={space['1.5']}
+                                        title={t('dashboard.learningpartner.header')}
+                                        showAll={(activeMatches?.length ?? 0) > 2}
+                                        wrap
+                                    >
+                                        <Flex direction="row" flexWrap="wrap" marginRight="-10px">
+                                            {activeMatches!.map((match) => (
+                                                <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
+                                                    <LearningPartner
+                                                        isDark={true}
+                                                        name={`${match?.student?.firstname} ${match?.student?.lastname}`}
+                                                        subjects={match?.subjectsFormatted}
+                                                        status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
+                                                        button={
+                                                            (!match.dissolved && (
+                                                                <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
+                                                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                                                </Button>
+                                                            )) || <AlertMessage content={t('matching.request.check.resolveMatch')} />
+                                                        }
+                                                        contactMail={match?.studentEmail}
+                                                        meetingId={match?.uuid}
+                                                    />
+                                                </Box>
+                                            ))}
                                         </Flex>
                                         {data?.me?.pupil?.canRequestMatch?.allowed && (
                                             <Button
@@ -433,7 +405,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 {t('dashboard.helpers.buttons.requestMatchSuS')}
                                             </Button>
                                         )}
-                                        {data?.me?.pupil?.openMatchRequestCount > 0 && (
+                                        {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
                                             <VStack space={2} flexShrink={1} maxWidth="700px">
                                                 {data?.me?.pupil?.firstMatchRequest && (
                                                     <Text>
