@@ -7,7 +7,7 @@ import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 
 import { LFMatch } from '../../types/lernfair/Match';
@@ -23,10 +23,12 @@ import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
+import { gql } from '../../gql';
+import { PupilDashboardQuery } from '../../gql/graphql';
 
 type Props = {};
 
-const query = gql`
+const query = gql(`
     query PupilDashboard {
         me {
             firstname
@@ -70,6 +72,7 @@ const query = gql`
                         tags {
                             name
                         }
+                        subject
                     }
                 }
             }
@@ -96,9 +99,12 @@ const query = gql`
                 start
                 duration
             }
+            firstLecture { start duration }
         }
     }
-`;
+`);
+
+type JoinedSubcourse = Exclude<PupilDashboardQuery['me']['pupil'], null | undefined>['subcoursesJoined'][number];
 
 const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
@@ -112,7 +118,7 @@ const Dashboard: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>(false);
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-    const [dissolveData, setDissolveData] = useState<LFMatch>();
+    const [dissolveData, setDissolveData] = useState<{ id: number }>();
     const [toastShown, setToastShown] = useState<boolean>();
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
 
@@ -140,18 +146,18 @@ const Dashboard: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const sortedAppointments: { course: LFSubCourse; lecture: LFLecture }[] = useMemo(() => {
-        const lectures: { course: LFSubCourse; lecture: LFLecture }[] = [];
+    const sortedAppointments = useMemo(() => {
+        const lectures: { subcourse: JoinedSubcourse; lecture: LFLecture }[] = [];
 
         if (!data?.me?.pupil?.subcoursesJoined) return [];
 
-        for (const sub of data?.me?.pupil?.subcoursesJoined) {
-            const futureAndOngoingLectures = sub.lectures.filter(
-                (lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
+        for (const subcourse of data?.me?.pupil?.subcoursesJoined) {
+            const futureAndOngoingLectures = subcourse.lectures.filter(
+                (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
             );
 
             for (const lecture of futureAndOngoingLectures) {
-                lectures.push({ lecture: lecture, course: sub });
+                lectures.push({ lecture, subcourse });
             }
         }
 
@@ -163,14 +169,14 @@ const Dashboard: React.FC<Props> = () => {
         });
     }, [data?.me?.pupil?.subcoursesJoined]);
 
-    const highlightedAppointment: { course: LFSubCourse; lecture: LFLecture } | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments]);
+    const highlightedAppointment: { subcourse: JoinedSubcourse; lecture: LFLecture } | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments]);
 
     const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
-        gql`
+        gql(`
             mutation cancelMatchRequest {
                 pupilDeleteMatchRequest
             }
-        `,
+        `),
         {
             refetchQueries: [query],
         }
@@ -192,23 +198,25 @@ const Dashboard: React.FC<Props> = () => {
     );
 
     const [dissolve, _dissolve] = useMutation(
-        gql`
+        gql(`
             mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
             }
-        `,
+        `),
         {
             refetchQueries: [query],
         }
     );
 
-    const [joinMeeting, _joinMeeting] = useMutation(gql`
-        mutation joinMeetingPupil($courseId: Float!) {
-            subcourseJoinMeeting(subcourseId: $courseId)
+    const [joinMeeting, _joinMeeting] = useMutation(
+        gql(`
+        mutation joinMeetingPupil($subcourseId: Float!) {
+            subcourseJoinMeeting(subcourseId: $subcourseId)
         }
-    `);
+    `)
+    );
 
-    const dissolveMatch = useCallback((match: LFMatch) => {
+    const dissolveMatch = useCallback((match: { id: number }) => {
         setDissolveData(match);
         setShowDissolveModal(true);
     }, []);
@@ -224,17 +232,17 @@ const Dashboard: React.FC<Props> = () => {
     }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
 
     const activeMatches = useMemo(() => {
-        return data?.me?.pupil?.matches?.filter((match: LFMatch) => !match.dissolved);
+        return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
     const getMeetingLink = useCallback(async () => {
-        const courseId = highlightedAppointment?.course.id;
-        if (!courseId) return;
+        const subcourseId = highlightedAppointment?.subcourse.id;
+        if (!subcourseId) return;
 
         const windowRef = window.open(undefined, '_blank');
 
         try {
-            const res = await joinMeeting({ variables: { courseId } });
+            const res = await joinMeeting({ variables: { subcourseId } });
 
             if (res.data?.subcourseJoinMeeting) {
                 if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
@@ -246,7 +254,7 @@ const Dashboard: React.FC<Props> = () => {
             windowRef?.close();
             setShowMeetingNotStarted(true);
         }
-    }, [highlightedAppointment?.course.id, joinMeeting]);
+    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
 
     const disableMeetingButton: boolean = useMemo(() => {
         if (!highlightedAppointment) return true;
@@ -302,17 +310,17 @@ const Dashboard: React.FC<Props> = () => {
                                             trackEvent({
                                                 category: 'dashboard',
                                                 action: 'click-event',
-                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + sortedAppointments[0]?.course.course?.name,
+                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + sortedAppointments[0]?.subcourse.course?.name,
                                                 documentTitle: 'Schüler Dashboard',
                                             });
-                                            navigate(`/single-course/${sortedAppointments[0]?.course.id}`);
+                                            navigate(`/single-course/${sortedAppointments[0]?.subcourse.id}`);
                                         }}
-                                        tags={highlightedAppointment?.course?.course?.tags}
+                                        tags={highlightedAppointment?.subcourse?.course?.tags}
                                         date={highlightedAppointment?.lecture.start}
                                         duration={highlightedAppointment?.lecture.duration}
-                                        image={highlightedAppointment?.course.course?.image}
-                                        title={highlightedAppointment?.course.course?.name}
-                                        description={highlightedAppointment?.course.course?.description?.substring(0, 64)}
+                                        image={highlightedAppointment?.subcourse.course?.image ?? undefined}
+                                        title={highlightedAppointment?.subcourse.course?.name}
+                                        description={'' /* highlightedAppointment?.subcourse.course?.description?.substring(0, 64) */}
                                     />
                                 </VStack>
                             )}
@@ -320,11 +328,9 @@ const Dashboard: React.FC<Props> = () => {
                             {/* Appointments */}
                             <HSection marginBottom={space['1.5']} title={t('dashboard.myappointments.header')}>
                                 {(sortedAppointments.length > 1 &&
-                                    sortedAppointments.slice(1, 5).map(({ course, lecture }: { course: LFSubCourse; lecture: LFLecture }) => {
-                                        if (!course) return <></>;
-
+                                    sortedAppointments.slice(1, 5).map(({ subcourse, lecture }) => {
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${course.course.description}+${lecture.start}`}>
+                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${subcourse.id}+${lecture.start}`}>
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
@@ -332,17 +338,17 @@ const Dashboard: React.FC<Props> = () => {
                                                         trackEvent({
                                                             category: 'dashboard',
                                                             action: 'click-event',
-                                                            name: 'Schüler Dashboard – Meine Termin | Klick auf' + course.course.name,
+                                                            name: 'Schüler Dashboard – Meine Termin | Klick auf' + subcourse.course.name,
                                                             documentTitle: 'Schüler Dashboard',
                                                         });
 
-                                                        navigate(`/single-course/${course.id}`);
+                                                        navigate(`/single-course/${subcourse.id}`);
                                                     }}
-                                                    description={course.course.description}
-                                                    tags={course.course.tags}
+                                                    description={''}
+                                                    tags={subcourse.course.tags}
                                                     date={lecture.start}
-                                                    image={course.course.image}
-                                                    title={course.course.name}
+                                                    image={subcourse.course.image ?? undefined}
+                                                    title={subcourse.course.name}
                                                 />
                                             </Column>
                                         );
@@ -350,11 +356,18 @@ const Dashboard: React.FC<Props> = () => {
                             </HSection>
 
                             {/* Matches */}
-                            {(activeMatches?.length > 0 || data?.me?.pupil?.canRequestMatch?.allowed || data?.me?.pupil?.openMatchRequestCount > 0) && (
-                                <HSection marginBottom={space['1.5']} title={t('dashboard.learningpartner.header')} showAll={activeMatches > 2} wrap>
+                            {((activeMatches?.length ?? 0) > 0 ||
+                                data?.me?.pupil?.canRequestMatch?.allowed ||
+                                (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
+                                <HSection
+                                    marginBottom={space['1.5']}
+                                    title={t('dashboard.learningpartner.header')}
+                                    showAll={(activeMatches?.length ?? 0) > 2}
+                                    wrap
+                                >
                                     <Flex direction="row" flexWrap="wrap" marginRight="-10px">
-                                        {activeMatches.map(
-                                            (match: LFMatch) =>
+                                        {activeMatches!.map(
+                                            (match) =>
                                                 (
                                                     <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
                                                         <LearningPartner
@@ -392,7 +405,7 @@ const Dashboard: React.FC<Props> = () => {
                                             {t('dashboard.helpers.buttons.requestMatchSuS')}
                                         </Button>
                                     )}
-                                    {data?.me?.pupil?.openMatchRequestCount > 0 && (
+                                    {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
                                         <VStack space={2} flexShrink={1} maxWidth="700px">
                                             {data?.me?.pupil?.firstMatchRequest && (
                                                 <Text>
@@ -421,16 +434,15 @@ const Dashboard: React.FC<Props> = () => {
                                 marginBottom={space['1.5']}
                                 title={t('dashboard.relatedcontent.header')}
                                 onShowAll={() => navigate('/group')}
-                                showAll={data?.subcoursesPublic?.length > 4}
+                                showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
                             >
                                 {(data?.subcoursesPublic?.length &&
-                                    data?.subcoursesPublic?.slice(0, 4).map((sc: LFSubCourse, i: number) => (
-                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%" key={sc.id}>
+                                    data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
+                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%" key={subcourse.id}>
                                             <SignInCard
                                                 showTrafficLight
-                                                trafficLightStatus={getTrafficStatus(sc?.participantsCount || 0, sc?.maxParticipants || 0)}
-                                                tags={sc.course.tags}
-                                                data={sc}
+                                                trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
+                                                subcourse={subcourse}
                                                 onClickSignIn={() => {
                                                     trackEvent({
                                                         category: 'dashboard',
@@ -438,7 +450,7 @@ const Dashboard: React.FC<Props> = () => {
                                                         name: 'Schüler Dashboard – Matching Vorschlag',
                                                         documentTitle: 'Schüler Dashboard',
                                                     });
-                                                    navigate(`/single-course/${sc.id}`);
+                                                    navigate(`/single-course/${subcourse.id}`);
                                                 }}
                                                 onPress={() => {
                                                     trackEvent({
@@ -447,7 +459,7 @@ const Dashboard: React.FC<Props> = () => {
                                                         name: 'Schüler Dashboard – Matching Vorschlag',
                                                         documentTitle: 'Schüler Dashboard',
                                                     });
-                                                    navigate(`/single-course/${sc.id}`);
+                                                    navigate(`/single-course/${subcourse.id}`);
                                                 }}
                                             />
                                         </Column>
@@ -463,7 +475,7 @@ const Dashboard: React.FC<Props> = () => {
                     setShowDissolveModal(false);
                     return await dissolve({
                         variables: {
-                            matchId: dissolveData?.id,
+                            matchId: dissolveData!.id,
                             dissolveReason: parseInt(reason),
                         },
                     });
