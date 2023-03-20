@@ -420,7 +420,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                         button={
                                                             (!match.dissolved && (
                                                                 <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
-                                                                    {t('matching.request.buttons.dissolve')}
+                                                                    {t('matching.shared.dissolve')}
                                                                 </Button>
                                                             )) || <Text color="lightText">{t('matching.status.dissolved')}</Text>
                                                         }
