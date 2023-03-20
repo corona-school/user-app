@@ -1,9 +1,10 @@
 import { ApolloQueryResult } from '@apollo/client';
-import { Button, Column, Modal, Row, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { useEffect, useState } from 'react';
+import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
+import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import AlertMessage from '../../../widgets/AlertMessage';
 import JoinMeeting from '../../subcourse/JoinMeeting';
@@ -18,6 +19,7 @@ type ActionButtonProps = {
     canJoinSubcourse: CanJoin;
     joinedSubcourse: boolean;
     joinedWaitinglist: boolean;
+    leftSubcourseData: boolean;
     leftWaitinglist: boolean;
     loadingSubcourseJoined: boolean;
     loadingSubcourseLeft: boolean;
@@ -38,6 +40,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     canJoinSubcourse,
     joinedSubcourse,
     joinedWaitinglist,
+    leftSubcourseData,
     leftWaitinglist,
     loadingSubcourseJoined,
     loadingSubcourseLeft,
@@ -52,51 +55,58 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     doContactInstructor,
     refresh,
 }) => {
-    const [isSignedInModal, setSignedInModal] = useState<boolean>(false);
-    const [isSignedOutSureModal, setSignedOutSureModal] = useState<boolean>(false);
-    const [isSignedOutModal, setSignedOutModal] = useState<boolean>(false);
-    const [isOnWaitingListModal, setOnWaitingListModal] = useState<boolean>(false);
-    const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState<boolean>(false);
+    const [signInModal, setSignInModal] = useState<boolean>(false);
+    const [signOutModal, setSignOutModal] = useState<boolean>(false);
+    const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
+    const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
     const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
-
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
+    const toast = useToast();
 
     async function contactInstructor(title: string, body: string) {
         doContactInstructor(title, body);
         setShowMessageModal(false);
     }
 
-    useEffect(() => {
-        if (joinedSubcourse) {
-            setSignedInModal(true);
-        }
-    }, [joinedSubcourse]);
+    const handleSignInCourse = useCallback(() => {
+        setSignInModal(false);
+        joinSubcourse();
+        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+    }, []);
+
+    const handleCourseLeave = useCallback(async () => {
+        setSignOutModal(false);
+        leaveSubcourse();
+        toast.show({ description: t('single.leave.toast'), placement: 'top' });
+    }, []);
+
+    const handleJoinWaitinglist = useCallback(() => {
+        joinWaitinglist();
+        setJoinWaitinglistModal(false);
+        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+    }, []);
+
+    const handleWaitinglistLeave = useCallback(async () => {
+        setLeaveWaitingslistModal(false);
+        leaveWaitinglist();
+        toast.show({ description: t('single.leaveWaitinglist.toast'), placement: 'top' });
+    }, []);
 
     useEffect(() => {
-        if (leftWaitinglist) {
-            setLeaveWaitingListModal(true);
+        if (joinedSubcourse || leftSubcourseData || joinedWaitinglist || leftWaitinglist) {
+            refresh();
         }
-    }, [leftWaitinglist]);
-
-    useEffect(() => {
-        if (joinedWaitinglist) {
-            setOnWaitingListModal(true);
-        }
-    }, [joinedWaitinglist]);
+    }, [joinedSubcourse, leftSubcourseData, joinedWaitinglist, leftWaitinglist]);
 
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {!subcourse?.isParticipant &&
                     (canJoinSubcourse?.allowed ? (
-                        <Button onPress={joinSubcourse} isDisabled={loadingSubcourseJoined}>
+                        <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
                             {t('signin')}
                         </Button>
                     ) : (
@@ -104,31 +114,17 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     ))}
 
                 {subcourse?.isParticipant && (
-                    <Button onPress={() => setSignedOutSureModal(true)} isDisabled={loadingSubcourseLeft}>
+                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
                         {t('single.actions.leaveSubcourse')}
                     </Button>
                 )}
                 {!subcourse?.isParticipant && courseFull && !subcourse.isOnWaitingList && (
-                    <Button
-                        variant="outline"
-                        onPress={() => {
-                            joinWaitinglist();
-                            setOnWaitingListModal(true);
-                        }}
-                        isDisabled={loadingJoinedWaitinglist}
-                    >
+                    <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
                         {t('single.actions.joinWaitinglist')}
                     </Button>
                 )}
                 {subcourse.isOnWaitingList && (
-                    <Button
-                        variant="outline"
-                        onPress={() => {
-                            leaveWaitinglist();
-                            setLeaveWaitingListModal(true);
-                        }}
-                        isDisabled={loadingWaitinglistLeft}
-                    >
+                    <Button variant="outline" onPress={() => setLeaveWaitingslistModal(true)} isDisabled={loadingWaitinglistLeft}>
                         {t('single.actions.leaveWaitinglist')}
                     </Button>
                 )}
@@ -139,157 +135,48 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
                 {subcourse?.isParticipant && subcourse?.published && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
-            <VStack>
+            <VStack mt="3">
                 {subcourse?.isParticipant && <AlertMessage content={t('single.card.alreadyRegistered')} />}
                 {subcourse?.isOnWaitingList && <AlertMessage content={t('single.card.waitingListMember')} />}
             </VStack>
-
-            {/* JOINED SUBCOURSE MODAL */}
-            <Modal
-                isOpen={isSignedInModal}
-                onClose={() => {
-                    setSignedInModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich zum Kurs angemeldet.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedInModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+            <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.signIn.button')}
+                    description={t('single.signIn.description')}
+                    onClose={() => setSignInModal(false)}
+                    onConfirm={handleSignInCourse}
+                />
             </Modal>
 
-            {/* SURE TO SIGNE OUT SUBCOURSE MODAL */}
-            <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>Kurseinformationen</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>
-                            Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.
-                        </Text>
-                        <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
-                            <Column>
-                                <Button
-                                    height="100%"
-                                    colorScheme="blueGray"
-                                    variant="ghost"
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                    }}
-                                >
-                                    {t('cancel')}
-                                </Button>
-                            </Column>
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                        leaveSubcourse();
-                                        setSignedOutModal(true);
-                                    }}
-                                >
-                                    Vom Kurs abmelden
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+            <Modal isOpen={signOutModal} onClose={() => setSignOutModal(false)}>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.leave.signOut')}
+                    description={t('single.leave.description')}
+                    onClose={() => setSignOutModal(false)}
+                    onConfirm={() => handleCourseLeave()}
+                />
             </Modal>
 
-            {/* SIGNED OUT SUBCOURSE MODAL */}
-            <Modal
-                isOpen={isSignedOutModal}
-                onClose={() => {
-                    setSignedOutModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>Kurseinformationen</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast dich nun erfolgreich vom Kurs abgemeldet.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+            <Modal isOpen={joinWaitinglistModal} onClose={() => setJoinWaitinglistModal(false)}>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.joinWaitinglist.button')}
+                    description={t('single.joinWaitinglist.description')}
+                    onClose={() => setJoinWaitinglistModal(false)}
+                    onConfirm={handleJoinWaitinglist}
+                />
             </Modal>
 
-            {/* JOINED WAITINGLIST MODAL */}
-            <Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du bist auf der Warteliste!</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setOnWaitingListModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
-
-            {/* LEFT WAITINGLIST MODAL */}
-            <Modal
-                isOpen={isLeaveWaitingListModal}
-                onClose={() => {
-                    setLeaveWaitingListModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast die Warteliste erfolgreich verlassen.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setLeaveWaitingListModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+            <Modal isOpen={leaveWaitinglistModal} onClose={() => setLeaveWaitingslistModal(false)}>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.joinWaitinglist.button')}
+                    description={t('single.joinWaitinglist.description')}
+                    onClose={() => setJoinWaitinglistModal(false)}
+                    onConfirm={handleWaitinglistLeave}
+                />
             </Modal>
 
             <SendParticipantsMessageModal
