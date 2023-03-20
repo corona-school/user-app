@@ -8,6 +8,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { gql, useMutation } from '@apollo/client';
 import { RegistrationContext } from '../Registration';
 import { useNavigate } from 'react-router-dom';
+import isEmail from 'validator/es/lib/isEmail';
 
 const PersonalData: React.FC = () => {
     const {
@@ -46,8 +47,8 @@ const PersonalData: React.FC = () => {
         setShowNameMissing(!firstname || !lastname);
         setShowPasswordLength(password.length < 6);
         setShowPasswordConfirmNoMatch(password !== passwordRepeat);
-        setEmailValidate(!/\S+@\S+\.\S+/.test(email) || email.length < 6);
-        return password.length >= 6 && password === passwordRepeat && email.length >= 6 && /\S+@\S+\.\S+/.test(email) && firstname && lastname;
+        setEmailValidate(!isEmail(email));
+        return password.length >= 6 && password === passwordRepeat && isEmail(email) && firstname && lastname;
     }, [email, firstname, lastname, password, passwordRepeat]);
 
     const checkEmail = useCallback(async () => {
