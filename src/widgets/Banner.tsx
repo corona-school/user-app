@@ -5,11 +5,12 @@ import { useMemo } from 'react';
 
 type BannerProps = {
     courseState: Course_Coursestate_Enum;
+    isCourseCancelled: boolean;
     isPublished: boolean;
     handleButtonClick: () => void;
 };
 
-const Banner: React.FC<BannerProps> = ({ courseState, isPublished, handleButtonClick }) => {
+const Banner: React.FC<BannerProps> = ({ courseState, isCourseCancelled, isPublished, handleButtonClick }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
@@ -51,37 +52,39 @@ const Banner: React.FC<BannerProps> = ({ courseState, isPublished, handleButtonC
 
     return (
         <Box>
-            <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                <Stack direction={isMobile ? 'column' : 'row'} alignItems={isMobile ? 'flext-start' : 'center'}>
-                    <Stack direction="row" mb={isMobile ?? '3'}>
-                        <Text bold fontSize="md">
-                            {t('single.banner.state')}
-                        </Text>
-                        <Text ml="1" fontSize="md">
-                            {stateText}
-                        </Text>
+            {!isCourseCancelled && (
+                <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
+                    <Stack direction={isMobile ? 'column' : 'row'} alignItems={isMobile ? 'flext-start' : 'center'}>
+                        <Stack direction="row" mb={isMobile ?? '3'}>
+                            <Text bold fontSize="md">
+                                {t('single.banner.state')}
+                            </Text>
+                            <Text ml="1" fontSize="md">
+                                {stateText}
+                            </Text>
 
-                        <Tooltip
-                            maxWidth={270}
-                            label={!isPublished ? stateTooltipText : t('single.banner.allowedAndPublished.info')}
-                            _text={{ textAlign: 'center' }}
-                            p={3}
-                            hasArrow
-                            children={<InfoIcon ml={3} size="5" color="danger.100" />}
-                        ></Tooltip>
+                            <Tooltip
+                                maxWidth={270}
+                                label={!isPublished ? stateTooltipText : t('single.banner.allowedAndPublished.info')}
+                                _text={{ textAlign: 'center' }}
+                                p={3}
+                                hasArrow
+                                children={<InfoIcon ml={3} size="5" color="danger.100" />}
+                            />
+                        </Stack>
+
+                        <Spacer />
+
+                        <Stack w={isMobile ?? 'full'}>
+                            {courseState !== Course_Coursestate_Enum.Submitted && (
+                                <Button variant="outline" onPress={handleButtonClick}>
+                                    {stateButtonText}
+                                </Button>
+                            )}
+                        </Stack>
                     </Stack>
-
-                    <Spacer />
-
-                    <Stack w={isMobile ?? 'full'}>
-                        {courseState !== Course_Coursestate_Enum.Submitted && (
-                            <Button variant="outline" onPress={handleButtonClick}>
-                                {stateButtonText}
-                            </Button>
-                        )}
-                    </Stack>
-                </Stack>
-            </Card>
+                </Card>
+            )}
         </Box>
     );
 };

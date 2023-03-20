@@ -10,11 +10,10 @@ import StudentSetMeetingUrl from './StudentSetMeetingUrl';
 
 type ActionButtonProps = {
     subcourse: Subcourse;
-    isInPast: boolean;
     refresh: () => Promise<ApolloQueryResult<void>>;
 };
 
-const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, isInPast, refresh }) => {
+const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
@@ -23,6 +22,12 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, isInPast
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+                {subcourse.published && (
+                    <>
+                        <JoinMeeting subcourse={subcourse} refresh={refresh} />
+                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
+                    </>
+                )}
                 {subcourse?.isInstructor && (
                     <Button
                         onPress={() => {
@@ -31,16 +36,9 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, isInPast
                             });
                         }}
                         variant="outline"
-                        // isDisabled={isInPast}
                     >
                         {t('single.courseInfo.editCourse')}
                     </Button>
-                )}
-                {subcourse.published && (
-                    <>
-                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
-                        <JoinMeeting subcourse={subcourse} refresh={refresh} />
-                    </>
                 )}
                 <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
             </Stack>

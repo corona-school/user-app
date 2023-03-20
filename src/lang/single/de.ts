@@ -16,6 +16,7 @@ const single = {
         status: {
             free: 'Freie Plätze',
             last: 'Nur noch {{seatsLeft}} freie Plätze',
+            lastSeats: '{{seatsFull}} von {{seatsMax}} Plätzen belegt',
             full: 'Ausgebucht',
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
@@ -46,13 +47,15 @@ const single = {
         grade: 'Jahrgangsstufe: ',
         class: 'Klasse {{minGrade}} - {{maxGrade}}',
         editCourse: 'Kurs editieren',
+        courseInPast: 'Dieser Kurs ist bereits vorbei.',
+        courseCancelled: 'Dieser Kurs wurde abgesagt.',
     },
     actions: {
         leaveSubcourse: 'Kurs verlassen',
         joinWaitinglist: ' Auf Warteliste setzen',
         leaveWaitinglist: 'Warteliste verlassen',
         contactInstructor: 'Kursleiter:in kontaktieren',
-        videochat: 'Zum Videochat',
+        videochat: 'Videochat starten',
         videochatShouldOpen: 'Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:',
         openVideochatAgain: 'Videochat erneut öffnen',
         startVideochat: 'Du kannst das Meeting erst eine Stunde vor Beginn des Termins starten.',
@@ -110,11 +113,21 @@ const single = {
         },
     },
     signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+    joinWaitinglist: {
+        button: 'Auf Wartelist setzen',
+        description: 'Möchtest du dich auf die Warteliste setzen?',
+        toast: 'Du bist auf der Warteliste!',
+    },
     leave: {
         course: 'Kurs verlassen',
         signOut: 'Vom Kurs abmelden',
         description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
         toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
+    },
+    leaveWaitinglist: {
+        button: 'Warteliste verlassen',
+        description: 'Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?',
+        toast: 'Du hast die Warteliste erfolgreich verlassen.',
     },
 };
 export default single;

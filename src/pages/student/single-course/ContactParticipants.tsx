@@ -77,7 +77,7 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
 
     return (
         <>
-            <Button onPress={() => setShowMessageModal(true)} width={ButtonContainer} variant="outline">
+            <Button onPress={() => setShowMessageModal(true)} width={ButtonContainer}>
                 {t('single.contact.participants')}
             </Button>
             <SendParticipantsMessageModal

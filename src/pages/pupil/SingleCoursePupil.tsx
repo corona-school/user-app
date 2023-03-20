@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Column, Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -8,27 +8,10 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Lecture, Participant } from '../../gql/graphql';
-import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
-
-function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
-    const { space } = useTheme();
-    return (
-        <Row marginBottom={space['1.5']} alignItems="center">
-            <Column marginRight={space['1']}></Column>
-            <Column>
-                <Heading fontSize="md">
-                    {participant.firstname} {participant.lastname}
-                </Heading>
-                <Text>
-                    {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                    {participant.grade}
-                </Text>
-            </Column>
-        </Row>
-    );
-}
+import { useMemo } from 'react';
+import ParticipantRow from '../subcourse/ParticipantRow';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -148,7 +131,7 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [leaveSubcourse, { loading: loadingSubcourseLeft }] = useMutation(
+    const [leaveSubcourse, { loading: loadingSubcourseLeft, data: leftSubcourseData }] = useMutation(
         gql(`
             mutation LeaveSubcourse($subcourseId: Float!) {
                 subcourseLeave(subcourseId: $subcourseId)
@@ -193,6 +176,13 @@ const SingleCoursePupil = () => {
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
+
+    const isInPast = useMemo(
+        () =>
+            !subcourse ||
+            subcourse.lectures.every((lecture: Lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+        [subcourse]
+    );
 
     const tabs: Tab[] = [
         {
@@ -244,17 +234,17 @@ const SingleCoursePupil = () => {
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
-            <Stack space={space['1.5']} paddingX={space['1.5']}>
-                <Stack>
-                    <SubcourseData course={course} subcourse={subcourse} />
-                </Stack>
-                <Stack>
+            <Stack space={space['3']} paddingX={space['1.5']}>
+                <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
+
+                {!isInPast && (
                     <PupilCourseButtons
                         courseFull={courseFull}
                         subcourse={subcourse}
                         canJoinSubcourse={canJoinData?.subcourse?.canJoin}
                         joinedSubcourse={joinedSubcourseData}
                         joinedWaitinglist={joinedWaitinglist}
+                        leftSubcourseData={leftSubcourseData}
                         leftWaitinglist={leftWaitinglist}
                         loadingSubcourseJoined={loadingSubcourseJoined}
                         loadingSubcourseLeft={loadingSubcourseLeft}
@@ -268,7 +258,7 @@ const SingleCoursePupil = () => {
                         doContactInstructor={doContact}
                         refresh={refetch}
                     />
-                </Stack>
+                )}
                 <Tabs tabs={tabs} />
             </Stack>
         </WithNavigation>

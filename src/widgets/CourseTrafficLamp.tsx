@@ -13,11 +13,15 @@ type Props = {
     paddingY?: number;
     showBorder?: boolean;
     seatsLeft?: number;
+    seatsFull?: number;
+    seatsMax?: number;
 };
 
 const CourseTrafficLamp: React.FC<Props> = ({
     status = 'free',
     seatsLeft,
+    seatsFull,
+    seatsMax,
     infoPopupTitle,
     infoPopupContent,
     infoPopupLastContent,
@@ -47,6 +51,8 @@ const CourseTrafficLamp: React.FC<Props> = ({
                         <Text marginRight={7} bold>
                             {status === 'free'
                                 ? t('single.global.status.free')
+                                : status === 'last' && userType === 'student'
+                                ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
                                 : status === 'last'
                                 ? t('single.global.status.last', { seatsLeft: seatsLeft })
                                 : status === 'full'

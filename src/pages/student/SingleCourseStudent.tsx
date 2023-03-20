@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Column, Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Heading, Modal, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -10,30 +10,14 @@ import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
-import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
+import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
+import CourseConfirmationModal from '../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/Banner';
 import PromoteBanner from '../../widgets/PromoteBanner';
+import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-
-function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
-    const { space } = useTheme();
-    return (
-        <Row marginBottom={space['1.5']} alignItems="center">
-            <Column marginRight={space['1']}></Column>
-            <Column>
-                <Heading fontSize="md">
-                    {participant.firstname} {participant.lastname}
-                </Heading>
-                <Text>
-                    {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                    {participant.grade}
-                </Text>
-            </Column>
-        </Row>
-    );
-}
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -77,8 +61,12 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false)
         minGrade
         maxGrade
         capacity
+        cancelled
         published
         publishedAt
+        isInstructor
+        isParticipant
+        isOnWaitingList
         alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start
@@ -106,10 +94,6 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false)
             duration
         }
 
-        published
-        isInstructor
-        isParticipant
-        isOnWaitingList
     }
 }
 `);
@@ -132,7 +116,7 @@ const SingleCourseStudent = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
 
-    const [publish, { loading: loadingPublished }] = useMutation(
+    const [publish] = useMutation(
         gql(`
         mutation SubcoursePublish($subcourseId: Float!) {
             subcoursePublish(subcourseId: $subcourseId)
@@ -147,7 +131,7 @@ const SingleCourseStudent = () => {
         refetch();
     }, []);
 
-    const [submit, { loading: loadingSubmitted }] = useMutation(
+    const [submit] = useMutation(
         gql(`
         mutation CourseSubmit($courseId: Float!) { 
             courseSubmit(courseId: $courseId)
@@ -161,23 +145,20 @@ const SingleCourseStudent = () => {
         toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
         refetch();
     }, []);
-    const [cancelSubcourse] = useMutation(
+
+    const [cancelSubcourse, { data: canceldData }] = useMutation(
         gql(`mutation CancelSubcourse($subcourseId: Float!) {
         subcourseCancel(subcourseId: $subcourseId)
       }`),
-        { variables: { subcourseId: course?.id } }
+        { variables: { subcourseId: subcourseId } }
     );
 
     const cancelCourse = useCallback(async () => {
-        try {
-            await cancelSubcourse();
-            toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
-            refetch();
-        } catch (e) {
-            toast.show({ description: 'Der Kurs konnte nicht abgesagt werden', placement: 'top' });
-        }
+        await cancelSubcourse();
+        toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
+        refetch();
         setShowCancelModal(false);
-    }, [cancelSubcourse, toast, refetch]);
+    }, [canceldData]);
 
     const tabs: Tab[] = [
         {
@@ -280,31 +261,29 @@ const SingleCourseStudent = () => {
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
-            <Stack space={space['1.5']} paddingX={space['1.5']}>
-                <Stack>
-                    <SubcourseData course={course} subcourse={subcourse} />
-                </Stack>
-                <Stack>
-                    <StudentCourseButtons subcourse={subcourse} isInPast={isInPast} refresh={refetch} />
-                </Stack>
-
-                <Stack>
-                    {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
-                        <PromoteBanner
-                            onClick={doPromote}
-                            isPromoted={subcourse?.alreadyPromoted || false}
-                            courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-                        />
-                    )}
+            <Stack space={space['3']} paddingX={space['1.5']}>
+                <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
+                {!isInPast && !subcourse?.cancelled && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
+                {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
+                    <PromoteBanner
+                        onClick={doPromote}
+                        isPromoted={subcourse?.alreadyPromoted || false}
+                        courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                    />
+                )}
+                {!isInPast && (
                     <Banner
                         courseState={course?.courseState}
+                        isCourseCancelled={subcourse?.cancelled}
                         isPublished={subcourse?.published}
-                        handleButtonClick={subcourse?.published ? () => cancelCourse : getButtonClick}
+                        handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                     />
-                </Stack>
-
+                )}
                 <Tabs tabs={tabs} />
             </Stack>
+            <Modal>
+                <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
+            </Modal>
         </WithNavigation>
     );
 };
