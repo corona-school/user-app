@@ -1,3 +1,4 @@
+import { Course_Coursestate_Enum } from '../../gql/graphql';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -10,6 +11,7 @@ export type LFCourse = {
     image?: string;
     category: string;
     allowContact?: boolean;
+    courseState?: Course_Coursestate_Enum;
 };
 export interface LFSubCourse {
     id: number;
@@ -24,6 +26,7 @@ export interface LFSubCourse {
     canJoin?: LFDecision;
     isOnWaitingList?: boolean;
     published?: boolean;
+    cancelled?: boolean;
     joinAfterStart?: boolean;
     instructors?: LFInstructor[];
     firstLecture?: LFLecture;

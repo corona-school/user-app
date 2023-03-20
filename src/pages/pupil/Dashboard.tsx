@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -23,6 +23,7 @@ import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
+import { Course_Coursestate_Enum } from '../../gql/graphql';
 
 type Props = {};
 
@@ -60,6 +61,10 @@ const query = gql`
                 subcoursesJoined {
                     id
                     isParticipant
+                    minGrade
+                    maxGrade
+                    participantsCount
+                    maxParticipants
                     lectures {
                         start
                         duration
@@ -79,7 +84,6 @@ const query = gql`
             id
             minGrade
             maxGrade
-            maxParticipants
             joinAfterStart
             maxParticipants
             participantsCount
@@ -326,10 +330,11 @@ const Dashboard: React.FC<Props> = () => {
                                         if (!course) return <></>;
 
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${course.course.description}+${lecture.start}`}>
+                                            <Stack minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${course.course.description}+${lecture.start}`}>
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
+                                                    showCourseState
                                                     onPressToCourse={() => {
                                                         trackEvent({
                                                             category: 'dashboard',
@@ -345,8 +350,23 @@ const Dashboard: React.FC<Props> = () => {
                                                     date={lecture.start}
                                                     image={course.course.image}
                                                     title={course.course.name}
+                                                    maxParticipants={course.maxParticipants}
+                                                    participantsCount={course.participantsCount}
+                                                    minGrade={course.minGrade}
+                                                    maxGrade={course.maxGrade}
+                                                    courseStateText={
+                                                        course.published
+                                                            ? t('single.global.courseState.publish')
+                                                            : course.cancelled
+                                                            ? t('single.global.courseState.cancelled')
+                                                            : course.course.courseState === Course_Coursestate_Enum.Created
+                                                            ? t('single.global.courseState.draft')
+                                                            : course.course.courseState === Course_Coursestate_Enum.Submitted
+                                                            ? t('single.global.courseState.submitted')
+                                                            : ''
+                                                    }
                                                 />
-                                            </Column>
+                                            </Stack>
                                         );
                                     })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
                             </HSection>

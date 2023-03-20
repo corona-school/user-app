@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     status: TrafficStatus;
@@ -11,14 +12,33 @@ type Props = {
     infoPopupContent?: string;
     infoPopupLastContent?: string;
     hideText?: boolean;
+    circleSize?: string;
     paddingY?: number;
     showBorder?: boolean;
+    boldState?: boolean;
+    seatsLeft?: number;
+    seatsFull?: number;
+    seatsMax?: number;
 };
 
-const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, infoPopupContent, infoPopupLastContent, hideText, paddingY, showBorder }) => {
+const CourseTrafficLamp: React.FC<Props> = ({
+    status = 'free',
+    infoPopupTitle,
+    infoPopupContent,
+    infoPopupLastContent,
+    hideText,
+    circleSize,
+    paddingY,
+    showBorder,
+    boldState = false,
+    seatsLeft,
+    seatsFull,
+    seatsMax,
+}) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
+    const userType = useUserType();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 
@@ -30,15 +50,17 @@ const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, i
                         borderWidth={showBorder ? 2 : undefined}
                         borderColor="lightText"
                         backgroundColor={status === 'free' ? 'primary.900' : status === 'last' ? 'warning.1000' : status === 'full' ? 'warning.500' : ''}
-                        size="20px"
+                        size={circleSize ? circleSize : '20px'}
                         marginRight={3}
                     />
                     {!hideText && (
-                        <Text marginRight={7} bold>
+                        <Text marginRight={7} bold={boldState}>
                             {status === 'free'
                                 ? t('single.global.status.free')
+                                : status === 'last' && userType === 'student'
+                                ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
                                 : status === 'last'
-                                ? t('single.global.status.last')
+                                ? t('single.global.status.last', { seatsLeft: seatsLeft })
                                 : status === 'full'
                                 ? t('single.global.status.full')
                                 : ''}

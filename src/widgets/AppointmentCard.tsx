@@ -15,6 +15,9 @@ import {
     Heading,
     CheckCircleIcon,
     Tooltip,
+    HStack,
+    VStack,
+    Stack,
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -28,6 +31,7 @@ import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg';
 import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     tags?: LFTag[];
@@ -35,6 +39,10 @@ type Props = {
     duration?: number; // in minutes
     title: string;
     description: string;
+    maxParticipants?: number;
+    participantsCount?: number;
+    minGrade?: number;
+    maxGrade?: number;
     child?: string;
     avatar?: string;
     avatarname?: string;
@@ -50,7 +58,9 @@ type Props = {
     onPressToCourse?: () => any;
     videoButton?: ReactNode | ReactNode[];
     countCourse?: number;
+    courseStateText?: string;
     showTrafficLight?: boolean;
+    showCourseState?: boolean;
     trafficLightStatus?: TrafficStatus;
 };
 
@@ -60,7 +70,12 @@ const AppointmentCard: React.FC<Props> = ({
     duration,
     title,
     countCourse,
+    courseStateText,
     description,
+    maxParticipants,
+    participantsCount,
+    minGrade,
+    maxGrade,
     child,
     variant = 'card',
     avatar,
@@ -75,12 +90,14 @@ const AppointmentCard: React.FC<Props> = ({
     image,
     onPressToCourse,
     showTrafficLight,
+    showCourseState,
     trafficLightStatus,
     videoButton,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
+    const userType = useUserType();
 
     const date = _date && DateTime.fromISO(_date);
 
@@ -103,6 +120,12 @@ const AppointmentCard: React.FC<Props> = ({
             ended = true;
         }
     }
+
+    const seatsLeft: number | undefined = useMemo(() => {
+        if (!maxParticipants) return;
+        if (!participantsCount) return;
+        return maxParticipants - participantsCount;
+    }, [maxParticipants, participantsCount]);
 
     const textColor = useMemo(() => (isTeaser ? 'lightText' : 'darkText'), [isTeaser]);
 
@@ -166,7 +189,7 @@ const AppointmentCard: React.FC<Props> = ({
             {variant === 'card' ? (
                 <Card flexibleWidth={isTeaser || isGrid ? true : false} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
-                        <Column w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
+                        <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
                                 <Image
                                     position="absolute"
@@ -191,7 +214,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 )}
                             </Box>
 
-                            <Box padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px">
+                            <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
                                 {!isTeaser && date && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
@@ -237,6 +260,37 @@ const AppointmentCard: React.FC<Props> = ({
                                     {title}
                                 </Heading>
 
+                                {userType === 'pupil' && (
+                                    <Text maxWidth={sizes['imageHeaderWidth']}>
+                                        <Text bold>{t('single.courseInfo.grade')}</Text>
+                                        {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
+                                    </Text>
+                                )}
+
+                                {showCourseState && (
+                                    <Box>
+                                        <CourseTrafficLamp
+                                            status={trafficLightStatus || 'full'}
+                                            circleSize="12px"
+                                            paddingY={0}
+                                            seatsLeft={seatsLeft}
+                                            seatsFull={participantsCount}
+                                            seatsMax={maxParticipants}
+                                        />
+                                    </Box>
+                                )}
+
+                                {userType === 'student' && courseStateText && (
+                                    <HStack space={'0.5'}>
+                                        <Text bold fontSize="md">
+                                            {t('single.global.state')}
+                                        </Text>
+                                        <Text ml="1" fontSize="md">
+                                            {courseStateText}
+                                        </Text>
+                                    </HStack>
+                                )}
+
                                 {isTeaser && (
                                     <>
                                         <Text paddingBottom={space['1']} color={textColor}>
@@ -262,7 +316,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         </Button>
                                     </Link>
                                 )}
-                            </Box>
+                            </Stack>
 
                             <Box
                                 flex="1"
@@ -282,7 +336,7 @@ const AppointmentCard: React.FC<Props> = ({
 
                                 {isTeaser && videoButton}
                             </Box>
-                        </Column>
+                        </VStack>
                     </Pressable>
                 </Card>
             ) : (

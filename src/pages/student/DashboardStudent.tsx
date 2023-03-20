@@ -23,6 +23,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
+import { Course_Coursestate_Enum } from '../../gql/graphql';
 
 type Props = {};
 
@@ -56,9 +57,12 @@ const query = gql`
                 }
                 subcoursesInstructing {
                     id
+                    minGrade
+                    maxGrade
                     participantsCount
                     maxParticipants
                     published
+                    cancelled
                     lectures {
                         start
                         duration
@@ -66,6 +70,7 @@ const query = gql`
                     course {
                         name
                         description
+                        courseState
                         tags {
                             name
                         }
@@ -309,6 +314,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
+                                                    showCourseState
+                                                    trafficLightStatus="last"
                                                     onPressToCourse={() => {
                                                         trackEvent({
                                                             category: 'dashboard',
@@ -325,6 +332,21 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     date={lecture.start}
                                                     image={course.image}
                                                     title={course.name}
+                                                    maxParticipants={subcourse.maxParticipants}
+                                                    participantsCount={subcourse.participantsCount}
+                                                    minGrade={subcourse.minGrade}
+                                                    maxGrade={subcourse.maxGrade}
+                                                    courseStateText={
+                                                        subcourse.published
+                                                            ? t('single.global.courseState.publish')
+                                                            : subcourse.cancelled
+                                                            ? t('single.global.courseState.cancelled')
+                                                            : course.courseState === Course_Coursestate_Enum.Created
+                                                            ? t('single.global.courseState.draft')
+                                                            : course.courseState === Course_Coursestate_Enum.Submitted
+                                                            ? t('single.global.courseState.submitted')
+                                                            : ''
+                                                    }
                                                 />
                                             </Column>
                                         );

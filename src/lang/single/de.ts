@@ -13,10 +13,18 @@ const single = {
         more_tutors: 'Weitere Tutor:innen',
         years: 'Jahre',
         hours: 'Stunde(n)',
+        state: 'Status:',
         status: {
             free: 'Freie Plätze',
-            last: 'Wenige freie Plätze',
+            last: 'Nur noch {{seatsLeft}} freie Plätze',
+            lastSeats: '{{seatsFull}} von {{seatsMax}} Plätzen belegt',
             full: 'Ausgebucht',
+        },
+        courseState: {
+            publish: 'Öffentlich',
+            cancelled: 'Abgesagt',
+            draft: 'Entwurf',
+            submitted: 'In Prüfung',
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
         noLections: 'Es wurden keine Lektionen eingetragen.',
@@ -26,6 +34,13 @@ const single = {
         description: 'Beschreibung',
         lessons: 'Lektionen',
         participant: 'Teilnehmer:innen',
+    },
+    courseInfo: {
+        grade: 'Jahrgangsstufe: ',
+        class: 'Klasse {{minGrade}} - {{maxGrade}}',
+        editCourse: 'Kurs editieren',
+        courseInPast: 'Dieser Kurs ist bereits vorbei.',
+        courseCancelled: 'Dieser Kurs wurde abgesagt.',
     },
     card: {
         expandCardButton: 'Mehr Kurs-Infos',
