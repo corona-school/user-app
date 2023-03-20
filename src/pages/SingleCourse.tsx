@@ -28,6 +28,7 @@ import Waitinglist from './single-course/Waitinglist';
 import WaitinglistBanner from '../widgets/WaitinglistBanner';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
+import CourseConfirmationModal from '../modals/CourseConfirmationModal';
 
 /* ------------- Common UI ---------------------------- */
 function ParticipantRow({
@@ -492,6 +493,8 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
 function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const toast = useToast();
 
     const [isSignedInModal, setSignedInModal] = useState(false);
 
@@ -519,27 +522,25 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
 
     useEffect(() => {
         if (data?.subcourseJoin) {
-            setSignedInModal(true);
+            refresh();
         }
     }, [data?.subcourseJoin]);
 
-    const { space, sizes } = useTheme();
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const handleSignInCourse = useCallback(() => {
+        joinSubcourse();
+        setSignedInModal(false);
+        toast.show({ description: t('single.pupil.signIn.toast'), placement: 'top' });
+    }, [data?.subcourseJoin, joinSubcourse]);
+
     return (
         <>
             {canJoinData?.subcourse!.canJoin.allowed && (
-                <Button
-                    onPress={() => {
-                        joinSubcourse();
-                    }}
-                    width={ButtonContainer}
-                    marginBottom={space['0.5']}
-                    isDisabled={loading}
-                >
+                <Button onPress={() => setSignedInModal(true)} width={ButtonContainer} marginBottom={space['0.5']} isDisabled={loading}>
                     {t('signin')}
                 </Button>
             )}
@@ -550,25 +551,13 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
                     refresh();
                 }}
             >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>{t('single.pupil.courseSuccess')}</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedInModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    {t('single.global.close')}
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.pupil.signIn.button')}
+                    description={t('single.pupil.signIn.description')}
+                    onClose={() => setSignedInModal(false)}
+                    onConfirm={handleSignInCourse}
+                />
             </Modal>
         </>
     );
@@ -576,11 +565,12 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
 
 function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
     const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const toast = useToast();
 
     const [isSignedOutSureModal, setSignedOutSureModal] = useState(false);
-    const [isSignedOutModal, setSignedOutModal] = useState(false);
 
-    const [leaveSubcourse, { loading }] = useMutation(
+    const [leaveSubcourse, { loading, data }] = useMutation(
         gql(`
             mutation LeaveSubcourse($subcourseId: Float!) {
                 subcourseLeave(subcourseId: $subcourseId)
@@ -589,16 +579,22 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
         { variables: { subcourseId: subcourse.id } }
     );
 
-    const { space, sizes } = useTheme();
+    useEffect(() => {
+        if (data?.subcourseLeave) {
+            refresh();
+        }
+    }, [data?.subcourseLeave, refresh]);
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const buttonWrap = useBreakpointValue({
-        base: 'column',
-        lg: 'row',
-    });
+    const handleCourseLeave = useCallback(async () => {
+        setSignedOutSureModal(false);
+        leaveSubcourse();
+        toast.show({ description: t('single.pupil.leave.toast'), placement: 'top' });
+    }, [leaveSubcourse, refresh, t, toast]);
 
     return (
         <>
@@ -614,69 +610,16 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                 >
                     {t('single.global.leaveCourse')}
                 </Button>
-
                 <AlertMessage content={t('single.card.alreadyRegistered')} />
             </VStack>
             <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('single.leaveModal.header')}</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>{t('single.leaveModal.question')}</Text>
-                        <Row space="3" flexDir={buttonWrap} justifyContent="flex-end">
-                            <Column>
-                                <Button
-                                    height="100%"
-                                    colorScheme="blueGray"
-                                    variant="ghost"
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                    }}
-                                >
-                                    {t('cancel')}
-                                </Button>
-                            </Column>
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutSureModal(false);
-                                        leaveSubcourse();
-                                        setSignedOutModal(true);
-                                    }}
-                                >
-                                    {t('single.global.signOut')}
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
-            <Modal
-                isOpen={isSignedOutModal}
-                onClose={() => {
-                    setSignedOutModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('single.leaveModal.header')}</Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>{t('single.leaveModal.successSignout')}</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setSignedOutModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    {t('single.global.close')}
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
+                <CourseConfirmationModal
+                    headline={t('single.global.courseInfo')}
+                    confirmButtonText={t('single.pupil.leave.signOut')}
+                    description={t('single.pupil.leave.description')}
+                    onClose={() => setSignedOutSureModal(false)}
+                    onConfirm={() => handleCourseLeave()}
+                />
             </Modal>
         </>
     );
@@ -883,6 +826,8 @@ const SingleCourse: React.FC = () => {
             isPupil: userType === 'pupil',
         },
     });
+
+    console.log('Course Data', data);
 
     const [promote, { error }] = useMutation(
         gql(`

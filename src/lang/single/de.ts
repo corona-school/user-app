@@ -23,6 +23,7 @@ const single = {
         close: 'Fenster schließen',
         leaveCourse: 'Kurs verlassen',
         signOut: 'Vom Kurs abmelden',
+        courseInfo: 'Kursinformationen',
     },
     tabs: {
         description: 'Beschreibung',
@@ -87,6 +88,14 @@ const single = {
     pupil: {
         subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
         courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
+        signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+        leave: {
+            course: 'Kurs verlassen',
+            signOut: 'Vom Kurs abmelden',
+            description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+            toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
+        },
     },
 };
+
 export default single;

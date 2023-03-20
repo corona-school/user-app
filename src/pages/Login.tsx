@@ -3,7 +3,24 @@ import { gql } from '../gql';
 import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
-import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack, Link, Alert, HStack, useToast, CloseIcon } from 'native-base';
+import {
+    Box,
+    Button,
+    Heading,
+    Image,
+    Modal,
+    Row,
+    Text,
+    useBreakpointValue,
+    useTheme,
+    VStack,
+    Link,
+    Alert,
+    HStack,
+    useToast,
+    CloseIcon,
+    FormControl,
+} from 'native-base';
 import useApollo from '../hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
@@ -13,6 +30,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
+import isEmail from 'validator/lib/isEmail';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -23,6 +41,7 @@ export default function Login() {
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [loginEmail, setLoginEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [isInvalidEmail, setIsInvalidEmail] = useState(false);
     const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
@@ -58,6 +77,16 @@ export default function Login() {
             tokenRequest(email: $email, action: "user-authenticate", redirectTo: $redirectTo)
         }
     `)
+    );
+
+    const onChangeEmail = useCallback(
+        (text: string) => {
+            if (isInvalidEmail) {
+                setIsInvalidEmail(false);
+            }
+            setEmail(text);
+        },
+        [isInvalidEmail]
     );
 
     useEffect(() => {
@@ -142,7 +171,10 @@ export default function Login() {
     }, [email, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
-        if (!email || email.length < 6) return;
+        if (!email || !isEmail(email)) {
+            setIsInvalidEmail(true);
+            return;
+        }
         const res = await determineLoginOptions({ variables: { email } });
         if (res.data!.userDetermineLoginOptions === 'password') {
             setShowPasswordField(true);
@@ -284,7 +316,17 @@ export default function Login() {
 
                     <Box marginX="90px" maxWidth={ContainerWidth} width="100%">
                         <Row marginBottom={3}>
-                            <TextInput width="100%" isRequired={true} placeholder={t('email')} onChangeText={setEmail} onKeyPress={handleKeyPress} />
+                            <FormControl isInvalid={isInvalidEmail}>
+                                <TextInput
+                                    width="100%"
+                                    isRequired={true}
+                                    placeholder={t('email')}
+                                    onChangeText={onChangeEmail}
+                                    onKeyPress={handleKeyPress}
+                                    isInvalid={isInvalidEmail}
+                                />
+                                <FormControl.ErrorMessage>{t('login.invalidMailMessage')}</FormControl.ErrorMessage>
+                            </FormControl>
                         </Row>
                         {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
                         {(showPasswordField && (
