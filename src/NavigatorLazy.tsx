@@ -9,7 +9,6 @@ import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolT
 import ChangeSettingState from './pages/change-setting/ChangeSettingState';
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage';
 import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass';
-import SingleCourse from './pages/SingleCourse';
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome';
