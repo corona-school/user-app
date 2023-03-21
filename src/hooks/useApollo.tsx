@@ -419,6 +419,19 @@ const useApolloInternal = () => {
             const deviceToken = getDeviceToken();
             const secretToken = searchParams.get('secret_token');
 
+            if (pathname.includes('verify-email')) {
+                // The E-Mail Verification flow is special: The user already has a session with an unverified account,
+                //  we MUST reauthenticate to use the secret token that proves that the user has access to the email.
+                //   and we also want to refresh the user session
+                if (!secretToken) {
+                    setSessionState('error');
+                    return;
+                }
+
+                await loginWithSecretToken(secretToken);
+                return;
+            }
+
             // Maybe the session already works?
             try {
                 await determineUser();
