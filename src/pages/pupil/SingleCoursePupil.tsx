@@ -33,7 +33,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
     if (loading) return <CenterLoadingSpinner />;
 
-    const otherParticipants = data!.subcourse!.otherParticipants;
+    const otherParticipants = data?.subcourse?.otherParticipants;
 
     if (otherParticipants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
 
