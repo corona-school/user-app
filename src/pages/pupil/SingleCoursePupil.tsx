@@ -15,7 +15,7 @@ import ParticipantRow from '../subcourse/ParticipantRow';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
-    const { data } = useQuery(
+    const { data, loading } = useQuery(
         gql(`
         query GetOtherParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
@@ -31,7 +31,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
         { variables: { subcourseId } }
     );
 
-    if (!data) return <CenterLoadingSpinner />;
+    if (loading) return <CenterLoadingSpinner />;
 
     const otherParticipants = data!.subcourse!.otherParticipants;
 
@@ -211,8 +211,7 @@ const SingleCoursePupil = () => {
                                     {DateTime.fromISO(lecture.start).toFormat('HH:mm')} {t('single.global.clock')}
                                 </Text>
                                 <Text>
-                                    <Text bold>{t('single.global.duration')}: </Text>{' '}
-                                    {(typeof lecture?.duration !== 'number' ? parseInt(lecture?.duration) : lecture?.duration) / 60} {t('single.global.hours')}
+                                    <Text bold>{t('single.global.duration')}: </Text> {lecture?.duration / 60} {t('single.global.hours')}
                                 </Text>
                             </Row>
                         ))) || <Text>{t('single.global.noLections')}</Text>}

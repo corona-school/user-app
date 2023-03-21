@@ -51,6 +51,8 @@ const single = {
     contact: {
         instructor: 'Kursleiter:innen kontaktieren',
         participants: 'Teilnehmer:innen kontaktieren',
+        messageSend: 'Nachricht erfolgreich versendet',
+        failedToSend: 'Deine Nachricht konnte nicht versendet werden',
     },
     courseInfo: {
         grade: 'Jahrgangsstufe: ',
@@ -132,44 +134,44 @@ const single = {
         signOut: 'Vom Kurs abmelden',
         description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
         toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
-        waitinglist: {
-            toast: 'Schüler wurde dem Kurs hinzugefügt.',
-            error: 'Schüler:in konnte nicht hinzugefügt werden.',
-            onwaitinglist: 'Auf Warteliste setzen',
-            leaveWaitinglist: 'Warteliste verlassen',
-            leaveSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
-            joined: 'Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.',
-            joinMember: 'Du bist auf der Warteliste für diesen Kurs.',
-            noPupilsOnWaitinglist: 'Keine Schüler:innen auf der Warteliste.',
-            modal: {
-                info: 'Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?',
-                success: 'Du bist auf der Warteliste!',
-                button: 'Auf die Warteliste',
-                cancel: 'Abbrechen',
-            },
+    },
+    waitinglist: {
+        toast: 'Schüler wurde dem Kurs hinzugefügt.',
+        error: 'Schüler:in konnte nicht hinzugefügt werden.',
+        onwaitinglist: 'Auf Warteliste setzen',
+        leaveWaitinglist: 'Warteliste verlassen',
+        leaveSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
+        joined: 'Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.',
+        joinMember: 'Du bist auf der Warteliste für diesen Kurs.',
+        noPupilsOnWaitinglist: 'Keine Schüler:innen auf der Warteliste.',
+        modal: {
+            info: 'Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?',
+            success: 'Du bist auf der Warteliste!',
+            button: 'Auf die Warteliste',
+            cancel: 'Abbrechen',
         },
-        joinPupilModal: {
-            header: 'Schüler:innen nachrücken',
-            add: 'Hinzufügen',
-            amount: 'Anzahl Schüler:innen',
-            success: 'Schüler:innen erfolgreich hinzugefügt',
+    },
+    joinPupilModal: {
+        header: 'Schüler:innen nachrücken',
+        add: 'Hinzufügen',
+        amount: 'Anzahl Schüler:innen',
+        success: 'Schüler:innen erfolgreich hinzugefügt',
+    },
+    pupil: {
+        subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
+        courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
+        signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+        leave: {
+            course: 'Kurs verlassen',
+            signOut: 'Vom Kurs abmelden',
+            description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+            toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
         },
-        pupil: {
-            subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
-            courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
-            signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
-            leave: {
-                course: 'Kurs verlassen',
-                signOut: 'Vom Kurs abmelden',
-                description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-                toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
-            },
-        },
-        leaveWaitinglist: {
-            button: 'Warteliste verlassen',
-            description: 'Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?',
-            toast: 'Du hast die Warteliste erfolgreich verlassen.',
-        },
+    },
+    leaveWaitinglist: {
+        button: 'Warteliste verlassen',
+        description: 'Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?',
+        toast: 'Du hast die Warteliste erfolgreich verlassen.',
     },
 };
 

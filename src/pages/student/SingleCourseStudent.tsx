@@ -11,17 +11,17 @@ import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
-import CourseConfirmationModal from '../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/Banner';
 import PromoteBanner from '../../widgets/PromoteBanner';
+import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
-    const { data } = useQuery(
+    const { data, loading } = useQuery(
         gql(`
         query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
@@ -37,7 +37,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
         { variables: { subcourseId } }
     );
 
-    if (!data) return <CenterLoadingSpinner />;
+    if (loading) return <CenterLoadingSpinner />;
 
     const participants = data!.subcourse!.participants;
 
@@ -53,7 +53,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 }
 
 const singleSubcourseStudentQuery = gql(`
-query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false) {
+query GetSingleSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -67,7 +67,7 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false)
         isInstructor
         isParticipant
         isOnWaitingList
-        alreadyPromoted @include(if: $isStudent)
+        alreadyPromoted
         nextLecture{
             start
             duration
@@ -93,6 +93,14 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isStudent: Boolean = false)
             start
             duration
         }
+        pupilsWaitingCount
+        pupilsOnWaitinglist {
+            id
+            firstname
+            lastname
+            schooltype
+            grade
+            }
 
     }
 }
@@ -160,6 +168,8 @@ const SingleCourseStudent = () => {
         setShowCancelModal(false);
     }, [canceldData]);
 
+    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount]);
+
     const tabs: Tab[] = [
         {
             title: t('single.tabs.description'),
@@ -200,9 +210,27 @@ const SingleCourseStudent = () => {
     if (subcourse?.isInstructor || subcourse?.isParticipant) {
         tabs.push({
             title: t('single.tabs.participant'),
+            badge: subcourse?.participantsCount,
             content: (
                 <>
                     <Participants subcourseId={subcourseId} />
+                </>
+            ),
+        });
+    }
+
+    if (subcourse?.isInstructor) {
+        tabs.push({
+            title: t('single.tabs.waitinglist'),
+            badge: countPupilsOnWaitinglist,
+            content: (
+                <>
+                    <Waitinglist
+                        subcourseId={subcourseId}
+                        maxParticipants={subcourse?.maxParticipants}
+                        pupilsOnWaitinglist={subcourse?.pupilsOnWaitinglist}
+                        refetch={refetch}
+                    />
                 </>
             ),
         });

@@ -1,12 +1,14 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
+import { getTrafficStatus } from '../../../Utility';
 import AlertMessage from '../../../widgets/AlertMessage';
+import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 
 type CanJoin = {
@@ -95,6 +97,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
         toast.show({ description: t('single.leaveWaitinglist.toast'), placement: 'top' });
     }, []);
 
+    const courseTrafficStatus = useMemo(
+        () => getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0),
+        [subcourse?.maxParticipants, subcourse?.participantsCount]
+    );
+
     useEffect(() => {
         if (joinedSubcourse || leftSubcourseData || joinedWaitinglist || leftWaitinglist) {
             refresh();
@@ -104,14 +111,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {!subcourse?.isParticipant &&
-                    (canJoinSubcourse?.allowed ? (
-                        <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
-                            {t('signin')}
-                        </Button>
-                    ) : (
-                        <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse?.reason}` as unknown as TemplateStringsArray)} />
-                    ))}
+                {!subcourse?.isParticipant && canJoinSubcourse?.allowed && (
+                    <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
+                        {t('signin')}
+                    </Button>
+                )}
 
                 {subcourse?.isParticipant && (
                     <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
@@ -124,9 +128,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </Button>
                 )}
                 {subcourse.isOnWaitingList && (
-                    <Button variant="outline" onPress={() => setLeaveWaitingslistModal(true)} isDisabled={loadingWaitinglistLeft}>
-                        {t('single.actions.leaveWaitinglist')}
-                    </Button>
+                    <VStack space={space['0.5']} mb="5">
+                        <WaitinglistBanner
+                            courseStatus={courseTrafficStatus}
+                            onWaitinglist={subcourse.isOnWaitingList}
+                            subcourseId={subcourse.id}
+                            refresh={() => refresh()}
+                        />
+                    </VStack>
                 )}
                 {subcourse.isParticipant && (
                     <Button variant="outline" onPress={() => setShowMessageModal(true)}>
@@ -135,10 +144,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
                 {subcourse?.isParticipant && subcourse?.published && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
-            <VStack mt="3">
-                {subcourse?.isParticipant && <AlertMessage content={t('single.card.alreadyRegistered')} />}
-                {subcourse?.isOnWaitingList && <AlertMessage content={t('single.card.waitingListMember')} />}
-            </VStack>
+
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}

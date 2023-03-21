@@ -50,6 +50,7 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
 
     const onSendMessage = useCallback(
         async (subject: string, message: string) => {
+            if (!subject || !message || !participantsData) return;
             if (subject && message && participantsData) {
                 try {
                     await sendMessage({
@@ -57,16 +58,17 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
                             subject,
                             message,
                             subcourseId: subcourseId,
-                            participants: selectedParticipants.length
-                                ? selectedParticipants
-                                : participantsData.subcourse!.participants.map((it: Participant) => it.id),
+                            participants:
+                                selectedParticipants.length > 0
+                                    ? selectedParticipants
+                                    : participantsData.subcourse!.participants.map((it: Participant) => it.id),
                         },
                     });
-                    toast.show({ description: 'Nachricht erfolgreich versendet', placement: 'top' });
+                    toast.show({ description: t('single.contact.messageSend'), placement: 'top' });
                     setShowMessageModal(false);
                 } catch (e) {
                     toast.show({
-                        description: 'Deine Nachricht konnte nicht versendet werden',
+                        description: t('single.contact.failedToSend'),
                         placement: 'top',
                     });
                 }

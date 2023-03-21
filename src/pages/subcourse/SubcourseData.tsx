@@ -64,7 +64,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <Text bold>{t('single.courseInfo.grade')}</Text>
                         {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
                     </Text>
-                    {!isInPast && !subcourse?.cancelled && subcourse?.published && (
+                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
                         <CourseTrafficLamp
                             status={trafficStatus}
                             seatsLeft={seatsLeft}
