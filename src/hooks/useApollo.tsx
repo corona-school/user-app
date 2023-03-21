@@ -423,11 +423,14 @@ const useApolloInternal = () => {
                 // The E-Mail Verification flow is special: The user already has a session with an unverified account,
                 //  we MUST reauthenticate to use the secret token that proves that the user has access to the email.
                 //   and we also want to refresh the user session
+                // Otherwise we redirect them to the next page with an unverified session, and that page tells the user to verify their account (they get stuck in a loop)
                 if (!secretToken) {
+                    log('GraphQL', 'No Secret Token present on E-Mail Verification Page, that is an error');
                     setSessionState('error');
                     return;
                 }
 
+                log('GraphQL', 'User visits email verification, forcing the usage of secret token');
                 await loginWithSecretToken(secretToken);
                 return;
             }
