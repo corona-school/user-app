@@ -92,7 +92,7 @@ const lernfair = {
             },
             // from backend/common/courses/participants.ts
             pupil: {
-                'subcourse-full': 'Dieser Kurs ist leider grade ausgebucht.',
+                'subcourse-full': 'Dieser Kurs ist leider gerade ausgebucht.',
                 'grade-to-high': 'Du kannst dich nicht anmelden, weil deine Klassenstufe zu groß ist.',
                 'grade-to-low': 'Du kannst dich nicht anmelden, weil deine Klassenstufe zu klein ist.',
                 'no-lectures': 'Du kannst dich nicht anmelden, da keine Lektionen angelegt sind.',

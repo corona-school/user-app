@@ -1,3 +1,4 @@
+import { Pupil } from '../../gql/graphql';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -47,5 +48,9 @@ export type LFInstructor = {
     firstname: string;
     lastname: string;
 };
+
+export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
+
+export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade'>;
 
 export type TrafficStatus = 'full' | 'last' | 'free';

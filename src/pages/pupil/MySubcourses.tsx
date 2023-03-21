@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, useTheme } from 'native-base';
+import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LFSubCourse } from '../../types/lernfair/Course';
@@ -27,7 +27,8 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
             trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
             isFullHeight
             isSpaceMarginBottom={false}
-            isHorizontalCardCourseChecked={subcourse.isParticipant}
+            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+            isOnWaitinglist={subcourse?.isOnWaitingList}
             key={index}
             variant="horizontal"
             description={subcourse.course.description}
