@@ -25,6 +25,7 @@ import { LFTag, TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
 
 import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg';
+import SandClockIcon from '../assets/icons/lernfair/Icon_SandClock_small.svg';
 import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +47,7 @@ type Props = {
     isSpaceMarginBottom?: boolean;
     isFullHeight?: boolean;
     isHorizontalCardCourseChecked?: boolean;
+    isOnWaitinglist?: boolean;
     image?: string;
     onPressToCourse?: () => any;
     videoButton?: ReactNode | ReactNode[];
@@ -72,6 +74,7 @@ const AppointmentCard: React.FC<Props> = ({
     isSpaceMarginBottom = true,
     isFullHeight = false,
     isHorizontalCardCourseChecked = false,
+    isOnWaitinglist,
     image,
     onPressToCourse,
     showTrafficLight,
@@ -335,7 +338,7 @@ const AppointmentCard: React.FC<Props> = ({
                         {isHorizontalCardCourseChecked && (
                             <Box position="absolute" right="20px" bottom="13px">
                                 <Tooltip label={t('single.card.alreadyRegistered')}>
-                                    <CheckCircleIcon color="danger.100" size="20px" />
+                                    {isOnWaitinglist ? <SandClockIcon /> : <CheckCircleIcon color="danger.100" size="20px" />}
                                 </Tooltip>
                             </Box>
                         )}
