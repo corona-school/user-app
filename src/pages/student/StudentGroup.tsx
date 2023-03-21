@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum, Subcourse } from '../../gql/graphql';
+import { LFSubCourse } from '../../types/lernfair/Course';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -227,9 +228,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CourseGroups
-                                                        currentCourses={publishedSubcourses as Subcourse[]}
-                                                        draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
-                                                        pastCourses={pastSubcourses as Subcourse[]}
+                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
+                                                        pastCourses={pastSubcourses as LFSubCourse[]}
                                                     />
                                                 </>
                                             ),
@@ -239,9 +240,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <AllSubcourses
-                                                        languageCourses={languageCourses as Subcourse[]}
-                                                        courses={revisionCourses as Subcourse[]}
-                                                        focusCourses={focusCourses as Subcourse[]}
+                                                        languageCourses={languageCourses as LFSubCourse[]}
+                                                        courses={revisionCourses as LFSubCourse[]}
+                                                        focusCourses={focusCourses as LFSubCourse[]}
                                                     />
                                                 </>
                                             ),

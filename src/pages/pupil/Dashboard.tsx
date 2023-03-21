@@ -20,10 +20,9 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
-import { getTrafficStatus } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
-import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 
 type Props = {};
 
@@ -253,14 +252,6 @@ const Dashboard: React.FC<Props> = () => {
             setShowMeetingNotStarted(true);
         }
     }, [highlightedAppointment?.course.id, joinMeeting]);
-
-    const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
-        if (subcourse.published) return t('single.global.courseState.publish');
-        if (subcourse.cancelled) return t('single.global.courseState.cancelled');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return t('single.global.courseState.draft');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return t('single.global.courseState.submitted');
-        return t('single.global.courseState.publish');
-    };
 
     const disableMeetingButton: boolean = useMemo(() => {
         if (!highlightedAppointment) return true;

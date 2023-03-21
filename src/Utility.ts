@@ -1,6 +1,8 @@
-import { LFLecture, TrafficStatus } from './types/lernfair/Course';
+import { LFLecture, LFSubCourse, TrafficStatus } from './types/lernfair/Course';
 import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
+import { Course_Coursestate_Enum, Subcourse } from './gql/graphql';
+import i18next from 'i18next';
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
 export const TOKEN_LENGTH = 32;
@@ -125,6 +127,14 @@ export const getFirstLectureFromSubcourse: (lectures: LFLecture[], pastLectures?
 
 export const getTrafficStatus: (participants: number, maxParticipants: number) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
     return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
+};
+
+export const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
+    if (subcourse.published) return i18next.t('single.global.courseState.publish');
+    if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+    if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return i18next.t('single.global.courseState.draft');
+    if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return i18next.t('single.global.courseState.submitted');
+    return i18next.t('single.global.courseState.publish');
 };
 
 export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | null }>(arr: Subcourse[] | undefined) => {

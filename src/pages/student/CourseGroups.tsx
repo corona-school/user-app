@@ -1,42 +1,27 @@
 import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
 type GroupProps = {
-    currentCourses: Subcourse[];
-    draftCourses: Subcourse[];
-    pastCourses: Subcourse[];
+    currentCourses: LFSubCourse[] | undefined;
+    draftCourses: LFSubCourse[] | undefined;
+    pastCourses: LFSubCourse[] | undefined;
 };
 
 const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
-        if (subcourse.published) return t('single.global.courseState.publish');
-        if (subcourse.cancelled) return t('single.global.courseState.cancelled');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return t('single.global.courseState.draft');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return t('single.global.courseState.submitted');
-        return t('single.global.courseState.publish');
-    };
-
-    const renderSubcourse = (
-        subcourse: typeof currentCourses[number] | typeof draftCourses[number] | typeof pastCourses[number],
-        index: number,
-        showDate: boolean = true,
-        readonly: boolean = false,
-        inPast: boolean = false
-    ) => (
+    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <AppointmentCard
             key={index}
-            showCourseTraffic={subcourse.published && !inPast ? true : false}
-            showStatus={inPast ? false : true}
+            showCourseTraffic={subcourse.published && inPast}
+            showStatus={!inPast}
             participantsCount={subcourse.participantsCount}
             maxParticipants={subcourse.maxParticipants}
             minGrade={subcourse.minGrade}
@@ -58,8 +43,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     return (
         <Stack space={5}>
             <Box>
-                <Heading>{t('matching.group.helper.course.tabs.tab1.current')}</Heading>
-                <HSection scrollable>
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.current')}>
                     {((currentCourses?.length ?? 0) > 0 &&
                         currentCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
@@ -67,8 +51,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 </HSection>
             </Box>
             <Box>
-                <Heading>{t('matching.group.helper.course.tabs.tab1.draft')}</Heading>
-                <HSection scrollable>
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.draft')}>
                     {((draftCourses?.length ?? 0) > 0 &&
                         draftCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
@@ -76,8 +59,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 </HSection>
             </Box>
             <Box>
-                <Heading>{t('matching.group.helper.course.tabs.tab1.past')}</Heading>
-                <HSection scrollable>
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.past')}>
                     {((pastCourses?.length ?? 0) > 0 &&
                         pastCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index, true, false, true);

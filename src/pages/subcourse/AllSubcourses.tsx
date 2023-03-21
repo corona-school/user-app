@@ -1,7 +1,6 @@
 import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Subcourse } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
 import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
@@ -9,9 +8,9 @@ import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
 type GroupProps = {
-    languageCourses: Subcourse[] | LFSubCourse[];
-    courses: Subcourse[] | LFSubCourse[];
-    focusCourses: Subcourse[] | LFSubCourse[];
+    languageCourses: LFSubCourse[];
+    courses: LFSubCourse[];
+    focusCourses: LFSubCourse[];
 };
 
 const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses }) => {
@@ -19,12 +18,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
     const navigate = useNavigate();
     const { user } = useApollo();
 
-    const renderSubcourse = (
-        subcourse: typeof languageCourses[number] | typeof courses[number] | typeof focusCourses[number],
-        index: number,
-        showDate: boolean = true,
-        readonly: boolean = false
-    ) => (
+    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false) => (
         <AppointmentCard
             key={index}
             participantsCount={subcourse.participantsCount}
@@ -32,7 +26,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
             minGrade={subcourse.minGrade}
             maxGrade={subcourse.maxGrade}
             isHorizontalCardCourseChecked={subcourse.isParticipant}
-            showSchoolclass={user?.pupil ? true : false}
+            showSchoolclass={!!user?.pupil}
             showCourseTraffic
             trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
             isFullHeight
@@ -50,7 +44,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
 
     return (
         <Stack space={5}>
-            {languageCourses.length > 0 && (
+            {languageCourses && languageCourses.length > 0 && (
                 <Box>
                     <HSection scrollable title={t('matching.group.pupil.tabs.tab2.language')}>
                         {languageCourses?.map((subcourse: any, index: number) => {
@@ -59,7 +53,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     </HSection>
                 </Box>
             )}
-            {courses.length > 0 && (
+            {courses && courses.length > 0 && (
                 <Box>
                     <HSection scrollable title={t('matching.group.pupil.tabs.tab2.courses')}>
                         {courses?.map((subcourse: any, index: number) => {
@@ -68,7 +62,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     </HSection>
                 </Box>
             )}
-            {focusCourses.length > 0 && (
+            {focusCourses && focusCourses.length > 0 && (
                 <Box>
                     <HSection scrollable title={t('matching.group.pupil.tabs.tab2.focus')}>
                         {focusCourses?.map((subcourse: any, index: number) => {

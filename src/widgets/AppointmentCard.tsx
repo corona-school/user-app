@@ -189,7 +189,7 @@ const AppointmentCard: React.FC<Props> = ({
     return (
         <View height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
-                <Card flexibleWidth={isTeaser || isGrid ? true : false} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
+                <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
