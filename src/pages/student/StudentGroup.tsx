@@ -17,7 +17,7 @@ import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
-import { Course_Category_Enum } from '../../gql/graphql';
+import { Course_Category_Enum, Subcourse } from '../../gql/graphql';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -32,6 +32,7 @@ const StudentGroup: React.FC = () => {
                         subcoursesInstructing {
                             id
                             published
+                            cancelled
                             participantsCount
                             maxParticipants
                             firstLecture {
@@ -59,6 +60,8 @@ const StudentGroup: React.FC = () => {
 
                 subcoursesPublic(take: 20) {
                     id
+                    published
+                    cancelled
                     participantsCount
                     maxParticipants
                     firstLecture {
@@ -71,6 +74,7 @@ const StudentGroup: React.FC = () => {
                     }
                     course {
                         name
+                        courseState
                         description
                         image
                         category
@@ -108,7 +112,7 @@ const StudentGroup: React.FC = () => {
             data?.me.student!.subcoursesInstructing.filter(
                 (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published) || it.course.courseState === 'submitted'
             ),
-        [data?.me.student!.subcoursesInstructing]
+        [data?.me.student]
     );
 
     const pastSubcourses = useMemo(
@@ -128,11 +132,11 @@ const StudentGroup: React.FC = () => {
 
     const languageCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const focusCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const revisionCourses = useMemo(
         () =>
@@ -141,7 +145,7 @@ const StudentGroup: React.FC = () => {
                     (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
                 )
             ),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -223,9 +227,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CourseGroups
-                                                        currentCourses={publishedSubcourses}
-                                                        draftCourses={unpublishedOrDraftedSubcourses}
-                                                        pastCourses={pastSubcourses}
+                                                        currentCourses={publishedSubcourses as Subcourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
+                                                        pastCourses={pastSubcourses as Subcourse[]}
                                                     />
                                                 </>
                                             ),
@@ -234,7 +238,11 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
+                                                    <AllSubcourses
+                                                        languageCourses={languageCourses as Subcourse[]}
+                                                        courses={revisionCourses as Subcourse[]}
+                                                        focusCourses={focusCourses as Subcourse[]}
+                                                    />
                                                 </>
                                             ),
                                         },

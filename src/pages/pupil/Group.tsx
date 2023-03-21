@@ -30,6 +30,8 @@ const query = gql`
                 }
                 subcoursesJoined {
                     id
+                    minGrade
+                    maxGrade
                     maxParticipants
                     participantsCount
                     firstLecture {
@@ -109,6 +111,8 @@ const PupilGroup: React.FC<Props> = () => {
         query GetAllSubcourses($name: String) {
             subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
                 isParticipant
+                minGrade
+                maxGrade
                 maxParticipants
                 participantsCount
                 id

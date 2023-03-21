@@ -31,7 +31,6 @@ import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg';
 import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
-import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     tags?: LFTag[];
@@ -58,9 +57,11 @@ type Props = {
     onPressToCourse?: () => any;
     videoButton?: ReactNode | ReactNode[];
     countCourse?: number;
-    courseStateText?: string;
+    statusText?: string;
     showTrafficLight?: boolean;
-    showCourseState?: boolean;
+    showStatus?: boolean;
+    showCourseTraffic?: boolean;
+    showSchoolclass?: boolean;
     trafficLightStatus?: TrafficStatus;
 };
 
@@ -70,7 +71,7 @@ const AppointmentCard: React.FC<Props> = ({
     duration,
     title,
     countCourse,
-    courseStateText,
+    statusText,
     description,
     maxParticipants,
     participantsCount,
@@ -90,14 +91,15 @@ const AppointmentCard: React.FC<Props> = ({
     image,
     onPressToCourse,
     showTrafficLight,
-    showCourseState,
+    showStatus,
+    showCourseTraffic,
+    showSchoolclass,
     trafficLightStatus,
     videoButton,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
-    const userType = useUserType();
 
     const date = _date && DateTime.fromISO(_date);
 
@@ -187,7 +189,7 @@ const AppointmentCard: React.FC<Props> = ({
     return (
         <View height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
-                <Card flexibleWidth={isTeaser || isGrid ? true : false} variant={isTeaser ? 'dark' : 'normal'}>
+                <Card flexibleWidth={isTeaser || isGrid ? true : false} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
@@ -218,9 +220,13 @@ const AppointmentCard: React.FC<Props> = ({
                                 {!isTeaser && date && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
-                                            <Text color={textColor}>{date.toFormat('dd.MM.yyyy')}</Text>
-                                            <Text color={textColor}>•</Text>
-                                            <Text color={textColor}>{date.toFormat('HH:mm')} Uhr</Text>
+                                            <Text color={textColor}>
+                                                {t('single.card.dateLectures', {
+                                                    date: date.toFormat('dd.MM.yyyy'),
+                                                    time: date.toFormat('HH:mm'),
+                                                    count: countCourse,
+                                                })}
+                                            </Text>
                                         </Row>
                                     </>
                                 )}
@@ -260,14 +266,14 @@ const AppointmentCard: React.FC<Props> = ({
                                     {title}
                                 </Heading>
 
-                                {userType === 'pupil' && (
+                                {showSchoolclass && (
                                     <Text maxWidth={sizes['imageHeaderWidth']}>
                                         <Text bold>{t('single.courseInfo.grade')}</Text>
                                         {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
                                     </Text>
                                 )}
 
-                                {showCourseState && (
+                                {showCourseTraffic && (
                                     <Box>
                                         <CourseTrafficLamp
                                             status={trafficLightStatus || 'full'}
@@ -280,13 +286,13 @@ const AppointmentCard: React.FC<Props> = ({
                                     </Box>
                                 )}
 
-                                {userType === 'student' && courseStateText && (
+                                {showStatus && (
                                     <HStack space={'0.5'}>
                                         <Text bold fontSize="md">
                                             {t('single.global.state')}
                                         </Text>
                                         <Text ml="1" fontSize="md">
-                                            {courseStateText}
+                                            {statusText}
                                         </Text>
                                     </HStack>
                                 )}
@@ -336,6 +342,13 @@ const AppointmentCard: React.FC<Props> = ({
 
                                 {isTeaser && videoButton}
                             </Box>
+                            {isHorizontalCardCourseChecked && (
+                                <Box position="absolute" right="20px" bottom="13px">
+                                    <Tooltip label={t('single.card.alreadyRegistered')}>
+                                        <CheckCircleIcon color="danger.100" size="20px" />
+                                    </Tooltip>
+                                </Box>
+                            )}
                         </VStack>
                     </Pressable>
                 </Card>

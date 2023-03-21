@@ -23,7 +23,7 @@ import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
-import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 
 type Props = {};
 
@@ -254,6 +254,14 @@ const Dashboard: React.FC<Props> = () => {
         }
     }, [highlightedAppointment?.course.id, joinMeeting]);
 
+    const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
+        if (subcourse.published) return t('single.global.courseState.publish');
+        if (subcourse.cancelled) return t('single.global.courseState.cancelled');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return t('single.global.courseState.draft');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return t('single.global.courseState.submitted');
+        return t('single.global.courseState.publish');
+    };
+
     const disableMeetingButton: boolean = useMemo(() => {
         if (!highlightedAppointment) return true;
         return DateTime.fromISO(highlightedAppointment?.lecture?.start).diffNow('minutes').minutes > 5;
@@ -334,7 +342,10 @@ const Dashboard: React.FC<Props> = () => {
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
-                                                    showCourseState
+                                                    isHorizontalCardCourseChecked={course.isParticipant}
+                                                    showCourseTraffic
+                                                    showSchoolclass
+                                                    trafficLightStatus={getTrafficStatus(course?.participantsCount || 0, course?.maxParticipants || 0)}
                                                     onPressToCourse={() => {
                                                         trackEvent({
                                                             category: 'dashboard',
@@ -350,21 +361,12 @@ const Dashboard: React.FC<Props> = () => {
                                                     date={lecture.start}
                                                     image={course.course.image}
                                                     title={course.course.name}
+                                                    countCourse={course.lectures.length}
                                                     maxParticipants={course.maxParticipants}
                                                     participantsCount={course.participantsCount}
                                                     minGrade={course.minGrade}
                                                     maxGrade={course.maxGrade}
-                                                    courseStateText={
-                                                        course.published
-                                                            ? t('single.global.courseState.publish')
-                                                            : course.cancelled
-                                                            ? t('single.global.courseState.cancelled')
-                                                            : course.course.courseState === Course_Coursestate_Enum.Created
-                                                            ? t('single.global.courseState.draft')
-                                                            : course.course.courseState === Course_Coursestate_Enum.Submitted
-                                                            ? t('single.global.courseState.submitted')
-                                                            : ''
-                                                    }
+                                                    statusText={getTrafficStatusText(course)}
                                                 />
                                             </Stack>
                                         );

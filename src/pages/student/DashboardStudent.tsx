@@ -23,7 +23,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
-import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 
 type Props = {};
 
@@ -241,6 +241,14 @@ const DashboardStudent: React.FC<Props> = () => {
         return DateTime.fromISO(highlightedAppointment.lecture.start).diffNow('minutes').minutes > 60;
     }, [highlightedAppointment]);
 
+    const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
+        if (subcourse.published) return t('single.global.courseState.publish');
+        if (subcourse.cancelled) return t('single.global.courseState.cancelled');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return t('single.global.courseState.draft');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return t('single.global.courseState.submitted');
+        return t('single.global.courseState.publish');
+    };
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -314,8 +322,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 <AppointmentCard
                                                     isGrid
                                                     isFullHeight
-                                                    showCourseState
-                                                    trafficLightStatus="last"
+                                                    showCourseTraffic
+                                                    showStatus
+                                                    trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
                                                     onPressToCourse={() => {
                                                         trackEvent({
                                                             category: 'dashboard',
@@ -332,21 +341,12 @@ const DashboardStudent: React.FC<Props> = () => {
                                                     date={lecture.start}
                                                     image={course.image}
                                                     title={course.name}
+                                                    countCourse={subcourse.lectures.length}
                                                     maxParticipants={subcourse.maxParticipants}
                                                     participantsCount={subcourse.participantsCount}
                                                     minGrade={subcourse.minGrade}
                                                     maxGrade={subcourse.maxGrade}
-                                                    courseStateText={
-                                                        subcourse.published
-                                                            ? t('single.global.courseState.publish')
-                                                            : subcourse.cancelled
-                                                            ? t('single.global.courseState.cancelled')
-                                                            : course.courseState === Course_Coursestate_Enum.Created
-                                                            ? t('single.global.courseState.draft')
-                                                            : course.courseState === Course_Coursestate_Enum.Submitted
-                                                            ? t('single.global.courseState.submitted')
-                                                            : ''
-                                                    }
+                                                    statusText={getTrafficStatusText(subcourse)}
                                                 />
                                             </Column>
                                         );
