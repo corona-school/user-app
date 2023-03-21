@@ -28,11 +28,15 @@ const single = {
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
         noLections: 'Es wurden keine Lektionen eingetragen.',
+        close: 'Fenster schließen',
+        leaveCourse: 'Kurs verlassen',
+        signOut: 'Vom Kurs abmelden',
         courseInfo: 'Kursinformationen',
     },
     tabs: {
         description: 'Beschreibung',
         lessons: 'Lektionen',
+        waitinglist: 'Warteliste',
         participant: 'Teilnehmer:innen',
     },
     courseInfo: {
@@ -41,6 +45,11 @@ const single = {
         editCourse: 'Kurs editieren',
         courseInPast: 'Dieser Kurs ist bereits vorbei.',
         courseCancelled: 'Dieser Kurs wurde abgesagt.',
+    },
+    leaveModal: {
+        header: 'Kurseinformationen',
+        question: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+        successSignout: 'Du hast dich nun erfolgreich vom Kurs abgemeldet',
     },
     card: {
         expandCardButton: 'Mehr Kurs-Infos',
@@ -70,12 +79,39 @@ const single = {
         promotedDescription: 'Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.',
         participant: 'Teilnehmer:innen',
     },
-    signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
-    leave: {
-        course: 'Kurs verlassen',
-        signOut: 'Vom Kurs abmelden',
-        description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-        toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
+    waitinglist: {
+        toast: 'Schüler wurde dem Kurs hinzugefügt.',
+        error: 'Schüler:in konnte nicht hinzugefügt werden.',
+        onwaitinglist: 'Auf Warteliste setzen',
+        leaveWaitinglist: 'Warteliste verlassen',
+        leaveSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
+        joined: 'Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.',
+        joinMember: 'Du bist auf der Warteliste für diesen Kurs.',
+        noPupilsOnWaitinglist: 'Keine Schüler:innen auf der Warteliste.',
+        modal: {
+            info: 'Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?',
+            success: 'Du bist auf der Warteliste!',
+            button: 'Auf die Warteliste',
+            cancel: 'Abbrechen',
+        },
+    },
+    joinPupilModal: {
+        header: 'Schüler:innen nachrücken',
+        add: 'Hinzufügen',
+        amount: 'Anzahl Schüler:innen',
+        success: 'Schüler:innen erfolgreich hinzugefügt',
+    },
+    pupil: {
+        subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
+        courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
+        signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+        leave: {
+            course: 'Kurs verlassen',
+            signOut: 'Vom Kurs abmelden',
+            description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
+            toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
+        },
     },
 };
+
 export default single;

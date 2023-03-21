@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, Image, Modal, Row, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row, Spacer, Stack, Text, Tooltip, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tabs, { Tab } from '../components/Tabs';
@@ -24,17 +24,27 @@ import { getTimeDifference } from '../helper/notification-helper';
 import PromoteBanner from '../widgets/PromoteBanner';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SelectParticipants } from '../widgets/SelectParticipants';
+import Waitinglist from './single-course/Waitinglist';
+import WaitinglistBanner from '../widgets/WaitinglistBanner';
+import { TrafficStatus } from '../types/lernfair/Course';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../modals/CourseConfirmationModal';
 
 /* ------------- Common UI ---------------------------- */
-function ParticipantRow({ participant }: { participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string } }) {
+function ParticipantRow({
+    participant,
+    isPupil,
+}: {
+    participant: { firstname: string; lastname?: string; schooltype?: string; grade?: string };
+    isPupil: boolean;
+}) {
     const { space } = useTheme();
     return (
         <Row marginBottom={space['1.5']} alignItems="center">
             <Column marginRight={space['1']}></Column>
             <Column>
                 <Heading fontSize="md">
-                    {participant.firstname} {participant.lastname}
+                    {participant.firstname} {isPupil ? null : participant.lastname}
                 </Heading>
                 <Text>
                     {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
@@ -159,7 +169,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} />
+                <ParticipantRow participant={participant} isPupil={false} />
             ))}
         </>
     );
@@ -473,9 +483,9 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
     return (
         <>
-            <ParticipantRow participant={data.me.pupil as any} />
+            <ParticipantRow participant={data.me.pupil as any} isPupil={true} />
             {otherParticipants.map((participant) => (
-                <ParticipantRow participant={participant} />
+                <ParticipantRow participant={participant} isPupil={true} />
             ))}
         </>
     );
@@ -524,14 +534,11 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
     const handleSignInCourse = useCallback(() => {
         joinSubcourse();
         setSignedInModal(false);
-        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+        toast.show({ description: t('single.pupil.signIn.toast'), placement: 'top' });
     }, [data?.subcourseJoin, joinSubcourse]);
 
     return (
         <>
-            {!canJoinData?.subcourse!.canJoin.allowed && (
-                <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinData?.subcourse!.canJoin?.reason}` as unknown as TemplateStringsArray)} />
-            )}
             {canJoinData?.subcourse!.canJoin.allowed && (
                 <Button onPress={() => setSignedInModal(true)} width={ButtonContainer} marginBottom={space['0.5']} isDisabled={loading}>
                     {t('signin')}
@@ -546,8 +553,8 @@ function PupilJoinCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcour
             >
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}
-                    confirmButtonText={t('single.signIn.button')}
-                    description={t('single.signIn.description')}
+                    confirmButtonText={t('single.pupil.signIn.button')}
+                    description={t('single.pupil.signIn.description')}
                     onClose={() => setSignedInModal(false)}
                     onConfirm={handleSignInCourse}
                 />
@@ -586,7 +593,7 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
     const handleCourseLeave = useCallback(async () => {
         setSignedOutSureModal(false);
         leaveSubcourse();
-        toast.show({ description: t('single.leave.toast'), placement: 'top' });
+        toast.show({ description: t('single.pupil.leave.toast'), placement: 'top' });
     }, [leaveSubcourse, refresh, t, toast]);
 
     return (
@@ -601,15 +608,15 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
                     isDisabled={loading}
                     variant="outline"
                 >
-                    {t('single.leave.course')}
+                    {t('single.global.leaveCourse')}
                 </Button>
                 <AlertMessage content={t('single.card.alreadyRegistered')} />
             </VStack>
             <Modal isOpen={isSignedOutSureModal} onClose={() => setSignedOutSureModal(false)}>
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}
-                    confirmButtonText={t('single.leave.signOut')}
-                    description={t('single.leave.description')}
+                    confirmButtonText={t('single.pupil.leave.signOut')}
+                    description={t('single.pupil.leave.description')}
                     onClose={() => setSignedOutSureModal(false)}
                     onConfirm={() => handleCourseLeave()}
                 />
@@ -618,82 +625,35 @@ function PupilLeaveCourseAction({ subcourse, refresh }: { subcourse: Pick<Subcou
     );
 }
 
-function PupilLeaveWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
-    const { t } = useTranslation();
-    const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false);
-
-    const [leaveWaitingList, { loading, data }] = useMutation(
-        gql(`
-            mutation LeaveWaitingList($subcourseId: Float!) {
-                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourse.id },
-        }
-    );
-
-    useEffect(() => {
-        if (data?.subcourseLeaveWaitinglist) {
-            setLeaveWaitingListModal(true);
-        }
-    }, [data?.subcourseLeaveWaitinglist]);
-
-    const { space, sizes } = useTheme();
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
+function PupilLeaveWaitingListAction({
+    courseStatus,
+    subcourse,
+    onWaitinglist,
+    refresh,
+}: {
+    courseStatus: TrafficStatus;
+    subcourse: Pick<Subcourse, 'id'>;
+    onWaitinglist: boolean;
+    refresh: () => void;
+}) {
+    const { space } = useTheme();
 
     return (
         <>
-            <VStack space={space['0.5']}>
-                <AlertMessage content={t('single.card.alreadyRegistered')} />
-                <Button
-                    onPress={() => {
-                        leaveWaitingList();
-                    }}
-                    width={ButtonContainer}
-                    marginBottom={space['0.5']}
-                    isDisabled={loading}
-                >
-                    Warteliste verlassen
-                </Button>
+            <VStack space={space['0.5']} mb="5">
+                <WaitinglistBanner courseStatus={courseStatus} onWaitinglist={onWaitinglist} subcourseId={subcourse.id} refresh={() => refresh()} />
             </VStack>
-            <Modal
-                isOpen={isLeaveWaitingListModal}
-                onClose={() => {
-                    setLeaveWaitingListModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}>Du hast die Warteliste erfolgreich verlassen.</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setLeaveWaitingListModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
         </>
     );
 }
 
 function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Subcourse, 'id'>; refresh: () => void }) {
-    const [isOnWaitingListModal, setOnWaitingListModal] = useState(false);
-    const [joinWaitingList, { data, loading }] = useMutation(
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { t } = useTranslation();
+    const { space, sizes } = useTheme();
+    const { isMobile } = useLayoutHelper();
+    const toast = useToast();
+    const [joinWaitingList, { loading }] = useMutation(
         gql(`
             mutation JoinWaitingList($subcourseId: Float!) {
                 subcourseJoinWaitinglist(subcourseId: $subcourseId)
@@ -704,48 +664,48 @@ function PupilJoinWaitingListAction({ subcourse, refresh }: { subcourse: Pick<Su
         }
     );
 
-    const { space, sizes } = useTheme();
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
 
-    useEffect(() => {
-        if (data?.subcourseJoinWaitinglist) {
-            setOnWaitingListModal(true);
-        }
-    }, [data?.subcourseJoinWaitinglist]);
+    const ButtonWidth = useBreakpointValue({
+        base: 'full',
+        lg: '50%',
+    });
+    const ButtonDirection = useBreakpointValue({
+        base: 'column',
+        lg: 'row-reverse',
+    });
+    const handleJoinWaitinglist = useCallback(() => {
+        joinWaitingList();
+        setIsModalOpen(false);
+        toast.show({ description: t('single.waitinglist.joined'), placement: 'top' });
+        refresh();
+    }, [joinWaitingList, refresh, toast]);
 
     return (
         <>
-            <Button
-                onPress={() => {
-                    joinWaitingList();
-                }}
-                width={ButtonContainer}
-                marginBottom={space['0.5']}
-                isDisabled={loading}
-            >
-                Auf die Warteliste
+            <Button onPress={() => setIsModalOpen(true)} width={ButtonContainer} marginBottom={space['0.5']} isDisabled={loading}>
+                {t('single.waitinglist.onwaitinglist')}
             </Button>
-            <Modal isOpen={isOnWaitingListModal} onClose={() => setOnWaitingListModal(false)}>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
+                    <Modal.Header>{t('single.waitinglist.onwaitinglist')}</Modal.Header>
                     <Modal.Body>
-                        <Text marginBottom={space['1']}>Du bist auf der Warteliste!</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setOnWaitingListModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    Fenster schließen
+                        <Text marginBottom={space['2']}>{t('single.waitinglist.modal.info')}</Text>
+                        <Box maxW="full">
+                            <Stack space={space['0.5']} direction={ButtonDirection} justifyContent="center">
+                                <Button width={ButtonWidth} onPress={() => handleJoinWaitinglist()}>
+                                    {t('single.waitinglist.modal.button')}
                                 </Button>
-                            </Column>
-                        </Row>
+                                {!isMobile && <Spacer w="2" />}
+                                <Button width={ButtonWidth} variant="outline" onPress={() => setIsModalOpen(false)}>
+                                    {t('single.waitinglist.modal.cancel')}
+                                </Button>
+                            </Stack>
+                        </Box>
                     </Modal.Body>
                 </Modal.Content>
             </Modal>
@@ -806,7 +766,7 @@ const SingleCourse: React.FC = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
     const singleSubcourseQuery = gql(`
-    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false) {
+    query GetSingleSubcourse($subcourseId: Int!, $isStudent: Boolean = false, $isPupil: Boolean = true) {
         subcourse(subcourseId: $subcourseId){
             id
             participantsCount
@@ -845,6 +805,17 @@ const SingleCourse: React.FC = () => {
             isInstructor
             isParticipant
             isOnWaitingList
+            pupilsWaitingCount
+            pupilsOnWaitinglist @include(if: $isStudent) {
+                id
+                firstname
+                lastname
+                schooltype
+                grade
+            }
+            canJoinWaitinglist @include(if: $isPupil) {
+                allowed
+            }
         }
     }
     `);
@@ -852,6 +823,7 @@ const SingleCourse: React.FC = () => {
         variables: {
             subcourseId,
             isStudent: userType === 'student',
+            isPupil: userType === 'pupil',
         },
     });
 
@@ -893,7 +865,15 @@ const SingleCourse: React.FC = () => {
         return subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
     };
 
-    const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
+    const courseFull = useMemo(
+        () => (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0),
+        [subcourse?.maxParticipants, subcourse?.participantsCount]
+    );
+
+    const courseTrafficStatus = useMemo(
+        () => getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0),
+        [subcourse?.maxParticipants, subcourse?.participantsCount]
+    );
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -918,6 +898,8 @@ const SingleCourse: React.FC = () => {
             subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
+
+    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount]);
 
     const tabs: Tab[] = [
         {
@@ -959,10 +941,28 @@ const SingleCourse: React.FC = () => {
     if (subcourse?.isInstructor || subcourse?.isParticipant) {
         tabs.push({
             title: t('single.tabs.participant'),
+            badge: subcourse?.participantsCount,
             content: (
                 <>
                     {subcourse?.isParticipant && <OtherParticipants subcourseId={subcourseId} />}
                     {subcourse?.isInstructor && <Participants subcourseId={subcourseId} />}
+                </>
+            ),
+        });
+    }
+
+    if (subcourse?.isInstructor) {
+        tabs.push({
+            title: t('single.tabs.waitinglist'),
+            badge: countPupilsOnWaitinglist,
+            content: (
+                <>
+                    <Waitinglist
+                        subcourseId={subcourseId}
+                        maxParticipants={subcourse?.maxParticipants}
+                        pupilsOnWaitinglist={subcourse?.pupilsOnWaitinglist}
+                        refetch={refetch}
+                    />
                 </>
             ),
         });
@@ -1005,13 +1005,14 @@ const SingleCourse: React.FC = () => {
                             <Heading fontSize="md">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(', ')}</Heading>
                         )}
                     </Row>
+
                     <Box my={2}>
-                        {subcourse && subcourse.published && !isInPast && (
+                        {subcourse && subcourse.published && userType === 'student' && !isInPast && (
                             <PromoteBanner
                                 onClick={doPromote}
                                 canPromote={canPromoteCourse()}
                                 isPromoted={subcourse?.alreadyPromoted || false}
-                                courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                                courseStatus={courseTrafficStatus}
                             />
                         )}
                     </Box>
@@ -1039,11 +1040,19 @@ const SingleCourse: React.FC = () => {
                         {subcourse && userType === 'pupil' && !subcourse.isParticipant && <PupilJoinCourseAction subcourse={subcourse} refresh={refetch} />}
                         {subcourse && userType === 'pupil' && subcourse.isParticipant && <PupilLeaveCourseAction subcourse={subcourse} refresh={refetch} />}
 
-                        {subcourse && userType === 'pupil' && !subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
-                            <PupilJoinWaitingListAction subcourse={subcourse} refresh={refetch} />
-                        )}
+                        {subcourse &&
+                            userType === 'pupil' &&
+                            !subcourse.isParticipant &&
+                            courseFull &&
+                            !subcourse.isOnWaitingList &&
+                            subcourse.canJoinWaitinglist?.allowed && <PupilJoinWaitingListAction subcourse={subcourse} refresh={refetch} />}
                         {subcourse && userType === 'pupil' && subcourse.isOnWaitingList && (
-                            <PupilLeaveWaitingListAction subcourse={subcourse} refresh={refetch} />
+                            <PupilLeaveWaitingListAction
+                                courseStatus={courseTrafficStatus}
+                                subcourse={subcourse}
+                                onWaitinglist={subcourse.isOnWaitingList}
+                                refresh={refetch}
+                            />
                         )}
                     </Box>
                     <Tabs tabs={tabs} />
