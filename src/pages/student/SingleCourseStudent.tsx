@@ -39,7 +39,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 
     if (loading) return <CenterLoadingSpinner />;
 
-    const participants = data!.subcourse!.participants;
+    const participants = data?.subcourse?.participants ?? [];
 
     if (participants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
 
