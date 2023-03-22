@@ -7,13 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 
 type BannerProps = {
-    canPromote: boolean;
     isPromoted: boolean;
     courseStatus: TrafficStatus;
     onClick: () => void;
 };
 
-const PromoteBanner: React.FC<BannerProps> = ({ canPromote, isPromoted, onClick, courseStatus }) => {
+const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
@@ -23,30 +22,24 @@ const PromoteBanner: React.FC<BannerProps> = ({ canPromote, isPromoted, onClick,
 
     return (
         <Box>
-            {!canPromote ? (
+            <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
                 <CourseTrafficLamp status={courseStatus} paddingY={3} />
-            ) : (
-                <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                    <CourseTrafficLamp status={courseStatus} paddingY={3} />
-                    <Divider />
-                    <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems={isMobile ? 'flex-start' : 'center'} space={1}>
-                        <Stack direction="row" alignItems="center" mb="2">
-                            <Box pr="2">{isPromoted ? <CheckIcon /> : <CallIcon />}</Box>
-                            {isMobile && <Spacer />}
-                            <VStack maxW={isMobile ? '300' : 'full'}>
-                                <Text bold fontSize="md">
-                                    {isPromoted ? t('single.bannerPromote.promotedTitle') : t('single.bannerPromote.freeTitle')}
-                                </Text>
-                                <Text fontSize="md">
-                                    {isPromoted ? t('single.bannerPromote.promotedDescription') : t('single.bannerPromote.freeDescription')}
-                                </Text>
-                            </VStack>
-                        </Stack>
-                        <Spacer />
-                        {!isPromoted && <PromoteButton onClick={onClick} />}
+                <Divider />
+                <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems={isMobile ? 'flex-start' : 'center'} space={1}>
+                    <Stack direction="row" alignItems="center" mb="2">
+                        <Box pr="2">{isPromoted ? <CheckIcon /> : <CallIcon />}</Box>
+                        {isMobile && <Spacer />}
+                        <VStack maxW={isMobile ? '300' : 'full'}>
+                            <Text bold fontSize="md">
+                                {isPromoted ? t('single.bannerPromote.promotedTitle') : t('single.bannerPromote.freeTitle')}
+                            </Text>
+                            <Text fontSize="md">{isPromoted ? t('single.bannerPromote.promotedDescription') : t('single.bannerPromote.freeDescription')}</Text>
+                        </VStack>
                     </Stack>
-                </Card>
-            )}
+                    <Spacer />
+                    {!isPromoted && <PromoteButton onClick={onClick} />}
+                </Stack>
+            </Card>
         </Box>
     );
 };

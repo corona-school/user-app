@@ -1,5 +1,4 @@
 import { View, Text, Column, Row, Circle, InfoIcon, Pressable, useTheme, Container, Box, CloseIcon, Heading } from 'native-base';
-
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
@@ -22,6 +21,9 @@ type Props = {
 
 const CourseTrafficLamp: React.FC<Props> = ({
     status = 'free',
+    seatsLeft,
+    seatsFull,
+    seatsMax,
     infoPopupTitle,
     infoPopupContent,
     infoPopupLastContent,
@@ -30,9 +32,6 @@ const CourseTrafficLamp: React.FC<Props> = ({
     paddingY,
     showBorder,
     boldState = false,
-    seatsLeft,
-    seatsFull,
-    seatsMax,
 }) => {
     const { space } = useTheme();
     const { t } = useTranslation();

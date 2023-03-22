@@ -17,7 +17,7 @@ import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
-import { Course_Category_Enum, Subcourse } from '../../gql/graphql';
+import { Course_Category_Enum } from '../../gql/graphql';
 import { LFSubCourse } from '../../types/lernfair/Course';
 
 const StudentGroup: React.FC = () => {
@@ -120,22 +120,21 @@ const StudentGroup: React.FC = () => {
             ),
         [data?.me.student]
     );
-
-    const pastSubcourses = useMemo(
+    const pastOrCancelledSubcourses = useMemo(
         () =>
             sortByDate(
-                data?.me?.student?.subcoursesInstructing.filter((it) =>
-                    it.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())
+                data?.me?.student?.subcoursesInstructing.filter(
+                    (sub) =>
+                        sub.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()) ||
+                        sub.cancelled
                 )
             ),
         [data?.me?.student?.subcoursesInstructing]
     );
-
     const publishedSubcourses = useMemo(
-        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published && !pastSubcourses.includes(sub))),
-        [data?.me?.student?.subcoursesInstructing, pastSubcourses]
+        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published && !sub.cancelled && !pastOrCancelledSubcourses.includes(sub))),
+        [data?.me?.student?.subcoursesInstructing, pastOrCancelledSubcourses]
     );
-
     const languageCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
         [data?.subcoursesPublic]
@@ -235,7 +234,7 @@ const StudentGroup: React.FC = () => {
                                                     <CourseGroups
                                                         currentCourses={publishedSubcourses as LFSubCourse[]}
                                                         draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
-                                                        pastCourses={pastSubcourses as LFSubCourse[]}
+                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
                                                     />
                                                 </>
                                             ),
