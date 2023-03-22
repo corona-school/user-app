@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Heading, Modal, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -53,7 +53,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 }
 
 const singleSubcourseStudentQuery = gql(`
-query GetSingleSubcourseStudent($subcourseId: Int!) {
+query GetSingleSubcourseStudent($subcourseId: Int!, $isMySubcourse: Boolean = false) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -67,7 +67,7 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
         isInstructor
         isParticipant
         isOnWaitingList
-        alreadyPromoted
+        alreadyPromoted @include(if: $isMySubcourse)
         nextLecture{
             start
             duration
@@ -94,30 +94,32 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
             duration
         }
         pupilsWaitingCount
-        pupilsOnWaitinglist {
+        pupilsOnWaitinglist @include(if: $isMySubcourse) {
             id
             firstname
             lastname
             schooltype
             grade
             }
-
     }
 }
 `);
 
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
-
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+    const location = useLocation();
+    const locationState = location.state as { isMySubcourse?: boolean };
+    const isMySubcourse = locationState?.isMySubcourse ?? false;
 
     const { data, loading, refetch } = useQuery(singleSubcourseStudentQuery, {
         variables: {
             subcourseId,
+            isMySubcourse,
         },
     });
 
@@ -291,15 +293,15 @@ const SingleCourseStudent = () => {
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
             <Stack space={space['3']} paddingX={space['1.5']}>
                 <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
-                {!isInPast && !subcourse?.cancelled && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
-                {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
+                {!isInPast && !subcourse?.cancelled && isMySubcourse && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
+                {subcourse && isMySubcourse && subcourse.published && !isInPast && canPromoteCourse && (
                     <PromoteBanner
                         onClick={doPromote}
                         isPromoted={subcourse?.alreadyPromoted || false}
                         courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                     />
                 )}
-                {!isInPast && (
+                {!isInPast && isMySubcourse && (
                     <Banner
                         courseState={course?.courseState}
                         isCourseCancelled={subcourse?.cancelled}
