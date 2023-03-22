@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
 import { useUserType } from '../hooks/useApollo';
+import { getTrafficLampText } from '../Utility';
 
 type Props = {
     status: TrafficStatus;
@@ -53,15 +54,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
                     />
                     {!hideText && (
                         <Text marginRight={7} bold={boldState}>
-                            {userType === 'student'
-                                ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
-                                : status === 'free'
-                                ? t('single.global.status.free')
-                                : status === 'last'
-                                ? t('single.global.status.last', { seatsLeft: seatsLeft })
-                                : status === 'full'
-                                ? t('single.global.status.full')
-                                : ''}
+                            {getTrafficLampText(status, userType === 'student', seatsMax, seatsFull, seatsLeft)}
                         </Text>
                     )}
                     {infoPopupTitle && (
