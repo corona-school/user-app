@@ -1,9 +1,8 @@
 import { View, Text, Column, Row, Circle, InfoIcon, Pressable, useTheme, Container, Box, CloseIcon, Heading } from 'native-base';
-
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     status: TrafficStatus;
@@ -13,12 +12,27 @@ type Props = {
     hideText?: boolean;
     paddingY?: number;
     showBorder?: boolean;
+    seatsLeft?: number;
+    seatsFull?: number;
+    seatsMax?: number;
 };
 
-const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, infoPopupContent, infoPopupLastContent, hideText, paddingY, showBorder }) => {
+const CourseTrafficLamp: React.FC<Props> = ({
+    status = 'free',
+    seatsLeft,
+    seatsFull,
+    seatsMax,
+    infoPopupTitle,
+    infoPopupContent,
+    infoPopupLastContent,
+    hideText,
+    paddingY,
+    showBorder,
+}) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
+    const userType = useUserType();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 
@@ -37,8 +51,10 @@ const CourseTrafficLamp: React.FC<Props> = ({ status = 'free', infoPopupTitle, i
                         <Text marginRight={7} bold>
                             {status === 'free'
                                 ? t('single.global.status.free')
+                                : status === 'last' && userType === 'student'
+                                ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
                                 : status === 'last'
-                                ? t('single.global.status.last')
+                                ? t('single.global.status.last', { seatsLeft: seatsLeft })
                                 : status === 'full'
                                 ? t('single.global.status.full')
                                 : ''}

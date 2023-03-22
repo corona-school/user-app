@@ -9,13 +9,12 @@ import { useTranslation } from 'react-i18next';
 import AddPupilModal from '../../modals/AddPupilModal';
 import IncreaseMaxParticipantsModal from '../../modals/IncreaseMaxParticipantsModal';
 import AlertMessage from '../../widgets/AlertMessage';
-import { GetSingleSubcourseQuery } from '../../gql/graphql';
 
 type WaitingListProps = {
     subcourseId: number;
     pupilsOnWaitinglist: LFPupilsOnWaitinglist;
     maxParticipants: number;
-    refetch: () => Promise<ApolloQueryResult<GetSingleSubcourseQuery>>;
+    refetch: () => Promise<ApolloQueryResult<any>>;
 };
 
 const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitinglist, maxParticipants, refetch }) => {

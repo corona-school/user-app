@@ -1,0 +1,100 @@
+import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import Tag from '../../components/Tag';
+import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import { TrafficStatus } from '../../types/lernfair/Course';
+import Utility, { getTrafficStatus } from '../../Utility';
+import AlertMessage from '../../widgets/AlertMessage';
+import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
+
+type SubcourseDataProps = {
+    course: Course;
+    subcourse: Subcourse;
+    isInPast: boolean;
+};
+
+const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast }) => {
+    const { t } = useTranslation();
+    const { sizes } = useTheme();
+    const { isMobile } = useLayoutHelper();
+
+    const ImageHeight = useBreakpointValue({
+        base: '178px',
+        lg: '300px',
+    });
+
+    const ContainerWidth = useBreakpointValue({
+        base: 'full',
+        lg: '50%',
+    });
+
+    const seatsLeft: number = useMemo(() => {
+        return subcourse?.maxParticipants - subcourse?.participantsCount;
+    }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
+
+    const trafficStatus: TrafficStatus = useMemo(() => {
+        return getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants);
+    }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
+
+    return (
+        <>
+            <Stack direction={isMobile ? 'column' : 'row'}>
+                <VStack space="5" width={ContainerWidth}>
+                    <HStack space="3">
+                        {course?.tags?.map((tag: { name: string; category: string }) => (
+                            <VStack>
+                                <Tag text={tag.name} />
+                            </VStack>
+                        ))}
+                    </HStack>
+                    {subcourse?.lectures.length > 0 && (
+                        <Text>
+                            {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
+                        </Text>
+                    )}
+                    <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
+                        {course?.name}
+                    </Heading>
+                    {subcourse?.instructors && subcourse?.instructors[0] && (
+                        <Heading fontSize="lg">{subcourse?.instructors.map((it: Instructor) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
+                    )}
+                    <Text maxWidth={sizes['imageHeaderWidth']}>
+                        <Text bold>{t('single.courseInfo.grade')}</Text>
+                        {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
+                    </Text>
+                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
+                        <CourseTrafficLamp
+                            status={trafficStatus}
+                            seatsLeft={seatsLeft}
+                            seatsFull={subcourse?.participantsCount}
+                            seatsMax={subcourse?.maxParticipants}
+                        />
+                    )}
+
+                    {isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
+                    {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
+                </VStack>
+
+                <Stack width={ContainerWidth}>
+                    <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
+                        <Image
+                            alt={course?.name}
+                            borderRadius="8px"
+                            position="absolute"
+                            w="100%"
+                            height="100%"
+                            bgColor="gray.300"
+                            source={{
+                                uri: course?.image!,
+                            }}
+                        />
+                    </Box>
+                </Stack>
+            </Stack>
+        </>
+    );
+};
+
+export default SubcourseData;
