@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -318,37 +318,35 @@ const DashboardStudent: React.FC<Props> = () => {
                                         const { course } = subcourse;
 
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%">
-                                                <AppointmentCard
-                                                    isGrid
-                                                    isFullHeight
-                                                    showCourseTraffic
-                                                    showStatus
-                                                    trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                    onPressToCourse={() => {
-                                                        trackEvent({
-                                                            category: 'dashboard',
-                                                            action: 'click-event',
-                                                            name: 'Helfer Dashboard Kachelklick  ' + course.name,
-                                                            documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
-                                                        });
+                                            <AppointmentCard
+                                                key={`appointment-${index}`}
+                                                description={course.description}
+                                                tags={course.tags}
+                                                date={lecture.start}
+                                                image={course.image}
+                                                title={course.name}
+                                                countCourse={subcourse.lectures.length}
+                                                maxParticipants={subcourse.maxParticipants}
+                                                participantsCount={subcourse.participantsCount}
+                                                minGrade={subcourse.minGrade}
+                                                maxGrade={subcourse.maxGrade}
+                                                statusText={getTrafficStatusText(subcourse)}
+                                                isFullHeight
+                                                showSchoolclass
+                                                showCourseTraffic
+                                                showStatus
+                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                onPressToCourse={() => {
+                                                    trackEvent({
+                                                        category: 'dashboard',
+                                                        action: 'click-event',
+                                                        name: 'Helfer Dashboard Kachelklick  ' + course.name,
+                                                        documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
+                                                    });
 
-                                                        navigate(`/single-course/${subcourse.id}`);
-                                                    }}
-                                                    key={`appointment-${index}`}
-                                                    description={course.description}
-                                                    tags={course.tags}
-                                                    date={lecture.start}
-                                                    image={course.image}
-                                                    title={course.name}
-                                                    countCourse={subcourse.lectures.length}
-                                                    maxParticipants={subcourse.maxParticipants}
-                                                    participantsCount={subcourse.participantsCount}
-                                                    minGrade={subcourse.minGrade}
-                                                    maxGrade={subcourse.maxGrade}
-                                                    statusText={getTrafficStatusText(subcourse)}
-                                                />
-                                            </Column>
+                                                    navigate(`/single-course/${subcourse.id}`);
+                                                }}
+                                            />
                                         );
                                     })}
                                 </HSection>
@@ -368,32 +366,34 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
                                                 if (!firstLecture) return <></>;
                                                 return (
-                                                    <CSSWrapper className="course-list__item">
-                                                        <AppointmentCard
-                                                            isFullHeight
-                                                            isSpaceMarginBottom={false}
-                                                            variant="horizontal"
-                                                            key={index}
-                                                            description={sub.course.description}
-                                                            tags={sub.course.tags}
-                                                            date={firstLecture.start}
-                                                            countCourse={sub.lectures.length}
-                                                            showTrafficLight
-                                                            trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
-                                                            onPressToCourse={() => {
-                                                                trackEvent({
-                                                                    category: 'dashboard',
-                                                                    action: 'click-event',
-                                                                    name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
-                                                                    documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
-                                                                });
+                                                    <AppointmentCard
+                                                        key={index}
+                                                        description={sub.course.description}
+                                                        tags={sub.course.tags}
+                                                        date={firstLecture.start}
+                                                        image={sub.course.image}
+                                                        title={sub.course.name}
+                                                        countCourse={sub.lectures.length}
+                                                        maxParticipants={sub.maxParticipants}
+                                                        participantsCount={sub.participantsCount}
+                                                        minGrade={sub.minGrade}
+                                                        maxGrade={sub.maxGrade}
+                                                        statusText={getTrafficStatusText(sub)}
+                                                        showCourseTraffic
+                                                        showSchoolclass
+                                                        showStatus
+                                                        trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
+                                                        onPressToCourse={() => {
+                                                            trackEvent({
+                                                                category: 'dashboard',
+                                                                action: 'click-event',
+                                                                name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
+                                                                documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
+                                                            });
 
-                                                                navigate(`/single-course/${sub.id}`);
-                                                            }}
-                                                            image={sub.course.image}
-                                                            title={sub.course.name}
-                                                        />
-                                                    </CSSWrapper>
+                                                            navigate(`/single-course/${sub.id}`);
+                                                        }}
+                                                    />
                                                 );
                                             })
                                         ) : (

@@ -100,6 +100,7 @@ const AppointmentCard: React.FC<Props> = ({
     trafficLightStatus,
     videoButton,
 }) => {
+    // console.log('CARD', title, isOnWaitinglist);
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
@@ -348,7 +349,7 @@ const AppointmentCard: React.FC<Props> = ({
                             {isHorizontalCardCourseChecked && (
                                 <Box position="absolute" right="20px" bottom="13px">
                                     <Tooltip label={t('single.card.alreadyRegistered')}>
-                                        <CheckCircleIcon color="danger.100" size="20px" />
+                                        {isOnWaitinglist ? <SandClockIcon /> : <CheckCircleIcon color="danger.100" size="20px" />}
                                     </Tooltip>
                                 </Box>
                             )}

@@ -51,8 +51,11 @@ const query = gql`
                         }
                     }
                 }
+
                 subcoursesWaitingList {
                     id
+                    minGrade
+                    maxGrade
                     isOnWaitingList
                     maxParticipants
                     participantsCount
@@ -76,6 +79,7 @@ const query = gql`
         }
     }
 `;
+
 const queryPast = gql`
     query PupilPastSubcoursesOverview {
         me {
@@ -90,6 +94,8 @@ const queryPast = gql`
                     isParticipant
                     maxParticipants
                     participantsCount
+                    minGrade
+                    maxGrade
                     firstLecture {
                         start
                     }
@@ -138,6 +144,7 @@ const PupilGroup: React.FC<Props> = () => {
                 maxParticipants
                 participantsCount
                 id
+                isOnWaitingList
                 firstLecture {
                     start
                 }
@@ -177,7 +184,7 @@ const PupilGroup: React.FC<Props> = () => {
                 break;
         }
         return arr;
-    }, [activeTab, allSubcoursesData, data?.me?.pupil?.subcoursesJoined]);
+    }, [activeTab, allSubcoursesData?.subcoursesPublic, data?.me?.pupil?.subcoursesJoined, data?.me?.pupil?.subcoursesWaitingList]);
 
     const activeCourses: LFSubCourse[] = useMemo(
         () =>

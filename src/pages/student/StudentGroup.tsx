@@ -36,6 +36,8 @@ const StudentGroup: React.FC = () => {
                             cancelled
                             participantsCount
                             maxParticipants
+                            minGrade
+                            maxGrade
                             firstLecture {
                                 start
                                 duration
@@ -63,8 +65,11 @@ const StudentGroup: React.FC = () => {
                     id
                     published
                     cancelled
+                    minGrade
+                    maxGrade
                     participantsCount
                     maxParticipants
+                    isInstructor
                     firstLecture {
                         start
                         duration

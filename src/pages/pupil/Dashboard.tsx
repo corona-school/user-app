@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip, Stack } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -329,37 +329,35 @@ const Dashboard: React.FC<Props> = () => {
                                         if (!course) return <></>;
 
                                         return (
-                                            <Stack minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${course.course.description}+${lecture.start}`}>
-                                                <AppointmentCard
-                                                    isGrid
-                                                    isFullHeight
-                                                    isHorizontalCardCourseChecked={course.isParticipant}
-                                                    showCourseTraffic
-                                                    showSchoolclass
-                                                    trafficLightStatus={getTrafficStatus(course?.participantsCount || 0, course?.maxParticipants || 0)}
-                                                    onPressToCourse={() => {
-                                                        trackEvent({
-                                                            category: 'dashboard',
-                                                            action: 'click-event',
-                                                            name: 'Schüler Dashboard – Meine Termin | Klick auf' + course.course.name,
-                                                            documentTitle: 'Schüler Dashboard',
-                                                        });
+                                            <AppointmentCard
+                                                key={`${course.course.description}+${lecture.start}`}
+                                                description={course.course.description}
+                                                tags={course.course.tags}
+                                                date={lecture.start}
+                                                image={course.course.image}
+                                                title={course.course.name}
+                                                countCourse={course.lectures.length}
+                                                maxParticipants={course.maxParticipants}
+                                                participantsCount={course.participantsCount}
+                                                minGrade={course.minGrade}
+                                                maxGrade={course.maxGrade}
+                                                statusText={getTrafficStatusText(course)}
+                                                isFullHeight
+                                                isHorizontalCardCourseChecked={course.isParticipant}
+                                                showCourseTraffic
+                                                showSchoolclass
+                                                trafficLightStatus={getTrafficStatus(course?.participantsCount || 0, course?.maxParticipants || 0)}
+                                                onPressToCourse={() => {
+                                                    trackEvent({
+                                                        category: 'dashboard',
+                                                        action: 'click-event',
+                                                        name: 'Schüler Dashboard – Meine Termin | Klick auf' + course.course.name,
+                                                        documentTitle: 'Schüler Dashboard',
+                                                    });
 
-                                                        navigate(`/single-course/${course.id}`);
-                                                    }}
-                                                    description={course.course.description}
-                                                    tags={course.course.tags}
-                                                    date={lecture.start}
-                                                    image={course.course.image}
-                                                    title={course.course.name}
-                                                    countCourse={course.lectures.length}
-                                                    maxParticipants={course.maxParticipants}
-                                                    participantsCount={course.participantsCount}
-                                                    minGrade={course.minGrade}
-                                                    maxGrade={course.maxGrade}
-                                                    statusText={getTrafficStatusText(course)}
-                                                />
-                                            </Stack>
+                                                    navigate(`/single-course/${course.id}`);
+                                                }}
+                                            />
                                         );
                                     })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
                             </HSection>

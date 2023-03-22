@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import useApollo from '../../hooks/useApollo';
 import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
@@ -18,29 +18,32 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
     const navigate = useNavigate();
     const { user } = useApollo();
 
-    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false) => (
-        <AppointmentCard
-            key={index}
-            participantsCount={subcourse.participantsCount}
-            maxParticipants={subcourse.maxParticipants}
-            minGrade={subcourse.minGrade}
-            maxGrade={subcourse.maxGrade}
-            isHorizontalCardCourseChecked={subcourse.isParticipant}
-            showSchoolclass={!!user?.pupil}
-            showCourseTraffic
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            isFullHeight
-            isSpaceMarginBottom={false}
-            variant="card"
-            description={subcourse.course.description}
-            tags={subcourse.course.tags}
-            date={(showDate && subcourse.firstLecture?.start) || ''}
-            countCourse={subcourse.lectures.length}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-            image={subcourse.course.image ?? undefined}
-            title={subcourse.course.name}
-        />
-    );
+    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false) => {
+        return (
+            <AppointmentCard
+                key={index}
+                description={subcourse.course.description}
+                tags={subcourse.course.tags}
+                date={(showDate && subcourse.firstLecture?.start) || ''}
+                image={subcourse.course.image ?? undefined}
+                title={subcourse.course.name}
+                countCourse={subcourse.lectures.length}
+                maxParticipants={subcourse.maxParticipants}
+                participantsCount={subcourse.participantsCount}
+                minGrade={subcourse.minGrade}
+                maxGrade={subcourse.maxGrade}
+                statusText={getTrafficStatusText(subcourse)}
+                isFullHeight
+                showCourseTraffic
+                showStatus={subcourse.isInstructor}
+                trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+                showSchoolclass
+                isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+                isOnWaitinglist={!!subcourse.isOnWaitingList}
+            />
+        );
+    };
 
     return (
         <Stack space={5}>

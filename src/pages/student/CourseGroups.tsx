@@ -20,24 +20,24 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <AppointmentCard
             key={index}
-            showCourseTraffic={subcourse.published && inPast}
-            showStatus={!inPast}
-            participantsCount={subcourse.participantsCount}
-            maxParticipants={subcourse.maxParticipants}
-            minGrade={subcourse.minGrade}
-            maxGrade={subcourse.maxGrade}
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            statusText={getTrafficStatusText(subcourse)}
-            isFullHeight
-            isSpaceMarginBottom={false}
-            variant="card"
             description={subcourse.course.description}
             tags={subcourse.course.tags}
             date={(showDate && subcourse.firstLecture?.start) || ''}
-            countCourse={subcourse.lectures.length}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
             image={subcourse.course.image ?? undefined}
             title={subcourse.course.name}
+            countCourse={subcourse.lectures.length}
+            maxParticipants={subcourse.maxParticipants}
+            participantsCount={subcourse.participantsCount}
+            minGrade={subcourse.minGrade}
+            maxGrade={subcourse.maxGrade}
+            statusText={getTrafficStatusText(subcourse)}
+            isFullHeight
+            showCourseTraffic
+            showStatus={!subcourse.isParticipant}
+            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+            showSchoolclass
+            isHorizontalCardCourseChecked={subcourse.isParticipant}
         />
     );
     return (

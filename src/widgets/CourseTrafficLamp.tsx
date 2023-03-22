@@ -1,6 +1,5 @@
 import { View, Text, Column, Row, Circle, InfoIcon, Pressable, useTheme, Container, Box, CloseIcon, Heading } from 'native-base';
 
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
@@ -55,10 +54,10 @@ const CourseTrafficLamp: React.FC<Props> = ({
                     />
                     {!hideText && (
                         <Text marginRight={7} bold={boldState}>
-                            {status === 'free'
-                                ? t('single.global.status.free')
-                                : status === 'last' && userType === 'student'
+                            {userType === 'student'
                                 ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
+                                : status === 'free'
+                                ? t('single.global.status.free')
                                 : status === 'last'
                                 ? t('single.global.status.last', { seatsLeft: seatsLeft })
                                 : status === 'full'
