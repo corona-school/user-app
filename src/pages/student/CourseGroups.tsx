@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from 'native-base';
+import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LFSubCourse } from '../../types/lernfair/Course';

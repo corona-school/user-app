@@ -13,7 +13,7 @@ import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 import { DateTime } from 'luxon';
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility';
+import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -23,7 +23,6 @@ import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
-import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 
 type Props = {};
 
@@ -241,14 +240,6 @@ const DashboardStudent: React.FC<Props> = () => {
         return DateTime.fromISO(highlightedAppointment.lecture.start).diffNow('minutes').minutes > 60;
     }, [highlightedAppointment]);
 
-    const getTrafficStatusText = (subcourse: Subcourse | LFSubCourse): string => {
-        if (subcourse.published) return t('single.global.courseState.publish');
-        if (subcourse.cancelled) return t('single.global.courseState.cancelled');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return t('single.global.courseState.draft');
-        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return t('single.global.courseState.submitted');
-        return t('single.global.courseState.publish');
-    };
-
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -314,12 +305,12 @@ const DashboardStudent: React.FC<Props> = () => {
                             )}
                             {sortedAppointments.length > 1 && (
                                 <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
+                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }) => {
                                         const { course } = subcourse;
 
                                         return (
                                             <AppointmentCard
-                                                key={`appointment-${index}`}
+                                                key={subcourse.id}
                                                 description={course.description}
                                                 tags={course.tags}
                                                 date={lecture.start}
