@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Heading, Modal, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -52,8 +52,8 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     );
 }
 
-const singleSubcourseStudentQuery = gql(`
-query GetSingleSubcourseStudent($subcourseId: Int!, $isMySubcourse: Boolean = false) {
+const basicSubcourseQuery = gql(`
+query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -65,9 +65,6 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isMySubcourse: Boolean = fa
         published
         publishedAt
         isInstructor
-        isParticipant
-        isOnWaitingList
-        alreadyPromoted @include(if: $isMySubcourse)
         nextLecture{
             start
             duration
@@ -93,8 +90,16 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isMySubcourse: Boolean = fa
             start
             duration
         }
+    }
+}
+`);
+
+const instructorSubcourseQuery = gql(`
+query GetInstructorSubcourse($subcourseId: Int!) {
+    subcourse(subcourseId: $subcourseId){
+        alreadyPromoted
         pupilsWaitingCount
-        pupilsOnWaitinglist @include(if: $isMySubcourse) {
+        pupilsOnWaitinglist {
             id
             firstname
             lastname
@@ -104,7 +109,6 @@ query GetSingleSubcourseStudent($subcourseId: Int!, $isMySubcourse: Boolean = fa
     }
 }
 `);
-
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const { id: _subcourseId } = useParams();
@@ -112,14 +116,22 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
-    const location = useLocation();
-    const locationState = location.state as { isMySubcourse?: boolean };
-    const isMySubcourse = locationState?.isMySubcourse ?? false;
 
-    const { data, loading, refetch } = useQuery(singleSubcourseStudentQuery, {
+    const { data, loading, refetch } = useQuery(basicSubcourseQuery, {
         variables: {
             subcourseId,
-            isMySubcourse,
+        },
+    });
+
+    const isInstructorOfSubcourse = useMemo(() => {
+        if (data?.subcourse?.isInstructor) return true;
+        return false;
+    }, [data?.subcourse?.isInstructor]);
+
+    const { data: instructorSubcourse, loading: subLoading } = useQuery(instructorSubcourseQuery, {
+        skip: !data?.subcourse?.isInstructor,
+        variables: {
+            subcourseId,
         },
     });
 
@@ -273,7 +285,8 @@ const SingleCourseStudent = () => {
     };
 
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted')) return false;
+        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !instructorSubcourse?.subcourse?.hasOwnProperty('alreadyPromoted'))
+            return false;
         const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
         return canPromote;
     }, [loading, subcourse]);
@@ -292,16 +305,22 @@ const SingleCourseStudent = () => {
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
             <Stack space={space['3']} paddingX={space['1.5']}>
-                <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
-                {!isInPast && !subcourse?.cancelled && isMySubcourse && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
-                {subcourse && isMySubcourse && subcourse.published && !isInPast && canPromoteCourse && (
+                <SubcourseData
+                    course={course}
+                    subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse!.subcourse } : subcourse}
+                    isInPast={isInPast}
+                />
+                {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                    <StudentCourseButtons subcourse={{ ...subcourse, ...instructorSubcourse!.subcourse }} refresh={refetch} />
+                )}
+                {subcourse && isInstructorOfSubcourse && subcourse.published && !isInPast && canPromoteCourse && (
                     <PromoteBanner
                         onClick={doPromote}
-                        isPromoted={subcourse?.alreadyPromoted || false}
+                        isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
                         courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                     />
                 )}
-                {!isInPast && isMySubcourse && (
+                {!isInPast && isInstructorOfSubcourse && (
                     <Banner
                         courseState={course?.courseState}
                         isCourseCancelled={subcourse?.cancelled}

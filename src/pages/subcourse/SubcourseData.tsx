@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getTrafficStatus } from '../../Utility';
@@ -19,6 +20,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const { isMobile } = useLayoutHelper();
+    const userType = useUserType();
 
     const ImageHeight = useBreakpointValue({
         base: '178px',
@@ -67,6 +69,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
                         <CourseTrafficLamp
                             status={trafficStatus}
+                            showLastSeats={userType === 'student'}
                             seatsLeft={seatsLeft}
                             seatsFull={subcourse?.participantsCount}
                             seatsMax={subcourse?.maxParticipants}
