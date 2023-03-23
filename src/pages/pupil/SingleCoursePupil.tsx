@@ -12,6 +12,8 @@ import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
 import { useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
+import PupilBanner from '../../widgets/PupilBanner';
+import { getTrafficStatus } from '../../Utility';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -233,8 +235,14 @@ const SingleCoursePupil = () => {
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
-            <Stack space={space['3']} paddingX={space['1.5']}>
+            <Stack space={space['2']} paddingX={space['1.5']}>
                 <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
+                {subcourse?.isParticipant && !isInPast && (
+                    <PupilBanner
+                        courseStatus={getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants)}
+                        seatsLeft={subcourse?.maxParticipants - subcourse?.participantsCount}
+                    />
+                )}
 
                 {!isInPast && (
                     <PupilCourseButtons

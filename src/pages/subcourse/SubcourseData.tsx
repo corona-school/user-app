@@ -64,7 +64,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <Text bold>{t('single.courseInfo.grade')}</Text>
                         {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
                     </Text>
-                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
+                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && !subcourse.isParticipant && (
                         <CourseTrafficLamp
                             status={trafficStatus}
                             seatsLeft={seatsLeft}
@@ -77,7 +77,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
                 </VStack>
 
-                <Stack width={ContainerWidth}>
+                <Stack width={ContainerWidth} mt="1">
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
                         <Image
                             alt={course?.name}
