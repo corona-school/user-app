@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue } from 'native-base';
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -90,6 +90,16 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
         return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
     };
 
+    const handleAppointmentPress = useCallback(
+        (appointmentId: number) => {
+            if (isEditing) {
+                setShowEditModal && setShowEditModal(true);
+            }
+            navigate(`/appointment/${appointmentId}`);
+        },
+        [isEditing, navigate, setShowEditModal]
+    );
+
     useEffect(() => {
         const observer = new IntersectionObserver(callbackFn, options);
         if (containerRef.current) observer.observe(containerRef.current);
@@ -138,7 +148,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                             title={appointment.title}
                                             organizers={appointment.organizers}
                                             participants={appointment.participants}
-                                            onPress={isEditing && setShowEditModal ? setShowEditModal(true) : navigate(`/appointment/${appointment.id}`)}
+                                            onPress={() => handleAppointmentPress(appointment.id)}
                                             scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                             isReadOnly={isReadOnly}
                                         />

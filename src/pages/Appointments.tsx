@@ -75,7 +75,7 @@ const Appointments: React.FC = () => {
 
     useEffect(() => {
         if (isEndOfList) loadMoreAppointments();
-    }, [isEndOfList]);
+    }, [isEndOfList, loadMoreAppointments]);
 
     return (
         <AsNavigationItem path="appointments">
