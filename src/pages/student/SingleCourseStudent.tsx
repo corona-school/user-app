@@ -52,8 +52,8 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     );
 }
 
-const singleSubcourseStudentQuery = gql(`
-query GetSingleSubcourseStudent($subcourseId: Int!) {
+const basicSubcourseQuery = gql(`
+query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -65,9 +65,6 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
         published
         publishedAt
         isInstructor
-        isParticipant
-        isOnWaitingList
-        alreadyPromoted
         nextLecture{
             start
             duration
@@ -93,6 +90,14 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
             start
             duration
         }
+    }
+}
+`);
+
+const instructorSubcourseQuery = gql(`
+query GetInstructorSubcourse($subcourseId: Int!) {
+    subcourse(subcourseId: $subcourseId){
+        alreadyPromoted
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -101,21 +106,30 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
             schooltype
             grade
             }
-
     }
 }
 `);
-
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
-
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
 
-    const { data, loading, refetch } = useQuery(singleSubcourseStudentQuery, {
+    const { data, loading, refetch } = useQuery(basicSubcourseQuery, {
+        variables: {
+            subcourseId,
+        },
+    });
+
+    const isInstructorOfSubcourse = useMemo(() => {
+        if (data?.subcourse?.isInstructor) return true;
+        return false;
+    }, [data?.subcourse?.isInstructor]);
+
+    const { data: instructorSubcourse, loading: subLoading } = useQuery(instructorSubcourseQuery, {
+        skip: !data?.subcourse?.isInstructor,
         variables: {
             subcourseId,
         },
@@ -271,10 +285,11 @@ const SingleCourseStudent = () => {
     };
 
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted')) return false;
+        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || instructorSubcourse?.subcourse?.alreadyPromoted !== false)
+            return false;
         const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
         return canPromote;
-    }, [loading, subcourse]);
+    }, [instructorSubcourse?.subcourse?.alreadyPromoted, loading, subcourse]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
@@ -285,30 +300,43 @@ const SingleCourseStudent = () => {
             default:
                 return () => submitCourse();
         }
-    }, [course?.courseState, doPublish, submit, submitCourse]);
+    }, [course?.courseState, doPublish, submitCourse]);
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
-            <Stack space={space['3']} paddingX={space['1.5']}>
-                <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
-                {!isInPast && !subcourse?.cancelled && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
-                {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
-                    <PromoteBanner
-                        onClick={doPromote}
-                        isPromoted={subcourse?.alreadyPromoted || false}
-                        courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            {subLoading ? (
+                <CenterLoadingSpinner />
+            ) : (
+                <Stack space={space['3']} paddingX={space['1.5']}>
+                    <SubcourseData
+                        course={course}
+                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse!.subcourse } : subcourse}
+                        isInPast={isInPast}
+                        hideTrafficStatus={canPromoteCourse}
                     />
-                )}
-                {!isInPast && (
-                    <Banner
-                        courseState={course?.courseState}
-                        isCourseCancelled={subcourse?.cancelled}
-                        isPublished={subcourse?.published}
-                        handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
-                    />
-                )}
-                <Tabs tabs={tabs} />
-            </Stack>
+                    {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                        <StudentCourseButtons subcourse={{ ...subcourse, ...instructorSubcourse!.subcourse }} refresh={refetch} />
+                    )}
+                    {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                        <PromoteBanner
+                            onClick={doPromote}
+                            seatsFull={subcourse?.participantsCount}
+                            seatsMax={subcourse?.maxParticipants}
+                            isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
+                            courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                        />
+                    )}
+                    {!isInPast && isInstructorOfSubcourse && (
+                        <Banner
+                            courseState={course?.courseState}
+                            isCourseCancelled={subcourse?.cancelled}
+                            isPublished={subcourse?.published}
+                            handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
+                        />
+                    )}
+                    <Tabs tabs={tabs} />
+                </Stack>
+            )}
             <Modal>
                 <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
             </Modal>

@@ -32,6 +32,7 @@ import SandClockIcon from '../assets/icons/lernfair/Icon_SandClock_small.svg';
 import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     tags?: LFTag[];
@@ -100,11 +101,10 @@ const AppointmentCard: React.FC<Props> = ({
     trafficLightStatus,
     videoButton,
 }) => {
-    // console.log('CARD', title, isOnWaitinglist);
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
-
+    const userType = useUserType();
     const date = _date && DateTime.fromISO(_date);
 
     useInterval(() => {
@@ -281,6 +281,7 @@ const AppointmentCard: React.FC<Props> = ({
                                     <Box>
                                         <CourseTrafficLamp
                                             status={trafficLightStatus || 'full'}
+                                            showLastSeats={userType === 'student'}
                                             circleSize="12px"
                                             paddingY={0}
                                             seatsLeft={seatsLeft}

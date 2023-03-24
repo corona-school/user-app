@@ -15,6 +15,7 @@ type Props = {
     paddingY?: number;
     showBorder?: boolean;
     boldState?: boolean;
+    showLastSeats?: boolean;
     seatsLeft?: number;
     seatsFull?: number;
     seatsMax?: number;
@@ -25,6 +26,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
     seatsLeft,
     seatsFull,
     seatsMax,
+    showLastSeats = false,
     infoPopupTitle,
     infoPopupContent,
     infoPopupLastContent,
@@ -37,7 +39,6 @@ const CourseTrafficLamp: React.FC<Props> = ({
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
-    const userType = useUserType();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 
@@ -54,7 +55,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
                     />
                     {!hideText && (
                         <Text marginRight={7} bold={boldState}>
-                            {getTrafficLampText(status, userType === 'student', seatsMax, seatsFull, seatsLeft)}
+                            {getTrafficLampText(status, showLastSeats, seatsMax, seatsFull, seatsLeft)}
                         </Text>
                     )}
                     {infoPopupTitle && (
