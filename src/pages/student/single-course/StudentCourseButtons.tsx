@@ -24,7 +24,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {subcourse.published && (
                     <>
-                        <JoinMeeting subcourse={subcourse} refresh={refresh} />
+                        <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />
                         <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
                     </>
                 )}
