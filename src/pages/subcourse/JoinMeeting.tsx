@@ -8,10 +8,11 @@ import AlertMessage from '../../widgets/AlertMessage';
 
 type JoinMeetingProps = {
     subcourse: Pick<Subcourse, 'id'> & { lectures?: { start: string; duration: number }[] | null };
+    isInstructor?: boolean;
     refresh: () => void;
 };
 
-const JoinMeeting: React.FC<JoinMeetingProps> = ({ subcourse, refresh }) => {
+const JoinMeeting: React.FC<JoinMeetingProps> = ({ subcourse, isInstructor = false, refresh }) => {
     const [disableMeetingButton, setDisableMeetingButton] = useState(true);
     const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
     const [showJoinedModal, setShowJoinedModal] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ subcourse, refresh }) => {
 
     return (
         <>
-            <Tooltip isDisabled={disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+            <Tooltip maxWidth={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}>
                 <Button onPress={getMeetingLink} isDisabled={_joinMeeting.loading || disableMeetingButton}>
                     {t('single.actions.videochat')}
                 </Button>
