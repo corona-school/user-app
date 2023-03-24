@@ -165,6 +165,12 @@ const course = {
                 '  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.',
         },
     },
+    unsplash: {
+        heading: 'Wähle ein Bild',
+        description: 'Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.',
+        noSearchoResults: 'Keine Suchergebnisse.',
+        choose: 'wählen',
+    },
     addCourseInstructor: {
         search: 'Name oder E-Mail-Adresse',
         notFound: 'Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden',

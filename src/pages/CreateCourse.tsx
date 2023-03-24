@@ -717,7 +717,7 @@ const CreateCourse: React.FC = () => {
     );
 
     const showUnsplash = useCallback(() => {
-        show({ variant: 'light' }, <Unsplash onPhotoSelected={pickPhoto} onClose={hide} />);
+        // show({ variant: 'light' }, <Unsplash onPhotoSelected={pickPhoto} onClose={hide} />);
     }, [pickPhoto, show, hide]);
 
     const addInstructor = useCallback(
