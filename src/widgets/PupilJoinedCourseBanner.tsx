@@ -9,7 +9,7 @@ type BannerProps = {
     seatsLeft: number;
 };
 
-const PupilBanner: React.FC<BannerProps> = ({ courseStatus, seatsLeft }) => {
+const PupilJoinedCourseBanner: React.FC<BannerProps> = ({ courseStatus, seatsLeft }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
 
@@ -29,4 +29,4 @@ const PupilBanner: React.FC<BannerProps> = ({ courseStatus, seatsLeft }) => {
     );
 };
 
-export default PupilBanner;
+export default PupilJoinedCourseBanner;

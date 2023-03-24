@@ -12,7 +12,7 @@ import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
 import { useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
-import PupilBanner from '../../widgets/PupilBanner';
+import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
@@ -238,7 +238,7 @@ const SingleCoursePupil = () => {
             <Stack space={space['2']} paddingX={space['1.5']}>
                 <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
                 {subcourse?.isParticipant && !isInPast && (
-                    <PupilBanner
+                    <PupilJoinedCourseBanner
                         courseStatus={getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants)}
                         seatsLeft={subcourse?.maxParticipants - subcourse?.participantsCount}
                     />
