@@ -27,6 +27,7 @@ export interface LFSubCourse {
     published?: boolean;
     joinAfterStart?: boolean;
     instructors?: LFInstructor[];
+    isInstructor?: boolean;
     firstLecture?: LFLecture;
     minGrade?: number;
     maxGrade?: number;

@@ -1,7 +1,6 @@
 import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import useApollo from '../../hooks/useApollo';
 import { getTrafficStatus } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -15,13 +14,11 @@ type GroupProps = {
 const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { user } = useApollo();
 
     const renderSubcourse = (
         subcourse: typeof languageCourses[number] | typeof courses[number] | typeof focusCourses[number],
         index: number,
-        showDate: boolean = true,
-        readonly: boolean = false
+        showDate: boolean = true
     ) => (
         <AppointmentCard
             showTrafficLight
@@ -34,7 +31,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
             tags={subcourse.course.tags}
             date={(showDate && subcourse.firstLecture?.start) || ''}
             countCourse={subcourse.lectures.length}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+            onPressToCourse={() => navigate(`/single-course/${subcourse.id}`, { state: { isMySubcourse: subcourse.isInstructor } })}
             image={subcourse.course.image ?? undefined}
             title={subcourse.course.name}
         />
@@ -47,7 +44,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.language')}</Heading>
                     <HSection scrollable>
                         {languageCourses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
+                            return renderSubcourse(subcourse, index, true);
                         })}
                     </HSection>
                 </Box>
@@ -57,7 +54,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.courses')}</Heading>
                     <HSection scrollable>
                         {courses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
+                            return renderSubcourse(subcourse, index, true);
                         })}
                     </HSection>
                 </Box>
@@ -67,7 +64,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     <Heading>{t('matching.group.pupil.tabs.tab2.focus')}</Heading>
                     <HSection scrollable>
                         {focusCourses?.map((subcourse: any, index: number) => {
-                            return renderSubcourse(subcourse, index, true, user?.pupil ? false : true);
+                            return renderSubcourse(subcourse, index, true);
                         })}
                     </HSection>
                 </Box>
