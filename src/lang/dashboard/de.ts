@@ -73,9 +73,9 @@ const dashboard = {
             recommend: 'Jetzt empfehlen',
         },
         channels: {
-            whatsApp: 'via WhatsApp',
-            signal: 'via Signal',
-            email: 'via E-Mail',
+            whatsApp: 'WhatsApp',
+            signal: 'Signal',
+            email: 'E-Mail',
         },
     },
     noproposalsPupil: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',

@@ -1,6 +1,12 @@
-import { Button, Text, Modal, TextArea, useToast, VStack } from 'native-base';
-import React, { useState } from 'react';
+import { Button, Modal, Stack, TextArea, useToast, VStack } from 'native-base';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import WhatsappIcon from '../assets/icons/icon_whatsapp.svg';
+import CopyToClipboardIcon from '../assets/icons/icon_copy_to_clipboard.svg';
+import SignalIcon from '../assets/icons/icon_signal.svg';
+import EmailIcon from '../assets/icons/icon_email.svg';
+import useInterval from '../hooks/useInterval';
 
 type ModalProps = {
     showRecommendModal: boolean;
@@ -12,7 +18,7 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
     const [copied, setCopied] = useState<boolean>();
 
     const recommendTextEncoded =
-        'Hey%2C+ich+engagiere+mich+ehrenamtlich+bei+Lern-Fair+e.V.+f%C3%BCr+mehr+Bildungschancen+und+Gerechtigkeit+in+Deutschland.+Vielleicht+w%C3%A4re+das+ja+auch+etwas+f%C3%BCr+dich%3F+Es+ist+total+einfach+und+komplett+flexibel%2C+da+alles+online+stattfindet+und+du+von+zuhause+aus+mitmachen+kannst.+Ich+w%C3%BCrde+mich+freuen%2C+wenn+du+dabei+w%C3%A4rst%21+Alle+Infos+findest+du+auf+der+Website%3A+www.lern-fair.de%27%3B';
+        'Hey%2C+%0D%0A%0D%0Aich+engagiere+mich+ehrenamtlich+bei+Lern-Fair+e.V.+f%C3%BCr+mehr+Bildungschancen+und+Gerechtigkeit+in+Deutschland.+Vielleicht+w%C3%A4re+das+ja+auch+etwas+f%C3%BCr+dich%3F+Es+ist+total+einfach+und+komplett+flexibel%2C+da+alles+online+stattfindet+und+du+von+zuhause+aus+mitmachen+kannst.+%0D%0A%0D%0AIch+w%C3%BCrde+mich+freuen%2C+wenn+du+dabei+w%C3%A4rst%21+%0D%0AAlle+Infos+findest+du+auf+der+Website%3A+www.lern-fair.de';
 
     const recommendText =
         'Hey, ich engagiere mich ehrenamtlich bei Lern-Fair e.V. für mehr Bildungschancen und Gerechtigkeit in Deutschland. Vielleicht wäre das ja auch etwas für dich? Es ist total einfach und komplett flexibel, da alles online stattfindet und du von zuhause aus mitmachen kannst. Ich würde mich freuen, wenn du dabei wärst! Alle Infos findest du auf der Website: www.lern-fair.de';
@@ -30,6 +36,10 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
         });
     };
 
+    useInterval(() => {
+        setCopied(false);
+    }, 10_000);
+
     return (
         <Modal
             isOpen={showRecommendModal}
@@ -43,20 +53,34 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
                 <Modal.Header>{t('dashboard.helpers.headlines.recommend')}</Modal.Header>
                 <Modal.Body>
                     <VStack space="3">
-                        <TextArea h="200" value={recommendText} isReadOnly autoCompleteType="" />
-                        <Button onPress={() => handleCopyClick()}>{copied ? 'Kopiert!' : 'Kopieren'}</Button>
+                        <TextArea h="180" value={recommendText} isReadOnly autoCompleteType="" />
+                        <Button onPress={() => handleCopyClick()}>
+                            <Stack space="2" direction={'row'} alignItems="center">
+                                <CopyToClipboardIcon />
+                                {copied ? 'Text kopiert!' : 'Text kopieren'}
+                            </Stack>
+                        </Button>
                         <Button variant="outline" onPress={() => window.open(`https://wa.me/?text=${recommendTextEncoded}`, '_blank')}>
-                            {t('dashboard.helpers.channels.whatsApp')}
+                            <Stack space="2" direction={'row'} alignItems="center">
+                                <WhatsappIcon />
+                                {t('dashboard.helpers.channels.whatsApp')}
+                            </Stack>
                         </Button>
                         <Button variant="outline" onPress={() => window.open(`https://signal.me/?text=${recommendTextEncoded}`, '_blank')}>
-                            {t('dashboard.helpers.channels.signal')}
+                            <Stack space="2" direction={'row'} alignItems="center">
+                                <SignalIcon />
+                                {t('dashboard.helpers.channels.signal')}
+                            </Stack>
                         </Button>
                         <Button
                             onPress={() => (window.location.href = `mailto:?subject=Engagiere+dich+bei+Lern-Fair%21&body=${recommendTextEncoded}`)}
                             variant="outline"
                             textAlign="center"
                         >
-                            {t('dashboard.helpers.channels.email')}
+                            <Stack space="2" direction={'row'} alignItems="center">
+                                <EmailIcon />
+                                {t('dashboard.helpers.channels.email')}
+                            </Stack>
                         </Button>
                     </VStack>
                 </Modal.Body>
