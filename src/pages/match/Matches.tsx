@@ -29,7 +29,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
 
     const getMatchPartnerName = useCallback(
         (match: LFMatch): string => {
-            if (userType === 'student') return match?.pupil?.firstname;
+            if (userType === 'student') return `${match?.pupil?.firstname} ${match?.pupil?.lastname}`;
             return `${match?.student?.firstname} ${match?.student?.lastname}`;
         },
         [userType]
