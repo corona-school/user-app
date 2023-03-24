@@ -8,11 +8,13 @@ import { TrafficStatus } from '../types/lernfair/Course';
 
 type BannerProps = {
     isPromoted: boolean;
+    seatsFull: number;
+    seatsMax: number;
     courseStatus: TrafficStatus;
     onClick: () => void;
 };
 
-const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus }) => {
+const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus, seatsFull, seatsMax }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
@@ -23,7 +25,7 @@ const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatu
     return (
         <Box>
             <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                <CourseTrafficLamp status={courseStatus} paddingY={3} />
+                <CourseTrafficLamp showLastSeats seatsFull={seatsFull} seatsMax={seatsMax} status={courseStatus} paddingY={3} />
                 <Divider />
                 <Stack direction={isMobile ? 'column' : 'row'} py={3} alignItems={isMobile ? 'flex-start' : 'center'} space={1}>
                     <Stack direction="row" alignItems="center" mb="2">

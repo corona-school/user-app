@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getTrafficStatus } from '../../Utility';
@@ -13,12 +14,14 @@ type SubcourseDataProps = {
     course: Course;
     subcourse: Subcourse;
     isInPast: boolean;
+    hideTrafficStatus?: boolean;
 };
 
-const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast }) => {
+const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const { isMobile } = useLayoutHelper();
+    const userType = useUserType();
 
     const ImageHeight = useBreakpointValue({
         base: '178px',
@@ -64,9 +67,10 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <Text bold>{t('single.courseInfo.grade')}</Text>
                         {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
                     </Text>
-                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
+                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && !hideTrafficStatus && (
                         <CourseTrafficLamp
                             status={trafficStatus}
+                            showLastSeats={userType === 'student'}
                             seatsLeft={seatsLeft}
                             seatsFull={subcourse?.participantsCount}
                             seatsMax={subcourse?.maxParticipants}
@@ -77,7 +81,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
                 </VStack>
 
-                <Stack width={ContainerWidth}>
+                <Stack width={ContainerWidth} mt="1">
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
                         <Image
                             alt={course?.name}
