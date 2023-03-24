@@ -30,6 +30,8 @@ const query = gql`
                 }
                 subcoursesJoined {
                     id
+                    minGrade
+                    maxGrade
                     isParticipant
                     maxParticipants
                     participantsCount
@@ -49,8 +51,11 @@ const query = gql`
                         }
                     }
                 }
+
                 subcoursesWaitingList {
                     id
+                    minGrade
+                    maxGrade
                     isOnWaitingList
                     maxParticipants
                     participantsCount
@@ -74,6 +79,7 @@ const query = gql`
         }
     }
 `;
+
 const queryPast = gql`
     query PupilPastSubcoursesOverview {
         me {
@@ -88,6 +94,8 @@ const queryPast = gql`
                     isParticipant
                     maxParticipants
                     participantsCount
+                    minGrade
+                    maxGrade
                     firstLecture {
                         start
                     }
@@ -131,9 +139,12 @@ const PupilGroup: React.FC<Props> = () => {
         query GetAllSubcourses($name: String) {
             subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
                 isParticipant
+                minGrade
+                maxGrade
                 maxParticipants
                 participantsCount
                 id
+                isOnWaitingList
                 firstLecture {
                     start
                 }
@@ -173,7 +184,7 @@ const PupilGroup: React.FC<Props> = () => {
                 break;
         }
         return arr;
-    }, [activeTab, allSubcoursesData, data?.me?.pupil?.subcoursesJoined]);
+    }, [activeTab, allSubcoursesData?.subcoursesPublic, data?.me?.pupil?.subcoursesJoined, data?.me?.pupil?.subcoursesWaitingList]);
 
     const activeCourses: LFSubCourse[] = useMemo(
         () =>
