@@ -12,6 +12,7 @@ type Props = {
     hideText?: boolean;
     paddingY?: number;
     showBorder?: boolean;
+    showLastSeats?: boolean;
     seatsLeft?: number;
     seatsFull?: number;
     seatsMax?: number;
@@ -22,6 +23,7 @@ const CourseTrafficLamp: React.FC<Props> = ({
     seatsLeft,
     seatsFull,
     seatsMax,
+    showLastSeats,
     infoPopupTitle,
     infoPopupContent,
     infoPopupLastContent,
@@ -32,7 +34,6 @@ const CourseTrafficLamp: React.FC<Props> = ({
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
-    const userType = useUserType();
 
     const padY = typeof paddingY === 'number' ? paddingY : 5;
 
@@ -47,19 +48,23 @@ const CourseTrafficLamp: React.FC<Props> = ({
                         size="20px"
                         marginRight={3}
                     />
-                    {!hideText && (
-                        <Text marginRight={7} bold>
-                            {status === 'free'
-                                ? t('single.global.status.free')
-                                : status === 'last' && userType === 'student'
-                                ? t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })
-                                : status === 'last'
-                                ? t('single.global.status.last', { seatsLeft: seatsLeft })
-                                : status === 'full'
-                                ? t('single.global.status.full')
-                                : ''}
-                        </Text>
-                    )}
+                    {!hideText &&
+                        (showLastSeats ? (
+                            <Text marginRight={7} bold>
+                                {t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })}
+                            </Text>
+                        ) : (
+                            <Text marginRight={7} bold>
+                                {status === 'free'
+                                    ? t('single.global.status.free')
+                                    : status === 'last'
+                                    ? t('single.global.status.last', { seatsLeft: seatsLeft })
+                                    : status === 'full'
+                                    ? t('single.global.status.full')
+                                    : ''}
+                            </Text>
+                        ))}
+
                     {infoPopupTitle && (
                         <Pressable
                             onPress={() => {

@@ -109,7 +109,7 @@ const StudentGroup: React.FC = () => {
             data?.me.student!.subcoursesInstructing.filter(
                 (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published) || it.course.courseState === 'submitted'
             ),
-        [data?.me.student!.subcoursesInstructing]
+        [data?.me.student]
     );
     const pastOrCancelledSubcourses = useMemo(
         () =>
@@ -128,11 +128,11 @@ const StudentGroup: React.FC = () => {
     );
     const languageCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const focusCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const revisionCourses = useMemo(
         () =>
