@@ -1,4 +1,4 @@
-import { Button, Modal, Text, Stack, useTheme, Row, Column, Heading, VStack } from 'native-base';
+import { Button, Modal, Text, Stack, useTheme, Heading, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { PupilOnWaitinglist } from '../types/lernfair/Course';
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';

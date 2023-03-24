@@ -9,7 +9,6 @@ import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolT
 import ChangeSettingState from './pages/change-setting/ChangeSettingState';
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage';
 import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass';
-import SingleCourse from './pages/SingleCourse';
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome';
@@ -51,6 +50,8 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
+import SingleCourseStudent from './pages/student/SingleCourseStudent';
 
 export default function NavigatorLazy() {
     return (
@@ -78,7 +79,7 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth isRetainPath>
-                        <SingleCourse />
+                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
                     </RequireAuth>
                 }
             />
