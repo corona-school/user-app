@@ -64,7 +64,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                         <div key={file.name}>{file.name}</div>
                     ))}
                     <Button maxW="200px" w="100%" onPress={openFileSelector}>
-                        Upload Files
+                        {t('helpcenter.contact.fileupload.label')}
                     </Button>
                     {details}
                     {errors.length > 0 && (

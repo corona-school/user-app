@@ -30,6 +30,7 @@ const helpcenter = {
         success: 'Deine Nachricht wurde erfolgreich versendet',
         error: 'Deine Nachricht konnte leider nicht versendet werden',
         fileupload: {
+            label: 'Dateien anhängen',
             fileSizeToolarge: 'Die Datei ist zu groß! Maximal {{maxSize}} MB erlaubt.',
             fileSizeToSmall: 'Die Datei ist zu klein!',
             readerError: 'Die Datei konnte nicht gelesen werden!',
