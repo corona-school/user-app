@@ -164,14 +164,14 @@ const SingleCoursePupil = () => {
 
     const [contact, { loading: loadingContactInstructor }] = useMutation(
         gql(`
-        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!) {
-            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: [] title: $title body: $body)
+        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!, $fileIDs: [String!]!) {
+            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: $fileIDs title: $title body: $body)
         }
     `)
     );
 
-    async function doContact(title: string, body: string) {
-        await contact({ variables: { subcourseId: subcourseId, title, body } });
+    async function doContact(title: string, body: string, fileIDs: string[]) {
+        await contact({ variables: { subcourseId, title, body, fileIDs } });
         toast.show({ description: 'Benachrichtigung verschickt', placement: 'top' });
     }
 
