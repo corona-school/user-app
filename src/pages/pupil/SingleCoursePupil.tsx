@@ -86,6 +86,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
             start
             duration
         }
+        canContactInstructor { allowed reason }
 
         published
         isInstructor

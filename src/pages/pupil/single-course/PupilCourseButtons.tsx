@@ -131,7 +131,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
                 )}
-                {subcourse.isParticipant && (
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
                     <Button variant="outline" onPress={() => setShowMessageModal(true)}>
                         {t('single.actions.contactInstructor')}
                     </Button>
