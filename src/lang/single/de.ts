@@ -131,7 +131,12 @@ const single = {
             info: 'Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support.',
         },
     },
-    signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+    signIn: {
+        button: 'Verbindlich anmelden',
+        description:
+            'Schön, dass du dich zum Kurs anmelden möchtest. Bitte beachte folgende <b>Regeln</b>: <br><br><b>1.</b> Deine Anmeldung zu diesem Kurs ist verbindlich! Unsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. <br><b>2.</b> Wenn du dich zu einem Kurs anmeldest, dann kommt bitte pünktlich zur Kursstunde. Falls du doch kurzfristig verhindert sein solltest, schreibe den Kursleiter:innen eine kurze Absage, oder melde dich unter support@lern-fair.de. <br><b>3.</b> Wir haben bei den meisten Kursen eine Warteliste mit Schüler:innen! Sei fair gegenüber deinen Mitschüler:innen und melde dich nur an, wenn du auch wirklich teilnehmen kannst. <br><b>4.</b> Lasse im Kurs das Mikrofon bitte aus, außer wenn du etwas sagen möchtest, dann melde dich bitte über die Handhebefunktion.<br><b>5.</b> Schalte deine Kamera wenn möglich an, um eine entspannte Atmosphäre zu schaffen.<br><b>6.</b> Bei technischen Problemen schreibe bitte an support@lern-fair.de. <br><b>7.</b> Arbeite im Kurs aktiv mit: Also zuhören, mitdenken und sich melden.',
+        toast: 'Du hast dich erfolgreich zum Kurs angemeldet.',
+    },
     joinWaitinglist: {
         button: 'Auf Warteliste setzen',
         description: 'Möchtest du dich auf die Warteliste setzen?',
@@ -169,17 +174,6 @@ const single = {
         add: 'Hinzufügen',
         amount: 'Anzahl Schüler:innen',
         success: 'Schüler:innen erfolgreich hinzugefügt',
-    },
-    pupil: {
-        subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
-        courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
-        signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
-        leave: {
-            course: 'Kurs verlassen',
-            signOut: 'Vom Kurs abmelden',
-            description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-            toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
-        },
     },
 };
 
