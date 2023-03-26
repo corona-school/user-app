@@ -20,7 +20,7 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
-import { getTrafficStatus } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
@@ -62,18 +62,26 @@ const query = gql(`
                 subcoursesJoined {
                     id
                     isParticipant
+                    minGrade
+                    maxGrade
+                    participantsCount
+                    maxParticipants
                     lectures {
                         start
                         duration
                     }
                     course {
+                        courseState
                         name
                         image
                         tags {
                             name
                         }
                         subject
+                        description
                     }
+                    published
+                    cancelled
                 }
             }
         }
@@ -82,7 +90,6 @@ const query = gql(`
             id
             minGrade
             maxGrade
-            maxParticipants
             joinAfterStart
             maxParticipants
             participantsCount
@@ -332,27 +339,35 @@ const Dashboard: React.FC<Props> = () => {
                                 {(sortedAppointments.length > 1 &&
                                     sortedAppointments.slice(1, 5).map(({ subcourse, lecture }) => {
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%" key={`${subcourse.id}+${lecture.start}`}>
-                                                <AppointmentCard
-                                                    isGrid
-                                                    isFullHeight
-                                                    onPressToCourse={() => {
-                                                        trackEvent({
-                                                            category: 'dashboard',
-                                                            action: 'click-event',
-                                                            name: 'Schüler Dashboard – Meine Termin | Klick auf' + subcourse.course.name,
-                                                            documentTitle: 'Schüler Dashboard',
-                                                        });
+                                            <AppointmentCard
+                                                key={`${subcourse.course.description}+${lecture.start}`}
+                                                description={subcourse.course.description}
+                                                tags={subcourse.course.tags}
+                                                date={lecture.start}
+                                                image={subcourse.course.image ?? undefined}
+                                                title={subcourse.course.name}
+                                                countCourse={subcourse.lectures.length}
+                                                maxParticipants={subcourse.maxParticipants}
+                                                participantsCount={subcourse.participantsCount}
+                                                minGrade={subcourse.minGrade}
+                                                maxGrade={subcourse.maxGrade}
+                                                statusText={getTrafficStatusText(subcourse)}
+                                                isFullHeight
+                                                isHorizontalCardCourseChecked={subcourse.isParticipant}
+                                                showCourseTraffic
+                                                showSchoolclass
+                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                onPressToCourse={() => {
+                                                    trackEvent({
+                                                        category: 'dashboard',
+                                                        action: 'click-event',
+                                                        name: 'Schüler Dashboard – Meine Termin | Klick auf' + subcourse.course.name,
+                                                        documentTitle: 'Schüler Dashboard',
+                                                    });
 
-                                                        navigate(`/single-course/${subcourse.id}`);
-                                                    }}
-                                                    description={''}
-                                                    tags={subcourse.course.tags}
-                                                    date={lecture.start}
-                                                    image={subcourse.course.image ?? undefined}
-                                                    title={subcourse.course.name}
-                                                />
-                                            </Column>
+                                                    navigate(`/single-course/${subcourse.id}`);
+                                                }}
+                                            />
                                         );
                                     })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
                             </HSection>

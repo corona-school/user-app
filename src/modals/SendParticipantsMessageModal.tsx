@@ -34,12 +34,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                     </Row>
                     {details}
                     <AlertMessage
-                        content={
-                            <>
-                                Wir teilen {isInstructor ? 'deinen Teilnehmer:innen' : 'deinen Kursleiter:innen'} deine E-Mail-Adresse mit, sodass ihr bei
-                                Bedarf via E-Mail weiter kommunizieren könnt.
-                            </>
-                        }
+                        content={<>{isInstructor ? t('single.modals.contactMessage.alertInstructors') : t('single.modals.contactMessage.alertParticipants')}</>}
                     />
                 </Modal.Body>
                 <Modal.Footer>

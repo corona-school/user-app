@@ -1,3 +1,5 @@
+import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Pupil } from '../../gql/graphql';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -10,6 +12,7 @@ export type LFCourse = {
     image?: string;
     category: string;
     allowContact?: boolean;
+    courseState?: Course_Coursestate_Enum;
 };
 export interface LFSubCourse {
     id: number;
@@ -23,8 +26,10 @@ export interface LFSubCourse {
     canJoin?: LFDecision;
     isOnWaitingList?: boolean;
     published?: boolean;
+    cancelled?: boolean;
     joinAfterStart?: boolean;
     instructors?: LFInstructor[];
+    isInstructor?: boolean;
     firstLecture?: LFLecture;
     minGrade?: number;
     maxGrade?: number;
@@ -46,5 +51,9 @@ export type LFInstructor = {
     firstname: string;
     lastname: string;
 };
+
+export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
+
+export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade'>;
 
 export type TrafficStatus = 'full' | 'last' | 'free';

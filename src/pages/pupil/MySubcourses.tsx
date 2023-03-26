@@ -1,8 +1,8 @@
-import { Box, Heading, Stack, useTheme } from 'native-base';
+import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
@@ -23,20 +23,26 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
         readonly: boolean = false
     ) => (
         <AppointmentCard
-            showTrafficLight
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            isFullHeight
-            isSpaceMarginBottom={false}
-            isHorizontalCardCourseChecked={subcourse.isParticipant}
             key={index}
-            variant="horizontal"
             description={subcourse.course.description}
             tags={subcourse.course.tags}
             date={(showDate && subcourse.firstLecture?.start) || ''}
-            countCourse={subcourse.lectures.length}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
             image={subcourse.course.image ?? undefined}
             title={subcourse.course.name}
+            countCourse={subcourse.lectures.length}
+            maxParticipants={subcourse.maxParticipants}
+            participantsCount={subcourse.participantsCount}
+            minGrade={subcourse.minGrade}
+            maxGrade={subcourse.maxGrade}
+            statusText={getTrafficStatusText(subcourse)}
+            isFullHeight
+            showCourseTraffic
+            showStatus={subcourse.isInstructor}
+            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+            showSchoolclass
+            isOnWaitinglist={subcourse.isOnWaitingList}
+            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
         />
     );
 
