@@ -11,7 +11,7 @@ export const schooltypes: SchoolType[] = [
     { label: 'Gymnasium', key: 'gymnasium' },
     { label: 'Berufsschule', key: 'berufsschule' },
     { label: 'Förderschule', key: 'f_rderschule' },
-    { label: 'Andere', key: 'other' },
+    { label: 'Sonstige', key: 'other' },
 ];
 
 export const getSchoolTypeKey: (name: string) => string = (name) => {
@@ -20,5 +20,5 @@ export const getSchoolTypeKey: (name: string) => string = (name) => {
             return schooltype.label;
         }
     }
-    return 'other';
+    return 'Sonstige';
 };
