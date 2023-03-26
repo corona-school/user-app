@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
@@ -143,7 +143,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}
                     confirmButtonText={t('single.signIn.button')}
-                    description={t('single.signIn.description')}
+                    description={(<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />) as any}
                     onClose={() => setSignInModal(false)}
                     onConfirm={handleSignInCourse}
                 />

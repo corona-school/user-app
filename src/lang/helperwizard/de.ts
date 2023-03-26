@@ -80,19 +80,19 @@ const helperwizard = {
     homeworkHelpStudent: {
         title: 'Hausaufgabenhilfe',
         content:
-            'Wir testen ein neues Angebot: <b>die Hausaufgabenhilfe</b>. Hier bekommen Schüler:innen einmalig, spontane, direkte Hilfe. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür <b>im März von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben.',
+            'Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!',
         buttons: ['Zur Hausaufgabenhilfe (Zoom-Registrierung)'],
     },
     homeworkHelpPupil: {
         title: 'Hilfe bei deinen Hausaufgaben',
         content:
-            'Lern-Fair testet im März ein neues Angebot: <b>die Hausaufgabenhilfe</b>.<br>Dort erhältst du <b>im März von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deinen Hausaufgaben.',
+            'Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!',
         buttons: ['Zur Hausaufgabenhilfe'],
     },
     pupilScreening: {
-        title: 'Ausstehendes Screening',
+        title: 'Wir möchten dich kennenlernen!',
         content:
-            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nDamit wir dir eine:n Lernpartner:in vermitteln können, wollen wir in einem nächsten Schritt gerne auf Zoom mit dir sprechen. Bitte buche dir dazu einen Termin.',
+            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin.',
         buttons: ['Termin vereinbaren'],
     },
 };
