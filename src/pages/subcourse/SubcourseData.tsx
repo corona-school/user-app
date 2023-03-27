@@ -12,7 +12,10 @@ import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
-    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'isOnWaitingList'> & {
+    subcourse: Pick<
+        Subcourse,
+        'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'isOnWaitingList' | 'isParticipant'
+    > & {
         instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
         lectures: Pick<Lecture, 'start' | 'duration'>[];
     };
