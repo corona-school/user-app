@@ -123,7 +123,11 @@ const SingleCourseStudent = () => {
         lg: space['4'],
     });
 
-    const { data, loading, refetch } = useQuery(basicSubcourseQuery, {
+    const {
+        data,
+        loading,
+        refetch: refetchBasics,
+    } = useQuery(basicSubcourseQuery, {
         variables: {
             subcourseId,
         },
@@ -134,7 +138,11 @@ const SingleCourseStudent = () => {
         return false;
     }, [data?.subcourse?.isInstructor]);
 
-    const { data: instructorSubcourse, loading: subLoading } = useQuery(instructorSubcourseQuery, {
+    const {
+        data: instructorSubcourse,
+        loading: subLoading,
+        refetch: refetchInstructorData,
+    } = useQuery(instructorSubcourseQuery, {
         skip: !data?.subcourse?.isInstructor,
         variables: {
             subcourseId,
@@ -156,7 +164,7 @@ const SingleCourseStudent = () => {
     const doPublish = useCallback(async () => {
         await publish();
         toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
-        refetch();
+        refetchBasics();
     }, []);
 
     const [submit] = useMutation(
@@ -171,7 +179,7 @@ const SingleCourseStudent = () => {
     const submitCourse = useCallback(async () => {
         await submit();
         toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
-        refetch();
+        refetchBasics();
     }, []);
 
     const [cancelSubcourse, { data: canceldData }] = useMutation(
@@ -184,7 +192,7 @@ const SingleCourseStudent = () => {
     const cancelCourse = useCallback(async () => {
         await cancelSubcourse();
         toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
-        refetch();
+        refetchBasics();
         setShowCancelModal(false);
     }, [canceldData]);
 
@@ -247,7 +255,7 @@ const SingleCourseStudent = () => {
                         subcourseId={subcourseId}
                         maxParticipants={subcourse?.maxParticipants}
                         pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
-                        refetch={refetch}
+                        refetch={refetchInstructorData}
                     />
                 </>
             ),
@@ -270,7 +278,7 @@ const SingleCourseStudent = () => {
         } else {
             toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
-        refetch();
+        refetchInstructorData();
     };
 
     const isInPast = useMemo(
@@ -319,7 +327,7 @@ const SingleCourseStudent = () => {
                         hideTrafficStatus={canPromoteCourse}
                     />
                     {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetch} />
+                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner
