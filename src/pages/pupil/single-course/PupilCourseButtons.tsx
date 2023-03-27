@@ -143,7 +143,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}
                     confirmButtonText={t('single.signIn.button')}
-                    description={(<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />) as any}
+                    description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
                     onClose={() => setSignInModal(false)}
                     onConfirm={handleSignInCourse}
                 />
