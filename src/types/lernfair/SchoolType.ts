@@ -20,5 +20,5 @@ export const getSchoolTypeKey: (name: string) => string = (name) => {
             return schooltype.label;
         }
     }
-    return 'Sonstige';
+    return 'other';
 };

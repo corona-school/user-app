@@ -56,7 +56,7 @@ const single = {
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',
-        dateLectures: '{{date}}, {{time}} Uhr • {{count}} Lektionen ',
+        dateLectures: '{{date}}, {{time}} Uhr • {{count}} Lektion(en) ',
         time: {
             notStarted: 'Startet:',
             ongoing: 'Läuft seit',
@@ -134,7 +134,7 @@ const single = {
     signIn: {
         button: 'Verbindlich anmelden',
         description:
-            'Schön, dass du dich zum Kurs anmelden möchtest. Bitte beachte folgende <b>Regeln</b>: <br><br><b>1.</b> Deine Anmeldung zu diesem Kurs ist verbindlich! Unsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. <br><b>2.</b> Wenn du dich zu einem Kurs anmeldest, dann kommt bitte pünktlich zur Kursstunde. Falls du doch kurzfristig verhindert sein solltest, schreibe den Kursleiter:innen eine kurze Absage, oder melde dich unter support@lern-fair.de. <br><b>3.</b> Wir haben bei den meisten Kursen eine Warteliste mit Schüler:innen! Sei fair gegenüber deinen Mitschüler:innen und melde dich nur an, wenn du auch wirklich teilnehmen kannst. <br><b>4.</b> Lasse im Kurs das Mikrofon bitte aus, außer wenn du etwas sagen möchtest, dann melde dich bitte über die Handhebefunktion.<br><b>5.</b> Schalte deine Kamera wenn möglich an, um eine entspannte Atmosphäre zu schaffen.<br><b>6.</b> Bei technischen Problemen schreibe bitte an support@lern-fair.de. <br><b>7.</b> Arbeite im Kurs aktiv mit: Also zuhören, mitdenken und sich melden.',
+            'Schön, dass du dich zu diesem Kurs verbindlich anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.',
         toast: 'Du hast dich erfolgreich zum Kurs angemeldet.',
     },
     joinWaitinglist: {

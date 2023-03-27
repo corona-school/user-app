@@ -81,7 +81,7 @@ const helperwizard = {
         title: 'Hausaufgabenhilfe',
         content:
             'Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!',
-        buttons: ['Zur Hausaufgabenhilfe (Zoom-Registrierung)'],
+        buttons: ['Zur Hausaufgabenhilfe\n(Zoom-Registrierung)'],
     },
     homeworkHelpPupil: {
         title: 'Hilfe bei deinen Hausaufgaben',

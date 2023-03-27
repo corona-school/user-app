@@ -325,7 +325,7 @@ const CreateCourse: React.FC = () => {
     const _getCourseData = useCallback(
         () => ({
             description,
-            schooltype: studentData?.me?.student?.schooltype || 'Sonstige',
+            schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
