@@ -126,7 +126,7 @@ const StudentGroup: React.FC = () => {
                 data?.me?.student?.subcoursesInstructing.filter(
                     (sub) =>
                         sub.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()) ||
-                        sub.cancelled
+                        sub.course.courseState === 'denied'
                 )
             ),
         [data?.me?.student?.subcoursesInstructing]
