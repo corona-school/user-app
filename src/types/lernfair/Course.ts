@@ -17,7 +17,6 @@ export type LFCourse = {
 export interface LFSubCourse {
     id: number;
     lectures: LFLecture[];
-    image?: string;
     isParticipant?: boolean;
     participants?: LFPupil[];
     participantsAsPupil?: LFPupil[];
