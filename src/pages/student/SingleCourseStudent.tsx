@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Heading, Modal, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -116,6 +116,11 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+
+    const sectionSpacing = useBreakpointValue({
+        base: space['1'],
+        lg: space['4'],
+    });
 
     const { data, loading, refetch } = useQuery(basicSubcourseQuery, {
         variables: {
@@ -307,7 +312,7 @@ const SingleCourseStudent = () => {
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
-                <Stack space={space['3']} paddingX={space['1.5']}>
+                <Stack space={sectionSpacing} paddingX={space['1.5']}>
                     <SubcourseData
                         course={course}
                         subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse!.subcourse } : subcourse}

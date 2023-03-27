@@ -43,7 +43,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'}>
+            <Stack direction={isMobile ? 'column-reverse' : 'row'}>
                 <VStack space="5" width={ContainerWidth}>
                     <HStack space="3">
                         {course?.tags?.map((tag: { name: string; category: string }) => (
@@ -80,8 +80,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     {isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
                 </VStack>
-
-                <Stack width={ContainerWidth} mt="1">
+                <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
                         <Image
                             alt={course?.name}
