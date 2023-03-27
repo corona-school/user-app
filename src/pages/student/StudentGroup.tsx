@@ -243,11 +243,7 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses
-                                                        languageCourses={languageCourses as LFSubCourse[]}
-                                                        courses={revisionCourses as LFSubCourse[]}
-                                                        focusCourses={focusCourses as LFSubCourse[]}
-                                                    />
+                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
                                                 </>
                                             ),
                                         },

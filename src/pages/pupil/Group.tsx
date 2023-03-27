@@ -8,8 +8,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import SearchBar from '../../components/SearchBar';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { LFSubCourse } from '../../types/lernfair/Course';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { gql } from '../../gql';
 import { sortByDate } from '../../Utility';
 import { DateTime } from 'luxon';
 import Hello from '../../widgets/Hello';
@@ -19,7 +19,7 @@ import { Course_Category_Enum } from '../../gql/graphql';
 
 type Props = {};
 
-const query = gql`
+const query = gql(`
     query PupilSubcourseOverview {
         me {
             pupil {
@@ -32,30 +32,9 @@ const query = gql`
                     id
                     minGrade
                     maxGrade
+                    cancelled
+                    published
                     isParticipant
-                    maxParticipants
-                    participantsCount
-                    firstLecture {
-                        start
-                        duration
-                    }
-                    lectures {
-                        start
-                    }
-                    course {
-                        name
-                        image
-                        category
-                        tags {
-                            name
-                        }
-                    }
-                }
-
-                subcoursesWaitingList {
-                    id
-                    minGrade
-                    maxGrade
                     isOnWaitingList
                     maxParticipants
                     participantsCount
@@ -64,7 +43,7 @@ const query = gql`
                         duration
                     }
                     lectures {
-                        start
+                        start duration
                     }
                     course {
                         name
@@ -73,14 +52,45 @@ const query = gql`
                         tags {
                             name
                         }
+                        description
+                        courseState
+                    }
+                }
+
+                subcoursesWaitingList {
+                    id
+                    minGrade
+                    maxGrade
+                    isParticipant
+                    cancelled
+                    published
+                    isOnWaitingList
+                    maxParticipants
+                    participantsCount
+                    firstLecture {
+                        start
+                        duration
+                    }
+                    lectures {
+                        start duration
+                    }
+                    course {
+                        name
+                        image
+                        category
+                        tags {
+                            name
+                        }
+                        description
+                        courseState
                     }
                 }
             }
         }
     }
-`;
+`);
 
-const queryPast = gql`
+const queryPast = gql(`
     query PupilPastSubcoursesOverview {
         me {
             pupil {
@@ -90,6 +100,9 @@ const queryPast = gql`
                     limit
                 }
                 subcoursesJoined(onlyPast: true) {
+                    cancelled
+                    published
+                    isOnWaitingList
                     id
                     isParticipant
                     maxParticipants
@@ -97,10 +110,10 @@ const queryPast = gql`
                     minGrade
                     maxGrade
                     firstLecture {
-                        start
+                        start duration
                     }
                     lectures {
-                        start
+                        start duration
                     }
                     course {
                         name
@@ -109,12 +122,14 @@ const queryPast = gql`
                         tags {
                             name
                         }
+                        description
+                        courseState
                     }
                 }
             }
         }
     }
-`;
+`);
 
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
@@ -135,9 +150,12 @@ const PupilGroup: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(gql`
+    const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(
+        gql(`
         query GetAllSubcourses($name: String) {
             subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+                cancelled
+                published
                 isParticipant
                 minGrade
                 maxGrade
@@ -146,10 +164,11 @@ const PupilGroup: React.FC<Props> = () => {
                 id
                 isOnWaitingList
                 firstLecture {
-                    start
+                    start duration
                 }
                 lectures {
                     start
+                    duration
                 }
                 course {
                     name
@@ -158,10 +177,13 @@ const PupilGroup: React.FC<Props> = () => {
                     tags {
                         name
                     }
+                    description
+                    courseState
                 }
             }
         }
-    `);
+    `)
+    );
 
     useEffect(() => {
         trackPageView({
@@ -172,8 +194,8 @@ const PupilGroup: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const courses: LFSubCourse[] = useMemo(() => {
-        let arr;
+    const courses = useMemo(() => {
+        let arr: Exclude<typeof allSubcoursesData, undefined | null>['subcoursesPublic'];
         switch (activeTab) {
             default:
             case 0:
@@ -186,10 +208,10 @@ const PupilGroup: React.FC<Props> = () => {
         return arr;
     }, [activeTab, allSubcoursesData?.subcoursesPublic, data?.me?.pupil?.subcoursesJoined, data?.me?.pupil?.subcoursesWaitingList]);
 
-    const activeCourses: LFSubCourse[] = useMemo(
+    const activeCourses = useMemo(
         () =>
             sortByDate(
-                courses.filter((course: LFSubCourse) => {
+                courses.filter((course) => {
                     let ok = false;
                     for (const lecture of course.lectures) {
                         const date = DateTime.fromISO(lecture.start).toMillis();
@@ -204,18 +226,14 @@ const PupilGroup: React.FC<Props> = () => {
         [courses]
     );
 
-    const searchResults: LFSubCourse[] = useMemo(() => {
+    const searchResults = useMemo(() => {
         if (lastSearch.length === 0) return activeCourses;
         return (
             (lastSearch.length > 0 && activeTab !== 1 && activeCourses) ||
-            activeCourses?.filter((sub: LFSubCourse) => sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())) ||
+            activeCourses?.filter((sub) => sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())) ||
             []
         );
     }, [lastSearch, activeTab, activeCourses]);
-
-    const sortedSearchResults: LFSubCourse[] = useMemo(() => {
-        return searchResults;
-    }, [searchResults]);
 
     const search = useCallback(async () => {
         switch (activeTab) {
@@ -228,22 +246,22 @@ const PupilGroup: React.FC<Props> = () => {
         }
     }, [activeTab, lastSearch, searchAllSubcoursesQuery]);
 
-    const languageCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
-        [sortedSearchResults]
+    const languageCourses = useMemo(
+        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
+        [searchResults]
     );
-    const focusCourses: LFSubCourse[] = useMemo(
-        () => sortByDate(sortedSearchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
-        [sortedSearchResults]
+    const focusCourses = useMemo(
+        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
+        [searchResults]
     );
-    const revisionCourses: LFSubCourse[] = useMemo(
+    const revisionCourses = useMemo(
         () =>
             sortByDate(
-                sortedSearchResults.filter(
+                searchResults.filter(
                     (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
                 )
             ),
-        [sortedSearchResults]
+        [searchResults]
     );
 
     return (
@@ -282,8 +300,8 @@ const PupilGroup: React.FC<Props> = () => {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
                                         content: (
                                             <MySubcourses
-                                                currentCourses={sortedSearchResults}
-                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined}
+                                                currentCourses={searchResults}
+                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
                                                 loading={allSubcoursesSearchLoading}
                                             />
                                         ),
