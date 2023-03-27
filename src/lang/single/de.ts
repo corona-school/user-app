@@ -23,6 +23,7 @@ const single = {
         courseState: {
             publish: 'Öffentlich',
             cancelled: 'Abgesagt',
+            denied: 'Abgelehnt',
             draft: 'Entwurf',
             submitted: 'In Prüfung',
         },
@@ -57,6 +58,7 @@ const single = {
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',
         dateLectures: '{{date}}, {{time}} Uhr • {{count}} Lektionen ',
+        oneLecture: '{{date}}, {{time}} Uhr • {{count}} Lektion ',
         time: {
             notStarted: 'Startet:',
             ongoing: 'Läuft seit',
