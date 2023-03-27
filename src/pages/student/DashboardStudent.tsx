@@ -105,7 +105,6 @@ const DashboardStudent: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [toastShown, setToastShown] = useState<boolean>();
-    const [copied, setCopied] = useState<boolean>();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [showRecommendModal, setShowRecommendModal] = useState<boolean>(false);
     const [dissolveData, setDissolveData] = useState<LFMatch>();
