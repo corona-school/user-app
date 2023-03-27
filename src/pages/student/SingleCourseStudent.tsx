@@ -1,7 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
+import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -45,7 +46,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 
     return (
         <>
-            {participants.map((participant: Participant) => (
+            {participants.map((participant) => (
                 <ParticipantRow participant={participant} />
             ))}
         </>
@@ -164,7 +165,7 @@ const SingleCourseStudent = () => {
             courseSubmit(courseId: $courseId)
         }
     `),
-        { variables: { courseId: course?.id } }
+        { variables: { courseId: course?.id! } }
     );
 
     const submitCourse = useCallback(async () => {
@@ -187,8 +188,6 @@ const SingleCourseStudent = () => {
         setShowCancelModal(false);
     }, [canceldData]);
 
-    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount]);
-
     const tabs: Tab[] = [
         {
             title: t('single.tabs.description'),
@@ -205,7 +204,7 @@ const SingleCourseStudent = () => {
             content: (
                 <>
                     {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture: Lecture, i: number) => (
+                        subcourse!.lectures.map((lecture, i) => (
                             <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
                                 <Heading paddingBottom={space['0.5']} fontSize="md">
                                     {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
@@ -226,7 +225,7 @@ const SingleCourseStudent = () => {
         },
     ];
 
-    if (subcourse?.isInstructor || subcourse?.isParticipant) {
+    if (subcourse?.isInstructor) {
         tabs.push({
             title: t('single.tabs.participant'),
             badge: subcourse?.participantsCount,
@@ -238,16 +237,16 @@ const SingleCourseStudent = () => {
         });
     }
 
-    if (subcourse?.isInstructor) {
+    if (subcourse?.isInstructor && instructorSubcourse?.subcourse) {
         tabs.push({
             title: t('single.tabs.waitinglist'),
-            badge: countPupilsOnWaitinglist,
+            badge: instructorSubcourse.subcourse.pupilsWaitingCount,
             content: (
                 <>
                     <Waitinglist
                         subcourseId={subcourseId}
                         maxParticipants={subcourse?.maxParticipants}
-                        pupilsOnWaitinglist={subcourse?.pupilsOnWaitinglist}
+                        pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
                         refetch={refetch}
                     />
                 </>
@@ -277,7 +276,7 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture: Lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -314,13 +313,13 @@ const SingleCourseStudent = () => {
             ) : (
                 <Stack space={sectionSpacing} paddingX={space['1.5']}>
                     <SubcourseData
-                        course={course}
-                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse!.subcourse } : subcourse}
+                        course={course!}
+                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
                     {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons subcourse={{ ...subcourse, ...instructorSubcourse!.subcourse }} refresh={refetch} />
+                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetch} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner
@@ -333,9 +332,9 @@ const SingleCourseStudent = () => {
                     )}
                     {!isInPast && isInstructorOfSubcourse && (
                         <Banner
-                            courseState={course?.courseState}
-                            isCourseCancelled={subcourse?.cancelled}
-                            isPublished={subcourse?.published}
+                            courseState={course!.courseState!}
+                            isCourseCancelled={subcourse!.cancelled}
+                            isPublished={subcourse!.published}
                             handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                         />
                     )}
