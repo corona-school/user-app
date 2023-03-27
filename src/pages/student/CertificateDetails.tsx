@@ -146,10 +146,7 @@ const CertificateList: React.FC = () => {
                                 description={'Lorem Ipsum'}
                                 date={DateTime.now().toISO()}
                                 title={'Kursname'}
-                                tags={[
-                                    { name: 'Mathe', id: 0 },
-                                    { name: 'Deutsch', id: 0 },
-                                ]}
+                                tags={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
                             />
                         </VStack>
                     )}

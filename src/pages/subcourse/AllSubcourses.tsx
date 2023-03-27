@@ -1,22 +1,30 @@
 import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LFSubCourse } from '../../types/lernfair/Course';
+import { Course, Course_Tag, Lecture, Subcourse } from '../../gql/graphql';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
+type ALecture = Pick<Lecture, 'start' | 'duration'>;
+type ACourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> & { tags: Pick<Course_Tag, 'name'>[] };
+type ASubcourse = Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'maxGrade' | 'minGrade' | 'published' | 'cancelled' | 'id'> &
+    (Pick<Subcourse, 'isInstructor'> | Pick<Subcourse, 'isParticipant' | 'isOnWaitingList'>) & {
+        firstLecture?: null | ALecture;
+        lectures: ALecture[];
+        course: ACourse;
+    };
 type GroupProps = {
-    languageCourses: LFSubCourse[];
-    courses: LFSubCourse[];
-    focusCourses: LFSubCourse[];
+    languageCourses: ASubcourse[];
+    courses: ASubcourse[];
+    focusCourses: ASubcourse[];
 };
 
 const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false) => {
+    const renderSubcourse = (subcourse: ASubcourse, index: number, showDate: boolean = true, readonly: boolean = false) => {
         return (
             <AppointmentCard
                 key={index}
@@ -33,12 +41,12 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                 statusText={getTrafficStatusText(subcourse)}
                 isFullHeight
                 showCourseTraffic
-                showStatus={subcourse.isInstructor}
+                showStatus={(subcourse as any)?.isInstructor ?? false}
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
                 showSchoolclass
-                isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
-                isOnWaitinglist={!!subcourse.isOnWaitingList}
+                isHorizontalCardCourseChecked={((subcourse as any)?.isParticipant ?? false) || ((subcourse as any)?.isOnWaitingList ?? false)}
+                isOnWaitinglist={!!((subcourse as any)?.isOnWaitingList ?? false)}
             />
         );
     };
