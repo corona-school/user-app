@@ -32,8 +32,10 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
         <>
             <VStack>
                 <FormControl marginBottom={space['0.5']}>
-                    <Heading>{t('course.CourseDate.form.furtherCourseInstructors')}</Heading>
+                    <Heading>{t('course.CourseDate.form.otherHeadline')}</Heading>
                     <VStack mt={space['1']}>
+                        <Heading fontSize="md">{t('course.CourseDate.form.furtherCourseInstructors')}</Heading>
+
                         {addedInstructors &&
                             addedInstructors.map((instructor: LFInstructor, index: number) => (
                                 <InstructorRow instructor={instructor} onPressDelete={() => onRemove(index, true)} />

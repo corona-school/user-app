@@ -857,7 +857,7 @@ const CreateCourse: React.FC = () => {
                                         label: t('course.CourseDate.step.appointments'),
                                     },
                                     {
-                                        label: t('course.CourseDate.step.instructors'),
+                                        label: t('course.CourseDate.step.settings'),
                                     },
                                     {
                                         label: t('course.CourseDate.step.checker'),

@@ -24,12 +24,11 @@ const ButtonRow: React.FC<ButtonProps> = ({ onCancel, onBack, onNext, isDisabled
     return (
         <>
             <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
-                <Button width={ButtonContainer} isDisabled={isDisabled} marginBottom={space['1']} onPress={onNext}>
-                    {t('next')}
-                </Button>
-
                 <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack ? onBack : onCancel}>
                     {onBack ? t('back') : t('cancel')}
+                </Button>
+                <Button width={ButtonContainer} isDisabled={isDisabled} marginBottom={space['1']} onPress={onNext}>
+                    {t('next')}
                 </Button>
             </Row>
         </>
