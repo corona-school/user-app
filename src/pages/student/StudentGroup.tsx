@@ -126,7 +126,7 @@ const StudentGroup: React.FC = () => {
                 data?.me?.student?.subcoursesInstructing.filter(
                     (sub) =>
                         sub.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()) ||
-                        sub.cancelled
+                        sub.course.courseState === 'denied'
                 )
             ),
         [data?.me?.student?.subcoursesInstructing]
@@ -243,11 +243,7 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses
-                                                        languageCourses={languageCourses as LFSubCourse[]}
-                                                        courses={revisionCourses as LFSubCourse[]}
-                                                        focusCourses={focusCourses as LFSubCourse[]}
-                                                    />
+                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
                                                 </>
                                             ),
                                         },

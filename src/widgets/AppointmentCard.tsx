@@ -24,7 +24,7 @@ import Tag from '../components/Tag';
 import CommunityUser from './CommunityUser';
 import { toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
-import { LFTag, TrafficStatus } from '../types/lernfair/Course';
+import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
 
 import LFTimerIcon from '../assets/icons/lernfair/lf-timer.svg';
@@ -35,7 +35,7 @@ import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
 
 type Props = {
-    tags?: LFTag[];
+    tags?: { name: string }[];
     date?: string;
     duration?: number; // in minutes
     title: string;

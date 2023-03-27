@@ -61,10 +61,14 @@ const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
             <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
                 <Heading>{t('course.CourseDate.step.subject')}</Heading>
                 <FormControl>
-                    <Select selectedValue={category} placeholder={t('course.CourseDate.form.courseCategory')} onValueChange={(e) => setCategory(e)}>
-                        <Select.Item value={Course_Category_Enum.Revision} label={'Nachhilfe'} />
-                        <Select.Item value={Course_Category_Enum.Language} label={'Deutsch'} />
-                        <Select.Item value={Course_Category_Enum.Focus} label={'Fokus'} />
+                    <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
+                        {t('course.CourseDate.form.courseCategory')}
+                    </FormControl.Label>
+
+                    <Select selectedValue={category} placeholder={t('course.CourseDate.form.categoryPlaceholder')} onValueChange={(e) => setCategory(e)}>
+                        <Select.Item value={Course_Category_Enum.Revision} label={t('course.CourseDate.form.revision')} />
+                        <Select.Item value={Course_Category_Enum.Language} label={t('course.CourseDate.form.language')} />
+                        <Select.Item value={Course_Category_Enum.Focus} label={t('course.CourseDate.form.focus')} />
                     </Select>
                 </FormControl>
                 {category === Course_Category_Enum.Revision && (
@@ -80,23 +84,32 @@ const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
                         </ScrollView>
                     </FormControl>
                 )}
+                {category && category !== Course_Category_Enum.Revision && (
+                    <FormControl marginBottom={space['0.5']}>
+                        <FormControl.Label _text={{ color: 'primary.900' }} marginBottom="5px">
+                            {t('course.CourseDate.form.tagsLabel')}
+                        </FormControl.Label>
 
-                <FormControl marginBottom={space['0.5']}>
-                    <FormControl.Label _text={{ color: 'primary.900' }} marginBottom="5px">
-                        {t('course.CourseDate.form.tagsLabel')}
-                    </FormControl.Label>
+                        <Row space={space['0.5']} mb={5}>
+                            {courseTags.map((tag: LFTag) => (
+                                <Tag text={tag.name} />
+                            ))}
+                        </Row>
 
-                    <Row space={space['0.5']} mb={5}>
-                        {courseTags.map((tag: LFTag) => (
-                            <Tag text={tag.name} />
-                        ))}
-                    </Row>
-                    <Button isDisabled={!category} width={ButtonContainer} marginBottom={space['1']} onPress={() => setShowTagsModal(true)}>
-                        {t('course.CourseDate.form.tagsEdit')}
-                    </Button>
-                </FormControl>
+                        <Button
+                            variant="outline"
+                            isDisabled={!category}
+                            width={ButtonContainer}
+                            marginBottom={space['1']}
+                            onPress={() => setShowTagsModal(true)}
+                        >
+                            {t('course.CourseDate.form.tagsEdit')}
+                        </Button>
+                    </FormControl>
+                )}
                 <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onBack={onBack} />
             </VStack>
+
             <Tags
                 isOpen={showTagsModal}
                 onClose={() => setShowTagsModal(false)}

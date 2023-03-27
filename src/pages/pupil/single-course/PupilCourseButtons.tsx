@@ -12,28 +12,28 @@ import JoinMeeting from '../../subcourse/JoinMeeting';
 
 type CanJoin = {
     allowed: boolean;
-    reason: string;
+    reason?: string | null;
 };
 
 type ActionButtonProps = {
     courseFull: boolean;
-    canJoinSubcourse: CanJoin;
-    joinedSubcourse: boolean;
-    joinedWaitinglist: boolean;
-    leftSubcourseData: boolean;
-    leftWaitinglist: boolean;
+    canJoinSubcourse?: CanJoin;
+    joinedSubcourse?: boolean;
+    joinedWaitinglist?: boolean;
+    leftSubcourseData?: boolean;
+    leftWaitinglist?: boolean;
     loadingSubcourseJoined: boolean;
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: Subcourse;
+    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
     doContactInstructor: (title: string, body: string) => Promise<void>;
-    refresh: () => Promise<ApolloQueryResult<void>>; //any
+    refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
@@ -131,12 +131,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
                 )}
-                {subcourse.isParticipant && (
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
                     <Button variant="outline" onPress={() => setShowMessageModal(true)}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse?.isParticipant && subcourse?.published && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse?.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>

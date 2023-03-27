@@ -129,7 +129,7 @@ export const getTrafficStatus: (participants: number, maxParticipants: number) =
     return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
 };
 
-export const getTrafficStatusText = (subcourse: LFSubCourse): string => {
+export const getTrafficStatusText = (subcourse: { course: { courseState?: Course_Coursestate_Enum }; published?: boolean; cancelled?: boolean }): string => {
     if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Created) return i18next.t('single.global.courseState.draft');
     if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return i18next.t('single.global.courseState.submitted');
     if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Allowed) return i18next.t('single.global.courseState.draft');
@@ -155,7 +155,7 @@ export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | n
         const aDate = aLecture?.start || 0;
         const bDate = bLecture?.start || 0;
 
-        return aDate < bDate ? 1 : -1;
+        return aDate > bDate ? 1 : -1;
     });
 };
 
