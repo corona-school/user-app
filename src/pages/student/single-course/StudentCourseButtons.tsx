@@ -8,9 +8,15 @@ import JoinMeeting from '../../subcourse/JoinMeeting';
 import ContactParticipants from './ContactParticipants';
 import StudentSetMeetingUrl from './StudentSetMeetingUrl';
 
+type SubcourseOfStudent = {
+    id: number;
+    published: boolean;
+    isInstructor: boolean;
+};
+
 type ActionButtonProps = {
-    subcourse: Subcourse;
-    refresh: () => Promise<ApolloQueryResult<void>>;
+    subcourse: SubcourseOfStudent;
+    refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
 const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh }) => {
