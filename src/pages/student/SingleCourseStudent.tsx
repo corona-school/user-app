@@ -255,7 +255,10 @@ const SingleCourseStudent = () => {
                         subcourseId={subcourseId}
                         maxParticipants={subcourse?.maxParticipants}
                         pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
-                        refetch={refetchInstructorData}
+                        refetch={() => {
+                            refetchInstructorData();
+                            return refetchBasics();
+                        }}
                     />
                 </>
             ),
