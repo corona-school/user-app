@@ -1,14 +1,21 @@
 import { Box, Heading, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus } from '../../Utility';
+import { Course, Course_Tag, Lecture, Subcourse } from '../../gql/graphql';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
+type MyLecture = Pick<Lecture, 'start' | 'duration'>;
+type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> & { tags: Pick<Course_Tag, 'name'>[] };
+type MySubcourse = Pick<
+    Subcourse,
+    'minGrade' | 'maxGrade' | 'participantsCount' | 'maxParticipants' | 'isOnWaitingList' | 'id' | 'isParticipant' | 'published' | 'cancelled'
+> & { lectures?: null | MyLecture[]; firstLecture?: null | MyLecture; course: MyCourse };
+
 type GroupProps = {
-    currentCourses: LFSubCourse[];
-    pastCourses: LFSubCourse[];
+    currentCourses: MySubcourse[];
+    pastCourses: MySubcourse[];
     loading: boolean;
 };
 
@@ -23,21 +30,26 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
         readonly: boolean = false
     ) => (
         <AppointmentCard
-            showTrafficLight
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            isFullHeight
-            isSpaceMarginBottom={false}
-            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
-            isOnWaitinglist={subcourse?.isOnWaitingList}
             key={index}
-            variant="horizontal"
-            description={subcourse.course.description}
-            tags={subcourse.course.tags}
+            description={subcourse.course!.description}
+            tags={subcourse.course!.tags}
             date={(showDate && subcourse.firstLecture?.start) || ''}
-            countCourse={subcourse.lectures.length}
+            image={subcourse.course!.image ?? undefined}
+            title={subcourse.course!.name}
+            countCourse={subcourse.lectures!.length}
+            maxParticipants={subcourse.maxParticipants}
+            participantsCount={subcourse.participantsCount}
+            minGrade={subcourse.minGrade}
+            maxGrade={subcourse.maxGrade}
+            statusText={getTrafficStatusText(subcourse)}
+            isFullHeight
+            showCourseTraffic
+            showStatus={false}
+            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
             onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-            image={subcourse.course.image ?? undefined}
-            title={subcourse.course.name}
+            showSchoolclass
+            isOnWaitinglist={subcourse.isOnWaitingList}
+            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
         />
     );
 

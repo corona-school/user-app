@@ -13,11 +13,18 @@ const single = {
         more_tutors: 'Weitere Tutor:innen',
         years: 'Jahre',
         hours: 'Stunde(n)',
+        state: 'Status:',
         status: {
             free: 'Freie Plätze',
             last: 'Nur noch {{seatsLeft}} freie Plätze',
             lastSeats: '{{seatsFull}} von {{seatsMax}} Plätzen belegt',
             full: 'Ausgebucht',
+        },
+        courseState: {
+            publish: 'Öffentlich',
+            cancelled: 'Abgesagt',
+            draft: 'Entwurf',
+            submitted: 'In Prüfung',
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
         noLections: 'Es wurden keine Lektionen eingetragen.',
@@ -32,6 +39,13 @@ const single = {
         waitinglist: 'Warteliste',
         participant: 'Teilnehmer:innen',
     },
+    courseInfo: {
+        grade: 'Jahrgangsstufe: ',
+        class: 'Klasse {{minGrade}} - {{maxGrade}}',
+        editCourse: 'Kurs editieren',
+        courseInPast: 'Dieser Kurs ist bereits vorbei.',
+        courseCancelled: 'Dieser Kurs wurde abgesagt.',
+    },
     leaveModal: {
         header: 'Kurseinformationen',
         question: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
@@ -42,6 +56,7 @@ const single = {
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',
+        dateLectures: '{{date}}, {{time}} Uhr • {{count}} Lektionen ',
         time: {
             notStarted: 'Startet:',
             ongoing: 'Läuft seit',
@@ -53,13 +68,6 @@ const single = {
         participants: 'Teilnehmer:innen kontaktieren',
         messageSend: 'Nachricht erfolgreich versendet',
         failedToSend: 'Deine Nachricht konnte nicht versendet werden',
-    },
-    courseInfo: {
-        grade: 'Jahrgangsstufe: ',
-        class: 'Klasse {{minGrade}} - {{maxGrade}}',
-        editCourse: 'Kurs editieren',
-        courseInPast: 'Dieser Kurs ist bereits vorbei.',
-        courseCancelled: 'Dieser Kurs wurde abgesagt.',
     },
     actions: {
         leaveSubcourse: 'Kurs verlassen',
@@ -125,7 +133,7 @@ const single = {
     },
     signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
     joinWaitinglist: {
-        button: 'Auf Wartelist setzen',
+        button: 'Auf Warteliste setzen',
         description: 'Möchtest du dich auf die Warteliste setzen?',
         toast: 'Du bist auf der Warteliste!',
     },
@@ -134,6 +142,11 @@ const single = {
         signOut: 'Vom Kurs abmelden',
         description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
         toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
+    },
+    leaveWaitinglist: {
+        button: 'Warteliste verlassen',
+        description: 'Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?',
+        toast: 'Du hast die Warteliste erfolgreich verlassen.',
     },
     waitinglist: {
         toast: 'Schüler wurde dem Kurs hinzugefügt.',
@@ -167,11 +180,6 @@ const single = {
             description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
             toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
         },
-    },
-    leaveWaitinglist: {
-        button: 'Warteliste verlassen',
-        description: 'Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?',
-        toast: 'Du hast die Warteliste erfolgreich verlassen.',
     },
 };
 

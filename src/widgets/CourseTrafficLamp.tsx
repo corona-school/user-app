@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
 import useModal from '../hooks/useModal';
 import { useUserType } from '../hooks/useApollo';
+import { getTrafficLampText } from '../Utility';
 
 type Props = {
     status: TrafficStatus;
@@ -10,8 +11,10 @@ type Props = {
     infoPopupContent?: string;
     infoPopupLastContent?: string;
     hideText?: boolean;
+    circleSize?: string;
     paddingY?: number;
     showBorder?: boolean;
+    boldState?: boolean;
     showLastSeats?: boolean;
     seatsLeft?: number;
     seatsFull?: number;
@@ -23,13 +26,15 @@ const CourseTrafficLamp: React.FC<Props> = ({
     seatsLeft,
     seatsFull,
     seatsMax,
-    showLastSeats,
+    showLastSeats = false,
     infoPopupTitle,
     infoPopupContent,
     infoPopupLastContent,
     hideText,
+    circleSize,
     paddingY,
     showBorder,
+    boldState = false,
 }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -45,26 +50,14 @@ const CourseTrafficLamp: React.FC<Props> = ({
                         borderWidth={showBorder ? 2 : undefined}
                         borderColor="lightText"
                         backgroundColor={status === 'free' ? 'primary.900' : status === 'last' ? 'warning.1000' : status === 'full' ? 'warning.500' : ''}
-                        size="20px"
+                        size={circleSize ? circleSize : '20px'}
                         marginRight={3}
                     />
-                    {!hideText &&
-                        (showLastSeats ? (
-                            <Text marginRight={7} bold>
-                                {t('single.global.status.lastSeats', { seatsFull: seatsFull, seatsMax: seatsMax })}
-                            </Text>
-                        ) : (
-                            <Text marginRight={7} bold>
-                                {status === 'free'
-                                    ? t('single.global.status.free')
-                                    : status === 'last'
-                                    ? t('single.global.status.last', { seatsLeft: seatsLeft })
-                                    : status === 'full'
-                                    ? t('single.global.status.full')
-                                    : ''}
-                            </Text>
-                        ))}
-
+                    {!hideText && (
+                        <Text marginRight={7} bold={boldState}>
+                            {getTrafficLampText(status, showLastSeats, seatsMax, seatsFull, seatsLeft)}
+                        </Text>
+                    )}
                     {infoPopupTitle && (
                         <Pressable
                             onPress={() => {

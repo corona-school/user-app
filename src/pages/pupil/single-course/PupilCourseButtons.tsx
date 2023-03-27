@@ -7,34 +7,33 @@ import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { getTrafficStatus } from '../../../Utility';
-import AlertMessage from '../../../widgets/AlertMessage';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 
 type CanJoin = {
     allowed: boolean;
-    reason: string;
+    reason?: string | null;
 };
 
 type ActionButtonProps = {
     courseFull: boolean;
-    canJoinSubcourse: CanJoin;
-    joinedSubcourse: boolean;
-    joinedWaitinglist: boolean;
-    leftSubcourseData: boolean;
-    leftWaitinglist: boolean;
+    canJoinSubcourse?: CanJoin;
+    joinedSubcourse?: boolean;
+    joinedWaitinglist?: boolean;
+    leftSubcourseData?: boolean;
+    leftWaitinglist?: boolean;
     loadingSubcourseJoined: boolean;
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: Subcourse;
+    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
     doContactInstructor: (title: string, body: string) => Promise<void>;
-    refresh: () => Promise<ApolloQueryResult<void>>; //any
+    refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
@@ -88,12 +87,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     const handleJoinWaitinglist = useCallback(() => {
         joinWaitinglist();
         setJoinWaitinglistModal(false);
-        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+        toast.show({ description: t('single.joinWaitinglist.toast'), placement: 'top' });
     }, []);
 
     const handleWaitinglistLeave = useCallback(async () => {
-        setLeaveWaitingslistModal(false);
         leaveWaitinglist();
+        setLeaveWaitingslistModal(false);
         toast.show({ description: t('single.leaveWaitinglist.toast'), placement: 'top' });
     }, []);
 
@@ -129,20 +128,15 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
                 {subcourse.isOnWaitingList && (
                     <VStack space={space['0.5']} mb="5">
-                        <WaitinglistBanner
-                            courseStatus={courseTrafficStatus}
-                            onWaitinglist={subcourse.isOnWaitingList}
-                            subcourseId={subcourse.id}
-                            refresh={() => refresh()}
-                        />
+                        <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
                 )}
-                {subcourse.isParticipant && (
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
                     <Button variant="outline" onPress={() => setShowMessageModal(true)}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse?.isParticipant && subcourse?.published && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse?.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
@@ -178,8 +172,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
             <Modal isOpen={leaveWaitinglistModal} onClose={() => setLeaveWaitingslistModal(false)}>
                 <CourseConfirmationModal
                     headline={t('single.global.courseInfo')}
-                    confirmButtonText={t('single.joinWaitinglist.button')}
-                    description={t('single.joinWaitinglist.description')}
+                    confirmButtonText={t('single.leaveWaitinglist.button')}
+                    description={t('single.leaveWaitinglist.description')}
                     onClose={() => setJoinWaitinglistModal(false)}
                     onConfirm={handleWaitinglistLeave}
                 />

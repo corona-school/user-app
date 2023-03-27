@@ -1,45 +1,23 @@
-import { Box, Button, Card, Column, Divider, Modal, Row, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Button, Card, Divider, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import SandClock from '../assets/icons/lernfair/Icon_SandClock.svg';
 import { useTranslation } from 'react-i18next';
 import { TrafficStatus } from '../types/lernfair/Course';
-import { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { gql } from '../gql';
+import { Dispatch, SetStateAction } from 'react';
 
 type BannerProps = {
     courseStatus: TrafficStatus;
-    subcourseId: number;
-    onWaitinglist: boolean;
-    refresh: () => void;
+    loading: boolean;
+    onLeaveWaitinglist: Dispatch<SetStateAction<boolean>>;
 };
 
-const WaitinglistBanner: React.FC<BannerProps> = ({ courseStatus, subcourseId, onWaitinglist, refresh }) => {
-    const [isLeaveWaitingListModal, setLeaveWaitingListModal] = useState(false);
-
+const WaitinglistBanner: React.FC<BannerProps> = ({ courseStatus, loading, onLeaveWaitinglist }) => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
         lg: false,
     });
-
-    const [leaveWaitingList, { loading, data }] = useMutation(
-        gql(`
-            mutation LeaveWaitingList($subcourseId: Float!) {
-                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
-    );
-
-    useEffect(() => {
-        if (data?.subcourseLeaveWaitinglist) {
-            setLeaveWaitingListModal(true);
-        }
-    }, [data?.subcourseLeaveWaitinglist]);
 
     const ButtonContainer = useBreakpointValue({
         base: '100%',
@@ -67,13 +45,11 @@ const WaitinglistBanner: React.FC<BannerProps> = ({ courseStatus, subcourseId, o
                             </Stack>
                             <Spacer />
                             <Button
-                                onPress={() => {
-                                    leaveWaitingList();
-                                }}
+                                onPress={() => onLeaveWaitinglist(true)}
                                 width={ButtonContainer}
                                 marginBottom={space['0.5']}
-                                isDisabled={loading}
                                 variant="outline"
+                                isDisabled={loading}
                             >
                                 {t('single.waitinglist.leaveWaitinglist')}
                             </Button>
@@ -81,33 +57,6 @@ const WaitinglistBanner: React.FC<BannerProps> = ({ courseStatus, subcourseId, o
                     </Card>
                 </Box>
             }
-            <Modal
-                isOpen={isLeaveWaitingListModal}
-                onClose={() => {
-                    setLeaveWaitingListModal(false);
-                    refresh();
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header></Modal.Header>
-                    <Modal.Body>
-                        <Text marginBottom={space['1']}> {t('single.waitinglist.leaveSuccess')}</Text>
-                        <Row justifyContent="center">
-                            <Column>
-                                <Button
-                                    onPress={() => {
-                                        setLeaveWaitingListModal(false);
-                                        refresh();
-                                    }}
-                                >
-                                    {t('single.global.close')}
-                                </Button>
-                            </Column>
-                        </Row>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
         </>
     );
 };

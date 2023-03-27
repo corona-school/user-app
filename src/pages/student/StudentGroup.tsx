@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
+import { LFSubCourse } from '../../types/lernfair/Course';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -35,6 +36,8 @@ const StudentGroup: React.FC = () => {
                             cancelled
                             participantsCount
                             maxParticipants
+                            minGrade
+                            maxGrade
                             firstLecture {
                                 start
                                 duration
@@ -60,8 +63,13 @@ const StudentGroup: React.FC = () => {
 
                 subcoursesPublic(take: 20) {
                     id
+                    published
+                    cancelled
+                    minGrade
+                    maxGrade
                     participantsCount
                     maxParticipants
+                    isInstructor
                     firstLecture {
                         start
                         duration
@@ -72,6 +80,7 @@ const StudentGroup: React.FC = () => {
                     }
                     course {
                         name
+                        courseState
                         description
                         image
                         category
@@ -141,7 +150,7 @@ const StudentGroup: React.FC = () => {
                     (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
                 )
             ),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -223,9 +232,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CourseGroups
-                                                        currentCourses={publishedSubcourses}
-                                                        draftCourses={unpublishedOrDraftedSubcourses}
-                                                        pastCourses={pastOrCancelledSubcourses}
+                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
+                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
                                                     />
                                                 </>
                                             ),
