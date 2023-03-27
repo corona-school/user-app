@@ -24,15 +24,19 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
         copyTextToClipboard(t('dashboard.helpers.contents.recommendText'));
         setCopied(true);
         toast.show({
-            description: 'Text in die Zwischenablage kopiert.',
+            description: t('dashboard.helpers.contents.toast'),
             placement: 'top',
         });
     };
 
     useEffect(() => {
-        setInterval(() => {
-            setCopied(false);
-        }, 10_000);
+        let id: NodeJS.Timer;
+        if (copied) {
+            id = setInterval(() => {
+                setCopied(false);
+            }, 10_000);
+        }
+        return () => clearInterval(id);
     }, [copied]);
 
     return (
@@ -64,7 +68,7 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
                                 {t('dashboard.helpers.channels.whatsApp')}
                             </Stack>
                         </Button>
-                        <Button
+                        {/* <Button
                             variant="outline"
                             onPress={() =>
                                 window.open(`https://signal.me/?text=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`, '_blank')
@@ -74,7 +78,7 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
                                 <SignalIcon />
                                 {t('dashboard.helpers.channels.signal')}
                             </Stack>
-                        </Button>
+                        </Button> */}
                         <Button
                             onPress={() =>
                                 (window.location.href = `mailto:?subject=Engagiere+dich+bei+Lern-Fair%21&body=${encodeURIComponent(
