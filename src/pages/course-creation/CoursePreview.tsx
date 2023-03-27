@@ -74,13 +74,30 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 </Text>
                 <Text fontSize="md">{courseName}</Text>
             </Row>
+            <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
+            <Text paddingBottom={space['0.5']}>{description}</Text>
 
+            <Row flexDirection="column" paddingBottom={space['0.5']}>
+                <Heading fontSize="md" paddingBottom={space['0.5']}>
+                    {t('course.CourseDate.Preview.image')}
+                </Heading>
+
+                <Box bg="gray.500" h="180">
+                    <Image src={pickedPhoto} h="100%" />
+                </Box>
+            </Row>
             {subject && (
                 <>
                     <Heading fontSize="md">{t('course.CourseDate.Preview.courseSubject')}</Heading>
                     <Box paddingBottom={space['0.5']}>
                         <SubjectSelector addSubject={() => {}} removeSubject={() => {}} subjects={[]} selectable={[subject]} variant="normal" />
                     </Box>
+                </>
+            )}
+            {tags && tags?.length > 0 && (
+                <>
+                    <Heading fontSize="md">{t('course.CourseDate.Preview.tagHeadline')}</Heading>
+                    <Row space={space['0.5']}>{(tags && tags.map((t) => <Tag text={t.name} />)) || <Text>{t('course.CourseDate.Preview.notags')}</Text>}</Row>
                 </>
             )}
 
@@ -94,31 +111,12 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 </Text>
             </Row>
 
-            <Row flexDirection="column" paddingBottom={space['0.5']}>
-                <Heading fontSize="md" paddingBottom={space['0.5']}>
-                    {t('course.CourseDate.Preview.image')}
-                </Heading>
-
-                <Box bg="gray.500" h="180">
-                    <Image src={pickedPhoto} h="100%" />
-                </Box>
-            </Row>
-
-            <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
-            <Text paddingBottom={space['0.5']}>{description}</Text>
-
-            <Heading fontSize="md">{t('course.CourseDate.Preview.tagHeadline')}</Heading>
-            <Row space={space['0.5']}>{(tags && tags.map((t) => <Tag text={t.name} />)) || <Text>{t('course.CourseDate.Preview.notags')}</Text>}</Row>
             <VStack>
                 <Row>
                     <Text fontSize="md" bold>
                         {t('course.CourseDate.Preview.membersCountLabel') + ' '}
                     </Text>
-                    <Text fontSize="md">
-                        {t('course.CourseDate.Preview.membersCountMaxLabel')}
-                        {'. '}
-                        {maxParticipantCount}
-                    </Text>
+                    <Text fontSize="md">{t('course.CourseDate.Preview.membersCountMaxLabel', { membersCount: maxParticipantCount })}</Text>
                 </Row>
 
                 <Row>

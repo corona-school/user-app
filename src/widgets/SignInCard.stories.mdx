@@ -17,9 +17,8 @@ import SignInCard from './SignInCard';
     <SignInCard
         showTrafficLight
         trafficLightStatus={'full'}
-        tags={[{ name: 'Englisch' }, { name: 'Deutsch' }]}
-        data={{
-            course: { name: 'Test Kurs', outline: 'Lorem Ipsum', description: 'My description' },
+        subcourse={{
+            course: { name: 'Test Kurs', outline: 'Lorem Ipsum', description: 'My description', tags: [{ name: 'Englisch' }, { name: 'Deutsch' }] },
             lectures: [{ start: new Date().toISOString(), duration: 60 }],
         }}
     />

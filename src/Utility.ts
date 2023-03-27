@@ -1,6 +1,8 @@
-import { LFLecture, TrafficStatus } from './types/lernfair/Course';
+import { LFLecture, LFSubCourse, TrafficStatus } from './types/lernfair/Course';
 import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
+import { Course_Coursestate_Enum } from './gql/graphql';
+import i18next from 'i18next';
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
 export const TOKEN_LENGTH = 32;
@@ -127,6 +129,23 @@ export const getTrafficStatus: (participants: number, maxParticipants: number) =
     return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
 };
 
+export const getTrafficStatusText = (subcourse: { course: { courseState?: Course_Coursestate_Enum }; published?: boolean; cancelled?: boolean }): string => {
+    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Created) return i18next.t('single.global.courseState.draft');
+    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return i18next.t('single.global.courseState.submitted');
+    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Allowed) return i18next.t('single.global.courseState.draft');
+    if (subcourse.published) return i18next.t('single.global.courseState.publish');
+    if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+    return i18next.t('single.global.courseState.publish');
+};
+
+export const getTrafficLampText = (status: TrafficStatus, isStudent: boolean, seatsMax?: number, seatsFull?: number, seatsLeft?: number): string => {
+    if (isStudent) return i18next.t('single.global.status.lastSeats', { seatsFull: seatsFull ?? 0, seatsMax: seatsMax ?? 0 });
+    if (status === 'free') return i18next.t('single.global.status.free');
+    if (status === 'last') return i18next.t('single.global.status.last', { seatsLeft: seatsLeft ?? 0 });
+    if (status === 'full') return i18next.t('single.global.status.full');
+    return i18next.t('single.global.status.full');
+};
+
 export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | null }>(arr: Subcourse[] | undefined) => {
     if (!arr) return [];
     return arr.sort((a, b) => {
@@ -136,7 +155,7 @@ export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | n
         const aDate = aLecture?.start || 0;
         const bDate = bLecture?.start || 0;
 
-        return aDate < bDate ? 1 : -1;
+        return aDate > bDate ? 1 : -1;
     });
 };
 

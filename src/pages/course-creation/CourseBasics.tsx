@@ -51,7 +51,9 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
         <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
             <Heading>{t('course.CourseDate.headline')}</Heading>
             <FormControl>
-                <FormControl.Label isRequired>{t('course.CourseDate.form.courseNameHeadline')}</FormControl.Label>
+                <FormControl.Label _text={{ color: 'primary.900' }} isRequired>
+                    {t('course.CourseDate.form.courseNameHeadline')}
+                </FormControl.Label>
                 <Input
                     value={name}
                     placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
