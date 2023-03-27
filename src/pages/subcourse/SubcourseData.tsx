@@ -2,7 +2,7 @@ import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpoi
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
-import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
@@ -11,8 +11,11 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
-    course: Course;
-    subcourse: Subcourse;
+    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'isOnWaitingList'> & {
+        instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
+        lectures: Pick<Lecture, 'start' | 'duration'>[];
+    };
     isInPast: boolean;
     hideTrafficStatus?: boolean;
 };
@@ -46,9 +49,9 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
             <Stack direction={isMobile ? 'column' : 'row'}>
                 <VStack space="5" width={ContainerWidth}>
                     <HStack space="3">
-                        {course?.tags?.map((tag: { name: string; category: string }) => (
+                        {course?.tags?.map(({ name }) => (
                             <VStack>
-                                <Tag text={tag.name} />
+                                <Tag text={name} />
                             </VStack>
                         ))}
                     </HStack>
@@ -61,7 +64,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         {course?.name}
                     </Heading>
                     {subcourse?.instructors && subcourse?.instructors[0] && (
-                        <Heading fontSize="lg">{subcourse?.instructors.map((it: Instructor) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
+                        <Heading fontSize="lg">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
                     )}
                     <Text maxWidth={sizes['imageHeaderWidth']}>
                         <Text bold>{t('single.courseInfo.grade')}</Text>
