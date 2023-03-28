@@ -47,11 +47,6 @@ const single = {
         courseInPast: 'Dieser Kurs ist bereits vorbei.',
         courseCancelled: 'Dieser Kurs wurde abgesagt.',
     },
-    leaveModal: {
-        header: 'Kurseinformationen',
-        question: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-        successSignout: 'Du hast dich nun erfolgreich vom Kurs abgemeldet',
-    },
     card: {
         expandCardButton: 'Mehr Kurs-Infos',
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
@@ -66,7 +61,6 @@ const single = {
         },
     },
     contact: {
-        instructor: 'Kursleiter:innen kontaktieren',
         participants: 'Teilnehmer:innen kontaktieren',
         messageSend: 'Nachricht erfolgreich versendet',
         failedToSend: 'Deine Nachricht konnte nicht versendet werden',
@@ -79,16 +73,8 @@ const single = {
         videochat: 'Videochat starten',
         videochatShouldOpen: 'Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:',
         openVideochatAgain: 'Videochat erneut öffnen',
-        startVideochat: 'Du kannst das Meeting erst eine Stunde vor Beginn des Termins starten.',
     },
     modals: {
-        headline: 'Kursinformationen',
-        signInSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
-        sureToLeave: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-        leaveCourse: 'Vom Kurs abmelden',
-        isOnWaitinglist: 'Du bist auf der Warteliste!',
-        leaveWaitinglistSuccess: 'Du hast die Warteliste erfolgreich verlassen.',
-        close: 'Fenster schließen',
         contactMessage: {
             alertParticipants: ' Wir teilen deinen Teilnehmer:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
             alertInstructors: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
@@ -133,7 +119,12 @@ const single = {
             info: 'Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support.',
         },
     },
-    signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
+    signIn: {
+        button: 'Verbindlich anmelden',
+        description:
+            'Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.',
+        toast: 'Du hast dich erfolgreich zu dem Kurs angemeldet.',
+    },
     joinWaitinglist: {
         button: 'Auf Warteliste setzen',
         description: 'Möchtest du dich auf die Warteliste setzen?',
@@ -171,17 +162,6 @@ const single = {
         add: 'Hinzufügen',
         amount: 'Anzahl Schüler:innen',
         success: 'Schüler:innen erfolgreich hinzugefügt',
-    },
-    pupil: {
-        subcourseFull: 'Dieser Kurs ist leider gerade ausgebucht.',
-        courseSuccess: 'Du hast dich nun erfolgreich zum Kurs angemeldet.',
-        signIn: { button: 'Anmelden', description: 'Möchtest du dich zum Kurs anmelden?', toast: 'Du hast dich erfolgreich zum Kurs angemeldet.' },
-        leave: {
-            course: 'Kurs verlassen',
-            signOut: 'Vom Kurs abmelden',
-            description: 'Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.',
-            toast: 'Du hast dich nun erfolgreich vom Kurs abgemeldet.',
-        },
     },
 };
 

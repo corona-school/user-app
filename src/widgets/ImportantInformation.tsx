@@ -290,7 +290,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- TEMP: Test of Homework help -----
-        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0)
+        if (roles.includes('TUTEE'))
             infos.push({
                 label: 'homeworkHelpPupil',
                 btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
