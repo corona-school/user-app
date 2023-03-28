@@ -272,7 +272,7 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>{t('ok')}</Button>
+                            <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
