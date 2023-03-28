@@ -23,8 +23,10 @@ const helpcenter = {
         message: {
             placeholder: 'Deine Nachricht an uns',
             label: 'Deine Nachricht',
+            error: 'Bitte gib eine Nachricht ein',
         },
         subject: {
+            error: 'Bitte wähle einen Betreff aus',
             label: 'Betreff',
         },
         success: 'Deine Nachricht wurde erfolgreich versendet',
