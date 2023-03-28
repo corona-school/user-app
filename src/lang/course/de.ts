@@ -177,6 +177,7 @@ const course = {
     },
     unsplash: {
         heading: 'Wähle ein Bild',
+        placeholder: 'Kursthema eingeben',
         description: 'Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.',
         noSearchoResults: 'Keine Suchergebnisse.',
         choose: 'wählen',

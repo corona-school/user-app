@@ -35,6 +35,11 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
         return true;
     }, [name, courseDescription]);
 
+    const pickPhoto = (photoUrl: string) => {
+        setPickedPhoto && setPickedPhoto(photoUrl);
+        setShowUnsplashModal(false);
+    };
+
     const deletePhoto = () => {
         if (pickedPhoto) {
             setPickedPhoto && setPickedPhoto('');
@@ -77,7 +82,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                 />
             </FormControl>
             <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onCancel={onCancel} />
-            <Unsplash showUnsplashModal={showUnsplashModal} onPhotoSelected={() => console.log('Foto gewählt')} onClose={() => setShowUnsplashModal(false)} />
+            <Unsplash showUnsplashModal={showUnsplashModal} onPhotoSelected={pickPhoto} onClose={() => setShowUnsplashModal(false)} />
         </VStack>
     );
 };
