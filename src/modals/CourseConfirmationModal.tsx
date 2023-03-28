@@ -1,10 +1,11 @@
 import { Modal, Text, Button, useTheme, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import { ReactNode } from 'react';
 
 type ConfirmProps = {
     headline: string;
     confirmButtonText: string;
-    description: string;
+    description: ReactNode;
     onClose: () => void;
     onConfirm: () => void;
 };

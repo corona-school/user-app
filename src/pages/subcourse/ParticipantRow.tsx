@@ -3,7 +3,7 @@ import { Participant } from '../../gql/graphql';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 
 type RowProps = {
-    participant: Pick<Participant, 'firstname' | 'lastname' | 'schooltype' | 'grade'>;
+    participant: Pick<Participant, 'firstname' | 'grade'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
 };
 const ParticipantRow: React.FC<RowProps> = ({ participant }) => {
     const { space } = useTheme();
@@ -13,7 +13,7 @@ const ParticipantRow: React.FC<RowProps> = ({ participant }) => {
             <Column marginRight={space['1']}></Column>
             <Column>
                 <Heading fontSize="md">
-                    {participant.firstname} {participant.lastname}
+                    {participant.firstname} {participant.lastname ?? ''}
                 </Heading>
                 <Text>
                     {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}

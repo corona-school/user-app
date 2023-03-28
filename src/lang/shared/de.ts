@@ -18,7 +18,7 @@ const shared = {
     edit: 'Bearbeiten',
     signup: 'Registrieren',
     signin: 'Anmelden',
-    ok: 'Ok',
+    done: 'Fertig',
     saveSelection: 'Auswahl speichern',
     sendMessage: 'Nachricht senden',
     next: 'Weiter',

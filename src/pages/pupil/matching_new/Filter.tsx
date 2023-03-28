@@ -52,7 +52,7 @@ const Filter: React.FC = () => {
                     <Heading>Lange Wartezeit: 3-6 Monate</Heading>
                     <Text>
                         Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
-                        Monate warten, bevor wir dir eine:n Lernpartner:in für dich finden können.
+                        Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.
                     </Text>
 
                     <Heading fontSize="md">Bist du bereit 3-6 Monate zu warten?</Heading>

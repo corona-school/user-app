@@ -1,7 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Heading, Modal, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
+import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -45,15 +46,15 @@ function Participants({ subcourseId }: { subcourseId: number }) {
 
     return (
         <>
-            {participants.map((participant: Participant) => (
+            {participants.map((participant) => (
                 <ParticipantRow participant={participant} />
             ))}
         </>
     );
 }
 
-const singleSubcourseStudentQuery = gql(`
-query GetSingleSubcourseStudent($subcourseId: Int!) {
+const basicSubcourseQuery = gql(`
+query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -65,9 +66,6 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
         published
         publishedAt
         isInstructor
-        isParticipant
-        isOnWaitingList
-        alreadyPromoted
         nextLecture{
             start
             duration
@@ -93,6 +91,14 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
             start
             duration
         }
+    }
+}
+`);
+
+const instructorSubcourseQuery = gql(`
+query GetInstructorSubcourse($subcourseId: Int!) {
+    subcourse(subcourseId: $subcourseId){
+        alreadyPromoted
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -101,21 +107,43 @@ query GetSingleSubcourseStudent($subcourseId: Int!) {
             schooltype
             grade
             }
-
     }
 }
 `);
-
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
-
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
 
-    const { data, loading, refetch } = useQuery(singleSubcourseStudentQuery, {
+    const sectionSpacing = useBreakpointValue({
+        base: space['1'],
+        lg: space['4'],
+    });
+
+    const {
+        data,
+        loading,
+        refetch: refetchBasics,
+    } = useQuery(basicSubcourseQuery, {
+        variables: {
+            subcourseId,
+        },
+    });
+
+    const isInstructorOfSubcourse = useMemo(() => {
+        if (data?.subcourse?.isInstructor) return true;
+        return false;
+    }, [data?.subcourse?.isInstructor]);
+
+    const {
+        data: instructorSubcourse,
+        loading: subLoading,
+        refetch: refetchInstructorData,
+    } = useQuery(instructorSubcourseQuery, {
+        skip: !data?.subcourse?.isInstructor,
         variables: {
             subcourseId,
         },
@@ -136,7 +164,7 @@ const SingleCourseStudent = () => {
     const doPublish = useCallback(async () => {
         await publish();
         toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
-        refetch();
+        refetchBasics();
     }, []);
 
     const [submit] = useMutation(
@@ -145,13 +173,13 @@ const SingleCourseStudent = () => {
             courseSubmit(courseId: $courseId)
         }
     `),
-        { variables: { courseId: course?.id } }
+        { variables: { courseId: course?.id! } }
     );
 
     const submitCourse = useCallback(async () => {
         await submit();
         toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
-        refetch();
+        refetchBasics();
     }, []);
 
     const [cancelSubcourse, { data: canceldData }] = useMutation(
@@ -164,11 +192,9 @@ const SingleCourseStudent = () => {
     const cancelCourse = useCallback(async () => {
         await cancelSubcourse();
         toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
-        refetch();
+        refetchBasics();
         setShowCancelModal(false);
     }, [canceldData]);
-
-    const countPupilsOnWaitinglist = useMemo(() => subcourse?.pupilsWaitingCount, [subcourse?.pupilsWaitingCount]);
 
     const tabs: Tab[] = [
         {
@@ -186,7 +212,7 @@ const SingleCourseStudent = () => {
             content: (
                 <>
                     {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture: Lecture, i: number) => (
+                        subcourse!.lectures.map((lecture, i) => (
                             <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
                                 <Heading paddingBottom={space['0.5']} fontSize="md">
                                     {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
@@ -207,7 +233,7 @@ const SingleCourseStudent = () => {
         },
     ];
 
-    if (subcourse?.isInstructor || subcourse?.isParticipant) {
+    if (subcourse?.isInstructor) {
         tabs.push({
             title: t('single.tabs.participant'),
             badge: subcourse?.participantsCount,
@@ -219,17 +245,20 @@ const SingleCourseStudent = () => {
         });
     }
 
-    if (subcourse?.isInstructor) {
+    if (subcourse?.isInstructor && instructorSubcourse?.subcourse) {
         tabs.push({
             title: t('single.tabs.waitinglist'),
-            badge: countPupilsOnWaitinglist,
+            badge: instructorSubcourse.subcourse.pupilsWaitingCount,
             content: (
                 <>
                     <Waitinglist
                         subcourseId={subcourseId}
                         maxParticipants={subcourse?.maxParticipants}
-                        pupilsOnWaitinglist={subcourse?.pupilsOnWaitinglist}
-                        refetch={refetch}
+                        pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
+                        refetch={() => {
+                            refetchInstructorData();
+                            return refetchBasics();
+                        }}
                     />
                 </>
             ),
@@ -252,13 +281,13 @@ const SingleCourseStudent = () => {
         } else {
             toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
-        refetch();
+        refetchInstructorData();
     };
 
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture: Lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -271,10 +300,11 @@ const SingleCourseStudent = () => {
     };
 
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || !subcourse.hasOwnProperty('alreadyPromoted')) return false;
+        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || instructorSubcourse?.subcourse?.alreadyPromoted !== false)
+            return false;
         const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
         return canPromote;
-    }, [loading, subcourse]);
+    }, [instructorSubcourse?.subcourse?.alreadyPromoted, loading, subcourse]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
@@ -285,30 +315,43 @@ const SingleCourseStudent = () => {
             default:
                 return () => submitCourse();
         }
-    }, [course?.courseState, doPublish, submit, submitCourse]);
+    }, [course?.courseState, doPublish, submitCourse]);
 
     return (
         <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
-            <Stack space={space['3']} paddingX={space['1.5']}>
-                <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />
-                {!isInPast && !subcourse?.cancelled && <StudentCourseButtons subcourse={subcourse} refresh={refetch} />}
-                {subcourse && subcourse.published && !isInPast && canPromoteCourse && (
-                    <PromoteBanner
-                        onClick={doPromote}
-                        isPromoted={subcourse?.alreadyPromoted || false}
-                        courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+            {subLoading ? (
+                <CenterLoadingSpinner />
+            ) : (
+                <Stack space={sectionSpacing} paddingX={space['1.5']}>
+                    <SubcourseData
+                        course={course!}
+                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
+                        isInPast={isInPast}
+                        hideTrafficStatus={canPromoteCourse}
                     />
-                )}
-                {!isInPast && (
-                    <Banner
-                        courseState={course?.courseState}
-                        isCourseCancelled={subcourse?.cancelled}
-                        isPublished={subcourse?.published}
-                        handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
-                    />
-                )}
-                <Tabs tabs={tabs} />
-            </Stack>
+                    {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
+                    )}
+                    {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                        <PromoteBanner
+                            onClick={doPromote}
+                            seatsFull={subcourse?.participantsCount}
+                            seatsMax={subcourse?.maxParticipants}
+                            isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
+                            courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                        />
+                    )}
+                    {!isInPast && isInstructorOfSubcourse && (
+                        <Banner
+                            courseState={course!.courseState!}
+                            isCourseCancelled={subcourse!.cancelled}
+                            isPublished={subcourse!.published}
+                            handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
+                        />
+                    )}
+                    <Tabs tabs={tabs} />
+                </Stack>
+            )}
             <Modal>
                 <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
             </Modal>

@@ -2,7 +2,8 @@ import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpoi
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
-import { Course, Instructor, Subcourse } from '../../gql/graphql';
+import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/graphql';
+import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getTrafficStatus } from '../../Utility';
@@ -10,15 +11,21 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
-    course: Course;
-    subcourse: Subcourse;
+    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
+        Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant'>> & {
+            instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
+            lectures: Pick<Lecture, 'start' | 'duration'>[];
+        };
     isInPast: boolean;
+    hideTrafficStatus?: boolean;
 };
 
-const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast }) => {
+const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const { isMobile } = useLayoutHelper();
+    const userType = useUserType();
 
     const ImageHeight = useBreakpointValue({
         base: '178px',
@@ -40,12 +47,12 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'}>
+            <Stack direction={isMobile ? 'column-reverse' : 'row'}>
                 <VStack space="5" width={ContainerWidth}>
                     <HStack space="3">
-                        {course?.tags?.map((tag: { name: string; category: string }) => (
+                        {course?.tags?.map(({ name }) => (
                             <VStack>
-                                <Tag text={tag.name} />
+                                <Tag text={name} />
                             </VStack>
                         ))}
                     </HStack>
@@ -58,26 +65,31 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         {course?.name}
                     </Heading>
                     {subcourse?.instructors && subcourse?.instructors[0] && (
-                        <Heading fontSize="lg">{subcourse?.instructors.map((it: Instructor) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
+                        <Heading fontSize="lg">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
                     )}
                     <Text maxWidth={sizes['imageHeaderWidth']}>
                         <Text bold>{t('single.courseInfo.grade')}</Text>
                         {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
                     </Text>
-                    {!isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && (
-                        <CourseTrafficLamp
-                            status={trafficStatus}
-                            seatsLeft={seatsLeft}
-                            seatsFull={subcourse?.participantsCount}
-                            seatsMax={subcourse?.maxParticipants}
-                        />
-                    )}
+                    {!isInPast &&
+                        !subcourse?.cancelled &&
+                        subcourse?.published &&
+                        !subcourse.isOnWaitingList &&
+                        !hideTrafficStatus &&
+                        !subcourse?.isParticipant && (
+                            <CourseTrafficLamp
+                                status={trafficStatus}
+                                showLastSeats={userType === 'student'}
+                                seatsLeft={seatsLeft}
+                                seatsFull={subcourse?.participantsCount}
+                                seatsMax={subcourse?.maxParticipants}
+                            />
+                        )}
 
                     {isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
                 </VStack>
-
-                <Stack width={ContainerWidth}>
+                <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
                         <Image
                             alt={course?.name}

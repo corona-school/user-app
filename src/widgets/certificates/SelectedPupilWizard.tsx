@@ -85,6 +85,9 @@ const SelectedPupilWizard = ({
 
                 <VStack space={space['0.5']}>
                     <Text bold>Zeit</Text>
+                    {((hoursPerWeek && isNaN(parseInt(hoursPerWeek))) || (hoursTotal && isNaN(parseInt(hoursTotal)))) && (
+                        <Text color="danger.700">Du musst hier ganze Zahlen eingeben.</Text>
+                    )}
                     <Row alignItems="center">
                         <Column flex={0.4}>
                             <TextInput
@@ -114,7 +117,15 @@ const SelectedPupilWizard = ({
                 </VStack>
 
                 <Button
-                    isDisabled={!startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length}
+                    isDisabled={
+                        !startDate ||
+                        !endDate ||
+                        !hoursPerWeek ||
+                        !hoursTotal ||
+                        !subjects.length ||
+                        isNaN(parseInt(hoursPerWeek)) ||
+                        isNaN(parseInt(hoursTotal))
+                    }
                     onPress={() => {
                         const request = {
                             startDate,

@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
+import { LFSubCourse } from '../../types/lernfair/Course';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -35,6 +36,8 @@ const StudentGroup: React.FC = () => {
                             cancelled
                             participantsCount
                             maxParticipants
+                            minGrade
+                            maxGrade
                             firstLecture {
                                 start
                                 duration
@@ -60,8 +63,13 @@ const StudentGroup: React.FC = () => {
 
                 subcoursesPublic(take: 20) {
                     id
+                    published
+                    cancelled
+                    minGrade
+                    maxGrade
                     participantsCount
                     maxParticipants
+                    isInstructor
                     firstLecture {
                         start
                         duration
@@ -72,6 +80,7 @@ const StudentGroup: React.FC = () => {
                     }
                     course {
                         name
+                        courseState
                         description
                         image
                         category
@@ -109,7 +118,7 @@ const StudentGroup: React.FC = () => {
             data?.me.student!.subcoursesInstructing.filter(
                 (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published) || it.course.courseState === 'submitted'
             ),
-        [data?.me.student!.subcoursesInstructing]
+        [data?.me.student]
     );
     const pastOrCancelledSubcourses = useMemo(
         () =>
@@ -117,7 +126,7 @@ const StudentGroup: React.FC = () => {
                 data?.me?.student?.subcoursesInstructing.filter(
                     (sub) =>
                         sub.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()) ||
-                        sub.cancelled
+                        sub.course.courseState === 'denied'
                 )
             ),
         [data?.me?.student?.subcoursesInstructing]
@@ -128,11 +137,11 @@ const StudentGroup: React.FC = () => {
     );
     const languageCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const focusCourses = useMemo(
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
     const revisionCourses = useMemo(
         () =>
@@ -141,7 +150,7 @@ const StudentGroup: React.FC = () => {
                     (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
                 )
             ),
-        [data?.me.student]
+        [data?.subcoursesPublic]
     );
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -223,9 +232,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CourseGroups
-                                                        currentCourses={publishedSubcourses}
-                                                        draftCourses={unpublishedOrDraftedSubcourses}
-                                                        pastCourses={pastOrCancelledSubcourses}
+                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
+                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
                                                     />
                                                 </>
                                             ),

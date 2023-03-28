@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Column, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -13,7 +13,7 @@ import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
 import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 import { DateTime } from 'luxon';
-import { getFirstLectureFromSubcourse, getTrafficStatus } from '../../Utility';
+import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -23,6 +23,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
+import RecommendModal from '../../modals/RecommendModal';
 
 type Props = {};
 
@@ -56,9 +57,12 @@ const query = gql`
                 }
                 subcoursesInstructing {
                     id
+                    minGrade
+                    maxGrade
                     participantsCount
                     maxParticipants
                     published
+                    cancelled
                     lectures {
                         start
                         duration
@@ -66,6 +70,7 @@ const query = gql`
                     course {
                         name
                         description
+                        courseState
                         tags {
                             name
                         }
@@ -100,8 +105,8 @@ const DashboardStudent: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [toastShown, setToastShown] = useState<boolean>();
-
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
+    const [showRecommendModal, setShowRecommendModal] = useState<boolean>(false);
     const [dissolveData, setDissolveData] = useState<LFMatch>();
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -301,32 +306,39 @@ const DashboardStudent: React.FC<Props> = () => {
                             )}
                             {sortedAppointments.length > 1 && (
                                 <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }, index) => {
+                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }) => {
                                         const { course } = subcourse;
 
                                         return (
-                                            <Column minWidth="230px" maxWidth="300px" flex={1} h="100%">
-                                                <AppointmentCard
-                                                    isGrid
-                                                    isFullHeight
-                                                    onPressToCourse={() => {
-                                                        trackEvent({
-                                                            category: 'dashboard',
-                                                            action: 'click-event',
-                                                            name: 'Helfer Dashboard Kachelklick  ' + course.name,
-                                                            documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
-                                                        });
+                                            <AppointmentCard
+                                                key={subcourse.id}
+                                                description={course.description}
+                                                tags={course.tags}
+                                                date={lecture.start}
+                                                image={course.image}
+                                                title={course.name}
+                                                countCourse={subcourse.lectures.length}
+                                                maxParticipants={subcourse.maxParticipants}
+                                                participantsCount={subcourse.participantsCount}
+                                                minGrade={subcourse.minGrade}
+                                                maxGrade={subcourse.maxGrade}
+                                                statusText={getTrafficStatusText(subcourse)}
+                                                isFullHeight
+                                                showSchoolclass
+                                                showCourseTraffic
+                                                showStatus
+                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
+                                                onPressToCourse={() => {
+                                                    trackEvent({
+                                                        category: 'dashboard',
+                                                        action: 'click-event',
+                                                        name: 'Helfer Dashboard Kachelklick  ' + course.name,
+                                                        documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
+                                                    });
 
-                                                        navigate(`/single-course/${subcourse.id}`);
-                                                    }}
-                                                    key={`appointment-${index}`}
-                                                    description={course.description}
-                                                    tags={course.tags}
-                                                    date={lecture.start}
-                                                    image={course.image}
-                                                    title={course.name}
-                                                />
-                                            </Column>
+                                                    navigate(`/single-course/${subcourse.id}`);
+                                                }}
+                                            />
                                         );
                                     })}
                                 </HSection>
@@ -346,32 +358,34 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
                                                 if (!firstLecture) return <></>;
                                                 return (
-                                                    <CSSWrapper className="course-list__item">
-                                                        <AppointmentCard
-                                                            isFullHeight
-                                                            isSpaceMarginBottom={false}
-                                                            variant="horizontal"
-                                                            key={index}
-                                                            description={sub.course.description}
-                                                            tags={sub.course.tags}
-                                                            date={firstLecture.start}
-                                                            countCourse={sub.lectures.length}
-                                                            showTrafficLight
-                                                            trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
-                                                            onPressToCourse={() => {
-                                                                trackEvent({
-                                                                    category: 'dashboard',
-                                                                    action: 'click-event',
-                                                                    name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
-                                                                    documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
-                                                                });
+                                                    <AppointmentCard
+                                                        key={index}
+                                                        description={sub.course.description}
+                                                        tags={sub.course.tags}
+                                                        date={firstLecture.start}
+                                                        image={sub.course.image}
+                                                        title={sub.course.name}
+                                                        countCourse={sub.lectures.length}
+                                                        maxParticipants={sub.maxParticipants}
+                                                        participantsCount={sub.participantsCount}
+                                                        minGrade={sub.minGrade}
+                                                        maxGrade={sub.maxGrade}
+                                                        statusText={getTrafficStatusText(sub)}
+                                                        showCourseTraffic
+                                                        showSchoolclass
+                                                        showStatus
+                                                        trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
+                                                        onPressToCourse={() => {
+                                                            trackEvent({
+                                                                category: 'dashboard',
+                                                                action: 'click-event',
+                                                                name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
+                                                                documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
+                                                            });
 
-                                                                navigate(`/single-course/${sub.id}`);
-                                                            }}
-                                                            image={sub.course.image}
-                                                            title={sub.course.name}
-                                                        />
-                                                    </CSSWrapper>
+                                                            navigate(`/single-course/${sub.id}`);
+                                                        }}
+                                                    />
                                                 );
                                             })
                                         ) : (
@@ -458,15 +472,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     closeable={false}
                                     content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
                                     button={
-                                        <Button
-                                            variant="outline"
-                                            onPress={() =>
-                                                window.open(
-                                                    'https://wa.me/?text=Hast%20du%20schon%20von%20Lern-Fair%20geh%C3%B6rt%3F%20Dort%20kannst%20du%20dich%20von%20zu%20Hause%20aus%20f%C3%BCr%20bildungsbenachteiligte%20Sch%C3%BCler%3Ainnen%20in%20ganz%20Deutschland%20engagieren.%20Alles%2C%20was%20du%20brauchst%2C%20sind%201-2%20Stunden%20pro%20Woche%20und%20Spa%C3%9F%20an%20der%20Vermittlung%20von%20Unterrichtsinhalten.%20Am%20Ende%20erh%C3%A4ltst%20du%20sogar%20eine%20Bescheinigung%21%20Registriere%20dich%20unter%20www.lern-fair.de%20und%20setze%20dich%20f%C3%BCr%20gleiche%20Bildungschancen%20in%20Deutschland%20ein%20%3C3',
-                                                    '_blank'
-                                                )
-                                            }
-                                        >
+                                        <Button variant="outline" onPress={() => setShowRecommendModal(true)}>
                                             {t('dashboard.helpers.buttons.recommend')}
                                         </Button>
                                     }
@@ -490,6 +496,7 @@ const DashboardStudent: React.FC<Props> = () => {
                 }}
                 onPressBack={() => setShowDissolveModal(false)}
             />
+            <RecommendModal showRecommendModal={showRecommendModal} onClose={() => setShowRecommendModal(false)} />
         </AsNavigationItem>
     );
 };

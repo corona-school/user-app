@@ -60,7 +60,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({
                     {schooltype && (
                         <Row flexWrap={'wrap'} space="5px" alignItems="center">
                             <Text color={isDark ? 'lightText' : 'primary.900'}>
-                                <Text bold>{t('matching.shared.schooltype')}</Text> {schooltype}
+                                <Text bold>{t('matching.shared.schooltype')}</Text> {t(`lernfair.schooltypes.${schooltype}` as unknown as TemplateStringsArray)}
                             </Text>
                         </Row>
                     )}
