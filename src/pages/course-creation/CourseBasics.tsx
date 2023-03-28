@@ -10,12 +10,11 @@ import ResizableTextArea from './ResizableTextArea';
 const MAX_LENGTH_TITLE = 50;
 
 type BasicProps = {
-    onShowUnsplash: () => void;
     onCancel: () => void;
     onNext: () => void;
 };
 
-const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }) => {
+const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto } = useContext(CreateCourseContext);

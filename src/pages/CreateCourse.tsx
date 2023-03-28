@@ -16,7 +16,6 @@ import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
 import WithNavigation from '../components/WithNavigation';
 import InstructionProgress from '../widgets/InstructionProgress';
-import Unsplash from '../modals/Unsplash';
 import CourseBlocker from './student/CourseBlocker';
 import AsNavigationItem from '../components/AsNavigationItem';
 import AddCourseInstructor from '../modals/AddCourseInstructor';
@@ -716,10 +715,6 @@ const CreateCourse: React.FC = () => {
         [hide]
     );
 
-    const showUnsplash = useCallback(() => {
-        // show({ variant: 'light' }, <Unsplash onPhotoSelected={pickPhoto} onClose={hide} />);
-    }, [pickPhoto, show, hide]);
-
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
             if (prefillCourseId === null) {
@@ -864,7 +859,7 @@ const CreateCourse: React.FC = () => {
                                     },
                                 ]}
                             />
-                            {currentIndex === 0 && <CourseBasics onShowUnsplash={showUnsplash} onCancel={onCancel} onNext={onNext} />}
+                            {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
