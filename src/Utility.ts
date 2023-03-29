@@ -136,8 +136,11 @@ export const getTrafficStatusText = (subcourse: { course: { courseState?: Course
         if (subcourse.course.courseState === Course_Coursestate_Enum.Allowed) return i18next.t('single.global.courseState.draft');
         if (subcourse.course.courseState === Course_Coursestate_Enum.Denied) return i18next.t('single.global.courseState.denied');
     }
-    if (subcourse.published) return i18next.t('single.global.courseState.publish');
-    if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+    if (subcourse.published) {
+        if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+
+        return i18next.t('single.global.courseState.publish');
+    }
     return i18next.t('single.global.courseState.publish');
 };
 
