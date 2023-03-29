@@ -1,13 +1,11 @@
-import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack, View } from 'native-base';
-import Card from '../components/Card';
+import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack } from 'native-base';
 
-import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
 import { Pupil_Schooltype_Enum, Subject } from '../gql/graphql';
+
 import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_56.svg';
-import { useUserType } from '../hooks/useApollo';
 
 type LearningPartnerProps = {
     name: string;
@@ -33,8 +31,9 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ name, subjects, schoo
         base: true,
         lg: false,
     });
+
     return (
-        <View width="auto">
+        <HStack minW="300">
             <Pressable
                 onPress={() => console.log('go to match details')}
                 width="100%"
@@ -45,7 +44,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ name, subjects, schoo
                 borderRadius="15px"
             >
                 <HStack>
-                    <Box mr="3" h="100%">
+                    <Box mr="3">
                         <Center
                             bg={isDissolved ? 'primary.300' : 'primary.900'}
                             width={containerWidth}
@@ -56,24 +55,22 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ name, subjects, schoo
                             {isStudent ? <StudentAvatar /> : <PupilAvatar />}
                         </Center>
                     </Box>
-                    <VStack space="1" my="2">
+                    <VStack space="1" my="2" maxW="300">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             <Text>{schoolclass ? t('matching.shared.schoolGrade', { schooltype: schooltype, grade: schoolclass }) : grade}</Text>
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {name}
                             </Text>
                         </VStack>
-                        <HStack space={2} maxW={isMobile ? 200 : 'full'}>
-                            <HStack space={space['0.5']} flexWrap="wrap" mr="3">
-                                {subjects.map((subject) => (
-                                    <Tag key={`subject tag ${subject.name}`} text={subject.name} />
-                                ))}
-                            </HStack>
+                        <HStack space={space['0.5']} flexWrap="wrap" mr="3">
+                            {subjects.map((subject) => (
+                                <Tag key={`subject tag ${subject.name}`} text={subject.name} />
+                            ))}
                         </HStack>
                     </VStack>
                 </HStack>
             </Pressable>
-        </View>
+        </HStack>
     );
 };
 export default LearningPartner;

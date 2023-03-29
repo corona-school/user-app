@@ -1,11 +1,11 @@
-import { Box, Button, Heading, useBreakpointValue } from 'native-base';
+import { Box, Flex, Heading, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Match, Pupil_Schooltype_Enum } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
-import HSection from '../../widgets/HSection';
 import LearningPartner from '../../widgets/LearningPartner';
 
 type MatchesProps = {
@@ -17,10 +17,12 @@ type MatchesProps = {
 const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showDissolveMatchModal }) => {
     const { t } = useTranslation();
     const userType = useUserType();
+    const { isMobile } = useLayoutHelper();
+    const { space } = useTheme();
 
     const cardGridWidth = useBreakpointValue({
-        base: '80%',
-        lg: '46%',
+        base: '100%',
+        lg: '50%',
     });
 
     const headingMarginTop = useBreakpointValue({
@@ -39,7 +41,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
     const renderMatch = useCallback(
         (match: Match, index: number) => {
             return (
-                <Box width={cardGridWidth} key={match.id}>
+                <Box key={match.id} width={cardGridWidth} paddingY={space['0.5']} paddingRight={isMobile ? 0 : space['1']}>
                     <LearningPartner
                         key={index}
                         name={getMatchPartnerName(match)}
@@ -58,22 +60,29 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
 
     return (
         <>
-            <Heading>{t('matching.shared.activeMatches')}</Heading>
-            <HSection>
-                {activeMatches?.length > 0 ? (
-                    activeMatches.map((match: Match, index: number) => renderMatch(match, index))
-                ) : (
-                    <AlertMessage content={t('matching.request.check.noMatches')} />
-                )}
-            </HSection>
-            <Heading mt={headingMarginTop}>{t('matching.shared.inactiveMatches')}</Heading>
-            <HSection>
-                {inactiveMatches?.length > 0 ? (
-                    inactiveMatches.map((match: Match, index: number) => renderMatch(match, index))
-                ) : (
-                    <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
-                )}
-            </HSection>
+            <VStack space={space['2']}>
+                <VStack space={space['1']}>
+                    <Heading>{t('matching.shared.activeMatches')}</Heading>
+                    <Flex direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
+                        {activeMatches?.length > 0 ? (
+                            activeMatches.map((match: Match, index: number) => renderMatch(match, index))
+                        ) : (
+                            <AlertMessage content={t('matching.request.check.noMatches')} />
+                        )}
+                    </Flex>
+                </VStack>
+                <VStack space={space['0.5']}>
+                    <Heading mt={headingMarginTop}>{t('matching.shared.inactiveMatches')}</Heading>
+
+                    <Flex direction="row" flexWrap="wrap">
+                        {inactiveMatches?.length > 0 ? (
+                            inactiveMatches.map((match: Match, index: number) => renderMatch(match, index))
+                        ) : (
+                            <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
+                        )}
+                    </Flex>
+                </VStack>
+            </VStack>
         </>
     );
 };

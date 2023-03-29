@@ -50,6 +50,7 @@ const query = gql(`
                     dissolved
                     pupil {
                         firstname
+                        lastname
                         grade
                         subjectsFormatted {
                             name
@@ -424,14 +425,14 @@ const DashboardStudent: React.FC<Props> = () => {
                             )}
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
-                                    <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
+                                    <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
                                     <CSSWrapper className="course-list__wrapper">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
                                                     <LearningPartner
                                                         key={index}
-                                                        name={match?.pupil?.firstname || ''}
+                                                        name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
                                                         subjects={match?.pupil?.subjectsFormatted}
                                                         schooltype={match?.pupil?.schooltype || ''}
                                                         grade={match?.pupil?.grade || ''}
