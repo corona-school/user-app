@@ -1,4 +1,4 @@
-import { HStack, Pressable, View, Text, VStack, Button, Image, Box, Flex, useTheme, Row, Modal, Stack } from 'native-base';
+import { HStack, Pressable, View, Text, VStack, Button, Image, Box, Flex, useTheme, Row, Modal, Stack, useBreakpointValue } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -21,6 +21,20 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
     const { space } = useTheme();
     const { t } = useTranslation();
 
+    const modalMinWidth = useBreakpointValue({
+        base: 320,
+        lg: 700,
+    });
+
+    const imageSize = useBreakpointValue({
+        base: 100,
+        lg: 175,
+    });
+
+    const containerMaxHeight = useBreakpointValue({
+        base: 300,
+        lg: 600,
+    });
     const loadPhotos = useCallback(async () => {
         try {
             const data = await fetch(
@@ -63,11 +77,11 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
 
     return (
         <Modal isOpen={showUnsplashModal} onClose={() => closeModal()}>
-            <Modal.Content minW="700">
+            <Modal.Content minW={modalMinWidth}>
                 <Modal.Header>{t('course.unsplash.heading')}</Modal.Header>
                 <Modal.CloseButton />
                 <Modal.Body>
-                    <Stack space={space['2']}>
+                    <Stack space={space['1']}>
                         <Text>{t('course.unsplash.description')}</Text>
                         <Row>
                             <SearchBar
@@ -84,7 +98,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                         {!isLoading && (
                             <View flex="1" overflowY="scroll">
                                 {photos.length > 0 ? (
-                                    <VStack justifyContent="space-between" maxW="800" maxH="600">
+                                    <VStack justifyContent="space-between" maxW="800" maxH={containerMaxHeight}>
                                         <HStack flex="1" flexWrap="wrap" justifyContent="center">
                                             {photos.map((photo: any) => {
                                                 return (
@@ -97,7 +111,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                                                             }
                                                         >
                                                             <Image
-                                                                size={175}
+                                                                size={imageSize}
                                                                 padding="2"
                                                                 borderColor="primary.500"
                                                                 borderWidth={selectedPhoto === photo.urls.regular ? '3' : '0'}
