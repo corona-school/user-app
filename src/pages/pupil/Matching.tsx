@@ -1,6 +1,6 @@
 import { DocumentNode, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Flex, Modal, Row, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,6 @@ import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql/gql';
 import { Match } from '../../gql/graphql';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
@@ -66,10 +65,7 @@ const Matching: React.FC<Props> = () => {
     const { data } = useQuery(query);
 
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [focusedMatch, setFocusedMatch] = useState<Match>();
     const [showCancelModal, setShowCancelModal] = useState<boolean>();
-    const [toastShown, setToastShown] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -78,15 +74,6 @@ const Matching: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [dissolveMatch, { data: dissolveData }] = useMutation(
-        gql(`
-            mutation dissolveMatchPupil2($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
-            }
-        `),
-        { refetchQueries: [{ query }] }
-    );
-
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
         gql(`
             mutation PupilDeleteMatchRequest {
@@ -94,31 +81,6 @@ const Matching: React.FC<Props> = () => {
             }
         `),
         { refetchQueries: [{ query }] }
-    );
-
-    const showDissolveMatchModal = useCallback((match: Match) => {
-        setFocusedMatch(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    const dissolve = useCallback(
-        async (reason: string) => {
-            trackEvent({
-                category: 'matching',
-                action: 'click-event',
-                name: 'Helfer Matching lösen',
-                documentTitle: 'Helfer Matching',
-            });
-            setShowDissolveModal(false);
-            return await dissolveMatch({
-                variables: {
-                    matchId: focusedMatch?.id ? focusedMatch?.id : 0,
-                    dissolveReason: parseInt(reason),
-                },
-            });
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dissolveMatch, focusedMatch?.id]
     );
 
     const showCancelMatchRequestModal = useCallback(() => {
@@ -151,13 +113,6 @@ const Matching: React.FC<Props> = () => {
         return data?.me?.pupil?.matches.filter((match: Match) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
-    useEffect(() => {
-        if (dissolveData?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
-        }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
-
     return (
         <>
             <AsNavigationItem path="matching">
@@ -168,13 +123,7 @@ const Matching: React.FC<Props> = () => {
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
-                                    content: (
-                                        <Matches
-                                            activeMatches={activeMatches}
-                                            inactiveMatches={inactiveMatches}
-                                            showDissolveMatchModal={showDissolveMatchModal}
-                                        />
-                                    ),
+                                    content: <Matches activeMatches={activeMatches} inactiveMatches={inactiveMatches} />,
                                 },
                                 {
                                     title: t('matching.request.check.tabs.tab2'),
@@ -203,13 +152,6 @@ const Matching: React.FC<Props> = () => {
                             ]}
                         />
                     </Box>
-                    <DissolveMatchModal
-                        showDissolveModal={showDissolveModal}
-                        onPressDissolve={async (reason: string) => {
-                            return await dissolve(reason);
-                        }}
-                        onPressBack={() => setShowDissolveModal(false)}
-                    />
                     <Modal isOpen={showCancelModal}>
                         <Modal.Content>
                             <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>
@@ -226,12 +168,9 @@ const Matching: React.FC<Props> = () => {
                     <Modal isOpen={showEditModal}>
                         <Modal.Content>
                             <Modal.CloseButton />
-                            <Modal.Header>Anfrage bearbeiten</Modal.Header>
+                            <Modal.Header>{t('matching.request.check.editRequest')}</Modal.Header>
                             <Modal.Body>
-                                <Text>
-                                    Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail sobald du an der Reihe
-                                    bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.
-                                </Text>
+                                <Text>{t('matching.request.check.editRequestDescrption')}</Text>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Row>
