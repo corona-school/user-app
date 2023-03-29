@@ -176,8 +176,8 @@ const AppointmentCard: React.FC<Props> = ({
     });
 
     const headline = useBreakpointValue({
-        base: '13px',
-        lg: '14px',
+        base: '15px',
+        lg: '16px',
     });
 
     const buttonteaser = useBreakpointValue({
@@ -225,11 +225,17 @@ const AppointmentCard: React.FC<Props> = ({
                                     <>
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
-                                                {t('single.card.dateLectures', {
-                                                    date: date.toFormat('dd.MM.yyyy'),
-                                                    time: date.toFormat('HH:mm'),
-                                                    count: countCourse,
-                                                })}
+                                                {countCourse && countCourse > 1
+                                                    ? t('single.card.dateLectures', {
+                                                          date: date.toFormat('dd.MM.yyyy'),
+                                                          time: date.toFormat('HH:mm'),
+                                                          count: countCourse,
+                                                      })
+                                                    : t('single.card.oneLecture', {
+                                                          date: date.toFormat('dd.MM.yyyy'),
+                                                          time: date.toFormat('HH:mm'),
+                                                          count: countCourse,
+                                                      })}
                                             </Text>
                                         </Row>
                                     </>
@@ -270,13 +276,6 @@ const AppointmentCard: React.FC<Props> = ({
                                     {title}
                                 </Heading>
 
-                                {showSchoolclass && (
-                                    <Text maxWidth={sizes['imageHeaderWidth']}>
-                                        <Text bold>{t('single.courseInfo.grade')}</Text>
-                                        {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
-                                    </Text>
-                                )}
-
                                 {showCourseTraffic && (
                                     <Box>
                                         <CourseTrafficLamp
@@ -289,6 +288,13 @@ const AppointmentCard: React.FC<Props> = ({
                                             seatsMax={maxParticipants}
                                         />
                                     </Box>
+                                )}
+
+                                {showSchoolclass && (
+                                    <Text maxWidth={sizes['imageHeaderWidth']}>
+                                        <Text bold>{t('single.courseInfo.grade')}</Text>
+                                        {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
+                                    </Text>
                                 )}
 
                                 {showStatus && (

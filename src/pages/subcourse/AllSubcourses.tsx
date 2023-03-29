@@ -44,7 +44,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                 showStatus={(subcourse as any)?.isInstructor ?? false}
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-                showSchoolclass
+                showSchoolclass={((subcourse as any)?.isInstructor || (subcourse as any)?.isParticipant) ?? false}
                 isHorizontalCardCourseChecked={((subcourse as any)?.isParticipant ?? false) || ((subcourse as any)?.isOnWaitingList ?? false)}
                 isOnWaitinglist={!!((subcourse as any)?.isOnWaitingList ?? false)}
             />
