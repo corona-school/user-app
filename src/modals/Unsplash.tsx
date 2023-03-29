@@ -38,7 +38,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
     const loadPhotos = useCallback(async () => {
         try {
             const data = await fetch(
-                `https://api.unsplash.com/search/photos?query=${lastSearch.length > 0 ? lastSearch : 'Lernen'}&page=${pageIndex}&per_page=9`,
+                `https://api.unsplash.com/search/photos?query=${lastSearch.length > 0 ? lastSearch : 'Schule'}&page=${pageIndex}&per_page=9`,
                 {
                     method: 'GET',
                     headers: {
