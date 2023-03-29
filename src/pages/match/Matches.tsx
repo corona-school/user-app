@@ -1,6 +1,7 @@
 import { Box, Button, Heading, useBreakpointValue } from 'native-base';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Match, Pupil_Schooltype_Enum } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
 import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -8,9 +9,9 @@ import HSection from '../../widgets/HSection';
 import LearningPartner from '../../widgets/LearningPartner';
 
 type MatchesProps = {
-    activeMatches: LFMatch[];
-    inactiveMatches: LFMatch[];
-    showDissolveMatchModal: (match: LFMatch) => void;
+    activeMatches: Match[];
+    inactiveMatches: Match[];
+    showDissolveMatchModal: (match: Match) => void;
 };
 
 const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showDissolveMatchModal }) => {
@@ -36,26 +37,18 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
     );
 
     const renderMatch = useCallback(
-        (match: LFMatch, index: number) => {
+        (match: Match, index: number) => {
             return (
                 <Box width={cardGridWidth} key={match.id}>
                     <LearningPartner
                         key={index}
-                        isDark={match?.dissolved ? false : true}
                         name={getMatchPartnerName(match)}
                         subjects={match?.subjectsFormatted}
-                        schooltype={match?.pupil?.schooltype}
-                        schoolclass={match?.pupil?.grade}
-                        status={match?.dissolved ? t('matching.shared.inactive') : t('matching.shared.active')}
-                        button={
-                            !match.dissolved && (
-                                <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                    {t('dashboard.helpers.buttons.solveMatch')}
-                                </Button>
-                            )
-                        }
-                        contactMail={match?.studentEmail}
-                        meetingId={match?.uuid}
+                        schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
+                        grade={match?.pupil?.grade ? match?.pupil?.grade : ''}
+                        isStudent={!!match?.student?.isStudent}
+                        isPupil={!!match?.pupil?.isPupil}
+                        isDissolved={match?.dissolved}
                     />
                 </Box>
             );
@@ -68,7 +61,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
             <Heading>{t('matching.shared.activeMatches')}</Heading>
             <HSection>
                 {activeMatches?.length > 0 ? (
-                    activeMatches.map((match: LFMatch, index: number) => renderMatch(match, index))
+                    activeMatches.map((match: Match, index: number) => renderMatch(match, index))
                 ) : (
                     <AlertMessage content={t('matching.request.check.noMatches')} />
                 )}
@@ -76,9 +69,9 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
             <Heading mt={headingMarginTop}>{t('matching.shared.inactiveMatches')}</Heading>
             <HSection>
                 {inactiveMatches?.length > 0 ? (
-                    inactiveMatches.map((match: LFMatch, index: number) => renderMatch(match, index))
+                    inactiveMatches.map((match: Match, index: number) => renderMatch(match, index))
                 ) : (
-                    <AlertMessage content={t('matching.request.check.noMatches')} />
+                    <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
                 )}
             </HSection>
         </>

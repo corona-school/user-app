@@ -7,7 +7,7 @@ import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
@@ -24,10 +24,12 @@ import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
+import { gql } from '../../gql/gql';
+import { Lecture, Match, Subcourse } from '../../gql/graphql';
 
 type Props = {};
 
-const query = gql`
+const query = gql(`
     query StudentDashboard {
         me {
             firstname
@@ -52,6 +54,7 @@ const query = gql`
                         subjectsFormatted {
                             name
                         }
+                        schooltype
                     }
                     pupilEmail
                 }
@@ -93,7 +96,7 @@ const query = gql`
             }
         }
     }
-`;
+`);
 
 const DashboardStudent: React.FC<Props> = () => {
     const toast = useToast();
@@ -119,21 +122,23 @@ const DashboardStudent: React.FC<Props> = () => {
     }, []);
 
     const [dissolve, _dissolve] = useMutation(
-        gql`
+        gql(`
             mutation dissolveMatchStudent($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
             }
-        `,
+        `),
         {
             refetchQueries: [query],
         }
     );
 
-    const [joinMeeting, _joinMeeting] = useMutation(gql`
+    const [joinMeeting, _joinMeeting] = useMutation(
+        gql(`
         mutation joinMeetingStudent($subcourseId: Float!) {
             subcourseJoinMeeting(subcourseId: $subcourseId)
         }
-    `);
+    `)
+    );
 
     const requestMatch = useCallback(async () => {
         navigate('/request-match');
@@ -167,7 +172,7 @@ const DashboardStudent: React.FC<Props> = () => {
     });
 
     const publishedSubcourses = useMemo(
-        () => data?.me?.student?.subcoursesInstructing.filter((sub: LFSubCourse) => sub.published),
+        () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
         [data?.me?.student?.subcoursesInstructing]
     );
 
@@ -176,7 +181,7 @@ const DashboardStudent: React.FC<Props> = () => {
 
         const courses = [...publishedSubcourses];
 
-        courses.sort((a: LFSubCourse, b: LFSubCourse) => {
+        courses.sort((a, b) => {
             const aLecture = getFirstLectureFromSubcourse(a.lectures);
             const bLecture = getFirstLectureFromSubcourse(b.lectures);
 
@@ -196,17 +201,17 @@ const DashboardStudent: React.FC<Props> = () => {
         return courses;
     }, [publishedSubcourses]);
 
-    const sortedAppointments: { subcourse: LFSubCourse; lecture: LFLecture }[] = useMemo(() => {
-        const lectures: { subcourse: LFSubCourse; lecture: LFLecture }[] = [];
+    const sortedAppointments = useMemo(() => {
         if (!publishedSubcourses) return [];
+        const lectures: { subcourse: typeof publishedSubcourses[number]; lecture: Pick<Lecture, 'start' | 'duration'> }[] = [];
 
         for (const subcourse of publishedSubcourses) {
             const futureAndOngoingLectures = subcourse.lectures.filter(
-                (lecture: LFLecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
+                (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
             );
 
             for (const lecture of futureAndOngoingLectures) {
-                lectures.push({ lecture, subcourse });
+                lectures.push({ subcourse, lecture });
             }
         }
 
@@ -220,7 +225,7 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const highlightedAppointment = sortedAppointments[0];
 
-    const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match: LFMatch) => !match.dissolved), [data?.me?.student?.matches]);
+    const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
     const getMeetingLink = useCallback(async () => {
         const subcourseId = highlightedAppointment?.subcourse.id;
@@ -298,7 +303,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                         date={highlightedAppointment.lecture.start || ''}
                                         duration={highlightedAppointment.lecture.duration}
                                         isTeaser={true}
-                                        image={highlightedAppointment.subcourse.course?.image}
+                                        image={highlightedAppointment?.subcourse?.course?.image || ''}
                                         title={highlightedAppointment.subcourse.course?.name || ''}
                                         description={highlightedAppointment.subcourse.course?.description || ''}
                                     />
@@ -315,7 +320,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 description={course.description}
                                                 tags={course.tags}
                                                 date={lecture.start}
-                                                image={course.image}
+                                                image={course?.image || ''}
                                                 title={course.name}
                                                 countCourse={subcourse.lectures.length}
                                                 maxParticipants={subcourse.maxParticipants}
@@ -354,7 +359,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                 >
                                     <CSSWrapper className="course-list__wrapper">
                                         {sortedPublishedSubcourses.length > 0 ? (
-                                            sortedPublishedSubcourses.slice(0, 4).map((sub: LFSubCourse, index: number) => {
+                                            sortedPublishedSubcourses.slice(0, 4).map((sub, index) => {
                                                 const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
                                                 if (!firstLecture) return <></>;
                                                 return (
@@ -363,7 +368,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
                                                         date={firstLecture.start}
-                                                        image={sub.course.image}
+                                                        image={sub.course.image || ''}
                                                         title={sub.course.name}
                                                         countCourse={sub.lectures.length}
                                                         maxParticipants={sub.maxParticipants}
@@ -417,32 +422,22 @@ const DashboardStudent: React.FC<Props> = () => {
                                     )}
                                 </HSection>
                             )}
-                            {(activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
+                            {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
                                     <CSSWrapper className="course-list__wrapper">
                                         {(activeMatches?.length &&
-                                            activeMatches.map((match: LFMatch, index: number) => (
-                                                <CSSWrapper className="course-list__item">
+                                            activeMatches.map((match, index) => {
+                                                return (
                                                     <LearningPartner
                                                         key={index}
-                                                        isDark={true}
-                                                        name={match?.pupil?.firstname}
+                                                        name={match?.pupil?.firstname || ''}
                                                         subjects={match?.pupil?.subjectsFormatted}
                                                         schooltype={match?.pupil?.schooltype || ''}
-                                                        schoolclass={match?.pupil?.grade}
-                                                        button={
-                                                            (!match.dissolved && (
-                                                                <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
-                                                                    {t('matching.shared.dissolve')}
-                                                                </Button>
-                                                            )) || <Text color="lightText">{t('matching.status.dissolved')}</Text>
-                                                        }
-                                                        contactMail={match?.pupilEmail}
-                                                        meetingId={match?.uuid}
+                                                        grade={match?.pupil?.grade || ''}
                                                     />
-                                                </CSSWrapper>
-                                            ))) ||
+                                                );
+                                            })) ||
                                             (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
                                     </CSSWrapper>
 
@@ -489,7 +484,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     setShowDissolveModal(false);
                     return await dissolve({
                         variables: {
-                            matchId: dissolveData?.id,
+                            matchId: dissolveData?.id || 0,
                             dissolveReason: parseInt(reason),
                         },
                     });

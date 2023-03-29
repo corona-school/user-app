@@ -1,4 +1,4 @@
-import { DocumentNode, gql, useMutation, useQuery } from '@apollo/client';
+import { DocumentNode, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Box, Button, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -8,8 +8,9 @@ import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
+import { gql } from '../../gql/gql';
+import { Match } from '../../gql/graphql';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
-import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
@@ -17,7 +18,7 @@ import MatchingOnboarding from './MatchingOnboarding';
 
 type Props = {};
 
-const query: DocumentNode = gql`
+const query: DocumentNode = gql(`
     query PupilMatching {
         me {
             pupil {
@@ -35,10 +36,12 @@ const query: DocumentNode = gql`
                         name
                     }
                     pupil {
+                        isPupil
                         schooltype
                         grade
                     }
                     student {
+                        isStudent
                         firstname
                         lastname
                     }
@@ -52,7 +55,7 @@ const query: DocumentNode = gql`
             }
         }
     }
-`;
+`);
 
 const Matching: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
@@ -64,7 +67,7 @@ const Matching: React.FC<Props> = () => {
 
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [focusedMatch, setFocusedMatch] = useState<LFMatch>();
+    const [focusedMatch, setFocusedMatch] = useState<Match>();
     const [showCancelModal, setShowCancelModal] = useState<boolean>();
     const [toastShown, setToastShown] = useState<boolean>();
 
@@ -76,24 +79,24 @@ const Matching: React.FC<Props> = () => {
     }, []);
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
-        gql`
+        gql(`
             mutation dissolveMatchPupil2($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
             }
-        `,
+        `),
         { refetchQueries: [{ query }] }
     );
 
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql`
+        gql(`
             mutation PupilDeleteMatchRequest {
                 pupilDeleteMatchRequest
             }
-        `,
+        `),
         { refetchQueries: [{ query }] }
     );
 
-    const showDissolveMatchModal = useCallback((match: LFMatch) => {
+    const showDissolveMatchModal = useCallback((match: Match) => {
         setFocusedMatch(match);
         setShowDissolveModal(true);
     }, []);
@@ -109,7 +112,7 @@ const Matching: React.FC<Props> = () => {
             setShowDissolveModal(false);
             return await dissolveMatch({
                 variables: {
-                    matchId: focusedMatch?.id,
+                    matchId: focusedMatch?.id ? focusedMatch?.id : 0,
                     dissolveReason: parseInt(reason),
                 },
             });
@@ -140,12 +143,12 @@ const Matching: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
 
-    const activeMatches: LFMatch[] = useMemo(() => {
-        return data?.me?.pupil?.matches.filter((match: LFMatch) => match.dissolved === false);
+    const activeMatches = useMemo(() => {
+        return data?.me?.pupil?.matches.filter((match: Match) => match.dissolved === false);
     }, [data?.me?.pupil?.matches]);
 
-    const inactiveMatches: LFMatch[] = useMemo(() => {
-        return data?.me?.pupil?.matches.filter((match: LFMatch) => match.dissolved === true);
+    const inactiveMatches = useMemo(() => {
+        return data?.me?.pupil?.matches.filter((match: Match) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
     useEffect(() => {

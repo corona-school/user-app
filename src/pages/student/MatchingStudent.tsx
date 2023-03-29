@@ -9,6 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
+import { Match } from '../../gql/graphql';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -17,11 +18,12 @@ import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
 
 type Props = {};
-const query = gql`
+const query = gql(`
     query MatchingStudentOverview {
         me {
             student {
                 id
+                
                 subjectsFormatted {
                     name
                 }
@@ -33,6 +35,7 @@ const query = gql`
                         name
                     }
                     pupil {
+                        isPupil
                         firstname
                         lastname
                         schooltype
@@ -49,7 +52,7 @@ const query = gql`
             }
         }
     }
-`;
+`);
 
 const MatchingStudent: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
@@ -138,12 +141,12 @@ const MatchingStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
 
-    const activeMatches: LFMatch[] = useMemo(() => {
-        return data?.me?.student?.matches.filter((match: LFMatch) => match.dissolved === false);
+    const activeMatches = useMemo(() => {
+        return data?.me?.student?.matches.filter((match: Match) => match.dissolved === false);
     }, [data?.me?.student?.matches]);
 
-    const inactiveMatches: LFMatch[] = useMemo(() => {
-        return data?.me?.student?.matches.filter((match: LFMatch) => match.dissolved === true);
+    const inactiveMatches = useMemo(() => {
+        return data?.me?.student?.matches.filter((match: Match) => match.dissolved === true);
     }, [data?.me?.student?.matches]);
 
     useEffect(() => {
