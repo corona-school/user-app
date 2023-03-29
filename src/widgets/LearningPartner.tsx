@@ -1,4 +1,4 @@
-import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack } from 'native-base';
+import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack, Row } from 'native-base';
 
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
@@ -6,8 +6,10 @@ import { Pupil_Schooltype_Enum, Subject } from '../gql/graphql';
 
 import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_56.svg';
+import { useNavigate } from 'react-router-dom';
 
 type LearningPartnerProps = {
+    matchId: number;
     name: string;
     subjects: Subject[];
     schooltype?: Pupil_Schooltype_Enum | undefined;
@@ -18,9 +20,10 @@ type LearningPartnerProps = {
     isDissolved?: boolean;
 };
 
-const LearningPartner: React.FC<LearningPartnerProps> = ({ name, subjects, schooltype, schoolclass, grade, isStudent, isDissolved }) => {
+const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, schoolclass, grade, isStudent, isDissolved }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const containerWidth = useBreakpointValue({
         base: 100,
@@ -35,7 +38,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ name, subjects, schoo
     return (
         <HStack minW="300">
             <Pressable
-                onPress={() => console.log('go to match details')}
+                onPress={() => navigate(`/match/${matchId}`)}
                 width="100%"
                 height="100%"
                 backgroundColor={isDissolved ? 'white' : 'primary.100'}

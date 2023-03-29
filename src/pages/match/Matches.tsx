@@ -11,10 +11,9 @@ import LearningPartner from '../../widgets/LearningPartner';
 type MatchesProps = {
     activeMatches: Match[];
     inactiveMatches: Match[];
-    showDissolveMatchModal: (match: Match) => void;
 };
 
-const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showDissolveMatchModal }) => {
+const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => {
     const { t } = useTranslation();
     const userType = useUserType();
     const { isMobile } = useLayoutHelper();
@@ -44,6 +43,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
                 <Box key={match.id} width={cardGridWidth} paddingY={space['0.5']} paddingRight={isMobile ? 0 : space['1']}>
                     <LearningPartner
                         key={index}
+                        matchId={match.id}
                         name={getMatchPartnerName(match)}
                         subjects={match?.subjectsFormatted}
                         schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
@@ -55,7 +55,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showD
                 </Box>
             );
         },
-        [getMatchPartnerName, showDissolveMatchModal]
+        [cardGridWidth, getMatchPartnerName, isMobile, space]
     );
 
     return (

@@ -52,6 +52,7 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import SingleMatch from './pages/SingleMatch';
 
 export default function NavigatorLazy() {
     return (
@@ -264,6 +265,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchingStudent />} />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/match/:id"
+                element={
+                    <RequireAuth>
+                        <SingleMatch />
                     </RequireAuth>
                 }
             />

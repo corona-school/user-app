@@ -432,6 +432,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 return (
                                                     <LearningPartner
                                                         key={index}
+                                                        matchId={match.id}
                                                         name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
                                                         subjects={match?.pupil?.subjectsFormatted}
                                                         schooltype={match?.pupil?.schooltype || ''}
