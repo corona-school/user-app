@@ -11,6 +11,7 @@ const matching = {
         inactive: 'inaktiv',
         activeMatches: 'Aktive Zuordnungen',
         inactiveMatches: 'Aufgelöste Zuordnungen',
+        schoolGrade: '{{schooltype}} • {{grade}} ',
     },
     blocker: {
         header: 'Lernunterstützung',
@@ -50,6 +51,7 @@ const matching = {
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
             noMatches: 'Du hast (noch) keine Lernpartner:in.',
+            noDissolvedMatches: 'Du hast keine aufgelösten Zuordnungen.',
             noRequestsTutee:
                 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
             noRequestsTutor:
