@@ -34,7 +34,6 @@ const query = gql(`
                         name
                     }
                     pupil {
-                        isPupil
                         firstname
                         lastname
                         schooltype
