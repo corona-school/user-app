@@ -65,7 +65,14 @@ const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
                         {t('course.CourseDate.form.courseCategory')}
                     </FormControl.Label>
 
-                    <Select selectedValue={category} placeholder={t('course.CourseDate.form.categoryPlaceholder')} onValueChange={(e) => setCategory(e)}>
+                    <Select
+                        selectedValue={category}
+                        placeholder={t('course.CourseDate.form.categoryPlaceholder')}
+                        onValueChange={(e) => {
+                            setCategory(e);
+                            setCourseTags([]);
+                        }}
+                    >
                         <Select.Item value={Course_Category_Enum.Revision} label={t('course.CourseDate.form.revision')} />
                         <Select.Item value={Course_Category_Enum.Language} label={t('course.CourseDate.form.language')} />
                         <Select.Item value={Course_Category_Enum.Focus} label={t('course.CourseDate.form.focus')} />
