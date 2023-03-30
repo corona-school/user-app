@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Flex, Heading, Modal, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -9,9 +9,9 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
+import { gql } from '../../gql/gql';
 import { Match } from '../../gql/graphql';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
-import { LFMatch } from '../../types/lernfair/Match';
+
 import AlertMessage from '../../widgets/AlertMessage';
 import Hello from '../../widgets/Hello';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
@@ -23,7 +23,6 @@ const query = gql(`
         me {
             student {
                 id
-                
                 subjectsFormatted {
                     name
                 }
@@ -58,11 +57,7 @@ const MatchingStudent: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const toast = useToast();
-
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [focusedMatch, setFocusedMatch] = useState<LFMatch>();
     const [showCancelModal, setShowCancelModal] = useState<boolean>();
-    const [toastShown, setToastShown] = useState<boolean>();
 
     const { data, loading } = useQuery(query);
 
@@ -75,47 +70,14 @@ const MatchingStudent: React.FC<Props> = () => {
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
-    const [dissolveMatch, { data: dissolveData }] = useMutation(
-        gql`
-            mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
-            }
-        `,
-        { refetchQueries: [{ query }] }
-    );
 
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql`
+        gql(`
             mutation StudentDeleteMatchRequest {
                 studentDeleteMatchRequest
             }
-        `,
+        `),
         { refetchQueries: [{ query }] }
-    );
-
-    const showDissolveMatchModal = useCallback((match: LFMatch) => {
-        setFocusedMatch(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    const dissolve = useCallback(
-        async (reason: string) => {
-            setShowDissolveModal(false);
-            trackEvent({
-                category: 'matching',
-                action: 'click-event',
-                name: 'Helfer Matching lösen',
-                documentTitle: 'Helfer Matching',
-            });
-            return await dissolveMatch({
-                variables: {
-                    matchId: focusedMatch?.id,
-                    dissolveReason: parseInt(reason),
-                },
-            });
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dissolveMatch, focusedMatch?.id]
     );
 
     const showCancelMatchRequestModal = useCallback(() => {
@@ -141,19 +103,12 @@ const MatchingStudent: React.FC<Props> = () => {
     }, [data?.me?.student?.id]);
 
     const activeMatches = useMemo(() => {
-        return data?.me?.student?.matches.filter((match: Match) => match.dissolved === false);
+        return data?.me?.student?.matches.filter((match) => match.dissolved === false);
     }, [data?.me?.student?.matches]);
 
     const inactiveMatches = useMemo(() => {
-        return data?.me?.student?.matches.filter((match: Match) => match.dissolved === true);
+        return data?.me?.student?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.student?.matches]);
-
-    useEffect(() => {
-        if (dissolveData?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
-        }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
 
     const { trackPageView, trackEvent } = useMatomo();
 
@@ -190,13 +145,7 @@ const MatchingStudent: React.FC<Props> = () => {
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
-                                    content: (
-                                        <Matches
-                                            activeMatches={activeMatches}
-                                            inactiveMatches={inactiveMatches}
-                                            showDissolveMatchModal={showDissolveMatchModal}
-                                        />
-                                    ),
+                                    content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
                                 },
                                 {
                                     title: t('matching.request.check.tabs.tab2'),
@@ -210,7 +159,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                 cancelLoading={cancelLoading}
                                                                 index={i}
                                                                 showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                                subjects={data?.me?.student?.subjectsFormatted}
+                                                                subjects={data?.me?.student?.subjectsFormatted || []}
                                                                 onEditRequest={() =>
                                                                     navigate('/request-match', {
                                                                         state: { edit: true },
@@ -228,14 +177,6 @@ const MatchingStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-
-            <DissolveMatchModal
-                showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: string) => {
-                    return await dissolve(reason);
-                }}
-                onPressBack={() => setShowDissolveModal(false)}
-            />
             <Modal isOpen={showCancelModal}>
                 <Modal.Content>
                     <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>

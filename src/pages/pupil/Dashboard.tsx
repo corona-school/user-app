@@ -386,6 +386,7 @@ const Dashboard: React.FC<Props> = () => {
                                             {activeMatches!.map((match) => (
                                                 <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
                                                     <LearningPartner
+                                                        matchId={match.id}
                                                         name={`${match?.student?.firstname} ${match?.student?.lastname}`}
                                                         subjects={match?.subjectsFormatted}
                                                     />
