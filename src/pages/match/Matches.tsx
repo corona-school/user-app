@@ -48,8 +48,6 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
                         subjects={match?.subjectsFormatted}
                         schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
                         grade={match?.pupil?.grade ? match?.pupil?.grade : ''}
-                        isStudent={!!match?.student?.isStudent}
-                        isPupil={!!match?.pupil?.isPupil}
                         isDissolved={match?.dissolved}
                     />
                 </Box>

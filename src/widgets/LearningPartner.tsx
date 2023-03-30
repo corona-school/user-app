@@ -7,6 +7,7 @@ import { Pupil_Schooltype_Enum, Subject } from '../gql/graphql';
 import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_56.svg';
 import { useNavigate } from 'react-router-dom';
+import { useUserType } from '../hooks/useApollo';
 
 type LearningPartnerProps = {
     matchId: number;
@@ -15,14 +16,13 @@ type LearningPartnerProps = {
     schooltype?: Pupil_Schooltype_Enum | undefined;
     schoolclass?: number;
     grade?: string;
-    isStudent?: boolean;
-    isPupil?: boolean;
     isDissolved?: boolean;
 };
 
-const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, schoolclass, grade, isStudent, isDissolved }) => {
+const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, schoolclass, grade, isDissolved }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
+    const userType = useUserType();
     const navigate = useNavigate();
 
     const containerWidth = useBreakpointValue({
@@ -55,7 +55,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
                             borderTopLeftRadius="15px"
                             borderBottomLeftRadius="15px"
                         >
-                            {isStudent ? <StudentAvatar /> : <PupilAvatar />}
+                            {userType === 'pupil' ? <StudentAvatar /> : <PupilAvatar />}
                         </Center>
                     </Box>
                     <VStack space="1" my="2" maxW="300">
