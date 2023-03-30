@@ -8,16 +8,23 @@ import isEmail from 'validator/lib/isEmail';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql/gql';
+import { useUserAuth } from '../hooks/useApollo';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
     const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
     const [showEmailSent, setShowEmailSent] = useState<boolean>();
-
-    const retainPath = '/start';
+    const { userId } = useUserAuth();
 
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+
+    const [changeEmail] = useMutation(
+        gql(`
+        mutation changeEmail($email: String!, $userId: String!) {
+            meEmailChange(email: $email, userId: $userId) 
+        }`)
+    );
     const ContainerWidth = useBreakpointValue({
         base: '90%',
         lg: sizes['formsWidth'],
@@ -28,28 +35,6 @@ const ChangeEmail = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const [sendToken, _sendToken] = useMutation(
-        gql(`
-        mutation Authenticate($email: String!, $redirectTo: String!) {
-            tokenRequest(email: $email, action: "user-authenticate", redirectTo: $redirectTo)
-        }
-    `)
-    );
-
-    const requestToken = useCallback(async () => {
-        const res = await sendToken({
-            variables: {
-                email: newEmail!,
-                redirectTo: retainPath,
-            },
-        });
-        if (res.data!.tokenRequest) {
-            setShowEmailSent(true);
-        } else if (res.errors) {
-            setShowEmailSent(false);
-        }
-    }, [newEmail, sendToken]);
-
     const handleKeyPress = useCallback(() => {
         if (!newEmail || !isEmail(newEmail)) {
             setIsValidEmail(false);
@@ -58,18 +43,19 @@ const ChangeEmail = () => {
         setIsValidEmail(true);
     }, [newEmail]);
 
-    const sendVerificationEmail = useCallback(() => {
-        console.log('verify email');
-        requestToken();
-        setShowEmailSent(true);
-    }, []);
+    const resetEmail = useCallback(async () => {
+        if (newEmail && userId) {
+            const res = await changeEmail({ variables: { email: newEmail, userId: userId } });
+            if (res) setShowEmailSent(true);
+        }
+    }, [changeEmail, newEmail, userId]);
 
     return (
         <WithNavigation showBack hideMenu>
             <Flex overflowY="auto" height="100vh">
                 <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                     <Logo />
-                    <Heading mt={space['1']}>E-Mail neu setzen</Heading>
+                    <Heading mt={space['1']}>{t('login.setNewEmail')}</Heading>
                 </Box>
                 <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
                     <Row marginBottom={3}>
@@ -88,8 +74,8 @@ const ChangeEmail = () => {
                     </Row>
                     {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
                     <Row justifyContent="center">
-                        <Button width={buttonWidth} isDisabled={!isValidEmail} onPress={sendVerificationEmail}>
-                            E-Mail ändern
+                        <Button width={buttonWidth} isDisabled={!isValidEmail} onPress={resetEmail}>
+                            {t('login.changeEmail')}
                         </Button>
                     </Row>
                 </VStack>
