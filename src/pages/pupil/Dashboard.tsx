@@ -8,9 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
+import { LFLecture } from '../../types/lernfair/Course';
 
-import { LFMatch } from '../../types/lernfair/Match';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -387,19 +386,9 @@ const Dashboard: React.FC<Props> = () => {
                                             {activeMatches!.map((match) => (
                                                 <Box width={CardGrid} marginRight="10px" marginBottom="10px" key={match.id}>
                                                     <LearningPartner
-                                                        isDark={true}
+                                                        matchId={match.id}
                                                         name={`${match?.student?.firstname} ${match?.student?.lastname}`}
                                                         subjects={match?.subjectsFormatted}
-                                                        status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                        button={
-                                                            (!match.dissolved && (
-                                                                <Button variant="outlinelight" onPress={() => dissolveMatch(match)}>
-                                                                    {t('dashboard.helpers.buttons.solveMatch')}
-                                                                </Button>
-                                                            )) || <AlertMessage content={t('matching.request.check.resolveMatch')} />
-                                                        }
-                                                        contactMail={match?.studentEmail}
-                                                        meetingId={match?.uuid}
                                                     />
                                                 </Box>
                                             ))}

@@ -11,6 +11,13 @@ const matching = {
         inactive: 'inaktiv',
         activeMatches: 'Aktive Zuordnungen',
         inactiveMatches: 'Aufgelöste Zuordnungen',
+        schoolGrade: '{{schooltype}} • {{grade}} ',
+        showMore: 'Mehr anzeigen',
+        showLess: 'Weniger anzeigen',
+        contactViaChat: 'Per Chat kontaktieren',
+        directCall: 'Sofortbesprechung starten',
+        dissolveMatch: 'Lernpaar auflösen',
+        dissolved: 'Das Match wurde aufgelöst.',
     },
     blocker: {
         header: 'Lernunterstützung',
@@ -50,6 +57,9 @@ const matching = {
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
             noMatches: 'Du hast (noch) keine Lernpartner:in.',
+            noDissolvedMatches: 'Du hast keine aufgelösten Zuordnungen.',
+            editRequestDescription:
+                ' Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.',
             noRequestsTutee:
                 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
             noRequestsTutor:
