@@ -52,6 +52,7 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import LeftChat from './pages/chat/LeftChat';
 
 export default function NavigatorLazy() {
     return (
@@ -255,6 +256,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Appointments />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/left-chat"
+                element={
+                    <RequireAuth>
+                        <LeftChat />
                     </RequireAuth>
                 }
             />
