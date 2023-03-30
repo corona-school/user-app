@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Text, useTheme, useToast } from 'native-base';
+import { Button, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../components/Tabs';
@@ -9,8 +9,8 @@ import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
-import { Pupil_Schooltype_Enum, Pupil_State_Enum, Student_State_Enum } from '../gql/graphql';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Pupil, Student } from '../gql/graphql';
+import { useCallback, useEffect, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -98,15 +98,6 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
-    const federalState = useMemo(() => {
-        if (userType === 'student') return data?.match?.student?.state !== Student_State_Enum.Other ? data?.match?.student?.state : '';
-        return data?.match?.pupil?.state !== Pupil_State_Enum.Other ? data?.match?.pupil?.state : '';
-    }, [data?.match?.pupil?.state, data?.match?.student?.state, userType]);
-
-    const schooltype = useMemo(() => {
-        return data?.match?.pupil?.schooltype !== Pupil_Schooltype_Enum.Other ? data?.match?.pupil?.schooltype : '';
-    }, [data?.match?.pupil?.schooltype]);
-
     // TODO integrate appointments
     // const tabs: Tab[] = [
     //     {
@@ -117,30 +108,15 @@ const SingleMatch = () => {
 
     return (
         <WithNavigation headerTitle={''} showBack headerLeft={<NotificationAlert />}>
-            {loading ? (
+            {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
-                !error &&
-                !loading && (
+                !error && (
                     <Stack space={space['1']} paddingX={space['1.5']}>
                         {userType === 'student' ? (
-                            <MatchPartner
-                                name={`${data?.match?.pupil?.firstname} ${data?.match?.pupil?.lastname}` || ''}
-                                schooltype={schooltype || ''}
-                                grade={data?.match?.pupil?.grade || ''}
-                                federalState={federalState || ''}
-                                subjects={data?.match?.pupil?.subjectsFormatted || []}
-                                aboutMe={data?.match?.pupil?.aboutMe || ''}
-                                isPupil={true}
-                            />
+                            <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
                         ) : (
-                            <MatchPartner
-                                name={`${data?.match?.student?.firstname} ${data?.match?.student?.lastname}` || ''}
-                                federalState={federalState || ''}
-                                subjects={data?.match?.student?.subjectsFormatted || []}
-                                aboutMe={data?.match?.student?.aboutMe || ''}
-                                isPupil={false}
-                            />
+                            <MatchPartner partner={(data?.match?.student as Student) || {}} />
                         )}
 
                         {data?.match?.dissolved && (

@@ -4,47 +4,51 @@ import { useTranslation } from 'react-i18next';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil_120.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student_120.svg';
 import Tag from '../../components/Tag';
-import { Subject } from '../../gql/graphql';
+import { Pupil, Pupil_Schooltype_Enum, Student, Student_State_Enum } from '../../gql/graphql';
 
 type MatchPartnerProps = {
-    name: string;
-    schooltype?: string;
-    grade?: string;
-    federalState: string;
-    subjects: Subject[];
-    aboutMe: string;
-    isPupil: boolean;
+    partner: Pupil | Student;
+    isPupil?: boolean;
 };
-const MatchPartner: React.FC<MatchPartnerProps> = ({ name, schooltype, grade, federalState, subjects, aboutMe, isPupil }) => {
+const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false }) => {
     const [showMore, setShowMore] = useState<boolean>(false);
     const { space } = useTheme();
     const { t } = useTranslation();
 
+    const state = useMemo(() => {
+        return partner.state !== Student_State_Enum.Other ? partner.state : undefined;
+    }, [partner.state]);
+
+    const school = useMemo(() => {
+        if ('schooltype' in partner) return partner.schooltype !== Pupil_Schooltype_Enum.Other && partner.schooltype;
+        return undefined;
+    }, [partner]);
+
     const matchPartnerInfos = useMemo(() => {
         let strings: string[] = [];
-        schooltype && strings.push(schooltype);
-        grade && strings.push(grade);
-        federalState && strings.push(federalState);
+        school && strings.push(school);
+        if ('grade' in partner && partner.grade) strings.push(partner.grade);
+        state && strings.push(state);
         return strings.join(' • ');
-    }, [federalState, grade, schooltype]);
+    }, [partner, school, state]);
 
     return (
         <Stack space={space['1']} justifyContent="center" alignItems="center">
             {isPupil ? <PupilAvatar /> : <StudentAvatar />}
-            <Heading>{name}</Heading>
+            <Heading>{`${partner.firstname} ${partner.lastname}`}</Heading>
             <Text>{matchPartnerInfos}</Text>
             <HStack space={space['1']}>
-                {subjects.map((subject) => (
+                {partner.subjectsFormatted.map((subject) => (
                     <Tag text={subject.name} />
                 ))}
             </HStack>
             <Box maxW="500">
                 <VStack>
                     <Text ellipsizeMode="tail" italic numberOfLines={showMore ? 50 : 2} textAlign="center">
-                        {aboutMe}
+                        {partner.aboutMe}
                     </Text>
                 </VStack>
-                {aboutMe.length > 500 &&
+                {partner.aboutMe.length > 500 &&
                     (!showMore ? (
                         <Button variant="link" onPress={() => setShowMore(true)} bold>
                             {t('matching.shared.showMore')}
