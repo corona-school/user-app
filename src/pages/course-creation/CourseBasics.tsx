@@ -1,6 +1,7 @@
 import { Box, FormControl, Heading, Input, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useState, useContext, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Unsplash from '../../modals/Unsplash';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import ImageWidget from './ImageWidget';
@@ -9,18 +10,18 @@ import ResizableTextArea from './ResizableTextArea';
 const MAX_LENGTH_TITLE = 50;
 
 type BasicProps = {
-    onShowUnsplash: () => void;
     onCancel: () => void;
     onNext: () => void;
 };
 
-const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }) => {
+const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto } = useContext(CreateCourseContext);
 
     const [name, setName] = useState<string>(courseName || '');
     const [courseDescription, setCourseDescription] = useState<string>(description || '');
+    const [showUnsplashModal, setShowUnsplashModal] = useState<boolean>(false);
 
     const ContentContainerWidth = useBreakpointValue({
         base: '100%',
@@ -32,6 +33,11 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
         if (!courseDescription || courseDescription.length < 5) return false;
         return true;
     }, [name, courseDescription]);
+
+    const pickPhoto = (photoUrl: string) => {
+        setPickedPhoto && setPickedPhoto(photoUrl);
+        setShowUnsplashModal(false);
+    };
 
     const deletePhoto = () => {
         if (pickedPhoto) {
@@ -61,7 +67,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
             <FormControl marginBottom={space['0.5']}>
                 <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.coursePhotoLabel')}</FormControl.Label>
                 <Box paddingY={space['1']}>
-                    <ImageWidget photo={pickedPhoto} onShowUnsplash={onShowUnsplash} onDeletePhoto={deletePhoto} />
+                    <ImageWidget photo={pickedPhoto} onShowUnsplash={() => setShowUnsplashModal(true)} onDeletePhoto={deletePhoto} />
                 </Box>
             </FormControl>
             <FormControl marginBottom={space['0.5']}>
@@ -75,6 +81,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onShowUnsplash, onCancel, onNext }
                 />
             </FormControl>
             <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onCancel={onCancel} />
+            <Unsplash showUnsplashModal={showUnsplashModal} onPhotoSelected={pickPhoto} onClose={() => setShowUnsplashModal(false)} />
         </VStack>
     );
 };

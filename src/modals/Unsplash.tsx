@@ -1,115 +1,156 @@
-import { View, Text, VStack, Button, Image, Box, Flex, useTheme, Heading, Row, ArrowBackIcon, Column, AspectRatio } from 'native-base';
-import { useCallback, useState } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { HStack, Pressable, View, Text, VStack, Button, Image, Box, Flex, useTheme, Row, Modal, Stack, useBreakpointValue } from 'native-base';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
+import UnsplashPagination from '../components/UnsplashPagination';
 
 type Props = {
-    onPhotoSelected: (photo: string) => any;
-    onClose: () => any;
+    showUnsplashModal: boolean;
+    onPhotoSelected: (photoUrl: string) => void;
+    onClose: () => void;
 };
 
-const Unsplash: React.FC<Props> = ({ onPhotoSelected, onClose }) => {
-    const { space } = useTheme();
-
-    const [isLoading, setIsLoading] = useState<boolean>();
+const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose }) => {
     const [photos, setPhotos] = useState([]);
     const [selectedPhoto, setSelectedPhoto] = useState<string>('');
     const [pageIndex, setPageIndex] = useState<number>(1);
     const [lastSearch, setLastSearch] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>();
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const { space } = useTheme();
+    const { t } = useTranslation();
+
+    const modalMinWidth = useBreakpointValue({
+        base: 320,
+        lg: 700,
+    });
+
+    const imageSize = useBreakpointValue({
+        base: 100,
+        lg: 175,
+    });
+
+    const containerMaxHeight = useBreakpointValue({
+        base: 300,
+        lg: 600,
+    });
+    const loadPhotos = useCallback(async () => {
+        try {
+            const data = await fetch(
+                `https://api.unsplash.com/search/photos?query=${lastSearch.length > 0 ? lastSearch : 'Schule'}&page=${pageIndex}&per_page=9`,
+                {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`,
+                    },
+                }
+            );
+            const res = await data.json();
+            setTotalPages(res.total_pages);
+            setPhotos(res.results);
+        } catch (e) {
+            setIsLoading(false);
+            console.error(e);
+        }
+    }, [lastSearch, pageIndex]);
 
     const search = useCallback(async () => {
         setIsLoading(true);
-
-        const data = await fetch(`https://api.unsplash.com/search/photos?query=${lastSearch}&page=${pageIndex}&per_page=20`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`,
-            },
-        });
-        const res = await data.json();
-        setPhotos(res.results);
+        await loadPhotos();
         setIsLoading(false);
-    }, [lastSearch, pageIndex]);
+    }, [loadPhotos]);
 
     const pickPhoto = useCallback(() => {
-        onPhotoSelected && onPhotoSelected(selectedPhoto);
+        onPhotoSelected(selectedPhoto);
         setSelectedPhoto('');
     }, [onPhotoSelected, selectedPhoto]);
 
-    if (isLoading) return <CenterLoadingSpinner />;
+    const closeModal = () => {
+        onClose();
+        setLastSearch('');
+    };
+
+    useEffect(() => {
+        loadPhotos();
+    }, [loadPhotos]);
 
     return (
-        <VStack flex="1" overflowY="scroll" h="100%">
-            <Row w="100%" paddingX={space['1']} paddingY={space['0.5']}>
-                <Button padding={space['1']} onPress={onClose}>
-                    <ArrowBackIcon />
-                </Button>
-                <SearchBar onSearch={(s) => search()} onChangeText={setLastSearch} value={lastSearch} />
-            </Row>
-            <View overflowY={'scroll'} flex="1">
-                {(photos.length > 0 && (
-                    <VStack pb={'72px'} marginX={space['1']}>
-                        <Heading>Seite {pageIndex}</Heading>
-                        <Row flex="1" flexWrap={'wrap'} marginX={-space['0.5']}>
-                            {photos?.map((photo: any) => (
-                                <TouchableWithoutFeedback
-                                    onPress={() => (selectedPhoto === photo.urls.regular ? setSelectedPhoto('') : setSelectedPhoto(photo.urls.regular))}
-                                >
-                                    <Column flex={{ base: '50%', lg: '25%' }} padding={space['0.5']}>
-                                        <AspectRatio ratio={16 / 9} w="100%">
-                                            <>
-                                                <Image src={photo.urls.small} height="100%" />
-                                                {selectedPhoto === photo.urls.regular && (
-                                                    <Box position={'absolute'} w="100%" h="100%" bgColor="primary.900" opacity={0.8}></Box>
-                                                )}
-                                            </>
-                                        </AspectRatio>
-                                    </Column>
-                                </TouchableWithoutFeedback>
-                            ))}
+        <Modal isOpen={showUnsplashModal} onClose={() => closeModal()}>
+            <Modal.Content minW={modalMinWidth}>
+                <Modal.Header>{t('course.unsplash.heading')}</Modal.Header>
+                <Modal.CloseButton />
+                <Modal.Body>
+                    <Stack space={space['1']}>
+                        <Text>{t('course.unsplash.description')}</Text>
+                        <Row>
+                            <SearchBar
+                                placeholder={t('course.unsplash.placeholder')}
+                                onSearch={() => {
+                                    setPageIndex(1);
+                                    search();
+                                }}
+                                onChangeText={setLastSearch}
+                                value={lastSearch}
+                            />
                         </Row>
+                        {isLoading && <CenterLoadingSpinner />}
+                        {!isLoading && (
+                            <View flex="1" overflowY="scroll">
+                                {photos.length > 0 ? (
+                                    <VStack justifyContent="space-between" maxW="800" maxH={containerMaxHeight}>
+                                        <HStack flex="1" flexWrap="wrap" justifyContent="center">
+                                            {photos.map((photo: any) => {
+                                                return (
+                                                    <VStack padding="1">
+                                                        <Pressable
+                                                            onPress={() =>
+                                                                selectedPhoto === photo.urls.regular
+                                                                    ? setSelectedPhoto('')
+                                                                    : setSelectedPhoto(photo.urls.regular)
+                                                            }
+                                                        >
+                                                            <Image
+                                                                size={imageSize}
+                                                                padding="2"
+                                                                borderColor="primary.500"
+                                                                borderWidth={selectedPhoto === photo.urls.regular ? '3' : '0'}
+                                                                src={photo.urls.small}
+                                                                alt={photo.alt_description}
+                                                            />
+                                                        </Pressable>
+                                                    </VStack>
+                                                );
+                                            })}
+                                        </HStack>
+                                    </VStack>
+                                ) : (
+                                    <Flex flex="1" justifyContent="center" alignItems="center" minH="400">
+                                        <Text>{t('course.unsplash.noSearchoResults')}</Text>
+                                    </Flex>
+                                )}
+                            </View>
+                        )}
 
-                        <Pagination
+                        <UnsplashPagination
                             currentIndex={pageIndex}
-                            onPrev={() => {
-                                setPageIndex((prev) => prev - 1);
-                                search();
-                            }}
-                            onNext={() => {
-                                setPageIndex((prev) => prev + 1);
-                                search();
-                            }}
-                            onSelectIndex={(index) => {
+                            totalPagesCount={totalPages}
+                            onPageChange={(index) => {
                                 setPageIndex(index);
                                 search();
                             }}
                         />
-                    </VStack>
-                )) || (
-                    <Flex flex="1" justifyContent="center" alignItems="center">
-                        <Text>Keine Suchergebnisse.</Text>
-                    </Flex>
-                )}
-                {selectedPhoto && (
-                    <Box
-                        bgColor="primary.900"
-                        w="100%"
-                        h="64px"
-                        position={'fixed'}
-                        bottom="0"
-                        alignItems={'flex-end'}
-                        justifyContent={'center'}
-                        paddingRight={space['0.5']}
-                    >
+                    </Stack>
+                </Modal.Body>
+                <Modal.Footer bgColor="primary.900">
+                    <Box alignItems="flex-end" justifyContent="center" paddingRight={space['0.5']}>
                         <Button onPress={pickPhoto} isDisabled={!selectedPhoto}>
-                            Wählen
+                            {t('course.unsplash.choose')}
                         </Button>
                     </Box>
-                )}
-            </View>
-        </VStack>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
     );
 };
 export default Unsplash;
