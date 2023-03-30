@@ -1,6 +1,6 @@
-import { DocumentNode, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Flex, Modal, Row, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ import MatchingOnboarding from './MatchingOnboarding';
 
 type Props = {};
 
-const query: DocumentNode = gql(`
+const query = gql(`
     query PupilMatching {
         me {
             pupil {
@@ -36,12 +36,10 @@ const query: DocumentNode = gql(`
                         name
                     }
                     pupil {
-                        isPupil
                         schooltype
                         grade
                     }
                     student {
-                        isStudent
                         firstname
                         lastname
                     }
@@ -144,11 +142,11 @@ const Matching: React.FC<Props> = () => {
     }, [data?.me?.pupil?.id]);
 
     const activeMatches = useMemo(() => {
-        return data?.me?.pupil?.matches.filter((match: Match) => match.dissolved === false);
+        return data?.me?.pupil?.matches.filter((match) => match.dissolved === false);
     }, [data?.me?.pupil?.matches]);
 
     const inactiveMatches = useMemo(() => {
-        return data?.me?.pupil?.matches.filter((match: Match) => match.dissolved === true);
+        return data?.me?.pupil?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
     useEffect(() => {
@@ -170,8 +168,8 @@ const Matching: React.FC<Props> = () => {
                                     title: t('matching.request.check.tabs.tab1'),
                                     content: (
                                         <Matches
-                                            activeMatches={activeMatches}
-                                            inactiveMatches={inactiveMatches}
+                                            activeMatches={activeMatches as Match[]}
+                                            inactiveMatches={inactiveMatches as Match[]}
                                             showDissolveMatchModal={showDissolveMatchModal}
                                         />
                                     ),
@@ -191,7 +189,7 @@ const Matching: React.FC<Props> = () => {
                                                                     index={i}
                                                                     key={i}
                                                                     showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                                    subjects={data?.me?.pupil?.subjectsFormatted}
+                                                                    subjects={data?.me?.pupil?.subjectsFormatted || []}
                                                                     onEditRequest={() => setShowEditModal(true)}
                                                                 />
                                                             ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
