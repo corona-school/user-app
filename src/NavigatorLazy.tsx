@@ -52,6 +52,7 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import ChangeEmail from './pages/ChangeEmail';
 
 export default function NavigatorLazy() {
     return (
@@ -278,6 +279,7 @@ export default function NavigatorLazy() {
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+            <Route path="/new-email" element={<ChangeEmail />} />
             <Route
                 path="/new-password"
                 element={
