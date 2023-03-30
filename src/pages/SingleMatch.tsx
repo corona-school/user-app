@@ -131,13 +131,13 @@ const SingleMatch = () => {
                         )}
 
                         <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                            <Button isDisabled>{t('matching.shared.contactViaChat')}</Button>
-                            <Button isDisabled variant="outline">
-                                {t('matching.shared.directCall')}
-                            </Button>
-                            <Button isDisabled={data?.match?.dissolved} variant="outline" onPress={() => setShowDissolveModal(true)}>
-                                {t('matching.shared.dissolveMatch')}
-                            </Button>
+                            <Button>{t('matching.shared.contactViaChat')}</Button>
+                            <Button variant="outline">{t('matching.shared.directCall')}</Button>
+                            {!data?.match?.dissolved && (
+                                <Button variant="outline" onPress={() => setShowDissolveModal(true)}>
+                                    {t('matching.shared.dissolveMatch')}
+                                </Button>
+                            )}
                         </Stack>
 
                         {/* <Tabs tabs={tabs} /> */}
