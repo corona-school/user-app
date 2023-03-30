@@ -168,7 +168,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.CloseButton />
                             <Modal.Header>{t('matching.request.check.editRequest')}</Modal.Header>
                             <Modal.Body>
-                                <Text>{t('matching.request.check.editRequestDescrption')}</Text>
+                                <Text>{t('matching.request.check.editRequestDescription')}</Text>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Row>

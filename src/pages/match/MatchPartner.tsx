@@ -26,9 +26,9 @@ const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false })
 
     const matchPartnerInfos = useMemo(() => {
         let strings: string[] = [];
-        school && strings.push(school);
+        if (school) strings.push(school);
         if ('grade' in partner && partner.grade) strings.push(partner.grade);
-        state && strings.push(state);
+        if (state) strings.push(state);
         return strings.join(' • ');
     }, [partner, school, state]);
 
