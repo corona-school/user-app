@@ -86,7 +86,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                             />
                         )}
 
-                    {isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
+                    {!subcourse?.cancelled && isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>

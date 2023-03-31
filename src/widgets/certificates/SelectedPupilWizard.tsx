@@ -85,7 +85,7 @@ const SelectedPupilWizard = ({
 
                 <VStack space={space['0.5']}>
                     <Text bold>Zeit</Text>
-                    {((hoursPerWeek && isNaN(parseInt(hoursPerWeek))) || (hoursTotal && isNaN(parseInt(hoursTotal)))) && (
+                    {((hoursPerWeek && isNaN(parseInt(hoursPerWeek, 10))) || (hoursTotal && isNaN(parseInt(hoursTotal, 10)))) && (
                         <Text color="danger.700">Du musst hier ganze Zahlen eingeben.</Text>
                     )}
                     <Row alignItems="center">
@@ -123,16 +123,16 @@ const SelectedPupilWizard = ({
                         !hoursPerWeek ||
                         !hoursTotal ||
                         !subjects.length ||
-                        isNaN(parseInt(hoursPerWeek)) ||
-                        isNaN(parseInt(hoursTotal))
+                        isNaN(parseInt(hoursPerWeek, 10)) ||
+                        isNaN(parseInt(hoursTotal, 10))
                     }
                     onPress={() => {
                         const request = {
                             startDate,
                             endDate,
                             ongoingLessons,
-                            hoursPerWeek: +hoursPerWeek,
-                            hoursTotal: +hoursTotal,
+                            hoursPerWeek: parseInt(hoursPerWeek, 10),
+                            hoursTotal: parseInt(hoursTotal, 10),
                             subjects: subjects.join(', '),
                         };
 
