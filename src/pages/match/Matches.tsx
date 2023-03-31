@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Button, Flex, Heading, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Match, Pupil_Schooltype_Enum } from '../../gql/graphql';
@@ -11,9 +11,10 @@ import LearningPartner from '../../widgets/LearningPartner';
 type MatchesProps = {
     activeMatches: Match[];
     inactiveMatches: Match[];
+    showDissolveMatchModal: (match: Match) => void;
 };
 
-const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => {
+const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches, showDissolveMatchModal }) => {
     const { t } = useTranslation();
     const userType = useUserType();
     const { isMobile } = useLayoutHelper();
@@ -49,6 +50,15 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
                         schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
                         grade={match?.pupil?.grade ? match?.pupil?.grade : ''}
                         isDissolved={match?.dissolved}
+                        button={
+                            !match.dissolved && (
+                                <Button variant="outline" onPress={() => showDissolveMatchModal(match)}>
+                                    {t('dashboard.helpers.buttons.solveMatch')}
+                                </Button>
+                            )
+                        }
+                        contactMail={userType === 'student' ? match?.pupilEmail : match?.studentEmail}
+                        meetingId={match?.uuid}
                     />
                 </Box>
             );

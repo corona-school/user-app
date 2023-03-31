@@ -1,4 +1,4 @@
-import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack, Row } from 'native-base';
+import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack, Row, Column, Button, Spacer } from 'native-base';
 
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
@@ -8,6 +8,7 @@ import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_56.svg';
 import { useNavigate } from 'react-router-dom';
 import { useUserType } from '../hooks/useApollo';
+import { ReactNode } from 'react';
 
 type LearningPartnerProps = {
     matchId: number;
@@ -17,9 +18,23 @@ type LearningPartnerProps = {
     schoolclass?: number;
     grade?: string;
     isDissolved?: boolean;
+    button?: ReactNode;
+    contactMail?: string;
+    meetingId?: string;
 };
 
-const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, schoolclass, grade, isDissolved }) => {
+const LearningPartner: React.FC<LearningPartnerProps> = ({
+    matchId,
+    name,
+    subjects,
+    schooltype,
+    schoolclass,
+    grade,
+    isDissolved,
+    button,
+    contactMail,
+    meetingId,
+}) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const userType = useUserType();
@@ -71,6 +86,25 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
                             ))}
                         </HStack>
                     </VStack>
+
+                    {button && (
+                        <>
+                            <Spacer />
+                            <Column space={space['0.5']} mr="3" p="1">
+                                {meetingId && (
+                                    <Button variant="outline" onPress={() => window.open(`https://meet.jit.si/CoronaSchool-${meetingId}`, '_blank')}>
+                                        {t('matching.shared.videochat')}
+                                    </Button>
+                                )}
+                                {contactMail && (
+                                    <Button variant="outline" onPress={() => (window.location.href = `mailto:${contactMail}`)}>
+                                        {t('matching.shared.contact')}
+                                    </Button>
+                                )}
+                                {button}
+                            </Column>
+                        </>
+                    )}
                 </HStack>
             </Pressable>
         </HStack>
