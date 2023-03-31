@@ -8,21 +8,21 @@ import isEmail from 'validator/lib/isEmail';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql/gql';
-import { useUserAuth } from '../hooks/useApollo';
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
-    const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+    const [isInvalidEmail, setIsInvalidEmail] = useState<boolean>(false);
+    const [canCreate, setCanCreate] = useState<boolean>(false);
     const [showEmailSent, setShowEmailSent] = useState<boolean>();
-    const { userId } = useUserAuth();
 
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
 
     const [changeEmail] = useMutation(
         gql(`
-        mutation changeEmail($email: String!, $userId: String!) {
-            meEmailChange(email: $email, userId: $userId) 
+        mutation changeEmail($email: String!) {
+            meEmailChange(email: $email) 
         }`)
     );
     const ContainerWidth = useBreakpointValue({
@@ -35,20 +35,29 @@ const ChangeEmail = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const handleKeyPress = useCallback(() => {
-        if (!newEmail || !isEmail(newEmail)) {
-            setIsValidEmail(false);
-            return;
-        }
-        setIsValidEmail(true);
-    }, [newEmail]);
+    const handleKeyPress = useCallback(
+        (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+            if (e.nativeEvent.key === 'Enter') {
+                if (!newEmail || !isEmail(newEmail)) {
+                    console.log('email is invalid');
+                    setIsInvalidEmail(true);
+                    setCanCreate(false);
+                    return;
+                }
+                console.log('email is valid');
+                setCanCreate(true);
+                setIsInvalidEmail(false);
+            }
+        },
+        [newEmail]
+    );
 
     const resetEmail = useCallback(async () => {
-        if (newEmail && userId) {
-            const res = await changeEmail({ variables: { email: newEmail, userId: userId } });
+        if (newEmail) {
+            const res = await changeEmail({ variables: { email: newEmail } });
             if (res) setShowEmailSent(true);
         }
-    }, [changeEmail, newEmail, userId]);
+    }, [changeEmail, newEmail]);
 
     return (
         <WithNavigation showBack hideMenu>
@@ -59,7 +68,7 @@ const ChangeEmail = () => {
                 </Box>
                 <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
                     <Row marginBottom={3}>
-                        <FormControl isInvalid={!isValidEmail}>
+                        <FormControl isInvalid={isInvalidEmail}>
                             <TextInput
                                 width="100%"
                                 isRequired={true}
@@ -67,14 +76,14 @@ const ChangeEmail = () => {
                                 placeholder={'Neue E-Mail'}
                                 onChangeText={setNewEmail}
                                 onKeyPress={handleKeyPress}
-                                isInvalid={!isValidEmail}
+                                isInvalid={isInvalidEmail}
                             />
                             <FormControl.ErrorMessage>{t('login.invalidMailMessage')}</FormControl.ErrorMessage>
                         </FormControl>
                     </Row>
                     {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
                     <Row justifyContent="center">
-                        <Button width={buttonWidth} isDisabled={!isValidEmail} onPress={resetEmail}>
+                        <Button width={buttonWidth} isDisabled={!canCreate} onPress={resetEmail}>
                             {t('login.changeEmail')}
                         </Button>
                     </Row>
