@@ -127,7 +127,7 @@ const SingleMatch = () => {
                                 <AlertMessage
                                     content={
                                         'Match wurde aufgelöst: ' +
-                                        t(`matching.dissolveReasons.${userType}.${data?.match?.dissolveReason}` as unknown as TemplateStringsArray)
+                                        t(`matching.dissolveReasons.${userType}.${data?.match?.dissolveReason ?? 8}` as unknown as TemplateStringsArray)
                                     }
                                 />
                             </Stack>
