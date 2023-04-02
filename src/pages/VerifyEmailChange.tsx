@@ -10,7 +10,6 @@ const VerifyEmailChange: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [searchParams] = useSearchParams();
-    const token = searchParams?.get('secret_token') || '';
     const redirectTo = searchParams?.get('redirectTo');
     const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
 
@@ -22,7 +21,7 @@ const VerifyEmailChange: React.FC = () => {
             setShowSuccess(true);
         }
         if (sessionState === 'error') {
-            navigate('/login');
+            navigate('/login', { state: { error: 'token-invalid' } });
         }
     }, [navigate, sessionState]);
 
@@ -53,7 +52,7 @@ const VerifyEmailChange: React.FC = () => {
                     {(showSuccess && (
                         <VStack>
                             <Heading></Heading>
-                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: { token } })}>
+                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: {} })}>
                                 {t('continue')}
                             </Button>
                         </VStack>

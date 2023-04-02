@@ -8,7 +8,6 @@ const VerifyEmail: React.FC = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const token = searchParams?.get('secret_token') || '';
     const redirectTo = searchParams?.get('redirectTo');
     const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
 
@@ -20,7 +19,7 @@ const VerifyEmail: React.FC = () => {
             setShowSuccess(true);
         }
         if (sessionState === 'error') {
-            navigate('/login');
+            navigate('/login', { state: { error: 'token-invalid' } });
         }
     }, [navigate, sessionState, redirectEncoded]);
 
@@ -51,7 +50,7 @@ const VerifyEmail: React.FC = () => {
                     {(showSuccess && (
                         <VStack>
                             <Heading>Dein Account wurde aktiviert!</Heading>
-                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: { token } })}>
+                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: {} })}>
                                 Fortfahren
                             </Button>
                         </VStack>
