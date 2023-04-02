@@ -18,6 +18,7 @@ const matching = {
         directCall: 'Sofortbesprechung starten',
         dissolveMatch: 'Lernpaar auflösen',
         dissolved: 'Das Match wurde aufgelöst.',
+        contactMail: 'Via E-Mail kontaktieren',
     },
     blocker: {
         header: 'Lernunterstützung',
