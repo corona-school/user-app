@@ -46,8 +46,8 @@ function ConfirmData({
                     <ul>
                         <li>ab dem {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}</li>
                         <li>bis zum {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}</li>
-                        <li>ca. {certificate.hoursPerWeek} Stunden pro Woche</li>
-                        <li>ca. {certificate.hoursTotal} Stunden insgesamt</li>
+                        <li>ca. {certificate.hoursPerWeek.toFixed(2)} Stunden pro Woche</li>
+                        <li>ca. {certificate.hoursTotal.toFixed(2)} Stunden insgesamt</li>
                         <li>Inhalte:</li>
                         <ul>
                             {certificate.categories.split('\n').map((it) => (
