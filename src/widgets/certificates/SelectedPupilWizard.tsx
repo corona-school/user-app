@@ -93,7 +93,7 @@ const SelectedPupilWizard = ({
                 <VStack space={space['0.5']}>
                     <Text bold>Zeit</Text>
                     {((hoursPerWeek && !isValidNumber(hoursPerWeek)) || (hoursTotal && !isValidNumber(hoursTotal))) && (
-                        <Text color="danger.700">Du musst hier ganze Zahlen eingeben.</Text>
+                        <Text color="danger.700">Du musst hier eine Zahl eingeben.</Text>
                     )}
                     <Row alignItems="center">
                         <Column flex={0.4}>
