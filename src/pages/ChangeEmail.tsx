@@ -22,7 +22,7 @@ const ChangeEmail = () => {
     const [changeEmail] = useMutation(
         gql(`
         mutation changeEmail($email: String!) {
-            meEmailChange(email: $email) 
+            meChangeEmail(email: $email) 
         }`)
     );
     const ContainerWidth = useBreakpointValue({
