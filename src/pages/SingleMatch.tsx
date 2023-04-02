@@ -139,16 +139,21 @@ const SingleMatch = () => {
                                     window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
                                 }}
                             >
-                                {t('matching.shared.contactViaChat')}
+                                {t('matching.shared.videochat')}
                             </Button>
-                            <Button variant="outline">{t('matching.shared.directCall')}</Button>
                             <Button
-                                variant="outline"
                                 onPress={() =>
                                     (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
                                 }
                             >
                                 {t('matching.shared.contactMail')}
+                            </Button>
+
+                            <Button isDisabled variant="outline">
+                                {t('matching.shared.contactViaChat')}
+                            </Button>
+                            <Button isDisabled variant="outline">
+                                {t('matching.shared.directCall')}
                             </Button>
                             {!data?.match?.dissolved && (
                                 <Button variant="outline" onPress={() => setShowDissolveModal(true)}>
