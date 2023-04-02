@@ -99,7 +99,7 @@ const onboardingList = {
                 },
             },
             matching: {
-                title: 'Matching',
+                title: 'Lernunterstützung',
                 content:
                     'Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern.',
             },
