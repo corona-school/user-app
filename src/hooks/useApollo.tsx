@@ -419,6 +419,7 @@ const useApolloInternal = () => {
             const deviceToken = getDeviceToken();
             const secretToken = searchParams.get('secret_token');
 
+            // verify-email and verify-email-change
             if (pathname.includes('verify-email')) {
                 // The E-Mail Verification flow is special: The user already has a session with an unverified account,
                 //  we MUST reauthenticate to use the secret token that proves that the user has access to the email.
