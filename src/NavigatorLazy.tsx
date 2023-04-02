@@ -291,7 +291,14 @@ export default function NavigatorLazy() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-            <Route path="/new-email" element={<ChangeEmail />} />
+            <Route
+                path="/new-email"
+                element={
+                    <RequireAuth>
+                        <ChangeEmail />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/new-password"
                 element={
