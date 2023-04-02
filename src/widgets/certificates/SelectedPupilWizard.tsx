@@ -10,11 +10,11 @@ import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
 
 const isValidNumber = (value: string) => {
-    const parsed = parseFloat(value);
+    const parsed = parseFloat(value.replace(',', '.'));
     return !isNaN(parsed) && isFinite(parsed);
 };
 
-const toValidNumber = (value: string) => (isValidNumber(value) ? parseFloat(value) : null);
+const toValidNumber = (value: string) => (isValidNumber(value) ? parseFloat(value.replace(',', '.')) : null);
 
 const SelectedPupilWizard = ({
     match,
