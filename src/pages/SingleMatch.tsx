@@ -20,6 +20,7 @@ const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
   match(matchId: $matchId){
     id
+    uuid
     dissolved
     dissolveReason
     pupil {
@@ -33,6 +34,7 @@ query SingleMatch($matchId: Int! ) {
       }
       aboutMe
     }
+    pupilEmail
     student {
       firstname
       lastname
@@ -42,6 +44,7 @@ query SingleMatch($matchId: Int! ) {
       }
       aboutMe
     }
+    studentEmail
   }
 }`);
 
@@ -131,8 +134,25 @@ const SingleMatch = () => {
                         )}
 
                         <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                            <Button isDisabled>{t('matching.shared.contactViaChat')}</Button>
-                            <Button variant="outline" isDisabled>
+                            <Button
+                                onPress={() => {
+                                    window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
+                                }}
+                            >
+                                {t('matching.shared.videochat')}
+                            </Button>
+                            <Button
+                                onPress={() =>
+                                    (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
+                                }
+                            >
+                                {t('matching.shared.contactMail')}
+                            </Button>
+
+                            <Button isDisabled variant="outline">
+                                {t('matching.shared.contactViaChat')}
+                            </Button>
+                            <Button isDisabled variant="outline">
                                 {t('matching.shared.directCall')}
                             </Button>
                             {!data?.match?.dissolved && (
