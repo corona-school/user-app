@@ -9,6 +9,13 @@ import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
 
+const isValidNumber = (value: string) => {
+    const parsed = parseFloat(value);
+    return !isNaN(parsed) && isFinite(parsed);
+};
+
+const toValidNumber = (value: string) => (isValidNumber(value) ? parseFloat(value) : null);
+
 const SelectedPupilWizard = ({
     match,
     onNext,
@@ -85,7 +92,7 @@ const SelectedPupilWizard = ({
 
                 <VStack space={space['0.5']}>
                     <Text bold>Zeit</Text>
-                    {((hoursPerWeek && isNaN(parseInt(hoursPerWeek, 10))) || (hoursTotal && isNaN(parseInt(hoursTotal, 10)))) && (
+                    {((hoursPerWeek && !isValidNumber(hoursPerWeek)) || (hoursTotal && !isValidNumber(hoursTotal))) && (
                         <Text color="danger.700">Du musst hier ganze Zahlen eingeben.</Text>
                     )}
                     <Row alignItems="center">
@@ -95,9 +102,9 @@ const SelectedPupilWizard = ({
                                 value={hoursPerWeek}
                                 onChangeText={(perWeek) => {
                                     setHoursPerWeek(perWeek);
-                                    if (endDate && startDate) {
+                                    if (endDate && startDate && isValidNumber(perWeek)) {
                                         const durationInWeeks = DateTime.fromISO(endDate).diff(DateTime.fromISO(startDate), 'weeks').weeks;
-                                        setHoursTotal('' + Math.round(+perWeek * durationInWeeks));
+                                        setHoursTotal('' + Math.round(toValidNumber(perWeek)! * durationInWeeks));
                                     }
                                 }}
                             />
@@ -118,21 +125,15 @@ const SelectedPupilWizard = ({
 
                 <Button
                     isDisabled={
-                        !startDate ||
-                        !endDate ||
-                        !hoursPerWeek ||
-                        !hoursTotal ||
-                        !subjects.length ||
-                        isNaN(parseInt(hoursPerWeek, 10)) ||
-                        isNaN(parseInt(hoursTotal, 10))
+                        !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
                     onPress={() => {
                         const request = {
                             startDate,
                             endDate,
                             ongoingLessons,
-                            hoursPerWeek: parseInt(hoursPerWeek, 10),
-                            hoursTotal: parseInt(hoursTotal, 10),
+                            hoursPerWeek: toValidNumber(hoursPerWeek)!,
+                            hoursTotal: toValidNumber(hoursTotal)!,
                             subjects: subjects.join(', '),
                         };
 
