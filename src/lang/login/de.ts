@@ -4,6 +4,7 @@ const login = {
     forgotPassword: 'Passwort vergessen?',
     signupNew: 'Neu registrieren',
     noaccount: 'Du hast noch keinen Account? Hier geht es zur Registrierung!',
+    currentEmail: 'Aktuelle E-Mail',
     setNewEmail: 'E-Mail neu setzen',
     changeEmail: 'E-Mail ändern',
     emailVerification: 'E-Mail Verifizierung',
