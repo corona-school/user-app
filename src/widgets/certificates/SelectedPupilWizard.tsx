@@ -38,7 +38,7 @@ const SelectedPupilWizard = ({
     const [startDate, setStartDate] = useState<string>(DateTime.fromISO(match.createdAt).toFormat('yyyy-MM-dd'));
     const [endDate, setEndDate] = useState<string>(/* existingEntry.endDate */);
     const [ongoingLessons, setOngoingLessons] = useState<boolean>(existingEntry.ongoingLessons ?? false);
-    const [subjects, setSubjects] = useState<string[]>(existingEntry.subjects?.split(',') ?? []);
+    const [subjects, setSubjects] = useState<string[]>(existingEntry.subjects?.split(',') ?? match?.subjectsFormatted.map((it) => it.name) ?? []);
 
     const [hoursPerWeek, setHoursPerWeek] = useState<string>('');
     const [hoursTotal, setHoursTotal] = useState<string>('');
@@ -84,7 +84,6 @@ const SelectedPupilWizard = ({
                     <Text bold>Fächer</Text>
                     <SubjectSelector
                         subjects={subjects}
-                        selectable={match?.subjectsFormatted.map((it) => it.name) ?? []}
                         addSubject={(it) => setSubjects((prev) => [...prev, it])}
                         removeSubject={(it) => setSubjects((prev) => prev.filter((s) => s !== it))}
                     />
