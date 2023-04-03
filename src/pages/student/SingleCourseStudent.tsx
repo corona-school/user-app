@@ -284,10 +284,14 @@ const SingleCourseStudent = () => {
         refetchInstructorData();
     };
 
+    const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
+
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.lectures.every(
+                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis() + THIRTY_DAYS
+            ),
         [subcourse]
     );
 
@@ -329,7 +333,7 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                    {(!subcourse?.published || !isInPast) && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
                         <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
