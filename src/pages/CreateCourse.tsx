@@ -96,6 +96,7 @@ const CreateCourse: React.FC = () => {
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
 
+    const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
@@ -126,6 +127,7 @@ const CreateCourse: React.FC = () => {
                 maxParticipants
                 minGrade
                 maxGrade
+                published
                 instructors {
                     id
                     firstname
@@ -269,6 +271,7 @@ const CreateCourse: React.FC = () => {
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
         setAllowContact(!!prefillCourse.course.allowContact);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
+        setIsPublished(prefillCourse.published ?? false);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -862,7 +865,9 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && <CourseAppointments onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />}
+                            {currentIndex === 3 && (
+                                <CourseAppointments onlyFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
+                            )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}

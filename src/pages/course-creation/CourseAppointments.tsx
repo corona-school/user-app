@@ -14,9 +14,10 @@ type Props = {
     onNext: () => void;
     onBack: () => void;
     onDeleteAppointment?: (index: number, isSubmitted: boolean) => Promise<void>;
+    onlyFutureLectures: boolean;
 };
 
-const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointment }) => {
+const CourseAppointments: React.FC<Props> = ({ onlyFutureLectures, onNext, onBack, onDeleteAppointment }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { newLectures = [], lectures = [], setNewLectures } = useContext(CreateCourseContext);
@@ -94,7 +95,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
             <Heading marginBottom={space['1.5']}>{t('course.appointments.headline')}</Heading>
 
             <Heading fontSize="lg">Bestehende Termine</Heading>
-            {futureLectures?.map((lec, index) => (
+            {(onlyFutureLectures ? futureLectures : lectures)?.map((lec, index) => (
                 <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
             ))}
 
