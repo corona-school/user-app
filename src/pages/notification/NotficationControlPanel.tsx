@@ -1,4 +1,4 @@
-import { Heading, Row, useBreakpointValue, useTheme, View, VStack } from 'native-base';
+import { Column, Heading, Row, Text, useBreakpointValue, useTheme, View, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,8 @@ import { MarketingNotifications } from '../../components/notifications/preferenc
 import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { useQuery } from '@apollo/client';
+import { gql } from '../../gql/gql';
 
 const channels = ['email'];
 
@@ -17,6 +19,17 @@ const NotficationControlPanel = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const userPreferences = useUserPreferences();
+
+    const { data } = useQuery(
+        gql(`
+            query MeEmail {
+                me {
+                    firstname
+                    email
+                }
+            }
+        `)
+    );
 
     const isMobile = useBreakpointValue({
         base: true,
@@ -33,9 +46,13 @@ const NotficationControlPanel = () => {
             <WithNavigation showBack headerTitle={t('notification.controlPanel.title')} headerLeft={<NotificationAlert />}>
                 <View py={5} width={width}>
                     {!isMobile && (
-                        <Row marginBottom={space['2']} ml={3}>
+                        <Column space={space['1']} marginBottom={space['2']} ml={3}>
                             <Heading>{t('notification.controlPanel.title')}</Heading>
-                        </Row>
+                            <Row>
+                                <Text bold>{t('notification.controlPanel.yourMail')}</Text>
+                                <Text> {data?.me?.email}</Text>
+                            </Row>
+                        </Column>
                     )}
                     <VStack ml={3}>
                         <Tabs
