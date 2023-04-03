@@ -9,6 +9,13 @@ import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
 
+const isValidNumber = (value: string) => {
+    const parsed = parseFloat(value.replace(',', '.'));
+    return !isNaN(parsed) && isFinite(parsed);
+};
+
+const toValidNumber = (value: string) => (isValidNumber(value) ? parseFloat(value.replace(',', '.')) : null);
+
 const SelectedPupilWizard = ({
     match,
     onNext,
@@ -85,8 +92,8 @@ const SelectedPupilWizard = ({
 
                 <VStack space={space['0.5']}>
                     <Text bold>Zeit</Text>
-                    {((hoursPerWeek && isNaN(parseInt(hoursPerWeek))) || (hoursTotal && isNaN(parseInt(hoursTotal)))) && (
-                        <Text color="danger.700">Du musst hier ganze Zahlen eingeben.</Text>
+                    {((hoursPerWeek && !isValidNumber(hoursPerWeek)) || (hoursTotal && !isValidNumber(hoursTotal))) && (
+                        <Text color="danger.700">Du musst hier eine Zahl eingeben.</Text>
                     )}
                     <Row alignItems="center">
                         <Column flex={0.4}>
@@ -95,9 +102,9 @@ const SelectedPupilWizard = ({
                                 value={hoursPerWeek}
                                 onChangeText={(perWeek) => {
                                     setHoursPerWeek(perWeek);
-                                    if (endDate && startDate) {
+                                    if (endDate && startDate && isValidNumber(perWeek)) {
                                         const durationInWeeks = DateTime.fromISO(endDate).diff(DateTime.fromISO(startDate), 'weeks').weeks;
-                                        setHoursTotal('' + Math.round(+perWeek * durationInWeeks));
+                                        setHoursTotal('' + Math.round(toValidNumber(perWeek)! * durationInWeeks));
                                     }
                                 }}
                             />
@@ -118,21 +125,15 @@ const SelectedPupilWizard = ({
 
                 <Button
                     isDisabled={
-                        !startDate ||
-                        !endDate ||
-                        !hoursPerWeek ||
-                        !hoursTotal ||
-                        !subjects.length ||
-                        isNaN(parseInt(hoursPerWeek)) ||
-                        isNaN(parseInt(hoursTotal))
+                        !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
                     onPress={() => {
                         const request = {
                             startDate,
                             endDate,
                             ongoingLessons,
-                            hoursPerWeek: +hoursPerWeek,
-                            hoursTotal: +hoursTotal,
+                            hoursPerWeek: toValidNumber(hoursPerWeek)!,
+                            hoursTotal: toValidNumber(hoursTotal)!,
                             subjects: subjects.join(', '),
                         };
 

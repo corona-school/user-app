@@ -9,6 +9,7 @@ const shared = {
     begin: 'Ab',
     all: 'Alle',
     cancel: 'Abbrechen',
+    continue: 'Fortfahren',
     from: 'Ab',
     firstname: 'Vorname',
     lastname: 'Nachname',

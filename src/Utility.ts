@@ -130,11 +130,17 @@ export const getTrafficStatus: (participants: number, maxParticipants: number) =
 };
 
 export const getTrafficStatusText = (subcourse: { course: { courseState?: Course_Coursestate_Enum }; published?: boolean; cancelled?: boolean }): string => {
-    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Created) return i18next.t('single.global.courseState.draft');
-    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return i18next.t('single.global.courseState.submitted');
-    if (!subcourse.published && subcourse.course.courseState === Course_Coursestate_Enum.Allowed) return i18next.t('single.global.courseState.draft');
-    if (subcourse.published) return i18next.t('single.global.courseState.publish');
-    if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+    if (!subcourse.published) {
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Created) return i18next.t('single.global.courseState.draft');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Submitted) return i18next.t('single.global.courseState.submitted');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Allowed) return i18next.t('single.global.courseState.draft');
+        if (subcourse.course.courseState === Course_Coursestate_Enum.Denied) return i18next.t('single.global.courseState.denied');
+    }
+    if (subcourse.published) {
+        if (subcourse.cancelled) return i18next.t('single.global.courseState.cancelled');
+
+        return i18next.t('single.global.courseState.publish');
+    }
     return i18next.t('single.global.courseState.publish');
 };
 

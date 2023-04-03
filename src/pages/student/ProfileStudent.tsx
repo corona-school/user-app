@@ -39,6 +39,7 @@ const query = gql(`
         me {
             firstname
             lastname
+            email
             student {
                 state
                 aboutMe
@@ -216,6 +217,10 @@ const ProfileStudent: React.FC<Props> = () => {
                                 <Text>
                                     {data?.me?.firstname} {data?.me?.lastname}
                                 </Text>
+                            </ProfileSettingItem>
+
+                            <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
+                                <Text>{data?.me?.email}</Text>
                             </ProfileSettingItem>
 
                             <ProfileSettingItem

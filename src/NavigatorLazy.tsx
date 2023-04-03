@@ -52,6 +52,9 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import ChangeEmail from './pages/ChangeEmail';
+import VerifyEmailChange from './pages/VerifyEmailChange';
+import SingleMatch from './pages/SingleMatch';
 
 export default function NavigatorLazy() {
     return (
@@ -267,6 +270,15 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            <Route
+                path="/match/:id"
+                element={
+                    <RequireAuth>
+                        <SingleMatch />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/request-match"
                 element={
@@ -277,7 +289,16 @@ export default function NavigatorLazy() {
             />
 
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/verify-email-change" element={<VerifyEmailChange />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
+            <Route
+                path="/new-email"
+                element={
+                    <RequireAuth>
+                        <ChangeEmail />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/new-password"
                 element={

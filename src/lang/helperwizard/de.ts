@@ -76,7 +76,7 @@ const helperwizard = {
             'Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.',
         buttons: ['Kontakt aufnehmen', 'Lernpartner:in ansehen'],
     },
-    // temporary information during Lern-Fair Live homework help test phase in March 2023
+
     homeworkHelpStudent: {
         title: 'Hausaufgabenhilfe',
         content:
@@ -89,10 +89,11 @@ const helperwizard = {
             'Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!',
         buttons: ['Zur Hausaufgabenhilfe'],
     },
+
     pupilScreening: {
         title: 'Wir möchten dich kennenlernen!',
         content:
-            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin.',
+            'Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.',
         buttons: ['Termin vereinbaren'],
     },
 };
