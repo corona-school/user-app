@@ -39,14 +39,14 @@ const FileUploader: React.FC<Props> = ({ handleFileChange }) => {
 
     return (
         <>
-            <Stack space={space['1']} width="100%" alignItems="center" direction="row">
-                <Button maxW="200px" width="20%" onPress={openFileSelector}>
+            <Stack space={space['1']} alignItems="center" direction="row" flexWrap="wrap">
+                <Button flex="0 1 fit-content" maxW="100%" onPress={openFileSelector}>
                     {t('helpcenter.contact.fileupload.label')}
                 </Button>
-                <Stack space={space['0.5']} paddingTop={space['0.5']} width="80%" alignItems="center" direction="row" flexWrap="wrap">
+                <Stack flex="1 1 min-content" paddingTop={space['0.5']} alignItems="center" direction="row" flexWrap="wrap">
                     {plainFiles.map((file, i) => (
-                        <Card shadow={0} mb={space['0.5']} key={file.name} maxW="22ch" height="1rem" bg="primary.100">
-                            <Stack space={space['0.5']} width="100%" height="100%" direction="row" justifyContent="space-between" alignItems="center">
+                        <Card mr={space['0.5']} shadow={0} mb={space['0.5']} maxW="100%" key={i} padding="4px" height="100%" bg="primary.100">
+                            <Stack space={space['0.5']} direction="row" alignItems="center">
                                 <Text numberOfLines={1}>{file.name}</Text>
                                 <div
                                     onClick={() => {
