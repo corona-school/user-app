@@ -125,10 +125,9 @@ const SingleMatch = () => {
                         {data?.match?.dissolved && (
                             <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
                                 <AlertMessage
-                                    content={
-                                        'Match wurde aufgelöst: ' +
-                                        t(`matching.dissolveReasons.${userType}.${data?.match?.dissolveReason ?? 8}` as unknown as TemplateStringsArray)
-                                    }
+                                    content={t('matching.shared.dissolvedAlert', {
+                                        partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
+                                    })}
                                 />
                             </Stack>
                         )}
