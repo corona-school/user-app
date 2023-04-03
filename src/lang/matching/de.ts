@@ -6,7 +6,7 @@ const matching = {
         state: 'Status:',
         videochat: 'Videochat',
         contact: 'Kontaktieren',
-        dissolve: 'Match auflösen',
+        dissolve: 'Lernpaar auflösen',
         active: 'aktiv',
         inactive: 'inaktiv',
         activeMatches: 'Aktive Zuordnungen',
@@ -17,7 +17,8 @@ const matching = {
         contactViaChat: 'Per Chat kontaktieren',
         directCall: 'Sofortbesprechung starten',
         dissolveMatch: 'Lernpaar auflösen',
-        dissolved: 'Das Match wurde aufgelöst.',
+        dissolved: 'Das Lernpaar wurde aufgelöst.',
+        contactMail: 'Via E-Mail kontaktieren',
     },
     blocker: {
         header: 'Lernunterstützung',
@@ -64,7 +65,7 @@ const matching = {
                 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
             noRequestsTutor:
                 'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
-            resolveMatch: 'Das Match wurde aufgelöst',
+            resolveMatch: 'Das Lernpaar wurde aufgelöst',
         },
         updateData: 'Deine Daten wurden aktualisiert',
         daz: {
@@ -143,10 +144,10 @@ const matching = {
             },
         },
     },
-    status: { dissolved: 'Das Match wurde aufgelöst.' },
+    status: { dissolved: 'Das Lernpaar wurde aufgelöst.' },
     dissolveModal: {
-        title: 'Match auflösen',
-        btn: 'Match auflösen',
+        title: 'Lernpaar auflösen',
+        btn: 'Lernpaar auflösen',
     },
     dissolveReasons: {
         student: {
