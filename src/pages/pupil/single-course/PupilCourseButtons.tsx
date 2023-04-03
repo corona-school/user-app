@@ -32,7 +32,7 @@ type ActionButtonProps = {
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: (title: string, body: string) => Promise<void>;
+    doContactInstructor: (title: string, body: string, fileIDs: string[]) => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -67,8 +67,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
 
-    async function contactInstructor(title: string, body: string) {
-        doContactInstructor(title, body);
+    async function contactInstructor(title: string, body: string, fileIDs: string[]) {
+        doContactInstructor(title, body, fileIDs);
         setShowMessageModal(false);
     }
 
