@@ -8,23 +8,24 @@ import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_56.svg';
 import { useNavigate } from 'react-router-dom';
 import { useUserType } from '../hooks/useApollo';
+import { useMemo } from 'react';
 
 type LearningPartnerProps = {
     matchId: number;
     name: string;
     subjects: Subject[];
     schooltype?: Pupil_Schooltype_Enum | undefined;
-    schoolclass?: number;
     grade?: string;
     isDissolved?: boolean;
 };
 
-const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, schoolclass, grade, isDissolved }) => {
+const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjects, schooltype, grade, isDissolved }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const userType = useUserType();
     const navigate = useNavigate();
 
+    console.log('SCHULE', schooltype);
     const containerWidth = useBreakpointValue({
         base: 100,
         lg: 120,
@@ -34,6 +35,8 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
         base: true,
         lg: false,
     });
+
+    const schoolCapitalized = useMemo(() => schooltype && schooltype.charAt(0).toUpperCase() + schooltype.slice(1), []);
 
     return (
         <HStack minW="300">
@@ -60,7 +63,11 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
                     </Box>
                     <VStack space="1" my="2" maxW="300">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
-                            <Text>{schoolclass ? t('matching.shared.schoolGrade', { schooltype: schooltype, grade: schoolclass }) : grade}</Text>
+                            {userType === 'pupil' ? (
+                                <Text>Tutor:in, Kursleiter:in</Text>
+                            ) : (
+                                <Text>{schooltype ? t('matching.shared.schoolGrade', { schooltype: schoolCapitalized, grade: grade }) : grade}</Text>
+                            )}
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {name}
                             </Text>
