@@ -33,7 +33,6 @@ import DashboardStudent from './pages/student/DashboardStudent';
 import ProfileStudent from './pages/student/ProfileStudent';
 import RequestCertificate from './pages/RequestCertificate';
 import PupilGroup from './pages/pupil/Group';
-import StudentGroup from './pages/student/StudentGroup';
 import NoAcceptRegistration from './pages/NoAcceptRegistration';
 import VerifyEmail from './pages/VerifyEmail';
 import VerifyEmailModal from './modals/VerifyEmailModal';
@@ -44,7 +43,6 @@ import WithNavigation from './components/WithNavigation';
 import Registration from './pages/Registration';
 
 import RequestMatchStudent from './pages/student/matching_new/RequestMatch';
-import MatchingStudent from './pages/student/MatchingStudent';
 import RequestMatch from './pages/pupil/matching_new/RequestMatch';
 import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
@@ -55,6 +53,8 @@ import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
+import CoursePage from './pages/CoursePage';
+import MatchPage from './pages/MatchPage';
 
 export default function NavigatorLazy() {
     return (
@@ -248,7 +248,7 @@ export default function NavigatorLazy() {
                 path="/group"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<StudentGroup />} />
+                        <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
                     </RequireAuth>
                 }
             ></Route>
@@ -266,7 +266,7 @@ export default function NavigatorLazy() {
                 path="/matching"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchingStudent />} />
+                        <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchPage />} />
                     </RequireAuth>
                 }
             />
