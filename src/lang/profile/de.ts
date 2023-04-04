@@ -16,6 +16,7 @@ const profile = {
             title: 'Dein Name',
             firstname: 'Vorname',
             lastname: 'Nachname',
+            email: 'Deine E-Mail',
         },
         popup: {
             header: 'Name ändern',

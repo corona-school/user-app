@@ -23,6 +23,7 @@ const query = gql(`
         me {
             firstname
             lastname
+            email
             pupil {
                 aboutMe
                 state
@@ -286,6 +287,9 @@ const ProfilePupil: React.FC<Props> = () => {
                                 />
                             )}
 
+                            <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
+                                <Text>{data?.me?.email}</Text>
+                            </ProfileSettingItem>
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
