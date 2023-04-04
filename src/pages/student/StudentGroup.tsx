@@ -24,7 +24,6 @@ const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
         gql(`
             query StudentCourseOverview {
-                myRoles
                 me {
                     student {
                         canCreateCourse {
@@ -170,11 +169,6 @@ const StudentGroup: React.FC = () => {
         }
         return false;
     }, [locState?.errors]);
-
-    const canInstruct: boolean = useMemo(() => {
-        if (!data) return true;
-        return data?.myRoles.includes('INSTRUCTOR');
-    }, [data]);
 
     return (
         <AsNavigationItem path="group">
