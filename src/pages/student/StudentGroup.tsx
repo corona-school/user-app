@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Button, useBreakpointValue } from 'native-base';
+import { Text, Heading, useTheme, VStack, Button, useBreakpointValue, Box } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
@@ -19,11 +19,13 @@ import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import { LFSubCourse } from '../../types/lernfair/Course';
+import GroupOnboarding from '../GroupOnboarding';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
         gql(`
             query StudentCourseOverview {
+                myRoles
                 me {
                     student {
                         canCreateCourse {
@@ -170,90 +172,105 @@ const StudentGroup: React.FC = () => {
         return false;
     }, [locState?.errors]);
 
+    const canInstruct: boolean = useMemo(() => {
+        if (!data) return true;
+        return data?.myRoles.includes('INSTRUCTOR');
+    }, [data]);
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
-                <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
-                    {loading && <CenterLoadingSpinner />}
+                {canInstruct ? (
+                    <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
+                        {loading && <CenterLoadingSpinner />}
 
-                    {!loading && (
-                        <VStack space={space['1']}>
-                            <VStack space={space['0.5']}>
-                                <Heading>{t('matching.group.helper.title')}</Heading>
-                                <Text>{t('matching.group.helper.content')}</Text>
-                            </VStack>
-                            <VStack>
-                                <Heading fontSize="md" marginBottom="5px">
-                                    {t('matching.group.helper.contentHeadline')}
-                                </Heading>
-                                <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
-                            </VStack>
-                            {locState && Object.keys(locState).length > 0 && (
-                                <>
-                                    {showSuccess && (
-                                        <AlertMessage
-                                            content={
-                                                locState.wasEdited
-                                                    ? t('matching.group.helper.alert.successfulEditing')
-                                                    : t('matching.group.helper.alert.successfulCreation')
-                                            }
-                                        />
-                                    )}
-                                    {(locState?.errors?.length > 0 && (
-                                        <>
-                                            {locState.errors.map((e) => (
-                                                <AlertMessage content={t(`course.error.${e}`)} />
-                                            ))}
-                                        </>
-                                    )) || <></>}
-                                </>
-                            )}
-                            <VStack paddingY={space['1']}>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => {
-                                        trackEvent({
-                                            category: 'matching',
-                                            action: 'click-event',
-                                            name: 'Helfer Matching Gruppen – Kurs erstellen',
-                                            documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
-                                        });
-                                        navigate('/create-course');
-                                    }}
-                                >
-                                    {t('matching.group.helper.button')}
-                                </Button>
-                            </VStack>
+                        {!loading && (
+                            <VStack space={space['1']}>
+                                <VStack space={space['0.5']}>
+                                    <Heading>{t('matching.group.helper.title')}</Heading>
+                                    <Text>{t('matching.group.helper.content')}</Text>
+                                </VStack>
+                                <VStack>
+                                    <Heading fontSize="md" marginBottom="5px">
+                                        {t('matching.group.helper.contentHeadline')}
+                                    </Heading>
+                                    <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
+                                </VStack>
+                                {locState && Object.keys(locState).length > 0 && (
+                                    <>
+                                        {showSuccess && (
+                                            <AlertMessage
+                                                content={
+                                                    locState.wasEdited
+                                                        ? t('matching.group.helper.alert.successfulEditing')
+                                                        : t('matching.group.helper.alert.successfulCreation')
+                                                }
+                                            />
+                                        )}
+                                        {(locState?.errors?.length > 0 && (
+                                            <>
+                                                {locState.errors.map((e) => (
+                                                    <AlertMessage content={t(`course.error.${e}`)} />
+                                                ))}
+                                            </>
+                                        )) || <></>}
+                                    </>
+                                )}
+                                <VStack paddingY={space['1']}>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => {
+                                            trackEvent({
+                                                category: 'matching',
+                                                action: 'click-event',
+                                                name: 'Helfer Matching Gruppen – Kurs erstellen',
+                                                documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
+                                            });
+                                            navigate('/create-course');
+                                        }}
+                                    >
+                                        {t('matching.group.helper.button')}
+                                    </Button>
+                                </VStack>
 
-                            <VStack>
-                                <Tabs
-                                    tabs={[
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab1.title'),
-                                            content: (
-                                                <>
-                                                    <CourseGroups
-                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
-                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
-                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
-                                                    />
-                                                </>
-                                            ),
-                                        },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab2.title'),
-                                            content: (
-                                                <>
-                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
-                                                </>
-                                            ),
-                                        },
-                                    ]}
-                                />
+                                <VStack>
+                                    <Tabs
+                                        tabs={[
+                                            {
+                                                title: t('matching.group.helper.course.tabs.tab1.title'),
+                                                content: (
+                                                    <>
+                                                        <CourseGroups
+                                                            currentCourses={publishedSubcourses as LFSubCourse[]}
+                                                            draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
+                                                            pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
+                                                        />
+                                                    </>
+                                                ),
+                                            },
+                                            {
+                                                title: t('matching.group.helper.course.tabs.tab2.title'),
+                                                content: (
+                                                    <>
+                                                        <AllSubcourses
+                                                            languageCourses={languageCourses}
+                                                            courses={revisionCourses}
+                                                            focusCourses={focusCourses}
+                                                        />
+                                                    </>
+                                                ),
+                                            },
+                                        ]}
+                                    />
+                                </VStack>
                             </VStack>
-                        </VStack>
-                    )}
-                </VStack>
+                        )}
+                    </VStack>
+                ) : (
+                    <Box justifyContent="center" alignItems="center">
+                        <GroupOnboarding />
+                    </Box>
+                )}
             </WithNavigation>
         </AsNavigationItem>
     );

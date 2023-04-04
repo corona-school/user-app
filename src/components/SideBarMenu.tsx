@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
 import { NavigationItems } from '../types/navigation';
 import CSSWrapper from './CSSWrapper';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     show?: boolean;
@@ -17,6 +18,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
     const { space, colors } = useTheme();
     const { rootPath, setRootPath } = useLernfair();
     const navigate = useNavigate();
+    const userType = useUserType();
 
     const { data, loading } = useQuery(
         gql(`
@@ -28,12 +30,12 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
 
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('INSTRUCTOR') && !data?.myRoles.includes('PARTICIPANT');
+        return !data?.myRoles.includes('PARTICIPANT');
     }, [data]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('TUTOR') && !data?.myRoles.includes('TUTEE');
+        return !data?.myRoles.includes('TUTEE');
     }, [data]);
 
     if (loading) return <></>;
@@ -57,7 +59,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                     bottom="0"
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+                        const disabled =
+                            userType === 'pupil' ? _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) : false;
 
                         return (
                             <Pressable
