@@ -184,7 +184,7 @@ const SingleCoursePupil = () => {
         () =>
             !subcourse ||
             subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis() + THIRTY_DAYS
+                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis() - THIRTY_DAYS
             ),
         [subcourse]
     );
