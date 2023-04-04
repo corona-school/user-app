@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Button, useBreakpointValue, Box } from 'native-base';
+import { Text, Heading, useTheme, VStack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
