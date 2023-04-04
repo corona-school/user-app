@@ -7,6 +7,7 @@ import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     show?: boolean;
@@ -17,6 +18,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
+    const userType = useUserType();
 
     const { data, loading } = useQuery(
         gql(`
@@ -28,12 +30,12 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
 
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('INSTRUCTOR') && !data?.myRoles.includes('PARTICIPANT');
+        return !data?.myRoles.includes('PARTICIPANT');
     }, [data]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('TUTOR') && !data?.myRoles.includes('TUTEE');
+        return !data?.myRoles.includes('TUTEE');
     }, [data]);
 
     if (loading) return <></>;
@@ -62,7 +64,8 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                     }}
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'group' && disableGroup) || (key === 'matching' && disableMatching);
+                        const disabled =
+                            userType === 'pupil' ? _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) : false;
 
                         return (
                             <Pressable
