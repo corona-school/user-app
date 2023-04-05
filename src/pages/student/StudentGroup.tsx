@@ -186,6 +186,15 @@ const StudentGroup: React.FC = () => {
                                 <Text>{t('matching.group.helper.content')}</Text>
                             </VStack>
                             <VStack>
+                                <Button
+                                    width={ButtonContainer}
+                                    onPress={() => window.open('https://www.lern-fair.de/helfer/gruppenkurse', '_blank')}
+                                    textAlign="center"
+                                >
+                                    {t('moreInfoButton')}
+                                </Button>
+                            </VStack>
+                            <VStack>
                                 <Heading fontSize="md" marginBottom="5px">
                                     {t('matching.group.helper.contentHeadline')}
                                 </Heading>
