@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import OnboardingCard from '../../../widgets/OnboardingCard';
-import { Circle, FlatList, HStack, Modal, Text, useTheme, useToast } from 'native-base';
+import { Box, Circle, FlatList, HStack, Modal, Text, useTheme, useToast } from 'native-base';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import MatchIcon from '../../../assets/icons/Icon_Einzel.svg';
 import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
@@ -81,21 +81,23 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     return (
         <AsNavigationItem path="group">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
-                <OnboardingCard
-                    headline={t('introduction.match')}
-                    Description={matchDescriptions}
-                    cardImage={OneToOneImage}
-                    mobileCardImage={OneToOneMobileImage}
-                    Icon={MatchIcon}
-                    showRequestButton={canRequest}
-                    showRequestBanner={waitForSupport}
-                    requestButtonText={t('introduction.becomeTutor')}
-                    imageText={t('introduction.imageMatchText')}
-                    bannerHeadline={t('introduction.banner.tutorTitle')}
-                    onRequest={() => setIsModalOpen(true)}
-                    onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
-                    onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
-                />
+                <Box justifyContent="center" alignItems="center">
+                    <OnboardingCard
+                        headline={t('introduction.match')}
+                        Description={matchDescriptions}
+                        cardImage={OneToOneImage}
+                        mobileCardImage={OneToOneMobileImage}
+                        Icon={MatchIcon}
+                        showRequestButton={canRequest}
+                        showRequestBanner={waitForSupport}
+                        requestButtonText={t('introduction.becomeTutor')}
+                        imageText={t('introduction.imageMatchText')}
+                        bannerHeadline={t('introduction.banner.tutorTitle')}
+                        onRequest={() => setIsModalOpen(true)}
+                        onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
+                        onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
+                    />
+                </Box>
                 <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <CourseConfirmationModal
                         headline={t('introduction.modal.headline')}
