@@ -1,4 +1,5 @@
 import { Text, useTheme, Pressable, Column, Button, Row } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 import { LFInstructor } from '../types/lernfair/Course';
 
@@ -11,6 +12,7 @@ type Props = {
 
 const InstructorRow: React.FC<Props> = ({ instructor, onPress, isAdded, onPressDelete }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
     return (
         <Pressable
             isDisabled={isAdded}
@@ -30,12 +32,12 @@ const InstructorRow: React.FC<Props> = ({ instructor, onPress, isAdded, onPressD
                     <Text color={isAdded ? 'gray.500' : 'darkText'} flex="1">
                         {instructor.firstname} {instructor.lastname}
                     </Text>
-                    {onPressDelete && <Button onPress={onPressDelete}>löschen</Button>}
+                    {onPressDelete && <Button onPress={onPressDelete}>{t('delete')}</Button>}
                 </Row>
 
                 {isAdded && (
                     <Text fontSize="sm" opacity={isAdded ? 1 : 0}>
-                        Du hast diese Person bereits hinzugefügt.
+                        {t('course.CourseDate.form.courseAlreadyaAddedLead')}
                     </Text>
                 )}
             </Column>

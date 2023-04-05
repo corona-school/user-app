@@ -356,7 +356,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     key={index}
                                     marginBottom={'5px'}
                                 >
-                                    Mehr erfahren
+                                    {t('moreInfoButton')}
                                 </Button>
                             )}
                         </Card>

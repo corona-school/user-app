@@ -32,7 +32,6 @@ const single = {
         close: 'Fenster schließen',
         leaveCourse: 'Kurs verlassen',
         signOut: 'Vom Kurs abmelden',
-        courseInfo: 'Kursinformationen',
     },
     tabs: {
         description: 'Beschreibung',
