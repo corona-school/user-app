@@ -22,11 +22,14 @@ const matchTexts: string[] = [
 ];
 
 type MatchProps = {
+    // if student was screened, he can request role of TUTOR, if not screened, button does not appear
     canRequest?: boolean;
+    // if student has requested role TUTOR a banner appears
     waitForSupport?: boolean;
+    refetch?: () => void;
 };
 
-const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false }) => {
+const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false, refetch }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
@@ -69,6 +72,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
         if (res.data?.userContactSupport && becameTutor) {
             setIsModalOpen(false);
             toast.show({ description: t('introduction.toast.success'), placement: 'top' });
+            refetch && refetch();
         } else {
             toast.show({ description: t('introduction.toast.fail'), placement: 'top' });
         }
@@ -83,8 +87,8 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                     cardImage={OneToOneImage}
                     mobileCardImage={OneToOneMobileImage}
                     Icon={MatchIcon}
-                    showButton={canRequest}
-                    showBanner={waitForSupport}
+                    showRequestButton={canRequest}
+                    showRequestBanner={waitForSupport}
                     requestButtonText={t('introduction.becomeTutor')}
                     imageText={t('introduction.imageMatchText')}
                     bannerHeadline={t('introduction.banner.tutorTitle')}

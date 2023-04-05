@@ -16,7 +16,9 @@ import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 
 type OnboardingProps = {
+    // if student was screened, he can request role of TUTOR, if not screened, button does not appear
     canRequest?: boolean;
+    // student has requested role INSTRUCTOR -> banner appears
     waitForSupport?: boolean;
     refetch?: () => void;
 };
@@ -62,8 +64,8 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                         cardImage={LFImageGroupOnboarding}
                         mobileCardImage={LFImageGroupHorizontal}
                         Icon={IconGroup}
-                        showButton={canRequest}
-                        showBanner={waitForSupport}
+                        showRequestButton={canRequest}
+                        showRequestBanner={waitForSupport}
                         requestButtonText={t('introduction.becomeAnInstructor')}
                         imageText={t('introduction.imageGroupText')}
                         bannerHeadline={t('introduction.banner.instuctorTitle')}

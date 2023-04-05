@@ -9,8 +9,8 @@ type CardProps = {
     cardImage: string;
     mobileCardImage: string;
     Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    showButton: boolean;
-    showBanner: boolean;
+    showRequestButton: boolean;
+    showRequestBanner: boolean;
     requestButtonText: string;
     imageText: string;
     bannerHeadline: string;
@@ -25,8 +25,8 @@ const OnboardingCard: React.FC<CardProps> = ({
     cardImage,
     mobileCardImage,
     Icon,
-    showButton,
-    showBanner,
+    showRequestButton,
+    showRequestBanner,
     requestButtonText,
     imageText,
     bannerHeadline,
@@ -54,8 +54,8 @@ const OnboardingCard: React.FC<CardProps> = ({
                             </Box>
 
                             <Stack space={space['0.5']}>
-                                {showButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
-                                {showBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
+                                {showRequestButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
+                                {showRequestBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
                                 <Button variant="outline" onPress={onTalkToTeam}>
                                     {t('introduction.talkWithTeam')}
                                 </Button>
@@ -103,8 +103,8 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Description />
 
                             <Stack space={space['0.5']}>
-                                {showButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
-                                {showBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
+                                {showRequestButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
+                                {showRequestBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
                                 <Button variant="outline" onPress={onTalkToTeam}>
                                     {t('introduction.talkWithTeam')}
                                 </Button>
