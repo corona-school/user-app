@@ -17,8 +17,6 @@ These Query Parameters can be supplied to any path of the User-App:
 
 ## Development Tools
 
-To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
-
 Documentation about Components can be found in **[Storybook](https://corona-school.github.io/user-app/)**.
 
 To open the Storybook with documentation about components locally, install optional dependencies with `npm run dev-install`, 
@@ -53,6 +51,17 @@ Most configuration is done via `REACT_APP_` environment variables, which are inl
 A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts). 
 
 In local development environment you can use [`.env.template`](.env.template) as template for in your own .env file.
+
+## Bundles and Lazy Loading
+
+The App is split into multiple bundles to reduce initial load time, as well as increasing caching during updates. To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
+
+The main bundle only contains the [`Navigator`](./src/Navigator.tsx) component, 
+ which only provides the GraphQL client library, the user context and the login and landing pages. Thus the bundle contains everything for the first load. Unauthenticated users can then already start to log in, whereas authenticated users and visitors of specific pages will instead see a loading spinner while the [`NavigatorLazy`](./src/NavigatorLazy.tsx) is loaded. We assume that these users already opened the App before, and thus already have the page cached (thus the main bundle is optimized for first visitors).
+
+The same mechanism is used by `IconLoader` and `IconLoaderLazy` to lazily load icons - as the page usually also works without icons.
+
+Lazy Loading uses [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) with a custom wrapper around `React.lazy` called [`lazyWithRetry`](./src/lazy.ts) - which tries again in case a chunk failed to load due to network connectivity problems. 
 
 ## Further Resources
 
