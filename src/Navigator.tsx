@@ -15,7 +15,7 @@ import { lazyWithRetry } from './lazy';
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'));
 
 // But as after login the user will visit the dashboard anyways, let's start loading it already
-import('./NavigatorLazy');
+try { import('./NavigatorLazy'); } catch(_) {}
 
 export default function Navigator() {
     return (
