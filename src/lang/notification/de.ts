@@ -21,6 +21,7 @@ const notification = {
 
     controlPanel: {
         title: 'E-Mail-Benachrichtigungen',
+        yourMail: 'Deine E-Mail: ',
         closeButton: 'Schließen',
         preference: {
             enableAll: 'Alle Newsletter aktivieren',

@@ -35,8 +35,8 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
 
     const [sendMessage, _sendMessage] = useMutation(
         gql(`
-            mutation sendMessage($subject: String!, $message: String!, $subcourseId: Int!, $participants: [Int!]!) {
-                subcourseNotifyParticipants(subcourseId: $subcourseId, title: $subject, body: $message, participantIDs: $participants, fileIDs: [])
+            mutation sendMessage($subject: String!, $message: String!, $subcourseId: Int!, $participants: [Int!]!, $fileIDs: [String!]!) {
+                subcourseNotifyParticipants(subcourseId: $subcourseId, title: $subject, body: $message, participantIDs: $participants, fileIDs: $fileIDs)
             }
         `)
     );
@@ -49,7 +49,7 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
     });
 
     const onSendMessage = useCallback(
-        async (subject: string, message: string) => {
+        async (subject: string, message: string, fileIDs: string[]) => {
             if (!subject || !message || !participantsData) return;
             if (subject && message && participantsData) {
                 try {
@@ -62,6 +62,7 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
                                 selectedParticipants.length > 0
                                     ? selectedParticipants
                                     : participantsData.subcourse!.participants.map((it: Participant) => it.id),
+                            fileIDs,
                         },
                     });
                     toast.show({ description: t('single.contact.messageSend'), placement: 'top' });

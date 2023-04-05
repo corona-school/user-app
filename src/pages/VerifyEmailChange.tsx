@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useApollo from '../hooks/useApollo';
+import { useTranslation } from 'react-i18next';
 
-const VerifyEmail: React.FC = () => {
+const VerifyEmailChange: React.FC = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const redirectTo = searchParams?.get('redirectTo');
     const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
@@ -21,7 +23,7 @@ const VerifyEmail: React.FC = () => {
         if (sessionState === 'error') {
             navigate('/login', { state: { error: 'token-invalid' } });
         }
-    }, [navigate, sessionState, redirectEncoded]);
+    }, [navigate, sessionState]);
 
     const ContainerWidth = useBreakpointValue({
         base: '90%',
@@ -44,20 +46,20 @@ const VerifyEmail: React.FC = () => {
                         }}
                     />
                     <Logo />
-                    <Heading mt={space['1']}>E-Mail Verifizierung</Heading>
+                    <Heading mt={space['1']}>{t('login.emailVerification')}</Heading>
                 </Box>
                 <VStack space={space['1']} paddingX={space['1']} mt={space['4']} marginX="auto" width={ContainerWidth} justifyContent="center">
                     {(showSuccess && (
                         <VStack>
-                            <Heading>Dein Account wurde aktiviert!</Heading>
+                            <Heading></Heading>
                             <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: {} })}>
-                                Fortfahren
+                                {t('continue')}
                             </Button>
                         </VStack>
-                    )) || <Heading>Token ungültig</Heading>}
+                    )) || <Heading>{t('login.invalidToken')}</Heading>}
                 </VStack>
             </>
         </Flex>
     );
 };
-export default VerifyEmail;
+export default VerifyEmailChange;
