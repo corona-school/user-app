@@ -187,7 +187,7 @@ const StudentGroup: React.FC = () => {
                                 <Heading>{t('matching.group.helper.title')}</Heading>
                                 <Text>{t('matching.group.helper.content')}</Text>
                             </VStack>
-                            <VStack space={space['0.5']}>
+                            <VStack>
                                 {locState && Object.keys(locState).length > 0 && (
                                     <>
                                         {showSuccess && (
@@ -209,32 +209,33 @@ const StudentGroup: React.FC = () => {
                                     </>
                                 )}
                             </VStack>
-                            <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => {
-                                        trackEvent({
-                                            category: 'matching',
-                                            action: 'click-event',
-                                            name: 'Helfer Matching Gruppen – Kurs erstellen',
-                                            documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
-                                        });
-                                        navigate('/create-course');
-                                    }}
-                                >
-                                    {t('matching.group.helper.button')}
-                                </Button>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => window.open('https://www.lern-fair.de/helfer/gruppen-kurse', '_blank')}
-                                    textAlign="center"
-                                    variant="outline"
-                                >
-                                    {t('moreInfoButton')}
-                                </Button>
-                            </Stack>
-
-                            <VStack>
+                            <VStack space={space['1']}>
+                                <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => window.open('https://www.lern-fair.de/helfer/gruppen-kurse', '_blank')}
+                                        textAlign="center"
+                                        variant="outline"
+                                    >
+                                        {t('moreInfoButton')}
+                                    </Button>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => {
+                                            trackEvent({
+                                                category: 'matching',
+                                                action: 'click-event',
+                                                name: 'Helfer Matching Gruppen – Kurs erstellen',
+                                                documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
+                                            });
+                                            navigate('/create-course');
+                                        }}
+                                    >
+                                        {t('matching.group.helper.button')}
+                                    </Button>
+                                </Stack>
+                            </VStack>
+                            <VStack space={space['5']} paddingY={space['1']}>
                                 <Tabs
                                     tabs={[
                                         {
