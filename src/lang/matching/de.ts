@@ -116,8 +116,6 @@ const matching = {
             title: 'Gruppen-Kurse',
             content:
                 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Deutsch-Kurse und Fokus-Kurse.',
-            contentHeadline: 'Wichtig',
-            contentHeadlineContent: 'Gruppen-Kurse müssen mind. 7 Tage vor Kursbeginn angelegt werden.',
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',

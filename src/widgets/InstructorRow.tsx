@@ -32,7 +32,11 @@ const InstructorRow: React.FC<Props> = ({ instructor, onPress, isAdded, onPressD
                     <Text color={isAdded ? 'gray.500' : 'darkText'} flex="1">
                         {instructor.firstname} {instructor.lastname}
                     </Text>
-                    {onPressDelete && <Button onPress={onPressDelete}>{t('delete')}</Button>}
+                    {onPressDelete && (
+                        <Button onPress={onPressDelete} variant="outline">
+                            {t('delete')}{' '}
+                        </Button>
+                    )}
                 </Row>
 
                 {isAdded && (
