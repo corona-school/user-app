@@ -63,7 +63,7 @@ const dashboard = {
                 'Du stehst hinter der Mission von Lern-Fair für mehr Bildungsgerechtigkeit in Deutschland? Dann erzähle deinen Freunden von Lern-Fair und lass uns gemeinsam noch mehr benachteiligten Kindern und Jugendlichen helfen.',
             recommendText:
                 'Hey, ich engagiere mich ehrenamtlich bei Lern-Fair e.V. für mehr Bildungschancen und Gerechtigkeit in Deutschland. Vielleicht wäre das ja auch etwas für dich? Es ist total einfach und komplett flexibel, da alles online stattfindet und du von zuhause aus mitmachen kannst. Ich würde mich freuen, wenn du dabei wärst! Alle Infos findest du auf der Website: www.lern-fair.de',
-            recommendSubjet: 'Engagiere dich bei Lern-Fair!',
+            recommendSubject: 'Engagiere dich bei Lern-Fair!',
             toast: 'Text in die Zwischenablage kopiert.',
         },
         buttons: {

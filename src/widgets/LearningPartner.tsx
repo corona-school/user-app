@@ -25,7 +25,6 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
     const userType = useUserType();
     const navigate = useNavigate();
 
-    console.log('SCHULE', schooltype);
     const containerWidth = useBreakpointValue({
         base: 100,
         lg: 120,
@@ -36,7 +35,10 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
         lg: false,
     });
 
-    const schoolCapitalized = useMemo(() => schooltype && schooltype.charAt(0).toUpperCase() + schooltype.slice(1), []);
+    const schoolCapitalized = useMemo(() => {
+        if (!schooltype) return;
+        return t(`lernfair.schooltypes.${schooltype}`);
+    }, [schooltype, t]);
 
     return (
         <HStack minW="300">
@@ -64,7 +66,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
                     <VStack space="1" my="2" maxW="300">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             {userType === 'pupil' ? (
-                                <Text>Tutor:in, Kursleiter:in</Text>
+                                <Text>{t('matching.shared.tutorInstructor')}</Text>
                             ) : (
                                 <Text>{schooltype ? t('matching.shared.schoolGrade', { schooltype: schoolCapitalized, grade: grade }) : grade}</Text>
                             )}
