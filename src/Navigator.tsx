@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 
@@ -9,9 +9,10 @@ import Welcome from './pages/Welcome';
 import LoginToken from './pages/LoginToken';
 import { RequireAuth } from './User';
 import FullPageModal from './widgets/FullPageModal';
+import { lazyWithRetry } from './lazy';
 
 // All other pages load lazy:
-const NavigatorLazy = lazy(() => import('./NavigatorLazy'));
+const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'));
 
 // But as after login the user will visit the dashboard anyways, let's start loading it already
 import('./NavigatorLazy');
