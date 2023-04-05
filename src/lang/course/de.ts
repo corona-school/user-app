@@ -60,8 +60,8 @@ const course = {
         },
     },
     appointments: {
-        headline: 'Lege Termin(e) für deinen Kurs fest',
-        content: 'Termin(e) erstellen*',
+        headline: 'Wann soll der Kurs stattfinden?',
+        content: 'Termin erstellen',
         addOtherAppointment: 'Weiteren Termin anlegen',
         check: 'Angaben prüfen',
         saveDraft: 'Als Entwurf speichern',
