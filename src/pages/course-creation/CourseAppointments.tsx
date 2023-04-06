@@ -129,8 +129,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                     borderColor="primary.500"
                     _text={{ color: 'primary.500' }}
                     width="full"
-                    // * replace with open modal from another PR
-                    onPress={() => console.log('open modal')}
+                    onPress={() => setShowModal(true)}
                 >
                     {t('course.appointments.addOtherAppointment')}
                 </Button>
