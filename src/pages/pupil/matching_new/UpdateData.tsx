@@ -7,6 +7,7 @@ import CSSWrapper from '../../../components/CSSWrapper';
 import { schooltypes } from '../../../types/lernfair/SchoolType';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 
@@ -109,7 +110,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 default:
                     break;
             }
-            toast.show({ description: t('Daten geupdatet'), placement: 'top' });
+            toast.show({ description: t('matching.request.updateData'), placement: 'top' });
         } catch (e) {
             toast.show({ description: t('error'), placement: 'top' });
         }
@@ -138,7 +139,11 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         {(schooltype && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 <CSSWrapper className="profil-tab-link">
-                                    <IconTagList isDisabled iconPath={`schooltypes/icon_${schooltype}.svg`} text={t(`lernfair.schooltypes.${schooltype}`)} />
+                                    <IconTagList
+                                        isDisabled
+                                        iconPath={`schooltypes/icon_${schooltype}.svg`}
+                                        text={t(`lernfair.schooltypes.${schooltype}` as unknown as TemplateStringsArray)}
+                                    />
                                 </CSSWrapper>
                             </Column>
                         )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
@@ -180,7 +185,11 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
                                     <CSSWrapper className="profil-tab-link">
-                                        <IconTagList isDisabled iconPath={`states/icon_${state}.svg`} text={t(`lernfair.states.${state}`)} />
+                                        <IconTagList
+                                            isDisabled
+                                            iconPath={`states/icon_${state}.svg`}
+                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                        />
                                     </CSSWrapper>
                                 )) || <Text>{t('profile.noInfo')}</Text>}
                             </Column>
@@ -188,25 +197,13 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     </Row>
                 </ProfileSettingItem>
 
-                <Button
-                    onPress={() => {
-                        setCurrentIndex(2);
-                    }}
-                    isDisabled={isLoading}
-                >
-                    Weiter
-                </Button>
-                {!isEdit && (
-                    <Button
-                        variant="outline"
-                        onPress={() => {
-                            setCurrentIndex(0);
-                        }}
-                        isDisabled={isLoading}
-                    >
-                        Zurück
-                    </Button>
-                )}
+                <NextPrevButtons
+                    isDisabledNext={isLoading}
+                    onPressNext={() => setCurrentIndex(2)}
+                    onPressPrev={() => setCurrentIndex(0)}
+                    isDisabledPrev={isLoading}
+                    onlyNext={isEdit}
+                />
             </VStack>
             <Modal
                 isOpen={showModal}

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { AttendanceStatus } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
 import { AppointmentParticipant, Organizer } from '../gql/graphql';
+import { AttendeesDeclined } from '../types/lernfair/Appointment';
 
 type ModalProps = {
     organizers: Organizer[];
@@ -10,6 +11,10 @@ type ModalProps = {
     declinedBy: number[];
     onClose?: () => void;
 };
+
+function mapToIds(declinedAttendees: AttendeesDeclined[]): number[] {
+    return declinedAttendees.map((a) => a.id);
+}
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();

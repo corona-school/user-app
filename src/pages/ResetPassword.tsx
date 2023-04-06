@@ -10,10 +10,12 @@ import useApollo from '../hooks/useApollo';
 import AlertMessage from '../widgets/AlertMessage';
 import { log } from '../log';
 
-type Props = {};
+type Props = {
+    layout: 'new-pw' | 'reset-pw';
+};
 
-const ResetPassword: React.FC<Props> = () => {
-    const { onLogin, client, sessionState } = useApollo();
+const ResetPassword: React.FC<Props> = ({ layout }) => {
+    const { sessionState } = useApollo();
     const [searchParams] = useSearchParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -61,40 +63,17 @@ const ResetPassword: React.FC<Props> = () => {
     }, [changePassword, password, passwordRepeat]);
 
     useEffect(() => {
-        (async function () {
-            // Ensure the user is logged in
-            // Either they already have a session ...
-            if (sessionState === 'logged-in') {
-                log('PasswordReset', 'Already logged in');
-                setShowResetPassword('success');
-                return;
-            }
-
-            const token = searchParams?.get('secret_token');
-            if (!token) {
-                log('PasswordReset', 'No token present');
-                setShowResetPassword('error');
-                return;
-            }
-
-            try {
-                const loginResult = await client.mutate({
-                    mutation: gql(`
-                        mutation LoginToken($token: String!) {
-                            loginToken(token: $token)
-                        }
-                    `),
-                    variables: { token },
-                });
-                log('PasswordReset', 'Logged in with token');
-                onLogin(loginResult);
-                setShowResetPassword('success');
-            } catch (error) {
-                log('Password Reset', 'Failed to log in with token', error);
-                setShowResetPassword('error');
-            }
-        })();
-    }, [searchParams, setShowResetPassword, client, onLogin, sessionState]);
+        if (sessionState === 'logged-in') {
+            log('PasswordReset', 'Already logged in');
+            setShowResetPassword('success');
+            return;
+        }
+        if (sessionState === 'error') {
+            log('PasswordReset', 'Session state changed to error');
+            setShowResetPassword('error');
+            return;
+        }
+    }, [setShowResetPassword, sessionState]);
 
     const onNext = () => {
         const redirectTo = searchParams?.get('redirectTo');
@@ -105,22 +84,29 @@ const ResetPassword: React.FC<Props> = () => {
         <>
             <Flex overflowY={'auto'} height="100vh">
                 <>
-                    <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
-                        <Image
-                            alt="Lernfair"
-                            position="absolute"
-                            zIndex="-1"
-                            borderBottomRadius={15}
-                            width="100%"
-                            height="100%"
-                            source={{
-                                uri: require('../assets/images/globals/lf-bg.png'),
-                            }}
-                        />
-                        <Logo />
-                        <Heading mt={space['1']}>Passwort neu setzen</Heading>
-                    </Box>
-                    <VStack space={space['1']} paddingX={space['1']} mt={space['4']} marginX="auto" width={ContainerWidth} justifyContent="center">
+                    {layout === 'new-pw' ? (
+                        <Box paddingY={space['2']} justifyContent="center" alignItems="center">
+                            <Logo />
+                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                        </Box>
+                    ) : (
+                        <Box position="relative" paddingY={space['2']} mb={space['3']} justifyContent="center" alignItems="center">
+                            <Image
+                                alt="Lernfair"
+                                position="absolute"
+                                zIndex="-1"
+                                borderBottomRadius={15}
+                                width="100%"
+                                height="100%"
+                                source={{
+                                    uri: require('../assets/images/globals/lf-bg.png'),
+                                }}
+                            />
+                            <Logo />
+                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                        </Box>
+                    )}
+                    <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
                         {showResetPassword === 'success' && (
                             <>
                                 <PasswordInput placeholder={'Neues Passwort'} value={password} onChangeText={setPassword} />
@@ -131,7 +117,11 @@ const ResetPassword: React.FC<Props> = () => {
                                 {showPasswordLength && <AlertMessage content={t('registration.hint.password.length')} />}
                                 {showPasswordConfirmNoMatch && <AlertMessage content={t('registration.hint.password.nomatch')} />}
                                 <Row justifyContent="center">
-                                    <Button width={buttonWidth} onPress={resetPassword} isDisabled={!password.length}>
+                                    <Button
+                                        width={buttonWidth}
+                                        onPress={resetPassword}
+                                        isDisabled={!password.length || password.length != passwordRepeat.length}
+                                    >
                                         Passwort ändern
                                     </Button>
                                 </Row>

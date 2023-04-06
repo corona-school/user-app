@@ -6,10 +6,9 @@ import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
 import { AppointmentType } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
-import { getSubjectKey, getSubjectLabel } from '../../types/lernfair/Subject';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import IconTagList from '../../widgets/IconTagList';
+import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 
 type Props = {
@@ -70,13 +69,14 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
     const _convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
         for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+            const converted: Appointment = {
                 id: 1,
-                title: appointment.title,
-                description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: AppointmentType.Group,
+                subcourseId: 1,
+                title: appointment?.title ?? '',
+                description: appointment?.description ?? '',
             };
             convertedAppointments.push(converted);
         }
@@ -101,31 +101,9 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 </Text>
                 <Text fontSize="md">{courseName}</Text>
             </Row>
-            {subject?.name && (
-                <>
-                    <Heading fontSize="md">{t('course.CourseDate.Preview.courseSubject')}</Heading>
-                    <Box paddingBottom={space['0.5']}>
-                        {subject && (
-                            <>
-                                <IconTagList
-                                    iconPath={`subjects/icon_${getSubjectKey(subject.name)}.svg`}
-                                    isDisabled
-                                    text={getSubjectLabel(subject.name, true)}
-                                />
-                            </>
-                        )}
-                    </Box>
-                </>
-            )}
-            <Row flexDirection="column" paddingBottom={space['0.5']}>
-                <Heading fontSize="md" paddingBottom={space['0.5']}>
-                    {t('course.CourseDate.Preview.jahrgangsstufe')}
-                </Heading>
+            <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
+            <Text paddingBottom={space['0.5']}>{description}</Text>
 
-                <Text>
-                    {t('course.CourseDate.Preview.classHeadline')} {courseClasses && courseClasses[0]} - {courseClasses && courseClasses[1]}
-                </Text>
-            </Row>
             <Row flexDirection="column" paddingBottom={space['0.5']}>
                 <Heading fontSize="md" paddingBottom={space['0.5']}>
                     {t('course.CourseDate.Preview.image')}
@@ -135,20 +113,37 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                     <Image src={pickedPhoto} h="100%" />
                 </Box>
             </Row>
-            <Heading fontSize="md">{t('course.CourseDate.Preview.desc')}</Heading>
-            <Text paddingBottom={space['0.5']}>{description}</Text>
-            <Heading fontSize="md">{t('course.CourseDate.Preview.tagHeadline')}</Heading>
-            <Row space={space['0.5']}>{(tags && tags.map((t) => <Tag text={t.name} />)) || <Text>{t('course.CourseDate.Preview.notags')}</Text>}</Row>
+            {subject && (
+                <>
+                    <Heading fontSize="md">{t('course.CourseDate.Preview.courseSubject')}</Heading>
+                    <Box paddingBottom={space['0.5']}>
+                        <SubjectSelector addSubject={() => {}} removeSubject={() => {}} subjects={[]} selectable={[subject]} variant="normal" />
+                    </Box>
+                </>
+            )}
+            {tags && tags?.length > 0 && (
+                <>
+                    <Heading fontSize="md">{t('course.CourseDate.Preview.tagHeadline')}</Heading>
+                    <Row space={space['0.5']}>{(tags && tags.map((t) => <Tag text={t.name} />)) || <Text>{t('course.CourseDate.Preview.notags')}</Text>}</Row>
+                </>
+            )}
+
+            <Row flexDirection="column" paddingBottom={space['0.5']}>
+                <Heading fontSize="md" paddingBottom={space['0.5']}>
+                    {t('course.CourseDate.Preview.jahrgangsstufe')}
+                </Heading>
+
+                <Text>
+                    {t('course.CourseDate.Preview.classHeadline')} {courseClasses && courseClasses[0]} - {courseClasses && courseClasses[1]}
+                </Text>
+            </Row>
+
             <VStack>
                 <Row>
                     <Text fontSize="md" bold>
                         {t('course.CourseDate.Preview.membersCountLabel') + ' '}
                     </Text>
-                    <Text fontSize="md">
-                        {t('course.CourseDate.Preview.membersCountMaxLabel')}
-                        {'. '}
-                        {maxParticipantCount}
-                    </Text>
+                    <Text fontSize="md">{t('course.CourseDate.Preview.membersCountMaxLabel', { membersCount: maxParticipantCount })}</Text>
                 </Row>
 
                 <Row>

@@ -32,11 +32,12 @@ app.use(compression());
 app.use(Express.static(__dirname + '/build', {
     immutable: true,
     maxAge: '365 days',
-    fallthrough: true
+    fallthrough: true,
+    index: false
 }));
 
 // Entrypoint of the PWA - Do not cache to be able to invalidate logic changes fast
-app.use((req, res) => res.sendFile(__dirname + '/build/index.html', { 'Cache-Control': 'no-cache' }));
+app.use((req, res) => res.sendFile(__dirname + '/build/index.html', { headers: { 'Cache-Control': 'no-cache' } }));
 
 // Serve on the PORT Heroku wishes
 app.listen(process.env.PORT ?? 5000, () => console.info(`Express started and listening`));

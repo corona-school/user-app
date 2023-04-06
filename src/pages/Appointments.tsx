@@ -8,12 +8,15 @@ import WithNavigation from '../components/WithNavigation';
 import AddAppointmentButton from '../widgets/AddAppointmentButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
+import { gql } from '../gql/gql';
+import { Appointment } from '../types/lernfair/Appointment';
+import InfiniteScrollList from '../widgets/appointment/List';
 
-const GET_MY_APPOINTMENTS = gql`
+const GET_MY_APPOINTMENTS = gql(`
     query myAppointments($take: Float, $skip: Float) {
         me {
             appointments(take: $take, skip: $skip) {
@@ -22,8 +25,6 @@ const GET_MY_APPOINTMENTS = gql`
                 description
                 start
                 duration
-                subcourseId
-                matchId
                 organizers(skip: 0, take: 5) {
                     id
                     firstname
@@ -36,18 +37,15 @@ const GET_MY_APPOINTMENTS = gql`
                     isPupil
                     isStudent
                 }
-                meetingLink
-                appointmentType
             }
         }
     }
-`;
+`);
 
 const Appointments: React.FC = () => {
     const userType = useUserType();
     const take = 20;
     const skip = 0;
-    const [isEndOfList, setIsEndOfList] = useState(false);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -60,34 +58,42 @@ const Appointments: React.FC = () => {
         lg: 'top-right',
     });
 
+    const appointments = data?.me?.appointments ?? [];
+
     const loadMoreAppointments = () => {
         fetchMore({
-            variables: { take, skip: skip + take },
+            variables: { take: 10, skip: appointments.length + 10 },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
-                const newAppointments = fetchMoreResult.me.appointments;
-                return newAppointments.length
-                    ? {
-                          ...previousAppointments,
-                          me: {
-                              appointments: [...previousAppointments.me.appointments, ...newAppointments],
-                          },
-                      }
-                    : previousAppointments;
+                const newAppointments = fetchMoreResult?.me?.appointments;
+                const prevAppointments = previousAppointments?.me?.appointments ?? [];
+                if (!newAppointments || newAppointments.length === 0) return previousAppointments;
+                return {
+                    ...previousAppointments,
+                    me: {
+                        appointments: [...prevAppointments, ...newAppointments],
+                    },
+                };
             },
         });
     };
 
-    useEffect(() => {
-        if (isEndOfList) loadMoreAppointments();
-    }, [isEndOfList]);
+    // useEffect(() => {
+    //     if (isEndOfList) loadMoreAppointments();
+    // }, [isEndOfList]);
 
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
-                {loading && <CenterLoadingSpinner />}
+                {loading && !data && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
-                {!error && data?.me?.appointments.length > 0 ? (
-                    <AppointmentList isReadOnly={false} appointments={data?.me?.appointments} isEndOfList={isEndOfList} setEndOfList={setIsEndOfList} />
+                {!error && appointments.length > 0 ? (
+                    // <AppointmentList isReadOnly={false} appointments={appointments as Appointment[]} isEndOfList={isEndOfList} setEndOfList={setIsEndOfList} />
+                    <InfiniteScrollList
+                        isLoadingAppointments={loading}
+                        appointments={appointments as Appointment[]}
+                        isReadOnlyList={false}
+                        loadMoreAppointments={() => loadMoreAppointments()}
+                    />
                 ) : (
                     <Box h={800} justifyContent="center">
                         <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />

@@ -62,7 +62,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
         try {
             const res = await deactivateAccount({
                 variables: {
-                    reason: !isOther ? `${t(`profile.Deactivate.${userType}.${parseInt(reason)}`)}` : other,
+                    reason: !isOther ? `${t(`profile.Deactivate.${userType}.${parseInt(reason)}` as unknown as TemplateStringsArray)}` : other,
                 },
             });
 
@@ -106,7 +106,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                             <VStack space={space['0.5']}>
                                 {reasons.map((_, index: number) => (
                                     <Radio key={index} value={`${index + 1}`}>
-                                        {t(`profile.Deactivate.${userType}.${index + 1}`)}
+                                        {t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
                                     </Radio>
                                 ))}
                             </VStack>

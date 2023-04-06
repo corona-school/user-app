@@ -11,7 +11,7 @@ import AppointmentsInsight from './create-appointment/AppointmentsInsight';
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [noAppointments, setNoAppointments] = useState<boolean>(false);
-    const [id, setId] = useState<number>(0);
+    const [courseOrMatchId, setCourseOrMatchId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
     const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
 
@@ -33,14 +33,13 @@ const CreateAppointment = () => {
 
     const skipStepTwo = useCallback(
         (id: number, isCourse?: boolean) => {
-            console.log('isCourse? ', isCourse, id);
             if (isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(true);
                 setAppointmentsTotal(0);
             }
             if (!isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(false);
                 setAppointmentsTotal(0);
             }
@@ -52,19 +51,17 @@ const CreateAppointment = () => {
 
     const goToStepTwo = useCallback(
         (id: number, isCourse?: boolean) => {
-            console.log('isCourse? ', isCourse, id);
-
             if (isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(true);
             }
             if (!isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(false);
             }
             onNext();
         },
-        [setId, onNext]
+        [setCourseOrMatchId, onNext]
     );
 
     return (
@@ -83,12 +80,12 @@ const CreateAppointment = () => {
                     </View>
                     {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
                     {currentIndex === 1 && (
-                        <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} setAppointmentsTotal={setAppointmentsTotal} />
+                        <AppointmentsInsight id={courseOrMatchId} isCourse={isCourse} next={onNext} back={onBack} setAppointmentsTotal={setAppointmentsTotal} />
                     )}
                     {currentIndex === 2 && (
                         <AppointmentCreation
                             back={noAppointments ? returnToStepOne : onBack}
-                            id={id}
+                            courseOrMatchId={courseOrMatchId}
                             isCourse={isCourse}
                             appointmentsTotal={appointmentsTotal}
                         />

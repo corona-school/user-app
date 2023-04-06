@@ -1,11 +1,10 @@
 import { Box, Button, Flex, Heading, Image, Text, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useModal from '../hooks/useModal';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
-import { REDIRECT_OPTIN } from '../Utility';
 import UserType from './registration/UserType';
 import PersonalData from './registration/PersonalData';
 import SchoolClass from './registration/SchoolClass';
@@ -42,66 +41,49 @@ type RegistrationContextType = {
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
 
 const mutPupil = gql`
-  mutation registerPupil(
-    $firstname: String!
-    $lastname: String!
-    $email: String!
-    $password: String!
-    $newsletter: Boolean!
-    $state: State!
-    $grade: Int!
-    $schoolType: SchoolType!
-  ) {
-    meRegisterPupil(
-      noEmail: true,
-      data: {
-        firstname: $firstname
-        lastname: $lastname
-        email: $email
-        newsletter: $newsletter
-        registrationSource: normal
-        state: $state
-      }
+    mutation registerPupil(
+        $firstname: String!
+        $lastname: String!
+        $email: String!
+        $password: String!
+        $newsletter: Boolean!
+        $state: State!
+        $grade: Int!
+        $schoolType: SchoolType!
+        $retainPath: String!
     ) {
-      id
+        meRegisterPupil(
+            noEmail: true
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, state: $state }
+        ) {
+            id
+        }
+        passwordCreate(password: $password)
+        meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType } })
+        tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-    passwordCreate(password: $password)
-    meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType }})
-    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
-  }
 `;
 const mutStudent = gql`
-  mutation registerStudent(
-    $firstname: String!
-    $lastname: String!
-    $email: String!
-    $password: String!
-    $newsletter: Boolean!
-  ) {
-    meRegisterStudent(
-      noEmail: true,
-      data: {
-        firstname: $firstname
-        lastname: $lastname
-        email: $email
-        newsletter: $newsletter
-        registrationSource: normal
-      }
-    ) {
-      id
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!) {
+        meRegisterStudent(
+            noEmail: true
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal }
+        ) {
+            id
+        }
+        passwordCreate(password: $password)
+        tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-    passwordCreate(password: $password)
-    tokenRequest(action: "user-verify-email", email: $email, redirectTo: "${REDIRECT_OPTIN}")
-  }
 `;
 
 const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { setVariant, setShow, setContent } = useModal();
-    const navigate = useNavigate();
+    const { show, hide } = useModal();
 
     const location = useLocation();
+    const locState = location.state as { retainPath?: string };
+    const retainPath = locState?.retainPath ?? '/start';
 
     const [currentIndex, setCurrentIndex] = useState<number>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/pupil' ? 1 : 0
@@ -115,12 +97,11 @@ const Registration: React.FC = () => {
     const [schoolType, setSchoolType] = useState<string>('grundschule');
     const [schoolClass, setSchoolClass] = useState<number>(1);
     const [userState, setUserState] = useState<string>('bw');
-    const [newsletter, setNewsletter] = useState<boolean>(true);
+    const [newsletter, setNewsletter] = useState<boolean>(false);
 
     const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent);
 
     const attemptRegister = useCallback(async () => {
-        setVariant('dark');
         try {
             const validMail = email.toLowerCase();
             const data = {
@@ -130,6 +111,7 @@ const Registration: React.FC = () => {
                     email: validMail,
                     password,
                     newsletter,
+                    retainPath: retainPath,
                 },
             } as {
                 variables: {
@@ -141,6 +123,7 @@ const Registration: React.FC = () => {
                     schoolType?: string;
                     grade?: number;
                     state?: string;
+                    retainPath?: string;
                 };
             };
 
@@ -153,49 +136,50 @@ const Registration: React.FC = () => {
             const res = await register(data);
 
             if (!res.errors) {
-                setContent(<VerifyEmailModal email={email} />);
+                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
             } else {
-                setContent(
+                show(
+                    { variant: 'dark' },
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
-                            {t(`registration.result.error.message.${res.errors[0].message}`, {
+                            {t(`registration.result.error.message.${res.errors[0].message}` as unknown as TemplateStringsArray, {
                                 defaultValue: res.errors[0].message,
                             })}
                         </Text>
                         <Button
                             onPress={() => {
-                                setShow(false);
+                                hide();
                                 attemptRegister();
                             }}
                         >
                             {t('registration.result.error.tryagain')}
                         </Button>
-                        <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                        <Button onPress={hide}>{t('back')}</Button>
                     </VStack>
                 );
             }
         } catch (e: any) {
-            setContent(
+            show(
+                { variant: 'light' },
                 <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                     <Text color="lightText">
-                        {t(`registration.result.error.message.${e.message}`, {
+                        {t(`registration.result.error.message.${e.message}` as unknown as TemplateStringsArray, {
                             defaultValue: e.message,
                         })}
                     </Text>
                     <Button
                         onPress={() => {
-                            setShow(false);
+                            hide();
                             attemptRegister();
                         }}
                     >
                         {t('registration.result.error.tryagain')}
                     </Button>
-                    <Button onPress={() => setShow(false)}>{t('registration.result.error.btn')}</Button>
+                    <Button onPress={hide}>{t('back')}</Button>
                 </VStack>
             );
         }
-        setShow(true);
-    }, [setVariant, setShow, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, setContent, space, t]);
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, space, t]);
 
     return (
         <Flex alignItems="center" w="100%" h="100vh">
@@ -215,7 +199,7 @@ const Registration: React.FC = () => {
           <BackButton onPress={goBack} />
         </Box> */}
                 <Logo />
-                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title`)}</Heading>
+                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider

@@ -9,7 +9,7 @@ type ModalProps = {
 const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ closeModal, total }) => {
     return (
         <>
-            <Modal.Content minW="80%" marginX="auto" p={5}>
+            <Modal.Content minW="80%" p={10}>
                 <Modal.CloseButton />
                 <Modal.Body>
                     <AppointmentCreation appointmentsTotal={total} isCourseCreation={true} back={closeModal} closeModal={closeModal} />

@@ -26,8 +26,7 @@ const dashboard = {
     },
     myappointments: {
         header: 'Meine Termine',
-        linktext: 'Alle',
-        noappointments: 'Es wurden keine weitere Termine gefunden.',
+        noappointments: 'Es wurden keine Termine gefunden.',
     },
     homework: {
         header: 'Hausaufgabenhilfe',
@@ -44,35 +43,43 @@ const dashboard = {
     offers: {
         header: 'Angebote',
         match: 'Match auflösen',
-        noMatching: 'Du hast noch keine Matches',
-        requestMatching: 'Match anfordern',
+        noMatching: 'Du hast gerade kein aktives Lernpaar',
         requestCreated: 'Anfrage erstellt am:',
         clock: 'Uhr',
-        waitingTimeInfo: 'Bitte beachte dass die Suche nach einer/einem Lernpartner:in zu Wartezeiten von 3 - 6 Monaten kommen kann',
+        waitingTimeInfo: 'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in für dich zu Wartezeiten von 3 - 6 Monaten kommen kann.',
         removeRequest: 'Anfrage zurücknehmen',
     },
     helpers: {
         headlines: {
-            newOffer: 'Neues Angebot',
             course: 'Meine Kurse',
             importantNews: 'Wichtige Meldungen',
             myLearningPartner: 'Meine Lernpartner:innen',
-            openedRequests: 'Offene Anfragen:',
-            recommend: 'Empfehle uns weiter',
-            recommendFriends: 'Empfehle Lern-Fair deinen Freunden',
+            openedRequests: 'Suche nach Lernpartner:innen',
+            recommend: 'Empfiehl uns weiter',
+            recommendFriends: 'Empfiehl Lern-Fair deinen Freunden',
         },
         contents: {
-            newOffer: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.',
             recommendFriends:
                 'Du stehst hinter der Mission von Lern-Fair für mehr Bildungsgerechtigkeit in Deutschland? Dann erzähle deinen Freunden von Lern-Fair und lass uns gemeinsam noch mehr benachteiligten Kindern und Jugendlichen helfen.',
+            recommendText:
+                'Hey, ich engagiere mich ehrenamtlich bei Lern-Fair e.V. für mehr Bildungschancen und Gerechtigkeit in Deutschland. Vielleicht wäre das ja auch etwas für dich? Es ist total einfach und komplett flexibel, da alles online stattfindet und du von zuhause aus mitmachen kannst. Ich würde mich freuen, wenn du dabei wärst! Alle Infos findest du auf der Website: www.lern-fair.de',
+            recommendSubject: 'Engagiere dich bei Lern-Fair!',
+            toast: 'Text in die Zwischenablage kopiert.',
         },
         buttons: {
             course: 'Neuen Kurs eintragen',
             offer: 'Wichtige Meldungen',
-            requestMatch: 'Neues Match anfordern',
-            solveMatch: 'Match auflösen',
+            requestMatchHuH: 'Ein neues Lernpaar bilden',
+            requestMatchSuS: 'Auf die Warteliste setzen',
+            solveMatch: 'Lernpaar auflösen',
             recommend: 'Jetzt empfehlen',
         },
+        channels: {
+            whatsApp: 'WhatsApp',
+            signal: 'Signal',
+            email: 'E-Mail',
+        },
     },
+    noproposalsPupil: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',
 };
 export default dashboard;

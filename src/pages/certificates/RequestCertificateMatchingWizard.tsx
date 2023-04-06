@@ -6,7 +6,7 @@ import SelectPupilsWidget from '../../widgets/certificates/SelectPupilsWidget';
 import { RequestCertificateContext } from '../RequestCertificate';
 
 type Props = {
-    onNext: () => any;
+    onNext: () => void;
 };
 
 const RequestCertificateMatchingWizard: React.FC<Props> = ({ onNext }) => {

@@ -19,6 +19,14 @@ export type Appointment = {
     appointmentType?: AppointmentType;
 };
 
+export type AttendeesDeclined = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    isStudent: boolean;
+    isPupil: boolean;
+};
+
 // type of appointments to send to the BE
 export type CreateAppointmentInput = {
     title: string;
@@ -28,9 +36,5 @@ export type CreateAppointmentInput = {
     subcourseId?: number;
     matchId?: number;
     meetingLink: string;
-};
-
-export type Course = {
-    name: string;
-    description: string;
+    appointmentType: AppointmentType;
 };

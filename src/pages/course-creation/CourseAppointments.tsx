@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
 import { AppointmentType } from '../../gql/graphql';
@@ -9,6 +9,7 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
+import ButtonRow from './ButtonRow';
 
 type Props = {
     next: () => void;
@@ -83,11 +84,11 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
         for (const appointment of appointmentsToBeCreated) {
             const converted = {
                 id: 1,
-                title: appointment.title,
-                description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: AppointmentType.Group,
+                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
+                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
             };
             convertedAppointments.push(converted);
         }
@@ -101,6 +102,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
         return all;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
+
+    // * validate if min one appointment is created
+    const tryNext = () => {};
 
     return (
         <>
@@ -130,15 +134,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                     {t('course.appointments.addOtherAppointment')}
                 </Button>
                 <Divider my="5" />
-
-                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
-                    <Button onPress={next} width={buttonWidth}>
-                        {t('course.appointments.check')}
-                    </Button>
-                    <Button variant="outline" onPress={back} width={buttonWidth}>
-                        {t('course.appointments.prevPage')}
-                    </Button>
-                </Stack>
+                <ButtonRow onNext={next} onBack={back} />
             </Box>
         </>
     );

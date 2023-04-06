@@ -3,7 +3,7 @@ import { ReactNode, useContext } from 'react';
 import { Pressable } from 'react-native';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { ModalContext } from './FullPageModal';
+import useModal from '../hooks/useModal';
 
 type Props = {
     title: string;
@@ -18,21 +18,17 @@ type Props = {
 
 const WebServiceCard: React.FC<Props> = ({ title, description, image, tags, url, pros, contra, buttontext = 'Zur Website' }) => {
     const { space } = useTheme();
-    const { setShow, setContent, setVariant } = useContext(ModalContext);
+    const { show, hide } = useModal();
 
     return (
         <View>
             <Pressable
                 onPress={() => {
-                    setVariant('light');
-                    setContent(
+                    show(
+                        { variant: 'light' },
                         <Container maxWidth="100%" padding={space['1']}>
                             <Box marginBottom={space['2']}>
-                                <Pressable
-                                    onPress={() => {
-                                        setShow(false);
-                                    }}
-                                >
+                                <Pressable onPress={hide}>
                                     <CloseIcon color="primary.800" />
                                 </Pressable>
                             </Box>
@@ -76,7 +72,6 @@ const WebServiceCard: React.FC<Props> = ({ title, description, image, tags, url,
                             )}
                         </Container>
                     );
-                    setShow(true);
                 }}
             >
                 <Card flexibleWidth={true}>

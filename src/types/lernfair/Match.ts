@@ -1,12 +1,12 @@
 import { Appointment } from './Appointment';
-import { LFSubject } from './Subject';
+import { Subject } from '../../gql/graphql';
 
 export type LFMatch = {
     id: number;
     dissolved: boolean;
     pupil: any;
     student: any;
-    subjectsFormatted: LFSubject[];
+    subjectsFormatted: Subject[];
     uuid: string;
     studentEmail: string;
     pupilEmail: string;

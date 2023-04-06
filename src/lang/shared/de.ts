@@ -1,5 +1,5 @@
-const onboarding = {
-    email: 'Email',
+const shared = {
+    email: 'E-Mail',
     password: 'Passwort',
     hallo: 'Hallo',
     visitcourse: 'zum Kurs',
@@ -8,26 +8,26 @@ const onboarding = {
     login: 'Anmelden',
     begin: 'Ab',
     all: 'Alle',
+    cancel: 'Abbrechen',
+    continue: 'Fortfahren',
+    from: 'Ab',
     firstname: 'Vorname',
     lastname: 'Nachname',
     skip: 'Überspringen',
+    send: 'Senden',
+    save: 'Speichern',
+    edit: 'Bearbeiten',
+    signup: 'Registrieren',
+    signin: 'Anmelden',
+    done: 'Fertig',
+    saveSelection: 'Auswahl speichern',
+    sendMessage: 'Nachricht senden',
     next: 'Weiter',
     back: 'Zurück',
     important: 'Wichtig',
-    empty: {
-        appointments: 'Du hast momentan keine Termine.',
-        courses: 'Es wurden keine Kurse gefunden.',
-        offers: 'Es wurden keine Angebote gefunden.',
-        coursescheck: 'Es wurden keine Kurse in Prüfung gefunden.',
-        coursesdraft: 'Es wurden keine Kursentwürfe gefunden.',
-        matchings: 'Es wurden keine Matchings gefunden.',
-        norequests: 'Es wurden keine Anfragen gefunden.',
-    },
+    error: 'Es ist ein Fehler aufgetreten.',
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
-};
-
-const input = {
     datepickerPlaceholder: 'Wähle ein Datum...',
     timepickerPlaceholder: '00:00',
 };
-export default { onboarding, input };
+export default shared;
