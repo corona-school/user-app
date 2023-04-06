@@ -16,20 +16,20 @@ const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false })
     const { t } = useTranslation();
 
     const state = useMemo(() => {
-        const state = partner.state !== Student_State_Enum.Other ? partner.state : undefined;
-        return t(`lernfair.states.${state ?? 'other'}`, { defaultValue: '' }) as string;
-    }, [partner.state]);
+        if (partner.state && partner.state !== Student_State_Enum.Other) return t(`lernfair.states.${partner.state}`);
+        return undefined;
+    }, [partner.state, t]);
 
     const school = useMemo(() => {
-        if ('schooltype' in partner) return partner.schooltype !== Pupil_Schooltype_Enum.Other && partner.schooltype;
+        if ('schooltype' in partner && partner.schooltype !== Pupil_Schooltype_Enum.Other) return t(`lernfair.schooltypes.${partner.schooltype}`);
         return undefined;
-    }, [partner]);
+    }, [partner, t]);
 
     const matchPartnerInfos = useMemo(() => {
         let strings: string[] = [];
         if (school) strings.push(school);
         if ('grade' in partner && partner.grade) strings.push(partner.grade);
-        if (state) strings.push();
+        if (state) strings.push(state);
         return strings.join(' • ');
     }, [partner, school, state]);
 

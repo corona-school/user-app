@@ -18,7 +18,9 @@ const matching = {
         directCall: 'Sofortbesprechung starten',
         dissolveMatch: 'Lernpaar auflösen',
         dissolved: 'Das Lernpaar wurde aufgelöst.',
+        dissolvedAlert: 'Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.',
         contactMail: 'Via E-Mail kontaktieren',
+        tutorInstructor: 'Tutor:in, Kursleiter:in',
     },
     blocker: {
         header: 'Lernunterstützung',
