@@ -27,11 +27,10 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'rea
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
-import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
-import Card from '../../components/Card';
+import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 
 type Props = {};
 
@@ -40,6 +39,7 @@ const query = gql(`
         me {
             firstname
             lastname
+            email
             student {
                 state
                 aboutMe
@@ -55,6 +55,10 @@ const query = gql(`
                     hoursTotal
                     medium
                     categories
+                    uuid
+                    hoursPerWeek
+                    ongoingLessons
+                    pupil { firstname lastname }
                 }
             }
         }
@@ -95,9 +99,9 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.AboutMe.popup.exit')}
+                            {t('cancel')}
                         </Button>
-                        <Button onPress={onSaveAboutMe}>{t('profile.AboutMe.popup.save')}</Button>
+                        <Button onPress={onSaveAboutMe}>{t('save')}</Button>
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
@@ -117,8 +121,6 @@ const ProfileStudent: React.FC<Props> = () => {
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
     const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
 
-    const [showSelectPDFLanguageModal, setShowSelectPDFLanguageModal] = useState<boolean>(false);
-    const [focusedCertificateUuid, setFocusedCertificateUuid] = useState<string>('');
     const location = useLocation();
     const { showSuccessfulChangeAlert = false } = (location.state || {}) as {
         showSuccessfulChangeAlert: boolean;
@@ -127,23 +129,15 @@ const ProfileStudent: React.FC<Props> = () => {
     const { data, loading } = useQuery(query, {
         fetchPolicy: 'no-cache',
     });
-    const [requestCertificate] = useMutation(
-        gql(`
-            mutation GetCertificate($lang: String!, $uuid: String!) {
-                participationCertificateAsPDF(language: $lang, uuid: $uuid)
-            }
-        `)
-    );
 
     const profileCompleteness = useMemo(() => {
-        const max = 5.0;
+        const max = 4.0;
         let complete = 0.0;
 
         data?.me.firstname && data?.me.lastname && (complete += 1);
         (data?.me.student!.aboutMe?.length ?? 0) > 0 && (complete += 1);
         data?.me?.student?.languages?.length && (complete += 1);
         data?.me?.student?.state && (complete += 1);
-        (data?.me?.student?.subjectsFormatted?.length ?? 0) > 0 && (complete += 1);
         return Math.floor((complete / max) * 100);
     }, [data?.me?.firstname, data?.me?.lastname, data?.me?.student]);
 
@@ -177,27 +171,6 @@ const ProfileStudent: React.FC<Props> = () => {
             window.scrollTo({ top: 0 });
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
-
-    const downloadCertificate = useCallback(
-        async (lang: 'de' | 'en') => {
-            setShowSelectPDFLanguageModal(false);
-
-            const res = await requestCertificate({
-                variables: {
-                    lang,
-                    uuid: `${focusedCertificateUuid}`,
-                },
-            });
-
-            if (res?.data?.participationCertificateAsPDF) {
-                toast.show({ description: 'Dein Zertifikat wird heruntergeladen', placement: 'top' });
-                window.open(`${process.env.REACT_APP_APOLLO_CLIENT_URI}${res?.data?.participationCertificateAsPDF}`, '_blank');
-            } else {
-                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten', placement: 'top' });
-            }
-        },
-        [focusedCertificateUuid, requestCertificate, toast]
-    );
 
     return (
         <>
@@ -246,6 +219,10 @@ const ProfileStudent: React.FC<Props> = () => {
                                 </Text>
                             </ProfileSettingItem>
 
+                            <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
+                                <Text>{data?.me?.email}</Text>
+                            </ProfileSettingItem>
+
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
@@ -267,7 +244,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                                     <IconTagList
                                                         isDisabled
                                                         iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
-                                                        text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                                                        text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>
                                             </Column>
@@ -301,112 +278,20 @@ const ProfileStudent: React.FC<Props> = () => {
                                 </Row>
                             </ProfileSettingItem>
                         </ProfileSettingRow>
-                        {/* <ProfileSettingRow title={'Meine Bescheinigungen'}>
-                            <VStack space={space['1']}>
-                                <CertificateOverviewRow
-                                    title="Gruppenkurse"
-                                    isDisabled={_requestCertificate.loading}
-                                    Icon={<CertificateGroupIcon />}
-                                    certificate={{}}
-                                    onPressDownload={() => {
-                                        // setFocusedCertificateUuid(cert.uuid)
-                                        setShowSelectPDFLanguageModal(true);
-                                    }}
-                                    onPressDetails={() =>
-                                        navigate('/certificate-list', {
-                                            state: { type: 'group' },
-                                        })
-                                    }
-                                />
-                                <CertificateOverviewRow
-                                    title="1:1 Lernunterstützung"
-                                    isDisabled={_requestCertificate.loading}
-                                    Icon={<CertificateGroupIcon />}
-                                    certificate={{}}
-                                    onPressDownload={() => {
-                                        // setFocusedCertificateUuid(cert.uuid)
-                                        setShowSelectPDFLanguageModal(true);
-                                    }}
-                                    onPressDetails={() =>
-                                        navigate('/certificate-list', {
-                                            state: { type: 'matching' },
-                                        })
-                                    }
-                                />
+                        <ProfileSettingRow title={'Meine Bescheinigungen'}>
+                            <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
+                                Neue Bescheinigung beantragen
+                            </Button>
+                            <VStack display="flex" flexDirection="row" flexWrap="wrap">
+                                {data?.me.student?.participationCertificates.map((certificate) => (
+                                    <MatchCertificateCard certificate={certificate} />
+                                ))}
                             </VStack>
-                        </ProfileSettingRow> */}
+                        </ProfileSettingRow>
                     </VStack>
                 </VStack>
             </WithNavigation>
-            <Modal
-                isOpen={showSelectPDFLanguageModal}
-                onClose={() => {
-                    setFocusedCertificateUuid('');
-                    setShowSelectPDFLanguageModal(false);
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Heading>Bescheinigung herunterladen</Heading>
-                            <Text>
-                                Bitte beachte, dass noch Bestätigungen ausstehen und deswegen noch nicht alle Stunden in der Bescheigung aufgeführt sind. Die
-                                Bescheinigung wird automatisch aktualisert, sobald neue Bestätigungen vorliegen.
-                            </Text>
-
-                            <>
-                                <Button onPress={() => downloadCertificate('de')}>Deutsche Version</Button>
-                                <Button onPress={() => downloadCertificate('en')}>Englische Version</Button>
-                            </>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
         </>
     );
 };
 export default ProfileStudent;
-
-type CertificateProps = {
-    title: string;
-    Icon?: ReactNode;
-    certificate: any;
-    onPressDownload?: () => void;
-    onPressDetails?: () => void;
-    isDisabled?: boolean;
-};
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CertificateOverviewRow: React.FC<CertificateProps> = ({ title, Icon, certificate, onPressDownload, onPressDetails, isDisabled }) => {
-    const { space } = useTheme();
-    return (
-        <Card flexibleWidth padding={space['1']}>
-            <VStack>
-                <Row justifyContent="flex-end" alignItems="center">
-                    {Icon && <Box mr={space['0.5']}>{Icon}</Box>}
-                    <Heading flex="1">{title}</Heading>
-                </Row>
-                <VStack py={space['1']}>
-                    <Text>
-                        <Text bold mr="0.5">
-                            Beantragt am:
-                        </Text>
-                        {DateTime.now().toFormat('dd.MM.yyyy')}
-                    </Text>
-                    <Text>
-                        <Text bold mr="0.5">
-                            Status:{' '}
-                        </Text>
-                        <Text>0 von X bestätigt</Text>
-                    </Text>
-                </VStack>
-                <Button isDisabled={isDisabled} variant="outline" onPress={onPressDownload}>
-                    Herunterladen
-                </Button>
-                <Button isDisabled={isDisabled} variant="link" onPress={onPressDetails}>
-                    Details ansehen
-                </Button>
-            </VStack>
-        </Card>
-    );
-};

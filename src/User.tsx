@@ -3,12 +3,14 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import useApollo from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 
-export const RequireAuth = ({ children }: { children: JSX.Element }) => {
+export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
 
     const { sessionState, user } = useApollo();
 
-    if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: location }} replace />;
+    if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
+
+    if (sessionState === 'error') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 
@@ -26,6 +28,8 @@ export const SwitchUserType = ({ pupilComponent, studentComponent }: { pupilComp
     const { sessionState, user } = useApollo();
 
     if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: location }} replace />;
+
+    if (sessionState === 'error') return <Navigate to="/welcome" state={{ from: location }} replace />;
 
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 

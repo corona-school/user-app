@@ -1,6 +1,6 @@
 import { View, Row, Column, Heading, InfoIcon, Box, Pressable, Text, Container, CloseIcon, useTheme } from 'native-base';
 import { ReactNode, useContext } from 'react';
-import { ModalContext } from './FullPageModal';
+import useModal from '../hooks/useModal';
 
 type Props = {
     title: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const ProfileSettingRow: React.FC<Props> = ({ title, children, help, helpHeadline, isSpace = true }) => {
-    const { setShow, setContent, setVariant } = useContext(ModalContext);
+    const { show, hide } = useModal();
     const { space } = useTheme();
 
     return (
@@ -23,13 +23,13 @@ const ProfileSettingRow: React.FC<Props> = ({ title, children, help, helpHeadlin
                 {help && (
                     <Pressable
                         onPress={() => {
-                            setVariant('light');
-                            setContent(
+                            show(
+                                { variant: 'light' },
                                 <Container maxWidth="100%" padding={space['1']}>
                                     <Box marginBottom={space['2']}>
                                         <Pressable
                                             onPress={() => {
-                                                setShow(false);
+                                                hide();
                                             }}
                                         >
                                             <CloseIcon color="primary.800" />
@@ -44,7 +44,6 @@ const ProfileSettingRow: React.FC<Props> = ({ title, children, help, helpHeadlin
                                     </Box>
                                 </Container>
                             );
-                            setShow(true);
                         }}
                     >
                         <Box marginLeft="10px" marginTop="3px" marginRight="10px">

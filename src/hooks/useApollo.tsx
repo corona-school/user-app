@@ -44,7 +44,9 @@ export type LFApollo = {
     // Call in case a mutation was run that associates the session with a user
     onLogin: (result: FetchResult) => void;
 
-    sessionState: 'unknown' | 'logged-out' | 'logged-in';
+    loginWithPassword: (email: string, password: string) => Promise<FetchResult>;
+
+    sessionState: 'unknown' | 'logged-out' | 'logged-in' | 'error';
     // Once the session is 'logged-in', a query will be issued to determine the user session
     // When the query is finished, the user will be available:
     user: UserType | null;
@@ -64,11 +66,20 @@ export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({ children }
     );
 };
 
+// Sometimes Support / Tech-Team logs in on behalf of other users,
+//  in that case we do not want to create persistent sessions but use a temporary session instead
+// By storing the credentials in sessionStorage instead, reloading the tab will remove the session,
+//  and opening a new page will log in again with the default account
+const { searchParams } = new URL(window.location.href);
+const TEMPORARY_LOGIN = searchParams.has('temporary');
+
+const STORAGE = TEMPORARY_LOGIN ? sessionStorage : localStorage;
+
 // -------------- Global User State -------------------
 // ----- Session Token ---------------------
 //  Authenticates the user during a session
 export const getSessionToken = () => {
-    const token = localStorage.getItem('lernfair:token');
+    const token = STORAGE.getItem('lernfair:token');
     if (token) return token;
 
     return refreshSessionToken();
@@ -76,12 +87,12 @@ export const getSessionToken = () => {
 
 const refreshSessionToken = () => {
     let tok = Utility.createToken();
-    localStorage.setItem('lernfair:token', tok);
+    STORAGE.setItem('lernfair:token', tok);
     return tok;
 };
 
 const clearSessionToken = () => {
-    localStorage.removeItem('lernfair:token');
+    STORAGE.removeItem('lernfair:token');
 };
 
 // ----- Device Token -----------------------
@@ -90,18 +101,28 @@ const clearSessionToken = () => {
 //  user sessions, users can create long lived tokens with which they can log in
 // Users can create and delete these tokens as they want (e.g. logout from a certain device)
 
-const getDeviceToken = () => localStorage.getItem('lernfair:device-token');
-const setDeviceToken = (token: string) => localStorage.setItem('lernfair:device-token', token);
-const clearDeviceToken = () => localStorage.removeItem('lernfair:device-token');
+const getDeviceToken = () => STORAGE.getItem('lernfair:device-token');
+const setDeviceToken = (token: string) => STORAGE.setItem('lernfair:device-token', token);
+const clearDeviceToken = () => STORAGE.removeItem('lernfair:device-token');
 
 // ---------------- Custom ApolloLink For Request Logging -------
 class RequestLoggerLink extends ApolloLink {
     request(operation: Operation, forward?: NextLink | undefined) {
-        log('GraphQL Query', `running operation: ${operation.query.loc?.source.body}`, operation);
+        const queryName = operation.operationName;
+        const variableNames = Object.keys(operation.variables);
+        let serializedVariables = 'REDACTED';
+        if (['token', 'password', 'authToken', 'legacyToken'].every((it) => !variableNames.includes(it))) {
+            serializedVariables = JSON.stringify(operation.variables, null, 2);
+        }
+        log('GraphQL Query', `running operation: ${queryName} variables: ${serializedVariables}`, operation);
         const chain = forward!(operation);
 
         return chain.map((response: FetchResult) => {
-            log('GraphQL Query', `operation finished: `, response);
+            if (response.errors) {
+                log('GraphQL Query', `operation finished with errors: ${queryName}, errors: ${JSON.stringify(response.errors, null, 2)}`, response);
+            } else {
+                log('GraphQL Query', `operation finished with success: ${queryName}`, response);
+            }
             return response;
         });
     }
@@ -243,7 +264,7 @@ const useApolloInternal = () => {
         if (getDeviceToken()) return;
 
         const { searchParams } = new URL(window.location.href);
-        if (searchParams.has('temporary')) {
+        if (TEMPORARY_LOGIN) {
             log('GraphQL', 'Device token was not created as disabled via query parameter');
             return;
         }
@@ -273,7 +294,7 @@ const useApolloInternal = () => {
         async (deviceToken: string) => {
             log('GraphQL', 'device token present, trying to log in');
             try {
-                await client.mutate({
+                const res = await client.mutate({
                     mutation: gql(`
           mutation LoginWithDeviceToken($deviceToken: String!) {
             loginToken(token: $deviceToken)
@@ -286,10 +307,39 @@ const useApolloInternal = () => {
                 log('GraphQL', 'successfully logged in with device token');
                 setSessionState('logged-in');
                 setUser(null); // refresh user information
+                return res;
             } catch (error) {
                 log('GraphQL', 'Failed to log in with device token', error);
                 clearDeviceToken();
                 setSessionState('logged-out');
+                return;
+            }
+        },
+        [client, setSessionState]
+    );
+
+    // ---------- Secret Token --------------------
+    const loginWithSecretToken = useCallback(
+        async (secretToken: string) => {
+            log('GraphQL', 'secret token present, trying to log in');
+            try {
+                const res = await client.mutate({
+                    mutation: gql(`
+          mutation LoginWithDeviceToken($deviceToken: String!) {
+            loginToken(token: $deviceToken)
+          }
+        `),
+                    variables: { deviceToken: secretToken },
+                    context: { skipAuthRetry: true },
+                });
+
+                log('GraphQL', 'successfully logged in with secret token');
+                setSessionState('logged-in');
+                setUser(null); // refresh user information
+                return res;
+            } catch (error) {
+                log('GraphQL', 'Failed to log in with secret token', error);
+                setSessionState('error');
                 return;
             }
         },
@@ -311,6 +361,7 @@ const useApolloInternal = () => {
                     variables: { legacyToken },
                     context: { skipAuthRetry: true },
                 });
+
                 log('GraphQL', `Successfully logged in with a legacy token`);
                 await createDeviceToken();
                 setSessionState('logged-in');
@@ -366,9 +417,22 @@ const useApolloInternal = () => {
             const { searchParams, pathname } = new URL(window.location.href);
             const legacyToken = searchParams.get('token');
             const deviceToken = getDeviceToken();
+            const secretToken = searchParams.get('secret_token');
 
-            if (pathname === '/login-token' || pathname === '/login') {
-                log('GraphQL', 'User opened log in page, do not determine session');
+            // verify-email and verify-email-change
+            if (pathname.includes('verify-email')) {
+                // The E-Mail Verification flow is special: The user already has a session with an unverified account,
+                //  we MUST reauthenticate to use the secret token that proves that the user has access to the email.
+                //   and we also want to refresh the user session
+                // Otherwise we redirect them to the next page with an unverified session, and that page tells the user to verify their account (they get stuck in a loop)
+                if (!secretToken) {
+                    log('GraphQL', 'No Secret Token present on E-Mail Verification Page, that is an error');
+                    setSessionState('error');
+                    return;
+                }
+
+                log('GraphQL', 'User visits email verification, forcing the usage of secret token');
+                await loginWithSecretToken(secretToken);
                 return;
             }
 
@@ -392,7 +456,12 @@ const useApolloInternal = () => {
                 return;
             }
 
-            setSessionState('logged-out');
+            if (secretToken) {
+                await loginWithSecretToken(secretToken);
+                return;
+            }
+
+            setSessionState('error');
             log('GraphQL', 'No Device Token present, need to log in again');
         })();
     }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser]);
@@ -450,7 +519,29 @@ const useApolloInternal = () => {
         [createDeviceToken, setSessionState]
     );
 
-    return useMemo(() => ({ client, logout, sessionState, user, onLogin }), [client, logout, user, sessionState, onLogin]);
+    // ------------ Login with password -------------
+    const loginWithPassword = useCallback(
+        async (email: string, password: string): Promise<FetchResult> => {
+            log('GraphQL', 'Logging in with email and password');
+
+            const result = await client.mutate({
+                mutation: gql(`mutation login($password: String!, $email: String!) { loginPassword(password: $password, email: $email) }`),
+                variables: {
+                    email: email,
+                    password: password,
+                },
+                errorPolicy: 'all',
+                context: { skipAuthRetry: true },
+            });
+            return result;
+        },
+        [client]
+    );
+
+    return useMemo(
+        () => ({ client, logout, sessionState, user, onLogin, loginWithPassword }),
+        [client, logout, user, sessionState, onLogin, loginWithPassword]
+    );
 };
 
 const useApollo = () => useContext(ExtendedApolloContext)!;

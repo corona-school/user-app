@@ -23,6 +23,7 @@ const query = gql(`
         me {
             firstname
             lastname
+            email
             pupil {
                 aboutMe
                 state
@@ -77,9 +78,9 @@ function PupilNameModal({ firstname, lastname, onSave, onClose }: { firstname: s
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.UserName.popup.exit')}
+                            {t('cancel')}
                         </Button>
-                        <Button onPress={onSaveName}>{t('profile.UserName.popup.save')}</Button>
+                        <Button onPress={onSaveName}>{t('save')}</Button>
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
@@ -115,7 +116,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
                 <Modal.Footer>
                     <Button.Group space={2}>
                         <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-                            {t('profile.AboutMe.popup.exit')}
+                            {t('cancel')}
                         </Button>
                         <Button
                             onPress={() => {
@@ -124,7 +125,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
                                 onClose();
                             }}
                         >
-                            {t('profile.AboutMe.popup.save')}
+                            {t('save')}
                         </Button>
                     </Button.Group>
                 </Modal.Footer>
@@ -155,7 +156,7 @@ const ProfilePupil: React.FC<Props> = () => {
     });
 
     const profileCompleteness = useMemo(() => {
-        const max = 7.0;
+        const max = 6.0;
         let complete = 0.0;
 
         data?.me?.firstname && data?.me?.lastname && (complete += 1);
@@ -164,7 +165,6 @@ const ProfilePupil: React.FC<Props> = () => {
         data?.me?.pupil?.state && (complete += 1);
         data?.me?.pupil?.schooltype && (complete += 1);
         data?.me?.pupil?.gradeAsInt && (complete += 1);
-        data?.me?.pupil?.subjectsFormatted?.length && (complete += 1);
 
         return Math.floor((complete / max) * 100);
     }, [
@@ -175,7 +175,6 @@ const ProfilePupil: React.FC<Props> = () => {
         data?.me?.pupil?.languages?.length,
         data?.me?.pupil?.schooltype,
         data?.me?.pupil?.state,
-        data?.me?.pupil?.subjectsFormatted?.length,
     ]);
 
     const ContainerWidth = useBreakpointValue({
@@ -288,6 +287,9 @@ const ProfilePupil: React.FC<Props> = () => {
                                 />
                             )}
 
+                            <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
+                                <Text>{data?.me?.email}</Text>
+                            </ProfileSettingItem>
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
@@ -309,7 +311,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                                     <IconTagList
                                                         isDisabled
                                                         iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
-                                                        text={t(`lernfair.languages.${lang.toLowerCase()}`)}
+                                                        text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>
                                             </Column>

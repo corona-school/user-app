@@ -1,39 +1,57 @@
 import { useCallback, useEffect, useState } from 'react';
 import { gql } from '../gql';
-import { useMutation } from '@apollo/client';
+import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 
-import { Box, Button, Heading, Image, Modal, Row, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import {
+    Box,
+    Button,
+    Heading,
+    Image,
+    Modal,
+    Row,
+    Text,
+    useBreakpointValue,
+    useTheme,
+    VStack,
+    Link,
+    FormControl,
+    Alert,
+    HStack,
+    useToast,
+    CloseIcon,
+} from 'native-base';
 import useApollo from '../hooks/useApollo';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import TextInput from '../components/TextInput';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_LOGIN, REDIRECT_PASSWORD } from '../Utility';
+import { REDIRECT_PASSWORD } from '../Utility';
+import isEmail from 'validator/lib/isEmail';
 
 export default function Login() {
     const { t } = useTranslation();
-    const { onLogin, sessionState } = useApollo();
+    const { onLogin, sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
     const [email, setEmail] = useState<string>();
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [loginEmail, setLoginEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [isInvalidEmail, setIsInvalidEmail] = useState(false);
     const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
-    const [login, loginResult] = useMutation(
-        gql(`
-        mutation login($password: String!, $email: String!) {
-            loginPassword(password: $password, email: $email)
-        }
-    `),
-        { errorPolicy: 'all' }
-    );
+    const [loginResult, setLoginResult] = useState<FetchResult>();
+    const toast = useToast();
+
+    const location = useLocation();
+    const locationState = location.state as { retainPath?: string; error?: 'token-invalid' };
+    const retainPath = locationState?.retainPath ?? '/start';
+    const error = locationState?.error;
 
     const navigate = useNavigate();
     const { trackPageView, trackEvent } = useMatomo();
@@ -61,8 +79,41 @@ export default function Login() {
     `)
     );
 
+    const onChangeEmail = useCallback(
+        (text: string) => {
+            if (isInvalidEmail) {
+                setIsInvalidEmail(false);
+            }
+            setEmail(text);
+        },
+        [isInvalidEmail]
+    );
+
     useEffect(() => {
-        if (sessionState === 'logged-in') navigate('/');
+        if (sessionState === 'logged-in') navigate(retainPath);
+        if (error && error === 'token-invalid') {
+            toast.show({
+                render: ({ id }) => {
+                    return (
+                        <Alert w="100%" status="error" colorScheme="error" backgroundColor={'danger.50'}>
+                            <VStack space={2} flexShrink={1} w="100%">
+                                <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                                    <HStack space={2} flexShrink={1} alignItems="center">
+                                        <Alert.Icon />
+                                        <Text>{t('login.invalidTokenAlert.text')}</Text>
+                                        <Button onPress={() => toast.close(id)} variant="subtle" backgroundColor={'danger.50'}>
+                                            <CloseIcon size="sm" />
+                                        </Button>
+                                    </HStack>
+                                </HStack>
+                            </VStack>
+                        </Alert>
+                    );
+                },
+                duration: null,
+                placement: 'bottom',
+            });
+        }
     }, [navigate, sessionState]);
 
     useEffect(() => {
@@ -97,7 +148,7 @@ export default function Login() {
         const res = await sendToken({
             variables: {
                 email: email!,
-                redirectTo: REDIRECT_LOGIN,
+                redirectTo: retainPath,
             },
         });
 
@@ -114,17 +165,16 @@ export default function Login() {
 
     const attemptLogin = useCallback(async () => {
         loginButton();
-        const result = await login({
-            variables: {
-                email: email!,
-                password: password!,
-            },
-        });
-        onLogin(result);
-    }, [email, login, onLogin, loginButton, password]);
+        const res = await loginWithPassword(email!, password!);
+        onLogin(res);
+        setLoginResult(res);
+    }, [email, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
-        if (!email || email.length < 6) return;
+        if (!email || !isEmail(email)) {
+            setIsInvalidEmail(true);
+            return;
+        }
         const res = await determineLoginOptions({ variables: { email } });
         if (res.data!.userDetermineLoginOptions === 'password') {
             setShowPasswordField(true);
@@ -184,24 +234,20 @@ export default function Login() {
     };
 
     const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email }) => {
-        const [pwEmail, setPwEmail] = useState<string>(email);
-
+        const [pwEmail] = useState<string>(email);
         return (
             <Modal isOpen={showModal} onClose={() => setShowPasswordModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Passwort zurücksetzen</Modal.Header>
                     <Modal.Body>
                         <VStack space={space['0.5']}>
-                            <Text>Möchtest du dein Passwort wirklich zurücksetzen?</Text>
-
-                            <TextInput type="text" value={pwEmail} placeholder={t('email')} onChangeText={setPwEmail} />
+                            <Text>{t('login.passwordReset.description', { email: pwEmail })}</Text>
                         </VStack>
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
                             <Button isDisabled={pwEmail.length < 6 || _resetPW?.loading} onPress={() => resetPassword(pwEmail)}>
-                                Passwort zurücksetzen
+                                {t('login.passwordReset.btn')}
                             </Button>
                         </Row>
                     </Modal.Footer>
@@ -218,17 +264,15 @@ export default function Login() {
             <Modal isOpen={showModal} onClose={() => setShowNoAccountModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Login</Modal.Header>
+                    <Modal.Header>{t('login.accountNotFound.title')}</Modal.Header>
                     <Modal.Body>
                         <VStack space={space['0.5']}>
-                            <Text>
-                                Es konnte kein Account mit der E-Mail Adresse <Text bold>{email}</Text> gefunden werden
-                            </Text>
+                            <Text>{t('login.accountNotFound.alert_html', { email: email })}</Text>
                         </VStack>
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>OK</Button>
+                            <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -272,7 +316,17 @@ export default function Login() {
 
                     <Box marginX="90px" maxWidth={ContainerWidth} width="100%">
                         <Row marginBottom={3}>
-                            <TextInput width="100%" isRequired={true} placeholder={t('email')} onChangeText={setEmail} onKeyPress={handleKeyPress} />
+                            <FormControl isInvalid={isInvalidEmail}>
+                                <TextInput
+                                    width="100%"
+                                    isRequired={true}
+                                    placeholder={t('email')}
+                                    onChangeText={onChangeEmail}
+                                    onKeyPress={handleKeyPress}
+                                    isInvalid={isInvalidEmail}
+                                />
+                                <FormControl.ErrorMessage>{t('login.invalidMailMessage')}</FormControl.ErrorMessage>
+                            </FormControl>
                         </Row>
                         {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
                         {(showPasswordField && (
@@ -289,28 +343,27 @@ export default function Login() {
                             </Row>
                         )) || <input type="password" style={{ display: 'none' }} />}
                     </Box>
-                    {loginResult.error && (
+                    {loginResult?.errors && (
                         <Text paddingTop={4} color="danger.700" maxWidth={360} bold textAlign="center">
                             {t('login.error')}
                         </Text>
                     )}
-
                     {showPasswordResetResult && (
                         <Box maxWidth={ContainerWidth} width="100%">
                             <AlertMessage
                                 content={
                                     showPasswordResetResult === 'success'
-                                        ? 'Bitte checke deine E-Mails um dein Passwort zurückzusetzen'
+                                        ? t('login.passwordReset.alert.success')
                                         : showPasswordResetResult === 'error'
-                                        ? 'Leider konnte dein Passwort nicht zurückgesetzt werden'
-                                        : 'Für diese E-Mail Adresse ist kein Account registriert'
+                                        ? t('login.passwordReset.alert.error')
+                                        : t('login.passwordReset.alert.mailNotFound')
                                 }
                             />
                         </Box>
                     )}
                     {showPasswordField && (
                         <Button marginY={4} variant="link" onPress={() => setShowPasswordModal(true)}>
-                            {t('login.btn.password')}
+                            {t('login.forgotPassword')}
                         </Button>
                     )}
 
@@ -318,9 +371,9 @@ export default function Login() {
                         <Button
                             onPress={showPasswordField ? attemptLogin : getLoginOption}
                             width="100%"
-                            isDisabled={loginResult.loading || !email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
                         >
-                            {t('login.btn.login')}
+                            {t('signin')}
                         </Button>
                     </Box>
 
@@ -328,8 +381,13 @@ export default function Login() {
                         <Text textAlign="center">{t('login.noaccount')}</Text>
 
                         <Button onPress={loginRegisterLink} variant="link">
-                            {t('login.btn.register')}
+                            {t('login.signupNew')}
                         </Button>
+                        <Text textAlign="center" paddingTop="70px">
+                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
+                            <Text>{'  '}</Text>
+                            <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
+                        </Text>
                     </Box>
                 </Row>
             </VStack>

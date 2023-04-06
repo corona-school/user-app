@@ -12,30 +12,43 @@ import { LernfairProvider } from './hooks/useLernfair';
 import { IssueReporter } from './IssueReporter';
 import { NotificationsProvider } from './components/NotificationsProvider';
 import { ToastNotifications } from './components/ToastNotifications';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';
+import { log } from './log';
+import { useEffect } from 'react';
+
+function LogRouting() {
+    const location = useLocation();
+
+    useEffect(() => {
+        log('Routing', location.pathname);
+    }, [location]);
+
+    return null;
+}
 
 function App() {
     return (
         <LernfairProvider>
-            <CreateAppointmentProvider>
-                <LFModalProvider>
-                    <LFApolloProvider>
-                        <BrowserRouter>
-                            <NativeBaseProvider theme={Theme}>
-                                <IssueReporter>
-                                    <MatomoProvider value={matomo}>
-                                        <NotificationsProvider>
+            <LFModalProvider>
+                <LFApolloProvider>
+                    <BrowserRouter>
+                        <LogRouting />
+                        <NativeBaseProvider theme={Theme}>
+                            <IssueReporter>
+                                <MatomoProvider value={matomo}>
+                                    <NotificationsProvider>
+                                        <CreateAppointmentProvider>
                                             <Navigator />
                                             <ToastNotifications />
-                                        </NotificationsProvider>
-                                    </MatomoProvider>
-                                </IssueReporter>
-                            </NativeBaseProvider>
-                        </BrowserRouter>
-                    </LFApolloProvider>
-                </LFModalProvider>
-            </CreateAppointmentProvider>
+                                        </CreateAppointmentProvider>
+                                    </NotificationsProvider>
+                                </MatomoProvider>
+                            </IssueReporter>
+                        </NativeBaseProvider>
+                    </BrowserRouter>
+                </LFApolloProvider>
+            </LFModalProvider>
         </LernfairProvider>
     );
 }

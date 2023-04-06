@@ -35,7 +35,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                                 <VStack space={space['1']}>
                                     {reasons.map((_: number, index: number) => (
                                         <Radio key={index} value={`${index + 1}`}>
-                                            {t(`matching.dissolveReasons.${userType}.${index + 1}`)}
+                                            {t(`matching.dissolveReasons.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
                                         </Radio>
                                     ))}
                                 </VStack>
@@ -58,14 +58,14 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         <Modal.Header>Neue Lernpartner:in anfordern</Modal.Header>
                         <Modal.Body>
                             <Text>
-                                Möchest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte dabei, dass du wieder einige Zeit warten musst bis wir
+                                Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte dabei, dass du wieder einige Zeit warten musst bis wir
                                 jemanden für dich finden können.
                             </Text>
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <Button onPress={onPressBack} variant="secondary">
-                                    Abbrechen
+                                    {t('cancel')}
                                 </Button>
                                 <Button
                                     isDisabled={!reason}

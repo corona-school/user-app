@@ -18,11 +18,9 @@ const Settings: React.FC = () => {
     const navigate = useNavigate();
     const { logout } = useApollo();
     const tabspace = 3;
-    const userType = useUserType();
     const { trackPageView, trackEvent } = useMatomo();
 
     const [showDeactivate, setShowDeactivate] = useState<boolean>(false);
-    const [showCertificateOptions, setShowCertificateOptions] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -72,13 +70,13 @@ const Settings: React.FC = () => {
                         <Column mb={tabspace}>
                             <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                         </Column>
-                        {/* <Column mb={tabspace}>
-                            <EditDataRow label={'Bescheinigung beantragen'} onPress={() => setShowCertificateOptions(true)} />
-                        </Column> */}
                     </ProfileSettingRow>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/reset-password')} />
+                            <EditDataRow label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
+                        </Column>
+                        <Column mb={tabspace}>
+                            <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
                         </Column>
 
                         <Column mb={tabspace}>
@@ -110,34 +108,6 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
-            <Modal isOpen={showCertificateOptions} onClose={() => setShowCertificateOptions(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>Bescheinigung beantragen</Modal.Header>
-                    <Modal.Body>
-                        <VStack space={4}>
-                            <Button
-                                onPress={() => {
-                                    setShowCertificateOptions(false);
-                                    navigate('/request-certificate', {
-                                        state: { type: 'matching' },
-                                    });
-                                }}
-                            >
-                                1:1 Lernunterstützung
-                            </Button>
-                            <Button
-                                onPress={() => {
-                                    setShowCertificateOptions(false);
-                                    navigate('/request-certificate', { state: { type: 'group' } });
-                                }}
-                            >
-                                Gruppenkurs
-                            </Button>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
         </>
     );
 };

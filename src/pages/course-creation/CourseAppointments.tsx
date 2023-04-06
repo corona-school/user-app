@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
 import { AppointmentType } from '../../gql/graphql';
@@ -9,6 +9,7 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
+import ButtonRow from './ButtonRow';
 
 type Props = {
     next: () => void;
@@ -102,6 +103,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
 
+    // * validate if min one appointment is created
+    const tryNext = () => {};
+
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
@@ -125,20 +129,13 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                     borderColor="primary.500"
                     _text={{ color: 'primary.500' }}
                     width="full"
-                    onPress={() => setShowModal(true)}
+                    // * replace with open modal from another PR
+                    onPress={() => console.log('open modal')}
                 >
                     {t('course.appointments.addOtherAppointment')}
                 </Button>
                 <Divider my="5" />
-
-                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
-                    <Button onPress={next} width={buttonWidth}>
-                        {t('course.appointments.check')}
-                    </Button>
-                    <Button variant="outline" onPress={back} width={buttonWidth}>
-                        {t('course.appointments.prevPage')}
-                    </Button>
-                </Stack>
+                <ButtonRow onNext={next} onBack={back} />
             </Box>
         </>
     );
