@@ -1,119 +1,120 @@
-@import "_generated";
-@import "./widgets/CourseListGrid.scss";
-@import "./components/CTACard.scss";
-@import "./components/Onboarding.scss";
+@import '_generated';
+@import './widgets/CourseListGrid.scss';
+@import './components/CTACard.scss';
+@import './components/Onboarding.scss';
 
 html,
 body {
-  overscroll-behavior-y: contain;
-  
-  height: 100vh;
-  height: -webkit-fill-available;
-  // height: -moz-available;
-  // max-height: 100vh;
-  // max-height: -webkit-fill-available;
-  // max-height: -moz-available;
-  
-  * {
-    font-family: "Montserrat" !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: contain;
 
-   @media screen and (min-width: 993px){
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none; 
-      ::-webkit-scrollbar {
-        display: none;
-      }
-   }
-  }
+    height: 100vh;
+    height: -webkit-fill-available;
+    // height: -moz-available;
+    // max-height: 100vh;
+    // max-height: -webkit-fill-available;
+    // max-height: -moz-available;
+
+    * {
+        font-family: 'Montserrat' !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+
+        /* Hide scrollbar on small devices, these are likely mobiles where a scrollbar is not useful */
+        @media screen and (max-width: 700px) {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
 }
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 #root {
-  display: flex;
-  flex-wrap: nowrap;
-  height: 100vh;
-  // height: -webkit-fill-available;
-  // height: -moz-available;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    // height: -webkit-fill-available;
+    // height: -moz-available;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Light.ttf") format("truetype");
-  font-weight: 100;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Light.ttf') format('truetype');
+    font-weight: 100;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Light.ttf") format("truetype");
-  font-weight: 200;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Light.ttf') format('truetype');
+    font-weight: 200;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Bold.ttf") format("truetype");
-  font-weight: 800;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 800;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: Montserrat;
-  src: url("../../../public/fonts/Montserrat-Bold.ttf") format("truetype");
-  font-weight: 900;
-  font-display: swap;
+    font-family: Montserrat;
+    src: url('../../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 900;
+    font-display: swap;
 }
 
-div[role="button"] {
-  transition: all 0.3s ease;
+div[role='button'] {
+    transition: all 0.3s ease;
 }
 
-// Tags 
+// Tags
 
 .profil-tab-link {
-  [role="link"] {
-    cursor: default;
-    pointer-events: none;
-  }
+    [role='link'] {
+        cursor: default;
+        pointer-events: none;
+    }
 }

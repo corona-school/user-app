@@ -21,7 +21,9 @@
         "@types/react": "^18.0.14",
         "@types/react-dom": "^18.0.5",
         "@types/react-native": "^0.68.0",
+        "@types/react-signature-canvas": "^1.0.2",
         "@types/ua-parser-js": "^0.7.36",
+        "@types/validator": "^13.7.14",
         "apollo-codegen": "^0.20.2",
         "babel-jest": "^27.4.2",
         "babel-loader": "^8.2.3",
@@ -45,6 +47,7 @@
         "graphql": "^16.5.0",
         "html-webpack-plugin": "^5.5.0",
         "i18next": "^21.10.0",
+        "i18next-browser-languagedetector": "^7.0.1",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
@@ -71,6 +74,7 @@
         "react-native-web": "^0.17.7",
         "react-refresh": "^0.11.0",
         "react-router-dom": "^6.3.0",
+        "react-signature-canvas": "^1.0.6",
         "resolve": "^1.20.0",
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.54.4",
@@ -82,6 +86,7 @@
         "terser-webpack-plugin": "^5.2.5",
         "typescript": "^4.7.4",
         "ua-parser-js": "^1.0.32",
+        "validator": "^13.9.0",
         "web-vitals": "^2.1.4",
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
@@ -193,7 +198,7 @@
     "dependencies": {
         "compression": "^1.7.4",
         "express": "^4.18.2",
-        "i18next-browser-languagedetector": "^7.0.1"
+        "use-file-picker": "^1.5.2"
     },
     "pre-commit": [
         "prettier"

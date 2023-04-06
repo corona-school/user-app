@@ -121,7 +121,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                                         <IconTagList
                                             isDisabled
                                             iconPath={`languages/icon_${language.toLowerCase()}.svg`}
-                                            text={t(`lernfair.languages.${language.toLowerCase()}`)}
+                                            text={t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray)}
                                         />
                                         <Text color={'danger.500'} fontSize="xl" ml="1" bold>
                                             x
@@ -169,7 +169,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                         updateLanguage({ variables: { languages: selections } });
                     }}
                 >
-                    {t('profile.FluentLanguagenalData.single.button')}
+                    {t('saveSelection')}
                 </Button>
             </VStack>
         </WithNavigation>

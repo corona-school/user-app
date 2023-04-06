@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Stack, useBreakpointValue } from 'native-base';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
@@ -8,6 +8,7 @@ import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment'
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
+import ButtonRow from './ButtonRow';
 
 type Props = {
     next: () => void;
@@ -55,6 +56,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
 
+    // * validate if min one appointment is created
+    const tryNext = () => {};
+
     return (
         <Box>
             <Box maxH={maxHeight} flex="1" mb="10">
@@ -74,20 +78,13 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                 borderColor="primary.500"
                 _text={{ color: 'primary.500' }}
                 width="full"
-                onPress={() => navigate('/create-course-appointment')}
+                // * replace with open modal from another PR
+                onPress={() => console.log('open modal')}
             >
                 {t('course.appointments.addOtherAppointment')}
             </Button>
             <Divider my="5" />
-
-            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" justifyContent="center" space={3}>
-                <Button onPress={next} width={buttonWidth}>
-                    {t('course.appointments.check')}
-                </Button>
-                <Button variant="outline" onPress={back} width={buttonWidth}>
-                    {t('course.appointments.prevPage')}
-                </Button>
-            </Stack>
+            <ButtonRow onNext={next} onBack={back} />
         </Box>
     );
 };

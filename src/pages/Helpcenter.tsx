@@ -1,4 +1,4 @@
-import { Box, Heading, useTheme, Text, Row, FormControl, TextArea, Checkbox, Button, InfoIcon, useBreakpointValue, View, Input } from 'native-base';
+import { Box, Heading, useTheme, Text, Link, Row, FormControl, TextArea, Checkbox, Button, InfoIcon, useBreakpointValue, View, Input } from 'native-base';
 import Tabs from '../components/Tabs';
 import WithNavigation from '../components/WithNavigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const HelpCenter: React.FC = () => {
     const [messageSent, setMessageSent] = useState<boolean>();
     const [showError, setShowError] = useState<boolean>();
 
-    const { show, setShow, setContent, setVariant } = useModal();
+    const { show, hide } = useModal();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -56,23 +56,22 @@ const HelpCenter: React.FC = () => {
     }, [contactSupport, message, subject]);
 
     useEffect(() => {
-        if (!show && data) {
-            setVariant('light');
-            setContent(
+        if (data) {
+            show(
+                { variant: 'light' },
                 <InfoScreen
                     title={t('helpcenter.contact.popupTitle')}
                     icon={<InfoIcon />}
                     content={t('helpcenter.contact.popupContent')}
                     defaultButtonText={t('helpcenter.contact.popupBtn')}
                     defaultbuttonLink={() => {
-                        setShow(false);
+                        hide();
                         navigate('/start');
                     }}
                 />
             );
-            setShow(true);
         }
-    }, [show, data, setContent, setShow, setVariant, t, navigate]);
+    }, [data, show, hide, t, navigate]);
 
     // Breakpoints
     const ContainerWidth = useBreakpointValue({
@@ -182,7 +181,15 @@ const HelpCenter: React.FC = () => {
                                             </Row>
                                             <Row flexDirection="column" paddingY={space['1.5']}>
                                                 <Checkbox value="dsgvo" onChange={(val) => setDSGVO(val)}>
-                                                    {t('helpcenter.contact.datapolicy.label')}
+                                                    <Text>
+                                                        Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}>Datenschutzbestimmungen</Link>{' '}
+                                                        zur Kenntnis genommen und bin damit einverstanden, dass der Lern-Fair e.V. meine persönlichen Daten
+                                                        entsprechend des Zwecks, Umfangs und der Dauer wie in der Datenschutzerklärung angegeben, verarbeitet
+                                                        und gespeichert werden. Mir ist insbesondere bewusst, dass die von mir angegebenen Daten zur
+                                                        Durchführung der Angebote an zugeteilte Nutzer:innen weitergegeben werden und deren E-Mail-Adressen ggf.
+                                                        von Anbietern außerhalb der EU zur Verfügung gestellt werden, die die Einhaltung des europäischen
+                                                        Datenschutzniveaus nicht gewährleisten können.{' '}
+                                                    </Text>
                                                 </Checkbox>
                                             </Row>
                                             <Row flexDirection="column" paddingY={space['0.5']}>

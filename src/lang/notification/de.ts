@@ -21,63 +21,64 @@ const notification = {
 
     controlPanel: {
         title: 'E-Mail-Benachrichtigungen',
+        yourMail: 'Deine E-Mail: ',
         closeButton: 'Schließen',
         preference: {
             enableAll: 'Alle Newsletter aktivieren',
             disableAll: 'Alle Newsletter deaktivieren',
             chat: {
                 title: 'Chat-Nachrichten',
-                modalBody: 'Hier geht es um die Chat-Nachrichten, die du von Kurslehrer:innen oder auch Kursteilnehmer:innen erhältst.',
+                modalBody: 'Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst.',
             },
             survey: {
                 title: 'Feedback & Befragungen',
                 modalBody:
-                    'Wir möchten, dass du zufrieden mit Lern Fair bist. Wir fragen deshalb hin und wieder bei dir nach, ob du zufrieden bist oder ob etwas besser laufen könnte.',
+                    'Wir möchten, dass du zufrieden mit Lern Fair bist. Deshalb schicken wir dir gelegentlich Feedback-Fragebögen zu, um von deinen Erfahrungen zu hören. Wir freuen uns, wenn du Feedback, Ideen und Verbesserungsvorschläge auf diesem Wege an uns weiterleitest.',
             },
             appointment: {
                 title: 'Terminhinweis',
                 modalBody:
-                    'Bevor ein Termin beginnt, zu dem du dich angemeldet hast, möchten wir dir gerne eine Erinnerung schicken. Dies kann zum Beispiel kurz vor einem Kursbeginn geschehen.',
+                    'Wir informieren dich über neue Termine mit deinen Lernpartner:innen und in Kursen. Zudem erinnern wir dich kurz vor Beginn des Termins nochmal an die Unterrichtsstunde.',
             },
             advice: {
                 title: 'Lerntipps & Hilfestellungen',
                 modalBody:
-                    'Blindtext: Wir sind stetig dabei, unser Angebot zu verbessern und entwickeln unsere Plattform weiter. Wir möchten dich gerne über neue Features und Funktionen informieren.',
+                    'Lernen muss gelernt sein. Wir helfen dir mit Schulungen und Materialien, dich auf die Unterrichtsstunden vorzubereiten und senden dir zugleich die besten Tipps für einen möglichst großen Lernfortschritt. Damit bleibt ihr motiviert und spart wertvolle Zeit.',
             },
             suggestion: {
                 title: 'Kursvorschläge',
                 modalBody:
-                    'Blindtext: Wir möchten dich über wichtige Informationen rund um dein Lernangebot informieren.\nWir benachrichtigen dich, wenn du eine Anmeldung erfolgreich abgeschlossen hast, wir noch eine Bestätigung von dir benötigen oder wenn ein Zertifikat zum Download bereitsteht.',
+                    'Auf unserer Plattform laden wir regelmäßig neue spannende Kurse hoch. Wenn ein passender Kurs für deine Jahrgangsstufe und deine Fächer angeboten wird, erhältst du von uns eine Benachrichtigung. Du kannst deine Fächer und damit deine Interessen im Profil jederzeit anpassen.',
             },
             announcement: {
                 title: 'Wichtige Änderungen',
                 modalBody:
-                    'Blindtext: Wir sind stetig dabei, unser Angebot zu verbessern und entwickeln unsere Plattform weiter. Wir möchten dich gerne über neue Features und Funktionen informieren.',
+                    'Wenn sich die Funktionsweise von Lern-Fair wesentlich ändert oder es neue Programme gibt, informieren wir dich über wichtige Änderungen.',
             },
             call: {
                 title: 'Aufruf zum Engagement',
                 modalBody:
-                    'Blindtext: Wir möchten dich informieren, wenn wir eine geeignete Person für dich gefunden haben und halten dich über den Status deiner Zuordnung auf dem Laufenden.\nAußerdem fragen wir gelegentlich mal nach, ob du mit deiner Zuordnung zufrieden bist.',
+                    'Wir informieren dich, wenn es zu einem Zeitpunkt besonders viel Unterstützungsbedarf gibt und erklären dir, wie du dich am besten für mehr Bildungsgerechtigkeit bei uns einsetzen kannst.',
             },
             news: {
                 title: 'Neuigkeiten von Lern-Fair',
                 modalBody:
-                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+                    'Wir möchten dich gerne über neue Features und Funktionen informieren und dich auf Vorteile aufmerksam machen, die du über Lern-Fair erhalten kannst.',
             },
             event: {
                 title: 'Events & Happenings',
                 modalBody:
-                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+                    'Bei Lern-Fair organisieren wir regelmäßig coole Events und wertvolle Fortbildungen. Wir halten dich auf dem Laufenden und vernetzen dich mit anderen Nutzer:innen auf unserer Plattform.',
             },
             request: {
                 title: 'Gesuch',
                 modalBody:
-                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+                    'Für Interviews, Pressebeiträge oder lokale Aktionen suchen wir manchmal Helfer:innen und Schüler:innen, die bei Lern-Fair mitmachen und von ihren Erfahrungen berichten möchten. Darüber hinaus suchen wir Testpersonen für unsere App, unsere Website oder ein neues Programm von uns.',
             },
             alternative: {
                 title: 'Hinweise zu Alternativangeboten',
                 modalBody:
-                    'Das ist Blindtext. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, amet.',
+                    'Lern-Fair ist eine super Unterstützungsmöglichkeit für Schüler:innen. Es gibt aber auch viele andere hilfreiche Programme, nützliche Apps oder soziale Organisationen. Falls wir etwas Passendes für dich finden, benachrichtigen wir dich und hoffen, dass du von dem Angebot profitieren kannst.',
             },
         },
         tabs: {

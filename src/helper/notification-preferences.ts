@@ -18,13 +18,39 @@ import MatchModal from '../assets/icons/lernfair/notifications/Ic_Match.svg';
 
 import { FC } from 'react';
 
+type PossibleTextConstants =
+    | 'notification.controlPanel.preference.chat.title'
+    | 'notification.controlPanel.preference.chat.modalBody'
+    | 'notification.controlPanel.preference.survey.title'
+    | 'notification.controlPanel.preference.survey.modalBody'
+    | 'notification.controlPanel.preference.appointment.title'
+    | 'notification.controlPanel.preference.appointment.modalBody'
+    | 'notification.controlPanel.preference.advice.title'
+    | 'notification.controlPanel.preference.advice.modalBody'
+    | 'notification.controlPanel.preference.suggestion.title'
+    | 'notification.controlPanel.preference.suggestion.modalBody'
+    | 'notification.controlPanel.preference.chat.title'
+    | 'notification.controlPanel.preference.chat.modalBody'
+    | 'notification.controlPanel.preference.announcement.title'
+    | 'notification.controlPanel.preference.announcement.modalBody'
+    | 'notification.controlPanel.preference.call.title'
+    | 'notification.controlPanel.preference.call.modalBody'
+    | 'notification.controlPanel.preference.news.title'
+    | 'notification.controlPanel.preference.news.modalBody'
+    | 'notification.controlPanel.preference.event.title'
+    | 'notification.controlPanel.preference.event.modalBody'
+    | 'notification.controlPanel.preference.request.title'
+    | 'notification.controlPanel.preference.request.modalBody'
+    | 'notification.controlPanel.preference.alternative.title'
+    | 'notification.controlPanel.preference.alternative.modalBody';
+
 export interface NotificationCategoryDetails {
-    title: string;
+    title: PossibleTextConstants;
     icon?: FC;
     modal: Modal;
 }
 
-export type Modal = { body: string; icon?: FC };
+export type Modal = { body: PossibleTextConstants; icon?: FC };
 
 export type NotificationCategories = {
     [category: string]: NotificationCategoryDetails;

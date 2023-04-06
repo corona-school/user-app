@@ -30,13 +30,20 @@ const getTimeDifference = (timestamp: string) => {
     return { minutesDiff, hoursDiff, daysDiff, weeksDiff, timeDiffString };
 };
 
-type TimeText = { text: string; options?: TOptions };
+type PossibleTextConstants =
+    | 'notification.timedifference.now'
+    | 'notification.timedifference.beforeMinutes'
+    | 'notification.timedifference.dayBeforeYesterday'
+    | 'notification.timedifference.yesterday';
+
+type TimeText = { text: PossibleTextConstants; options?: TOptions };
 
 const getTimeText = (timestring: string): TimeText | string => {
     const diff = getTimeDifference(timestring);
     const minutes = diff.minutesDiff;
     const days = diff.daysDiff;
     const timeAsString = DateTime.fromISO(timestring).toFormat('T');
+    const dateAsString = DateTime.fromISO(timestring).toFormat('dd.MM.yyyy');
 
     if (minutes < 1) {
         return { text: 'notification.timedifference.now' };
@@ -48,6 +55,9 @@ const getTimeText = (timestring: string): TimeText | string => {
             },
         };
     } else if (minutes > 60) {
+        if (days > 3) {
+            return dateAsString;
+        }
         if (days > 2) {
             return { text: 'notification.timedifference.dayBeforeYesterday' };
         }
@@ -55,8 +65,6 @@ const getTimeText = (timestring: string): TimeText | string => {
         if (days > 1) {
             return { text: 'notification.timedifference.yesterday' };
         }
-
-        return timeAsString;
     }
     return timeAsString;
 };

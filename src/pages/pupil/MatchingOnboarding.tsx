@@ -75,10 +75,12 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
 
             <VStack marginBottom={space['1.5']}>
                 <Button isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed} width={ButtonContainer} onPress={onRequestMatch}>
-                    Match anfordern
+                    {t('dashboard.helpers.buttons.requestMatchSuS')}
                 </Button>
                 {!data?.me?.pupil?.canRequestMatch?.allowed && (
-                    <AlertMessage content={t(`lernfair.reason.${data?.me?.pupil?.canRequestMatch?.reason}.matching`)} />
+                    <AlertMessage
+                        content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
+                    />
                 )}
             </VStack>
         </VStack>

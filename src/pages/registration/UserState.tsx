@@ -38,12 +38,12 @@ const UserState: React.FC = () => {
                                 setCurrentIndex(3);
                             }}
                         >
-                            {t('lernfair.buttons.prev')}
+                            {t('back')}
                         </Button>
                     </Column>
                     <Column width="100%">
                         <Button width="100%" onPress={() => setCurrentIndex(5)}>
-                            {t('lernfair.buttons.next')}
+                            {t('next')}
                         </Button>
                     </Column>
                 </Row>
