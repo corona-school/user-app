@@ -92,8 +92,7 @@ const CourseAppointments: React.FC<Props> = ({ onNext, onBack, onDeleteAppointme
     return (
         <VStack space={space['1']}>
             <Heading marginBottom={space['1.5']}>{t('course.appointments.headline')}</Heading>
-
-            <Heading fontSize="lg">Bestehende Termine</Heading>
+            {futureLectures?.length > 0 && <Heading fontSize="lg"> {t('course.appointments.existingAppointments')}</Heading>}
             {futureLectures?.map((lec, index) => (
                 <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
             ))}
