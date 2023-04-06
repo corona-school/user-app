@@ -12,10 +12,7 @@ import FullPageModal from './widgets/FullPageModal';
 import { lazyWithRetry } from './lazy';
 
 // All other pages load lazy:
-const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'));
-
-// But as after login the user will visit the dashboard anyways, let's start loading it already
-try { import('./NavigatorLazy'); } catch(_) {}
+const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
 
 export default function Navigator() {
     return (
