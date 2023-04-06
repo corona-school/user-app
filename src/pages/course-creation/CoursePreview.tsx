@@ -8,7 +8,6 @@ import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment'
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
-import IconTagList from '../../widgets/IconTagList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 
@@ -137,6 +136,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                     {t('course.CourseDate.Preview.classHeadline')} {courseClasses && courseClasses[0]} - {courseClasses && courseClasses[1]}
                 </Text>
             </Row>
+
             <VStack>
                 <Row>
                     <Text fontSize="md" bold>
