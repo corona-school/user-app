@@ -27,5 +27,9 @@ const shared = {
     important: 'Wichtig',
     error: 'Es ist ein Fehler aufgetreten.',
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
+    registrationTitle: 'Anmeldung',
+    deregistrationTitle: 'Abmeldung',
+    moreInfoButton: 'Mehr erfahren',
+    delete: 'Löschen',
 };
 export default shared;

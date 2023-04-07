@@ -18,7 +18,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
     const { space } = useTheme();
     const { t } = useTranslation();
 
-    const { joinAfterStart, setJoinAfterStart, allowContact, setAllowContact, addedInstructors, newInstructors } = useContext(CreateCourseContext);
+    const { joinAfterStart, setJoinAfterStart, allowContact, setAllowContact, addedInstructors, newInstructors, myself } = useContext(CreateCourseContext);
     const [join, setJoin] = useState<boolean>(joinAfterStart || false);
     const [allow, setAllow] = useState<boolean>(allowContact || false);
 
@@ -32,10 +32,10 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
         <>
             <VStack>
                 <FormControl marginBottom={space['0.5']}>
-                    <Heading>{t('course.CourseDate.form.otherHeadline')}</Heading>
+                    <Heading>{t('course.CourseDate.step.settings')}</Heading>
                     <VStack mt={space['1']}>
-                        <Heading fontSize="md">{t('course.CourseDate.form.furtherCourseInstructors')}</Heading>
-
+                        <Heading fontSize="md">{t('course.CourseDate.form.CourseInstructors')}</Heading>
+                        {myself && <InstructorRow instructor={myself}></InstructorRow>}
                         {addedInstructors &&
                             addedInstructors.map((instructor: LFInstructor, index: number) => (
                                 <InstructorRow instructor={instructor} onPressDelete={() => onRemove(index, true)} />

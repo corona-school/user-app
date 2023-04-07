@@ -56,7 +56,7 @@ const helperwizard = {
         title: 'Erweitertes Führungszeugnis',
         content:
             'Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}',
-        buttons: ['Führungszeugnis einreichen', 'Vorduck herunterladen'],
+        buttons: ['Führungszeugnis einreichen', 'Vordruck herunterladen'],
     },
     statusStudent: {
         title: 'Wir suchen nach einem:r Lernpartner:in für dich!',
