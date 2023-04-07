@@ -149,10 +149,15 @@ const HelpCenter: React.FC = () => {
                         tabInset={space['1.5']}
                         tabs={[
                             {
+                                hide: userType === 'student',
                                 title: t('helpcenter.faq.tabName'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/faq" title="faq" width="100%" height="596px" />,
+                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-sus" title="faq" width="100%" height="596px" />,
                             },
-
+                            {
+                                hide: userType === 'pupil',
+                                title: t('helpcenter.faq.tabName'),
+                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" height="596px" />,
+                            },
                             {
                                 hide: userType === 'pupil',
                                 title: t('helpcenter.assistance.title'),
