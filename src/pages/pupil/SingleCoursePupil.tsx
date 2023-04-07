@@ -178,13 +178,11 @@ const SingleCoursePupil = () => {
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
-    const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
-
     const isInPast = useMemo(
         () =>
             !subcourse ||
             subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis() - THIRTY_DAYS
+                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
             ),
         [subcourse]
     );
