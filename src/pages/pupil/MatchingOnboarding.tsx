@@ -77,11 +77,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                 <Button isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed} width={ButtonContainer} onPress={onRequestMatch}>
                     {t('dashboard.helpers.buttons.requestMatchSuS')}
                 </Button>
-                {!data?.me?.pupil?.canRequestMatch?.allowed && (
-                    <AlertMessage
-                        content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
-                    />
-                )}
+                {(process.env.REACT_APP_DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
+                    <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
+                )) ||
+                    (!data?.me?.pupil?.canRequestMatch?.allowed && (
+                        <AlertMessage
+                            content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
+                        />
+                    ))}
             </VStack>
         </VStack>
     );
