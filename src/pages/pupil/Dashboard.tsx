@@ -9,6 +9,7 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import { LFLecture } from '../../types/lernfair/Course';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -396,6 +397,7 @@ const Dashboard: React.FC<Props> = () => {
                                         {data?.me?.pupil?.canRequestMatch?.allowed && (
                                             <Button
                                                 width={ButtonContainer}
+                                                isDisabled={DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                                                 onPress={() => {
                                                     trackEvent({
                                                         category: 'dashboard',
@@ -408,6 +410,9 @@ const Dashboard: React.FC<Props> = () => {
                                             >
                                                 {t('dashboard.helpers.buttons.requestMatchSuS')}
                                             </Button>
+                                        )}
+                                        {DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
+                                            <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
                                             <VStack space={2} flexShrink={1} maxWidth="700px">
