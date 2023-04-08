@@ -874,7 +874,7 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && (
-                                <CourseAppointments onlyFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
+                                <CourseAppointments onlyShowFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
                             )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
