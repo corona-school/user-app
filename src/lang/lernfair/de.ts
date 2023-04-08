@@ -113,7 +113,7 @@ const lernfair = {
                 'max-requests': 'Du bist bereits auf der Warteliste.',
                 'max-matches':
                     'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
-                deactivated: 'Aufgrund der hohen Nachfrage ist Matchmaking momentan deaktiviert. Bitte versuche es später noch einmal.',
+                deactivated: 'Aufgrund der hohen Nachfrage können aktuell leider keine neuen Anfragen für Lernpartner:innen angenommen werden.',
             },
         },
     },

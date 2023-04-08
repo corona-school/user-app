@@ -1,5 +1,6 @@
 import { Text, VStack, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
@@ -74,12 +75,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
             </Text>
 
             <VStack marginBottom={space['1.5']}>
-                <Button isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed} width={ButtonContainer} onPress={onRequestMatch}>
+                <Button
+                    isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                    width={ButtonContainer}
+                    onPress={onRequestMatch}
+                >
                     {t('dashboard.helpers.buttons.requestMatchSuS')}
                 </Button>
-                {(process.env.REACT_APP_DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
-                    <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
-                )) ||
+                {(DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />) ||
                     (!data?.me?.pupil?.canRequestMatch?.allowed && (
                         <AlertMessage
                             content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
