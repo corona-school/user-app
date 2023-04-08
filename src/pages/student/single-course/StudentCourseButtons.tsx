@@ -12,6 +12,9 @@ type SubcourseOfStudent = {
     id: number;
     published: boolean;
     isInstructor: boolean;
+    canCancel: { allowed: boolean };
+    canContactParticipants: { allowed: boolean };
+    canEdit: { allowed: boolean };
 };
 
 type ActionButtonProps = {
@@ -29,12 +32,12 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {subcourse.published && (
-                    <>
-                        <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />
-                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
-                    </>
+                    <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />
                 )}
-                {subcourse?.isInstructor && (
+                {subcourse.published && subcourse.canContactParticipants.allowed && (
+                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
+                )}
+                {subcourse.canEdit.allowed && (<>
                     <Button
                         onPress={() => {
                             navigate('/edit-course', {
@@ -45,8 +48,8 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
                     >
                         {t('single.courseInfo.editCourse')}
                     </Button>
-                )}
-                <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
+                    <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
+                </>)}
             </Stack>
         </>
     );
