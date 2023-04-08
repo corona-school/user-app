@@ -276,7 +276,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 label: 'angeforderteBescheinigung',
                 btnfn: [
                     () => {
-                        show({ variant: 'light', closeable: true, headline: 'Bescheinigung bestätigen' }, <ConfirmCertificate certificate={certificate} />);
+                        show(
+                            { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
+                            <ConfirmCertificate certificate={certificate} />
+                        );
                     },
                 ],
                 lang: {
@@ -356,7 +359,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                                     key={index}
                                     marginBottom={'5px'}
                                 >
-                                    Mehr erfahren
+                                    {t('moreInfoButton')}
                                 </Button>
                             )}
                         </Card>

@@ -1,7 +1,8 @@
 import { CircleIcon } from 'native-base';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
+import { lazyWithRetry } from '../lazy';
 
-const IconLoaderLazy = lazy(() => import('./IconLoader_Lazy'));
+const IconLoaderLazy = lazyWithRetry(() => import('./IconLoader_Lazy'));
 
 export function IconLoader({ iconPath }: { iconPath: string }) {
     return (

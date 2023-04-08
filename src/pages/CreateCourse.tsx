@@ -67,6 +67,7 @@ type ICreateCourseContext = {
     setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
     newInstructors?: LFInstructor[];
     image?: string;
+    myself?: LFInstructor;
 };
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
@@ -114,6 +115,8 @@ const CreateCourse: React.FC = () => {
                         reason
                     }
                     id
+                    firstname
+                    lastname
                 }
             }
         }
@@ -238,6 +241,10 @@ const CreateCourse: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
     const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
+    const myself: LFInstructor = {
+        firstname: studentData?.me.student.firstname,
+        lastname: studentData?.me.student.lastname,
+    };
 
     useEffect(() => {
         trackPageView({
@@ -833,6 +840,7 @@ const CreateCourse: React.FC = () => {
                         addedInstructors,
                         newInstructors,
                         image,
+                        myself,
                     }}
                 >
                     {(studentData?.me?.student?.canCreateCourse?.allowed && (
