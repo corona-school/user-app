@@ -375,7 +375,7 @@ const Dashboard: React.FC<Props> = () => {
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
-                                    data?.me?.pupil?.canRequestMatch?.allowed ||
+                                    (data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true') ||
                                     (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
                                     <HSection
                                         marginBottom={space['1.5']}
@@ -394,10 +394,9 @@ const Dashboard: React.FC<Props> = () => {
                                                 </Box>
                                             ))}
                                         </Flex>
-                                        {data?.me?.pupil?.canRequestMatch?.allowed && (
+                                        {data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true' && (
                                             <Button
                                                 width={ButtonContainer}
-                                                isDisabled={DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                                                 onPress={() => {
                                                     trackEvent({
                                                         category: 'dashboard',
@@ -410,9 +409,6 @@ const Dashboard: React.FC<Props> = () => {
                                             >
                                                 {t('dashboard.helpers.buttons.requestMatchSuS')}
                                             </Button>
-                                        )}
-                                        {DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
-                                            <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
                                             <VStack space={2} flexShrink={1} maxWidth="700px">
