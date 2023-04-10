@@ -124,7 +124,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </Button>
                 )}
                 {!subcourse.isParticipant && canJoinSubcourse?.allowed === false && (
-                    <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)}
+                    <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)} />
                 )}
 
                 {subcourse.isParticipant && (
