@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Button, useBreakpointValue } from 'native-base';
+import { Text, Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
@@ -19,6 +19,7 @@ import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import { LFSubCourse } from '../../types/lernfair/Course';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -95,6 +96,7 @@ const StudentGroup: React.FC = () => {
     );
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
 
     const location = useLocation();
@@ -186,49 +188,54 @@ const StudentGroup: React.FC = () => {
                                 <Text>{t('matching.group.helper.content')}</Text>
                             </VStack>
                             <VStack>
-                                <Heading fontSize="md" marginBottom="5px">
-                                    {t('matching.group.helper.contentHeadline')}
-                                </Heading>
-                                <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
+                                {locState && Object.keys(locState).length > 0 && (
+                                    <>
+                                        {showSuccess && (
+                                            <AlertMessage
+                                                content={
+                                                    locState.wasEdited
+                                                        ? t('matching.group.helper.alert.successfulEditing')
+                                                        : t('matching.group.helper.alert.successfulCreation')
+                                                }
+                                            />
+                                        )}
+                                        {(locState?.errors?.length > 0 && (
+                                            <>
+                                                {locState.errors.map((e) => (
+                                                    <AlertMessage content={t(`course.error.${e}`)} />
+                                                ))}
+                                            </>
+                                        )) || <></>}
+                                    </>
+                                )}
                             </VStack>
-                            {locState && Object.keys(locState).length > 0 && (
-                                <>
-                                    {showSuccess && (
-                                        <AlertMessage
-                                            content={
-                                                locState.wasEdited
-                                                    ? t('matching.group.helper.alert.successfulEditing')
-                                                    : t('matching.group.helper.alert.successfulCreation')
-                                            }
-                                        />
-                                    )}
-                                    {(locState?.errors?.length > 0 && (
-                                        <>
-                                            {locState.errors.map((e) => (
-                                                <AlertMessage content={t(`course.error.${e}`)} />
-                                            ))}
-                                        </>
-                                    )) || <></>}
-                                </>
-                            )}
-                            <VStack paddingY={space['1']}>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => {
-                                        trackEvent({
-                                            category: 'matching',
-                                            action: 'click-event',
-                                            name: 'Helfer Matching Gruppen – Kurs erstellen',
-                                            documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
-                                        });
-                                        navigate('/create-course');
-                                    }}
-                                >
-                                    {t('matching.group.helper.button')}
-                                </Button>
+                            <VStack space={space['1']}>
+                                <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => window.open('https://www.lern-fair.de/helfer/gruppen-kurse', '_blank')}
+                                        textAlign="center"
+                                        variant="outline"
+                                    >
+                                        {t('moreInfoButton')}
+                                    </Button>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => {
+                                            trackEvent({
+                                                category: 'matching',
+                                                action: 'click-event',
+                                                name: 'Helfer Matching Gruppen – Kurs erstellen',
+                                                documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
+                                            });
+                                            navigate('/create-course');
+                                        }}
+                                    >
+                                        {t('matching.group.helper.button')}
+                                    </Button>
+                                </Stack>
                             </VStack>
-
-                            <VStack>
+                            <VStack space={space['5']} paddingY={space['1']}>
                                 <Tabs
                                     tabs={[
                                         {
