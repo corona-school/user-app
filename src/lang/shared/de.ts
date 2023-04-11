@@ -29,5 +29,9 @@ const shared = {
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
     datepickerPlaceholder: 'Wähle ein Datum...',
     timepickerPlaceholder: '00:00',
+    registrationTitle: 'Anmeldung',
+    deregistrationTitle: 'Abmeldung',
+    moreInfoButton: 'Mehr erfahren',
+    delete: 'Löschen',
 };
 export default shared;

@@ -29,6 +29,7 @@ declare interface Window {
         readonly RUNTIME_BACKEND_URL: string;
         readonly RUNTIME_WEBSOCKET_URL: string;
         readonly RUNTIME_DISABLE_MATOMO?: 'true' | 'false';
+        readonly RUNTIME_DEACTIVATE_PUPIL_MATCH_REQUESTS?: 'true' | 'false';
     };
 }
 

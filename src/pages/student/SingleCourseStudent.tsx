@@ -106,7 +106,10 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             lastname
             schooltype
             grade
-            }
+        }
+        canEdit { allowed reason }
+        canContactParticipants { allowed reason }
+        canCancel { allowed reason }
     }
 }
 `);
@@ -329,7 +332,7 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
                         <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
