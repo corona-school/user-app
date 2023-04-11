@@ -13,6 +13,7 @@ import AsNavigationItem from '../../../components/AsNavigationItem';
 import WithNavigation from '../../../components/WithNavigation';
 import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
+import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
 
 const matchTexts: string[] = [
     i18next.t('introduction.matchDescription.first'),
@@ -26,10 +27,11 @@ type MatchProps = {
     canRequest?: boolean;
     // if student has requested role TUTOR a banner appears
     waitForSupport?: boolean;
+    loading?: boolean;
     refetch?: () => void;
 };
 
-const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false, refetch }) => {
+const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false, loading, refetch }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
@@ -79,25 +81,29 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     }, [becomeTutor, contactSupport, t, toast]);
 
     return (
-        <AsNavigationItem path="group">
+        <AsNavigationItem path="matching">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
-                <Box justifyContent="center" alignItems="center">
-                    <OnboardingCard
-                        headline={t('introduction.match')}
-                        Description={matchDescriptions}
-                        cardImage={OneToOneImage}
-                        mobileCardImage={OneToOneMobileImage}
-                        Icon={MatchIcon}
-                        showRequestButton={canRequest}
-                        showRequestBanner={waitForSupport}
-                        requestButtonText={t('introduction.becomeTutor')}
-                        imageText={t('introduction.imageMatchText')}
-                        bannerHeadline={t('introduction.banner.tutorTitle')}
-                        onRequest={() => setIsModalOpen(true)}
-                        onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
-                        onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
-                    />
-                </Box>
+                {loading && <CenterLoadingSpinner />}
+
+                {!loading && (
+                    <Box justifyContent="center" alignItems="center">
+                        <OnboardingCard
+                            headline={t('introduction.match')}
+                            Description={matchDescriptions}
+                            cardImage={OneToOneImage}
+                            mobileCardImage={OneToOneMobileImage}
+                            Icon={MatchIcon}
+                            showRequestButton={canRequest}
+                            showRequestBanner={waitForSupport}
+                            requestButtonText={t('introduction.becomeTutor')}
+                            imageText={t('introduction.imageMatchText')}
+                            bannerHeadline={t('introduction.banner.tutorTitle')}
+                            onRequest={() => setIsModalOpen(true)}
+                            onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
+                            onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
+                        />
+                    </Box>
+                )}
                 <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <CourseConfirmationModal
                         headline={t('introduction.modal.headline')}
