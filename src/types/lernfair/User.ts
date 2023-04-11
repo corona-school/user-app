@@ -49,7 +49,7 @@ export type Organizer = {
     id: number;
     firstname: string;
     lastname: string;
-    isOrganizer: true;
+    isOrganizer?: true;
 };
 
 export type Participant = Student | Pupil | Screener;
