@@ -106,7 +106,10 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             lastname
             schooltype
             grade
-            }
+        }
+        canEdit { allowed reason }
+        canContactParticipants { allowed reason }
+        canCancel { allowed reason }
     }
 }
 `);
@@ -287,7 +290,9 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.lectures.every(
+                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
+            ),
         [subcourse]
     );
 
@@ -329,7 +334,7 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {!isInPast && isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                    {(isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading) && (
                         <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (

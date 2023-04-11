@@ -9,6 +9,7 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import { LFLecture } from '../../types/lernfair/Course';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -374,7 +375,7 @@ const Dashboard: React.FC<Props> = () => {
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
-                                    data?.me?.pupil?.canRequestMatch?.allowed ||
+                                    (data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true') ||
                                     (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
                                     <HSection
                                         marginBottom={space['1.5']}
@@ -393,7 +394,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 </Box>
                                             ))}
                                         </Flex>
-                                        {data?.me?.pupil?.canRequestMatch?.allowed && (
+                                        {data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true' && (
                                             <Button
                                                 width={ButtonContainer}
                                                 onPress={() => {

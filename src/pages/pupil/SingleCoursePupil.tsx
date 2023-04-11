@@ -181,7 +181,9 @@ const SingleCoursePupil = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.lectures.every(
+                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
+            ),
         [subcourse]
     );
 
