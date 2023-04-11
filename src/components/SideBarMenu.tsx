@@ -30,13 +30,15 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
 
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('PARTICIPANT');
-    }, [data]);
+        if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
+        return false;
+    }, [data, userType]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('TUTEE');
-    }, [data]);
+        if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
+        return false;
+    }, [data, userType]);
 
     if (loading) return <></>;
 
@@ -59,8 +61,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
                     bottom="0"
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled =
-                            userType === 'pupil' ? _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) : false;
+                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
 
                         return (
                             <Pressable
