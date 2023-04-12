@@ -12,6 +12,9 @@ type SubcourseOfStudent = {
     id: number;
     published: boolean;
     isInstructor: boolean;
+    canCancel: { allowed: boolean };
+    canContactParticipants: { allowed: boolean };
+    canEdit: { allowed: boolean };
 };
 
 type ActionButtonProps = {
@@ -28,25 +31,23 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && (
+                {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
+                {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
+                {subcourse.canEdit.allowed && (
                     <>
-                        <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />
-                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
+                        <Button
+                            onPress={() => {
+                                navigate('/edit-course', {
+                                    state: { courseId: subcourse.id },
+                                });
+                            }}
+                            variant="outline"
+                        >
+                            {t('single.courseInfo.editCourse')}
+                        </Button>
+                        <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
                     </>
                 )}
-                {subcourse?.isInstructor && (
-                    <Button
-                        onPress={() => {
-                            navigate('/edit-course', {
-                                state: { courseId: subcourse.id },
-                            });
-                        }}
-                        variant="outline"
-                    >
-                        {t('single.courseInfo.editCourse')}
-                    </Button>
-                )}
-                <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
             </Stack>
         </>
     );

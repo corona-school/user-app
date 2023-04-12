@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/appointment/_AppointmentList';
 type Props = {
     id: number;
     isCourse: boolean;
@@ -118,7 +118,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
                 </Stack>
             )}
             {!error && (
-                <Box maxH={maxHeight} flex="1" mb="10">
+                <Box minH={200} maxH={maxHeight} flex="1" mb="10">
                     <AppointmentList isReadOnly={true} appointments={isCourse ? data?.subcourse?.appointments : data?.match?.appointments} />
                 </Box>
             )}

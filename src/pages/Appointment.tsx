@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
-import { AppointmentType } from '../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 
 const APPOINTMENT = gql`
     query appointment($appointmentId: Float!) {
@@ -52,7 +52,7 @@ const Appointment = () => {
             {!error && data?.appointment && (
                 <AppointmentDetail
                     appointment={data?.appointment}
-                    id={data?.appointment?.appointmentType === AppointmentType.Group ? data?.appointment?.subcourseId : data?.appointment?.matchId}
+                    id={data?.appointment?.appointmentType === Lecture_Appointmenttype_Enum.Group ? data?.appointment?.subcourseId : data?.appointment?.matchId}
                 />
             )}
         </WithNavigation>

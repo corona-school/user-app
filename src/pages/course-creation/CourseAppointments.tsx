@@ -3,7 +3,7 @@ import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-b
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { AppointmentType } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
@@ -86,7 +86,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
                 ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
                 ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
             };
@@ -118,7 +118,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                             <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
                         </Box>
                     ) : (
-                        <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+                        <Box minH={400}>
+                            <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                        </Box>
                     )}
                 </Box>
 

@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { AppointmentType } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
@@ -73,7 +73,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
                 subcourseId: 1,
                 title: appointment?.title ?? '',
                 description: appointment?.description ?? '',
@@ -162,8 +162,8 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
             <Heading fontSize="xl" marginBottom={space['1']}>
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
-            <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+            <Box minH={300} maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>

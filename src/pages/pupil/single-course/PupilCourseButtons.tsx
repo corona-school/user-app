@@ -141,7 +141,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
                 <CourseConfirmationModal
-                    headline={t('single.global.courseInfo')}
+                    headline={t('registrationTitle')}
                     confirmButtonText={t('single.signIn.button')}
                     description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
                     onClose={() => setSignInModal(false)}
@@ -151,7 +151,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
 
             <Modal isOpen={signOutModal} onClose={() => setSignOutModal(false)}>
                 <CourseConfirmationModal
-                    headline={t('single.global.courseInfo')}
+                    headline={t('deregistrationTitle')}
                     confirmButtonText={t('single.leave.signOut')}
                     description={t('single.leave.description')}
                     onClose={() => setSignOutModal(false)}
@@ -161,7 +161,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
 
             <Modal isOpen={joinWaitinglistModal} onClose={() => setJoinWaitinglistModal(false)}>
                 <CourseConfirmationModal
-                    headline={t('single.global.courseInfo')}
+                    headline={t('registrationTitle')}
                     confirmButtonText={t('single.joinWaitinglist.button')}
                     description={t('single.joinWaitinglist.description')}
                     onClose={() => setJoinWaitinglistModal(false)}
@@ -171,7 +171,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
 
             <Modal isOpen={leaveWaitinglistModal} onClose={() => setLeaveWaitingslistModal(false)}>
                 <CourseConfirmationModal
-                    headline={t('single.global.courseInfo')}
+                    headline={t('deregistrationTitle')}
                     confirmButtonText={t('single.leaveWaitinglist.button')}
                     description={t('single.leaveWaitinglist.description')}
                     onClose={() => setJoinWaitinglistModal(false)}

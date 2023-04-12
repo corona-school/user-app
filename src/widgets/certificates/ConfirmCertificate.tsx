@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { Button, Input } from 'native-base';
+import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
 import TextInput from '../../components/TextInput';
 import { Participation_Certificate } from '../../gql/graphql';
@@ -34,21 +35,30 @@ function ConfirmData({
     goSign: () => void;
 }) {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const [confirmed, setConfirmed] = useState<boolean | null>(null);
 
     return (
         <>
             <Card bg="primary.900" width="100%">
                 <Text color="white" fontWeight="bold">
-                    Lernunterstützung von {certificate.student.firstname}
+                    {t('matching.certificate.title', { firstname: certificate.student.firstname })}
                 </Text>
                 <Text color="white">
                     <ul>
-                        <li>ab dem {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}</li>
-                        <li>bis zum {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}</li>
-                        <li>ca. {certificate.hoursPerWeek} Stunden pro Woche</li>
-                        <li>ca. {certificate.hoursTotal} Stunden insgesamt</li>
-                        <li>Inhalte:</li>
+                        <li>
+                            {t('matching.certificate.from')} {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}
+                        </li>
+                        <li>
+                            {t('matching.certificate.to')} {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}
+                        </li>
+                        <li>
+                            {t('matching.certificate.approx')} {certificate.hoursPerWeek} {t('matching.certificate.hoursPerWeek')}
+                        </li>
+                        <li>
+                            {t('matching.certificate.approx')} {certificate.hoursTotal} {t('matching.certificate.totalHours')}
+                        </li>
+                        <li>{t('matching.certificate.contents')}</li>
                         <ul>
                             {certificate.categories.split('\n').map((it) => (
                                 <li>{it}</li>
@@ -59,7 +69,7 @@ function ConfirmData({
             </Card>
 
             <Text fontWeight="bold" textAlign="center" paddingTop="50px">
-                Stimmen diese Informationen?
+                {t('matching.certificate.correctInformation')}
             </Text>
             <YesNoSelector
                 align="center"
@@ -75,15 +85,15 @@ function ConfirmData({
             {confirmed === false && (
                 <Card bg="primary.900" padding={space['1']} marginTop={space['1']}>
                     <Text color="white" fontWeight="bold">
-                        Bitte {certificate.student.firstname} die Informationen anzupassen
+                        {t('matching.certificate.requestChange', { firstname: certificate.student.firstname })}
                     </Text>
-                    <Text color="white">{certificate.student.firstname} kann in seinem Userbereich die informationen anpassen.</Text>
+                    <Text color="white">{t('matching.certificate.requestInstructions', { firstname: certificate.student.firstname })}</Text>
                 </Card>
             )}
             {confirmed && (
                 <>
                     <Text fontWeight="bold" textAlign="center" paddingTop="50px">
-                        Bist du volljährig (18 Jahre oder älter)?
+                        {t('matching.certificate.areYou18')}
                     </Text>
                     <YesNoSelector
                         align="center"
@@ -99,20 +109,17 @@ function ConfirmData({
                     {isMinor && (
                         <Card bg="primary.900" padding={space['1']} marginTop={space['1']}>
                             <Text color="white" fontWeight="bold">
-                                Bitte deine Eltern um Bestätigung
+                                {t('matching.certificate.askYourParents')}
                             </Text>
-                            <Text color="white">
-                                Auf der folgenden Seite müssen deine Eltern unterschreiben, um zu bestätigen dass {certificate.student.firstname} dich
-                                unterstützt hat.
-                            </Text>
+                            <Text color="white">{t('matching.certificate.signInstructionsParents', { firstname: certificate.student.firstname })}</Text>
                         </Card>
                     )}
                     <FormControl padding={space['1']} marginTop={space['2']}>
-                        <FormControl.Label>Ort der Unterschrift</FormControl.Label>
+                        <FormControl.Label> {t('matching.certificate.signPlace')}</FormControl.Label>
                         <Input value={location} onChangeText={setLocation} />
                     </FormControl>
                     <Button isDisabled={isMinor === null || location.length < 2} variant="solid" margin={space['1']} onPress={goSign}>
-                        Zur Unterschrift
+                        {t('matching.certificate.goToSign')}
                     </Button>
                 </>
             )}
@@ -166,11 +173,12 @@ function Sign({
     }
 
     const { colors, space } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <>
             <Text fontWeight="bold" marginBottom={space['1']}>
-                {isMinor ? 'Unterschrift eines Erziehungsberechtigten' : 'Deine Unterschrift'}
+                {isMinor ? t('matching.certificate.signatureParent') : t('matching.certificate.signatureYour')}
             </Text>
             <Box borderBottomColor={colors['primary']['900']} borderBottomStyle="solid" borderBottomWidth="2px" marginBottom={space['0.5']}>
                 <SignatureCanvas
@@ -183,14 +191,14 @@ function Sign({
                 />
             </Box>
             <Text>
-                {location}, den {DateTime.now().toFormat('dd.MM.yyyy')}
+                {location}, {t('matching.certificate.dateFiller')} {DateTime.now().toFormat('dd.MM.yyyy')}
             </Text>
             <Box marginTop={space['2']} display="flex" flexDirection="row">
                 <Button isDisabled={!isSigned} onPress={discardSignature} flexGrow="1" marginRight={space['1']} variant="primary">
-                    Löschen
+                    {t('delete')}
                 </Button>
                 <Button isDisabled={!isSigned} onPress={prepareSignature} flexGrow="2">
-                    Unterschreiben
+                    {t('matching.certificate.sign')}
                 </Button>
             </Box>
         </>
@@ -199,6 +207,7 @@ function Sign({
 
 export function ConfirmCertificate({ certificate }: { certificate: CertificateToConfirm }) {
     const { space } = useTheme();
+    const { t } = useTranslation();
     const [location, setLocation] = useState('');
     const [isMinor, setIsMinor] = useState<boolean | null>(null);
     const [sign, setSign] = useState(false);
@@ -217,7 +226,7 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
         if (data) {
             show(
                 { variant: 'dark', closeable: true },
-                <SuccessModal title="Zertifikat bestätigt" content="Vielen Dank das du uns geholfen hast, die Arbeit unsererer Helfer:innen zu würdigen." />
+                <SuccessModal title={t('matching.certificate.success')} content={t('matching.certificate.successInfo')} />
             );
         }
 
