@@ -160,6 +160,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;
+        if (isReadOnlyList) return;
         return handleScroll(scrollViewRef.current);
     }, []);
 
