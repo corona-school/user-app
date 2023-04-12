@@ -269,6 +269,10 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <LeftChat />
+                    </RequireAuth>
+                }
+            />
+            <Route
                 path="/video-chat"
                 element={
                     <RequireAuth>
