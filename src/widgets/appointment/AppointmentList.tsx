@@ -15,8 +15,6 @@ type Props = {
     isReadOnlyList: boolean;
     noNewAppointments?: boolean;
     isLoadingAppointments?: boolean;
-    isEditing?: boolean;
-    setShowEditModal?: Dispatch<SetStateAction<boolean>>;
     loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
 };
 
@@ -36,15 +34,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
     return currentId || nextId || 0;
 };
 
-const AppointmentList: React.FC<Props> = ({
-    appointments,
-    isReadOnlyList,
-    noNewAppointments,
-    isLoadingAppointments,
-    loadMoreAppointments,
-    isEditing,
-    setShowEditModal,
-}) => {
+const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewAppointments, isLoadingAppointments, loadMoreAppointments }) => {
     const [isAtTop, setIsAtTop] = useState<boolean>(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -86,7 +76,7 @@ const AppointmentList: React.FC<Props> = ({
     }, [appointments, isAtTop, loadMoreAppointments]);
 
     const renderFooter = () => {
-        if (noNewAppointments)
+        if (noNewAppointments || appointments.length === 0)
             return (
                 <Box py={5} justifyContent="center">
                     <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
@@ -134,16 +124,6 @@ const AppointmentList: React.FC<Props> = ({
         return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
     };
 
-    const handleAppointmentPress = useCallback(
-        (appointmentId: number) => {
-            if (isEditing) {
-                setShowEditModal && setShowEditModal(true);
-            }
-            navigate(`/appointment/${appointmentId}`);
-        },
-        [isEditing, navigate, setShowEditModal]
-    );
-
     const renderItems = ({ item: appointment, index }: { item: Appointment; index: number }) => {
         const previousAppointment = appointments[index - 1];
         const weekDivider = showWeekDivider(appointment, previousAppointment);
@@ -169,7 +149,7 @@ const AppointmentList: React.FC<Props> = ({
                         title={appointment.title}
                         organizers={appointment.organizers}
                         participants={appointment.participants}
-                        onPress={() => handleAppointmentPress(appointment.id)}
+                        onPress={() => navigate(`/appointment/${appointment.id}`)}
                         scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                         isReadOnly={isReadOnlyList}
                     />

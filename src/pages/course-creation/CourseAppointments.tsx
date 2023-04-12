@@ -8,7 +8,6 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
-import AppointmentEditModal from '../edit-appointment/AppointmentEditModal';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 import ButtonRow from './ButtonRow';
 import { gql } from '../../gql/gql';
@@ -16,7 +15,7 @@ import { gql } from '../../gql/gql';
 type Props = {
     next: () => void;
     back: () => void;
-    isEditing: boolean;
+    isEditing?: boolean;
     courseId?: number;
 };
 
@@ -32,7 +31,6 @@ const GET_COURSE_APPOINTMENTS = gql(`
                 duration
                 title
                 description
-                meetingLink
                 participants(skip: 0, take: 10) {
                     id
                     firstname
@@ -54,11 +52,11 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [editingAppointmentId, setEditingAppointmentId] = useState<number>(0);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     // TODO query on editing modus
     const { data } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
-    console.log('edit course', isEditing, courseId, data?.subcourse?.appointments);
 
     const { isMobile } = useLayoutHelper();
 
@@ -97,6 +95,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
     const allAppointmentsToShow = _allAppointmentsToShow();
 
     const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
+    console.log('appointments', appointmentsOfEditingCourse);
 
     // * validate if min one appointment is created
     const tryNext = () => {};
@@ -105,9 +104,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
                 <CreateCourseAppointmentModal closeModal={() => setShowModal(false)} total={appointmentsToBeCreated.length} />
-            </Modal>
-            <Modal isOpen={showEditModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <AppointmentEditModal />
             </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">
@@ -118,10 +114,8 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
                     ) : (
                         <Box minH={400}>
                             <AppointmentList
-                                isReadOnlyList={isEditing ? false : true}
+                                isReadOnlyList={true}
                                 appointments={isEditing ? (appointmentsOfEditingCourse as Appointment[]) : allAppointmentsToShow}
-                                isEditing={isEditing}
-                                setShowEditModal={() => setShowEditModal}
                             />
                         </Box>
                     )}

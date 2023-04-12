@@ -65,12 +65,12 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const { data } = useQuery(getAppointmentById, { variables: { appointmentId } });
     const [errors, setErrors] = useState<FormErrors>({});
     const [updatedAppointment, setUpdatedAppointment] = useState<UpdateAppointment>({
-        id: data?.appointment?.id ? data?.appointment.id : 0,
-        title: data?.appointment?.title ? data?.appointment.title : '',
-        description: data?.appointment?.description ? data?.appointment.description : '',
+        id: data?.appointment?.id ?? 0,
+        title: data?.appointment?.title ?? '',
+        description: data?.appointment?.description ?? '',
         date: formatStart(data?.appointment.start).date,
         time: formatStart(data?.appointment.start).time,
-        duration: data?.appointment.duration ? data?.appointment.duration : 0,
+        duration: data?.appointment.duration ?? 0,
     });
     const { t } = useTranslation();
     const navigate = useNavigate();
