@@ -118,7 +118,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                             <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
                         </Box>
                     ) : (
-                        <Box minH={200}>
+                        <Box minH={400}>
                             <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
                         </Box>
                     )}

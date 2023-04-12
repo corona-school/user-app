@@ -7,7 +7,6 @@ import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
@@ -118,6 +117,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             field: 'isRecurring',
         });
     };
+
+    // * create appointments for a new course
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
@@ -157,6 +158,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             closeModal && closeModal();
         }
     };
+    // * create appointments for an existing course
     const handleCreateCourseAppointment = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
@@ -201,6 +203,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             navigate('/appointments');
         }
     };
+
+    // * create appointments for an existing match
     const handleCreateMatchAppointment = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
