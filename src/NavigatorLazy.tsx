@@ -50,6 +50,7 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import LeftChat from './pages/chat/LeftChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
@@ -264,6 +265,10 @@ export default function NavigatorLazy() {
             />
 
             <Route
+                path="/left-chat"
+                element={
+                    <RequireAuth>
+                        <LeftChat />
                 path="/video-chat"
                 element={
                     <RequireAuth>
