@@ -1,7 +1,6 @@
 import { Divider, Heading, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AppointmentType, Organizer } from '../../gql/graphql';
-import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 
 type HeaderProps = {
     appointmentType?: Lecture_Appointmenttype_Enum;
