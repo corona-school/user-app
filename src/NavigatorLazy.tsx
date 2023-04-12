@@ -55,6 +55,7 @@ import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
+import VideoChat from './pages/VideoChat';
 
 export default function NavigatorLazy() {
     return (
@@ -258,6 +259,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Appointments />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/video-chat"
+                element={
+                    <RequireAuth>
+                        <VideoChat />
                     </RequireAuth>
                 }
             />
