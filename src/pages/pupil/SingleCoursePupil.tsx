@@ -210,6 +210,14 @@ const SingleCoursePupil = () => {
 
     const tabs: Tab[] = [
         {
+            title: t('single.tabs.lessons'),
+            content: (
+                <Box minH={300}>
+                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
+                </Box>
+            ),
+        },
+        {
             title: t('single.tabs.description'),
             content: (
                 <>
@@ -217,14 +225,6 @@ const SingleCoursePupil = () => {
                         {course?.description}
                     </Text>
                 </>
-            ),
-        },
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <Box minH={300}>
-                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
-                </Box>
             ),
         },
     ];
