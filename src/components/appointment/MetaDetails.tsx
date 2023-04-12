@@ -46,6 +46,7 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>

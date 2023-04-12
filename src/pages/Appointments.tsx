@@ -29,7 +29,7 @@ const getMyAppointments = gql(`
                     firstname
                     lastname
                 }
-                participants(skip: 0, take: 50) {
+                participants(skip: 0, take: 30) {
                     id
                     firstname
                     lastname

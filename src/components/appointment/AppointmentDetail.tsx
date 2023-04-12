@@ -139,8 +139,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                     count={appointment.position ? appointment.position : 0}
                     total={appointment.total ? appointment.total : 0}
                     attendeesCount={attendeesCount}
-                    organizers={appointment.organizers}
-                    participants={appointment.participants}
+                    organizers={appointment.organizers ?? []}
+                    participants={appointment.participants ?? []}
                     declinedBy={appointment?.declinedBy ?? []}
                 />
                 <Description description={appointment.description} />

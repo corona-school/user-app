@@ -32,6 +32,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                 declinedBy.findIndex((declinedAttendee) => a.id === declinedAttendee.id) -
                 declinedBy.findIndex((declinedAttendee) => b.id === declinedAttendee.id)
         );
+
     const sortedParticipants =
         participants &&
         declinedBy &&

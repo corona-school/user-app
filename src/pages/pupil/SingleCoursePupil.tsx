@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
-import { Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Box, Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -15,6 +15,8 @@ import { useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { Appointment } from '../../types/lernfair/Appointment';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -90,6 +92,27 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         isOnWaitingList
         cancelled
         published
+        appointments {
+              id
+              title
+              description
+              start
+              duration
+              position
+              total
+              organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+              }
+              participants(skip: 0, take: 50) {
+                id
+                firstname
+                lastname
+                isPupil
+                isStudent
+              }
+            }
     }
 }
 `);
@@ -187,35 +210,20 @@ const SingleCoursePupil = () => {
 
     const tabs: Tab[] = [
         {
+            title: t('single.tabs.lessons'),
+            content: (
+                <Box minH={300}>
+                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
+                </Box>
+            ),
+        },
+        {
             title: t('single.tabs.description'),
             content: (
                 <>
                     <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
                         {course?.description}
                     </Text>
-                </>
-            ),
-        },
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <>
-                    {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture, i) => (
-                            <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
-                                <Heading paddingBottom={space['0.5']} fontSize="md">
-                                    {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
-                                </Heading>
-                                <Text paddingBottom={space['0.5']}>
-                                    {DateTime.fromISO(lecture.start).toFormat('dd.MM.yyyy')}
-                                    <Text marginX="3px">•</Text>
-                                    {DateTime.fromISO(lecture.start).toFormat('HH:mm')} {t('single.global.clock')}
-                                </Text>
-                                <Text>
-                                    <Text bold>{t('single.global.duration')}: </Text> {lecture?.duration / 60} {t('single.global.hours')}
-                                </Text>
-                            </Row>
-                        ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
             ),
         },
