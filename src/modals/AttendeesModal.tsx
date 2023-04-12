@@ -1,13 +1,14 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AttendanceStatus, Organizer, Participant } from '../types/lernfair/User';
+import { AttendanceStatus } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
 import { AttendeesDeclined } from '../types/lernfair/Appointment';
 import { useMemo } from 'react';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 
 type ModalProps = {
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     declinedBy: AttendeesDeclined[];
     onClose?: () => void;
 };
@@ -57,7 +58,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
-                                            isOrganizer={organizer.isOrganizer}
+                                            isOrganizer={true}
                                             declined={declinedIds.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
@@ -66,7 +67,11 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}
-                                            declined={declinedIds.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            declined={
+                                                declinedIds.includes(participant.id ? participant.id : 1)
+                                                    ? AttendanceStatus.DECLINED
+                                                    : AttendanceStatus.ACCEPTED
+                                            }
                                         />
                                     );
                                 })}

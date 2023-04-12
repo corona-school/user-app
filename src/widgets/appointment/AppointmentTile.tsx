@@ -3,7 +3,7 @@ import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
-import { Organizer, Participant } from '../../types/lernfair/User';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
     title: string;
     isCurrentlyTakingPlace: boolean;
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     isReadOnly?: boolean;
     onPress?: () => void;
 };
