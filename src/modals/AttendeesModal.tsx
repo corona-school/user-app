@@ -12,10 +12,6 @@ type ModalProps = {
     onClose?: () => void;
 };
 
-function mapToIds(declinedAttendees: AttendeesDeclined[]): number[] {
-    return declinedAttendees.map((a) => a.id);
-}
-
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
