@@ -12,9 +12,6 @@ const APPOINTMENT = gql`
             duration
             title
             description
-            matchId
-            subcourseId
-            appointmentType
             isCanceled
             position
             total
