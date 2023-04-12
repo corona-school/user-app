@@ -1,7 +1,7 @@
 export type NotificationPreferences = {
-  [category: string]: PreferencesType
-}
+    [category: string]: PreferencesType;
+};
 
 export type PreferencesType = {
-  [channel: string]: boolean
-}
+    [channel: string]: boolean;
+};

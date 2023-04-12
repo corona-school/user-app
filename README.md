@@ -6,9 +6,16 @@ To develop locally, install all dependencies with `npm ci`, then use `npm start`
 
 `npm start` will start GraphQL Codegen in Watch mode - to check GraphQL queries and generate types for them - and the React Development server in two separate processes. For a better development experience one can also `npm run start-graphql` and `npm run start-dev-server` in two separate shells.
 
-## Development Tools
+## Query Parameters
 
-To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
+These Query Parameters can be supplied to any path of the User-App:
+
+**?temporary** opens the App in a temporary session where all credentials are stored in Session Storage instead of Local Storage and no Device Token is created.
+ Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
+
+**?token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
+
+## Development Tools
 
 Documentation about Components can be found in **[Storybook](https://corona-school.github.io/user-app/)**.
 
@@ -44,6 +51,17 @@ Most configuration is done via `REACT_APP_` environment variables, which are inl
 A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts). 
 
 In local development environment you can use [`.env.template`](.env.template) as template for in your own .env file.
+
+## Bundles and Lazy Loading
+
+The App is split into multiple bundles to reduce initial load time, as well as increasing caching during updates. To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
+
+The main bundle only contains the [`Navigator`](./src/Navigator.tsx) component, 
+ which only provides the GraphQL client library, the user context and the login and landing pages. Thus the bundle contains everything for the first load. Unauthenticated users can then already start to log in, whereas authenticated users and visitors of specific pages will instead see a loading spinner while the [`NavigatorLazy`](./src/NavigatorLazy.tsx) is loaded. We assume that these users already opened the App before, and thus already have the page cached (thus the main bundle is optimized for first visitors).
+
+The same mechanism is used by `IconLoader` and `IconLoaderLazy` to lazily load icons - as the page usually also works without icons.
+
+Lazy Loading uses [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) with a custom wrapper around `React.lazy` called [`lazyWithRetry`](./src/lazy.ts) - which tries again in case a chunk failed to load due to network connectivity problems. 
 
 ## Further Resources
 

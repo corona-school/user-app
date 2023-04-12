@@ -1,22 +1,25 @@
-import { Text, Heading, useTheme, VStack, Button, useBreakpointValue } from 'native-base';
+import { Text, Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs from '../../components/Tabs';
 import { useEffect, useMemo } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
-import { getTrafficStatus, sortByDate } from '../../Utility';
+import { sortByDate } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
-import CSSWrapper from '../../components/CSSWrapper';
 import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
+import CourseGroups from './CourseGroups';
+import AllSubcourses from '../subcourse/AllSubcourses';
+import { Course_Category_Enum } from '../../gql/graphql';
+import { LFSubCourse } from '../../types/lernfair/Course';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -31,8 +34,11 @@ const StudentGroup: React.FC = () => {
                         subcoursesInstructing {
                             id
                             published
+                            cancelled
                             participantsCount
                             maxParticipants
+                            minGrade
+                            maxGrade
                             firstLecture {
                                 start
                                 duration
@@ -46,6 +52,7 @@ const StudentGroup: React.FC = () => {
                                 name
                                 description
                                 image
+                                category
                                 tags {
                                     id
                                     name
@@ -54,11 +61,42 @@ const StudentGroup: React.FC = () => {
                         }
                     }
                 }
+
+                subcoursesPublic(take: 20) {
+                    id
+                    published
+                    cancelled
+                    minGrade
+                    maxGrade
+                    participantsCount
+                    maxParticipants
+                    isInstructor
+                    firstLecture {
+                        start
+                        duration
+                    }
+                    lectures {
+                        start
+                        duration
+                    }
+                    course {
+                        name
+                        courseState
+                        description
+                        image
+                        category
+                        tags {
+                            id
+                            name
+                        }
+                    }
+                }
             }
         `)
     );
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
 
     const location = useLocation();
@@ -77,32 +115,48 @@ const StudentGroup: React.FC = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const submittedSubcourses = useMemo(
-        () => data?.me.student!.subcoursesInstructing.filter((it) => it.course.courseState === 'submitted'),
-        [data?.me.student!.subcoursesInstructing]
-    );
-
     const unpublishedOrDraftedSubcourses = useMemo(
         () =>
             data?.me.student!.subcoursesInstructing.filter(
-                (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published)
+                (it) => it.course.courseState === 'created' || (it.course.courseState === 'allowed' && !it.published) || it.course.courseState === 'submitted'
             ),
-        [data?.me.student!.subcoursesInstructing]
+        [data?.me.student]
     );
-
-    const pastSubcourses = useMemo(
+    const pastOrCancelledSubcourses = useMemo(
         () =>
             sortByDate(
-                data?.me?.student?.subcoursesInstructing.filter((it) =>
-                    it.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())
+                data?.me?.student?.subcoursesInstructing.filter(
+                    (sub) =>
+                        (sub.published &&
+                            sub.lectures.every(
+                                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
+                            )) ||
+                        sub.course.courseState === 'denied' ||
+                        sub.cancelled
                 )
             ),
         [data?.me?.student?.subcoursesInstructing]
     );
-
     const publishedSubcourses = useMemo(
-        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published && !pastSubcourses.includes(sub))),
-        [data?.me?.student?.subcoursesInstructing, pastSubcourses]
+        () => sortByDate(data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published && !sub.cancelled && !pastOrCancelledSubcourses.includes(sub))),
+        [data?.me?.student?.subcoursesInstructing, pastOrCancelledSubcourses]
+    );
+    const languageCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
+        [data?.subcoursesPublic]
+    );
+    const focusCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
+        [data?.subcoursesPublic]
+    );
+    const revisionCourses = useMemo(
+        () =>
+            sortByDate(
+                data?.subcoursesPublic?.filter(
+                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                )
+            ),
+        [data?.subcoursesPublic]
     );
 
     const { trackPageView, trackEvent } = useMatomo();
@@ -113,28 +167,6 @@ const StudentGroup: React.FC = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const renderSubcourse = (subcourse: typeof publishedSubcourses[number], index: number, showDate: boolean = true) => {
-        return (
-            <CSSWrapper className="course-list__item">
-                <AppointmentCard
-                    showTrafficLight
-                    trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-                    isFullHeight
-                    isSpaceMarginBottom={false}
-                    key={index}
-                    variant="horizontal"
-                    description={subcourse.course.description}
-                    tags={subcourse.course.tags}
-                    date={(showDate && subcourse.firstLecture?.start) || ''}
-                    countCourse={subcourse.lectures.length}
-                    onPressToCourse={() => navigate(`/single-course/${subcourse.id}`)}
-                    image={subcourse.course.image ?? undefined}
-                    title={subcourse.course.name}
-                />
-            </CSSWrapper>
-        );
-    };
 
     const showSuccess = useMemo(() => {
         if (locState?.errors) {
@@ -156,62 +188,65 @@ const StudentGroup: React.FC = () => {
                                 <Text>{t('matching.group.helper.content')}</Text>
                             </VStack>
                             <VStack>
-                                <Heading fontSize="md" marginBottom="5px">
-                                    {t('matching.group.helper.contentHeadline')}
-                                </Heading>
-                                <Text>{t('matching.group.helper.contentHeadlineContent')}</Text>
+                                {locState && Object.keys(locState).length > 0 && (
+                                    <>
+                                        {showSuccess && (
+                                            <AlertMessage
+                                                content={
+                                                    locState.wasEdited
+                                                        ? t('matching.group.helper.alert.successfulEditing')
+                                                        : t('matching.group.helper.alert.successfulCreation')
+                                                }
+                                            />
+                                        )}
+                                        {(locState?.errors?.length > 0 && (
+                                            <>
+                                                {locState.errors.map((e) => (
+                                                    <AlertMessage content={t(`course.error.${e}`)} />
+                                                ))}
+                                            </>
+                                        )) || <></>}
+                                    </>
+                                )}
                             </VStack>
-                            {locState && Object.keys(locState).length > 0 && (
-                                <>
-                                    {showSuccess && (
-                                        <AlertMessage
-                                            content={
-                                                locState.wasEdited
-                                                    ? 'Dein Kurs wurde erfolgreich bearbeitet.'
-                                                    : 'Dein Kurs wurde erfolgreich erstellt. Er befindet sich nun in Prüfung.'
-                                            }
-                                        />
-                                    )}
-                                    {(locState?.errors?.length > 0 && (
-                                        <>
-                                            {locState.errors.map((e) => (
-                                                <AlertMessage content={t(`course.error.${e}`)} />
-                                            ))}
-                                        </>
-                                    )) || <></>}
-                                </>
-                            )}
-                            <VStack paddingY={space['1']}>
-                                <Button
-                                    width={ButtonContainer}
-                                    onPress={() => {
-                                        trackEvent({
-                                            category: 'matching',
-                                            action: 'click-event',
-                                            name: 'Helfer Matching Gruppen – Kurs erstellen',
-                                            documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
-                                        });
-                                        navigate('/create-course');
-                                    }}
-                                >
-                                    {t('matching.group.helper.button')}
-                                </Button>
+                            <VStack space={space['1']}>
+                                <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => window.open('https://www.lern-fair.de/helfer/gruppen-kurse', '_blank')}
+                                        textAlign="center"
+                                        variant="outline"
+                                    >
+                                        {t('moreInfoButton')}
+                                    </Button>
+                                    <Button
+                                        width={ButtonContainer}
+                                        onPress={() => {
+                                            trackEvent({
+                                                category: 'matching',
+                                                action: 'click-event',
+                                                name: 'Helfer Matching Gruppen – Kurs erstellen',
+                                                documentTitle: 'Matching Gruppen Lernunterstützung Kurs erstellen',
+                                            });
+                                            navigate('/create-course');
+                                        }}
+                                    >
+                                        {t('matching.group.helper.button')}
+                                    </Button>
+                                </Stack>
                             </VStack>
-
-                            <VStack>
-                                <Heading marginBottom={space['1.5']}>{t('matching.group.helper.course.title')}</Heading>
+                            <VStack space={space['5']} paddingY={space['1']}>
                                 <Tabs
                                     tabs={[
                                         {
                                             title: t('matching.group.helper.course.tabs.tab1.title'),
                                             content: (
                                                 <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((publishedSubcourses?.length ?? 0) > 0 &&
-                                                            publishedSubcourses?.map((subcourse, index) => {
-                                                                return renderSubcourse(subcourse, index);
-                                                            })) || <AlertMessage content={t('empty.courses')} />}
-                                                    </CSSWrapper>
+                                                    <CourseGroups
+                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
+                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
+                                                    />
                                                 </>
                                             ),
                                         },
@@ -219,37 +254,7 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((submittedSubcourses?.length ?? 0) > 0 &&
-                                                            submittedSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('empty.coursescheck')} />
-                                                        )}
-                                                    </CSSWrapper>
-                                                </>
-                                            ),
-                                        },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab3.title'),
-                                            content: (
-                                                <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {((unpublishedOrDraftedSubcourses?.length ?? 0) > 0 &&
-                                                            unpublishedOrDraftedSubcourses!.map((subcourse, index) => renderSubcourse(subcourse, index))) || (
-                                                            <AlertMessage content={t('empty.coursescheck')} />
-                                                        )}
-                                                    </CSSWrapper>
-                                                </>
-                                            ),
-                                        },
-                                        {
-                                            title: t('matching.group.helper.course.tabs.tab4.title'),
-                                            content: (
-                                                <>
-                                                    <CSSWrapper className="course-list__wrapper">
-                                                        {pastSubcourses?.map((subcourse, index) => renderSubcourse(subcourse, index, false)) || (
-                                                            <AlertMessage content={t('empty.courses')} />
-                                                        )}
-                                                    </CSSWrapper>
+                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
                                                 </>
                                             ),
                                         },

@@ -1,21 +1,25 @@
-import { VStack, useTheme, Heading, Column, Button } from 'native-base';
+import { VStack, useTheme, Heading, Column, Button, Box } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
+import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { setMatching, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
     const [showSecond, setShowSecond] = useState<boolean>(false);
-    const [isNativeLanguage, setIsNativeLanguage] = useState<'yes' | 'no'>();
+    const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
     const [learningSince, setLearningSince] = useState<'<1' | '1-2' | '2-4' | '>4'>();
 
     const onGoNext = useCallback(() => {
-        if (isNativeLanguage === 'no') {
+        if (isNativeLanguage === false) {
             setShowSecond(true);
         } else {
+            removeSubject(DAZ);
             setCurrentIndex(3);
         }
     }, [isNativeLanguage, setCurrentIndex]);
@@ -24,19 +28,21 @@ const German: React.FC = () => {
         switch (learningSince) {
             case '<1':
             case '1-2':
-                setMatching((prev) => ({ ...prev, setDazPriority: true }));
+                for (const subject of matchRequest.subjects) removeSubject(subject.name);
+                setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(5); // 5 = details, skip subjects, priorities
                 break;
             case '2-4':
-                setMatching((prev) => ({ ...prev, setDazPriority: true }));
+                setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(3); // 3 = subjects
                 break;
             case '>4':
             default:
+                removeSubject(DAZ);
                 setCurrentIndex(3);
                 break;
         }
-    }, [learningSince, setCurrentIndex, setMatching]);
+    }, [matchRequest, learningSince, setCurrentIndex, setSubject]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -44,32 +50,15 @@ const German: React.FC = () => {
             {!showSecond && (
                 <>
                     <Heading>Ist Deutsch deine Muttersprache?</Heading>
-                    <TwoColGrid>
-                        <Column>
-                            <IconTagList
-                                initial={isNativeLanguage === 'yes'}
-                                variant="selection"
-                                text="Ja"
-                                iconPath={`lf-yes.svg`}
-                                onPress={() => setIsNativeLanguage('yes')}
-                            />
-                        </Column>
-                        <Column>
-                            <IconTagList
-                                initial={isNativeLanguage === 'no'}
-                                variant="selection"
-                                text="Nein"
-                                iconPath={`lf-no.svg`}
-                                onPress={() => setIsNativeLanguage('no')}
-                            />
-                        </Column>
-                    </TwoColGrid>
-                    <Button onPress={onGoNext} isDisabled={!isNativeLanguage}>
-                        Weiter
-                    </Button>
-                    <Button variant="outline" onPress={() => setCurrentIndex(1)}>
-                        Zurück
-                    </Button>
+                    <YesNoSelector
+                        initialYes={isNativeLanguage === true}
+                        initialNo={isNativeLanguage === false}
+                        onPressNo={() => setIsNativeLanguage(false)}
+                        onPressYes={() => setIsNativeLanguage(true)}
+                        align="left"
+                    />
+                    <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
+                    <NextPrevButtons isDisabledNext={isNativeLanguage === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onGoNext} />
                 </>
             )}
             {showSecond && (
@@ -118,12 +107,7 @@ const German: React.FC = () => {
                         <AlertMessage content="Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft." />
                     )}
 
-                    <Button onPress={onSecondNext} isDisabled={!learningSince}>
-                        Weiter
-                    </Button>
-                    <Button variant="outline" onPress={() => setShowSecond(false)}>
-                        Zurück
-                    </Button>
+                    <NextPrevButtons isDisabledNext={!learningSince} onPressPrev={() => setShowSecond(false)} onPressNext={onSecondNext} />
                 </>
             )}
         </VStack>

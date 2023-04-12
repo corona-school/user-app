@@ -4,31 +4,35 @@ import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMem
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import WithNavigation from '../components/WithNavigation';
-import { LFSubject } from '../types/lernfair/Subject';
 
 import InstructionProgress from '../widgets/InstructionProgress';
 
-import CourseData from './course-creation/CourseData';
 import CoursePreview from './course-creation/CoursePreview';
 import CourseAppointments from './course-creation/CourseAppointments';
-
 import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
 import useModal from '../hooks/useModal';
-import Unsplash from '../modals/Unsplash';
-import CourseBlocker from './student/CourseBlocker';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import AddCourseInstructor from '../modals/AddCourseInstructor';
 import { GraphQLError } from 'graphql';
-import AsNavigationItem from '../components/AsNavigationItem';
 import { BACKEND_URL } from '../config';
+import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
+
+import CourseBlocker from './student/CourseBlocker';
+import AsNavigationItem from '../components/AsNavigationItem';
+import CourseBasics from './course-creation/CourseBasics';
+import CourseClassification from './course-creation/CourseClassification';
+import CourseAttendees from './course-creation/CourseAttendees';
+import FurtherInstructors from './course-creation/FurtherInstructors';
+
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
 import { AppointmentCreateGroupInput } from '../gql/graphql';
 
-export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'appointments' | 'tags';
+import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+
+export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
 export type Lecture = {
     id?: string | number;
@@ -40,8 +44,10 @@ export type Lecture = {
 type ICreateCourseContext = {
     courseName?: string;
     setCourseName?: Dispatch<SetStateAction<string>>;
-    subject?: LFSubject;
-    setSubject?: Dispatch<SetStateAction<LFSubject>>;
+    courseCategory?: string;
+    setCourseCategory?: Dispatch<SetStateAction<string>>;
+    subject?: string | null;
+    setSubject?: Dispatch<SetStateAction<string | null>>;
     classRange?: [number, number];
     setClassRange?: Dispatch<SetStateAction<[number, number]>>;
     description?: string;
@@ -54,12 +60,17 @@ type ICreateCourseContext = {
     setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
     allowContact?: boolean;
     setAllowContact?: Dispatch<SetStateAction<boolean>>;
+    lectures?: LFLecture[];
+    setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
+    newLectures?: Lecture[];
+    setNewLectures?: Dispatch<SetStateAction<Lecture[]>>;
     pickedPhoto?: string;
     setPickedPhoto?: Dispatch<SetStateAction<string>>;
     addedInstructors?: LFInstructor[];
     setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
     newInstructors?: LFInstructor[];
     image?: string;
+    myself?: LFInstructor;
 };
 
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
@@ -73,7 +84,8 @@ const CreateCourse: React.FC = () => {
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
-    const [subject, setSubject] = useState<LFSubject>({ name: '' });
+    const [courseCategory, setCourseCategory] = useState<string>('');
+    const [subject, setSubject] = useState<string | null>(null);
     const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<LFTag[]>([]);
@@ -85,6 +97,7 @@ const CreateCourse: React.FC = () => {
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
 
+    const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
@@ -103,6 +116,8 @@ const CreateCourse: React.FC = () => {
                         reason
                     }
                     id
+                    firstname
+                    lastname
                 }
             }
         }
@@ -116,6 +131,7 @@ const CreateCourse: React.FC = () => {
                 maxParticipants
                 minGrade
                 maxGrade
+                published
                 instructors {
                     id
                     firstname
@@ -167,7 +183,7 @@ const CreateCourse: React.FC = () => {
     `);
 
     const [createGroupAppointments, { reset: resetAppointments }] = useMutation(gql`
-        mutation groupAppointmentsCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
+        mutation appointmentsCourseCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
             appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
         }
     `);
@@ -213,8 +229,12 @@ const CreateCourse: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
-    const { setShow, setContent } = useModal();
+    const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
+    const myself: LFInstructor = {
+        firstname: studentData?.me.student.firstname,
+        lastname: studentData?.me.student.lastname,
+    };
 
     useEffect(() => {
         trackPageView({
@@ -241,12 +261,14 @@ const CreateCourse: React.FC = () => {
 
         setCourseId(prefillCourse.course.id || '');
         setCourseName(prefillCourse.course.name);
-        setSubject({ name: prefillCourse.course.subject });
+        setSubject(prefillCourse.course.subject);
+        setCourseCategory(prefillCourse.course.category);
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
         setAllowContact(!!prefillCourse.course.allowContact);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
+        setIsPublished(prefillCourse.published ?? false);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -283,17 +305,22 @@ const CreateCourse: React.FC = () => {
         [isEditing, navigate]
     );
 
+    const getSubject = useCallback(() => {
+        if (courseCategory === Course_Category_Enum.Revision) return (SUBJECT_TO_COURSE_SUBJECT as any)[subject!];
+        if (courseCategory === Course_Category_Enum.Language) return Course_Subject_Enum.Deutsch;
+    }, [courseCategory, subject]);
+
     const _getCourseData = useCallback(
         () => ({
             description,
-            subject: subject.name,
             schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
-            category: 'revision',
+            category: courseCategory,
             allowContact,
+            ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [allowContact, courseName, description, studentData?.me?.student?.schooltype, subject.name]
+        [allowContact, courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -446,10 +473,12 @@ const CreateCourse: React.FC = () => {
 
             let uploadFileId;
             try {
-                uploadFileId = await fetch(BACKEND_URL + '/api/file/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
+                uploadFileId = await (
+                    await fetch(BACKEND_URL + '/api/files/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                ).text();
 
                 if (!uploadFileId) {
                     errors.push('upload_image');
@@ -584,10 +613,12 @@ const CreateCourse: React.FC = () => {
 
         let uploadFileId;
         try {
-            uploadFileId = await fetch(BACKEND_URL + '/api/files/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            uploadFileId = await (
+                await fetch(BACKEND_URL + '/api/files/upload', {
+                    method: 'POST',
+                    body: formData,
+                })
+            ).text();
 
             if (!uploadFileId) {
                 errors.push('upload_image');
@@ -637,7 +668,7 @@ const CreateCourse: React.FC = () => {
     ]);
 
     const onNext = useCallback(() => {
-        if (currentIndex >= 2) {
+        if (currentIndex >= 6) {
             return;
         } else {
             setCurrentIndex((prev) => prev + 1);
@@ -652,28 +683,6 @@ const CreateCourse: React.FC = () => {
         navigate(-1);
     }, [navigate]);
 
-    const pickPhoto = useCallback(
-        (photo: string) => {
-            setPickedPhoto(photo);
-            setShow(false);
-            setContent(<></>);
-        },
-        [setContent, setShow]
-    );
-
-    const showUnsplash = useCallback(() => {
-        setContent(
-            <Unsplash
-                onPhotoSelected={pickPhoto}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [pickPhoto, setContent, setShow]);
-
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
             if (prefillCourseId === null) {
@@ -685,25 +694,10 @@ const CreateCourse: React.FC = () => {
                     setNewInstructors((prev) => [...prev, instructor]);
                 }
             }
-            setShow(false);
-            setContent(<></>);
+            hide();
         },
-        [addedInstructors, newInstructors, prefillCourseId, setContent, setShow]
+        [addedInstructors, newInstructors, prefillCourseId, hide]
     );
-
-    const showAddInstructor = useCallback(() => {
-        setContent(
-            <AddCourseInstructor
-                addedInstructors={addedInstructors}
-                onInstructorAdded={addInstructor}
-                onClose={() => {
-                    setShow(false);
-                    setContent(<></>);
-                }}
-            />
-        );
-        setShow(true);
-    }, [addInstructor, setContent, setShow, addedInstructors]);
 
     const removeInstructor = useCallback(
         async (index: number, isSubmitted: boolean) => {
@@ -735,6 +729,10 @@ const CreateCourse: React.FC = () => {
         [addedInstructors, newInstructors, prefillCourseId, removeCourseInstructor, toast]
     );
 
+    const goToStep = useCallback((index: number) => {
+        setCurrentIndex(index);
+    }, []);
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation
@@ -747,6 +745,8 @@ const CreateCourse: React.FC = () => {
                     value={{
                         courseName,
                         setCourseName,
+                        courseCategory,
+                        setCourseCategory,
                         classRange: courseClasses,
                         setClassRange: setCourseClasses,
                         subject,
@@ -766,6 +766,7 @@ const CreateCourse: React.FC = () => {
                         addedInstructors,
                         newInstructors,
                         image,
+                        myself,
                     }}
                 >
                     {(studentData?.me?.student?.canCreateCourse?.allowed && (
@@ -773,29 +774,36 @@ const CreateCourse: React.FC = () => {
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}
+                                goToStep={goToStep}
                                 instructions={[
                                     {
-                                        label: t('course.CourseDate.tabs.course'),
+                                        label: t('course.CourseDate.step.general'),
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.appointments'),
+                                        label: t('course.CourseDate.step.subject'),
                                     },
                                     {
-                                        label: t('course.CourseDate.tabs.checker'),
+                                        label: t('course.CourseDate.step.attendees'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.appointments'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.settings'),
+                                    },
+                                    {
+                                        label: t('course.CourseDate.step.checker'),
                                     },
                                 ]}
                             />
-                            {currentIndex === 0 && (
-                                <CourseData
-                                    onNext={onNext}
-                                    onCancel={onCancel}
-                                    onShowUnsplash={showUnsplash}
-                                    onShowAddInstructor={showAddInstructor}
-                                    onRemoveInstructor={removeInstructor}
-                                />
+                            {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
+                            {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
+                            {currentIndex === 3 && <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} courseId={prefillCourseId} />}
+                            {currentIndex === 4 && (
+                                <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
-                            {currentIndex === 1 && <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} courseId={prefillCourseId} />}
-                            {currentIndex === 2 && (
+                            {currentIndex === 5 && (
                                 <>
                                     <CoursePreview
                                         createAndSubmit={prefillCourseId ? undefined : () => finishCreation(/* also submit */ true)}
@@ -818,16 +826,16 @@ const CreateCourse: React.FC = () => {
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Heading maxWidth="330px" marginX="auto" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                                                        {t('course.modal.headline')}
+                                                        {t('course.CourseDate.modal.headline')}
                                                     </Heading>
                                                     <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                                                        {t('course.modal.content')}
+                                                        {t('course.CourseDate.modal.content')}
                                                     </Text>
                                                 </Box>
                                                 <Box paddingY={space['1']}>
                                                     <Row marginBottom={space['0.5']}>
                                                         <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('course.modal.button')}
+                                                            {t('next')}
                                                         </Button>
                                                     </Row>
                                                 </Box>

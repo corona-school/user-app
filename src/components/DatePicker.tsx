@@ -20,7 +20,7 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = 
         <>
             <div className="lf__datepicker">
                 <input
-                    placeholder={type === 'date' ? t('input.datepickerPlaceholder') : t('input.timepickerPlaceholder')}
+                    placeholder={type === 'date' ? t('datepickerPlaceholder') : t('timepickerPlaceholder')}
                     type={type}
                     onChange={onChange}
                     value={value}

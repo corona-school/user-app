@@ -1,6 +1,6 @@
-import { DocumentNode, gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Column, Flex, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Flex, Modal, Row, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -8,30 +8,35 @@ import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
-import { LFMatch } from '../../types/lernfair/Match';
+import { gql } from '../../gql/gql';
+import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
-import LearningPartner from '../../widgets/LearningPartner';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
+import Matches from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
 
 type Props = {};
 
-const query: DocumentNode = gql`
+const query = gql(`
     query PupilMatching {
         me {
             pupil {
+                id
                 subjectsFormatted {
                     name
+                    mandatory
                 }
                 openMatchRequestCount
-                id
                 matches {
                     id
                     uuid
                     dissolved
                     subjectsFormatted {
                         name
+                    }
+                    pupil {
+                        schooltype
+                        grade
                     }
                     student {
                         firstname
@@ -47,7 +52,7 @@ const query: DocumentNode = gql`
             }
         }
     }
-`;
+`);
 
 const Matching: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
@@ -58,10 +63,7 @@ const Matching: React.FC<Props> = () => {
     const { data } = useQuery(query);
 
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [focusedMatch, setFocusedMatch] = useState<LFMatch>();
     const [showCancelModal, setShowCancelModal] = useState<boolean>();
-    const [toastShown, setToastShown] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -70,52 +72,13 @@ const Matching: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const CardGrid = useBreakpointValue({
-        base: '100%',
-        lg: '48%',
-    });
-
-    const [dissolveMatch, { data: dissolveData }] = useMutation(
-        gql`
-            mutation dissolveMatchPupil2($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
-            }
-        `,
-        { refetchQueries: [{ query }] }
-    );
-
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql`
+        gql(`
             mutation PupilDeleteMatchRequest {
                 pupilDeleteMatchRequest
             }
-        `,
+        `),
         { refetchQueries: [{ query }] }
-    );
-
-    const showDissolveMatchModal = useCallback((match: LFMatch) => {
-        setFocusedMatch(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    const dissolve = useCallback(
-        async (reason: string) => {
-            trackEvent({
-                category: 'matching',
-                action: 'click-event',
-                name: 'Helfer Matching lösen',
-                documentTitle: 'Helfer Matching',
-            });
-            setShowDissolveModal(false);
-            return await dissolveMatch({
-                variables: {
-                    matchId: focusedMatch?.id,
-                    dissolveReason: parseInt(reason),
-                },
-            });
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dissolveMatch, focusedMatch?.id]
     );
 
     const showCancelMatchRequestModal = useCallback(() => {
@@ -140,19 +103,13 @@ const Matching: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
 
-    // active matches should appear first
-    const activeMatches: LFMatch[] = useMemo(() => {
-        return [...(data?.me?.pupil?.matches ?? [])].sort((match1: LFMatch, match2: LFMatch) => {
-            return (match1.dissolved ? 1 : 0) - (match2.dissolved ? 1 : 0);
-        });
+    const activeMatches = useMemo(() => {
+        return data?.me?.pupil?.matches.filter((match) => match.dissolved === false);
     }, [data?.me?.pupil?.matches]);
 
-    useEffect(() => {
-        if (dissolveData?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({ description: 'Das Match wurde aufgelöst', placement: 'top' });
-        }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
+    const inactiveMatches = useMemo(() => {
+        return data?.me?.pupil?.matches.filter((match) => match.dissolved === true);
+    }, [data?.me?.pupil?.matches]);
 
     return (
         <>
@@ -164,32 +121,7 @@ const Matching: React.FC<Props> = () => {
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
-                                    content: (
-                                        <VStack>
-                                            <Flex direction="row" flexWrap="wrap">
-                                                {activeMatches.map((match: LFMatch, index: number) => (
-                                                    <Column width={CardGrid} marginRight="15px" key={index}>
-                                                        <LearningPartner
-                                                            key={index}
-                                                            isDark={true}
-                                                            name={`${match?.student?.firstname} ${match?.student?.lastname}`}
-                                                            subjects={match?.subjectsFormatted}
-                                                            status={match?.dissolved ? 'aufgelöst' : 'aktiv'}
-                                                            button={
-                                                                !match.dissolved && (
-                                                                    <Button variant="outlinelight" onPress={() => showDissolveMatchModal(match)}>
-                                                                        {t('dashboard.helpers.buttons.solveMatch')}
-                                                                    </Button>
-                                                                )
-                                                            }
-                                                            contactMail={match?.studentEmail}
-                                                            meetingId={match?.uuid}
-                                                        />
-                                                    </Column>
-                                                )) || <AlertMessage content={t('matching.request.check.noMatches')} />}
-                                            </Flex>
-                                        </VStack>
-                                    ),
+                                    content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
                                 },
                                 {
                                     title: t('matching.request.check.tabs.tab2'),
@@ -206,10 +138,10 @@ const Matching: React.FC<Props> = () => {
                                                                     index={i}
                                                                     key={i}
                                                                     showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                                    subjects={data?.me?.pupil?.subjectsFormatted}
+                                                                    subjects={data?.me?.pupil?.subjectsFormatted || []}
                                                                     onEditRequest={() => setShowEditModal(true)}
                                                                 />
-                                                            ))) || <AlertMessage content={t('matching.request.check.noMatches')} />}
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -218,13 +150,6 @@ const Matching: React.FC<Props> = () => {
                             ]}
                         />
                     </Box>
-                    <DissolveMatchModal
-                        showDissolveModal={showDissolveModal}
-                        onPressDissolve={async (reason: string) => {
-                            return await dissolve(reason);
-                        }}
-                        onPressBack={() => setShowDissolveModal(false)}
-                    />
                     <Modal isOpen={showCancelModal}>
                         <Modal.Content>
                             <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>
@@ -232,7 +157,7 @@ const Matching: React.FC<Props> = () => {
                             <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
                             <Modal.Footer>
                                 <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                                    {t('matching.request.check.cancel')}
+                                    {t('cancel')}
                                 </Button>
                                 <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
                             </Modal.Footer>
@@ -241,17 +166,14 @@ const Matching: React.FC<Props> = () => {
                     <Modal isOpen={showEditModal}>
                         <Modal.Content>
                             <Modal.CloseButton />
-                            <Modal.Header>Anfrage bearbeiten</Modal.Header>
+                            <Modal.Header>{t('matching.request.check.editRequest')}</Modal.Header>
                             <Modal.Body>
-                                <Text>
-                                    Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail sobald du an der Reihe
-                                    bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.
-                                </Text>
+                                <Text>{t('matching.request.check.editRequestDescription')}</Text>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Row>
                                     <Button onPress={() => setShowEditModal(false)} variant={'secondary-light'}>
-                                        Abbrechen
+                                        {t('cancel')}
                                     </Button>
                                     <Button
                                         onPress={() =>
@@ -260,7 +182,7 @@ const Matching: React.FC<Props> = () => {
                                             })
                                         }
                                     >
-                                        Bearbeiten
+                                        {t('edit')}
                                     </Button>
                                 </Row>
                             </Modal.Footer>

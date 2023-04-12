@@ -4,13 +4,11 @@ import ProfilePupil from './pages/pupil/ProfilePupil';
 
 import Settings from './pages/Settings';
 import OnboardingTourList from './pages/OnboardingTourList';
-import ChangeSettingSubject from './pages/change-setting/ChangeSettingSubject';
 import HelpCenter from './pages/Helpcenter';
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType';
 import ChangeSettingState from './pages/change-setting/ChangeSettingState';
 import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage';
 import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass';
-import SingleCourse from './pages/SingleCourse';
 
 // Onboarding Students
 import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome';
@@ -56,6 +54,11 @@ import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
 import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import EditAppointment from './pages/EditAppointment';
+import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
+import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import ChangeEmail from './pages/ChangeEmail';
+import VerifyEmailChange from './pages/VerifyEmailChange';
+import SingleMatch from './pages/SingleMatch';
 
 export default function NavigatorLazy() {
     return (
@@ -82,8 +85,8 @@ export default function NavigatorLazy() {
             <Route
                 path="/single-course/:id"
                 element={
-                    <RequireAuth>
-                        <SingleCourse />
+                    <RequireAuth isRetainPath>
+                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
                     </RequireAuth>
                 }
             />
@@ -100,7 +103,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/notifications"
                 element={
-                    <RequireAuth>
+                    <RequireAuth isRetainPath>
                         <NotficationControlPanel />
                     </RequireAuth>
                 }
@@ -123,7 +126,6 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route path="subjects" element={<ChangeSettingSubject />} />
                 <Route path="school-type" element={<ChangeSettingSchoolType />} />
                 <Route path="state" element={<ChangeSettingState />} />
                 <Route path="language" element={<ChangeSettingLanguage />} />
@@ -307,6 +309,15 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            <Route
+                path="/match/:id"
+                element={
+                    <RequireAuth>
+                        <SingleMatch />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/request-match"
                 element={
@@ -317,8 +328,26 @@ export default function NavigatorLazy() {
             />
 
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/verify-email-change" element={<VerifyEmailChange />} />
             <Route path="/email-not-verified" element={<VerifyEmailModal />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+                path="/new-email"
+                element={
+                    <RequireAuth>
+                        <ChangeEmail />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/new-password"
+                element={
+                    <WithNavigation showBack hideMenu>
+                        <ResetPassword layout="new-pw" />
+                    </WithNavigation>
+                }
+            />
+            <Route path="/reset-password" element={<ResetPassword layout="reset-pw" />} />
+
             <Route
                 path="/datenschutz"
                 element={

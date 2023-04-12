@@ -1,19 +1,23 @@
+import { Dispatch, SetStateAction, useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { Box, Center, Divider, Text, useBreakpointValue, FlatList } from 'native-base';
 import { DateTime } from 'luxon';
-import { Box, Center, Divider, ScrollView, Stack, Text, useBreakpointValue } from 'native-base';
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { Appointment } from '../../types/lernfair/Appointment';
-import AppointmentsEmptyState from '../AppointmentsEmptyState';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AppointmentDay from './AppointmentDay';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import AppointmentsEmptyState from '../AppointmentsEmptyState';
+import { ScrollDirection } from '../../pages/Appointments';
+import { NativeScrollEvent, NativeSyntheticEvent, ViewToken } from 'react-native';
 
 type Props = {
     appointments: Appointment[];
-    isReadOnly?: boolean;
-    isEndOfList?: boolean;
-    setEndOfList?: Dispatch<SetStateAction<boolean>>;
+    isReadOnlyList: boolean;
+    noNewAppointments?: boolean;
+    isLoadingAppointments?: boolean;
     isEditing?: boolean;
     setShowEditModal?: Dispatch<SetStateAction<boolean>>;
+    loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
 };
 
 const isAppointmentNow = (start: string, duration: number): boolean => {
@@ -31,43 +35,83 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId || 0;
 };
-const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEndOfList, setEndOfList, isEditing, setShowEditModal }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    // const startContainerRef = useRef<HTMLDivElement>(null);
-    const scrollViewRef = useRef<HTMLElement>(null);
-    const [isVisible, setIsVisible] = useState<boolean>(false);
+
+const AppointmentList: React.FC<Props> = ({
+    appointments,
+    isReadOnlyList,
+    noNewAppointments,
+    isLoadingAppointments,
+    loadMoreAppointments,
+    isEditing,
+    setShowEditModal,
+}) => {
+    const [isAtTop, setIsAtTop] = useState<boolean>(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const scrollViewRef = useRef<HTMLElement>(null);
+
+    // * required if scrolling to first appointment in list and load past data
+    const viewabilityConfig = {
+        itemVisiblePercentThreshold: 0.1,
+    };
 
     const maxListWidth = useBreakpointValue({
         base: 'full',
-        lg: isReadOnly ? 'full' : '90%',
+        lg: isReadOnlyList ? 'full' : '90%',
     });
-
-    const emptyStateH = useBreakpointValue({
-        base: '60%',
-        lg: 1200,
-    });
-
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
 
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0,
-    };
-
-    const callbackFn = (entries: IntersectionObserverEntry[]) => {
-        if (isEndOfList) return;
-        const [entry] = entries;
-        setIsVisible(entry.isIntersecting);
-        setEndOfList && setEndOfList(entry.isIntersecting);
-    };
-
     const handleScroll = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
+    };
+
+    const handleScrollTop = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+        if (e.nativeEvent.contentOffset.y <= 2) setIsAtTop(true);
+    };
+
+    // TODO load past appointments
+    // const handleViewableChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    //     if (viewableItems.some((item) => Number(item.key) === appointments[0].id)) handleLoadPast();
+    //     return;
+    // }, []);
+
+    const handleLoadMore = () => {
+        loadMoreAppointments && loadMoreAppointments(appointments[appointments.length - 1].id, 'next');
+    };
+
+    const handleLoadPast = useCallback(() => {
+        loadMoreAppointments && isAtTop && loadMoreAppointments(appointments[0].id, 'last');
+    }, [appointments, isAtTop, loadMoreAppointments]);
+
+    const renderFooter = () => {
+        if (noNewAppointments)
+            return (
+                <Box py={5} justifyContent="center">
+                    <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
+                </Box>
+            );
+        if (isLoadingAppointments) {
+            return (
+                <Box h={50} justifyContent="center">
+                    <CenterLoadingSpinner />
+                </Box>
+            );
+        }
+        return <></>;
+    };
+
+    // TODO use Header if scrolling to top
+    const renderHeader = () => {
+        if (!noNewAppointments) {
+            return (
+                <Box h={50} justifyContent="center">
+                    <CenterLoadingSpinner />
+                </Box>
+            );
+        }
+        return <></>;
     };
 
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
@@ -100,72 +144,69 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
         [isEditing, navigate, setShowEditModal]
     );
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(callbackFn, options);
-        if (containerRef.current) observer.observe(containerRef.current);
+    const renderItems = ({ item: appointment, index }: { item: Appointment; index: number }) => {
+        const previousAppointment = appointments[index - 1];
+        const weekDivider = showWeekDivider(appointment, previousAppointment);
+        const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-        return () => {
-            if (containerRef.current) observer.unobserve(containerRef.current);
-        };
-    }, [containerRef.current, options]);
+        if (isLoadingAppointments) return <CenterLoadingSpinner />;
+        return (
+            <Box key={`${appointment.id + index}`} ml={3}>
+                {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
+                {monthDivider && (
+                    <>
+                        <Center mt="3">
+                            <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${DateTime.fromISO(appointment.start).year}`}</Text>
+                        </Center>
+                        <Divider my={3} width="95%" />
+                    </>
+                )}
+                <Box ml={5}>
+                    <AppointmentDay
+                        key={appointment.title}
+                        start={appointment.start}
+                        duration={appointment.duration}
+                        title={appointment.title}
+                        organizers={appointment.organizers}
+                        participants={appointment.participants}
+                        onPress={() => handleAppointmentPress(appointment.id)}
+                        scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
+                        isReadOnly={isReadOnlyList}
+                    />
+                </Box>
+            </Box>
+        );
+    };
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;
-        if (isVisible) return handleScroll(scrollViewRef.current);
-        if (!isReadOnly) return handleScroll(scrollViewRef.current);
-        return;
-    }, [appointments, isReadOnly, isVisible]);
+        if (isReadOnlyList) return;
+        return handleScroll(scrollViewRef.current);
+    }, []);
+
+    // TODO remove if scroll past appointments is working
+    // useEffect(() => {
+    //     if (!isAtTop) return;
+    //     return handleLoadPast;
+    // }, [handleLoadPast, isAtTop]);
 
     return (
-        <>
-            {/* <div ref={startContainerRef} /> */}
-            <ScrollView scrollEnabled={isReadOnly}>
-                <Stack flex={1} maxW={maxListWidth}>
-                    <>
-                        {appointments.map((appointment, index) => {
-                            const previousAppointment = appointments[index - 1];
-                            const weekDivider = showWeekDivider(appointment, previousAppointment);
-                            const monthDivider = showMonthDivider(appointment, previousAppointment);
-
-                            return (
-                                <Box key={`${appointment.id + index}`} ml={3}>
-                                    {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
-                                    {monthDivider && (
-                                        <>
-                                            <Center mt="3">
-                                                <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
-                                                    DateTime.fromISO(appointment.start).year
-                                                }`}</Text>
-                                            </Center>
-                                            <Divider my={3} width="95%" />
-                                        </>
-                                    )}
-                                    <Box ml={5}>
-                                        <AppointmentDay
-                                            key={`appointment-${appointment.title}-start-${appointment.id}`}
-                                            start={appointment.start}
-                                            duration={appointment.duration}
-                                            title={appointment.title}
-                                            organizers={appointment.organizers}
-                                            participants={appointment.participants}
-                                            onPress={() => handleAppointmentPress(appointment.id)}
-                                            scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
-                                            isReadOnly={isReadOnly}
-                                        />
-                                    </Box>
-                                </Box>
-                            );
-                        })}
-                        {!isReadOnly && appointments.length >= 10 && isEndOfList && (
-                            <Box alignItems="center" justifyContent="center" h={emptyStateH}>
-                                <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
-                            </Box>
-                        )}
-                    </>
-                </Stack>
-            </ScrollView>
-            <div ref={containerRef} />
-        </>
+        <FlatList
+            keyExtractor={(item) => item.id.toString()}
+            height={100}
+            maxW={maxListWidth}
+            data={appointments}
+            renderItem={renderItems}
+            onEndReached={!isReadOnlyList ? handleLoadMore : undefined}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
+            onScroll={!isReadOnlyList ? handleScrollTop : undefined}
+            viewabilityConfig={viewabilityConfig}
+            // * use for load past appointments
+            // ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
+            // ListHeaderComponent={renderHeader}
+            // onViewableItemsChanged={handleViewableChanged}
+        />
     );
 };
 

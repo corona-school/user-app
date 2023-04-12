@@ -1,13 +1,17 @@
 import { Box, Button, Column, Heading, Text, useTheme, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import IconTagList from '../../../widgets/IconTagList';
+import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
+import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 
 const Filter: React.FC = () => {
     const { space } = useTheme();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { setCurrentIndex: goToIndex } = useContext(RequestMatchContext);
     const [isFit, setIsFit] = useState<'yes' | 'no'>();
     const [isAcceptWaitingTime, setIsAcceptWaitingTime] = useState<'yes' | 'no'>();
@@ -37,46 +41,30 @@ const Filter: React.FC = () => {
                     </Box>
 
                     <Heading fontSize="md">Treffen diese Punkte auf dich zu?</Heading>
-                    <TwoColGrid>
-                        <Column>
-                            <IconTagList iconPath={`lf-yes.svg`} initial={isFit === 'yes'} text="Ja" variant="selection" onPress={() => setIsFit('yes')} />
-                        </Column>
-                        <Column>
-                            <IconTagList iconPath={`lf-no.svg`} initial={isFit === 'no'} text="Nein" variant="selection" onPress={() => setIsFit('no')} />
-                        </Column>
-                    </TwoColGrid>
-
+                    <YesNoSelector
+                        initialYes={isFit === 'yes'}
+                        initialNo={isFit === 'no'}
+                        onPressYes={() => setIsFit('yes')}
+                        onPressNo={() => setIsFit('no')}
+                        align="left"
+                    />
+                    <br />
                     <Heading>Lange Wartezeit: 3-6 Monate</Heading>
                     <Text>
-                        Zur Zeit brauchen sehr viele Schüler:innen 1:1-Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
-                        Monate warten, bevor wir dir eine:n Lernpartner:in für dich finden können.
+                        Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
+                        Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.
                     </Text>
 
                     <Heading fontSize="md">Bist du bereit 3-6 Monate zu warten?</Heading>
-                    <TwoColGrid>
-                        <Column>
-                            <IconTagList
-                                iconPath={`lf-yes.svg`}
-                                initial={isAcceptWaitingTime === 'yes'}
-                                text="Ja"
-                                variant="selection"
-                                onPress={() => setIsAcceptWaitingTime('yes')}
-                            />
-                        </Column>
-                        <Column>
-                            <IconTagList
-                                iconPath={`lf-no.svg`}
-                                initial={isAcceptWaitingTime === 'no'}
-                                text="Nein"
-                                variant="selection"
-                                onPress={() => setIsAcceptWaitingTime('no')}
-                            />
-                        </Column>
-                    </TwoColGrid>
-
-                    <Button onPress={next} isDisabled={!isFit || !isAcceptWaitingTime}>
-                        Weiter
-                    </Button>
+                    <YesNoSelector
+                        initialYes={isAcceptWaitingTime === 'yes'}
+                        initialNo={isAcceptWaitingTime === 'no'}
+                        onPressYes={() => setIsAcceptWaitingTime('yes')}
+                        onPressNo={() => setIsAcceptWaitingTime('no')}
+                        align="left"
+                    />
+                    <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
+                    <NextPrevButtons isDisabledNext={!isFit || !isAcceptWaitingTime} onPressNext={next} onlyNext />
                 </VStack>
             )}
             {currentIndex === 1 && (
@@ -86,7 +74,7 @@ const Filter: React.FC = () => {
                     <Text>Leider können wir dich derzeit nicht mit einem:r Lernpartner:in versorgen.</Text>
 
                     <Heading fontSize="md" mt={space['1']}>
-                        Kennst du schon unsere Gruppenkurse?
+                        Kennst du schon unsere Gruppen-Kurse?
                     </Heading>
 
                     <Text>
@@ -97,10 +85,12 @@ const Filter: React.FC = () => {
 
                     <Text>Bei Fragen kannst du dich gerne jederzeit bei uns melden.</Text>
 
-                    <Button onPress={() => navigate('/group')}>Zu den Gruppenkursen</Button>
-                    <Button variant="outline" onPress={() => window.open('https://edu-cloud.org', '_blank')}>
-                        Zu Edu-Cloud
-                    </Button>
+                    <NextPrevButtons
+                        altPrevText="Zu Edu-Cloud"
+                        altNextText="Zu den Gruppen-Kursen"
+                        onPressPrev={() => window.open('https://edu-cloud.org', '_blank')}
+                        onPressNext={() => navigate('/group')}
+                    />
                 </VStack>
             )}
         </VStack>

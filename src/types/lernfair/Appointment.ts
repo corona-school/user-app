@@ -1,5 +1,4 @@
-import { AppointmentType } from '../../gql/graphql';
-import { Participant, Organizer } from './User';
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -14,10 +13,10 @@ export type Appointment = {
     total?: number;
     meetingLink?: string | null;
     organizers?: Organizer[];
-    participants?: Participant[];
+    participants?: AppointmentParticipant[];
     isCancelled?: boolean;
     declinedBy?: AttendeesDeclined[];
-    appointmentType: AppointmentType;
+    appointmentType?: Lecture_Appointmenttype_Enum;
 };
 
 export type AttendeesDeclined = {
@@ -37,5 +36,5 @@ export type CreateAppointmentInput = {
     subcourseId?: number;
     matchId?: number;
     meetingLink: string;
-    appointmentType: AppointmentType;
+    appointmentType: Lecture_Appointmenttype_Enum;
 };

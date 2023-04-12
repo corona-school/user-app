@@ -3,24 +3,21 @@ import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
 import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_OPTIN } from '../Utility';
 import useModal from '../hooks/useModal';
 
 type Props = {
     email?: string;
+    retainPath?: string;
 };
 
-const VerifyEmailModal: React.FC<Props> = ({ email }) => {
+const VerifyEmailModal: React.FC<Props> = ({ email, retainPath }) => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
     const navigate = useNavigate();
-    const { setShow } = useModal();
-
-    const goToWelcome = useCallback(() => {
-        navigate('/welcome');
-        setShow(false);
-    }, [navigate, setShow]);
+    const { hide } = useModal();
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
 
@@ -41,7 +38,7 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
         const res = await sendVerification({
             variables: {
                 email: email!,
-                redirectTo: REDIRECT_OPTIN,
+                redirectTo: retainPath ?? '/start',
             },
         });
 
@@ -53,32 +50,33 @@ const VerifyEmailModal: React.FC<Props> = ({ email }) => {
             <VStack w={ContentContainerWidth} space={space['1']} flex="1" alignItems="center">
                 <Icon />
                 <Heading size="md" textAlign="center" color="lightText">
-                    Fast geschafft!
+                    {t('registration.verifyemail.title')}
                 </Heading>
                 {email && (
                     <>
-                        <Text color="lightText">{`Wir haben eine E-Mail an`}</Text>
-                        <Text color="lightText">{email} gesendet. </Text>
+                        <Text color="lightText">
+                            {t('registration.verifyemail.mailsendto', {
+                                email: email,
+                            })}
+                        </Text>
                     </>
                 )}
                 <Text color="lightText" textAlign={'center'}>
-                    Bevor du unser Angebot nutzen kannst, musst du deine E-Mailadresse bestätigen und den AGB zustimmen. Wenn du deine E-Mailadresse bestätigt
-                    hast, wirst du automatisch weitergeleitet.
+                    {t('registration.verifyemail.description')}
                 </Text>
                 <Text bold color="lightText">
-                    Keine E-Mail erhalten?
+                    {t('registration.verifyemail.notreceived')}
                 </Text>
-                <Button onPress={goToWelcome}>Fenster schließen</Button>
                 <Button isDisabled={_sendVerification?.loading} onPress={requestEmailVerification} variant={'link'}>
-                    Erneut senden
+                    {t('registration.verifyemail.resend.button')}
                 </Button>
                 {showSendEmailResult && (
                     <Box width="100%">
                         <AlertMessage
                             content={
                                 showSendEmailResult === 'success'
-                                    ? 'Wir haben dir eine E-Mail gesendet. Bitte überprüfe deinen Posteingang.'
-                                    : 'Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut.'
+                                    ? t('registration.verifyemail.resend.successAlert')
+                                    : t('registration.verifyemail.resend.failedAlert')
                             }
                         />
                     </Box>

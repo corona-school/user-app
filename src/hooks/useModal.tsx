@@ -1,38 +1,50 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
-import { IModalTheme } from '../widgets/FullPageModal';
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState, useMemo } from 'react';
+
+export type IModalTheme = 'light' | 'dark' | 'image';
 
 type LFModal = {
-    show: boolean;
-    setShow: Dispatch<SetStateAction<boolean>>;
-    content: ReactNode;
-    setContent: Dispatch<SetStateAction<ReactNode>>;
+    visible: boolean;
+    content?: ReactNode;
     variant: IModalTheme;
-    setVariant: Dispatch<SetStateAction<IModalTheme>>;
+    closeable: boolean;
+    headline?: string;
+
+    show: (options: { variant: IModalTheme; closeable?: boolean; headline?: string }, content: ReactNode) => void;
+    hide(): void;
 };
 
 export const LFModalContext = createContext<LFModal>({
-    show: false,
+    visible: false,
     content: null,
     variant: 'light',
-    setShow: () => null,
-    setContent: () => null,
-    setVariant: () => null,
+    closeable: false,
+
+    show: () => {},
+    hide: () => {},
 });
 
 export const LFModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const modal = useProvideModal();
-    return <LFModalContext.Provider value={modal}>{children}</LFModalContext.Provider>;
+    const [modalValues, setModal] = useState<{ visible: boolean; content?: ReactNode; variant: IModalTheme; closeable: boolean; headline?: string }>({
+        visible: false,
+        variant: 'light',
+        closeable: false,
+    });
+
+    const show = useCallback(
+        ({ variant, closeable, headline }: { variant: IModalTheme; closeable?: boolean; headline?: string }, content: ReactNode) =>
+            setModal({ visible: true, variant, content, closeable: closeable ?? false, headline }),
+        [setModal]
+    );
+    const hide = useCallback(() => setModal({ visible: false, content: null, variant: 'light', closeable: false }), [setModal]);
+
+    const value = useMemo(() => ({ ...modalValues, show, hide }), [modalValues, show, hide]);
+
+    return <LFModalContext.Provider value={value}>{children}</LFModalContext.Provider>;
 };
 
-const useModal = () => {
-    return useContext(LFModalContext);
+export const useModal = () => {
+    const { show, hide } = useContext(LFModalContext);
+    return { show, hide };
 };
 
-const useProvideModal = () => {
-    const [show, setShow] = useState<boolean>(false);
-    const [content, setContent] = useState<ReactNode>();
-    const [variant, setVariant] = useState<IModalTheme>('light');
-
-    return { show, setShow, content, setContent, variant, setVariant };
-};
 export default useModal;

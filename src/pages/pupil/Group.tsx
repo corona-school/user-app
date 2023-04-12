@@ -1,26 +1,25 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Box } from 'native-base';
-import { useNavigate } from 'react-router-dom';
+import { Text, Heading, useTheme, VStack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import AppointmentCard from '../../widgets/AppointmentCard';
 import Tabs, { Tab } from '../../components/Tabs';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import SearchBar from '../../components/SearchBar';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus, sortByDate } from '../../Utility';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { gql } from '../../gql';
+import { sortByDate } from '../../Utility';
 import { DateTime } from 'luxon';
 import Hello from '../../widgets/Hello';
-import AlertMessage from '../../widgets/AlertMessage';
-import CSSWrapper from '../../components/CSSWrapper';
+import MySubcourses from './MySubcourses';
+import AllSubcourses from '../subcourse/AllSubcourses';
+import { Course_Category_Enum } from '../../gql/graphql';
 
 type Props = {};
 
-const query = gql`
+const query = gql(`
     query PupilSubcourseOverview {
         me {
             pupil {
@@ -31,6 +30,12 @@ const query = gql`
                 }
                 subcoursesJoined {
                     id
+                    minGrade
+                    maxGrade
+                    cancelled
+                    published
+                    isParticipant
+                    isOnWaitingList
                     maxParticipants
                     participantsCount
                     firstLecture {
@@ -38,23 +43,102 @@ const query = gql`
                         duration
                     }
                     lectures {
-                        start
+                        start duration
                     }
                     course {
                         name
                         image
+                        category
                         tags {
                             name
                         }
+                        description
+                        courseState
+                    }
+                }
+
+                subcoursesWaitingList {
+                    id
+                    minGrade
+                    maxGrade
+                    isParticipant
+                    cancelled
+                    published
+                    isOnWaitingList
+                    maxParticipants
+                    participantsCount
+                    firstLecture {
+                        start
+                        duration
+                    }
+                    lectures {
+                        start duration
+                    }
+                    course {
+                        name
+                        image
+                        category
+                        tags {
+                            name
+                        }
+                        description
+                        courseState
                     }
                 }
             }
         }
     }
-`;
+`);
+
+const queryPast = gql(`
+    query PupilPastSubcoursesOverview {
+        me {
+            pupil {
+                canJoinSubcourses {
+                    allowed
+                    reason
+                    limit
+                }
+                subcoursesJoined(onlyPast: true) {
+                    cancelled
+                    published
+                    isOnWaitingList
+                    id
+                    isParticipant
+                    maxParticipants
+                    participantsCount
+                    minGrade
+                    maxGrade
+                    firstLecture {
+                        start duration
+                    }
+                    lectures {
+                        start duration
+                    }
+                    course {
+                        name
+                        image
+                        category
+                        tags {
+                            name
+                        }
+                        description
+                        courseState
+                    }
+                }
+            }
+        }
+    }
+`);
 
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
+    const { t } = useTranslation();
+    const { trackPageView } = useMatomo();
+    const [lastSearch, setLastSearch] = useState<string>('');
+    const [activeTab, setActiveTab] = useState<number>(0);
+    const { data, loading } = useQuery(query);
+    const { data: dataPast, loading: loadingPast } = useQuery(queryPast);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -66,38 +150,40 @@ const PupilGroup: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const { trackPageView } = useMatomo();
-
-    const [lastSearch, setLastSearch] = useState<string>('');
-    const [activeTab, setActiveTab] = useState<number>(0);
-
-    const { data, loading } = useQuery(query);
-
-    const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(gql`
+    const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(
+        gql(`
         query GetAllSubcourses($name: String) {
             subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
+                cancelled
+                published
                 isParticipant
+                minGrade
+                maxGrade
                 maxParticipants
                 participantsCount
                 id
+                isOnWaitingList
                 firstLecture {
-                    start
+                    start duration
                 }
                 lectures {
                     start
+                    duration
                 }
                 course {
                     name
                     image
+                    category
                     tags {
                         name
                     }
+                    description
+                    courseState
                 }
             }
         }
-    `);
+    `)
+    );
 
     useEffect(() => {
         trackPageView({
@@ -108,24 +194,24 @@ const PupilGroup: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const courses: LFSubCourse[] = useMemo(() => {
-        let arr;
+    const courses = useMemo(() => {
+        let arr: Exclude<typeof allSubcoursesData, undefined | null>['subcoursesPublic'];
         switch (activeTab) {
             default:
             case 0:
                 arr = allSubcoursesData?.subcoursesPublic || [];
                 break;
             case 1:
-                arr = data?.me?.pupil?.subcoursesJoined || [];
+                arr = data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) || [];
                 break;
         }
         return arr;
-    }, [activeTab, allSubcoursesData, data?.me?.pupil?.subcoursesJoined]);
+    }, [activeTab, allSubcoursesData?.subcoursesPublic, data?.me?.pupil?.subcoursesJoined, data?.me?.pupil?.subcoursesWaitingList]);
 
-    const activeCourses: LFSubCourse[] = useMemo(
+    const activeCourses = useMemo(
         () =>
             sortByDate(
-                courses.filter((course: LFSubCourse) => {
+                courses.filter((course) => {
                     let ok = false;
                     for (const lecture of course.lectures) {
                         const date = DateTime.fromISO(lecture.start).toMillis();
@@ -140,18 +226,14 @@ const PupilGroup: React.FC<Props> = () => {
         [courses]
     );
 
-    const searchResults: LFSubCourse[] = useMemo(() => {
+    const searchResults = useMemo(() => {
         if (lastSearch.length === 0) return activeCourses;
         return (
             (lastSearch.length > 0 && activeTab !== 1 && activeCourses) ||
-            activeCourses?.filter((sub: LFSubCourse) => sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())) ||
+            activeCourses?.filter((sub) => sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())) ||
             []
         );
     }, [lastSearch, activeTab, activeCourses]);
-
-    const sortedSearchResults: LFSubCourse[] = useMemo(() => {
-        return searchResults;
-    }, [searchResults]);
 
     const search = useCallback(async () => {
         switch (activeTab) {
@@ -164,13 +246,23 @@ const PupilGroup: React.FC<Props> = () => {
         }
     }, [activeTab, lastSearch, searchAllSubcoursesQuery]);
 
-    const SubcoursesTab: React.FC = () => {
-        return <></>;
-    };
-
-    const AllSubcoursesTab: React.FC = () => {
-        return <></>;
-    };
+    const languageCourses = useMemo(
+        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
+        [searchResults]
+    );
+    const focusCourses = useMemo(
+        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
+        [searchResults]
+    );
+    const revisionCourses = useMemo(
+        () =>
+            sortByDate(
+                searchResults.filter(
+                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                )
+            ),
+        [searchResults]
+    );
 
     return (
         <AsNavigationItem path="group">
@@ -201,45 +293,21 @@ const PupilGroup: React.FC<Props> = () => {
                                 }}
                                 tabs={[
                                     {
-                                        title: t('matching.group.pupil.tabs.tab3.title'),
-                                        content: <AllSubcoursesTab />,
+                                        title: t('matching.group.pupil.tabs.tab2.title'),
+                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
                                     },
                                     {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
-                                        content: <SubcoursesTab />,
+                                        content: (
+                                            <MySubcourses
+                                                currentCourses={searchResults}
+                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
+                                                loading={allSubcoursesSearchLoading}
+                                            />
+                                        ),
                                     },
                                 ]}
                             />
-                            <CSSWrapper className="course-list__wrapper">
-                                {(!allSubcoursesSearchLoading && (
-                                    <>
-                                        {(sortedSearchResults?.length &&
-                                            sortedSearchResults.map((course: LFSubCourse, index: number) => (
-                                                <CSSWrapper className="course-list__item" key={`subcourse-${index}`}>
-                                                    <AppointmentCard
-                                                        showTrafficLight={activeTab > 0}
-                                                        trafficLightStatus={getTrafficStatus(course.participantsCount || 0, course.maxParticipants || 0)}
-                                                        isHorizontalCardCourseChecked={course.isParticipant}
-                                                        isSpaceMarginBottom={false}
-                                                        isFullHeight
-                                                        variant="horizontal"
-                                                        description={course.course.description}
-                                                        tags={course.course.tags}
-                                                        date={course.firstLecture?.start}
-                                                        countCourse={course.lectures?.length}
-                                                        onPressToCourse={() => navigate(`/single-course/${course.id}`)}
-                                                        image={course.course.image}
-                                                        title={course.course.name}
-                                                    />
-                                                </CSSWrapper>
-                                            ))) || (
-                                            <Box paddingLeft={space['1']} width="100%">
-                                                <AlertMessage content={t('matching.group.error.nofound')} />
-                                            </Box>
-                                        )}
-                                    </>
-                                )) || <CenterLoadingSpinner />}
-                            </CSSWrapper>
                         </VStack>
                     </VStack>
                 )}

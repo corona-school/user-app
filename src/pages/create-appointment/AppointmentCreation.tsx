@@ -4,14 +4,13 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
 import { DateTime } from 'luxon';
-import { gql, useMutation } from '@apollo/client';
-import useApollo from '../../hooks/useApollo';
+import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { CreateAppointmentInput } from '../../types/lernfair/Appointment';
 import { useCallback, useState } from 'react';
-import { AppointmentCreateGroupInput, AppointmentType } from '../../gql/graphql';
+import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
+import { gql } from '../../gql/gql';
 
 type FormErrors = {
     title?: string;
@@ -28,7 +27,7 @@ export type StartDate = {
 };
 
 type Props = {
-    id?: number;
+    courseOrMatchId?: number;
     isCourse?: boolean;
     isCourseCreation?: boolean;
     appointmentsTotal?: number;
@@ -36,12 +35,11 @@ type Props = {
     closeModal?: () => void;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCreation, appointmentsTotal, closeModal }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
-    const { user } = useApollo();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
@@ -52,17 +50,21 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
         lg: '25%',
     });
 
-    const [createGroupAppointments] = useMutation(gql`
+    const [createGroupAppointments] = useMutation(
+        gql(`
         mutation appointmentsGroupCreate($appointments: [AppointmentCreateGroupInput!]!, $id: Float!) {
             appointmentsGroupCreate(appointments: $appointments, subcourseId: $id)
         }
-    `);
+    `)
+    );
 
-    const [createMatchAppointments] = useMutation(gql`
+    const [createMatchAppointments] = useMutation(
+        gql(`
         mutation appointmentsMatchCreate($appointments: [AppointmentCreateMatchInput!]!, $id: Float!) {
             appointmentsMatchCreate(appointments: $appointments, matchId: $id)
         }
-    `);
+    `)
+    );
 
     const convertStartDate = (date: string, time: string) => {
         const dt = DateTime.fromISO(date);
@@ -116,6 +118,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
         });
     };
 
+    // * create appointments for a new course
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
@@ -125,7 +128,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
-                subcourseId: id!,
+                subcourseId: courseOrMatchId!,
                 appointmentType: AppointmentType.Group,
             };
             if (isCourseCreation && weeklies.length === 0) {
@@ -140,7 +143,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                         start: weekly.nextDate,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
-                        subcourseId: id!,
+                        subcourseId: courseOrMatchId!,
                         appointmentType: AppointmentType.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
@@ -155,25 +158,26 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
             closeModal && closeModal();
         }
     };
-
-    const handleCreateAppointment = () => {
+    // * create appointments for an existing course
+    const handleCreateCourseAppointment = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
-            let appointments: CreateAppointmentInput[] = [];
+            let appointments: AppointmentCreateGroupInput[] = [];
 
-            const newAppointment: CreateAppointmentInput = {
+            const newAppointment: AppointmentCreateGroupInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
-                ...(isCourse ? { subcourseId: id, appointmentType: AppointmentType.Group } : { matchId: id, appointmentType: AppointmentType.Match }),
+                subcourseId: courseOrMatchId ? courseOrMatchId : 1,
+                appointmentType: AppointmentType.Group,
             };
 
             appointments.push(newAppointment);
 
             if (weeklies.length > 0) {
-                let weeklyAppointments: CreateAppointmentInput[] = [];
+                let weeklyAppointments: AppointmentCreateGroupInput[] = [];
 
                 for (const weekly of weeklies) {
                     const newWeeklyAppointment = {
@@ -182,14 +186,15 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
                         start: weekly.nextDate,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
-                        ...(isCourse ? { subcourseId: id, appointmentType: AppointmentType.Group } : { matchId: id, appointmentType: AppointmentType.Match }),
+                        subcourseId: courseOrMatchId ? courseOrMatchId : 1,
+                        appointmentType: AppointmentType.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
                 appointments.push(...weeklyAppointments);
             }
 
-            isCourse ? createGroupAppointments({ variables: { appointments, id } }) : createMatchAppointments({ variables: { appointments, id } });
+            createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -199,6 +204,51 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
         }
     };
 
+    // * create appointments for an existing match
+    const handleCreateMatchAppointment = () => {
+        if (!appointmentToCreate) return;
+        if (validateInputs()) {
+            let appointments: AppointmentCreateMatchInput[] = [];
+
+            const newAppointment: AppointmentCreateMatchInput = {
+                title: appointmentToCreate.title ? appointmentToCreate.title : '',
+                description: appointmentToCreate.description ? appointmentToCreate.description : '',
+                start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
+                duration: appointmentToCreate.duration,
+                meetingLink: '',
+                matchId: courseOrMatchId ? courseOrMatchId : 1,
+                appointmentType: AppointmentType.Match,
+            };
+
+            appointments.push(newAppointment);
+
+            if (weeklies.length > 0) {
+                let weeklyAppointments: AppointmentCreateMatchInput[] = [];
+
+                for (const weekly of weeklies) {
+                    const newWeeklyAppointment = {
+                        title: weekly.title ? weekly.title : '',
+                        description: weekly.description ? weekly.description : '',
+                        start: weekly.nextDate,
+                        duration: appointmentToCreate.duration,
+                        meetingLink: '',
+                        matchId: courseOrMatchId ? courseOrMatchId : 1,
+                        appointmentType: AppointmentType.Match,
+                    };
+                    weeklyAppointments.push(newWeeklyAppointment);
+                }
+                appointments.push(...weeklyAppointments);
+            }
+
+            createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+
+            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+
+            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
+            navigate('/appointments');
+        }
+    };
     const calcNewAppointmentInOneWeek = useCallback(() => {
         const startDate = DateTime.fromISO(appointmentToCreate.date);
         const nextDate = startDate.plus({ days: 7 }).toISO();
@@ -220,7 +270,10 @@ const AppointmentCreation: React.FC<Props> = ({ back, id, isCourse, isCourseCrea
             </Box>
             {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
-                <Button onPress={isCourseCreation ? handleCreateCourseAppointments : handleCreateAppointment} width={buttonWidth}>
+                <Button
+                    onPress={isCourseCreation ? handleCreateCourseAppointments : isCourse ? handleCreateCourseAppointment : handleCreateMatchAppointment}
+                    width={buttonWidth}
+                >
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
