@@ -10,7 +10,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -125,10 +125,9 @@ const SingleMatch = () => {
                         {data?.match?.dissolved && (
                             <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
                                 <AlertMessage
-                                    content={
-                                        'Match wurde aufgelöst: ' +
-                                        t(`matching.dissolveReasons.${userType}.${data?.match?.dissolveReason ?? 8}` as unknown as TemplateStringsArray)
-                                    }
+                                    content={t('matching.shared.dissolvedAlert', {
+                                        partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
+                                    })}
                                 />
                             </Stack>
                         )}

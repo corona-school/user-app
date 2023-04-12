@@ -81,9 +81,9 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
                         </Button> */}
                         <Button
                             onPress={() =>
-                                (window.location.href = `mailto:?subject=Engagiere+dich+bei+Lern-Fair%21&body=${encodeURIComponent(
-                                    t('dashboard.helpers.contents.recommendText')
-                                )}`)
+                                (window.location.href = `mailto:?subject=${encodeURIComponent(
+                                    t('dashboard.helpers.contents.recommendSubject')
+                                )}&body=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`)
                             }
                             variant="outline"
                             textAlign="center"
