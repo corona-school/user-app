@@ -20,7 +20,6 @@ const getMyAppointments = gql(`
         me {
             appointments(take: $take, cursor: $cursor, direction: $direction) {
                 id
-                appointmentType
                 title
                 description
                 start
