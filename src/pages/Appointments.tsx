@@ -9,12 +9,11 @@ import AddAppointmentButton from '../widgets/AddAppointmentButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
-import AppointmentList from '../widgets/appointment/AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from '../gql/gql';
 import { Appointment } from '../types/lernfair/Appointment';
-import InfiniteScrollList from '../widgets/appointment/List';
+import AppointmentList from '../widgets/appointment/AppointmentList';
 
 const getMyAppointments = gql(`
     query myAppointments($take: Float, $cursor: Float, $direction: String) {
@@ -74,13 +73,13 @@ const Appointments: React.FC = () => {
                 if (scrollDirection === 'next') {
                     return {
                         me: {
-                            appointments: prevAppointments.concat(newAppointments),
+                            appointments: [...prevAppointments, ...newAppointments],
                         },
                     };
                 } else {
                     return {
                         me: {
-                            appointments: newAppointments.concat(prevAppointments),
+                            appointments: [...newAppointments, ...prevAppointments],
                         },
                     };
                 }
@@ -94,8 +93,7 @@ const Appointments: React.FC = () => {
                 {loadingMyAppointments && !myAppointments && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 {!error && appointments.length > 0 ? (
-                    // <AppointmentList isReadOnly={false} appointments={appointments as Appointment[]} isEndOfList={isEndOfList} setEndOfList={setIsEndOfList} />
-                    <InfiniteScrollList
+                    <AppointmentList
                         appointments={appointments as Appointment[]}
                         isLoadingAppointments={loadingMyAppointments}
                         isReadOnlyList={false}

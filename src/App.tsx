@@ -30,25 +30,25 @@ function LogRouting() {
 function App() {
     return (
         <LernfairProvider>
-            <LFModalProvider>
-                <LFApolloProvider>
-                    <BrowserRouter>
-                        <LogRouting />
-                        <NativeBaseProvider theme={Theme}>
-                            <IssueReporter>
-                                <MatomoProvider value={matomo}>
-                                    <NotificationsProvider>
-                                        <CreateAppointmentProvider>
+            <CreateAppointmentProvider>
+                <LFModalProvider>
+                    <LFApolloProvider>
+                        <BrowserRouter>
+                            <LogRouting />
+                            <NativeBaseProvider theme={Theme}>
+                                <IssueReporter>
+                                    <MatomoProvider value={matomo}>
+                                        <NotificationsProvider>
                                             <Navigator />
                                             <ToastNotifications />
-                                        </CreateAppointmentProvider>
-                                    </NotificationsProvider>
-                                </MatomoProvider>
-                            </IssueReporter>
-                        </NativeBaseProvider>
-                    </BrowserRouter>
-                </LFApolloProvider>
-            </LFModalProvider>
+                                        </NotificationsProvider>
+                                    </MatomoProvider>
+                                </IssueReporter>
+                            </NativeBaseProvider>
+                        </BrowserRouter>
+                    </LFApolloProvider>
+                </LFModalProvider>
+            </CreateAppointmentProvider>
         </LernfairProvider>
     );
 }
