@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { AttendeesDeclined } from '../../types/lernfair/Appointment';
 
 type MetaProps = {
     date: string;
@@ -20,7 +21,7 @@ type MetaProps = {
     attendeesCount?: number;
     organizers: Organizer[];
     participants: AppointmentParticipant[];
-    declinedBy: number[];
+    declinedBy: AttendeesDeclined[];
 
     meetingLink?: string;
 };
