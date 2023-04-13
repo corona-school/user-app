@@ -1,6 +1,7 @@
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
 import { Button } from 'native-base';
 import { GestureResponderEvent } from 'react-native';
+import { generateSignature } from './zoomMeeting-helper/generate-zoom-signature';
 
 type MeetingParams = {
     authEndpoint: string;
@@ -9,41 +10,55 @@ type MeetingParams = {
     sdkKey: string;
     userEmail: string;
     passWord: string;
-    registrantToken: string;
-    zakToken: string;
     role: number;
 };
 
-const ZoomMeeting: React.FC<MeetingParams> = ({ authEndpoint, meetingNumber, userName, sdkKey, userEmail, passWord, registrantToken, zakToken, role }) => {
+const ZoomMeeting: React.FC<MeetingParams> = ({ authEndpoint, meetingNumber, userName, sdkKey, userEmail, passWord, role }) => {
     const client = ZoomMtgEmbedded.createClient();
 
-    const getSignature = (event: GestureResponderEvent) => {
+    const getZakToken = async () => {
+        const oAuthRes = await fetch(
+            `https://zoom.us/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_ZOOM_SDK_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_ZOOM_REDIRECT_URL}`,
+            {
+                mode: 'no-cors',
+                headers: {
+                    Authorization: 'b3kwMGhDS0VRdkt5eGNSNDlGekV5dzptbU9Xa3Y5ejBzWGdsVGhBVktveGtrMVNIQmhaVHN6Vg==',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+        console.log(oAuthRes);
+        const accessToken = oAuthRes.body;
+        const res = await fetch(`https://api.zoom.us/v2/users/${userEmail}/token?type=zak`, {
+            mode: 'no-cors',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        console.log(res);
+        return res as unknown as string;
+    };
+
+    const getNewSignature = (event: GestureResponderEvent) => {
         event.preventDefault();
 
-        fetch(authEndpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                meetingNumber: meetingNumber,
-                role: role,
-            }),
-        })
-            .then((res) => res.json())
-            .then((response) => {
-                startMeeting(response.signature);
+        generateSignature(process.env.REACT_APP_ZOOM_SDK_CLIENT_ID, process.env.REACT_APP_ZOOM_SDK_CLIENT_SECRET, process.env.REACT_APP_ZOOM_MEETING_NUMBER, 0)
+            .then((response: any) => {
+                console.log(response);
+                startMeeting(response);
             })
-            .catch((error) => {
+            .catch((error: Error) => {
                 console.error(error);
             });
     };
 
-    function startMeeting(signature: any) {
+    async function startMeeting(signature: any) {
         let meetingSDKElement = document.getElementById('meetingSDKElement');
 
         client.init({
             debug: true,
             zoomAppRoot: meetingSDKElement || undefined,
-            language: 'en-US',
+            language: 'de-DE',
             customize: {
                 meetingInfo: ['topic', 'host', 'mn', 'pwd', 'telPwd', 'invite', 'participant', 'dc', 'enctype'],
                 toolbar: {
@@ -67,8 +82,7 @@ const ZoomMeeting: React.FC<MeetingParams> = ({ authEndpoint, meetingNumber, use
             password: passWord,
             userName: userName,
             userEmail: userEmail,
-            tk: registrantToken,
-            zak: zakToken,
+            zak: await getZakToken(),
         });
     }
 
@@ -78,7 +92,7 @@ const ZoomMeeting: React.FC<MeetingParams> = ({ authEndpoint, meetingNumber, use
                 <h1>Zoom Meeting SDK Sample React</h1>
 
                 <div id="meetingSDKElement">{/* Zoom Meeting SDK Component View Rendered Here */}</div>
-                <Button colorScheme="coolGray" onPress={(event) => getSignature(event)}>
+                <Button colorScheme="coolGray" onPress={(event) => getNewSignature(event)}>
                     An Meeting Teilnehmen
                 </Button>
             </main>
