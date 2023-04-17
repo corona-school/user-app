@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -45,7 +45,7 @@ type Props = {
     minGrade?: number;
     maxGrade?: number;
     child?: string;
-    avatar?: string;
+    avatar?: ReactElement;
     avatarname?: string;
     button?: ReactNode;
     buttonlink?: string;

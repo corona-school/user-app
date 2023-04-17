@@ -48,6 +48,9 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import CreateAppointment from './pages/CreateAppointment';
+import Appointment from './pages/Appointment';
+import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import ChangeEmail from './pages/ChangeEmail';
@@ -233,6 +236,15 @@ export default function NavigatorLazy() {
                 }
             />
 
+            <Route
+                path="/create-course-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
             {/* Edit Course */}
             <Route
                 path="/edit-course"
@@ -258,6 +270,23 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Appointments />
+                    </RequireAuth>
+                }
+            ></Route>
+            <Route
+                path="/appointment/:id"
+                element={
+                    <RequireAuth>
+                        <Appointment />
+                    </RequireAuth>
+                }
+            ></Route>
+
+            <Route
+                path="/create-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateAppointment />} />
                     </RequireAuth>
                 }
             />

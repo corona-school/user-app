@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,8 @@ import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { Appointment } from '../../types/lernfair/Appointment';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -91,6 +93,27 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             start
             duration
         }
+        appointments {
+              id
+              title
+              description
+              start
+              duration
+              position
+              total
+              organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+              }
+              participants(skip: 0, take: 50) {
+                id
+                firstname
+                lastname
+                isPupil
+                isStudent
+              }
+            }
     }
 }
 `);
@@ -201,36 +224,20 @@ const SingleCourseStudent = () => {
 
     const tabs: Tab[] = [
         {
+            title: t('single.tabs.lessons'),
+            content: (
+                <Box minH={300}>
+                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
+                </Box>
+            ),
+        },
+        {
             title: t('single.tabs.description'),
             content: (
                 <>
                     <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
                         {course?.description}
                     </Text>
-                </>
-            ),
-        },
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <>
-                    {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture, i) => (
-                            <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
-                                <Heading paddingBottom={space['0.5']} fontSize="md">
-                                    {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
-                                </Heading>
-                                <Text paddingBottom={space['0.5']}>
-                                    {DateTime.fromISO(lecture.start).toFormat('dd.MM.yyyy')}
-                                    <Text marginX="3px">•</Text>
-                                    {DateTime.fromISO(lecture.start).toFormat('HH:mm')} {t('single.global.clock')}
-                                </Text>
-                                <Text>
-                                    <Text bold>{t('single.global.duration')}: </Text>{' '}
-                                    {(typeof lecture?.duration !== 'number' ? parseInt(lecture?.duration) : lecture?.duration) / 60} {t('single.global.hours')}
-                                </Text>
-                            </Row>
-                        ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
             ),
         },
@@ -290,9 +297,7 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
-            ),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -334,7 +339,7 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {(isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading) && (
+                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
                         <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (

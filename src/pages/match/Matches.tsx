@@ -30,7 +30,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
     });
 
     const getMatchPartnerName = useCallback(
-        (match: LFMatch): string => {
+        (match: Match): string => {
             if (userType === 'student') return `${match?.pupil?.firstname} ${match?.pupil?.lastname}`;
             return `${match?.student?.firstname} ${match?.student?.lastname}`;
         },

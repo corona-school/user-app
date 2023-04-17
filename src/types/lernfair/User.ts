@@ -1,6 +1,16 @@
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { State } from './State';
 
 export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
+export enum UserType {
+    STUDENT = 'student',
+    PUPIL = 'pupil',
+}
+
+export enum AttendanceStatus {
+    ACCEPTED = 'accepted',
+    DECLINED = 'declined',
+}
 
 export type LFUserType = string | 'pupil' | 'student';
 
@@ -15,3 +25,5 @@ export type LFStudent = {
     firstname: string;
     lastname: string;
 };
+
+export type Attendee = AppointmentParticipant | Organizer;
