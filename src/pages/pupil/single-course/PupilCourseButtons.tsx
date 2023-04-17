@@ -9,10 +9,18 @@ import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessag
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
+import AlertMessage from '../../../widgets/AlertMessage';
 
 type CanJoin = {
     allowed: boolean;
-    reason?: string | null;
+    reason?:
+     | 'not-participant'
+     | 'no-lectures'
+     | 'already-started'
+     | 'grade-to-low'
+     | 'grade-to-high'
+     | 'subcourse-full'
+     | null;
 };
 
 type ActionButtonProps = {
@@ -110,18 +118,21 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {!subcourse?.isParticipant && canJoinSubcourse?.allowed && (
+                {!subcourse.isParticipant && canJoinSubcourse?.allowed && (
                     <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
                         {t('signin')}
                     </Button>
                 )}
+                {!subcourse.isParticipant && canJoinSubcourse?.allowed === false && (
+                    <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)} />
+                )}
 
-                {subcourse?.isParticipant && (
+                {subcourse.isParticipant && (
                     <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
                         {t('single.actions.leaveSubcourse')}
                     </Button>
                 )}
-                {!subcourse?.isParticipant && courseFull && !subcourse.isOnWaitingList && (
+                {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
                         {t('single.actions.joinWaitinglist')}
                     </Button>
@@ -136,7 +147,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse?.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
             </Stack>
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>

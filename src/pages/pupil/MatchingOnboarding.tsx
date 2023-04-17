@@ -82,12 +82,12 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                 >
                     {t('dashboard.helpers.buttons.requestMatchSuS')}
                 </Button>
-                {(DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />) ||
-                    (!data?.me?.pupil?.canRequestMatch?.allowed && (
+                {(!data?.me?.pupil?.canRequestMatch?.allowed && (
                         <AlertMessage
                             content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
                         />
-                    ))}
+                 )) ||
+                 (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
             </VStack>
         </VStack>
     );
