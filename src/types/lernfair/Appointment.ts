@@ -25,6 +25,7 @@ export type AttendeesDeclined = {
     lastname: string;
     isStudent: boolean;
     isPupil: boolean;
+    userId: string;
 };
 
 // type of appointments to send to the BE
