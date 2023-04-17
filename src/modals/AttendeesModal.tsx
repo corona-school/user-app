@@ -42,7 +42,6 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                 declinedBy.findIndex((declinedAttendee) => b.userId === declinedAttendee.userId)
         );
 
-    console.log(declinedBy);
     return (
         <>
             <Modal.Content width="350" background="primary.900">
