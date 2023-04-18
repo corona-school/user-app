@@ -407,7 +407,7 @@ const useApolloInternal = () => {
 
         if (error) throw new Error(`Failed to determine user: ${error.message}`);
         setUser(me as UserType);
-        setRoles(myRoles);
+        setRoles(myRoles as Role[]);
     }, [client, setUser, setRoles]);
 
     // If the session is present and the user is not yet determined
