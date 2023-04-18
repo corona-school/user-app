@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { AlertDialog, Button } from 'native-base';
 import React, { ErrorInfo, useEffect, useRef, useState } from 'react';
 import useApollo from './hooks/useApollo';
-import { getLastLogs } from './log';
+import { getLastLogs, logError } from './log';
 
 // c.f. https://reactjs.org/docs/error-boundaries.html
 type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
@@ -43,6 +43,8 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
         if (issue) return; // Only return the first error occuring
 
         const issueTag = Date.now().toString(36);
+
+        logError('React Error', error, { issueTag, errorInfo });
 
         reportToBackend({
             variables: {

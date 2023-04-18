@@ -17,6 +17,8 @@ declare namespace NodeJS {
         readonly REACT_APP_UNSPLASH: string;
         // URL for student screenings
         readonly REACT_APP_SCREENING_URL: string;
+        // Datadog app key
+        readonly REACT_APP_DATADOG_APP_KEY: string;
     }
     interface ProcessEnv extends LernFairEnv {
         readonly NODE_ENV: 'development' | 'production' | 'test';
