@@ -11,7 +11,7 @@ import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
-import { gql } from '../gql/gql';
+import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/appointment/AppointmentList';
 
@@ -24,6 +24,7 @@ const getMyAppointments = gql(`
                 description
                 start
                 duration
+                appointmentType
                 organizers(skip: 0, take: 5) {
                     id
                     firstname

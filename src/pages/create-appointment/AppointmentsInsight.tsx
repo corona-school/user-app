@@ -27,6 +27,7 @@ const GET_COURSE_APPOINTMENTS = gql`
                 description
                 position
                 total
+                appointmentType
                 organizers(skip: 0, take: 10) {
                     firstname
                     lastname

@@ -14,6 +14,7 @@ const APPOINTMENT = gql`
             description
             isCanceled
             position
+            appointmentType
             total
             participants(skip: 0, take: 10) {
                 id

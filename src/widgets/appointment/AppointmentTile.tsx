@@ -5,6 +5,7 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
+import { Appointment } from '../../types/lernfair/Appointment';
 
 type Props = {
     timeDescriptionText: string;
@@ -14,9 +15,19 @@ type Props = {
     participants?: AppointmentParticipant[];
     isReadOnly?: boolean;
     onPress?: () => void;
+    appointmentType: Appointment['appointmentType'];
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, title, isCurrentlyTakingPlace, organizers, participants, isReadOnly, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({
+    timeDescriptionText,
+    title,
+    isCurrentlyTakingPlace,
+    organizers,
+    participants,
+    isReadOnly,
+    onPress,
+    appointmentType,
+}) => {
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
@@ -60,7 +71,7 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, title, isCurren
                         </HStack>
                         <Box>
                             <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {title}
+                                {appointmentType === 'match' ? 'Match: ' + title : appointmentType === 'group' ? 'Group: ' + title : title}
                             </Heading>
 
                             <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>

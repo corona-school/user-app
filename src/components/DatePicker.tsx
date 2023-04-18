@@ -8,7 +8,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
     useMin?: boolean;
 }
 
-const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = true }) => {
+const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = true, onBlur }) => {
     const { t } = useTranslation();
     const _min = useMemo(() => {
         let date = DateTime.now();
@@ -25,6 +25,7 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = 
                     onChange={onChange}
                     value={value}
                     min={(type === 'date' && useMin && _min) || undefined}
+                    onBlur={onBlur}
                 />
             </div>
             <Spacer m={3} />

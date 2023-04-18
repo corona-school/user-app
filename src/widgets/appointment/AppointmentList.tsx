@@ -66,7 +66,6 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
 
     const handleLoadPast = useCallback(() => {
         loadMoreAppointments && loadMoreAppointments(appointments[0].id, 'last');
-        setIsAtTop(false);
     }, [appointments, loadMoreAppointments]);
 
     const renderFooter = () => {
@@ -125,7 +124,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
                 )}
                 <Box ml={5} ref={index === 0 ? firstElementRef : null}>
                     <AppointmentDay
-                        key={appointment.title}
+                        key={appointment.id}
                         start={appointment.start}
                         duration={appointment.duration}
                         title={appointment.title}
@@ -134,6 +133,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
                         onPress={() => navigate(`/appointment/${appointment.id}`)}
                         scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                         isReadOnly={isReadOnlyList}
+                        appointmentType={appointment.appointmentType}
                     />
                 </Box>
             </Box>

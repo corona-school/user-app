@@ -139,6 +139,7 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                             onPress={() => navigate(`/appointment/${appointment.id}`)}
                                             scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                             isReadOnly={isReadOnly}
+                                            appointmentType={appointment.appointmentType}
                                         />
                                     </Box>
                                 </Box>
