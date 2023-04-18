@@ -19,7 +19,7 @@ if (!schema) {
 
 if (!schema) {
   // In case nobody configured it, fall back to default staging backend
-  schema = "https://corona-school-backend-dev.herokuapp.com/apollo";
+  schema = "https://lernfair-backend-dev.herokuapp.com/apollo";
 }
 
 console.info(chalk.bgBlue.white(
