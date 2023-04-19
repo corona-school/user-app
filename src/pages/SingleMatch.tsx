@@ -1,4 +1,4 @@
-import { Button, Divider, Stack, useTheme, useToast } from 'native-base';
+import { Box, Button, Divider, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
+import MatchAppointments from './MatchAppointments';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -24,6 +25,7 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolveReason
     pupil {
+      id
       firstname
       lastname
       schooltype
@@ -36,6 +38,7 @@ query SingleMatch($matchId: Int! ) {
     }
     pupilEmail
     student {
+      id
       firstname
       lastname
       state
@@ -102,21 +105,13 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
-    // TODO integrate appointments
-    // const tabs: Tab[] = [
-    //     {
-    //         title: 'Termine',
-    //         content: <Text>Termine</Text>,
-    //     },
-    // ];
-
     return (
-        <WithNavigation headerTitle={''} showBack={!createAppointment} headerLeft={!createAppointment ? <NotificationAlert /> : <></>}>
+        <WithNavigation headerTitle={''} showBack={!createAppointment} headerLeft={<NotificationAlert />}>
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
                 !error && (
-                    <Stack space={space['1']} paddingX={space['1.5']}>
+                    <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
                         {createAppointment ? (
                             <AppointmentCreation back={() => setCreateAppointment(false)} courseOrMatchId={matchId} isCourse={false} appointmentsTotal={0} />
                         ) : (
@@ -141,7 +136,7 @@ const SingleMatch = () => {
                                     direction={isMobile ? 'column' : 'row'}
                                     flexWrap={isMobile ? 'nowrap' : 'wrap'}
                                     justifyContent="center"
-                                    space={isMobile ? space['0.5'] : space['3']}
+                                    space={isMobile ? space['0.5'] : space['2']}
                                 >
                                     <Button
                                         onPress={() => {
@@ -172,13 +167,18 @@ const SingleMatch = () => {
                                         </Button>
                                     )}
                                 </Stack>
+                                <Box h={'50vh'}>
+                                    <MatchAppointments matchId={matchId} />
+                                </Box>
                                 {userType === 'student' && (
-                                    <>
-                                        <Divider thickness={1} my={1} />
-                                        <Button variant="outline" onPress={() => setCreateAppointment(true)}>
-                                            {t('matching.shared.createAppointment')}
-                                        </Button>
-                                    </>
+                                    <Box>
+                                        <Divider thickness={1} mb={4} />
+                                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
+                                            <Button variant="outline" onPress={() => setCreateAppointment(true)}>
+                                                {t('matching.shared.createAppointment')}
+                                            </Button>
+                                        </Stack>
+                                    </Box>
                                 )}
                             </>
                         )}

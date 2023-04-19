@@ -14,6 +14,7 @@ import { useOnScreen } from '../../hooks/useIntersectionObserver';
 type Props = {
     appointments: Appointment[];
     isReadOnlyList: boolean;
+    isFullWidth?: boolean;
     noNewAppointments?: boolean;
     isLoadingAppointments?: boolean;
     loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
@@ -35,7 +36,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
     return currentId || nextId || 0;
 };
 
-const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewAppointments, isLoadingAppointments, loadMoreAppointments }) => {
+const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFullWidth, noNewAppointments, isLoadingAppointments, loadMoreAppointments }) => {
     const [isAtTop, setIsAtTop] = useState<boolean>(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -46,7 +47,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
 
     const maxListWidth = useBreakpointValue({
         base: 'full',
-        lg: isReadOnlyList ? 'full' : '90%',
+        lg: isReadOnlyList || isFullWidth ? 'full' : '90%',
     });
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
@@ -112,14 +113,14 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
 
         if (isLoadingAppointments) return <CenterLoadingSpinner />;
         return (
-            <Box key={`${appointment.id + index}`} ml={3}>
+            <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
                 {monthDivider && (
                     <>
                         <Center mt="3">
                             <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${DateTime.fromISO(appointment.start).year}`}</Text>
                         </Center>
-                        <Divider my={3} width="95%" />
+                        <Divider my={3} width={isFullWidth ? '100%' : '95%'} />
                     </>
                 )}
                 <Box ml={5} ref={index === 0 ? firstElementRef : null}>
@@ -133,6 +134,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, noNewA
                         onPress={() => navigate(`/appointment/${appointment.id}`)}
                         scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                         isReadOnly={isReadOnlyList}
+                        isFullWidth={isFullWidth}
                         appointmentType={appointment.appointmentType}
                         position={appointment.position}
                         total={appointment.total}

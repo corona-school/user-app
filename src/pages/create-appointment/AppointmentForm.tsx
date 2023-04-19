@@ -10,8 +10,9 @@ import { useState } from 'react';
 type FormProps = {
     errors: {};
     appointmentsCount: number;
+    onSetDate: () => void;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -39,6 +40,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
 
     const handleDateInput = (e: any) => {
         setDate(e.target.value);
+        onSetDate();
     };
 
     const handleTimeInput = (e: any) => {

@@ -14,6 +14,7 @@ type Props = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     isReadOnly?: boolean;
+    isFullWidth?: boolean;
     onPress?: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
@@ -29,6 +30,7 @@ const AppointmentTile: React.FC<Props> = ({
     organizers,
     participants,
     isReadOnly,
+    isFullWidth,
     onPress,
     position,
     displayName,
@@ -36,7 +38,7 @@ const AppointmentTile: React.FC<Props> = ({
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
-        lg: '90%',
+        lg: isFullWidth ? '95%' : '90%',
     });
     console.log(position);
     return (
