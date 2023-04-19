@@ -138,11 +138,17 @@ const SingleMatch = () => {
                                     </Stack>
                                 )}
 
-                                <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
+                                <Stack
+                                    direction={isMobile ? 'column' : 'row'}
+                                    flexWrap={isMobile ? 'nowrap' : 'wrap'}
+                                    justifyContent="center"
+                                    space={isMobile ? space['0.5'] : space['3']}
+                                >
                                     <Button
                                         onPress={() => {
                                             window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
                                         }}
+                                        my={isMobile ? '0' : '1'}
                                     >
                                         {t('matching.shared.videochat')}
                                     </Button>
@@ -150,26 +156,27 @@ const SingleMatch = () => {
                                         onPress={() =>
                                             (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
                                         }
+                                        my={isMobile ? '0' : '1'}
                                     >
                                         {t('matching.shared.contactMail')}
                                     </Button>
 
-                                    <Button isDisabled variant="outline">
+                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.contactViaChat')}
                                     </Button>
-                                    <Button isDisabled variant="outline">
+                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.directCall')}
                                     </Button>
                                     {!data?.match?.dissolved && (
-                                        <Button variant="outline" onPress={() => setShowDissolveModal(true)}>
+                                        <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
                                             {t('matching.shared.dissolveMatch')}
                                         </Button>
                                     )}
-                                    <Divider thickness={1} my={1} />
-                                    <Button variant="outline" onPress={() => setCreateAppointment(true)}>
-                                        {t('matching.shared.createAppointment')}
-                                    </Button>
                                 </Stack>
+                                <Divider thickness={1} my={1} />
+                                <Button variant="outline" onPress={() => setCreateAppointment(true)}>
+                                    {t('matching.shared.createAppointment')}
+                                </Button>
                             </>
                         )}
                         {/* <Tabs tabs={tabs} /> */}
