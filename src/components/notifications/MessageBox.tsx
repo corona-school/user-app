@@ -23,7 +23,6 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
 
     const { sentAt } = userNotification || { sentAt: '' };
     const { headline, body, type, navigateTo, modalText } = userNotification.message;
-    console.warn(`CONTEXT: ${JSON.stringify(userNotification)}`);
 
     const boxProps = {
         mb: 2,
@@ -39,8 +38,6 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     };
 
     const navigateToLink = () => {
-        console.warn(`navigateTo: ${navigateTo} type - ${typeof navigateTo}`);
-        console.warn(`modalText: ${modalText} type - ${typeof modalText}`);
         if (modalText) {
             setNotificationModalOpen(true);
         }
