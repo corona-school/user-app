@@ -6,7 +6,7 @@ import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import LeavePageModal from './LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
-import AppointmentCancelledModal from './AppointmentCancelledModal';
+import AppointmentCancelledModal from './NotificationModal';
 
 type Props = {
     userNotification: Concrete_Notification;
@@ -16,13 +16,13 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
     const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
-    const [appointmentCancelledModalOpen, setAppointmentCancelledModalOpen] = useState<boolean>(false);
+    const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
     const { sentAt } = userNotification || { sentAt: '' };
-    const { headline, body, type, navigateTo } = userNotification.message;
+    const { headline, body, type, navigateTo, modalText } = userNotification.message;
     console.warn(`CONTEXT: ${JSON.stringify(userNotification)}`);
 
     const boxProps = {
@@ -40,11 +40,11 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
 
     const navigateToLink = () => {
         console.warn(`navigateTo: ${navigateTo} type - ${typeof navigateTo}`);
-        if (typeof navigateTo !== 'string') return null;
-        if (navigateTo === 'student-cancel-appointment-group' || navigateTo === 'student-cancel-appointment-match') {
-            setAppointmentCancelledModalOpen(true);
-            return;
+        console.warn(`modalText: ${modalText} type - ${typeof modalText}`);
+        if (modalText) {
+            setNotificationModalOpen(true);
         }
+        if (typeof navigateTo !== 'string') return null;
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
         }
@@ -66,11 +66,19 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
                     <Modal isOpen={leavePageModalOpen}>
                         <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
                     </Modal>
-                    <Modal isOpen={appointmentCancelledModalOpen}>
+                </>
+            );
+        } else if (modalText) {
+            return (
+                <>
+                    <Pressable onPress={navigateToLink}>
+                        <Component />
+                    </Pressable>
+                    <Modal isOpen={notificationModalOpen}>
                         <AppointmentCancelledModal
                             messageType={type}
-                            onClose={() => setLeavePageModalOpen(false)}
-                            context={'context' as any}
+                            onClose={() => setNotificationModalOpen(false)}
+                            modalText={modalText}
                             headline={headline}
                         />
                     </Modal>

@@ -17,10 +17,6 @@ const notification = {
             description: 'Du wirst zu folgender Seite weitergeleitet',
             button: 'Weiter zu externer Seite',
         },
-        appointmentCancelModal: {
-            description:
-                'Der Termin {{appointmentTitle}} des Kurses {{courseTitle}} {{date}} wurde von {{organizer}} abgesagt und aus deinen Terminen entfern.',
-        },
     },
     controlPanel: {
         title: 'E-Mail-Benachrichtigungen',

@@ -11,6 +11,7 @@ const concreteNotificationQuery = gql(`
             message {
                 headline
                 body
+                modalText
                 type
             }
             sentAt
