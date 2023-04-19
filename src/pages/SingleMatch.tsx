@@ -7,7 +7,6 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
-import {} from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useState } from 'react';
@@ -173,10 +172,14 @@ const SingleMatch = () => {
                                         </Button>
                                     )}
                                 </Stack>
-                                <Divider thickness={1} my={1} />
-                                <Button variant="outline" onPress={() => setCreateAppointment(true)}>
-                                    {t('matching.shared.createAppointment')}
-                                </Button>
+                                {userType === 'student' && (
+                                    <>
+                                        <Divider thickness={1} my={1} />
+                                        <Button variant="outline" onPress={() => setCreateAppointment(true)}>
+                                            {t('matching.shared.createAppointment')}
+                                        </Button>
+                                    </>
+                                )}
                             </>
                         )}
                         {/* <Tabs tabs={tabs} /> */}
