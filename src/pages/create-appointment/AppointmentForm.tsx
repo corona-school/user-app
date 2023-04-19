@@ -5,13 +5,14 @@ import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
+import { useState } from 'react';
 
 type FormProps = {
     errors: {};
     appointmentsCount: number;
 };
 const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => {
-    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
+    const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const inputWidth = useBreakpointValue({
@@ -19,8 +20,13 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
         lg: '50%',
     });
 
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+
     const handleTitleInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: e.target.value });
+        setTitle(e.target.value);
     };
 
     const handleDurationSelection = (e: any) => {
@@ -28,15 +34,15 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
     };
 
     const handleDescriptionInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: e });
+        setDescription(e);
     };
 
     const handleDateInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: e.target.value });
+        setDate(e.target.value);
     };
 
     const handleTimeInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: e.target.value });
+        setTime(e.target.value);
     };
 
     return (
@@ -46,13 +52,24 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                     {/* TITLE */}
                     <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
-                        <InputSuffix appointmentsCount={appointmentsCount + 1} inputValue={appointmentToCreate.title} handleInput={handleTitleInput} />
+                        <InputSuffix
+                            appointmentsCount={appointmentsCount + 1}
+                            inputValue={title}
+                            handleInput={handleTitleInput}
+                            handleBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
+                        />
                     </FormControl>
 
                     {/* DATE */}
                     <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker onChange={(e) => handleDateInput(e)} value={appointmentToCreate.date} />
+                        <DatePicker
+                            onChange={(e) => handleDateInput(e)}
+                            value={date}
+                            onBlur={() => {
+                                dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
+                            }}
+                        />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyDateError')}
@@ -71,7 +88,13 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                     <FormControl isInvalid={'time' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
-                            <DatePicker type="time" onChange={(e) => handleTimeInput(e)} value={appointmentToCreate.time} min={'08:00'} />
+                            <DatePicker
+                                type="time"
+                                onChange={(e) => handleTimeInput(e)}
+                                value={time}
+                                min={'08:00'}
+                                onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
+                            />
                         </Box>
                         {'time' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
@@ -105,8 +128,9 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                 <FormControl isInvalid={'description' in errors} width={inputWidth}>
                     <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                     <TextArea
-                        value={appointmentToCreate.description}
+                        value={description}
                         onChangeText={(e) => handleDescriptionInput(e)}
+                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
                         placeholder={t('appointment.create.descriptionPlaceholder')}
                         _light={{ placeholderTextColor: 'primary.500' }}
                         autoCompleteType={'normal'}

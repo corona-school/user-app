@@ -5,6 +5,7 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
+import { Appointment } from '../../types/lernfair/Appointment';
 
 type Props = {
     timeDescriptionText: string;
@@ -14,15 +15,30 @@ type Props = {
     participants?: AppointmentParticipant[];
     isReadOnly?: boolean;
     onPress?: () => void;
+    appointmentType: Appointment['appointmentType'];
+    position: Appointment['position'];
+    total: Appointment['total'];
+    isOrganizer: Appointment['isOrganizer'];
+    displayName: Appointment['displayName'];
 };
 
-const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, title, isCurrentlyTakingPlace, organizers, participants, isReadOnly, onPress }) => {
+const AppointmentTile: React.FC<Props> = ({
+    timeDescriptionText,
+    title,
+    isCurrentlyTakingPlace,
+    organizers,
+    participants,
+    isReadOnly,
+    onPress,
+    position,
+    displayName,
+}) => {
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
     });
-
+    console.log(position);
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
@@ -60,15 +76,12 @@ const AppointmentTile: React.FC<Props> = ({ timeDescriptionText, title, isCurren
                         </HStack>
                         <Box>
                             <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {title}
+                                {displayName}
                             </Heading>
 
                             <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {organizers
-                                    ?.map((organizers) => {
-                                        return `${organizers.firstname} ${organizers.lastname}`;
-                                    })
-                                    .join(', ')}
+                                {t('appointment.appointmentTile.lecture', { position: position }) +
+                                    (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
                             </Text>
                         </Box>
                         {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton')}</Button>}

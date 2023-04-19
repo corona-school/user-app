@@ -14,17 +14,21 @@ const APPOINTMENT = gql`
             description
             isCanceled
             position
+            appointmentType
             total
+            displayName
             participants(skip: 0, take: 10) {
                 id
                 firstname
                 lastname
+                userId
             }
             organizers(skip: 0, take: 10) {
                 id
                 firstname
                 lastname
                 isStudent
+                userId
             }
             isOrganizer
             isParticipant
@@ -34,6 +38,7 @@ const APPOINTMENT = gql`
                 lastname
                 isStudent
                 isPupil
+                userId
             }
         }
     }

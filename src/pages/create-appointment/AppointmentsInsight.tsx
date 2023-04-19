@@ -27,6 +27,9 @@ const GET_COURSE_APPOINTMENTS = gql`
                 description
                 position
                 total
+                isOrganizer
+                displayName
+                appointmentType
                 organizers(skip: 0, take: 10) {
                     firstname
                     lastname
@@ -53,6 +56,8 @@ const GET_MATCH_APPOINTMENTS = gql`
                 start
                 duration
                 title
+                isOrganizer
+                displayName
                 description
                 appointmentType
                 meetingLink

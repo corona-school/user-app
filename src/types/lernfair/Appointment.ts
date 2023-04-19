@@ -17,6 +17,9 @@ export type Appointment = {
     isCancelled?: boolean;
     declinedBy?: AttendeesDeclined[];
     appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
+    isParticipant?: boolean;
+    displayName?: string;
 };
 
 export type AttendeesDeclined = {
@@ -25,6 +28,7 @@ export type AttendeesDeclined = {
     lastname: string;
     isStudent: boolean;
     isPupil: boolean;
+    userId: string;
 };
 
 // type of appointments to send to the BE

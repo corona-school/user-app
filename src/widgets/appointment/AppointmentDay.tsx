@@ -5,6 +5,7 @@ import { getI18n } from 'react-i18next';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
+import { Appointment } from '../../types/lernfair/Appointment';
 
 type Props = {
     start: string;
@@ -15,9 +16,28 @@ type Props = {
     scrollToRef?: any;
     isReadOnly?: boolean;
     onPress: () => void;
+    appointmentType: Appointment['appointmentType'];
+    position: Appointment['position'];
+    total: Appointment['total'];
+    isOrganizer: Appointment['isOrganizer'];
+    displayName: Appointment['displayName'];
 };
 
-const AppointmentDay: React.FC<Props> = ({ start, duration, title, organizers, participants, scrollToRef, isReadOnly, onPress }) => {
+const AppointmentDay: React.FC<Props> = ({
+    start,
+    duration,
+    title,
+    organizers,
+    participants,
+    scrollToRef,
+    isReadOnly,
+    onPress,
+    appointmentType,
+    position,
+    total,
+    isOrganizer,
+    displayName,
+}) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
@@ -72,6 +92,11 @@ const AppointmentDay: React.FC<Props> = ({ start, duration, title, organizers, p
                                 participants={participants}
                                 isReadOnly={isReadOnly}
                                 onPress={onPress}
+                                appointmentType={appointmentType}
+                                position={position}
+                                total={total}
+                                isOrganizer={isOrganizer}
+                                displayName={displayName}
                             />
                         </HStack>
                     </Box>
@@ -81,7 +106,16 @@ const AppointmentDay: React.FC<Props> = ({ start, duration, title, organizers, p
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={start} />
-                            <AppointmentTile timeDescriptionText={getAppointmentTimeText(start, duration)} title={title} isCurrentlyTakingPlace={isCurrent} />
+                            <AppointmentTile
+                                timeDescriptionText={getAppointmentTimeText(start, duration)}
+                                title={title}
+                                isCurrentlyTakingPlace={isCurrent}
+                                appointmentType={appointmentType}
+                                position={position}
+                                total={total}
+                                isOrganizer={isOrganizer}
+                                displayName={displayName}
+                            />
                         </HStack>
                     </Box>
                 </div>
