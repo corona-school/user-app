@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -11,7 +11,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 import { DateTime } from 'luxon';
 import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -24,8 +23,9 @@ import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
-import { gql } from '../../gql/gql';
-import { Lecture, Match, Subcourse } from '../../gql/graphql';
+import { gql } from './../../gql';
+import {} from '../../gql/gql';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -114,6 +114,11 @@ const DashboardStudent: React.FC<Props> = () => {
     const [dissolveData, setDissolveData] = useState<LFMatch>();
 
     const { trackPageView, trackEvent } = useMatomo();
+
+    const cardGridWidth = useBreakpointValue({
+        base: '100%',
+        lg: '50%',
+    });
 
     useEffect(() => {
         trackPageView({
@@ -426,22 +431,30 @@ const DashboardStudent: React.FC<Props> = () => {
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <CSSWrapper className="course-list__wrapper">
+                                    <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
-                                                    <LearningPartner
-                                                        key={index}
-                                                        matchId={match.id}
-                                                        name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
-                                                        subjects={match?.pupil?.subjectsFormatted}
-                                                        schooltype={match?.pupil?.schooltype || ''}
-                                                        grade={match?.pupil?.grade || ''}
-                                                    />
+                                                    <Box
+                                                        key={match.id}
+                                                        width={cardGridWidth}
+                                                        paddingY={space['0.5']}
+                                                        paddingRight={!isMobile && index % 2 === 0 ? space['0.5'] : 0}
+                                                        paddingLeft={!isMobile && index % 2 === 1 ? space['0.5'] : 0}
+                                                    >
+                                                        <LearningPartner
+                                                            key={index}
+                                                            matchId={match.id}
+                                                            name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
+                                                            subjects={match?.pupil?.subjectsFormatted}
+                                                            schooltype={match?.pupil?.schooltype || ''}
+                                                            grade={match?.pupil?.grade || ''}
+                                                        />
+                                                    </Box>
                                                 );
                                             })) ||
                                             (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
-                                    </CSSWrapper>
+                                    </Stack>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (
                                         <Button
