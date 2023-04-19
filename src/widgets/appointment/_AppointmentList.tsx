@@ -140,6 +140,10 @@ const AppointmentList: React.FC<Props> = ({ appointments = [], isReadOnly, isEnd
                                             scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                                             isReadOnly={isReadOnly}
                                             appointmentType={appointment.appointmentType}
+                                            total={appointment.total}
+                                            position={appointment.position}
+                                            isOrganizer={appointment.isOrganizer}
+                                            displayName={appointment.displayName}
                                         />
                                     </Box>
                                 </Box>

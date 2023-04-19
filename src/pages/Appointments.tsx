@@ -25,6 +25,11 @@ const getMyAppointments = gql(`
                 start
                 duration
                 appointmentType
+                total
+                position
+                displayName
+                isOrganizer
+                isParticipant
                 organizers(skip: 0, take: 5) {
                     id
                     firstname

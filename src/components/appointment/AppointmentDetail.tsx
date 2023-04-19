@@ -130,6 +130,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                     organizers={appointment.organizers}
                     courseName={data?.subcourse?.course?.name}
                     appointmentTitle={appointment.title}
+                    displayName={appointment.displayName}
+                    position={appointment.position}
                 />
                 <MetaDetails
                     date={date}

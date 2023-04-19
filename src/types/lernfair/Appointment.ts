@@ -17,6 +17,9 @@ export type Appointment = {
     isCancelled?: boolean;
     declinedBy?: AttendeesDeclined[];
     appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
+    isParticipant?: boolean;
+    displayName?: string;
 };
 
 export type AttendeesDeclined = {

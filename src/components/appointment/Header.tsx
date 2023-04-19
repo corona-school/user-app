@@ -8,20 +8,21 @@ type HeaderProps = {
     organizers?: Organizer[];
     appointmentTitle: string;
     courseName: string;
+    displayName: Appointment['displayName'];
+    position: Appointment['position'];
 };
-const Header: React.FC<HeaderProps> = ({ appointmentType, organizers, appointmentTitle, courseName }) => {
+const Header: React.FC<HeaderProps> = ({ appointmentType, appointmentTitle, courseName, displayName, position }) => {
     const { t } = useTranslation();
 
     return (
         <>
             <VStack space={2}>
                 <Text color="primary.600" fontWeight="normal">
-                    {t(appointmentType === Lecture_Appointmenttype_Enum.Group ? 'appointment.detail.group' : 'appointment.detail.oneToOne', {
-                        instructor: organizers?.map((o) => o.firstname + ' ' + o.lastname).join(', '),
-                    })}
+                    {t('appointment.appointmentTile.lecture', { position: position }) +
+                        (appointmentTitle ? t('appointment.appointmentTile.title', { appointmentTitle: appointmentTitle }) : '')}
                 </Text>
                 <Heading fontSize="3xl" fontWeight="normal" color="primary.900">
-                    {t('appointment.detail.appointmentTitle', { appointmentTitle: appointmentTitle })}
+                    {t('appointment.detail.appointmentTitle', { appointmentTitle: displayName })}
                 </Heading>
                 {appointmentType === Lecture_Appointmenttype_Enum.Group && (
                     <Text color="primary.600" fontWeight="normal">

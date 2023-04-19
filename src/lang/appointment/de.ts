@@ -16,6 +16,10 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
+    appointmentTile: {
+        lecture: 'Lektion #{{position}}',
+        title: ': {{appointmentTitle}}',
+    },
     create: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
         insightMatchHeader: 'Deine bestehenden Termine mit {{matchPartner}}.',

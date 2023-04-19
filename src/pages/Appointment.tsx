@@ -16,6 +16,7 @@ const APPOINTMENT = gql`
             position
             appointmentType
             total
+            displayName
             participants(skip: 0, take: 10) {
                 id
                 firstname
