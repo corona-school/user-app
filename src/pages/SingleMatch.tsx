@@ -1,20 +1,21 @@
 import { Button, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../components/Tabs';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from '../gql/gql';
+import { gql } from './../gql';
+import {} from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
+import HelpNavigation from '../components/HelpNavigation';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -110,7 +111,16 @@ const SingleMatch = () => {
     // ];
 
     return (
-        <WithNavigation headerTitle={''} showBack headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={''}
+            showBack
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (

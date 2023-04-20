@@ -66,7 +66,7 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="create-appointments">
-            <WithNavigation>
+            <WithNavigation showBack>
                 <Box mx="4">
                     <View position="sticky" mb={2} overflow="hidden">
                         <InstructionProgress

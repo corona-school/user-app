@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue } from 'native-base';
+import { Box, Stack, useBreakpointValue } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/appointment/AppointmentList';
+import HelpNavigation from '../components/HelpNavigation';
 
 const getMyAppointments = gql(`
     query myAppointments($take: Float, $cursor: Float, $direction: String) {
@@ -52,7 +53,9 @@ const take = 10;
 
 const Appointments: React.FC = () => {
     const userType = useUserType();
+
     const { t } = useTranslation();
+
     const navigate = useNavigate();
     const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
 
@@ -94,7 +97,16 @@ const Appointments: React.FC = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('appointment.title')} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                headerContent={<Hello />}
+                headerTitle={t('appointment.title')}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 {loadingMyAppointments && !myAppointments && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
                 {!error && appointments.length > 0 ? (
