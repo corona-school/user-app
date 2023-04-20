@@ -5,9 +5,9 @@ import BottomNavigationBar from './BottomNavigationBar';
 import { ReactNode } from 'react';
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
+import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
-import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg';
 import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
@@ -54,10 +54,9 @@ const WithNavigation: React.FC<Props> = ({
 
     const navItems: NavigationItems = {
         start: { label: t('navigation.label.start'), icon: LFHomeIcon },
-        // appointments: { label: 'Termine', icon: LFAppointmentIcon },
+        appointments: { label: t('navigation.label.appointments'), icon: LFAppointmentIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
-        hilfebereich: { label: t('navigation.label.help'), icon: LFHelpIcon },
         chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
     };
 
