@@ -3,7 +3,7 @@ const navigation = {
         start: 'Start',
         group: 'Kurse',
         matching: 'Nachhilfe',
-        help: 'Hilfe',
+        appointments: 'Termine',
         chat: 'Chat',
     },
 };
