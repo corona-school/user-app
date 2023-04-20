@@ -36,6 +36,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
         return !data?.myRoles.includes('TUTOR') && !data?.myRoles.includes('TUTEE');
     }, [data]);
 
+    console.log(navItems);
+
     if (loading) return <></>;
 
     return (
