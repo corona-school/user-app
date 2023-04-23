@@ -99,6 +99,7 @@ const lernfair = {
                     'Du kannst dich nicht zu diesem Kurs anmelden, weil du nicht in der vorgesehenen Jahrgangsstufe bist. Der Kurs ist für ältere Schüler:innen gedacht.',
                 'no-lectures': 'Du kannst dich nicht anmelden, da keine Lektionen für diesen Kurs angelegt wurden.',
                 'already-started': 'Du kannst dich nicht mehr zum Kurs anmelden, da er bereits gestartet ist.',
+                'already-participant': 'Du bist bereits für diesen Kurs angemeldet.',
                 'not-participant':
                     'Du kannst dich nicht anmelden, weil dein Account für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest.',
             },
@@ -116,7 +117,8 @@ const lernfair = {
                 'max-requests': 'Du bist bereits auf der Warteliste.',
                 'max-matches':
                     'Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.',
-                deactivated: 'Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ',
+                deactivated:
+                    'Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ',
             },
         },
     },
