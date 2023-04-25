@@ -58,8 +58,6 @@ const COURSE_APPOINTMENTS = gql(`
 const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [editingAppointmentId, setEditingAppointmentId] = useState<number>(0);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const { data } = useQuery(COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
@@ -96,16 +94,28 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
 
         return convertedAppointments;
     };
-
     const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
-
-    // * validate if min one appointment is created
     const canGoFurther = () => {
         if (isEditing) return appointmentsOfEditingCourse.length === 0 ? true : false;
         return allAppointmentsToShow.length === 0 ? true : false;
     };
-
     const getAllAppointmentsToShow = () => {
+        if (isEditing) {
+            const existingAppointments = appointmentsOfEditingCourse as Appointment[];
+            const convertedAppointments = convertAppointments();
+            const allAppointments = existingAppointments.concat(convertedAppointments);
+            const sortedAppointments = allAppointments.sort((a, b) => {
+                const _a = DateTime.fromISO(a.start).toMillis();
+                const _b = DateTime.fromISO(b.start).toMillis();
+                return _a - _b;
+            });
+            console.log('TERMINE:', sortedAppointments);
+            let sortedWithPosition: Appointment[] = [];
+            sortedAppointments.forEach((appointment, index) => {
+                sortedWithPosition.push({ ...appointment, position: index + 1 });
+            });
+            return sortedWithPosition;
+        }
         const appointments: Appointment[] = [];
         const convertedAppointments = convertAppointments();
         const allAppointments = appointments.concat(convertedAppointments);
@@ -137,10 +147,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
                         </Box>
                     ) : (
                         <Box minH={400}>
-                            <AppointmentList
-                                isReadOnlyList={true}
-                                appointments={isEditing ? (appointmentsOfEditingCourse as Appointment[]) : allAppointmentsToShow}
-                            />
+                            <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
                         </Box>
                     )}
                 </Box>

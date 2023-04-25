@@ -4,26 +4,64 @@ import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { AppointmentCreateGroupInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 import { DateTime } from 'luxon';
+import { useQuery } from '@apollo/client';
+import { gql } from '../../gql';
 
 type Props = {
     onBack: () => void;
     isDisabled?: boolean;
     isError?: boolean;
+    courseId?: number;
+    isEditing?: boolean;
     createAndSubmit?: () => void;
     createOnly?: () => void;
-    update?: () => void;
+    update?: (newAppointments?: AppointmentCreateGroupInput[]) => void;
 };
 
-const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAndSubmit, createOnly, update }) => {
+const COURSE_APPOINTMENTS = gql(`
+    query courseAppointments($id: Int!) {
+        subcourse(subcourseId: $id) {
+            course {
+                name
+            }
+            appointments {
+                id
+                subcourseId
+                start
+                duration
+                title
+                description
+                displayName
+                position
+                total
+                appointmentType
+                participants(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isPupil
+                    isStudent
+                }
+                organizers(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                }
+            }
+        }
+    }
+`);
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+    const { data } = useQuery(COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const {
         courseName,
@@ -61,7 +99,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const _convertAppointments = () => {
+    const convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
 
         appointmentsToBeCreated.forEach((appointment) => {
@@ -79,11 +117,29 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         return convertedAppointments;
     };
 
-    const _allAppointmentsToShow = () => {
+    const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
+
+    const getAllAppointmentsToShow = () => {
+        if (isEditing) {
+            const existingAppointments = appointmentsOfEditingCourse as Appointment[];
+            const convertedAppointments = convertAppointments();
+            const allAppointments = existingAppointments.concat(convertedAppointments);
+            const sortedAppointments = allAppointments.sort((a, b) => {
+                const _a = DateTime.fromISO(a.start).toMillis();
+                const _b = DateTime.fromISO(b.start).toMillis();
+                return _a - _b;
+            });
+            console.log('TERMINE:', sortedAppointments);
+            let sortedWithPosition: Appointment[] = [];
+            sortedAppointments.forEach((appointment, index) => {
+                sortedWithPosition.push({ ...appointment, position: index + 1 });
+            });
+            return sortedWithPosition;
+        }
         const appointments: Appointment[] = [];
-        const convertedAppointments = _convertAppointments();
-        const all = appointments.concat(convertedAppointments);
-        const sortedAppointments = all.sort((a, b) => {
+        const convertedAppointments = convertAppointments();
+        const allAppointments = appointments.concat(convertedAppointments);
+        const sortedAppointments = allAppointments.sort((a, b) => {
             const _a = DateTime.fromISO(a.start).toMillis();
             const _b = DateTime.fromISO(b.start).toMillis();
             return _a - _b;
@@ -93,9 +149,10 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         sortedAppointments.forEach((appointment, index) => {
             sortedWithPosition.push({ ...appointment, position: index + 1 });
         });
+
         return sortedWithPosition;
     };
-    const allAppointmentsToShow = _allAppointmentsToShow();
+    const allAppointmentsToShow = getAllAppointmentsToShow();
     return (
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>
@@ -188,7 +245,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                                 name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
                                 documentTitle: 'Helfer Kurs erstellen',
                             });
-                            update();
+                            update(appointmentsToBeCreated);
                         }}
                         isDisabled={isDisabled}
                     >
