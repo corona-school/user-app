@@ -7,8 +7,9 @@ type AvatarsProps = {
     onPress: () => void;
     onEditPress: () => void;
     canceled: boolean;
+    canEdit: boolean;
 };
-const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled }) => {
+const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, canEdit }) => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const { user } = useApollo();
@@ -26,7 +27,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled }) => 
                         <Button _text={{ color: 'white' }} onPress={onPress} bgColor="danger.100" width={buttonWidth}>
                             {t('appointment.detail.deleteButton')}
                         </Button>
-                        <Button variant="outline" width={buttonWidth} onPress={onEditPress}>
+                        <Button variant="outline" width={buttonWidth} onPress={onEditPress} isDisabled={!canEdit}>
                             {t('appointment.detail.editButton')}
                         </Button>
                     </>
