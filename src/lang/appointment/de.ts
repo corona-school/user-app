@@ -1,5 +1,6 @@
 const appointment = {
     title: 'Termine',
+    loadPastAppointments: 'Weitere vergangene Termine laden',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',

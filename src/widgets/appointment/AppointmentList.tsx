@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { Box, Center, Divider, Text, useBreakpointValue, FlatList } from 'native-base';
+import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../../types/lernfair/Appointment';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -16,6 +16,7 @@ type Props = {
     isReadOnlyList: boolean;
     isFullWidth?: boolean;
     noNewAppointments?: boolean;
+    noOldAppointments?: boolean;
     isLoadingAppointments?: boolean;
     loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
 };
@@ -35,15 +36,17 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId || 0;
 };
-
-const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFullWidth, noNewAppointments, isLoadingAppointments, loadMoreAppointments }) => {
-    const [isAtTop, setIsAtTop] = useState<boolean>(false);
+const AppointmentList: React.FC<Props> = ({
+    appointments,
+    isReadOnlyList,
+    noNewAppointments,
+    noOldAppointments,
+    isLoadingAppointments,
+    loadMoreAppointments,
+}) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const scrollViewRef = useRef<HTMLElement>(null);
-    const firstElementRef = useRef<HTMLElement>(null);
-
-    const isFirstElementOnScreen = useOnScreen(firstElementRef);
 
     const maxListWidth = useBreakpointValue({
         base: 'full',
@@ -55,10 +58,6 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFull
 
     const handleScrollIntoView = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' });
-    };
-
-    const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-        if (e.nativeEvent.contentOffset.y <= 2) setIsAtTop(true);
     };
 
     const handleLoadMore = () => {
@@ -84,6 +83,24 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFull
             );
         }
         return null;
+    };
+
+    const renderHeader = () => {
+        if (noOldAppointments) return null;
+        if (isLoadingAppointments) {
+            return (
+                <Box h={50} justifyContent="center">
+                    <CenterLoadingSpinner />
+                </Box>
+            );
+        }
+        return (
+            <Box py={5} justifyContent="center" alignItems="center">
+                <Button variant="outline" onPress={handleLoadPast} width="25%">
+                    {t('appointment.loadPastAppointments')}
+                </Button>
+            </Box>
+        );
     };
 
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
@@ -123,7 +140,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFull
                         <Divider my={3} width={isFullWidth ? '100%' : '95%'} />
                     </>
                 )}
-                <Box ml={5} ref={index === 0 ? firstElementRef : null}>
+                <Box ml={5}>
                     <AppointmentDay
                         key={appointment.id}
                         start={appointment.start}
@@ -152,12 +169,6 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFull
         return handleScrollIntoView(scrollViewRef.current);
     }, []);
 
-    useEffect(() => {
-        if (isAtTop && isFirstElementOnScreen) {
-            return handleLoadPast();
-        }
-    }, [handleLoadPast, isAtTop, isFirstElementOnScreen]);
-
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
@@ -168,8 +179,7 @@ const AppointmentList: React.FC<Props> = ({ appointments, isReadOnlyList, isFull
             onEndReached={!isReadOnlyList ? handleLoadMore : undefined}
             onEndReachedThreshold={0.1}
             ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
-            onScroll={!isReadOnlyList ? handleScroll : undefined}
-            maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
+            ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
         />
     );
 };

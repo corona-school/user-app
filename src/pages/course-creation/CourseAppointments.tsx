@@ -1,15 +1,17 @@
 import { gql, useQuery } from '@apollo/client';
 import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 import ButtonRow from './ButtonRow';
+import { DateTime } from 'luxon';
+import { CreateCourseContext } from '../CreateCourse';
+import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 
 type Props = {
     next: () => void;
@@ -29,7 +31,7 @@ const GET_COURSE_APPOINTMENTS = gql`
                 title
                 description
                 appointmentType
-                meetingLink
+                displayName
                 isCanceled
                 subcourseId
                 matchId
@@ -62,54 +64,67 @@ const GET_COURSE_APPOINTMENTS = gql`
 const CourseAppointments: React.FC<Props> = ({ next, back }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const { dispatchCreateAppointment } = useCreateAppointment();
+    const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
-    // TODO query on editing modus
-    // const { data, loading, error, fetchMore } = useQuery(GET_COURSE_APPOINTMENTS, {variables: { id: 1 },});
+    const { courseName } = useContext(CreateCourseContext);
 
-    const { isMobile } = useLayoutHelper();
+    // TODO query on editing modus
+    // const { data, loading, error } = useQuery(GET_COURSE_APPOINTMENTS, {variables: { id: 1 },});
 
     const maxHeight = useBreakpointValue({
         base: 400,
         lg: 600,
     });
 
-    const buttonWidth = useBreakpointValue({
-        base: '100%',
-        lg: '50%',
-    });
+    const closeModal = () => {
+        setShowModal(false);
+        dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+        dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+    };
 
-    const _convertAppointments = () => {
+    const convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
-        for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+
+        appointmentsToBeCreated.forEach((appointment) => {
+            convertedAppointments.push({
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
+                displayName: courseName,
                 ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
                 ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
-            };
-            convertedAppointments.push(converted);
-        }
+            });
+        });
+
         return convertedAppointments;
     };
 
-    const _allAppointmentsToShow = () => {
+    const getAllAppointmentsToShow = () => {
         const appointments: Appointment[] = [];
-        const convertedAppointments = _convertAppointments();
-        const all = appointments.concat(convertedAppointments);
-        return all;
-    };
-    const allAppointmentsToShow = _allAppointmentsToShow();
+        const convertedAppointments = convertAppointments();
+        const allAppointments = appointments.concat(convertedAppointments);
+        const sortedAppointments = allAppointments.sort((a, b) => {
+            const _a = DateTime.fromISO(a.start).toMillis();
+            const _b = DateTime.fromISO(b.start).toMillis();
+            return _a - _b;
+        });
 
-    // * validate if min one appointment is created
-    const tryNext = () => {};
+        let sortedWithPosition: Appointment[] = [];
+        sortedAppointments.forEach((appointment, index) => {
+            sortedWithPosition.push({ ...appointment, position: index + 1 });
+        });
+
+        return sortedWithPosition;
+    };
+    const allAppointmentsToShow = getAllAppointmentsToShow();
 
     return (
         <>
-            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <CreateCourseAppointmentModal closeModal={() => setShowModal(false)} total={appointmentsToBeCreated.length} />
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={closeModal}>
+                {showModal && <CreateCourseAppointmentModal closeModal={closeModal} total={appointmentsToBeCreated.length} />}
             </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">
@@ -136,7 +151,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back }) => {
                     {t('course.appointments.addOtherAppointment')}
                 </Button>
                 <Divider my="5" />
-                <ButtonRow onNext={next} onBack={back} />
+                <ButtonRow onNext={next} onBack={back} isDisabled={allAppointmentsToShow.length === 0 ? true : false} />
             </Box>
         </>
     );

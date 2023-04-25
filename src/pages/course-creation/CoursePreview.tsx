@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
-import { useCallback, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
@@ -10,6 +10,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
+import { DateTime } from 'luxon';
 
 type Props = {
     onBack: () => void;
@@ -60,26 +61,21 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const convertTime = useCallback((_time: string) => {
-        let time = parseInt(_time);
-
-        return time >= 60 ? time / 60 + ' Stunden' : time + ' Minuten';
-    }, []);
-
     const _convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
-        for (const appointment of appointmentsToBeCreated) {
-            const converted: Appointment = {
+
+        appointmentsToBeCreated.forEach((appointment) => {
+            convertedAppointments.push({
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
-                subcourseId: 1,
-                title: appointment?.title ?? '',
-                description: appointment?.description ?? '',
-            };
-            convertedAppointments.push(converted);
-        }
+                displayName: courseName,
+                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
+                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
+            });
+        });
+
         return convertedAppointments;
     };
 
@@ -87,7 +83,17 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         const appointments: Appointment[] = [];
         const convertedAppointments = _convertAppointments();
         const all = appointments.concat(convertedAppointments);
-        return all;
+        const sortedAppointments = all.sort((a, b) => {
+            const _a = DateTime.fromISO(a.start).toMillis();
+            const _b = DateTime.fromISO(b.start).toMillis();
+            return _a - _b;
+        });
+
+        let sortedWithPosition: Appointment[] = [];
+        sortedAppointments.forEach((appointment, index) => {
+            sortedWithPosition.push({ ...appointment, position: index + 1 });
+        });
+        return sortedWithPosition;
     };
     const allAppointmentsToShow = _allAppointmentsToShow();
     return (

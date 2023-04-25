@@ -99,6 +99,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
               description
               start
               duration
+              displayName
               position
               total
               organizers(skip: 0, take: 5) {
