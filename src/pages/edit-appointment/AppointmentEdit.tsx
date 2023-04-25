@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { Button, Modal, Stack, useToast } from 'native-base';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { gql } from '../../gql';
@@ -23,7 +23,7 @@ type EditProps = {
     appointmentId: number;
 };
 
-type UpdateAppointment = {
+export type UpdateAppointment = {
     id: number;
     title: string;
     description: string;
@@ -72,11 +72,47 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         time: formatStart(data?.appointment.start).time,
         duration: data?.appointment.duration ?? 0,
     });
+
     const { t } = useTranslation();
     const navigate = useNavigate();
     const toast = useToast();
     const { isMobile } = useLayoutHelper();
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
+    const validateInputs = () => {
+        const isDateMinOneWeekLater = (date: string): boolean => {
+            const startDate = DateTime.fromISO(date);
+            const diff = startDate.diffNow('days').days;
+            if (diff >= 6) return true;
+            return false;
+        };
+
+        if (!updatedAppointment.date) {
+            setErrors({ ...errors, date: t('appointment.errors.date') });
+            return false;
+        } else {
+            delete errors.date;
+        }
+        if (isDateMinOneWeekLater(updatedAppointment.date) === false) {
+            setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
+            return false;
+        } else {
+            delete errors.date;
+        }
+        if (!updatedAppointment.time.length) {
+            setErrors({ ...errors, time: t('appointment.errors.time') });
+            return false;
+        } else {
+            delete errors.time;
+        }
+        if (updatedAppointment.duration === 0) {
+            setErrors({ ...errors, duration: t('appointment.errors.duration') });
+            return false;
+        } else {
+            delete errors.duration;
+        }
+        return true;
+    };
 
     const [cancelAppointment] = useMutation(
         gql(`
@@ -85,13 +121,14 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         }
     `)
     );
-    const [updateAppointments] = useMutation(
+    const [updateAppointment, { data: updateResponse, error: updateError }] = useMutation(
         gql(`
-        mutation updateAppointment($appointmentsToBeUpdated: [AppointmentUpdateInput!]!) {
-            appointmentsUpdate(appointmentsToBeUpdated: $appointmentsToBeUpdated)
+        mutation updateAppointment($appointmentToBeUpdated: AppointmentUpdateInput!) {
+            appointmentUpdate(appointmentToBeUpdated: $appointmentToBeUpdated)
             }
     `)
     );
+
     const handleCancelClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         cancelAppointment({ variables: { appointmentId: appointmentId } });
@@ -99,27 +136,31 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     }, []);
 
     const handleUpdateClick = useCallback(() => {
-        let appointmentsToBeUpdated: AppointmentUpdateInput[] = [];
-
-        const convertedUpdatedAppointment = {
-            id: updatedAppointment.id,
-            title: updatedAppointment.title,
-            description: updatedAppointment.description,
-            start: convertStartDate(updatedAppointment.date, updatedAppointment.time),
-            duration: updatedAppointment.duration,
-        };
-
-        appointmentsToBeUpdated.push(convertedUpdatedAppointment);
-        console.log('updated', appointmentsToBeUpdated);
-        updateAppointments({ variables: { appointmentsToBeUpdated } });
-        navigate('/appointments');
+        if (validateInputs()) {
+            const appointmentToBeUpdated: AppointmentUpdateInput = {
+                id: updatedAppointment.id,
+                title: updatedAppointment.title,
+                description: updatedAppointment.description,
+                start: convertStartDate(updatedAppointment.date, updatedAppointment.time),
+                duration: updatedAppointment.duration,
+            };
+            updateAppointment({ variables: { appointmentToBeUpdated } });
+            console.log('Response', updateResponse?.appointmentUpdate, updateError);
+            navigate('/appointments');
+            toast.show({ description: t('appointment.editSuccess'), placement: 'top' });
+        }
     }, [
+        navigate,
+        t,
+        toast,
+        updateAppointment,
         updatedAppointment.date,
         updatedAppointment.description,
         updatedAppointment.duration,
         updatedAppointment.id,
         updatedAppointment.time,
         updatedAppointment.title,
+        validateInputs,
     ]);
 
     return (

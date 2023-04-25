@@ -4,21 +4,13 @@ import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
+import { UpdateAppointment } from './AppointmentEdit';
 
 type EditProps = {
     errors: {};
     appointmentsCount: number;
     updatedAppointment: UpdateAppointment;
     setUpdatedAppointment: Dispatch<SetStateAction<UpdateAppointment>>;
-};
-
-type UpdateAppointment = {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    duration: number;
 };
 
 const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, updatedAppointment, setUpdatedAppointment }) => {
