@@ -98,6 +98,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
               description
               start
               duration
+              displayName
               position
               total
               organizers(skip: 0, take: 5) {

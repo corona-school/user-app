@@ -58,6 +58,7 @@ const Appointments: React.FC = () => {
 
     const navigate = useNavigate();
     const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
+    const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
     const { data: myAppointments, loading: loadingMyAppointments, error, fetchMore } = useQuery(getMyAppointments, { variables: { take } });
 
@@ -74,17 +75,21 @@ const Appointments: React.FC = () => {
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
                 const prevAppointments = previousAppointments?.me?.appointments ?? [];
-                if (!newAppointments || newAppointments.length === 0) {
-                    setNoNewAppointments(true);
-                    return previousAppointments;
-                }
                 if (scrollDirection === 'next') {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        setNoNewAppointments(true);
+                        return previousAppointments;
+                    }
                     return {
                         me: {
                             appointments: [...prevAppointments, ...newAppointments],
                         },
                     };
                 } else {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        setNoOldAppointments(true);
+                        return previousAppointments;
+                    }
                     return {
                         me: {
                             appointments: [...newAppointments, ...prevAppointments],
@@ -116,6 +121,7 @@ const Appointments: React.FC = () => {
                         isReadOnlyList={false}
                         loadMoreAppointments={loadMoreAppointments}
                         noNewAppointments={noNewAppointments}
+                        noOldAppointments={noOldAppointments}
                     />
                 ) : (
                     <Box h={800} justifyContent="center">
