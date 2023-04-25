@@ -8,7 +8,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { AttendeesDeclined } from '../../types/lernfair/Appointment';
+import { Appointment, AttendeesDeclined } from '../../types/lernfair/Appointment';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 
 type MetaProps = {
@@ -22,7 +22,6 @@ type MetaProps = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     declinedBy: AttendeesDeclined[];
-
     meetingLink?: string;
 };
 const MetaDetails: React.FC<MetaProps> = ({

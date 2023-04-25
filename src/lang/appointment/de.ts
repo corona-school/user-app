@@ -3,6 +3,7 @@ const appointment = {
     saveChanges: 'Änderungen speichern',
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
+    loadPastAppointments: 'Weitere vergangene Termine laden',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
@@ -18,6 +19,10 @@ const appointment = {
         description: 'Der Termin wird dadurch für alle Teilnehmer:innen abgesagt. Du kannst dies nicht rückgängig machen.',
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
+    },
+    appointmentTile: {
+        lecture: 'Lektion #{{position}}',
+        title: ': {{appointmentTitle}}',
     },
     create: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',

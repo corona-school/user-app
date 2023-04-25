@@ -1,16 +1,18 @@
 import { useQuery } from '@apollo/client';
 import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 import ButtonRow from './ButtonRow';
 import { gql } from '../../gql/gql';
+import { DateTime } from 'luxon';
+import { CreateCourseContext } from '../CreateCourse';
+import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 
 type Props = {
     next: () => void;
@@ -19,7 +21,7 @@ type Props = {
     courseId?: number;
 };
 
-const GET_COURSE_APPOINTMENTS = gql(`
+const COURSE_APPOINTMENTS = gql(`
     query courseAppointments($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
@@ -27,21 +29,26 @@ const GET_COURSE_APPOINTMENTS = gql(`
             }
             appointments {
                 id
+                subcourseId
                 start
                 duration
                 title
                 description
+                displayName
+                position
+                total
+                appointmentType
                 participants(skip: 0, take: 10) {
                     id
                     firstname
                     lastname
                     isPupil
+                    isStudent
                 }
                 organizers(skip: 0, take: 10) {
                     id
                     firstname
                     lastname
-                    isStudent
                 }
             }
         }
@@ -55,55 +62,72 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
     const [editingAppointmentId, setEditingAppointmentId] = useState<number>(0);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
-    // TODO query on editing modus
-    const { data } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
+    const { data } = useQuery(COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
+    const { dispatchCreateAppointment } = useCreateAppointment();
+    const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
-    const { isMobile } = useLayoutHelper();
+    const { courseName } = useContext(CreateCourseContext);
 
     const maxHeight = useBreakpointValue({
         base: 400,
         lg: 600,
     });
 
-    const buttonWidth = useBreakpointValue({
-        base: '100%',
-        lg: '50%',
-    });
+    const closeModal = () => {
+        setShowModal(false);
+        dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+        dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+    };
 
-    const _convertAppointments = () => {
+    const convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
-        for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+
+        appointmentsToBeCreated.forEach((appointment) => {
+            convertedAppointments.push({
                 id: 1,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
+                displayName: courseName,
                 ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
                 ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
-            };
-            convertedAppointments.push(converted);
-        }
+            });
+        });
+
         return convertedAppointments;
     };
 
-    const _allAppointmentsToShow = () => {
-        const appointments: Appointment[] = [];
-        const convertedAppointments = _convertAppointments();
-        const all = appointments.concat(convertedAppointments);
-        return all;
-    };
-    const allAppointmentsToShow = _allAppointmentsToShow();
-
     const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
-    console.log('appointments', appointmentsOfEditingCourse);
 
     // * validate if min one appointment is created
-    const tryNext = () => {};
+    const canGoFurther = () => {
+        if (isEditing) return appointmentsOfEditingCourse.length === 0 ? true : false;
+        return allAppointmentsToShow.length === 0 ? true : false;
+    };
+
+    const getAllAppointmentsToShow = () => {
+        const appointments: Appointment[] = [];
+        const convertedAppointments = convertAppointments();
+        const allAppointments = appointments.concat(convertedAppointments);
+        const sortedAppointments = allAppointments.sort((a, b) => {
+            const _a = DateTime.fromISO(a.start).toMillis();
+            const _b = DateTime.fromISO(b.start).toMillis();
+            return _a - _b;
+        });
+
+        let sortedWithPosition: Appointment[] = [];
+        sortedAppointments.forEach((appointment, index) => {
+            sortedWithPosition.push({ ...appointment, position: index + 1 });
+        });
+
+        return sortedWithPosition;
+    };
+    const allAppointmentsToShow = getAllAppointmentsToShow();
 
     return (
         <>
-            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
-                <CreateCourseAppointmentModal closeModal={() => setShowModal(false)} total={appointmentsToBeCreated.length} />
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={closeModal}>
+                {showModal && <CreateCourseAppointmentModal closeModal={closeModal} total={appointmentsToBeCreated.length} />}
             </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">
@@ -133,7 +157,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
                     {t('course.appointments.addOtherAppointment')}
                 </Button>
                 <Divider my="5" />
-                <ButtonRow onNext={next} onBack={back} />
+                <ButtonRow onNext={next} onBack={back} isDisabled={canGoFurther()} />
             </Box>
         </>
     );

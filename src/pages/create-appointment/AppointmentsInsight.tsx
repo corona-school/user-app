@@ -1,10 +1,11 @@
-import { Box, Button, Stack, useBreakpointValue, Text, ScrollView } from 'native-base';
+import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import AppointmentList from '../../widgets/appointment/_AppointmentList';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { Appointment } from '../../types/lernfair/Appointment';
 type Props = {
     id: number;
     isCourse: boolean;
@@ -21,17 +22,24 @@ const GET_COURSE_APPOINTMENTS = gql`
             }
             appointments {
                 id
+                subcourseId
                 start
                 duration
                 title
                 description
+                displayName
                 position
                 total
-                organizers(skip: 0, take: 10) {
+                appointmentType
+                participants(skip: 0, take: 10) {
+                    id
                     firstname
                     lastname
+                    isPupil
+                    isStudent
                 }
-                participants(skip: 0, take: 50) {
+                organizers(skip: 0, take: 10) {
+                    id
                     firstname
                     lastname
                 }
@@ -50,35 +58,26 @@ const GET_MATCH_APPOINTMENTS = gql`
             }
             appointments {
                 id
+                matchId
                 start
                 duration
                 title
                 description
-                appointmentType
-                meetingLink
-                isCanceled
-                subcourseId
-                matchId
+                displayName
                 position
                 total
+                appointmentType
                 participants(skip: 0, take: 10) {
                     id
                     firstname
                     lastname
+                    isPupil
+                    isStudent
                 }
                 organizers(skip: 0, take: 10) {
                     id
                     firstname
                     lastname
-                }
-                isOrganizer
-                isParticipant
-                declinedBy(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                    isStudent
-                    isPupil
                 }
             }
         }
@@ -89,6 +88,8 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     const { data, loading, error } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+
+    const appointments = (isCourse ? data?.subcourse?.appointments : data?.match?.appointments) ?? [];
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -101,8 +102,9 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     });
 
     useEffect(() => {
-        isCourse ? setAppointmentsTotal(data?.subcourse?.appointments?.length) : setAppointmentsTotal(data?.match?.appointments?.length);
+        setAppointmentsTotal(appointments.total);
     });
+
     return (
         <Box>
             {loading && <CenterLoadingSpinner />}
@@ -119,7 +121,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
             )}
             {!error && (
                 <Box minH={200} maxH={maxHeight} flex="1" mb="10">
-                    <AppointmentList isReadOnly={true} appointments={isCourse ? data?.subcourse?.appointments : data?.match?.appointments} />
+                    <AppointmentList isReadOnlyList={true} appointments={appointments as Appointment[]} />
                 </Box>
             )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
