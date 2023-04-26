@@ -447,31 +447,33 @@ const Dashboard: React.FC<Props> = () => {
                             >
                                 {(data?.subcoursesPublic?.length &&
                                     data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
-                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%" key={subcourse.id}>
-                                            <SignInCard
-                                                showTrafficLight
-                                                trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
-                                                subcourse={subcourse}
-                                                onClickSignIn={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Schüler Dashboard – Matching Vorschlag',
-                                                        documentTitle: 'Schüler Dashboard',
-                                                    });
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                                onPress={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Schüler Dashboard – Matching Vorschlag',
-                                                        documentTitle: 'Schüler Dashboard',
-                                                    });
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                            />
-                                        </Column>
+                                        <AppointmentCard
+                                            key={subcourse.id}
+                                            description={subcourse.course.description}
+                                            tags={subcourse.course.tags}
+                                            date={subcourse?.firstLecture?.start ?? undefined}
+                                            image={subcourse.course.image ?? undefined}
+                                            title={subcourse.course.name}
+                                            countCourse={subcourse.lectures.length}
+                                            maxParticipants={subcourse.maxParticipants}
+                                            participantsCount={subcourse.participantsCount}
+                                            minGrade={subcourse.minGrade}
+                                            maxGrade={subcourse.maxGrade}
+                                            isFullHeight
+                                            showCourseTraffic
+                                            showSchoolclass
+                                            trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
+                                            onPressToCourse={() => {
+                                                trackEvent({
+                                                    category: 'dashboard',
+                                                    action: 'click-event',
+                                                    name: 'Schüler Dashboard – Matching Vorschlag',
+                                                    documentTitle: 'Schüler Dashboard',
+                                                });
+
+                                                navigate(`/single-course/${subcourse.id}`);
+                                            }}
+                                        />
                                     ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
