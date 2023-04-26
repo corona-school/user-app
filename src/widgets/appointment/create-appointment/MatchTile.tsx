@@ -2,10 +2,13 @@ import { Box, HStack, VStack, Text, Center, Pressable, useBreakpointValue } from
 import PupilAvatar from '../../../assets/icons/lernfair/avatar_pupil_56.svg';
 import Tag from '../../../components/Tag';
 import { LFPupil } from '../../../types/lernfair/User';
+import { useMemo } from 'react';
+import { Pupil_Schooltype_Enum } from '../../../gql/graphql';
+import { useTranslation } from 'react-i18next';
 
 type MatchTileProps = {
     matchId: number;
-    schooltype: string;
+    schooltype: Pupil_Schooltype_Enum | undefined;
     grade: string;
     pupil: LFPupil;
     subjects?: string[];
@@ -13,6 +16,8 @@ type MatchTileProps = {
 };
 
 const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil, subjects, next }) => {
+    const { t } = useTranslation();
+
     const containerWidth = useBreakpointValue({
         base: 100,
         lg: 120,
@@ -22,6 +27,11 @@ const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil
         base: true,
         lg: false,
     });
+
+    const schoolCapitalized = useMemo(() => {
+        if (!schooltype || schooltype === Pupil_Schooltype_Enum.Other) return;
+        return t(`lernfair.schooltypes.${schooltype}`);
+    }, [schooltype, t]);
 
     return (
         <Box>
@@ -34,7 +44,9 @@ const MatchTile: React.FC<MatchTileProps> = ({ matchId, schooltype, grade, pupil
                     </Box>
                     <VStack space="1" my="2">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
-                            <Text>{schooltype && `${schooltype} • ${grade}`}</Text>
+                            <Text>
+                                {schooltype && schoolCapitalized ? t('matching.shared.schoolGrade', { schooltype: schoolCapitalized, grade: grade }) : grade}
+                            </Text>
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {Object.values(pupil).join(' ')}
                             </Text>

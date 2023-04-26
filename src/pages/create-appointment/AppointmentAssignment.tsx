@@ -10,6 +10,7 @@ import { DateTime } from 'luxon';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
 import LearningPartner from '../../widgets/LearningPartner';
+import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
 
 type AssignmentProps = {
     next: (id: number, isCourse?: boolean) => void;
@@ -127,13 +128,14 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                             activeMatches.map((match, index) => {
                                                 return (
                                                     <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
-                                                        <LearningPartner
-                                                            key={index}
+                                                        <MatchTile
+                                                            key={match.id}
                                                             matchId={match.id}
-                                                            name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
-                                                            subjects={match?.pupil?.subjectsFormatted}
-                                                            schooltype={match?.pupil?.schooltype || ''}
+                                                            schooltype={match?.pupil?.schooltype}
                                                             grade={match?.pupil?.grade || ''}
+                                                            pupil={{ firstname: match?.pupil?.firstname || '', lastname: match?.pupil?.lastname || '' }}
+                                                            subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
+                                                            next={match.appointments && match.appointments.length === 0 ? skipStepTwo : next}
                                                         />
                                                     </Box>
                                                 );
