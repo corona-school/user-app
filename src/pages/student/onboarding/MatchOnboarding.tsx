@@ -96,7 +96,6 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                             showRequestButton={canRequest}
                             showRequestBanner={waitForSupport}
                             requestButtonText={t('introduction.becomeTutor')}
-                            imageText={t('introduction.imageMatchText')}
                             bannerHeadline={t('introduction.banner.tutorTitle')}
                             onRequest={() => setIsModalOpen(true)}
                             onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
