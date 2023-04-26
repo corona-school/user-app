@@ -116,6 +116,11 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const { trackPageView, trackEvent } = useMatomo();
 
+    const CardGrid = useBreakpointValue({
+        base: '100%',
+        lg: '50%',
+    });
+
     useEffect(() => {
         trackPageView({
             documentTitle: 'Helfer Dashboard',
@@ -432,22 +437,24 @@ const DashboardStudent: React.FC<Props> = () => {
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <CSSWrapper className="course-list__wrapper">
+                                    <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
-                                                    <LearningPartner
-                                                        key={index}
-                                                        matchId={match.id}
-                                                        name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
-                                                        subjects={match?.pupil?.subjectsFormatted}
-                                                        schooltype={match?.pupil?.schooltype || ''}
-                                                        grade={match?.pupil?.grade || ''}
-                                                    />
+                                                    <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
+                                                        <LearningPartner
+                                                            key={index}
+                                                            matchId={match.id}
+                                                            name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
+                                                            subjects={match?.pupil?.subjectsFormatted}
+                                                            schooltype={match?.pupil?.schooltype || ''}
+                                                            grade={match?.pupil?.grade || ''}
+                                                        />
+                                                    </Box>
                                                 );
                                             })) ||
                                             (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
-                                    </CSSWrapper>
+                                    </Stack>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (
                                         <Button
