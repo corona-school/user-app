@@ -7,6 +7,7 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
+import {} from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import MatchAppointments from './MatchAppointments';
+import HelpNavigation from '../components/HelpNavigation';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -105,8 +107,17 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
-    return (
-        <WithNavigation headerTitle={''} showBack={!createAppointment} headerLeft={<NotificationAlert />}>
+    return 
+        <WithNavigation
+            headerTitle={''}
+            showBack={!createAppointment}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (

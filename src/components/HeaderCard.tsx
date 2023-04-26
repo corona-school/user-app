@@ -1,4 +1,4 @@
-import { Box, useTheme, Heading, Row, useBreakpointValue, HStack } from 'native-base';
+import { Box, useTheme, Row, useBreakpointValue, Stack, Heading } from 'native-base';
 import { ReactNode } from 'react';
 import BackButton from './BackButton';
 
@@ -31,20 +31,15 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
 
     return (
         <Box bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
-            <Box h={`${sizes['headerSizePx']}px`} paddingX={space['1']} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
-                <Row alignItems="center" justifyContent="center" h="100%">
+            <Box h={`${sizes['headerSizePx']}px`} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
+                <Row alignItems="center" justifyContent="center" h="100%" padding={space[1]}>
                     {showBack && (
-                        <Box mr={space['1']} position="absolute" left="0" marginRight="12">
+                        <Box ml={space['2']} position="absolute" left="0" zIndex={5}>
                             <BackButton onPress={onBack} />
                         </Box>
                     )}
-
-                    <Box marginLeft={showBack ? '10' : 0} flex={1} flexGrow={0} minW="28px">
-                        {isMobile && leftContent}
-                    </Box>
-
                     {(isMobile && (
-                        <Heading fontSize={headerTitleSize} color="lightText" flex="1" textAlign={'center'}>
+                        <Heading fontSize={headerTitleSize} color="lightText" flex="1" textAlign={'center'} position={'fixed'}>
                             {title}
                         </Heading>
                     )) || (
@@ -52,10 +47,21 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
                             {children}
                         </Box>
                     )}
-                    <HStack space={space['1']} flexDirection={'row'} justifyContent="center" alignItems="flex-end">
-                        {!isMobile && <Box>{leftContent}</Box>}
-                        <Box>{rightContent}</Box>
-                    </HStack>
+                    {isMobile ? (
+                        <Stack alignItems="center" direction="row" width={'100%'} justifyContent={'space-between'}>
+                            <Box ml={showBack ? space[3] : 0}>{rightContent}</Box>
+                            <Stack alignItems="center" direction="row">
+                                <Box>{leftContent}</Box>
+                            </Stack>
+                        </Stack>
+                    ) : (
+                        <Stack>
+                            <Stack alignItems="center" direction="row">
+                                <Box>{leftContent}</Box>
+                                <Box>{rightContent}</Box>
+                            </Stack>
+                        </Stack>
+                    )}
                 </Row>
             </Box>
             {isMobile && children && (

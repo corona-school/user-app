@@ -1,4 +1,4 @@
-import { Button, Text, Heading, useTheme, VStack, Stagger, useBreakpointValue } from 'native-base';
+import { Button, Text, Heading, useTheme, VStack, Stagger, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -13,6 +13,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import HelpNavigation from '../components/HelpNavigation';
 
 type Props = {};
 
@@ -44,7 +45,16 @@ const OnboardingTourList: React.FC<Props> = () => {
     });
 
     return (
-        <WithNavigation headerTitle={t('onboardingList.header')} showBack headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={t('onboardingList.header')}
+            showBack
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             <VStack marginX="auto" maxWidth={ContainerWidth} width="100%" paddingBottom={7} paddingX={space['1.5']}>
                 <Heading paddingBottom={space['0.5']}>{t('onboardingList.title')}</Heading>
                 <Text maxWidth={ContentContainerWidth}>{t('onboardingList.content')}</Text>
