@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -25,6 +25,7 @@ import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
 import { PupilDashboardQuery } from '../../gql/graphql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -286,7 +287,12 @@ const Dashboard: React.FC<Props> = () => {
                         </HStack>
                     )
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (

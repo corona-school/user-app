@@ -5,22 +5,14 @@ import BottomNavigationBar from './BottomNavigationBar';
 import { ReactNode } from 'react';
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
+import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
-import LFHelpIcon from '../assets/icons/lernfair/lf-question.svg';
-import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
+import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
-
-// TODO translations
-const navItems: NavigationItems = {
-    start: { label: 'Start', icon: LFHomeIcon },
-    appointments: { label: 'Termine', icon: LFAppointmentIcon },
-    group: { label: 'Kurse', icon: LFGroupIcon },
-    matching: { label: 'Nachhilfe', icon: LFMatchingIcon },
-    hilfebereich: { label: 'Hilfe', icon: LFHelpIcon },
-};
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -57,6 +49,16 @@ const WithNavigation: React.FC<Props> = ({
         base: 0,
         lg: space['1'],
     });
+
+    const { t } = useTranslation();
+
+    const navItems: NavigationItems = {
+        start: { label: t('navigation.label.start'), icon: LFHomeIcon },
+        appointments: { label: t('navigation.label.appointments'), icon: LFAppointmentIcon },
+        group: { label: t('navigation.label.group'), icon: LFGroupIcon },
+        matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
+        chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
+    };
 
     // const [view, setView] = useState(null)
 

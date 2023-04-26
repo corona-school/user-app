@@ -38,7 +38,7 @@ const AppointmentTile: React.FC<Props> = ({
         base: '100%',
         lg: '90%',
     });
-    console.log(position);
+
     return (
         <Box w={width}>
             <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
@@ -79,10 +79,12 @@ const AppointmentTile: React.FC<Props> = ({
                                 {displayName}
                             </Heading>
 
-                            <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
-                                {t('appointment.appointmentTile.lecture', { position: position }) +
-                                    (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
-                            </Text>
+                            {position && (
+                                <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                    {t('appointment.appointmentTile.lecture', { position: position }) +
+                                        (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
+                                </Text>
+                            )}
                         </Box>
                         {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton')}</Button>}
                     </VStack>

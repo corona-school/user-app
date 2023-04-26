@@ -26,6 +26,7 @@ import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import {} from '../../gql/gql';
 import { Lecture } from '../../gql/graphql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -265,7 +266,12 @@ const DashboardStudent: React.FC<Props> = () => {
                         </HStack>
                     )
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
