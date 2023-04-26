@@ -266,7 +266,7 @@ const SingleCoursePupil = () => {
                     <PupilCourseButtons
                         courseFull={courseFull}
                         subcourse={subcourse}
-                        canJoinSubcourse={canJoinData?.subcourse?.canJoin}
+                        canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}
                         joinedSubcourse={joinedSubcourseData?.subcourseJoin}
                         joinedWaitinglist={joinedWaitinglist?.subcourseJoinWaitinglist}
                         leftSubcourseData={leftSubcourseData?.subcourseLeave}

@@ -16,6 +16,7 @@ import archive from './archive/de';
 import notification from './notification/de';
 import appointment from './appointment/de';
 import navigation from './navigation/de';
+import introduction from './introduction/de';
 
 const de = {
     ...shared,
@@ -36,5 +37,6 @@ const de = {
     notification,
     appointment,
     navigation,
+    introduction,
 };
 export default de;
