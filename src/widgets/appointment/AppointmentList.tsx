@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppointmentsEmptyState from '../AppointmentsEmptyState';
 import { ScrollDirection } from '../../pages/Appointments';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { useOnScreen } from '../../hooks/useIntersectionObserver';
 
 type Props = {
     appointments: Appointment[];
@@ -39,6 +37,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
 const AppointmentList: React.FC<Props> = ({
     appointments,
     isReadOnlyList,
+    isFullWidth,
     noNewAppointments,
     noOldAppointments,
     isLoadingAppointments,
