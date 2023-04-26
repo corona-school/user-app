@@ -1,4 +1,4 @@
-import { Box, Stack, Text, VStack, useBreakpointValue, useTheme } from 'native-base';
+import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import Tabs from '../../components/Tabs';
 import { gql } from './../../gql';
 import { useQuery } from '@apollo/client';
@@ -69,14 +69,12 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
     const { t } = useTranslation();
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
-    const cardGridWidth = useBreakpointValue({
+    const isMobile = useBreakpointValue({ base: true, lg: false });
+
+    const CardGrid = useBreakpointValue({
         base: '100%',
         lg: '50%',
     });
-
-    const isMobile = useBreakpointValue({ base: true, lg: false });
-
-    const { space } = useTheme();
 
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
@@ -125,17 +123,10 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                     <CenterLoadingSpinner />
                                 ) : (
                                     <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
-                                        {' '}
                                         {activeMatches &&
                                             activeMatches.map((match, index) => {
                                                 return (
-                                                    <Box
-                                                        key={match.id}
-                                                        width={cardGridWidth}
-                                                        paddingY={space['0.5']}
-                                                        paddingRight={!isMobile && index % 2 === 0 ? space['0.5'] : 0}
-                                                        paddingLeft={!isMobile && index % 2 === 1 ? space['0.5'] : 0}
-                                                    >
+                                                    <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
                                                         <LearningPartner
                                                             key={index}
                                                             matchId={match.id}

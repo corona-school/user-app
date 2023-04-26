@@ -115,7 +115,7 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const { trackPageView, trackEvent } = useMatomo();
 
-    const cardGridWidth = useBreakpointValue({
+    const CardGrid = useBreakpointValue({
         base: '100%',
         lg: '50%',
     });
@@ -435,13 +435,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
-                                                    <Box
-                                                        key={match.id}
-                                                        width={cardGridWidth}
-                                                        paddingY={space['0.5']}
-                                                        paddingRight={!isMobile && index % 2 === 0 ? space['0.5'] : 0}
-                                                        paddingLeft={!isMobile && index % 2 === 1 ? space['0.5'] : 0}
-                                                    >
+                                                    <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
                                                         <LearningPartner
                                                             key={index}
                                                             matchId={match.id}
