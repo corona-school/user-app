@@ -375,7 +375,7 @@ const Dashboard: React.FC<Props> = () => {
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
-                                    data?.me?.pupil?.canRequestMatch?.allowed ||
+                                    (data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true') ||
                                     (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
                                     <HSection
                                         marginBottom={space['1.5']}
@@ -394,10 +394,9 @@ const Dashboard: React.FC<Props> = () => {
                                                 </Box>
                                             ))}
                                         </Flex>
-                                        {data?.me?.pupil?.canRequestMatch?.allowed && (
+                                        {data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true' && (
                                             <Button
                                                 width={ButtonContainer}
-                                                isDisabled={DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                                                 onPress={() => {
                                                     trackEvent({
                                                         category: 'dashboard',
@@ -410,9 +409,6 @@ const Dashboard: React.FC<Props> = () => {
                                             >
                                                 {t('dashboard.helpers.buttons.requestMatchSuS')}
                                             </Button>
-                                        )}
-                                        {DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
-                                            <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
                                             <VStack space={2} flexShrink={1} maxWidth="700px">
@@ -451,31 +447,33 @@ const Dashboard: React.FC<Props> = () => {
                             >
                                 {(data?.subcoursesPublic?.length &&
                                     data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
-                                        <Column minWidth="230px" maxWidth="280px" flex={1} h="100%" key={subcourse.id}>
-                                            <SignInCard
-                                                showTrafficLight
-                                                trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
-                                                subcourse={subcourse}
-                                                onClickSignIn={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Schüler Dashboard – Matching Vorschlag',
-                                                        documentTitle: 'Schüler Dashboard',
-                                                    });
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                                onPress={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Schüler Dashboard – Matching Vorschlag',
-                                                        documentTitle: 'Schüler Dashboard',
-                                                    });
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                            />
-                                        </Column>
+                                        <AppointmentCard
+                                            key={subcourse.id}
+                                            description={subcourse.course.description}
+                                            tags={subcourse.course.tags}
+                                            date={subcourse?.firstLecture?.start ?? undefined}
+                                            image={subcourse.course.image ?? undefined}
+                                            title={subcourse.course.name}
+                                            countCourse={subcourse.lectures.length}
+                                            maxParticipants={subcourse.maxParticipants}
+                                            participantsCount={subcourse.participantsCount}
+                                            minGrade={subcourse.minGrade}
+                                            maxGrade={subcourse.maxGrade}
+                                            isFullHeight
+                                            showCourseTraffic
+                                            showSchoolclass
+                                            trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
+                                            onPressToCourse={() => {
+                                                trackEvent({
+                                                    category: 'dashboard',
+                                                    action: 'click-event',
+                                                    name: 'Schüler Dashboard – Matching Vorschlag',
+                                                    documentTitle: 'Schüler Dashboard',
+                                                });
+
+                                                navigate(`/single-course/${subcourse.id}`);
+                                            }}
+                                        />
                                     ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
