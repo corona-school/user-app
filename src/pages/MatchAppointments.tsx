@@ -1,4 +1,4 @@
-import { Box } from 'native-base';
+import { Box, Stack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
@@ -41,7 +41,7 @@ query getMatchAppointments($id: Int!) {
 
 export type ScrollDirection = 'next' | 'last';
 
-const MatchAppointments: React.FC<{ matchId: number; height?: string }> = ({ matchId, height }) => {
+const MatchAppointments: React.FC<{ matchId: number }> = ({ matchId }) => {
     const { t } = useTranslation();
 
     const {
@@ -57,21 +57,20 @@ const MatchAppointments: React.FC<{ matchId: number; height?: string }> = ({ mat
     const appointments = matchAppointments?.match?.appointments ?? [];
 
     return (
-        <Box h={height && height}>
+        <Stack>
             {!error && appointments.length > 0 ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
                     isLoadingAppointments={loadingMyAppointments}
                     isReadOnlyList={false}
                     isFullWidth={true}
-                    height={height && height}
                 />
             ) : (
                 <Box justifyContent="center">
                     <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
                 </Box>
             )}
-        </Box>
+        </Stack>
     );
 };
 

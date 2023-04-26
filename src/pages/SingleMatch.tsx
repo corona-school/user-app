@@ -7,7 +7,7 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
-import {} from '../gql/gql';
+import {} from './../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useState } from 'react';
@@ -107,7 +107,7 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
-    return 
+    return (
         <WithNavigation
             headerTitle={''}
             showBack={!createAppointment}
@@ -178,9 +178,7 @@ const SingleMatch = () => {
                                         </Button>
                                     )}
                                 </Stack>
-                                <Box>
-                                    <MatchAppointments matchId={matchId} height={'80vh'} />
-                                </Box>
+                                <MatchAppointments matchId={matchId} />
                                 {userType === 'student' && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />

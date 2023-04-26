@@ -83,36 +83,26 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         shadowOffset: { width: -1, height: -3 },
                     }}
                 >
-                    {Object.entries(sortNavItems(navItems)).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'group' && disableGroup) || (key === 'matching' && disableMatching);
-
+                    {Object.entries(sortNavItems(navItems)).map(([key, { label, icon: Icon }]) => {
                         return (
                             <Pressable
-                                onPress={
-                                    disabled
-                                        ? undefined
-                                        : () => {
-                                              setRootPath && setRootPath(`${key}`);
-                                              navigate(`/${key}`);
-                                          }
-                                }
+                                onPress={() => {
+                                    setRootPath && setRootPath(`${key}`);
+                                    navigate(`/${key}`);
+                                }}
                                 key={key}
                             >
                                 <CSSWrapper className="navigation__item">
                                     <Center>
                                         <Box>
-                                            <CircleIcon size="35px" color={disabled ? 'transparent' : key === rootPath ? 'primary.900' : 'transparent'} />
-                                            <CSSWrapper className={`navigation__item__icon ${!disabled && key === rootPath ? 'active' : ''}`}>
+                                            <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
+                                            <CSSWrapper className={`navigation__item__icon ${key === rootPath ? 'active' : ''}`}>
                                                 <Flex>
-                                                    <Icon
-                                                        fill={
-                                                            disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']
-                                                        }
-                                                    />
+                                                    <Icon fill={key === rootPath ? colors['lightText'] : colors['primary']['900']} />
                                                 </Flex>
                                             </CSSWrapper>
                                         </Box>
-                                        <Text fontSize="xs" color={disabled ? colors['gray']['300'] : colors['primary']['900']}>
+                                        <Text fontSize="xs" color={colors['primary']['900']}>
                                             {label}
                                         </Text>
                                     </Center>
