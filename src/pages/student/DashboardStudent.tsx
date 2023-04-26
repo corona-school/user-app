@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -11,7 +11,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 import { DateTime } from 'luxon';
 import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -24,8 +23,10 @@ import AlertMessage from '../../widgets/AlertMessage';
 import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
-import { gql } from '../../gql/gql';
-import { Lecture, Match, Subcourse } from '../../gql/graphql';
+import { gql } from './../../gql';
+import {} from '../../gql/gql';
+import { Lecture } from '../../gql/graphql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -260,7 +261,12 @@ const DashboardStudent: React.FC<Props> = () => {
                         </HStack>
                     )
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
+import { Course_Coursestate_Enum } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
@@ -21,6 +21,7 @@ import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
+import HelpNavigation from '../../components/HelpNavigation';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -329,7 +330,17 @@ const SingleCourseStudent = () => {
     }, [course?.courseState, doPublish, submitCourse]);
 
     return (
-        <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={course?.name.substring(0, 20)}
+            showBack
+            isLoading={loading}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
