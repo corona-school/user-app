@@ -1,4 +1,5 @@
-import { AddIcon, Box, Fab, useBreakpointValue } from 'native-base';
+import { Box, Fab, useBreakpointValue } from 'native-base';
+import CalendarAddIcon from '../assets/icons/calendar_add.svg';
 
 type FabProps = {
     place?: any;
@@ -31,7 +32,7 @@ const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
                 backgroundColor="primary.900"
                 rounded="md"
                 size="md"
-                icon={<AddIcon />}
+                icon={<CalendarAddIcon />}
                 onPress={handlePress}
             />
         </Box>
