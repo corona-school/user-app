@@ -41,7 +41,7 @@ query getMatchAppointments($id: Int!) {
 
 export type ScrollDirection = 'next' | 'last';
 
-const MatchAppointments: React.FC<{ matchId: number }> = ({ matchId }) => {
+const MatchAppointments: React.FC<{ matchId: number; height?: string }> = ({ matchId, height }) => {
     const { t } = useTranslation();
 
     const {
@@ -57,20 +57,21 @@ const MatchAppointments: React.FC<{ matchId: number }> = ({ matchId }) => {
     const appointments = matchAppointments?.match?.appointments ?? [];
 
     return (
-        <>
+        <Box h={height && height}>
             {!error && appointments.length > 0 ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
                     isLoadingAppointments={loadingMyAppointments}
                     isReadOnlyList={false}
                     isFullWidth={true}
+                    height={height && height}
                 />
             ) : (
-                <Box h={800} justifyContent="center">
+                <Box justifyContent="center">
                     <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
                 </Box>
             )}
-        </>
+        </Box>
     );
 };
 

@@ -168,7 +168,7 @@ const SingleMatch = () => {
                                     )}
                                 </Stack>
                                 <Box>
-                                    <MatchAppointments matchId={matchId} />
+                                    <MatchAppointments matchId={matchId} height={'80vh'} />
                                 </Box>
                                 {userType === 'student' && (
                                     <Box>
