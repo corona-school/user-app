@@ -448,7 +448,7 @@ const Dashboard: React.FC<Props> = () => {
                                 {(data?.subcoursesPublic?.length &&
                                     data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
                                         <AppointmentCard
-                                            key={`${subcourse.course.description}`}
+                                            key={subcourse.id}
                                             description={subcourse.course.description}
                                             tags={subcourse.course.tags}
                                             date={subcourse?.firstLecture?.start ?? undefined}
