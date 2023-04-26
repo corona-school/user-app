@@ -75,8 +75,8 @@ const single = {
     },
     modals: {
         contactMessage: {
-            alertParticipants: ' Wir teilen deinen Teilnehmer:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
-            alertInstructors: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+            alertParticipants: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+            alertInstructors: ' Wir teilen deinen Schüler:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
         },
     },
     buttonPromote: {
