@@ -12,8 +12,6 @@ export enum AttendanceStatus {
 }
 export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
 
-export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
-
 export type LFUserType = string | 'pupil' | 'student';
 
 export type LFPupil = {
