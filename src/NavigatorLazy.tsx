@@ -56,9 +56,9 @@ import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
-import Chat from './pages/Chat';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
+import Chat from './pages/Chat';
 
 export default function NavigatorLazy() {
     return (

@@ -1,4 +1,4 @@
-import { Button, Stack, useTheme, useToast } from 'native-base';
+import { Box, Button, Divider, Heading, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,6 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
-import {} from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,6 +14,8 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
+import AppointmentCreation from './create-appointment/AppointmentCreation';
+import MatchAppointments from './MatchAppointments';
 import HelpNavigation from '../components/HelpNavigation';
 
 const singleMatchQuery = gql(`
@@ -25,6 +26,7 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolveReason
     pupil {
+      id
       firstname
       lastname
       schooltype
@@ -37,6 +39,7 @@ query SingleMatch($matchId: Int! ) {
     }
     pupilEmail
     student {
+      id
       firstname
       lastname
       state
@@ -60,6 +63,7 @@ const SingleMatch = () => {
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [toastShown, setToastShown] = useState<boolean>();
+    const [createAppointment, setCreateAppointment] = useState<boolean>(false);
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
@@ -102,18 +106,10 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
-    // TODO integrate appointments
-    // const tabs: Tab[] = [
-    //     {
-    //         title: 'Termine',
-    //         content: <Text>Termine</Text>,
-    //     },
-    // ];
-
     return (
         <WithNavigation
             headerTitle={''}
-            showBack
+            showBack={!createAppointment}
             headerLeft={
                 <Stack alignItems="center" direction="row">
                     <HelpNavigation />
@@ -125,53 +121,79 @@ const SingleMatch = () => {
                 <CenterLoadingSpinner />
             ) : (
                 !error && (
-                    <Stack space={space['1']} paddingX={space['1.5']}>
-                        {userType === 'student' ? (
-                            <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
+                    <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
+                        {createAppointment ? (
+                            <AppointmentCreation back={() => setCreateAppointment(false)} courseOrMatchId={matchId} isCourse={false} appointmentsTotal={0} />
                         ) : (
-                            <MatchPartner partner={(data?.match?.student as Student) || {}} />
+                            <>
+                                {userType === 'student' ? (
+                                    <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
+                                ) : (
+                                    <MatchPartner partner={(data?.match?.student as Student) || {}} />
+                                )}
+
+                                {data?.match?.dissolved && (
+                                    <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
+                                        <AlertMessage
+                                            content={t('matching.shared.dissolvedAlert', {
+                                                partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
+                                            })}
+                                        />
+                                    </Stack>
+                                )}
+
+                                <Stack
+                                    direction={isMobile ? 'column' : 'row'}
+                                    flexWrap={isMobile ? 'nowrap' : 'wrap'}
+                                    justifyContent="center"
+                                    space={isMobile ? space['0.5'] : space['2']}
+                                >
+                                    <Button
+                                        onPress={() => {
+                                            window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
+                                        }}
+                                        my={isMobile ? '0' : '1'}
+                                    >
+                                        {t('matching.shared.videochat')}
+                                    </Button>
+                                    <Button
+                                        onPress={() =>
+                                            (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
+                                        }
+                                        my={isMobile ? '0' : '1'}
+                                    >
+                                        {t('matching.shared.contactMail')}
+                                    </Button>
+
+                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
+                                        {t('matching.shared.contactViaChat')}
+                                    </Button>
+                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
+                                        {t('matching.shared.directCall')}
+                                    </Button>
+                                    {!data?.match?.dissolved && (
+                                        <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
+                                            {t('matching.shared.dissolveMatch')}
+                                        </Button>
+                                    )}
+                                </Stack>
+                                <Divider thickness={1} mb={4} />
+                                <Stack space={space['1']}>
+                                    <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
+                                </Stack>
+                                <MatchAppointments matchId={matchId} minimumHeight={'30vh'} />
+                                {userType === 'student' && (
+                                    <Box>
+                                        <Divider thickness={1} mb={4} />
+                                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
+                                            <Button variant="outline" onPress={() => setCreateAppointment(true)}>
+                                                {t('matching.shared.createAppointment')}
+                                            </Button>
+                                        </Stack>
+                                    </Box>
+                                )}
+                            </>
                         )}
-
-                        {data?.match?.dissolved && (
-                            <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                                <AlertMessage
-                                    content={t('matching.shared.dissolvedAlert', {
-                                        partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
-                                    })}
-                                />
-                            </Stack>
-                        )}
-
-                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                            <Button
-                                onPress={() => {
-                                    window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
-                                }}
-                            >
-                                {t('matching.shared.videochat')}
-                            </Button>
-                            <Button
-                                onPress={() =>
-                                    (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
-                                }
-                            >
-                                {t('matching.shared.contactMail')}
-                            </Button>
-
-                            <Button isDisabled variant="outline">
-                                {t('matching.shared.contactViaChat')}
-                            </Button>
-                            <Button isDisabled variant="outline">
-                                {t('matching.shared.directCall')}
-                            </Button>
-                            {!data?.match?.dissolved && (
-                                <Button variant="outline" onPress={() => setShowDissolveModal(true)}>
-                                    {t('matching.shared.dissolveMatch')}
-                                </Button>
-                            )}
-                        </Stack>
-
-                        {/* <Tabs tabs={tabs} /> */}
                     </Stack>
                 )
             )}

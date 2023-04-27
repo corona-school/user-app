@@ -10,7 +10,7 @@ import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lern
 import { useCallback, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { gql } from '../../gql/gql';
+import { gql } from './../../gql';
 
 type FormErrors = {
     title?: string;
@@ -44,6 +44,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
     const navigate = useNavigate();
+
+    const [dateSelected, setDateSelected] = useState(false);
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -257,27 +259,33 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
 
     return (
         <Box>
-            <AppointmentForm errors={errors} appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} />
+            <AppointmentForm
+                errors={errors}
+                appointmentsCount={appointmentsTotal ? appointmentsTotal : 0}
+                onSetDate={() => {
+                    setDateSelected(true);
+                }}
+            />
             <Box py="8">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={appointmentToCreate.date ? false : true}
+                    isDisabled={!dateSelected}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
             {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
+                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
+                    {t('appointment.create.backButton')}
+                </Button>
                 <Button
                     onPress={isCourseCreation ? handleCreateCourseAppointments : isCourse ? handleCreateCourseAppointment : handleCreateMatchAppointment}
                     width={buttonWidth}
                 >
                     {t('appointment.create.addAppointmentButton')}
-                </Button>
-                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
-                    {t('appointment.create.backButton')}
                 </Button>
             </Stack>
         </Box>
