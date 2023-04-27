@@ -179,10 +179,10 @@ const SingleMatch = () => {
                                     )}
                                 </Stack>
                                 <Divider thickness={1} mb={4} />
-                                <Stack space={space['1']} justifyContent="center" alignItems="center">
+                                <Stack space={space['1']}>
                                     <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
                                 </Stack>
-                                <MatchAppointments matchId={matchId} minimumHeight={'60vh'} />
+                                <MatchAppointments matchId={matchId} minimumHeight={'30vh'} />
                                 {userType === 'student' && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />

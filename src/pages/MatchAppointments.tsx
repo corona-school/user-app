@@ -6,6 +6,7 @@ import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/appointment/AppointmentList';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 const GET_MATCH_APPOINTMENTS = gql(`
 query getMatchAppointments($id: Int!) {
@@ -57,7 +58,8 @@ const MatchAppointments: React.FC<{ matchId: number; minimumHeight: string }> = 
     const appointments = matchAppointments?.match?.appointments ?? [];
 
     return (
-        <Stack minHeight={minimumHeight}>
+        <Stack minH={minimumHeight}>
+            {loadingMyAppointments && !matchAppointments && <CenterLoadingSpinner />}
             {!error && appointments.length > 0 ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
