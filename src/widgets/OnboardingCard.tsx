@@ -28,7 +28,6 @@ const OnboardingCard: React.FC<CardProps> = ({
     showRequestButton,
     showRequestBanner,
     requestButtonText,
-    imageText,
     bannerHeadline,
     onRequest,
     onTalkToTeam,

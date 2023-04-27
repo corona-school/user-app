@@ -11,7 +11,6 @@ import { useCallback, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
-import {} from '../../gql/gql';
 
 type FormErrors = {
     title?: string;
