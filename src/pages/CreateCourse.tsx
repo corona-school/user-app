@@ -31,6 +31,7 @@ import { useCreateCourseAppointments } from '../context/AppointmentContext';
 import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+import { Appointment } from '../types/lernfair/Appointment';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -96,6 +97,7 @@ const CreateCourse: React.FC = () => {
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
+    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
 
     const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
@@ -150,6 +152,30 @@ const CreateCourse: React.FC = () => {
                     tags {
                         id
                         name
+                    }
+                }
+                appointments {
+                    id
+                    subcourseId
+                    start
+                    duration
+                    title
+                    description
+                    displayName
+                    position
+                    total
+                    appointmentType
+                    participants(skip: 0, take: 10) {
+                        id
+                        firstname
+                        lastname
+                        isPupil
+                        isStudent
+                    }
+                    organizers(skip: 0, take: 10) {
+                        id
+                        firstname
+                        lastname
                     }
                 }
             }
@@ -269,6 +295,7 @@ const CreateCourse: React.FC = () => {
         setAllowContact(!!prefillCourse.course.allowContact);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
+        setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -835,7 +862,15 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} courseId={prefillCourseId} />}
+                            {currentIndex === 3 && (
+                                <CourseAppointments
+                                    next={onNext}
+                                    back={onBack}
+                                    isEditing={isEditing}
+                                    courseId={prefillCourseId}
+                                    appointments={courseAppointments ?? []}
+                                />
+                            )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
@@ -850,6 +885,7 @@ const CreateCourse: React.FC = () => {
                                         isEditing={isEditing}
                                         isError={showCourseError}
                                         isDisabled={loading || isLoading || imageLoading}
+                                        appointments={courseAppointments ?? []}
                                     />
                                     <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">
                                         <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">

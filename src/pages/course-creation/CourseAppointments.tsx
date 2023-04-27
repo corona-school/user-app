@@ -19,48 +19,14 @@ type Props = {
     back: () => void;
     isEditing?: boolean;
     courseId?: number;
+    appointments: Appointment[];
 };
 
-const COURSE_APPOINTMENTS = gql(`
-    query courseAppointments($id: Int!) {
-        subcourse(subcourseId: $id) {
-            course {
-                name
-            }
-            appointments {
-                id
-                subcourseId
-                start
-                duration
-                title
-                description
-                displayName
-                position
-                total
-                appointmentType
-                participants(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                    isPupil
-                    isStudent
-                }
-                organizers(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                }
-            }
-        }
-    }
-`);
-
-const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }) => {
+const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId, appointments }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
-    const { data } = useQuery(COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
@@ -94,16 +60,14 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
 
         return convertedAppointments;
     };
-    const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
     const canGoFurther = () => {
-        if (isEditing) return appointmentsOfEditingCourse.length === 0 ? true : false;
+        if (isEditing) return appointments.length === 0 ? true : false;
         return allAppointmentsToShow.length === 0 ? true : false;
     };
     const getAllAppointmentsToShow = () => {
         if (isEditing) {
-            const existingAppointments = appointmentsOfEditingCourse as Appointment[];
             const convertedAppointments = convertAppointments();
-            const allAppointments = existingAppointments.concat(convertedAppointments);
+            const allAppointments = appointments.concat(convertedAppointments);
             const sortedAppointments = allAppointments.sort((a, b) => {
                 const _a = DateTime.fromISO(a.start).toMillis();
                 const _b = DateTime.fromISO(b.start).toMillis();
@@ -116,9 +80,9 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId }
             });
             return sortedWithPosition;
         }
-        const appointments: Appointment[] = [];
+        const newAppointments: Appointment[] = [];
         const convertedAppointments = convertAppointments();
-        const allAppointments = appointments.concat(convertedAppointments);
+        const allAppointments = newAppointments.concat(convertedAppointments);
         const sortedAppointments = allAppointments.sort((a, b) => {
             const _a = DateTime.fromISO(a.start).toMillis();
             const _b = DateTime.fromISO(b.start).toMillis();

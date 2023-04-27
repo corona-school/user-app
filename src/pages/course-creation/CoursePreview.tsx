@@ -23,45 +23,12 @@ type Props = {
     createAndSubmit?: () => void;
     createOnly?: () => void;
     update?: (newAppointments?: AppointmentCreateGroupInput[]) => void;
+    appointments: Appointment[];
 };
 
-const COURSE_APPOINTMENTS = gql(`
-    query courseAppointments($id: Int!) {
-        subcourse(subcourseId: $id) {
-            course {
-                name
-            }
-            appointments {
-                id
-                subcourseId
-                start
-                duration
-                title
-                description
-                displayName
-                position
-                total
-                appointmentType
-                participants(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                    isPupil
-                    isStudent
-                }
-                organizers(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                }
-            }
-        }
-    }
-`);
-const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, isEditing, createAndSubmit, createOnly, update }) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, appointments, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const { data } = useQuery(COURSE_APPOINTMENTS, { variables: { id: courseId ?? 0 } });
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const {
         courseName,
@@ -117,28 +84,24 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
         return convertedAppointments;
     };
 
-    const appointmentsOfEditingCourse = data?.subcourse?.appointments ?? [];
-
     const getAllAppointmentsToShow = () => {
         if (isEditing) {
-            const existingAppointments = appointmentsOfEditingCourse as Appointment[];
             const convertedAppointments = convertAppointments();
-            const allAppointments = existingAppointments.concat(convertedAppointments);
+            const allAppointments = appointments.concat(convertedAppointments);
             const sortedAppointments = allAppointments.sort((a, b) => {
                 const _a = DateTime.fromISO(a.start).toMillis();
                 const _b = DateTime.fromISO(b.start).toMillis();
                 return _a - _b;
             });
-            console.log('TERMINE:', sortedAppointments);
             let sortedWithPosition: Appointment[] = [];
             sortedAppointments.forEach((appointment, index) => {
                 sortedWithPosition.push({ ...appointment, position: index + 1 });
             });
             return sortedWithPosition;
         }
-        const appointments: Appointment[] = [];
+        const newAppointments: Appointment[] = [];
         const convertedAppointments = convertAppointments();
-        const allAppointments = appointments.concat(convertedAppointments);
+        const allAppointments = newAppointments.concat(convertedAppointments);
         const sortedAppointments = allAppointments.sort((a, b) => {
             const _a = DateTime.fromISO(a.start).toMillis();
             const _b = DateTime.fromISO(b.start).toMillis();

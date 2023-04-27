@@ -168,6 +168,7 @@ const AppointmentList: React.FC<Props> = ({
         return handleScrollIntoView(scrollViewRef.current);
     }, []);
 
+    console.log('KURSTERMINE', appointments);
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
