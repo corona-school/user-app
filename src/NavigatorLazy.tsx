@@ -59,6 +59,8 @@ import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import Chat from './pages/Chat';
+import CoursePage from './pages/CoursePage';
+import MatchPage from './pages/MatchPage';
 
 export default function NavigatorLazy() {
     return (

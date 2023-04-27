@@ -10,6 +10,7 @@ export enum AttendanceStatus {
     ACCEPTED = 'accepted',
     DECLINED = 'declined',
 }
+export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
 
 export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
 

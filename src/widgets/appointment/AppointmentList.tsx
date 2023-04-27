@@ -51,6 +51,7 @@ const AppointmentList: React.FC<Props> = ({
         base: 'full',
         lg: isReadOnlyList || isFullWidth ? 'full' : '90%',
     });
+
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
@@ -95,7 +96,7 @@ const AppointmentList: React.FC<Props> = ({
         }
         return (
             <Box py={5} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast} width="25%">
+                <Button variant="outline" onPress={handleLoadPast}>
                     {t('appointment.loadPastAppointments')}
                 </Button>
             </Box>

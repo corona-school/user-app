@@ -72,7 +72,6 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                             showRequestButton={canRequest}
                             showRequestBanner={waitForSupport}
                             requestButtonText={t('introduction.becomeAnInstructor')}
-                            imageText={t('introduction.imageGroupText')}
                             bannerHeadline={t('introduction.banner.instuctorTitle')}
                             onRequest={() => setIsModalOpen(true)}
                             onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
