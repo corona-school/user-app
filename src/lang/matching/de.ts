@@ -21,6 +21,7 @@ const matching = {
         dissolvedAlert: 'Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.',
         contactMail: 'Via E-Mail kontaktieren',
         tutorInstructor: 'Tutor:in, Kursleiter:in',
+        appointmentsHeadline: 'Termine',
         createAppointment: 'Termin erstellen',
     },
     blocker: {

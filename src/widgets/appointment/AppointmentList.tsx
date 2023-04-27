@@ -13,7 +13,6 @@ type Props = {
     appointments: Appointment[];
     isReadOnlyList: boolean;
     isFullWidth?: boolean;
-    height?: string;
     noNewAppointments?: boolean;
     noOldAppointments?: boolean;
     isLoadingAppointments?: boolean;
@@ -39,7 +38,6 @@ const AppointmentList: React.FC<Props> = ({
     appointments,
     isReadOnlyList,
     isFullWidth,
-    height,
     noNewAppointments,
     noOldAppointments,
     isLoadingAppointments,
@@ -131,7 +129,7 @@ const AppointmentList: React.FC<Props> = ({
 
         if (isLoadingAppointments) return <CenterLoadingSpinner />;
         return (
-            <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3} h={height && height}>
+            <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
                 {monthDivider && (
                     <>

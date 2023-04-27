@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, useTheme, useToast } from 'native-base';
+import { Box, Button, Divider, Heading, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -178,7 +178,11 @@ const SingleMatch = () => {
                                         </Button>
                                     )}
                                 </Stack>
-                                <MatchAppointments matchId={matchId} />
+                                <Divider thickness={1} mb={4} />
+                                <Stack space={space['1']} justifyContent="center" alignItems="center">
+                                    <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
+                                </Stack>
+                                <MatchAppointments matchId={matchId} minimumHeight={'60vh'} />
                                 {userType === 'student' && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />
@@ -191,7 +195,6 @@ const SingleMatch = () => {
                                 )}
                             </>
                         )}
-                        {/* <Tabs tabs={tabs} /> */}
                     </Stack>
                 )
             )}
