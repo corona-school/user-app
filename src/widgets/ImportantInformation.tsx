@@ -28,6 +28,8 @@ query GetOnboardingInfos {
   }
   me {
     email
+    firstname
+    lastname
     secrets {
       type
     }
@@ -293,7 +295,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- TEMP: Test of Homework help -----
-        if (roles.includes('TUTEE'))
+        if (pupil)
             infos.push({
                 label: 'homeworkHelpPupil',
                 btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
