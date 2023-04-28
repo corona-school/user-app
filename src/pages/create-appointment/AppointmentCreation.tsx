@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useCallback, useState } from 'react';
-import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
+import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
 
@@ -131,7 +131,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 subcourseId: courseOrMatchId!,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
             if (isCourseCreation && weeklies.length === 0) {
                 setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
@@ -146,7 +146,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId!,
-                        appointmentType: AppointmentType.Group,
+                        appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -173,7 +173,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 subcourseId: courseOrMatchId ? courseOrMatchId : 1,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
 
             appointments.push(newAppointment);
@@ -189,7 +189,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
-                        appointmentType: AppointmentType.Group,
+                        appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -219,7 +219,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 matchId: courseOrMatchId ? courseOrMatchId : 1,
-                appointmentType: AppointmentType.Match,
+                appointmentType: Lecture_Appointmenttype_Enum.Match,
             };
 
             appointments.push(newAppointment);
@@ -235,7 +235,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
-                        appointmentType: AppointmentType.Match,
+                        appointmentType: Lecture_Appointmenttype_Enum.Match,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }

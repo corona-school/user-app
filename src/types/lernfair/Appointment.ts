@@ -15,7 +15,7 @@ export type Appointment = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     isCancelled?: boolean;
-    declinedBy?: AttendeesDeclined[];
+    declinedBy?: string[];
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     isParticipant?: boolean;

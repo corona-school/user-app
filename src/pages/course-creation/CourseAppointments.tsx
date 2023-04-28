@@ -37,25 +37,19 @@ const GET_COURSE_APPOINTMENTS = gql`
                 matchId
                 participants(skip: 0, take: 10) {
                     id
+                    userID
                     firstname
                     lastname
-                    isPupil
                 }
                 organizers(skip: 0, take: 10) {
                     id
+                    userID
                     firstname
                     lastname
-                    isStudent
                 }
                 isOrganizer
                 isParticipant
-                declinedBy(skip: 0, take: 10) {
-                    id
-                    firstname
-                    lastname
-                    isStudent
-                    isPupil
-                }
+                declinedBy
             }
         }
     }

@@ -33,16 +33,17 @@ const getMyAppointments = gql(`
                 isParticipant
                 organizers(skip: 0, take: 5) {
                     id
+                    userID
                     firstname
                     lastname
                 }
                 participants(skip: 0, take: 30) {
                     id
+                    userID
                     firstname
                     lastname
-                    isPupil
-                    isStudent
                 }
+                declinedBy
             }
         }
     }
