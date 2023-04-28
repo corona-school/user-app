@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -7,6 +7,7 @@ import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
+import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     show?: boolean;
@@ -17,6 +18,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
+    const userType = useUserType();
 
     const { data, loading } = useQuery(
         gql(`
@@ -26,14 +28,34 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
         `)
     );
 
+    function sortNavItems(navItems: NavigationItems): NavigationItems {
+        const newNavItems: NavigationItems = {};
+
+        let index = 1;
+        for (const key in navItems) {
+            if (Object.prototype.hasOwnProperty.call(navItems, key)) {
+                if (index === 3) {
+                    newNavItems.chat = navItems.chat;
+                    index++;
+                }
+                if (key !== 'chat') {
+                    newNavItems[key] = navItems[key];
+                    index++;
+                }
+            }
+        }
+
+        return newNavItems;
+    }
+
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('INSTRUCTOR') && !data?.myRoles.includes('PARTICIPANT');
+        return !data?.myRoles.includes('PARTICIPANT');
     }, [data]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('TUTOR') && !data?.myRoles.includes('TUTEE');
+        return !data?.myRoles.includes('TUTEE');
     }, [data]);
 
     if (loading) return <></>;
@@ -61,32 +83,26 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         shadowOffset: { width: -1, height: -3 },
                     }}
                 >
-                    {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'group' && disableGroup) || (key === 'matching' && disableMatching);
-
+                    {Object.entries(sortNavItems(navItems)).map(([key, { label, icon: Icon }]) => {
                         return (
                             <Pressable
-                                onPress={
-                                    disabled
-                                        ? undefined
-                                        : () => {
-                                              setRootPath && setRootPath(`${key}`);
-                                              navigate(`/${key}`);
-                                          }
-                                }
+                                onPress={() => {
+                                    setRootPath && setRootPath(`${key}`);
+                                    navigate(`/${key}`);
+                                }}
                                 key={key}
                             >
                                 <CSSWrapper className="navigation__item">
                                     <Center>
                                         <Box>
-                                            <CircleIcon size="35px" color={disabled ? 'transparent' : key === rootPath ? 'primary.900' : 'transparent'} />
-                                            <CSSWrapper className={`navigation__item__icon ${!disabled && key === rootPath ? 'active' : ''}`}>
-                                                <Icon
-                                                    fill={disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']}
-                                                />
+                                            <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
+                                            <CSSWrapper className={`navigation__item__icon ${key === rootPath ? 'active' : ''}`}>
+                                                <Flex>
+                                                    <Icon fill={key === rootPath ? colors['lightText'] : colors['primary']['900']} />
+                                                </Flex>
                                             </CSSWrapper>
                                         </Box>
-                                        <Text fontSize="xs" color={disabled ? colors['gray']['300'] : colors['primary']['900']}>
+                                        <Text fontSize="xs" color={colors['primary']['900']}>
                                             {label}
                                         </Text>
                                     </Center>

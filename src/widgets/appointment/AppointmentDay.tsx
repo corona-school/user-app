@@ -15,6 +15,7 @@ type Props = {
     participants?: AppointmentParticipant[];
     scrollToRef?: any;
     isReadOnly?: boolean;
+    isFullWidth?: boolean;
     onPress: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
@@ -31,6 +32,7 @@ const AppointmentDay: React.FC<Props> = ({
     participants,
     scrollToRef,
     isReadOnly,
+    isFullWidth,
     onPress,
     appointmentType,
     position,
@@ -91,6 +93,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 organizers={organizers}
                                 participants={participants}
                                 isReadOnly={isReadOnly}
+                                isFullWidth={isFullWidth}
                                 onPress={onPress}
                                 appointmentType={appointmentType}
                                 position={position}

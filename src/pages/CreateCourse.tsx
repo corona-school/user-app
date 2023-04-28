@@ -1,5 +1,6 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -32,6 +33,7 @@ import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import { Appointment } from '../types/lernfair/Appointment';
+import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -109,7 +111,8 @@ const CreateCourse: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
-    const { data: studentData, loading } = useQuery(gql`
+    const { data: studentData, loading } = useQuery(
+        gql(`
         query StudentCanCreateCourse {
             me {
                 student {
@@ -123,9 +126,11 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [courseQuery] = useLazyQuery(gql`
+    const [courseQuery] = useLazyQuery(
+        gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -156,7 +161,6 @@ const CreateCourse: React.FC = () => {
                 }
                 appointments {
                     id
-                    subcourseId
                     start
                     duration
                     title
@@ -166,37 +170,40 @@ const CreateCourse: React.FC = () => {
                     total
                     appointmentType
                     participants(skip: 0, take: 10) {
-                        id
                         firstname
                         lastname
-                        isPupil
-                        isStudent
+                      
                     }
                     organizers(skip: 0, take: 10) {
-                        id
                         firstname
                         lastname
                     }
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [createCourse, { reset: resetCourse }] = useMutation(gql`
+    const [createCourse, { reset: resetCourse }] = useMutation(
+        gql(`
         mutation createCourse($course: PublicCourseCreateInput!) {
             courseCreate(course: $course) {
                 id
             }
         }
-    `);
-    const [updateCourse, { reset: resetEditCourse }] = useMutation(gql`
+    `)
+    );
+    const [updateCourse, { reset: resetEditCourse }] = useMutation(
+        gql(`
         mutation updateCourse($course: PublicCourseEditInput!, $id: Float!) {
             courseEdit(course: $course, courseId: $id) {
                 id
             }
         }
-    `);
-    const [createSubcourse, { reset: resetSubcourse }] = useMutation(gql`
+    `)
+    );
+    const [createSubcourse, { reset: resetSubcourse }] = useMutation(
+        gql(`
         mutation createSubcourse($courseId: Float!, $subcourse: PublicSubcourseCreateInput!) {
             subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
                 id
@@ -206,50 +213,65 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(gql`
+    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(
+        gql(`
         mutation appointmentsCourseCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
             appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
         }
-    `);
+    `)
+    );
 
-    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(gql`
+    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(
+        gql(`
         mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
             subcourseEdit(subcourse: $course, subcourseId: $id) {
                 id
             }
         }
-    `);
+    `)
+    );
 
-    const [setCourseImage] = useMutation(gql`
+    const [setCourseImage] = useMutation(
+        gql(`
         mutation setCourseImage($courseId: Float!, $fileId: String!) {
             courseSetImage(courseId: $courseId, fileId: $fileId)
         }
-    `);
+    `)
+    );
 
-    const [addCourseInstructor] = useMutation(gql`
+    const [addCourseInstructor] = useMutation(
+        gql(`
         mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [removeCourseInstructor] = useMutation(gql`
+    `)
+    );
+    const [removeCourseInstructor] = useMutation(
+        gql(`
         mutation removeCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseDeleteInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
+    `)
+    );
 
-    const [setCourseTags] = useMutation(gql`
+    const [setCourseTags] = useMutation(
+        gql(`
         mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
             courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
         }
-    `);
+    `)
+    );
 
-    const [submitCourse] = useMutation(gql`
+    const [submitCourse] = useMutation(
+        gql(`
         mutation SubmitCourse($courseId: Float!) {
             courseSubmit(courseId: $courseId)
         }
-    `);
+    `)
+    );
 
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -802,7 +824,12 @@ const CreateCourse: React.FC = () => {
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 isLoading={loading || isLoading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 <CreateCourseContext.Provider
                     value={{

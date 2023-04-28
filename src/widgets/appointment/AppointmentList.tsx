@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -8,12 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppointmentsEmptyState from '../AppointmentsEmptyState';
 import { ScrollDirection } from '../../pages/Appointments';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { useOnScreen } from '../../hooks/useIntersectionObserver';
 
 type Props = {
     appointments: Appointment[];
     isReadOnlyList: boolean;
+    isFullWidth?: boolean;
     noNewAppointments?: boolean;
     noOldAppointments?: boolean;
     isLoadingAppointments?: boolean;
@@ -35,10 +34,10 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId || 0;
 };
-
 const AppointmentList: React.FC<Props> = ({
     appointments,
     isReadOnlyList,
+    isFullWidth,
     noNewAppointments,
     noOldAppointments,
     isLoadingAppointments,
@@ -50,8 +49,9 @@ const AppointmentList: React.FC<Props> = ({
 
     const maxListWidth = useBreakpointValue({
         base: 'full',
-        lg: isReadOnlyList ? 'full' : '90%',
+        lg: isReadOnlyList || isFullWidth ? 'full' : '90%',
     });
+
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
     }, [appointments]);
@@ -95,8 +95,8 @@ const AppointmentList: React.FC<Props> = ({
             );
         }
         return (
-            <Box py={5} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast} width="25%">
+            <Box pb={10} justifyContent="center" alignItems="center">
+                <Button variant="outline" onPress={handleLoadPast}>
                     {t('appointment.loadPastAppointments')}
                 </Button>
             </Box>
@@ -130,14 +130,14 @@ const AppointmentList: React.FC<Props> = ({
 
         if (isLoadingAppointments) return <CenterLoadingSpinner />;
         return (
-            <Box key={`${appointment.id + index}`} ml={3}>
+            <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
                 {monthDivider && (
                     <>
                         <Center mt="3">
                             <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${DateTime.fromISO(appointment.start).year}`}</Text>
                         </Center>
-                        <Divider my={3} width="95%" />
+                        <Divider my={3} width={isFullWidth ? '100%' : '95%'} />
                     </>
                 )}
                 <Box ml={5}>
@@ -151,6 +151,7 @@ const AppointmentList: React.FC<Props> = ({
                         onPress={() => navigate(`/appointment/${appointment.id}`)}
                         scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
                         isReadOnly={isReadOnlyList}
+                        isFullWidth={isFullWidth}
                         appointmentType={appointment.appointmentType}
                         position={appointment.position}
                         total={appointment.total}

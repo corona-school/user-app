@@ -36,7 +36,7 @@ const appointment = {
         appointmentAdd: 'Termin hinzufügen',
         group: 'Gruppe',
         date: 'Ab {{date}} • {{time}} Uhr',
-        addAppointmentButton: 'Termin hinzufügen',
+        addAppointmentButton: 'Termin(e) hinzufügen',
         backButton: 'zur vorherigen Seite',
         lecture: 'Lektion',
         titleLabel: 'Titel',

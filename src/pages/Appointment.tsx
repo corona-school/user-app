@@ -20,27 +20,19 @@ const APPOINTMENT = gql`
             displayName
             participants(skip: 0, take: 10) {
                 id
+                userID
                 firstname
                 lastname
-                userId
             }
             organizers(skip: 0, take: 10) {
                 id
+                userID
                 firstname
                 lastname
-                isStudent
-                userId
             }
             isOrganizer
             isParticipant
-            declinedBy(skip: 0, take: 10) {
-                id
-                firstname
-                lastname
-                isStudent
-                isPupil
-                userId
-            }
+            declinedBy
         }
     }
 `;
