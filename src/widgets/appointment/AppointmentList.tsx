@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppointmentsEmptyState from '../AppointmentsEmptyState';
 import { ScrollDirection } from '../../pages/Appointments';
+import { isAppointmentNow } from '../../helper/appointment-helper';
 
 type Props = {
     appointments: Appointment[];
@@ -19,12 +20,6 @@ type Props = {
     loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
 };
 
-const isAppointmentNow = (start: string, duration: number): boolean => {
-    const now = DateTime.now();
-    const startDate = DateTime.fromISO(start);
-    const end = startDate.plus({ minutes: duration });
-    return startDate <= now && now < end;
-};
 const getScrollToId = (appointments: Appointment[]): number => {
     const now = DateTime.now();
     const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
@@ -167,9 +162,8 @@ const AppointmentList: React.FC<Props> = ({
         if (scrollViewRef.current === null) return;
         if (isReadOnlyList) return;
         return handleScrollIntoView(scrollViewRef.current);
-    }, []);
+    }, [isReadOnlyList]);
 
-    console.log('KURSTERMINE', appointments);
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}

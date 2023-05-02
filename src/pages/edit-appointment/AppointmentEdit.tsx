@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { Button, Modal, Stack, useToast } from 'native-base';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { gql } from '../../gql';
@@ -9,6 +9,7 @@ import { AppointmentUpdateInput } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 import AppointmentEditForm from './AppointmentEditForm';
+import { convertStartDate, formatStart } from '../../helper/appointment-helper';
 
 type FormErrors = {
     title?: string;
@@ -42,24 +43,6 @@ query getAppointmentById($appointmentId: Float!) {
         description
     }
 }`);
-
-const formatStart = (start: string) => {
-    const date = DateTime.fromISO(start).toFormat('yyyy-MM-dd');
-    const time = DateTime.fromISO(start).toFormat('HH:mm:ss');
-    return { date, time };
-};
-
-const convertStartDate = (date: string, time: string) => {
-    const dt = DateTime.fromISO(date);
-    const t = DateTime.fromISO(time);
-
-    const newDate = dt.set({
-        hour: t.hour,
-        minute: t.minute,
-        second: t.second,
-    });
-    return newDate.toISO();
-};
 
 const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const { data } = useQuery(getAppointmentById, { variables: { appointmentId } });
@@ -145,7 +128,6 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 duration: updatedAppointment.duration,
             };
             updateAppointment({ variables: { appointmentToBeUpdated } });
-            console.log('Response', updateResponse?.appointmentUpdate, updateError);
             navigate('/appointments');
             toast.show({ description: t('appointment.editSuccess'), placement: 'top' });
         }

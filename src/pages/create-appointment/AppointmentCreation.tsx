@@ -7,10 +7,11 @@ import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
+import { calcNewAppointmentInOneWeek, convertStartDate } from '../../helper/appointment-helper';
 
 type FormErrors = {
     title?: string;
@@ -67,18 +68,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         }
     `)
     );
-
-    const convertStartDate = (date: string, time: string) => {
-        const dt = DateTime.fromISO(date);
-        const t = DateTime.fromISO(time);
-
-        const newDate = dt.set({
-            hour: t.hour,
-            minute: t.minute,
-            second: t.second,
-        });
-        return newDate.toISO();
-    };
     const validateInputs = () => {
         const isDateMinOneWeekLater = (date: string): boolean => {
             const startDate = DateTime.fromISO(date);
@@ -119,7 +108,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             field: 'isRecurring',
         });
     };
-
     // * create appointments for a new course
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
@@ -142,7 +130,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId!,
@@ -185,7 +173,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
@@ -205,7 +193,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             navigate('/appointments');
         }
     };
-
     // * create appointments for an existing match
     const handleCreateMatchAppointment = () => {
         if (!appointmentToCreate) return;
@@ -231,7 +218,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
@@ -251,11 +238,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             navigate('/appointments');
         }
     };
-    const calcNewAppointmentInOneWeek = useCallback(() => {
-        const startDate = DateTime.fromISO(appointmentToCreate.date);
-        const nextDate = startDate.plus({ days: 7 }).toISO();
-        return nextDate;
-    }, [appointmentToCreate.date]);
 
     return (
         <Box>
@@ -276,7 +258,9 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
+            {appointmentToCreate.isRecurring && (
+                <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
+            )}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
                     {t('appointment.create.backButton')}
