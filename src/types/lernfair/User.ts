@@ -9,7 +9,22 @@ export enum AttendanceStatus {
     ACCEPTED = 'accepted',
     DECLINED = 'declined',
 }
-export const SCREENED_HELPER_ROLES = ['INSTRUCTOR', 'TUTOR'];
+// c.f. https://github.com/corona-school/backend/blob/master/common/user/roles.ts
+// This list only includes the subset of roles that make sense to use in the frontend
+export type Role =
+    | 'USER'
+    | 'SCREENER'
+    | 'PUPIL'
+    | 'STUDENT'
+    | 'WANNABE_TUTOR'
+    | 'TUTOR'
+    | 'WANNABE_INSTRUCTOR'
+    | 'INSTRUCTOR'
+    | 'TUTEE'
+    | 'PARTICIPANT'
+    | 'SUBCOURSE_PARTICIPANT';
+
+export const SCREENED_HELPER_ROLES: Role[] = ['INSTRUCTOR', 'TUTOR'];
 
 export type LFUserType = string | 'pupil' | 'student';
 
