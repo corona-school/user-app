@@ -1,6 +1,6 @@
 import { Box, Button, Modal, Text, useTheme, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import WarningIcon from '../../assets/icons/lernfair/lf_caution.svg';
+import WarningIcon from '../assets/icons/lernfair/lf_caution.svg';
 
 type ModalProps = {
     onDelete: () => void;
@@ -9,6 +9,7 @@ type ModalProps = {
 const DeleteAppointmentModal: React.FC<ModalProps> = ({ onDelete, close }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
+
     return (
         <>
             <Modal.Content width="320" marginX="auto" background="primary.900">
@@ -18,10 +19,10 @@ const DeleteAppointmentModal: React.FC<ModalProps> = ({ onDelete, close }) => {
                         <WarningIcon />
                     </Box>
                     <VStack space="3" marginY={space['1']} alignItems="center">
-                        <Text width="280" textAlign={'center'} color="white" fontSize="sm">
+                        <Text width="280" textAlign={'center'} color="white">
                             {t('appointment.deleteModal.title')}
                         </Text>
-                        <Text width="224" textAlign={'center'} color="lightText" fontWeight="thin" fontSize="xs">
+                        <Text width="224" textAlign={'center'} color="lightText" fontWeight="light">
                             {t('appointment.deleteModal.description')}
                         </Text>
                     </VStack>

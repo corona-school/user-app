@@ -1,4 +1,4 @@
-import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack, Row } from 'native-base';
+import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack } from 'native-base';
 
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
@@ -36,7 +36,7 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
     });
 
     const schoolCapitalized = useMemo(() => {
-        if (!schooltype) return;
+        if (!schooltype || schooltype === Pupil_Schooltype_Enum.Other) return;
         return t(`lernfair.schooltypes.${schooltype}`);
     }, [schooltype, t]);
 
@@ -68,7 +68,11 @@ const LearningPartner: React.FC<LearningPartnerProps> = ({ matchId, name, subjec
                             {userType === 'pupil' ? (
                                 <Text>{t('matching.shared.tutorInstructor')}</Text>
                             ) : (
-                                <Text>{schooltype ? t('matching.shared.schoolGrade', { schooltype: schoolCapitalized, grade: grade }) : grade}</Text>
+                                <Text>
+                                    {schooltype && schoolCapitalized
+                                        ? t('matching.shared.schoolGrade', { schooltype: schoolCapitalized, grade: grade })
+                                        : grade}
+                                </Text>
                             )}
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {name}

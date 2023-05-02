@@ -1,40 +1,44 @@
-export type AppointmentType = {
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
+
+export type Appointment = {
+    __typename?: 'Lecture' | undefined;
     id: number;
     title: string;
-    organizers: {
-        firstname: string;
-        lastname: string;
-    }[];
-    startDate: string;
+    description: string;
+    start: string;
     duration: number;
+    subcourseId?: number;
+    matchId?: number | null;
+    position?: number;
+    total?: number;
+    meetingLink?: string | null;
+    organizers?: Organizer[];
+    participants?: AppointmentParticipant[];
+    isCancelled?: boolean;
+    declinedBy?: string[];
+    appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
+    isParticipant?: boolean;
+    displayName?: string;
+};
+
+export type AttendeesDeclined = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    isStudent: boolean;
+    isPupil: boolean;
+    userId: string;
+};
+
+// type of appointments to send to the BE
+export type CreateAppointmentInput = {
+    title: string;
+    description: string;
+    start: string;
+    duration: number;
+    subcourseId?: number;
+    matchId?: number;
     meetingLink: string;
-    subcourseId: number;
-    lectureId: number;
-    participants: {
-        firstname: string;
-        lastname: string;
-    }[];
-    declinedBy: { id: number }[];
-    isCancelled: boolean;
-    appointmentType: string;
-};
-
-export type CalendarDates = {
-    [year: number]: {
-        [month: number]: {
-            [week: number]: AppointmentType[];
-        };
-    };
-};
-
-export type Year = {
-    [year: number]: Month;
-};
-
-export type Month = {
-    [month: number]: Week;
-};
-
-export type Week = {
-    [week: number]: AppointmentType[];
+    appointmentType: Lecture_Appointmenttype_Enum;
 };

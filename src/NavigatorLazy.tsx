@@ -48,6 +48,9 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import CreateAppointment from './pages/CreateAppointment';
+import Appointment from './pages/Appointment';
+import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import LeftChat from './pages/chat/LeftChat';
@@ -57,6 +60,7 @@ import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import VideoChat from './pages/VideoChat';
+import Chat from './pages/Chat';
 
 export default function NavigatorLazy() {
     return (
@@ -235,6 +239,15 @@ export default function NavigatorLazy() {
                 }
             />
 
+            <Route
+                path="/create-course-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
             {/* Edit Course */}
             <Route
                 path="/edit-course"
@@ -260,6 +273,23 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Appointments />
+                    </RequireAuth>
+                }
+            ></Route>
+            <Route
+                path="/appointment/:id"
+                element={
+                    <RequireAuth>
+                        <Appointment />
+                    </RequireAuth>
+                }
+            ></Route>
+
+            <Route
+                path="/create-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateAppointment />} />
                     </RequireAuth>
                 }
             />
@@ -303,6 +333,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                    </RequireAuth>
+                }
+            />
+            {/* Chat feature */}
+            <Route
+                path="/chat"
+                element={
+                    <RequireAuth>
+                        <Chat />
                     </RequireAuth>
                 }
             />

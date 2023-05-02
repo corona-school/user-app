@@ -17,6 +17,7 @@ import notification from './notification/de';
 import appointment from './appointment/de';
 import chat from './chat/de';
 import introduction from './introduction/de';
+import navigation from './navigation/de';
 
 const de = {
     ...shared,
@@ -38,5 +39,6 @@ const de = {
     appointment,
     chat,
     introduction,
+    navigation,
 };
 export default de;

@@ -1,9 +1,15 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { DateTime } from 'luxon';
+import WithNavigation from '../components/WithNavigation';
+
+import InstructionProgress from '../widgets/InstructionProgress';
+
+import CoursePreview from './course-creation/CoursePreview';
+import CourseAppointments from './course-creation/CourseAppointments';
 import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
@@ -14,22 +20,21 @@ import { GraphQLError } from 'graphql';
 import { BACKEND_URL } from '../config';
 import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
 
-import WithNavigation from '../components/WithNavigation';
-import InstructionProgress from '../widgets/InstructionProgress';
 import CourseBlocker from './student/CourseBlocker';
 import AsNavigationItem from '../components/AsNavigationItem';
-import AddCourseInstructor from '../modals/AddCourseInstructor';
 import CourseBasics from './course-creation/CourseBasics';
 import CourseClassification from './course-creation/CourseClassification';
 import CourseAttendees from './course-creation/CourseAttendees';
 import FurtherInstructors from './course-creation/FurtherInstructors';
-import CourseAppointments from './course-creation/CourseAppointments';
-import CoursePreview from './course-creation/CoursePreview';
+
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { useCreateCourseAppointments } from '../context/AppointmentContext';
+import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+import HelpNavigation from '../components/HelpNavigation';
 
-export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
+export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
 export type Lecture = {
     id?: string | number;
@@ -76,8 +81,7 @@ const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
-    const state = location.state as { courseId?: number };
-
+    const state = location.state as { courseId?: number; currentStep?: number };
     const prefillCourseId = state?.courseId;
 
     const [courseId, setCourseId] = useState<string>('');
@@ -90,8 +94,6 @@ const CreateCourse: React.FC = () => {
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
     const [allowContact, setAllowContact] = useState<boolean>(false);
-    const [lectures, setLectures] = useState<LFLecture[]>([]);
-    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
@@ -102,11 +104,13 @@ const CreateCourse: React.FC = () => {
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
     const [imageLoading, setImageLoading] = useState<boolean>(false);
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
 
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
-    const { data: studentData, loading } = useQuery(gql`
+    const { data: studentData, loading } = useQuery(
+        gql(`
         query StudentCanCreateCourse {
             me {
                 student {
@@ -120,9 +124,11 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [courseQuery] = useLazyQuery(gql`
+    const [courseQuery] = useLazyQuery(
+        gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -151,30 +157,31 @@ const CreateCourse: React.FC = () => {
                         name
                     }
                 }
-                lectures {
-                    id
-                    start
-                    duration
-                }
             }
         }
-    `);
+    `)
+    );
 
-    const [createCourse, { reset: resetCourse }] = useMutation(gql`
+    const [createCourse, { reset: resetCourse }] = useMutation(
+        gql(`
         mutation createCourse($course: PublicCourseCreateInput!) {
             courseCreate(course: $course) {
                 id
             }
         }
-    `);
-    const [updateCourse, { reset: resetEditCourse }] = useMutation(gql`
+    `)
+    );
+    const [updateCourse, { reset: resetEditCourse }] = useMutation(
+        gql(`
         mutation updateCourse($course: PublicCourseEditInput!, $id: Float!) {
             courseEdit(course: $course, courseId: $id) {
                 id
             }
         }
-    `);
-    const [createSubcourse, { reset: resetSubcourse }] = useMutation(gql`
+    `)
+    );
+    const [createSubcourse, { reset: resetSubcourse }] = useMutation(
+        gql(`
         mutation createSubcourse($courseId: Float!, $subcourse: PublicSubcourseCreateInput!) {
             subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
                 id
@@ -184,56 +191,65 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
-    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(gql`
+    `)
+    );
+
+    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(
+        gql(`
+        mutation appointmentsCourseCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
+            appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
+        }
+    `)
+    );
+
+    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(
+        gql(`
         mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
             subcourseEdit(subcourse: $course, subcourseId: $id) {
                 id
             }
         }
-    `);
+    `)
+    );
 
-    const [setCourseImage] = useMutation(gql`
+    const [setCourseImage] = useMutation(
+        gql(`
         mutation setCourseImage($courseId: Float!, $fileId: String!) {
             courseSetImage(courseId: $courseId, fileId: $fileId)
         }
-    `);
+    `)
+    );
 
-    const [addCourseInstructor] = useMutation(gql`
+    const [addCourseInstructor] = useMutation(
+        gql(`
         mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [removeCourseInstructor] = useMutation(gql`
+    `)
+    );
+    const [removeCourseInstructor] = useMutation(
+        gql(`
         mutation removeCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseDeleteInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [addLecture] = useMutation(gql`
-        mutation addLecture($lecture: PublicLectureInput!, $courseId: Float!) {
-            lectureCreate(lecture: $lecture, subcourseId: $courseId) {
-                id
-            }
-        }
-    `);
+    `)
+    );
 
-    const [removeLecture] = useMutation(gql`
-        mutation removeLecture($lectureId: Float!) {
-            lectureDelete(lectureId: $lectureId)
-        }
-    `);
-
-    const [setCourseTags] = useMutation(gql`
+    const [setCourseTags] = useMutation(
+        gql(`
         mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
             courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
         }
-    `);
+    `)
+    );
 
-    const [submitCourse] = useMutation(gql`
+    const [submitCourse] = useMutation(
+        gql(`
         mutation SubmitCourse($courseId: Float!) {
             courseSubmit(courseId: $courseId)
         }
-    `);
+    `)
+    );
 
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -290,17 +306,6 @@ const CreateCourse: React.FC = () => {
             setTags(prefillCourse.course.tags);
         }
 
-        if (prefillCourse.lectures && Array.isArray(prefillCourse.lectures)) {
-            // typing is not that nice here
-            const editLectures: any[] = prefillCourse.lectures.map((l: LFLecture) => ({
-                ...l,
-                duration: l.duration,
-                date: DateTime.fromISO(l.start).toFormat('yyyy-MM-dd'),
-                time: DateTime.fromISO(l.start).toFormat('HH:mm'),
-            }));
-            setLectures(editLectures);
-        }
-
         setIsLoading(false);
     }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
 
@@ -312,7 +317,7 @@ const CreateCourse: React.FC = () => {
         (errors: any[]) => {
             setIsLoading(false);
 
-            if (errors.includes('course') || errors.includes('subcourse')) {
+            if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
                 navigate('/group', {
@@ -361,28 +366,15 @@ const CreateCourse: React.FC = () => {
         return subcourse;
     }, [courseClasses, joinAfterStart, maxParticipantCount]);
 
-    const _convertLecture: (lecture: Lecture) => LFLecture = useCallback((lecture) => {
-        const l: LFLecture = {
-            start: new Date().toLocaleString(),
-            duration: parseInt(lecture.duration),
-        };
-        const dt = DateTime.fromISO(lecture.date);
-        const t = DateTime.fromISO(lecture.time);
-
-        const newDate = dt.set({
-            hour: t.hour,
-            minute: t.minute,
-            second: t.second,
-        });
-        l.start = newDate.toISO();
-        return l;
-    }, []);
-
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
             setIsLoading(true);
-
             const errors: CreateCourseError[] = [];
+            if (appointmentsToBeCreated.length === 0) {
+                errors.push('appointments');
+                finishCourseCreation(errors);
+                return;
+            }
 
             /**
              * Course Creation
@@ -425,7 +417,6 @@ const CreateCourse: React.FC = () => {
              * Subcourse Creation
              */
             const subcourse = _getSubcourseData();
-
             subcourse.lectures = [];
 
             const subRes = await createSubcourse({
@@ -434,6 +425,8 @@ const CreateCourse: React.FC = () => {
                     subcourse,
                 },
             });
+
+            const subcourseId = subRes?.data?.subcourseCreate?.id;
 
             if (!subRes.data && subRes.errors) {
                 errors.push('subcourse');
@@ -445,19 +438,6 @@ const CreateCourse: React.FC = () => {
             }
 
             if (subRes.data.subcourseCreate && !subRes.errors) {
-                for await (const lecture of newLectures) {
-                    const l = _convertLecture(lecture);
-                    let res = await addLecture({
-                        variables: {
-                            courseId: subRes.data.subcourseCreate.id,
-                            lecture: l,
-                        },
-                    });
-                    if (!res.data.lectureDelete && res.errors) {
-                        errors.push('lectures');
-                    }
-                }
-
                 for await (const instructor of addedInstructors) {
                     let res = await addCourseInstructor({
                         variables: {
@@ -470,6 +450,38 @@ const CreateCourse: React.FC = () => {
                     }
                 }
             }
+
+            /**
+             * Appointment Creation
+             */
+            const addIdToAppointment = (a: AppointmentCreateGroupInput[], sId: number) => {
+                const appointments = a.map((appointment) => ({
+                    ...appointment,
+                    subcourseId,
+                }));
+                return appointments;
+            };
+
+            const appointments = addIdToAppointment(appointmentsToBeCreated, subcourseId);
+
+            if (appointments.length === 0) {
+                errors.push('appointments');
+            }
+
+            const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
+
+            // errors === undefined
+            if (appointmentsRes.errors) {
+                errors.push('appointments');
+                await resetAppointments();
+                await resetSubcourse();
+                await resetCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
+            }
+
+            if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
 
             /**
              * Image upload
@@ -526,22 +538,20 @@ const CreateCourse: React.FC = () => {
             finishCourseCreation(errors);
         },
         [
-            _convertLecture,
             _getCourseData,
             _getSubcourseData,
             addCourseInstructor,
-            addLecture,
             addedInstructors,
             createCourse,
             createSubcourse,
             finishCourseCreation,
-            newLectures,
             pickedPhoto,
             resetCourse,
             resetSubcourse,
             setCourseImage,
             setCourseTags,
             tags,
+            appointmentsToBeCreated,
         ]
     );
 
@@ -611,21 +621,6 @@ const CreateCourse: React.FC = () => {
             }
         }
 
-        if (newLectures.length > 0 && newLectures[0].date) {
-            for await (const lecture of newLectures) {
-                const l = _convertLecture(lecture);
-                let res = await addLecture({
-                    variables: {
-                        courseId: prefillCourseId,
-                        lecture: l,
-                    },
-                });
-                if (!res.data.lectureDelete && res.errors) {
-                    errors.push('lectures');
-                }
-            }
-        }
-
         /**
          * Image upload
          */
@@ -689,7 +684,6 @@ const CreateCourse: React.FC = () => {
         _getSubcourseData,
         updateSubcourse,
         prefillCourseId,
-        newLectures,
         pickedPhoto,
         setCourseImage,
         finishCourseCreation,
@@ -697,8 +691,6 @@ const CreateCourse: React.FC = () => {
         resetEditSubcourse,
         newInstructors,
         addCourseInstructor,
-        _convertLecture,
-        addLecture,
     ]);
 
     const onNext = useCallback(() => {
@@ -716,14 +708,6 @@ const CreateCourse: React.FC = () => {
     const onCancel = useCallback(() => {
         navigate(-1);
     }, [navigate]);
-
-    const pickPhoto = useCallback(
-        (photo: string) => {
-            setPickedPhoto(photo);
-            hide();
-        },
-        [hide]
-    );
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
@@ -771,34 +755,6 @@ const CreateCourse: React.FC = () => {
         [addedInstructors, newInstructors, prefillCourseId, removeCourseInstructor, toast]
     );
 
-    const deleteAppointment = useCallback(
-        async (index: number, isSubmitted: boolean) => {
-            if (!isSubmitted) {
-                const arr = [...newLectures];
-                arr.splice(index, 1);
-                setNewLectures(arr);
-            } else {
-                const lecs = [...lectures];
-                const res = await removeLecture({
-                    variables: {
-                        lectureId: lecs[index].id,
-                    },
-                });
-                if (res.data.lectureDelete && !res.errors) {
-                    lecs.splice(index, 1);
-                    setLectures(lecs);
-                    toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
-                } else {
-                    toast.show({
-                        description: 'Der Termin konnte nicht entfernt werden.',
-                        placement: 'top',
-                    });
-                }
-            }
-        },
-        [lectures, newLectures, removeLecture, toast]
-    );
-
     const goToStep = useCallback((index: number) => {
         setCurrentIndex(index);
     }, []);
@@ -809,7 +765,12 @@ const CreateCourse: React.FC = () => {
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 isLoading={loading || isLoading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 <CreateCourseContext.Provider
                     value={{
@@ -831,10 +792,6 @@ const CreateCourse: React.FC = () => {
                         setJoinAfterStart,
                         allowContact,
                         setAllowContact,
-                        lectures,
-                        setLectures,
-                        newLectures,
-                        setNewLectures,
                         pickedPhoto,
                         setPickedPhoto,
                         addedInstructors,
@@ -873,9 +830,7 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && (
-                                <CourseAppointments onlyShowFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
-                            )}
+                            {currentIndex === 3 && <CourseAppointments next={onNext} back={onBack} />}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}

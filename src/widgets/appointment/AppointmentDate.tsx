@@ -1,25 +1,22 @@
-import { VStack, Text, Box } from 'native-base';
-import { useCallback } from 'react';
-import { getCourseDay } from '../../helper/appointment-helper';
+import { DateTime } from 'luxon';
+import { Text, Box } from 'native-base';
 
 type Props = {
     current: boolean;
     date: string;
+    color?: string;
 };
-const AppointmentDate: React.FC<Props> = ({ current, date }) => {
-    const day = useCallback(() => {
-        return getCourseDay(date);
-    }, [date]);
 
+const AppointmentDate: React.FC<Props> = ({ current, date, color }) => {
     return (
-        <VStack mr={3}>
-            <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5}>
-                <Text fontSize="xs">{day().courseDay}.</Text>
-                <Text fontSize="md" bold>
-                    {day().courseDateDay}
-                </Text>
-            </Box>
-        </VStack>
+        <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
+            <Text fontSize="xs" color={color ? color : 'black'}>
+                {DateTime.fromISO(date).setLocale('de').toFormat('ccc')}.
+            </Text>
+            <Text fontSize="md" bold color={color ? color : 'black'}>
+                {DateTime.fromISO(date).setLocale('de').toFormat('dd')}
+            </Text>
+        </Box>
     );
 };
 
