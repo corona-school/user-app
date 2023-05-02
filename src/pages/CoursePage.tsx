@@ -1,48 +1,27 @@
-import { useQuery } from '@apollo/client';
-import { gql } from '../gql/gql';
 import StudentGroup from './student/StudentGroup';
 import GroupOnboarding from './student/onboarding/GroupOnboarding';
 import { SCREENED_HELPER_ROLES } from '../types/lernfair/User';
+import useApollo from '../hooks/useApollo';
 
 const CoursePage = () => {
-    const { data, loading, refetch } = useQuery(
-        gql(`
-            query StudentCourseRoles {
-                myRoles
-                me {
-                    student {
-                        canCreateCourse {
-                            allowed
-                            reason
-                        }
-                        
-                    }
-                }
+    const { refreshUser, roles } = useApollo();
 
-                
-            }
-        `)
-    );
-
-    // student is already an instructor
-    const alreadyInstructor = data?.myRoles && data?.myRoles.includes('INSTRUCTOR');
-    // student was screened and has role STUDENT
-    const alreadyHasOtherRoles = data?.myRoles.some((role: string) => SCREENED_HELPER_ROLES.includes(role));
-
-    // student has requested to become an instructor
-    const requestedRole = data?.myRoles && data?.me?.student?.canCreateCourse.reason === 'not-screened';
+    const alreadyInstructor = roles.includes('INSTRUCTOR');
+    const alreadyHasOtherRoles = roles.some((role) => SCREENED_HELPER_ROLES.includes(role));
+    const requestedRole = roles.includes('WANNABE_INSTRUCTOR');
 
     // student is already instructor and can see course page
     if (alreadyInstructor) return <StudentGroup />;
 
-    // student can't request, because was not screened and has no roles. Button does not appear.
-    if (!alreadyHasOtherRoles) return <GroupOnboarding canRequest={false} loading={loading} />;
+    // The support will pick the appropriate roles for the student during the screening interview,
+    //  thus we want to inform the student about our group offerings but do not want them to request the role
+    if (!alreadyHasOtherRoles) return <GroupOnboarding canRequest={false} loading={false} />;
 
-    // student has requested to become an instructor and waits for become the role, so a banner to inform student about the request appears
-    if (requestedRole) return <GroupOnboarding waitForSupport loading={loading} />; //show banner
+    // student has requested to become an instructor and waits for the role, so a banner to inform student about the request appears
+    if (requestedRole) return <GroupOnboarding waitForSupport loading={false} />; //show banner
 
     // student was screened and can request to become an instructor
-    return <GroupOnboarding canRequest refetch={() => refetch()} loading={loading} />;
+    return <GroupOnboarding canRequest refetch={refreshUser} loading={false} />;
 };
 
 export default CoursePage;
