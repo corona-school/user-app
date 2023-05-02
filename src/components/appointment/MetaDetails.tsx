@@ -44,7 +44,6 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
-    console.log(declinedBy);
 
     return (
         <>

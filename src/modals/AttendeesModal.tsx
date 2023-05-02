@@ -19,7 +19,6 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
     const sortedParticipants =
         participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.userID ?? '') - declinedBy.indexOf(b.userID ?? ''));
 
-    console.log(sortedOrganizers);
     return (
         <>
             <Modal.Content width="350" background="primary.900">

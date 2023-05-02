@@ -7,9 +7,10 @@ type AvatarsProps = {
     onPress: () => void;
     onEditPress: () => void;
     canceled: boolean;
+    declined: boolean;
     canEdit: boolean;
 };
-const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, canEdit }) => {
+const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, declined, canEdit }) => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const { user } = useApollo();
@@ -33,7 +34,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, canEd
                     </>
                 )}
                 {user?.pupil && (
-                    <Button _text={{ color: 'white' }} bgColor="danger.100" width={buttonWidth} onPress={onPress} isDisabled={canceled}>
+                    <Button _text={{ color: 'white' }} bgColor="danger.100" width={buttonWidth} onPress={onPress} isDisabled={canceled || declined}>
                         {t('appointment.detail.cancelButton')}
                     </Button>
                 )}
