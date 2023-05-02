@@ -29,7 +29,7 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
     };
 
     const width = useBreakpointValue({
-        base: isLast ? '70%' : '90%',
+        base: isLast ? '70%' : '85%',
         lg: isLast ? '40%' : '46%',
     });
 
