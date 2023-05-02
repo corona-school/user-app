@@ -1,5 +1,4 @@
-import { useQuery } from '@apollo/client';
-import { Box, Button, Divider, Modal, Stack, useBreakpointValue } from 'native-base';
+import { Box, Button, Divider, Modal, useBreakpointValue } from 'native-base';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
@@ -9,7 +8,6 @@ import AppointmentList from '../../widgets/appointment/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 import ButtonRow from './ButtonRow';
-import { gql } from '../../gql/gql';
 import { DateTime } from 'luxon';
 import { CreateCourseContext } from '../CreateCourse';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
@@ -18,11 +16,10 @@ type Props = {
     next: () => void;
     back: () => void;
     isEditing?: boolean;
-    courseId?: number;
     appointments: Appointment[];
 };
 
-const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId, appointments }) => {
+const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointments }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -73,7 +70,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId, 
                 const _b = DateTime.fromISO(b.start).toMillis();
                 return _a - _b;
             });
-            console.log('TERMINE:', sortedAppointments);
             let sortedWithPosition: Appointment[] = [];
             sortedAppointments.forEach((appointment, index) => {
                 sortedWithPosition.push({ ...appointment, position: index + 1 });
@@ -101,7 +97,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, courseId, 
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={closeModal}>
-                {showModal && <CreateCourseAppointmentModal closeModal={closeModal} total={appointmentsToBeCreated.length} />}
+                {showModal && <CreateCourseAppointmentModal closeModal={closeModal} total={allAppointmentsToShow.length} />}
             </Modal>
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">

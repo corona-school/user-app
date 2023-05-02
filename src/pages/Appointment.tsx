@@ -30,8 +30,6 @@ const APPOINTMENT = gql`
                 firstname
                 lastname
             }
-            isOrganizer
-            isParticipant
             declinedBy
         }
     }

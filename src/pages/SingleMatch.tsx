@@ -17,6 +17,7 @@ import AlertMessage from '../widgets/AlertMessage';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import MatchAppointments from './MatchAppointments';
 import HelpNavigation from '../components/HelpNavigation';
+import { Appointment } from '../types/lernfair/Appointment';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -49,6 +50,29 @@ query SingleMatch($matchId: Int! ) {
       aboutMe
     }
     studentEmail
+    appointments {
+        id
+            title
+            description
+            start
+            duration
+            appointmentType
+            total
+            position
+            displayName
+            isOrganizer
+            isParticipant
+            organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+            }
+            participants(skip: 0, take: 10) {
+                id
+                firstname
+                lastname
+            }
+        }
   }
 }`);
 
@@ -98,6 +122,7 @@ const SingleMatch = () => {
         },
         [dissolveMatch, matchId, refetch, trackEvent]
     );
+    const appointments = data?.match?.appointments ?? [];
 
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
@@ -123,7 +148,12 @@ const SingleMatch = () => {
                 !error && (
                     <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
                         {createAppointment ? (
-                            <AppointmentCreation back={() => setCreateAppointment(false)} courseOrMatchId={matchId} isCourse={false} appointmentsTotal={0} />
+                            <AppointmentCreation
+                                back={() => setCreateAppointment(false)}
+                                courseOrMatchId={matchId}
+                                isCourse={false}
+                                appointmentsTotal={appointments.length}
+                            />
                         ) : (
                             <>
                                 {userType === 'student' ? (
@@ -181,7 +211,7 @@ const SingleMatch = () => {
                                 <Stack space={space['1']}>
                                     <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
                                 </Stack>
-                                <MatchAppointments matchId={matchId} minimumHeight={'30vh'} />
+                                <MatchAppointments appointments={appointments as Appointment[]} minimumHeight={'30vh'} loading={loading} error={error} />
                                 {userType === 'student' && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />

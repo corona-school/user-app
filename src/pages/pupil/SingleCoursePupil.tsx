@@ -101,18 +101,6 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
               displayName
               position
               total
-              organizers(skip: 0, take: 5) {
-                id
-                firstname
-                lastname
-              }
-              participants(skip: 0, take: 50) {
-                id
-                firstname
-                lastname
-                isPupil
-                isStudent
-              }
             }
     }
 }

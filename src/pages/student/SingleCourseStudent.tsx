@@ -224,7 +224,6 @@ const SingleCourseStudent = () => {
         setShowCancelModal(false);
     }, [canceldData]);
 
-    console.log('SINGLE KURSTERMINE', data?.subcourse?.appointments);
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),

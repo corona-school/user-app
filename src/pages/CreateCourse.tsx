@@ -890,13 +890,7 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && (
-                                <CourseAppointments
-                                    next={onNext}
-                                    back={onBack}
-                                    isEditing={isEditing}
-                                    courseId={prefillCourseId}
-                                    appointments={courseAppointments ?? []}
-                                />
+                                <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} appointments={courseAppointments ?? []} />
                             )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
