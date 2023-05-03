@@ -1,38 +1,36 @@
 import { useQuery } from '@apollo/client';
-import { ZoomMtg } from '@zoomus/websdk';
 import { Button } from 'native-base';
 import { gql } from '../gql';
+import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
 
 type MeetingParams = {};
 
-// const zoomCredentials = gql(`query zoom {
-//   zoomSDKJWT
-//   zoomZAK
-// }`);
+const zoomCredentials = gql(`
+query zoom {
+    zoomSDKJWT (role: 1)
+    zoomZAK
+}`);
 
 const ZoomMeeting: React.FC<MeetingParams> = () => {
-    // const { data } = useQuery(zoomCredentials);
+    const { data } = useQuery(zoomCredentials);
+    const client = ZoomMtgEmbedded.createClient();
 
     async function startMeeting() {
         let meetingSDKElement = document.getElementById('meetingSDKElement');
 
-        ZoomMtg.init({
-            leaveUrl: '',
-            success: (s: any) => {
-                ZoomMtg.join({
-                    sdkKey: '', // FROM BE
-                    signature: '', // FROM BE
-                    meetingNumber: '87975266869',
-                    passWord: '',
-                    userName: 'Tom',
-                    success: (sc: any) => {
-                        console.log(sc);
-                    },
-                    error: (error: any) => {
-                        console.log(error);
-                    },
-                });
-            },
+        client.init({
+            debug: true,
+            zoomAppRoot: meetingSDKElement || undefined,
+            language: 'de-DE',
+        });
+        client.join({
+            signature: data?.zoomSDKJWT || '',
+            sdkKey: 'jSQWqYJdRb-Q1eA7OtUoTg',
+            meetingNumber: '87975266869',
+            password: '',
+            userName: 'Lomy',
+            userEmail: 'salome.wick@typedigital.de',
+            zak: data?.zoomZAK,
         });
     }
 
