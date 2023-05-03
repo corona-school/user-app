@@ -29,7 +29,7 @@ const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, u
                     <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
                         <InputSuffix
-                            appointmentsCount={appointmentsCount + 1}
+                            appointmentsCount={appointmentsCount}
                             inputValue={updatedAppointment.title}
                             handleInput={(e) => {
                                 setUpdatedAppointment({ ...updatedAppointment, title: e.target.value });

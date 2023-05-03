@@ -116,6 +116,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 appointmentType={appointmentType}
                                 position={position}
                                 total={total}
+                                onPress={onPress}
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                             />

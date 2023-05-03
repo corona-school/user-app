@@ -40,8 +40,6 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
         return false;
     }, [data, userType]);
 
-    console.log(navItems);
-
     if (loading) return <></>;
 
     return (

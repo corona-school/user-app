@@ -41,6 +41,7 @@ query getAppointmentById($appointmentId: Float!) {
         duration
         title
         description
+        position
     }
 }`);
 
@@ -150,7 +151,12 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <DeleteAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} />
             </Modal>
-            <AppointmentEditForm errors={errors} appointmentsCount={0} updatedAppointment={updatedAppointment} setUpdatedAppointment={setUpdatedAppointment} />
+            <AppointmentEditForm
+                errors={errors}
+                appointmentsCount={data?.appointment.position ?? 0}
+                updatedAppointment={updatedAppointment}
+                setUpdatedAppointment={setUpdatedAppointment}
+            />
             <Stack space={3} mt={5} direction={isMobile ? 'column' : 'row'}>
                 <Button onPress={() => handleUpdateClick()}>{t('appointment.saveChanges')}</Button>
                 <Button onPress={() => setShowDeleteModal(true)} bgColor="danger.100" _text={{ color: 'white' }}>

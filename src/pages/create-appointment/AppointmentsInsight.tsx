@@ -101,7 +101,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     });
 
     useEffect(() => {
-        setAppointmentsTotal(appointments.total);
+        setAppointmentsTotal(appointments.length);
     });
 
     return (
