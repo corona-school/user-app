@@ -11,15 +11,16 @@ import { useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
-import { calcNewAppointmentInOneWeek, convertStartDate } from '../../helper/appointment-helper';
+import { calcNewAppointmentInOneWeek, convertStartDate, isDateMinOneWeekLater, isTimeMinFiveMinutesLater } from '../../helper/appointment-helper';
 
-type FormErrors = {
+export type FormErrors = {
     title?: string;
     date?: string;
     time?: string;
     duration?: string;
     description?: string;
     dateNotInOneWeek?: string;
+    timeNotInFiveMin?: string;
 };
 
 export type StartDate = {
@@ -68,25 +69,25 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         }
     `)
     );
-    const validateInputs = () => {
-        const isDateMinOneWeekLater = (date: string): boolean => {
-            const startDate = DateTime.fromISO(date);
-            const diff = startDate.diffNow('days').days;
-            if (diff >= 6) return true;
-            return false;
-        };
 
+    const validateInputs = () => {
         if (!appointmentToCreate.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
         } else {
             delete errors.date;
         }
-        if (isDateMinOneWeekLater(appointmentToCreate.date) === false) {
+        if (isCourse && isDateMinOneWeekLater(appointmentToCreate.date) === false) {
             setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
             return false;
         } else {
             delete errors.date;
+        }
+        if (!isCourse && isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time) === false) {
+            setErrors({ ...errors, timeNotInFiveMin: t('appointment.errors.timeNotInFiveMin') });
+            return false;
+        } else {
+            delete errors.timeNotInFiveMin;
         }
         if (!appointmentToCreate.time.length) {
             setErrors({ ...errors, time: t('appointment.errors.time') });
@@ -247,6 +248,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 onSetDate={() => {
                     setDateSelected(true);
                 }}
+                isCourse={isCourse ? isCourse : false}
             />
             <Box py="8">
                 <Checkbox
