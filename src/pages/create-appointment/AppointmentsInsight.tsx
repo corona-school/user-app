@@ -119,7 +119,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
                 </Stack>
             )}
             {!error && (
-                <Box minH={isMobile ? 400 : 200} maxH={maxHeight} flex="1" mb="10">
+                <Box minH={isMobile ? 400 : 600} maxH={maxHeight} flex="1" mb="10">
                     <AppointmentList isReadOnlyList={true} appointments={appointments as Appointment[]} />
                 </Box>
             )}
