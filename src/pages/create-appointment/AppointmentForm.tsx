@@ -6,13 +6,16 @@ import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 import { useState } from 'react';
+import { FormErrors } from './AppointmentCreation';
+import { isDateToday } from '../../helper/appointment-helper';
 
 type FormProps = {
-    errors: {};
+    errors: FormErrors;
     appointmentsCount: number;
     onSetDate: () => void;
+    isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate }) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, isCourse }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -25,6 +28,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
+    const [isToday, setIsToday] = useState<boolean>(false);
 
     const handleTitleInput = (e: any) => {
         setTitle(e.target.value);
@@ -41,6 +45,13 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     const handleDateInput = (e: any) => {
         setDate(e.target.value);
         onSetDate();
+    };
+
+    const handleDateBlur = () => {
+        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
+        if (isDateToday(date)) {
+            setIsToday(true);
+        }
     };
 
     const handleTimeInput = (e: any) => {
@@ -65,13 +76,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                     {/* DATE */}
                     <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker
-                            onChange={(e) => handleDateInput(e)}
-                            value={date}
-                            onBlur={() => {
-                                dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
-                            }}
-                        />
+                        <DatePicker onChange={(e) => handleDateInput(e)} value={date} onBlur={handleDateBlur} isCourse={isCourse} />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyDateError')}
@@ -87,20 +92,26 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
 
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TIME */}
-                    <FormControl isInvalid={'time' in errors} width={inputWidth}>
+                    <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
                             <DatePicker
                                 type="time"
                                 onChange={(e) => handleTimeInput(e)}
                                 value={time}
-                                min={'08:00'}
+                                isCourse={isCourse}
                                 onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
+                                isToday={isToday}
                             />
                         </Box>
                         {'time' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyTimeError')}
+                            </FormControl.ErrorMessage>
+                        )}
+                        {'timeNotInFiveMin' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.errors.timeNotInFiveMin')}
                             </FormControl.ErrorMessage>
                         )}
                     </FormControl>
