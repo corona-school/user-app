@@ -19,6 +19,7 @@ import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
+import HelpNavigation from '../../components/HelpNavigation';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -290,9 +291,7 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
-            ),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -323,7 +322,18 @@ const SingleCourseStudent = () => {
     }, [course?.courseState, doPublish, submitCourse]);
 
     return (
-        <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={course?.name.substring(0, 20)}
+            showBack
+            isLoading={loading}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
+            {' '}
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
@@ -334,7 +344,7 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {(isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading) && (
+                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
                         <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Text, VStack, useTheme, Heading, Button } from 'native-base';
+import { Text, VStack, useTheme, Heading, Button, Stack } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BackButton from '../../components/BackButton';
@@ -9,6 +9,7 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import WithNavigation from '../../components/WithNavigation';
 import { LFCertificate } from '../../types/lernfair/Certificate';
 import AppointmentCard from '../../widgets/AppointmentCard';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type CertificatePupil = {
     name: string;
@@ -103,9 +104,17 @@ const CertificateList: React.FC = () => {
     }, [certificateType, navigate]);
 
     return (
-        <WithNavigation showBack headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            showBack
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
+            {' '}
             {/* {!certificate.uuid && <Text>Fehler beim Laden des Zertifikates</Text>} */}
-
             {(certificate.uuid || true) && (
                 <VStack space={space['1']} paddingX={space['1']}>
                     <Heading>{certificateType === 'group' ? 'Gruppen-Kurse' : 'Lernunterstützung'}</Heading>

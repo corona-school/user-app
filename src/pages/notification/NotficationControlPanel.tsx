@@ -1,4 +1,4 @@
-import { Column, Heading, Row, Text, useBreakpointValue, useTheme, View, VStack } from 'native-base';
+import { Column, Heading, Row, Stack, Text, useBreakpointValue, useTheme, View, VStack } from 'native-base';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { createContext } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql/gql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 const channels = ['email'];
 
@@ -43,7 +44,17 @@ const NotficationControlPanel = () => {
 
     return (
         <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
-            <WithNavigation showBack headerTitle={t('notification.controlPanel.title')} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                showBack
+                headerTitle={t('notification.controlPanel.title')}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
+                {' '}
                 <View py={5} width={width}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>

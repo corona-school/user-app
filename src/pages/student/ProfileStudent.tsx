@@ -8,6 +8,7 @@ import {
     Heading,
     Modal,
     Row,
+    Stack,
     Text,
     TextArea,
     useBreakpointValue,
@@ -31,6 +32,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -195,7 +197,12 @@ const ProfileStudent: React.FC<Props> = () => {
                         </Heading>
                     </Flex>
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {(showSuccessfulChangeAlert || userSettingChanged) && (
                     <Container maxWidth={ContainerWidth} paddingX={space['1']}>

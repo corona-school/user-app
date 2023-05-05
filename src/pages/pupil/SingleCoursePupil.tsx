@@ -15,6 +15,7 @@ import { useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
+import HelpNavigation from '../../components/HelpNavigation';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -181,9 +182,7 @@ const SingleCoursePupil = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
-            ),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -235,7 +234,17 @@ const SingleCoursePupil = () => {
     }
 
     return (
-        <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={course?.name.substring(0, 20)}
+            showBack
+            isLoading={loading}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             <Stack space={space['2']} paddingX={space['1.5']}>
                 {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
                 {subcourse?.isParticipant && !isInPast && (

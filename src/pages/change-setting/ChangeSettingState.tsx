@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, useTheme, VStack, Row, Column, useBreakpointValue, Heading } from 'native-base';
+import { Button, useTheme, VStack, Row, Column, useBreakpointValue, Heading, Stack } from 'native-base';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,9 @@ import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
+import HelpNavigation from '../../components/HelpNavigation';
 
-const queryPupil = gql`
+const queryPupil = gql(`
     query GetPupilState {
         me {
             pupil {
@@ -22,8 +23,8 @@ const queryPupil = gql`
             }
         }
     }
-`;
-const queryStudent = gql`
+`);
+const queryStudent = gql(`
     query GetStudentState {
         me {
             student {
@@ -31,18 +32,18 @@ const queryStudent = gql`
             }
         }
     }
-`;
+`);
 
-const mutStudent = gql`
+const mutStudent = gql(`
     mutation updateStateStudent($state: StudentState!) {
         meUpdate(update: { student: { state: $state } })
     }
-`;
-const mutPupil = gql`
+`);
+const mutPupil = gql(`
     mutation updateStatePupil($state: State!) {
         meUpdate(update: { pupil: { state: $state } })
     }
-`;
+`);
 
 type Props = {};
 
@@ -113,7 +114,17 @@ const ChangeSettingState: React.FC<Props> = () => {
     if (loading) <CenterLoadingSpinner />;
 
     return (
-        <WithNavigation headerTitle={t('profile.State.single.header')} showBack headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={t('profile.State.single.header')}
+            showBack
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
+            {' '}
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.State.single.selectedStates')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

@@ -1,5 +1,5 @@
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -28,6 +28,7 @@ import CoursePreview from './course-creation/CoursePreview';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
@@ -809,7 +810,12 @@ const CreateCourse: React.FC = () => {
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 isLoading={loading || isLoading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 <CreateCourseContext.Provider
                     value={{
@@ -874,7 +880,12 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && (
-                                <CourseAppointments onlyShowFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
+                                <CourseAppointments
+                                    onlyShowFutureLectures={isPublished}
+                                    onNext={onNext}
+                                    onBack={onBack}
+                                    onDeleteAppointment={deleteAppointment}
+                                />
                             )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />

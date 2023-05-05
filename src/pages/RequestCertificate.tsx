@@ -1,6 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, useTheme, VStack } from 'native-base';
+import { Stack, Text, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -13,6 +13,7 @@ import { LFSubCourse } from '../types/lernfair/Course';
 import InstructionProgress from '../widgets/InstructionProgress';
 import RequestCertificateMatchingWizard from './certificates/RequestCertificateMatchingWizard';
 import RequestCertificateOverview from './certificates/RequestCertificateOverview';
+import HelpNavigation from '../components/HelpNavigation';
 
 type Props = {};
 
@@ -136,7 +137,15 @@ const RequestCertificate: React.FC<Props> = () => {
                 setWizardIndex,
             }}
         >
-            <WithNavigation showBack headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                showBack
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 <VStack paddingX={space['1']} space={space['1']}>
                     <InstructionProgress
                         currentIndex={currentIndex}

@@ -1,7 +1,7 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Modal, Button } from 'native-base';
+import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Modal, Button, Stack } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import EditDataRow from '../widgets/EditDataRow';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import HelpNavigation from '../components/HelpNavigation';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -55,7 +56,12 @@ const Settings: React.FC = () => {
                     </Button>
                 }
                 isLoading={loading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <HStack space={space['1']} alignItems="center">

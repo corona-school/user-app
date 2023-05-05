@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Flex, Modal, Row, Text, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -8,12 +8,13 @@ import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { gql } from '../../gql/gql';
 import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
+import { gql } from '../../gql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -114,7 +115,15 @@ const Matching: React.FC<Props> = () => {
     return (
         <>
             <AsNavigationItem path="matching">
-                <WithNavigation headerTitle={t('matching.request.check.header')} headerLeft={<NotificationAlert />}>
+                <WithNavigation
+                    headerTitle={t('matching.request.check.header')}
+                    headerLeft={
+                        <Stack alignItems="center" direction="row">
+                            <HelpNavigation />
+                            <NotificationAlert />
+                        </Stack>
+                    }
+                >
                     <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                     <Box paddingX={space['1']}>
                         <Tabs

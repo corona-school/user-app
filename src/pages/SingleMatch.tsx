@@ -15,6 +15,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
+import HelpNavigation from '../components/HelpNavigation';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -110,7 +111,16 @@ const SingleMatch = () => {
     // ];
 
     return (
-        <WithNavigation headerTitle={''} showBack headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={''}
+            showBack
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
