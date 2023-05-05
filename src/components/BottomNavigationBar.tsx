@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -84,9 +84,13 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                         <Box>
                                             <CircleIcon size="35px" color={disabled ? 'transparent' : key === rootPath ? 'primary.900' : 'transparent'} />
                                             <CSSWrapper className={`navigation__item__icon ${!disabled && key === rootPath ? 'active' : ''}`}>
-                                                <Icon
-                                                    fill={disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']}
-                                                />
+                                                <Flex>
+                                                    <Icon
+                                                        fill={
+                                                            disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']
+                                                        }
+                                                    />
+                                                </Flex>
                                             </CSSWrapper>
                                         </Box>
                                         <Text fontSize="xs" color={disabled ? colors['gray']['300'] : colors['primary']['900']}>
