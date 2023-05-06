@@ -1,7 +1,7 @@
-import { LFLecture, LFSubCourse, TrafficStatus } from './types/lernfair/Course';
+import { TrafficStatus } from './types/lernfair/Course';
 import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
-import { Course_Coursestate_Enum } from './gql/graphql';
+import { Course_Coursestate_Enum, Lecture } from './gql/graphql';
 import i18next from 'i18next';
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
@@ -99,9 +99,12 @@ export const handleDateString: (datetime: string, format: string, locale?: strin
     });
 };
 
-export const getFirstLectureFromSubcourse: (lectures: LFLecture[], pastLectures?: boolean) => LFLecture = (lectures, pastLectures) => {
+export const getFirstLectureFromSubcourse: (lectures: Pick<Lecture, 'start' | 'duration'>[], pastLectures?: boolean) => Pick<Lecture, 'start' | 'duration'> = (
+    lectures,
+    pastLectures
+) => {
     let firstDate: DateTime = null!;
-    let firstLecture: LFLecture = null!;
+    let firstLecture: Pick<Lecture, 'start' | 'duration'> = null!;
 
     const now = DateTime.now().toMillis();
 

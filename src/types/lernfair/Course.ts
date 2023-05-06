@@ -36,7 +36,7 @@ export interface LFSubCourse {
 }
 
 export type LFLecture = {
-    id?: number;
+    id: number;
     start: string;
     duration: number;
 };

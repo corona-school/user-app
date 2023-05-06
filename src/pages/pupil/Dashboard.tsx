@@ -24,7 +24,7 @@ import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import { PupilDashboardQuery } from '../../gql/graphql';
+import { Lecture, PupilDashboardQuery } from '../../gql/graphql';
 
 type Props = {};
 
@@ -156,7 +156,7 @@ const Dashboard: React.FC<Props> = () => {
     });
 
     const sortedAppointments = useMemo(() => {
-        const lectures: { subcourse: JoinedSubcourse; lecture: LFLecture }[] = [];
+        const lectures: { subcourse: JoinedSubcourse; lecture: Pick<Lecture, 'start' | 'duration'> }[] = [];
 
         if (!data?.me?.pupil?.subcoursesJoined) return [];
 
@@ -178,7 +178,10 @@ const Dashboard: React.FC<Props> = () => {
         });
     }, [data?.me?.pupil?.subcoursesJoined]);
 
-    const highlightedAppointment: { subcourse: JoinedSubcourse; lecture: LFLecture } | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments]);
+    const highlightedAppointment: { subcourse: JoinedSubcourse; lecture: Pick<Lecture, 'start' | 'duration'> } | undefined = useMemo(
+        () => sortedAppointments[0],
+        [sortedAppointments]
+    );
 
     const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
         gql(`

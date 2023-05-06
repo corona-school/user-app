@@ -361,8 +361,8 @@ const CreateCourse: React.FC = () => {
         return subcourse;
     }, [courseClasses, joinAfterStart, maxParticipantCount]);
 
-    const _convertLecture: (lecture: Lecture) => LFLecture = useCallback((lecture) => {
-        const l: LFLecture = {
+    const _convertLecture = useCallback((lecture: Lecture) => {
+        const l: Omit<LFLecture, 'id'> = {
             start: new Date().toLocaleString(),
             duration: parseInt(lecture.duration),
         };

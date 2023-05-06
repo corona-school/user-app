@@ -13,7 +13,7 @@ import CourseDateWizard from './CourseDateWizard';
 type Props = {
     onNext: () => void;
     onBack: () => void;
-    onDeleteAppointment?: (index: number, isSubmitted: boolean) => Promise<void>;
+    onDeleteAppointment?: (id: number, isSubmitted: boolean) => Promise<void>;
     onlyShowFutureLectures: boolean;
 };
 
@@ -97,7 +97,7 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
                 <Heading fontSize="lg"> {t('course.appointments.existingAppointments')}</Heading>
             )}
             {(onlyShowFutureLectures ? futureLectures : lectures)?.map((lec, index) => (
-                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
+                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment?.(lec.id, true)} />
             ))}
 
             <Text fontSize="md" bold>
