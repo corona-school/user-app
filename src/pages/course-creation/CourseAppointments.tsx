@@ -62,7 +62,7 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
 
     useEffect(() => {
         if (newLectures?.length === 0) {
-            setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', duration: '', date: '' }]);
+            setNewLectures && setNewLectures((prev) => [...prev, { id: prev.length, time: '08:00', duration: '', date: '' }]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -93,7 +93,9 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
     return (
         <VStack space={space['1']}>
             <Heading marginBottom={space['1.5']}>{t('course.appointments.headline')}</Heading>
-            {(onlyShowFutureLectures ? futureLectures : lectures)?.length > 0 && <Heading fontSize="lg"> {t('course.appointments.existingAppointments')}</Heading>}
+            {(onlyShowFutureLectures ? futureLectures : lectures)?.length > 0 && (
+                <Heading fontSize="lg"> {t('course.appointments.existingAppointments')}</Heading>
+            )}
             {(onlyShowFutureLectures ? futureLectures : lectures)?.map((lec, index) => (
                 <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment && onDeleteAppointment(index, true)} />
             ))}
@@ -121,7 +123,7 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
                     marginBottom={space['2']}
                     isDisabled={!isValidInput}
                     onPress={() => {
-                        setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', date: '', duration: '' }]);
+                        setNewLectures && setNewLectures((prev) => [...prev, { id: prev.length, time: '08:00', date: '', duration: '' }]);
                     }}
                     alignItems="center"
                     flexDirection="row"

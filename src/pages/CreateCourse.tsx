@@ -32,7 +32,7 @@ import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
 
 export type Lecture = {
-    id?: string | number;
+    id: number;
     date: string;
     time: string;
     duration: string;
@@ -772,23 +772,26 @@ const CreateCourse: React.FC = () => {
     );
 
     const deleteAppointment = useCallback(
-        async (index: number, isSubmitted: boolean) => {
+        async (id: number, isSubmitted: boolean) => {
             if (!isSubmitted) {
-                const arr = [...newLectures];
-                arr.splice(index, 1);
-                setNewLectures(arr);
+                setNewLectures(newLectures.filter((it) => it.id !== id));
             } else {
-                const lecs = [...lectures];
-                const res = await removeLecture({
-                    variables: {
-                        lectureId: lecs[index].id,
-                    },
-                });
-                if (res.data.lectureDelete && !res.errors) {
-                    lecs.splice(index, 1);
-                    setLectures(lecs);
-                    toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
-                } else {
+                try {
+                    const res = await removeLecture({
+                        variables: {
+                            lectureId: id,
+                        },
+                    });
+                    if (res.data.lectureDelete && !res.errors) {
+                        setLectures(lectures.filter((it) => it.id !== id));
+                        toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
+                    } else {
+                        toast.show({
+                            description: 'Der Termin konnte nicht entfernt werden.',
+                            placement: 'top',
+                        });
+                    }
+                } catch (error) {
                     toast.show({
                         description: 'Der Termin konnte nicht entfernt werden.',
                         placement: 'top',
@@ -874,7 +877,12 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
                             {currentIndex === 3 && (
-                                <CourseAppointments onlyShowFutureLectures={isPublished} onNext={onNext} onBack={onBack} onDeleteAppointment={deleteAppointment} />
+                                <CourseAppointments
+                                    onlyShowFutureLectures={isPublished}
+                                    onNext={onNext}
+                                    onBack={onBack}
+                                    onDeleteAppointment={deleteAppointment}
+                                />
                             )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
