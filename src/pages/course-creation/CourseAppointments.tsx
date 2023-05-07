@@ -13,7 +13,7 @@ import CourseDateWizard from './CourseDateWizard';
 type Props = {
     onNext: () => void;
     onBack: () => void;
-    onDeleteAppointment?: (id: number, isSubmitted: boolean) => Promise<void>;
+    onDeleteAppointment?: (start: string, isSubmitted: boolean) => Promise<void>;
     onlyShowFutureLectures: boolean;
 };
 
@@ -62,7 +62,7 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
 
     useEffect(() => {
         if (newLectures?.length === 0) {
-            setNewLectures && setNewLectures((prev) => [...prev, { id: prev.length, time: '08:00', duration: '', date: '' }]);
+            setNewLectures && setNewLectures((prev) => [...prev, { time: '08:00', duration: '', date: '' }]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -97,7 +97,7 @@ const CourseAppointments: React.FC<Props> = ({ onlyShowFutureLectures, onNext, o
                 <Heading fontSize="lg"> {t('course.appointments.existingAppointments')}</Heading>
             )}
             {(onlyShowFutureLectures ? futureLectures : lectures)?.map((lec, index) => (
-                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment?.(lec.id, true)} />
+                <AppointmentInfoRow lecture={lec} index={index} key={index} onPressDelete={() => onDeleteAppointment?.(lec.start, true)} />
             ))}
 
             <Text fontSize="md" bold>

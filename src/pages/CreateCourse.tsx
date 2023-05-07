@@ -59,8 +59,8 @@ type ICreateCourseContext = {
     setAllowContact?: Dispatch<SetStateAction<boolean>>;
     lectures?: LFLecture[];
     setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
-    newLectures?: Lecture[];
-    setNewLectures?: Dispatch<SetStateAction<Lecture[]>>;
+    newLectures?: Omit<Lecture, 'id'>[];
+    setNewLectures?: Dispatch<SetStateAction<Omit<Lecture, 'id'>[]>>;
     pickedPhoto?: string;
     setPickedPhoto?: Dispatch<SetStateAction<string>>;
     addedInstructors?: LFInstructor[];
@@ -91,7 +91,7 @@ const CreateCourse: React.FC = () => {
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
     const [allowContact, setAllowContact] = useState<boolean>(false);
     const [lectures, setLectures] = useState<LFLecture[]>([]);
-    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
+    const [newLectures, setNewLectures] = useState<Omit<Lecture, 'id'>[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
@@ -361,7 +361,7 @@ const CreateCourse: React.FC = () => {
         return subcourse;
     }, [courseClasses, joinAfterStart, maxParticipantCount]);
 
-    const _convertLecture = useCallback((lecture: Lecture) => {
+    const _convertLecture = useCallback((lecture: Omit<Lecture, 'id'>) => {
         const l: Omit<LFLecture, 'id'> = {
             start: new Date().toLocaleString(),
             duration: parseInt(lecture.duration),
@@ -772,18 +772,21 @@ const CreateCourse: React.FC = () => {
     );
 
     const deleteAppointment = useCallback(
-        async (id: number, isSubmitted: boolean) => {
+        async (start: string, isSubmitted: boolean) => {
             if (!isSubmitted) {
-                setNewLectures(newLectures.filter((it) => it.id !== id));
+                setNewLectures(newLectures.filter((it) => _convertLecture(it).start !== start));
             } else {
                 try {
+                    const toDelete = lectures.find((it) => it.start === start);
+                    if (!toDelete) throw new Error(`Already deleted`);
+
                     const res = await removeLecture({
                         variables: {
-                            lectureId: id,
+                            lectureId: toDelete.id,
                         },
                     });
                     if (res.data.lectureDelete && !res.errors) {
-                        setLectures(lectures.filter((it) => it.id !== id));
+                        setLectures(lectures.filter((it) => it.id !== toDelete.id));
                         toast.show({ description: 'Der Termin wurde entfernt.', placement: 'top' });
                     } else {
                         toast.show({
