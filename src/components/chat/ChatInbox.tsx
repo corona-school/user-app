@@ -27,7 +27,7 @@ const ChatInbox: React.FC<InboxProps> = ({ openChat }) => {
                 me: currentUser,
             });
 
-            const otherUser = new Talk.User({
+            const userOne = new Talk.User({
                 id: '2',
                 name: 'Jessica Wells',
                 email: 'jessicawells@example.com',
@@ -35,20 +35,34 @@ const ChatInbox: React.FC<InboxProps> = ({ openChat }) => {
                 role: 'default',
             });
 
-            const conversationId = Talk.oneOnOneId(currentUser, otherUser);
-            const conversation = session.getOrCreateConversation(conversationId);
-            conversation.setParticipant(currentUser);
-            conversation.setParticipant(otherUser);
+            const userTwo = new Talk.User({
+                id: '3',
+                name: 'Emma Doe',
+                email: 'emmadoe@example.com',
+                welcomeMessage: 'Hello!',
+                role: 'default',
+            });
 
+            const conversationId = Talk.oneOnOneId(currentUser, userOne);
+            const conversationIdTwo = Talk.oneOnOneId(currentUser, userTwo);
+
+            const conversation = session.getOrCreateConversation(conversationId);
+            const conversationTwo = session.getOrCreateConversation(conversationIdTwo);
+
+            conversation.setParticipant(currentUser);
+            conversation.setParticipant(userOne);
+            conversationTwo.setParticipant(currentUser);
+            conversationTwo.setParticipant(userTwo);
             const inbox = session.createInbox();
+
             inbox.onSelectConversation(() => openChat(true));
             inbox.mount(inboxRef.current);
 
             return () => session.destroy();
         }
-    }, [talkLoaded]);
+    }, [openChat, talkLoaded]);
 
-    return <Box h="800px" pr="10" ref={inboxRef} />;
+    return <Box bgColor={'amber.500'} h="900px" pr="10" mb="10" w="90%" ref={inboxRef} />;
 };
 
 export default ChatInbox;

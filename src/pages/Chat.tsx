@@ -3,15 +3,21 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import Hello from '../widgets/Hello';
-import { Box, Stack } from 'native-base';
+import { Box, Stack, useBreakpointValue } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import UserChat from '../components/chat/UserChat';
 import ChatInbox from '../components/chat/ChatInbox';
 import { useState } from 'react';
+import FloatinActionButton from '../widgets/FloatingActionButton';
+import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 
 const Chat: React.FC = () => {
     const { t } = useTranslation();
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const fabPlace = useBreakpointValue({
+        base: 'bottom-right',
+        lg: 'top-right',
+    });
 
     return (
         <AsNavigationItem path="chat">
@@ -24,9 +30,10 @@ const Chat: React.FC = () => {
                         <NotificationAlert />
                     </Stack>
                 }
-            />
-
-            <Stack pl="290px">{!isChatOpen ? <ChatInbox openChat={setIsChatOpen} /> : <UserChat />}</Stack>
+            >
+                <FloatinActionButton handlePress={() => console.log('NEW CHAT')} place={fabPlace} icon={<LFAddChatIcon />} />
+                <Stack>{!isChatOpen ? <ChatInbox openChat={setIsChatOpen} /> : <UserChat />}</Stack>
+            </WithNavigation>
         </AsNavigationItem>
     );
 };

@@ -3,8 +3,9 @@ import { AddIcon, Box, Fab, useBreakpointValue } from 'native-base';
 type FabProps = {
     place?: any;
     handlePress?: () => void;
+    icon?: JSX.Element;
 };
-const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place }) => {
+const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon }) => {
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 50,
@@ -31,7 +32,7 @@ const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place }) => {
                 backgroundColor="primary.900"
                 rounded="md"
                 size="md"
-                icon={<AddIcon />}
+                icon={icon ? icon : <AddIcon />}
                 onPress={handlePress}
             />
         </Box>

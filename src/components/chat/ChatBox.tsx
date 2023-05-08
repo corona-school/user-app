@@ -46,7 +46,7 @@ const ChatBox = () => {
         }
     }, [talkLoaded]);
 
-    return <Box justifyContent="center" alignItems="center" w="100%" px="10" height="800px" ref={chatboxEl} />;
+    return <Box bgColor={'blue.600'} ref={chatboxEl} w="80%" px="10" height="900px" mb="10" />;
 };
 
 export default ChatBox;
