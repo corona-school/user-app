@@ -101,6 +101,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
 
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
+    const isPastAppointment = useMemo(() => {
+        return DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
+    }, [appointment.duration, appointment.start]);
+
     const handleCancelClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
@@ -147,7 +151,13 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                 />
                 <Description description={appointment.description} />
 
-                <Buttons onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick} canceled={canceled} />
+                <Buttons
+                    onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick}
+                    onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
+                    canceled={canceled}
+                    declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
+                    canEdit={!isPastAppointment}
+                />
             </Box>
         </>
     );

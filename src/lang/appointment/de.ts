@@ -1,5 +1,9 @@
 const appointment = {
     title: 'Termine',
+    saveChanges: 'Änderungen speichern',
+    editSuccess: 'Termin erfolgreich geändert',
+    deleteAppointment: 'Termin löschen',
+    goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Weitere vergangene Termine laden',
     empty: {
         noAppointments: 'Keine Termine',

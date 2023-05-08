@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import PartyIcon from '../../assets/icons/lernfair/lf-party.svg';
 
 type LeftChatProps = {
-    leftCourse?: boolean;
+    leftCourseChat?: boolean;
 };
 
-const LeftChat: React.FC<LeftChatProps> = ({ leftCourse }) => {
+const LeftChat: React.FC<LeftChatProps> = ({ leftCourseChat }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -21,8 +21,7 @@ const LeftChat: React.FC<LeftChatProps> = ({ leftCourse }) => {
 
     const { space } = useTheme();
 
-    const chatType = leftCourse ? 'course' : 'oneOnOne';
-    console.log(leftCourse);
+    const chatType = leftCourseChat ? 'course' : 'oneOnOne';
 
     return (
         <View position="fixed" top="0" left="0" right="0" w="100vw" h="100vh" background="primary.900">

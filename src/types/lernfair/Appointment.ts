@@ -11,24 +11,15 @@ export type Appointment = {
     matchId?: number | null;
     position?: number;
     total?: number;
+    displayName?: string;
     meetingLink?: string | null;
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
-    isCancelled?: boolean;
+    isCanceled?: boolean;
     declinedBy?: string[];
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     isParticipant?: boolean;
-    displayName?: string;
-};
-
-export type AttendeesDeclined = {
-    id: number;
-    firstname: string;
-    lastname: string;
-    isStudent: boolean;
-    isPupil: boolean;
-    userId: string;
 };
 
 // type of appointments to send to the BE

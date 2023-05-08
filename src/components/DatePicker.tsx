@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { Spacer } from 'native-base';
-import { InputHTMLAttributes, useEffect, useMemo, useRef, useState } from 'react';
+import { InputHTMLAttributes, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../web/scss/components/DatePicker.scss';
 

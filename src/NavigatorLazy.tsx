@@ -51,6 +51,7 @@ import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
 import CreateCourseAppointment from './pages/CreateCourseAppointment';
+import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import LeftChat from './pages/chat/LeftChat';
@@ -307,6 +308,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <VideoChat />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/edit-appointment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
                     </RequireAuth>
                 }
             />

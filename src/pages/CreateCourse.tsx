@@ -32,6 +32,7 @@ import { useCreateCourseAppointments } from '../context/AppointmentContext';
 import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+import { Appointment } from '../types/lernfair/Appointment';
 import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
@@ -98,6 +99,7 @@ const CreateCourse: React.FC = () => {
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
+    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
 
     const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
@@ -155,6 +157,26 @@ const CreateCourse: React.FC = () => {
                     tags {
                         id
                         name
+                    }
+                }
+                appointments {
+                    id
+                    start
+                    duration
+                    title
+                    description
+                    displayName
+                    position
+                    total
+                    appointmentType
+                    participants(skip: 0, take: 10) {
+                        firstname
+                        lastname
+                      
+                    }
+                    organizers(skip: 0, take: 10) {
+                        firstname
+                        lastname
                     }
                 }
             }
@@ -295,6 +317,7 @@ const CreateCourse: React.FC = () => {
         setAllowContact(!!prefillCourse.course.allowContact);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
+        setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -555,143 +578,179 @@ const CreateCourse: React.FC = () => {
         ]
     );
 
-    const editCourse = useCallback(async () => {
-        setIsLoading(true);
-        const errors: CreateCourseError[] = [];
+    const editCourse = useCallback(
+        async (newAppointments?: AppointmentCreateGroupInput[]) => {
+            setIsLoading(true);
+            const errors: CreateCourseError[] = [];
 
-        const course = _getCourseData();
-        const courseData = (await updateCourse({
-            variables: {
-                course,
-                id: courseId,
-            },
-        })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
-
-        if (!courseData.data && courseData.errors) {
-            errors.push('course');
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            return;
-        }
-
-        const _courseId = courseData?.data?.courseEdit?.id;
-
-        if (!_courseId) {
-            errors.push('course');
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-
-        const tagIds = tags.map((t: LFTag) => t.id);
-        const tagsRes = await setCourseTags({
-            variables: { courseTagIds: tagIds, courseId },
-        });
-        if (!tagsRes.data.courseSetTags && tagsRes.errors) {
-            errors.push('tags');
-        }
-
-        const subcourse = _getSubcourseData();
-        const subRes = await updateSubcourse({
-            variables: {
-                id: prefillCourseId,
-                course: subcourse,
-            },
-        });
-
-        if (!subRes.data && subRes.errors) {
-            errors.push('subcourse');
-            await resetEditSubcourse();
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-
-        for await (const instructor of newInstructors) {
-            let res = await addCourseInstructor({
+            const course = _getCourseData();
+            const courseData = (await updateCourse({
                 variables: {
-                    courseId: prefillCourseId,
-                    studentId: instructor.id,
+                    course,
+                    id: courseId,
+                },
+            })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
+
+            if (!courseData.data && courseData.errors) {
+                errors.push('course');
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                return;
+            }
+
+            const _courseId = courseData?.data?.courseEdit?.id;
+
+            if (!_courseId) {
+                errors.push('course');
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
+            }
+
+            const tagIds = tags.map((t: LFTag) => t.id);
+            const tagsRes = await setCourseTags({
+                variables: { courseTagIds: tagIds, courseId },
+            });
+            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+                errors.push('tags');
+            }
+
+            const subcourse = _getSubcourseData();
+            const subRes = await updateSubcourse({
+                variables: {
+                    id: prefillCourseId,
+                    course: subcourse,
                 },
             });
-            if (!res.data && res.errors) {
-                errors.push('instructors');
+
+            if (!subRes.data && subRes.errors) {
+                errors.push('subcourse');
+                await resetEditSubcourse();
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
             }
-        }
 
-        /**
-         * Image upload
-         */
-        if (!pickedPhoto) {
-            setIsLoading(false);
-            finishCourseCreation(errors);
-            return;
-        }
-        setImageLoading(true);
-        const formData: FormData = new FormData();
+            for await (const instructor of newInstructors) {
+                let res = await addCourseInstructor({
+                    variables: {
+                        courseId: prefillCourseId,
+                        studentId: instructor.id,
+                    },
+                });
+                if (!res.data && res.errors) {
+                    errors.push('instructors');
+                }
+            }
 
-        const base64 = await fetch(pickedPhoto);
+            const subcourseId = subRes?.data?.subcourseEdit?.id;
+            /**
+             * Appointment Creation
+             */
+            if (newAppointments && newAppointments?.length > 0) {
+                const addIdToAppointment = (a: AppointmentCreateGroupInput[]) => {
+                    const appointments = a.map((appointment) => ({
+                        ...appointment,
+                        subcourseId,
+                    }));
+                    return appointments;
+                };
 
-        const data = await base64.blob();
-        formData.append('file', data, 'img_course.jpeg');
+                const appointments = addIdToAppointment(newAppointments ?? []);
 
-        let uploadFileId;
-        try {
-            uploadFileId = await (
-                await fetch(BACKEND_URL + '/api/files/upload', {
-                    method: 'POST',
-                    body: formData,
-                })
-            ).text();
+                if (appointments.length === 0) {
+                    errors.push('appointments');
+                }
 
-            if (!uploadFileId) {
+                const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
+
+                if (appointmentsRes.errors) {
+                    errors.push('appointments');
+                    await resetAppointments();
+                    await resetSubcourse();
+                    await resetCourse();
+                    finishCourseCreation(errors);
+                    setIsLoading(false);
+                    return;
+                }
+
+                if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
+            }
+            /**
+             * Image upload
+             */
+            if (!pickedPhoto) {
+                setIsLoading(false);
+                finishCourseCreation(errors);
+                return;
+            }
+            setImageLoading(true);
+            const formData: FormData = new FormData();
+
+            const base64 = await fetch(pickedPhoto);
+
+            const data = await base64.blob();
+            formData.append('file', data, 'img_course.jpeg');
+
+            let uploadFileId;
+            try {
+                uploadFileId = await (
+                    await fetch(BACKEND_URL + '/api/files/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                ).text();
+
+                if (!uploadFileId) {
+                    errors.push('upload_image');
+                }
+            } catch (e) {
+                console.error(e);
                 errors.push('upload_image');
             }
-        } catch (e) {
-            console.error(e);
-            errors.push('upload_image');
-        }
 
-        if (!uploadFileId) {
+            if (!uploadFileId) {
+                finishCourseCreation(errors);
+                return;
+            }
+
+            /**
+             * Set image in course
+             */
+            const imageRes = (await setCourseImage({
+                variables: {
+                    courseId: courseId,
+                    fileId: uploadFileId,
+                },
+            })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
+
+            if (!imageRes.data && imageRes.errors) {
+                errors.push('set_image');
+            }
+
+            setImageLoading(false);
             finishCourseCreation(errors);
-            return;
-        }
-
-        /**
-         * Set image in course
-         */
-        const imageRes = (await setCourseImage({
-            variables: {
-                courseId: courseId,
-                fileId: uploadFileId,
-            },
-        })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
-
-        if (!imageRes.data && imageRes.errors) {
-            errors.push('set_image');
-        }
-
-        setImageLoading(false);
-        finishCourseCreation(errors);
-    }, [
-        _getCourseData,
-        updateCourse,
-        courseId,
-        tags,
-        setCourseTags,
-        _getSubcourseData,
-        updateSubcourse,
-        prefillCourseId,
-        pickedPhoto,
-        setCourseImage,
-        finishCourseCreation,
-        resetEditCourse,
-        resetEditSubcourse,
-        newInstructors,
-        addCourseInstructor,
-    ]);
+        },
+        [
+            _getCourseData,
+            updateCourse,
+            courseId,
+            tags,
+            setCourseTags,
+            _getSubcourseData,
+            updateSubcourse,
+            prefillCourseId,
+            pickedPhoto,
+            setCourseImage,
+            finishCourseCreation,
+            resetEditCourse,
+            resetEditSubcourse,
+            newInstructors,
+            addCourseInstructor,
+        ]
+    );
 
     const onNext = useCallback(() => {
         if (currentIndex >= 6) {
@@ -830,7 +889,9 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && <CourseAppointments next={onNext} back={onBack} />}
+                            {currentIndex === 3 && (
+                                <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} appointments={courseAppointments ?? []} />
+                            )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
@@ -841,8 +902,11 @@ const CreateCourse: React.FC = () => {
                                         createOnly={prefillCourseId ? undefined : () => finishCreation(/* also submit */ false)}
                                         update={prefillCourseId ? editCourse : undefined}
                                         onBack={onBack}
+                                        courseId={prefillCourseId}
+                                        isEditing={isEditing}
                                         isError={showCourseError}
                                         isDisabled={loading || isLoading || imageLoading}
+                                        appointments={courseAppointments ?? []}
                                     />
                                     <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">
                                         <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
