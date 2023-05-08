@@ -352,34 +352,6 @@ const useApolloInternal = () => {
         [client, setSessionState]
     );
 
-    // ---------- Legacy Token --------------------
-    // In the old frontend, the token is passed to all pages via ?token= query parameter
-    // For backwards compatibility the new user app also supports this for now
-    const loginWithLegacyToken = useCallback(
-        async (legacyToken: string) => {
-            try {
-                await client.mutate({
-                    mutation: gql(`
-          mutation LoginTokenLegacy($legacyToken: String!) {
-            loginLegacy(authToken: $legacyToken)
-          }
-        `),
-                    variables: { legacyToken },
-                    context: { skipAuthRetry: true },
-                });
-
-                log('GraphQL', `Successfully logged in with a legacy token`);
-                await createDeviceToken();
-                setSessionState('logged-in');
-                setUser(null); // refresh user information
-            } catch (error) {
-                log('GraphQL', 'Failed to login with legacy token', error);
-                setSessionState('logged-out');
-            }
-        },
-        [client, setSessionState, createDeviceToken]
-    );
-
     // ----------- Determine User --------------------------
     const determineUser = useCallback(async () => {
         log('GraphQL', 'Begin Determining User');
@@ -423,9 +395,9 @@ const useApolloInternal = () => {
         log('GraphQL', 'Determining Session');
         (async function () {
             const { searchParams, pathname } = new URL(window.location.href);
-            const legacyToken = searchParams.get('token');
             const deviceToken = getDeviceToken();
-            const secretToken = searchParams.get('secret_token');
+            // TODO: remove one option after mailjet templates have been updated
+            const secretToken = searchParams.get('secret_token') ?? searchParams.get('token');
 
             // verify-email and verify-email-change
             if (pathname.includes('verify-email')) {
@@ -459,11 +431,6 @@ const useApolloInternal = () => {
                 return;
             }
 
-            if (legacyToken) {
-                await loginWithLegacyToken(legacyToken);
-                return;
-            }
-
             if (secretToken) {
                 await loginWithSecretToken(secretToken);
                 return;
@@ -472,7 +439,7 @@ const useApolloInternal = () => {
             setSessionState('error');
             log('GraphQL', 'No Device Token present, need to log in again');
         })();
-    }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser]);
+    }, [client, loginWithDeviceToken, determineUser]);
 
     // ------------ Logout --------------------------
 
