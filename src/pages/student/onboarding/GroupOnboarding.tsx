@@ -75,7 +75,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                             imageText={t('introduction.imageGroupText')}
                             bannerHeadline={t('introduction.banner.instuctorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
+                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/gruppenkurse', '_blank')}
                         />
                     </Box>
