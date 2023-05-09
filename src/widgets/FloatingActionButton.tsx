@@ -4,8 +4,11 @@ type FabProps = {
     place?: any;
     handlePress?: () => void;
     icon?: JSX.Element;
+    mr?: number;
+    mb?: number;
+    mt?: number;
 };
-const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon }) => {
+const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr, mb, mt }) => {
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 50,
@@ -24,9 +27,9 @@ const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon }) =
     return (
         <Box>
             <Fab
-                mt={marginTop}
-                mb={marginBottom}
-                mr={marginRight}
+                mt={mt ? mt : marginTop}
+                mb={mb ? mb : marginBottom}
+                mr={mr ? mr : marginRight}
                 position="fixed"
                 placement={place}
                 backgroundColor="primary.900"

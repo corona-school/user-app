@@ -1,14 +1,34 @@
-import { Box } from 'native-base';
+import { Box, useBreakpointValue } from 'native-base';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import Talk from 'talkjs';
+import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 
 type InboxProps = {
-    openChat: Dispatch<SetStateAction<boolean>>;
+    showAddButton: Dispatch<SetStateAction<boolean>>;
 };
 
-const ChatInbox: React.FC<InboxProps> = ({ openChat }) => {
+const ChatInbox: React.FC<InboxProps> = ({ showAddButton }) => {
     const inboxRef = useRef(null);
+    const { isMobile } = useLayoutHelper();
     const [talkLoaded, markTalkLoaded] = useState(false);
+
+    const chatHeight = useBreakpointValue({
+        base: 'full',
+        lg: '90%',
+    });
+    const paddingRight = useBreakpointValue({
+        base: '0',
+        lg: '10px',
+    });
+
+    const marginBottom = useBreakpointValue({
+        base: '0',
+        lg: '0',
+    });
+    const chatWidth = useBreakpointValue({
+        base: '100%',
+        lg: '90%',
+    });
 
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
@@ -19,7 +39,11 @@ const ChatInbox: React.FC<InboxProps> = ({ openChat }) => {
                 name: 'John Doe',
                 email: 'envkt@example.com',
                 welcomeMessage: 'HEY!',
-                role: 'default',
+                role: 'student',
+                photoUrl: '../.../assets/icons/avatar_pupils.svg',
+                custom: {
+                    contact: 'course_participant',
+                },
             });
 
             const session = new Talk.Session({
@@ -37,32 +61,30 @@ const ChatInbox: React.FC<InboxProps> = ({ openChat }) => {
 
             const userTwo = new Talk.User({
                 id: '3',
-                name: 'Emma Doe',
-                email: 'emmadoe@example.com',
+                name: 'Emma Wells',
+                email: 'emmawells@example.com',
                 welcomeMessage: 'Hello!',
-                role: 'default',
+                role: 'pupil',
             });
 
-            const conversationId = Talk.oneOnOneId(currentUser, userOne);
-            const conversationIdTwo = Talk.oneOnOneId(currentUser, userTwo);
+            const conversationId = Talk.oneOnOneId(currentUser, userTwo);
 
             const conversation = session.getOrCreateConversation(conversationId);
-            const conversationTwo = session.getOrCreateConversation(conversationIdTwo);
+            console.log('CONVERSATION', conversationId, conversation);
 
             conversation.setParticipant(currentUser);
-            conversation.setParticipant(userOne);
-            conversationTwo.setParticipant(currentUser);
-            conversationTwo.setParticipant(userTwo);
-            const inbox = session.createInbox();
+            conversation.setParticipant(userTwo);
 
-            inbox.onSelectConversation(() => openChat(true));
+            const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+            inbox.onConversationSelected(() => showAddButton(true));
+            inbox.onLeaveConversation(() => console.log('LEAVE'));
             inbox.mount(inboxRef.current);
 
             return () => session.destroy();
         }
-    }, [openChat, talkLoaded]);
+    }, [talkLoaded]);
 
-    return <Box bgColor={'amber.500'} h="900px" pr="10" mb="10" w="90%" ref={inboxRef} />;
+    return <Box h={chatHeight} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
 
 export default ChatInbox;
