@@ -20,6 +20,7 @@ import userAgentParser from 'ua-parser-js';
 import { BACKEND_URL } from '../config';
 import { debug, log } from '../log';
 import { gql } from '../gql';
+import { Role } from '../types/lernfair/User';
 
 interface UserType {
     userID: string;
@@ -43,6 +44,8 @@ export type LFApollo = {
     logout: () => Promise<void>;
     // Call in case a mutation was run that associates the session with a user
     onLogin: (result: FetchResult) => void;
+    // If we suspect that a backend mutation caused a change in user data or roles, we might want to refresh:
+    refreshUser: () => void;
 
     loginWithPassword: (email: string, password: string) => Promise<FetchResult>;
 
@@ -50,6 +53,8 @@ export type LFApollo = {
     // Once the session is 'logged-in', a query will be issued to determine the user session
     // When the query is finished, the user will be available:
     user: UserType | null;
+
+    roles: Role[];
 };
 
 // Unlike the standard ApolloProvider, this context carries additional properties
@@ -229,8 +234,9 @@ function describeDevice() {
 const useApolloInternal = () => {
     const [sessionState, setSessionState] = useState<LFApollo['sessionState']>('unknown');
     const [user, setUser] = useState<UserType | null>(null);
+    const [roles, setRoles] = useState<Role[]>([]);
 
-    log('GraphQL', 'Refresh', { sessionState, user });
+    log('GraphQL', 'Refresh', { sessionState, user, roles });
 
     const onMissingAuth = useCallback(() => setSessionState('logged-out'), []);
 
@@ -346,40 +352,12 @@ const useApolloInternal = () => {
         [client, setSessionState]
     );
 
-    // ---------- Legacy Token --------------------
-    // In the old frontend, the token is passed to all pages via ?token= query parameter
-    // For backwards compatibility the new user app also supports this for now
-    const loginWithLegacyToken = useCallback(
-        async (legacyToken: string) => {
-            try {
-                await client.mutate({
-                    mutation: gql(`
-          mutation LoginTokenLegacy($legacyToken: String!) {
-            loginLegacy(authToken: $legacyToken)
-          }
-        `),
-                    variables: { legacyToken },
-                    context: { skipAuthRetry: true },
-                });
-
-                log('GraphQL', `Successfully logged in with a legacy token`);
-                await createDeviceToken();
-                setSessionState('logged-in');
-                setUser(null); // refresh user information
-            } catch (error) {
-                log('GraphQL', 'Failed to login with legacy token', error);
-                setSessionState('logged-out');
-            }
-        },
-        [client, setSessionState, createDeviceToken]
-    );
-
     // ----------- Determine User --------------------------
     const determineUser = useCallback(async () => {
         log('GraphQL', 'Begin Determining User');
 
         const {
-            data: { me },
+            data: { me, myRoles },
             error,
         } = await client.query({
             query: gql(`
@@ -392,6 +370,7 @@ const useApolloInternal = () => {
             pupil { id verifiedAt }
             student { id verifiedAt }
           }
+          myRoles
         }
       `),
             context: { skipAuthRetry: true },
@@ -400,7 +379,8 @@ const useApolloInternal = () => {
 
         if (error) throw new Error(`Failed to determine user: ${error.message}`);
         setUser(me as UserType);
-    }, [client, setUser]);
+        setRoles(myRoles as Role[]);
+    }, [client, setUser, setRoles]);
 
     // If the session is present and the user is not yet determined
     // Trigger the user query
@@ -415,9 +395,9 @@ const useApolloInternal = () => {
         log('GraphQL', 'Determining Session');
         (async function () {
             const { searchParams, pathname } = new URL(window.location.href);
-            const legacyToken = searchParams.get('token');
             const deviceToken = getDeviceToken();
-            const secretToken = searchParams.get('secret_token');
+            // TODO: remove one option after mailjet templates have been updated
+            const secretToken = searchParams.get('secret_token') ?? searchParams.get('token');
 
             // verify-email and verify-email-change
             if (pathname.includes('verify-email')) {
@@ -451,11 +431,6 @@ const useApolloInternal = () => {
                 return;
             }
 
-            if (legacyToken) {
-                await loginWithLegacyToken(legacyToken);
-                return;
-            }
-
             if (secretToken) {
                 await loginWithSecretToken(secretToken);
                 return;
@@ -464,7 +439,7 @@ const useApolloInternal = () => {
             setSessionState('error');
             log('GraphQL', 'No Device Token present, need to log in again');
         })();
-    }, [client, loginWithDeviceToken, loginWithLegacyToken, determineUser]);
+    }, [client, loginWithDeviceToken, determineUser]);
 
     // ------------ Logout --------------------------
 
@@ -539,8 +514,8 @@ const useApolloInternal = () => {
     );
 
     return useMemo(
-        () => ({ client, logout, sessionState, user, onLogin, loginWithPassword }),
-        [client, logout, user, sessionState, onLogin, loginWithPassword]
+        () => ({ client, logout, sessionState, user, onLogin, loginWithPassword, refreshUser: determineUser, roles }),
+        [client, logout, user, sessionState, onLogin, loginWithPassword, determineUser, roles]
     );
 };
 

@@ -12,7 +12,7 @@ type CardProps = {
     showRequestButton: boolean;
     showRequestBanner: boolean;
     requestButtonText: string;
-    imageText: string;
+    imageText?: string;
     bannerHeadline: string;
     onRequest: () => void;
     onTalkToTeam: () => void;
@@ -28,7 +28,6 @@ const OnboardingCard: React.FC<CardProps> = ({
     showRequestButton,
     showRequestBanner,
     requestButtonText,
-    imageText,
     bannerHeadline,
     onRequest,
     onTalkToTeam,
@@ -76,23 +75,12 @@ const OnboardingCard: React.FC<CardProps> = ({
                                     uri: cardImage,
                                 }}
                             />
-                            <View position="absolute" bottom={0} right={0} w="350px">
-                                <Text italic textAlign="end" color="primary.900" pr={10}>
-                                    {imageText}
-                                </Text>
-                            </View>
                         </Container>
                     </Stack>
                 ) : (
                     <Stack space={space['0.5']} direction="column">
                         <Container minW="115%" height="150px" ml={-5} mt={-5} position="relative" bgColor="violet.500">
                             <Image height="100%" w="100%" bgColor="gray.300" alt={'group'} source={{ uri: mobileCardImage }} />
-
-                            <View position="absolute" bottom={0} right={0} w="200px" pr={5} pb={3}>
-                                <Text italic textAlign="end" fontSize="8px" color="primary.900">
-                                    {imageText}
-                                </Text>
-                            </View>
                         </Container>
                         <Stack maxW="full" px="2" space={space['1']}>
                             <Icon />

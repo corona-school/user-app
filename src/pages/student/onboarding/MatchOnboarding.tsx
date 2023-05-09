@@ -96,7 +96,6 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                             showRequestButton={canRequest}
                             showRequestBanner={waitForSupport}
                             requestButtonText={t('introduction.becomeTutor')}
-                            imageText={t('introduction.imageMatchText')}
                             bannerHeadline={t('introduction.banner.tutorTitle')}
                             onRequest={() => setIsModalOpen(true)}
                             onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
