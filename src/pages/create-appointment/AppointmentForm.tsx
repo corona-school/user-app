@@ -57,22 +57,19 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
         setTime(e.target.value);
     };
 
-    const getMinForDatePicker = useCallback(
-        (type: 'date' | 'time') => {
-            let date = DateTime.now();
-            if (type === 'date') {
-                if (isCourse) date = date.plus({ days: 7 });
-                return date.toFormat('yyyy-MM-dd');
-            }
+    const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
+        let date = DateTime.now();
+        if (type === 'date') {
+            if (isCourse) date = date.plus({ days: 7 });
+            return date.toFormat('yyyy-MM-dd');
+        }
 
-            if (type === 'time') {
-                if (!isCourse && isToday) date = date.plus({ minutes: 5 });
-                return date.toFormat('HH:mm');
-            }
-            return undefined;
-        },
-        [isCourse, isToday]
-    );
+        if (type === 'time') {
+            if (!isCourse && isToday) date = date.plus({ minutes: 5 });
+            return date.toFormat('HH:mm');
+        }
+        return undefined;
+    }, []);
 
     return (
         <Box>
@@ -92,7 +89,12 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                     {/* DATE */}
                     <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker onChange={(e) => handleDateInput(e)} value={date} onBlur={handleDateBlur} min={getMinForDatePicker('date')} />
+                        <DatePicker
+                            onChange={(e) => handleDateInput(e)}
+                            value={date}
+                            onBlur={handleDateBlur}
+                            min={getMinForDatePicker('date', isCourse, isToday)}
+                        />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyDateError')}
@@ -116,7 +118,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                                 onChange={(e) => handleTimeInput(e)}
                                 value={time}
                                 onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
-                                min={getMinForDatePicker('time')}
+                                min={getMinForDatePicker('time', isCourse, isToday)}
                             />
                         </Box>
                         {'time' in errors && (

@@ -3,9 +3,7 @@ import { InputHTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../web/scss/components/DatePicker.scss';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-    useMin?: boolean;
-}
+interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 
 const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, min, onBlur }) => {
     const { t } = useTranslation();
