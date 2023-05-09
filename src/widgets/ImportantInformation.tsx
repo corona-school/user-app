@@ -60,6 +60,7 @@ query GetOnboardingInfos {
     pupil {
       createdAt
       verifiedAt
+      grade
       subjectsFormatted {
         name
       }
@@ -185,11 +186,23 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Pupil Screening --------
         if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+            const pupil_url =
+                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                '?first_name=' +
+                encodeURIComponent(data?.me?.firstname as string) +
+                '&last_name=' +
+                encodeURIComponent(data?.me?.lastname as string) +
+                '&email=' +
+                encodeURIComponent(email as string) +
+                '&a1=' +
+                encodeURIComponent(pupil?.grade as string) +
+                '&a2=' +
+                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') as string);
             infos.push({
                 label: 'pupilScreening',
                 btnfn: [
                     () => {
-                        window.open(process.env.REACT_APP_PUPIL_SCREENING_URL, '_blank');
+                        window.open(pupil_url, '_blank');
                     },
                 ],
                 lang: {},
