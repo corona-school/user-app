@@ -248,7 +248,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 onSetDate={() => {
                     setDateSelected(true);
                 }}
-                isCourse={isCourse ? isCourse : false}
+                isCourse={isCourse}
             />
             <Box py="8">
                 <Checkbox
