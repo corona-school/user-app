@@ -31,4 +31,26 @@ const isAppointmentNow = (start: string, duration: number): boolean => {
     return startDate <= now && now < end;
 };
 
-export { convertStartDate, calcNewAppointmentInOneWeek, formatStart, isAppointmentNow };
+const isDateMinOneWeekLater = (date: string): boolean => {
+    const startDate = DateTime.fromISO(date);
+    const diff = startDate.diffNow('days').days;
+    if (diff >= 6) return true;
+    return false;
+};
+
+const isDateToday = (dateString: string): boolean => {
+    const date = DateTime.fromISO(dateString);
+    const today = DateTime.local();
+    const same = date.hasSame(today, 'day') && date.hasSame(today, 'month') && date.hasSame(today, 'year');
+    return same;
+};
+
+const isTimeMinFiveMinutesLater = (date: string, time: string): boolean => {
+    const convertedDate = convertStartDate(date, time);
+    const start = DateTime.fromISO(convertedDate);
+    let diff: number = 0;
+    if (isDateToday(date)) diff = start.diffNow('minutes').minutes;
+    if (diff >= 5) return true;
+    return false;
+};
+export { convertStartDate, calcNewAppointmentInOneWeek, formatStart, isDateToday, isAppointmentNow, isDateMinOneWeekLater, isTimeMinFiveMinutesLater };

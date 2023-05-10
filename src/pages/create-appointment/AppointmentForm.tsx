@@ -5,14 +5,18 @@ import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { FormErrors } from './AppointmentCreation';
+import { isDateToday } from '../../helper/appointment-helper';
+import { DateTime } from 'luxon';
 
 type FormProps = {
-    errors: {};
+    errors: FormErrors;
     appointmentsCount: number;
     onSetDate: () => void;
+    isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate }) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, isCourse }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -25,6 +29,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
+    const [isToday, setIsToday] = useState<boolean>(false);
 
     const handleTitleInput = (e: any) => {
         setTitle(e.target.value);
@@ -43,9 +48,28 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
         onSetDate();
     };
 
+    const handleDateBlur = () => {
+        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
+        setIsToday(isDateToday(date));
+    };
+
     const handleTimeInput = (e: any) => {
         setTime(e.target.value);
     };
+
+    const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
+        let date = DateTime.now();
+        if (type === 'date') {
+            if (isCourse) date = date.plus({ days: 7 });
+            return date.toFormat('yyyy-MM-dd');
+        }
+
+        if (type === 'time') {
+            if (!isCourse && isToday) date = date.plus({ minutes: 5 });
+            return date.toFormat('HH:mm');
+        }
+        return undefined;
+    }, []);
 
     return (
         <Box>
@@ -68,9 +92,8 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                         <DatePicker
                             onChange={(e) => handleDateInput(e)}
                             value={date}
-                            onBlur={() => {
-                                dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
-                            }}
+                            onBlur={handleDateBlur}
+                            min={getMinForDatePicker('date', isCourse, isToday)}
                         />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
@@ -87,20 +110,25 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
 
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TIME */}
-                    <FormControl isInvalid={'time' in errors} width={inputWidth}>
+                    <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
                             <DatePicker
                                 type="time"
                                 onChange={(e) => handleTimeInput(e)}
                                 value={time}
-                                min={'08:00'}
                                 onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
+                                min={getMinForDatePicker('time', isCourse, isToday)}
                             />
                         </Box>
                         {'time' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyTimeError')}
+                            </FormControl.ErrorMessage>
+                        )}
+                        {'timeNotInFiveMin' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.errors.timeNotInFiveMin')}
                             </FormControl.ErrorMessage>
                         )}
                     </FormControl>

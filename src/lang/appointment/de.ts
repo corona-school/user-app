@@ -80,6 +80,7 @@ const appointment = {
         title: 'Title darf nicht leer sein',
         date: 'Datum darf nicht leer sein',
         dateMinOneWeek: 'Datum kann frühestens in einer Woche sein',
+        timeNotInFiveMin: 'Zeit kann frühestens in 5 Minuten sein',
         time: 'Zeit darf nicht leer sein',
         duration: 'Dauer darf nicht leer sein',
     },
