@@ -20,6 +20,7 @@ export type Appointment = {
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     isParticipant?: boolean;
+    zoomMeetingId?: string;
 };
 
 // type of appointments to send to the BE

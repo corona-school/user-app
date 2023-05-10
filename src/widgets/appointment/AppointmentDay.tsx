@@ -22,6 +22,7 @@ type Props = {
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
+    appointmentId: Appointment['id'];
 };
 
 const AppointmentDay: React.FC<Props> = ({
@@ -39,6 +40,7 @@ const AppointmentDay: React.FC<Props> = ({
     total,
     isOrganizer,
     displayName,
+    appointmentId,
 }) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
@@ -100,6 +102,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 total={total}
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
+                                appointmentId={appointmentId}
                             />
                         </HStack>
                     </Box>

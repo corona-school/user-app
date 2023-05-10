@@ -8,6 +8,7 @@ import Avatars from './Avatars';
 import Description from './Description';
 import Buttons from './Buttons';
 import { DateTime } from 'luxon';
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useMutation, useQuery } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +17,7 @@ import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 type AppointmentDetailProps = {
     appointment: Appointment;
     id?: number;
+    startMeeting?: boolean;
 };
 
 type AppointmentDates = {
@@ -24,7 +26,7 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const QUERY_MATCH = gql`
+const QUERY_MATCH = gql(`
     query match($id: Int!) {
         match(matchId: $id) {
             id
@@ -34,9 +36,9 @@ const QUERY_MATCH = gql`
             }
         }
     }
-`;
+`);
 
-const QUERY_SUBCOURSE = gql`
+const QUERY_SUBCOURSE = gql(`
     query course($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
@@ -49,9 +51,9 @@ const QUERY_SUBCOURSE = gql`
             }
         }
     }
-`;
+`);
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, startMeeting }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -66,17 +68,21 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
         lg: sizes['containerWidth'],
     });
 
-    const [cancelAppointment] = useMutation(gql`
+    const [cancelAppointment] = useMutation(
+        gql(`
         mutation cancelAppointment($appointmentId: Float!) {
             appointmentCancel(appointmentId: $appointmentId)
         }
-    `);
+    `)
+    );
 
-    const [declineAppointment] = useMutation(gql`
+    const [declineAppointment] = useMutation(
+        gql(`
         mutation declineAppointment($appointmentId: Float!) {
             appointmentDecline(appointmentId: $appointmentId)
         }
-    `);
+    `)
+    );
 
     const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
         const start = DateTime.fromISO(appointmentStart).setLocale('de');
@@ -141,6 +147,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                     date={date}
                     startTime={startTime}
                     endTime={endTime}
+                    startDateTime={appointment.start}
                     duration={appointment.duration}
                     count={appointment.position ? appointment.position : 0}
                     total={appointment.total ? appointment.total : 0}
@@ -148,6 +155,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }
                     organizers={appointment.organizers ?? []}
                     participants={appointment.participants ?? []}
                     declinedBy={appointment?.declinedBy ?? []}
+                    meetingId={appointment.zoomMeetingId}
+                    startChat={startMeeting}
                 />
                 <Description description={appointment.description} />
 

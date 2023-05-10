@@ -152,6 +152,7 @@ const AppointmentList: React.FC<Props> = ({
                         total={appointment.total}
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
+                        appointmentId={appointment.id}
                     />
                 </Box>
             </Box>

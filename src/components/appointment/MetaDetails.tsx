@@ -9,11 +9,13 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import ZoomMeeting from '../ZoomMeeting';
 
 type MetaProps = {
     date: string;
     startTime: string;
     endTime: string;
+    startDateTime: string;
     duration: number;
     count: number;
     total: number;
@@ -21,12 +23,14 @@ type MetaProps = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     declinedBy: string[];
-    meetingLink?: string;
+    meetingId?: string;
+    startChat?: boolean;
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
     startTime,
     endTime,
+    startDateTime,
     duration,
     count,
     total,
@@ -34,9 +38,11 @@ const MetaDetails: React.FC<MetaProps> = ({
     organizers,
     participants,
     declinedBy,
-    meetingLink,
+    meetingId,
+    startChat,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showVideoChat, setShowVideoChat] = useState<boolean>(startChat || false);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
 
@@ -44,6 +50,17 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
+    function isWithinAppointmentTime(appointmentStart: string, duration: number) {
+        const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
+        const start = new Date(new Date(appointmentStart).getTime() - TEN_MINUTES_IN_MS);
+        const end = new Date(start.getTime() + (duration + 10 || 0) * 60 * 1000 + TEN_MINUTES_IN_MS);
+        const now = new Date();
+
+        console.log(start, end, now);
+
+        return now >= start && now <= end;
+    }
 
     return (
         <>
@@ -77,9 +94,16 @@ const MetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            <Button width={buttonWidth} isDisabled={meetingLink ? false : true} onPress={() => window.open(meetingLink, '_blank')}>
+            <Button
+                width={`${buttonWidth}`}
+                onPress={() => {
+                    setShowVideoChat(true);
+                }}
+                isDisabled={!meetingId || !isWithinAppointmentTime(startDateTime, duration)}
+            >
                 {t('appointment.detail.videochatButton')}
             </Button>
+            {meetingId && showVideoChat && <ZoomMeeting meetingId={meetingId} />}
         </>
     );
 };
