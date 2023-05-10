@@ -9,10 +9,12 @@ import ChatInbox from '../components/chat/ChatInbox';
 import FloatinActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useState } from 'react';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 const Chat: React.FC = () => {
     const { t } = useTranslation();
-    const [showAddButton, setShowAddButton] = useState(false);
+    const { isMobile } = useLayoutHelper();
+
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
         lg: 'top-right',
@@ -28,33 +30,28 @@ const Chat: React.FC = () => {
         lg: '4%',
     });
 
-    const marginBottom = useBreakpointValue({
-        base: '20%',
-        lg: 0,
-    });
-
     return (
         <AsNavigationItem path="chat">
             <WithNavigation
                 headerContent={<Hello />}
-                headerTitle={t('appointment.title')}
+                headerTitle={t('chat.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />
                         <NotificationAlert />
                     </Stack>
                 }
+                showBack={isMobile}
             >
-                {showAddButton && (
-                    <FloatinActionButton
-                        mr={marginRight}
-                        mt={marginTop}
-                        handlePress={() => console.log('NEW CHAT')}
-                        place={fabPlace}
-                        icon={<LFAddChatIcon />}
-                    />
-                )}
-                <ChatInbox showAddButton={setShowAddButton} />
+                {/*  TODO mobile version */}
+                <FloatinActionButton
+                    mr={marginRight}
+                    mt={marginTop}
+                    handlePress={() => console.log('open start-new-chat-modal')}
+                    place={fabPlace}
+                    icon={<LFAddChatIcon />}
+                />
+                <ChatInbox />
             </WithNavigation>
         </AsNavigationItem>
     );
