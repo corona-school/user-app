@@ -1,23 +1,21 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Talk from 'talkjs';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 
-type InboxProps = {
-    showAddButton: Dispatch<SetStateAction<boolean>>;
-};
+type InboxProps = {};
 
-const ChatInbox: React.FC<InboxProps> = ({ showAddButton }) => {
+const ChatInbox: React.FC<InboxProps> = ({}) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
-    const [talkLoaded, markTalkLoaded] = useState(false);
+    const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
 
     const chatHeight = useBreakpointValue({
-        base: 'full',
+        base: '90%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
-        base: '0',
+        base: '2',
         lg: '10px',
     });
 
@@ -35,15 +33,10 @@ const ChatInbox: React.FC<InboxProps> = ({ showAddButton }) => {
 
         if (talkLoaded) {
             const currentUser = new Talk.User({
-                id: '1',
-                name: 'John Doe',
-                email: 'envkt@example.com',
-                welcomeMessage: 'HEY!',
-                role: 'student',
-                photoUrl: '../.../assets/icons/avatar_pupils.svg',
-                custom: {
-                    contact: 'course_participant',
-                },
+                id: '123',
+                name: 'Lomy W',
+                email: 'salome.wick@typedigital.de',
+                role: 'pupil',
             });
 
             const session = new Talk.Session({
@@ -51,40 +44,15 @@ const ChatInbox: React.FC<InboxProps> = ({ showAddButton }) => {
                 me: currentUser,
             });
 
-            const userOne = new Talk.User({
-                id: '2',
-                name: 'Jessica Wells',
-                email: 'jessicawells@example.com',
-                welcomeMessage: 'Hello!',
-                role: 'default',
-            });
-
-            const userTwo = new Talk.User({
-                id: '3',
-                name: 'Emma Wells',
-                email: 'emmawells@example.com',
-                welcomeMessage: 'Hello!',
-                role: 'pupil',
-            });
-
-            const conversationId = Talk.oneOnOneId(currentUser, userTwo);
-
-            const conversation = session.getOrCreateConversation(conversationId);
-            console.log('CONVERSATION', conversationId, conversation);
-
-            conversation.setParticipant(currentUser);
-            conversation.setParticipant(userTwo);
-
             const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-            inbox.onConversationSelected(() => showAddButton(true));
-            inbox.onLeaveConversation(() => console.log('LEAVE'));
+            inbox.setFeedFilter({});
             inbox.mount(inboxRef.current);
 
             return () => session.destroy();
         }
     }, [talkLoaded]);
 
-    return <Box h={chatHeight} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
+    return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
 
 export default ChatInbox;
