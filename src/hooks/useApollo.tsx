@@ -396,8 +396,7 @@ const useApolloInternal = () => {
         (async function () {
             const { searchParams, pathname } = new URL(window.location.href);
             const deviceToken = getDeviceToken();
-            // TODO: remove one option after mailjet templates have been updated
-            const secretToken = searchParams.get('secret_token') ?? searchParams.get('token');
+            const secretToken = searchParams.get('secret_token');
 
             // verify-email and verify-email-change
             if (pathname.includes('verify-email')) {
