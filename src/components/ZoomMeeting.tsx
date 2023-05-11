@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { ZoomMtg } from '@zoomus/websdk';
 import { useUserType } from '../hooks/useApollo';
+import { useParams } from 'react-router-dom';
 
 const zoomCredentials = gql(`
 query zoom($meetingId: String!, $role: Float!) {
@@ -21,11 +22,9 @@ query zoom($meetingId: String!, $role: Float!) {
     zoomSDKJWT (meetingId: $meetingId, role: $role)
 }`);
 
-type ZoomProps = {
-    meetingId: string;
-};
+const ZoomMeeting: React.FC = () => {
+    const { id, type } = useParams();
 
-const ZoomMeeting: React.FC<ZoomProps> = ({ meetingId }) => {
     window.onpopstate = (e) => {
         e.preventDefault();
         document.getElementById('zmmtg-root')!.style.display = 'none';
@@ -34,8 +33,9 @@ const ZoomMeeting: React.FC<ZoomProps> = ({ meetingId }) => {
     document.getElementById('zmmtg-root')!.style.display = 'block';
 
     const userType = useUserType();
-    const role = userType === 'student' ? 0 : 1;
-    const { data } = useQuery(zoomCredentials, { variables: { meetingId: meetingId, role: role } });
+    const leaveUrl = type === 'match' ? 'http://localhost:3000/left-chat/match' : 'http://localhost:3000/left-chat/course';
+    const role = userType === 'student' ? 1 : 0;
+    const { data } = useQuery(zoomCredentials, { variables: { meetingId: id!, role: role } });
 
     ZoomMtg.setZoomJSLib('https://source.zoom.us/2.11.5/lib', '/av');
     ZoomMtg.preLoadWasm();
@@ -47,14 +47,16 @@ const ZoomMeeting: React.FC<ZoomProps> = ({ meetingId }) => {
         authEndpoint: '',
         sdkKey: 'oy00hCKEQvKyxcR49FzEyw',
         password: '',
-        meetingNumber: meetingId,
+        meetingNumber: id!,
         signature: data?.zoomSDKJWT || '',
-        zak: data?.zoomZAK,
         userEmail: userType === 'student' ? data?.me.student?.email : data?.me.pupil?.email,
         userName: userType === 'student' ? data?.me.student?.firstname : data?.me.pupil?.firstname,
-        leaveUrl: 'http://localhost:3000/left-chat',
+        leaveUrl: leaveUrl,
         role: role,
+        ...(data?.zoomZAK ? { zak: data.zoomZAK } : {}),
     };
+
+    console.log(credentials);
 
     ZoomMtg.init({
         leaveUrl: credentials.leaveUrl,

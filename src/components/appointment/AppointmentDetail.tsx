@@ -156,7 +156,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
                     participants={appointment.participants ?? []}
                     declinedBy={appointment?.declinedBy ?? []}
                     meetingId={appointment.zoomMeetingId}
-                    startChat={startMeeting}
+                    chatType={appointment.appointmentType}
                 />
                 <Description description={appointment.description} />
 

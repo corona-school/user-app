@@ -44,6 +44,7 @@ const getMyAppointments = gql(`
                     lastname
                 }
                 declinedBy
+                zoomMeetingId
             }
         }
     }

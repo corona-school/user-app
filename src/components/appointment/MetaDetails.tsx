@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
-import ZoomMeeting from '../ZoomMeeting';
+import { useNavigate } from 'react-router-dom';
 
 type MetaProps = {
     date: string;
@@ -24,7 +24,7 @@ type MetaProps = {
     participants?: AppointmentParticipant[];
     declinedBy: string[];
     meetingId?: string;
-    startChat?: boolean;
+    chatType?: string;
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
@@ -39,12 +39,12 @@ const MetaDetails: React.FC<MetaProps> = ({
     participants,
     declinedBy,
     meetingId,
-    startChat,
+    chatType,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [showVideoChat, setShowVideoChat] = useState<boolean>(startChat || false);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -97,13 +97,12 @@ const MetaDetails: React.FC<MetaProps> = ({
             <Button
                 width={`${buttonWidth}`}
                 onPress={() => {
-                    setShowVideoChat(true);
+                    navigate(`/video-chat/${meetingId}/${chatType}`);
                 }}
                 isDisabled={!meetingId || !isWithinAppointmentTime(startDateTime, duration)}
             >
                 {t('appointment.detail.videochatButton')}
             </Button>
-            {meetingId && showVideoChat && <ZoomMeeting meetingId={meetingId} />}
         </>
     );
 };

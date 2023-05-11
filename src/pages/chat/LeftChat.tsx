@@ -1,13 +1,11 @@
 import { Box, Button, Heading, Stack, Text, useBreakpointValue, useTheme, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PartyIcon from '../../assets/icons/lernfair/lf-party.svg';
 
-type LeftChatProps = {
-    leftCourseChat?: boolean;
-};
+const LeftChat: React.FC = () => {
+    const { type } = useParams();
 
-const LeftChat: React.FC<LeftChatProps> = ({ leftCourseChat }) => {
     const width = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -21,7 +19,7 @@ const LeftChat: React.FC<LeftChatProps> = ({ leftCourseChat }) => {
 
     const { space } = useTheme();
 
-    const chatType = leftCourseChat ? 'course' : 'oneOnOne';
+    const chatType = type ? 'course' : 'oneOnOne';
 
     return (
         <View position="fixed" top="0" left="0" right="0" w="100vw" h="100vh" background="primary.900">
