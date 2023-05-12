@@ -123,6 +123,7 @@ const single = {
         description:
             'Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.',
         toast: 'Du hast dich erfolgreich zu dem Kurs angemeldet.',
+        error: 'Du konntest nicht zu dem Kurs angemeldet werden.',
     },
     joinWaitinglist: {
         button: 'Auf Warteliste setzen',

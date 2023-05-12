@@ -5,6 +5,7 @@ import InputSuffix from '../../widgets/InputSuffix';
 import RemoveIcon from '../../assets/icons/lernfair/remove_circle_outline.svg';
 import { useWeeklyAppointments } from '../../context/AppointmentContext';
 import { WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
+import { useState } from 'react';
 
 type WeeklyProps = {
     index: number;
@@ -16,17 +17,19 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
     const { t } = useTranslation();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
 
-    const handleInput = (e: any) => {
-        dispatchWeeklyAppointment({
-            type: WeeklyReducerActionType.CHANGE_WEEKLY_APPOINTMENT_TITLE,
-            value: e.target.value,
-            index,
-            field: 'title',
-        });
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+
+    const handleTitleInput = (e: any) => {
+        setTitle(e.target.value);
+    };
+
+    const handleDescriptionInput = (e: any) => {
+        setDescription(e);
     };
 
     const width = useBreakpointValue({
-        base: isLast ? '70%' : '90%',
+        base: isLast ? '70%' : '85%',
         lg: isLast ? '40%' : '46%',
     });
 
@@ -35,7 +38,19 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
             <AppointmentDate current={false} date={weeklies[index].nextDate} />
             <VStack space={3} width={width}>
                 <FormControl>
-                    <InputSuffix appointmentsCount={weeklies[index].index} handleInput={handleInput} inputValue={weeklies[index].title} />
+                    <InputSuffix
+                        appointmentsCount={weeklies[index].index}
+                        handleInput={handleTitleInput}
+                        inputValue={title}
+                        handleBlur={() =>
+                            dispatchWeeklyAppointment({
+                                type: WeeklyReducerActionType.CHANGE_WEEKLY_APPOINTMENT_TITLE,
+                                value: title,
+                                index,
+                                field: 'title',
+                            })
+                        }
+                    />
                     <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>{t('appointment.create.emptyFieldError')}</FormControl.ErrorMessage>
                 </FormControl>
                 <FormControl>
@@ -43,11 +58,12 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
                         placeholder={t('appointment.create.descriptionLabel')}
                         _light={{ placeholderTextColor: 'primary.500' }}
                         autoCompleteType={'normal'}
-                        value={weeklies?.[index]?.['description'] ?? ''}
-                        onChangeText={(e) =>
+                        value={description}
+                        onChangeText={(e) => handleDescriptionInput(e)}
+                        onBlur={() =>
                             dispatchWeeklyAppointment({
                                 type: WeeklyReducerActionType.CHANGE_WEEKLY_APPOINTMENT_DESCRIPTION,
-                                value: e,
+                                value: description,
                                 index,
                                 field: 'description',
                             })
@@ -62,7 +78,6 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
                     <IconButton
                         icon={<RemoveIcon />}
                         onPress={() => {
-                            console.log('Dispatch remove');
                             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.REMOVE_WEEKLY_APPOINTMENT });
                         }}
                     />

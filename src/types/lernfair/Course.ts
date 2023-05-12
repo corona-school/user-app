@@ -1,5 +1,6 @@
 import { Course_Coursestate_Enum } from '../../gql/graphql';
 import { Pupil } from '../../gql/graphql';
+import { Appointment } from './Appointment';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -33,6 +34,7 @@ export interface LFSubCourse {
     firstLecture?: LFLecture;
     minGrade?: number;
     maxGrade?: number;
+    appointments?: Appointment[];
 }
 
 export type LFLecture = {

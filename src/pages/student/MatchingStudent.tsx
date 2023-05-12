@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Flex, Heading, Modal, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -9,13 +9,15 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { gql } from '../../gql/gql';
+import { gql } from './../../gql';
+import {} from '../../gql/gql';
 import { Match } from '../../gql/graphql';
 
 import AlertMessage from '../../widgets/AlertMessage';
 import Hello from '../../widgets/Hello';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 const query = gql(`
@@ -121,7 +123,16 @@ const MatchingStudent: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation headerTitle={t('matching.request.check.header')} headerContent={<Hello />} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                headerTitle={t('matching.request.check.header')}
+                headerContent={<Hello />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">

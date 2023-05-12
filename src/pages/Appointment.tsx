@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 const APPOINTMENT = gql`
     query appointment($appointmentId: Float!) {
@@ -14,27 +15,22 @@ const APPOINTMENT = gql`
             description
             isCanceled
             position
+            appointmentType
             total
+            displayName
             participants(skip: 0, take: 10) {
                 id
+                userID
                 firstname
                 lastname
             }
             organizers(skip: 0, take: 10) {
                 id
+                userID
                 firstname
                 lastname
-                isStudent
             }
-            isOrganizer
-            isParticipant
-            declinedBy(skip: 0, take: 10) {
-                id
-                firstname
-                lastname
-                isStudent
-                isPupil
-            }
+            declinedBy
         }
     }
 `;
@@ -45,7 +41,7 @@ const Appointment = () => {
     const { data, error } = useQuery(APPOINTMENT, { variables: { appointmentId } });
 
     return (
-        <WithNavigation showBack>
+        <WithNavigation showBack headerLeft={<NotificationAlert />}>
             {!error && data?.appointment && (
                 <AppointmentDetail
                     appointment={data?.appointment}

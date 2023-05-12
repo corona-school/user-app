@@ -7,18 +7,20 @@ import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useCallback, useState } from 'react';
-import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, AppointmentType } from '../../gql/graphql';
+import { useState } from 'react';
+import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { gql } from '../../gql/gql';
+import { gql } from './../../gql';
+import { calcNewAppointmentInOneWeek, convertStartDate, isDateMinOneWeekLater, isTimeMinFiveMinutesLater } from '../../helper/appointment-helper';
 
-type FormErrors = {
+export type FormErrors = {
     title?: string;
     date?: string;
     time?: string;
     duration?: string;
     description?: string;
     dateNotInOneWeek?: string;
+    timeNotInFiveMin?: string;
 };
 
 export type StartDate = {
@@ -45,6 +47,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const toast = useToast();
     const navigate = useNavigate();
 
+    const [dateSelected, setDateSelected] = useState(false);
+
     const buttonWidth = useBreakpointValue({
         base: 'full',
         lg: '25%',
@@ -66,36 +70,24 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     `)
     );
 
-    const convertStartDate = (date: string, time: string) => {
-        const dt = DateTime.fromISO(date);
-        const t = DateTime.fromISO(time);
-
-        const newDate = dt.set({
-            hour: t.hour,
-            minute: t.minute,
-            second: t.second,
-        });
-        return newDate.toISO();
-    };
     const validateInputs = () => {
-        const isDateMinOneWeekLater = (date: string): boolean => {
-            const startDate = DateTime.fromISO(date);
-            const diff = startDate.diffNow('days').days;
-            if (diff >= 6) return true;
-            return false;
-        };
-
         if (!appointmentToCreate.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
         } else {
             delete errors.date;
         }
-        if (isDateMinOneWeekLater(appointmentToCreate.date) === false) {
+        if (isCourse && !isDateMinOneWeekLater(appointmentToCreate.date)) {
             setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
             return false;
         } else {
             delete errors.date;
+        }
+        if (!isCourse && !isCourseCreation && !isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time)) {
+            setErrors({ ...errors, timeNotInFiveMin: t('appointment.errors.timeNotInFiveMin') });
+            return false;
+        } else {
+            delete errors.timeNotInFiveMin;
         }
         if (!appointmentToCreate.time.length) {
             setErrors({ ...errors, time: t('appointment.errors.time') });
@@ -117,7 +109,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             field: 'isRecurring',
         });
     };
-
     // * create appointments for a new course
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
@@ -129,7 +120,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 subcourseId: courseOrMatchId!,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
             if (isCourseCreation && weeklies.length === 0) {
                 setAppointmentsToBeCreated([...appointmentsToBeCreated, newAppointment]);
@@ -140,11 +131,11 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId!,
-                        appointmentType: AppointmentType.Group,
+                        appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -171,7 +162,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 subcourseId: courseOrMatchId ? courseOrMatchId : 1,
-                appointmentType: AppointmentType.Group,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
 
             appointments.push(newAppointment);
@@ -183,11 +174,11 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
-                        appointmentType: AppointmentType.Group,
+                        appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -203,7 +194,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             navigate('/appointments');
         }
     };
-
     // * create appointments for an existing match
     const handleCreateMatchAppointment = () => {
         if (!appointmentToCreate) return;
@@ -217,7 +207,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 duration: appointmentToCreate.duration,
                 meetingLink: '',
                 matchId: courseOrMatchId ? courseOrMatchId : 1,
-                appointmentType: AppointmentType.Match,
+                appointmentType: Lecture_Appointmenttype_Enum.Match,
             };
 
             appointments.push(newAppointment);
@@ -229,11 +219,11 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     const newWeeklyAppointment = {
                         title: weekly.title ? weekly.title : '',
                         description: weekly.description ? weekly.description : '',
-                        start: weekly.nextDate,
+                        start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
                         meetingLink: '',
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
-                        appointmentType: AppointmentType.Match,
+                        appointmentType: Lecture_Appointmenttype_Enum.Match,
                     };
                     weeklyAppointments.push(newWeeklyAppointment);
                 }
@@ -249,35 +239,39 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             navigate('/appointments');
         }
     };
-    const calcNewAppointmentInOneWeek = useCallback(() => {
-        const startDate = DateTime.fromISO(appointmentToCreate.date);
-        const nextDate = startDate.plus({ days: 7 }).toISO();
-        return nextDate;
-    }, [appointmentToCreate.date]);
 
     return (
         <Box>
-            <AppointmentForm errors={errors} appointmentsCount={appointmentsTotal ? appointmentsTotal : 0} />
+            <AppointmentForm
+                errors={errors}
+                appointmentsCount={appointmentsTotal ? appointmentsTotal : 0}
+                onSetDate={() => {
+                    setDateSelected(true);
+                }}
+                isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
+            />
             <Box py="8">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={appointmentToCreate.date ? false : true}
+                    isDisabled={!dateSelected}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
             </Box>
-            {appointmentToCreate.isRecurring && <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek()} />}
+            {appointmentToCreate.isRecurring && (
+                <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
+            )}
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
+                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
+                    {t('appointment.create.backButton')}
+                </Button>
                 <Button
                     onPress={isCourseCreation ? handleCreateCourseAppointments : isCourse ? handleCreateCourseAppointment : handleCreateMatchAppointment}
                     width={buttonWidth}
                 >
                     {t('appointment.create.addAppointmentButton')}
-                </Button>
-                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
-                    {t('appointment.create.backButton')}
                 </Button>
             </Stack>
         </Box>

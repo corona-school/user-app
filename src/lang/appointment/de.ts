@@ -1,5 +1,10 @@
 const appointment = {
     title: 'Termine',
+    saveChanges: 'Änderungen speichern',
+    editSuccess: 'Termin erfolgreich geändert',
+    deleteAppointment: 'Termin löschen',
+    goBack: 'zur vorherigen Seite',
+    loadPastAppointments: 'Weitere vergangene Termine laden',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
@@ -16,6 +21,10 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
+    appointmentTile: {
+        lecture: 'Lektion #{{position}}',
+        title: ': {{appointmentTitle}}',
+    },
     create: {
         assignmentHeader: 'Für welches Lernangebot soll dieser Termin erstellt werden?',
         insightMatchHeader: 'Deine bestehenden Termine mit {{matchPartner}}.',
@@ -27,7 +36,7 @@ const appointment = {
         appointmentAdd: 'Termin hinzufügen',
         group: 'Gruppe',
         date: 'Ab {{date}} • {{time}} Uhr',
-        addAppointmentButton: 'Termin hinzufügen',
+        addAppointmentButton: 'Termin(e) hinzufügen',
         backButton: 'zur vorherigen Seite',
         lecture: 'Lektion',
         titleLabel: 'Titel',
@@ -71,6 +80,7 @@ const appointment = {
         title: 'Title darf nicht leer sein',
         date: 'Datum darf nicht leer sein',
         dateMinOneWeek: 'Datum kann frühestens in einer Woche sein',
+        timeNotInFiveMin: 'Zeit kann frühestens in 5 Minuten sein',
         time: 'Zeit darf nicht leer sein',
         duration: 'Dauer darf nicht leer sein',
     },
