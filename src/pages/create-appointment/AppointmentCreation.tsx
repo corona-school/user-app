@@ -83,7 +83,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.date;
         }
-        if (!isCourse && !isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time)) {
+        if (!isCourse && !isCourseCreation && !isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time)) {
             setErrors({ ...errors, timeNotInFiveMin: t('appointment.errors.timeNotInFiveMin') });
             return false;
         } else {
@@ -248,7 +248,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 onSetDate={() => {
                     setDateSelected(true);
                 }}
-                isCourse={isCourse ? isCourse : false}
+                isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
             <Box py="8">
                 <Checkbox
