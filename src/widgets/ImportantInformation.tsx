@@ -189,15 +189,15 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             const pupil_url =
                 process.env.REACT_APP_PUPIL_SCREENING_URL +
                 '?first_name=' +
-                encodeURIComponent(data?.me?.firstname as string) +
+                encodeURIComponent(data?.me?.firstname ?? '') +
                 '&last_name=' +
-                encodeURIComponent(data?.me?.lastname as string) +
+                encodeURIComponent(data?.me?.lastname ?? '') +
                 '&email=' +
-                encodeURIComponent(email as string) +
+                encodeURIComponent(email ?? '') +
                 '&a1=' +
-                encodeURIComponent(pupil?.grade as string) +
+                encodeURIComponent(pupil?.grade ?? '') +
                 '&a2=' +
-                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') as string);
+                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
                 label: 'pupilScreening',
                 btnfn: [
