@@ -13,14 +13,7 @@ import AlertMessage from '../../../widgets/AlertMessage';
 
 type CanJoin = {
     allowed: boolean;
-    reason?:
-     | 'not-participant'
-     | 'no-lectures'
-     | 'already-started'
-     | 'grade-to-low'
-     | 'grade-to-high'
-     | 'subcourse-full'
-     | null;
+    reason?: 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full' | null;
 };
 
 type ActionButtonProps = {
@@ -80,10 +73,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
         setShowMessageModal(false);
     }
 
-    const handleSignInCourse = useCallback(() => {
+    const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
-        joinSubcourse();
-        toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+        try {
+            await joinSubcourse();
+            toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+        } catch (e) {
+            toast.show({ description: t('single.signIn.error'), placement: 'top' });
+        }
     }, []);
 
     const handleCourseLeave = useCallback(async () => {
