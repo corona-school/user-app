@@ -23,7 +23,7 @@ type MetaProps = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     declinedBy: string[];
-    meetingId?: string;
+    appointmentId?: number;
     chatType?: string;
 };
 const MetaDetails: React.FC<MetaProps> = ({
@@ -38,7 +38,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     organizers,
     participants,
     declinedBy,
-    meetingId,
+    appointmentId,
     chatType,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -97,9 +97,9 @@ const MetaDetails: React.FC<MetaProps> = ({
             <Button
                 width={`${buttonWidth}`}
                 onPress={() => {
-                    navigate(`/video-chat/${meetingId}/${chatType}`);
+                    navigate(`/video-chat/${appointmentId}/${chatType}`);
                 }}
-                isDisabled={!meetingId || !isWithinAppointmentTime(startDateTime, duration)}
+                isDisabled={!appointmentId || !isWithinAppointmentTime(startDateTime, duration)}
             >
                 {t('appointment.detail.videochatButton')}
             </Button>

@@ -23,7 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
-    meetingId?: Appointment['zoomMeetingId'];
     chatType?: Appointment['appointmentType'];
 };
 
@@ -39,7 +38,6 @@ const AppointmentTile: React.FC<Props> = ({
     position,
     displayName,
     appointmentId,
-    meetingId,
     chatType,
 }) => {
     const navigate = useNavigate();
@@ -100,7 +98,7 @@ const AppointmentTile: React.FC<Props> = ({
                             <Button
                                 mt={2}
                                 onPress={() => {
-                                    appointmentId && navigate(`/video-chat/${meetingId}/${chatType}`);
+                                    appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
                                 }}
                             >
                                 {t('appointment.tile.videoButton')}

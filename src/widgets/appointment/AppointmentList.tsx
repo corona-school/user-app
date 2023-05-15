@@ -153,7 +153,6 @@ const AppointmentList: React.FC<Props> = ({
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
-                        meetingId={appointment.zoomMeetingId}
                         chatType={appointment.appointmentType}
                     />
                 </Box>

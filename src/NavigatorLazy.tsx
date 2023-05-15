@@ -295,7 +295,7 @@ export default function NavigatorLazy() {
                 }
             ></Route>
             <Route
-                path="/left-chat/:type"
+                path="/left-chat/:id/:type"
                 element={
                     <RequireAuth>
                         <LeftChat />

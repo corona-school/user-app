@@ -1,10 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { gql } from '../gql';
+// eslint-disable-next-line lernfair-app-linter/typed-gql
+import { gql, useQuery } from '@apollo/client';
 import { ZoomMtg } from '@zoomus/websdk';
 import { useUserType } from '../hooks/useApollo';
 import { useParams } from 'react-router-dom';
+import CenterLoadingSpinner from './CenterLoadingSpinner';
 
-const zoomCredentials = gql(`
+const getappointmentMeetingData = gql(`
+query appointmentMeetingData($appointmentId: Float!) {
+    appointment(appointmentId: $appointmentId) {
+        zoomMeetingId
+    }
+}`);
+
+const getZoomCredentials = gql(`
 query zoom($meetingId: String!, $role: Float!) {
     me {
         pupil {
@@ -24,18 +32,26 @@ query zoom($meetingId: String!, $role: Float!) {
 
 const ZoomMeeting: React.FC = () => {
     const { id, type } = useParams();
+    const appointmentId = parseInt(id!) || 0;
 
     window.onpopstate = (e) => {
         e.preventDefault();
         document.getElementById('zmmtg-root')!.style.display = 'none';
         window.location.reload();
     };
-    document.getElementById('zmmtg-root')!.style.display = 'block';
 
     const userType = useUserType();
-    const leaveUrl = type === 'match' ? 'http://localhost:3000/left-chat/match' : 'http://localhost:3000/left-chat/course';
+    const leaveUrl = type === 'match' ? `http://localhost:3000/left-chat/${appointmentId}/match` : `http://localhost:3000/left-chat/${appointmentId}/course`;
     const role = userType === 'student' ? 1 : 0;
-    const { data } = useQuery(zoomCredentials, { variables: { meetingId: id!, role: role } });
+    console.log(appointmentId);
+    const { data } = useQuery(getappointmentMeetingData, { variables: { appointmentId: appointmentId } });
+    const meetingId = data?.appointment.zoomMeetingId;
+
+    const { data: zoomData } = useQuery(getZoomCredentials, { variables: { meetingId: meetingId, role: role }, skip: !data });
+
+    if (!zoomData) return <CenterLoadingSpinner />;
+
+    document.getElementById('zmmtg-root')!.style.display = 'block';
 
     ZoomMtg.setZoomJSLib('https://source.zoom.us/2.11.5/lib', '/av');
     ZoomMtg.preLoadWasm();
@@ -47,16 +63,14 @@ const ZoomMeeting: React.FC = () => {
         authEndpoint: '',
         sdkKey: 'oy00hCKEQvKyxcR49FzEyw',
         password: '',
-        meetingNumber: id!,
-        signature: data?.zoomSDKJWT || '',
-        userEmail: userType === 'student' ? data?.me.student?.email : data?.me.pupil?.email,
-        userName: userType === 'student' ? data?.me.student?.firstname : data?.me.pupil?.firstname,
+        meetingNumber: data.appointment.zoomMeetingId,
+        signature: zoomData?.zoomSDKJWT || '',
+        userEmail: userType === 'student' ? zoomData?.me.student?.email : zoomData?.me.pupil?.email,
+        userName: userType === 'student' ? zoomData?.me.student?.firstname : zoomData?.me.pupil?.firstname,
         leaveUrl: leaveUrl,
         role: role,
-        ...(data?.zoomZAK ? { zak: data.zoomZAK } : {}),
+        ...(zoomData?.zoomZAK ? { zak: zoomData.zoomZAK } : {}),
     };
-
-    console.log(credentials);
 
     ZoomMtg.init({
         leaveUrl: credentials.leaveUrl,
