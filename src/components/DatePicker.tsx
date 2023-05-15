@@ -18,6 +18,7 @@ const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, min, onBl
                     value={value}
                     min={min}
                     onBlur={onBlur}
+                    height={'100%'}
                 />
             </div>
             <Spacer m={3} />
