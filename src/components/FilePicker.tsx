@@ -12,7 +12,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 const FilePicker: React.FC<Props> = ({ handleFileChange }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
-    const maxFileSize = 5; // in MB
+    const maxFileSize = 10; // in MB
     const [openFileSelector, { plainFiles, errors }] = useFilePicker({ maxFileSize, minFileSize: 0, multiple: true });
 
     // unforunately useFilePicker doesnt return state change of file content.
