@@ -28,11 +28,6 @@ const dashboard = {
         header: 'Meine Termine',
         noappointments: 'Es wurden keine Termine gefunden.',
     },
-    homework: {
-        header: 'Hausaufgabenhilfe',
-        title: 'Du brauchst Hife bei deinen Hausaufgaben?',
-        content: 'Schreibe uns einfach an, wir helfen dir gerne.',
-    },
     learningpartner: {
         header: 'Dein:e Lernpartner:in',
         username: 'Max Mustermann',
