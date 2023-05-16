@@ -28,6 +28,8 @@ query GetOnboardingInfos {
   }
   me {
     email
+    firstname
+    lastname
     secrets {
       type
     }
@@ -58,6 +60,7 @@ query GetOnboardingInfos {
     pupil {
       createdAt
       verifiedAt
+      grade
       subjectsFormatted {
         name
       }
@@ -183,11 +186,23 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Pupil Screening --------
         if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+            const pupil_url =
+                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                '?first_name=' +
+                encodeURIComponent(data?.me?.firstname ?? '') +
+                '&last_name=' +
+                encodeURIComponent(data?.me?.lastname ?? '') +
+                '&email=' +
+                encodeURIComponent(email ?? '') +
+                '&a1=' +
+                encodeURIComponent(pupil?.grade ?? '') +
+                '&a2=' +
+                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
                 label: 'pupilScreening',
                 btnfn: [
                     () => {
-                        window.open(process.env.REACT_APP_PUPIL_SCREENING_URL, '_blank');
+                        window.open(pupil_url, '_blank');
                     },
                 ],
                 lang: {},
@@ -293,7 +308,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- TEMP: Test of Homework help -----
-        if (roles.includes('TUTEE'))
+        if (pupil)
             infos.push({
                 label: 'homeworkHelpPupil',
                 btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
