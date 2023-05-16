@@ -1,8 +1,7 @@
-import { Button, Card, DeleteIcon, FormControl, Input, Modal, Row, Stack, Text, TextArea, useTheme } from 'native-base';
-import { createRef, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { Button, FormControl, Input, Modal, Row, TextArea, useTheme } from 'native-base';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import FileUploader from '../components/FileUploader';
-import { BACKEND_URL } from '../config';
+import FilePicker, { uploadFiles } from '../components/FilePicker';
 import AlertMessage from '../widgets/AlertMessage';
 
 type Props = {
@@ -44,26 +43,13 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
 
     const send = useCallback(async () => {
         if (message && subject && files) {
-            let fileIDs: string[] = [];
-            for (const file of files) {
-                const formData: FormData = new FormData();
-                const data = new Blob([file], { type: file.type });
-                formData.append('file', data, file.name);
-                try {
-                    const fileID = await (
-                        await fetch(BACKEND_URL + '/api/files/upload', {
-                            method: 'POST',
-                            body: formData,
-                        })
-                    ).text();
-                    fileIDs.push(fileID);
-                } catch (e) {
-                    console.error(e);
-                    setSendError(t('helpcenter.contact.error'));
-                    break;
-                }
+            try {
+                const fileIDs = await uploadFiles(files);
+                onSend(subject, message, fileIDs);
+            } catch (e) {
+                console.error(e);
+                setSendError(t('helpcenter.contact.error'));
             }
-            onSend(subject, message, fileIDs);
         }
     }, [files, message, onSend, subject]);
 
@@ -85,11 +71,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                         <TextArea onChangeText={setMessage} h={80} placeholder={t('helpcenter.contact.message.placeholder')} autoCompleteType={{}} />
                     </Row>
                     <Row flexDirection="column" paddingY={space['0.5']}>
-                        <FileUploader
-                            handleFileChange={(files: File[]) => {
-                                setFiles(files);
-                            }}
-                        />
+                        <FilePicker handleFileChange={setFiles} />
                     </Row>
                     {details}
                     {noSubjectError && <AlertMessage content={noSubjectError} />}
