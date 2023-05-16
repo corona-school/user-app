@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Talk from 'talkjs';
 import useApollo from '../hooks/useApollo';
 
@@ -26,10 +26,11 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         role: 'student',
         email: 'salome.wick@typedigital.de',
     };
-
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
+    }, []);
 
+    useEffect(() => {
         if (talkLoaded) {
             const currentUser = new Talk.User(me);
 
@@ -43,7 +44,9 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         }
     }, [talkLoaded]);
 
-    return <ChatContext.Provider value={{ session, talkLoaded }}>{children}</ChatContext.Provider>;
+    const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
+
+    return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };
 
 export const useChat = () => {
