@@ -8,7 +8,7 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { Organizer, Participant } from '../../types/lernfair/User';
+import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 
 type MetaProps = {
     date: string;
@@ -19,9 +19,8 @@ type MetaProps = {
     total: number;
     attendeesCount?: number;
     organizers?: Organizer[];
-    participants?: Participant[];
-    declinedBy?: number[];
-
+    participants?: AppointmentParticipant[];
+    declinedBy: string[];
     meetingLink?: string;
 };
 const MetaDetails: React.FC<MetaProps> = ({
@@ -45,9 +44,10 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
     return (
         <>
-            <Modal mt="200" isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
+            <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
                 <AttendeesModal organizers={organizers} participants={participants} declinedBy={declinedBy} onClose={() => setShowModal(false)} />
             </Modal>
 

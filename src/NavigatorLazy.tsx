@@ -51,6 +51,7 @@ import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
 import CreateCourseAppointment from './pages/CreateCourseAppointment';
+import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
 import ChangeEmail from './pages/ChangeEmail';
@@ -58,6 +59,7 @@ import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
+import Chat from './pages/Chat';
 
 export default function NavigatorLazy() {
     return (
@@ -292,6 +294,15 @@ export default function NavigatorLazy() {
             />
 
             <Route
+                path="/edit-appointment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
                 path="/matching"
                 element={
                     <RequireAuth>
@@ -313,6 +324,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                    </RequireAuth>
+                }
+            />
+            {/* Chat feature */}
+            <Route
+                path="/chat"
+                element={
+                    <RequireAuth>
+                        <Chat />
                     </RequireAuth>
                 }
             />

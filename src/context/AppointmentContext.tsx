@@ -1,5 +1,5 @@
 import { createContext, ReactNode, Reducer, useContext, useReducer, useState } from 'react';
-import { CreateAppointmentInput } from '../types/lernfair/Appointment';
+import { AppointmentCreateGroupInput } from '../gql/graphql';
 import {
     CreateAppointmentAction,
     FormReducerActionType,
@@ -94,9 +94,9 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
     });
     const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);
 
-    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<CreateAppointmentInput[]>([]);
+    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<AppointmentCreateGroupInput[]>([]);
     const [appointmentsToBeCanceled, setAppointmentsToBeCanceled] = useState<number[]>([]);
-    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<CreateAppointmentInput[]>([]);
+    const [appointmentsToBeUpdated, setAppointmentsToBeUpdated] = useState<AppointmentCreateGroupInput[]>([]);
 
     return (
         <AppointmentContext.Provider

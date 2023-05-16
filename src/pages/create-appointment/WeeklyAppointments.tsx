@@ -1,9 +1,9 @@
-import { DateTime } from 'luxon';
 import { VStack } from 'native-base';
 import { useCallback } from 'react';
 import { useWeeklyAppointments } from '../../context/AppointmentContext';
 import AddWeeklyAppointmentButton from '../../widgets/AddWeeklyAppointmentButton';
 import WeeklyAppointmentForm from './WeeklyAppointmentForm';
+import { calcNewAppointmentInOneWeek } from '../../helper/appointment-helper';
 
 type WeeklyProps = {
     appointmentsCount: number;
@@ -12,12 +12,6 @@ type WeeklyProps = {
 
 const WeeklyAppointments: React.FC<WeeklyProps> = ({ appointmentsCount, nextDate }) => {
     const { weeklies } = useWeeklyAppointments();
-
-    const calcNewAppointmentInOneWeek = (date: string) => {
-        const startDate = DateTime.fromISO(date);
-        const nextDate = startDate.plus({ days: 7 }).toISO();
-        return nextDate;
-    };
 
     const getNextSuffix = useCallback(() => {
         if (weeklies.length === 0) return appointmentsCount + 1;

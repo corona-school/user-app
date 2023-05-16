@@ -1,24 +1,27 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AttendanceStatus, Organizer, Participant } from '../types/lernfair/User';
+import { AttendanceStatus } from '../types/lernfair/User';
 import AttendeeBox from '../components/appointment/AttendeeBox';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 
 type ModalProps = {
     organizers?: Organizer[];
-    participants?: Participant[];
-    declinedBy?: number[];
+    participants?: AppointmentParticipant[];
+    declinedBy: string[];
     onClose?: () => void;
 };
 
 const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declinedBy, onClose }) => {
     const { t } = useTranslation();
 
-    const sortedOrganizers = organizers && declinedBy && organizers.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
-    const sortedParticipants = participants && declinedBy && participants.sort((a, b) => declinedBy.indexOf(a.id) - declinedBy.indexOf(b.id));
+    const sortedOrganizers =
+        organizers && declinedBy && [...organizers].sort((a, b) => declinedBy.indexOf(a.userID ?? '') - declinedBy.indexOf(b.userID ?? ''));
+    const sortedParticipants =
+        participants && declinedBy && [...participants].sort((a, b) => declinedBy.indexOf(a.userID ?? '') - declinedBy.indexOf(b.userID ?? ''));
 
     return (
         <>
-            <Modal.Content width="350" marginX="auto" background="primary.900">
+            <Modal.Content width="350" background="primary.900">
                 <Modal.CloseButton />
                 <Modal.Body background="primary.900">
                     <Box>
@@ -33,8 +36,8 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${organizer.firstname} ${organizer.lastname}`}
-                                            isOrganizer={organizer.isOrganizer}
-                                            declined={declinedBy?.includes(organizer.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            isOrganizer={true}
+                                            declined={declinedBy.includes(organizer.userID!) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
                                 })}
@@ -42,7 +45,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                     return (
                                         <AttendeeBox
                                             name={`${participant.firstname} ${participant.lastname}`}
-                                            declined={declinedBy?.includes(participant.id) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
+                                            declined={declinedBy.includes(participant.userID!) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
                                 })}

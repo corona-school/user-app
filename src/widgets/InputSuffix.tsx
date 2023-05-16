@@ -6,9 +6,10 @@ type InputProps = {
     appointmentsCount: number;
     inputValue?: string;
     handleInput?: (e: any) => void;
+    handleBlur?: (e: any) => void;
 };
 
-const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, handleInput }) => {
+const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, handleInput, handleBlur }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -26,6 +27,7 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, hand
                 placeholder={t('appointment.create.inputPlaceholder')}
                 _light={{ placeholderTextColor: 'primary.500' }}
                 value={inputValue}
+                onBlur={handleBlur}
             />
         </InputGroup>
     );

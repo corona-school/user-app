@@ -1,26 +1,32 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
-import { useCallback, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { useCreateCourseAppointments } from '../../context/AppointmentContext';
-import { Appointment, AppointmentTypes } from '../../types/lernfair/Appointment';
+import { AppointmentCreateGroupInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Appointment } from '../../types/lernfair/Appointment';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
+import { DateTime } from 'luxon';
+import { useQuery } from '@apollo/client';
+import { gql } from '../../gql';
 
 type Props = {
     onBack: () => void;
     isDisabled?: boolean;
     isError?: boolean;
+    courseId?: number;
+    isEditing?: boolean;
     createAndSubmit?: () => void;
     createOnly?: () => void;
-    update?: () => void;
+    update?: (newAppointments?: AppointmentCreateGroupInput[]) => void;
+    appointments: Appointment[];
 };
 
-const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAndSubmit, createOnly, update }) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, appointments, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
@@ -60,35 +66,56 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const convertTime = useCallback((_time: string) => {
-        let time = parseInt(_time);
-
-        return time >= 60 ? time / 60 + ' Stunden' : time + ' Minuten';
-    }, []);
-
-    const _convertAppointments = () => {
+    const convertAppointments = () => {
         let convertedAppointments: Appointment[] = [];
-        for (const appointment of appointmentsToBeCreated) {
-            const converted = {
+
+        appointmentsToBeCreated.forEach((appointment) => {
+            convertedAppointments.push({
                 id: 1,
-                title: appointment.title,
-                description: appointment.description,
                 start: appointment.start,
                 duration: appointment.duration,
-                appointmentType: AppointmentTypes.GROUP,
-            };
-            convertedAppointments.push(converted);
-        }
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
+                displayName: courseName,
+                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
+                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
+            });
+        });
+
         return convertedAppointments;
     };
 
-    const _allAppointmentsToShow = () => {
-        const convertedAppointments = _convertAppointments();
-        const all = appointmentsData.concat(convertedAppointments);
-        return all;
-    };
-    const allAppointmentsToShow = _allAppointmentsToShow();
+    const getAllAppointmentsToShow = () => {
+        if (isEditing) {
+            const convertedAppointments = convertAppointments();
+            const allAppointments = appointments.concat(convertedAppointments);
+            const sortedAppointments = allAppointments.sort((a, b) => {
+                const _a = DateTime.fromISO(a.start).toMillis();
+                const _b = DateTime.fromISO(b.start).toMillis();
+                return _a - _b;
+            });
+            let sortedWithPosition: Appointment[] = [];
+            sortedAppointments.forEach((appointment, index) => {
+                sortedWithPosition.push({ ...appointment, position: index + 1 });
+            });
+            return sortedWithPosition;
+        }
+        const newAppointments: Appointment[] = [];
+        const convertedAppointments = convertAppointments();
+        const allAppointments = newAppointments.concat(convertedAppointments);
+        const sortedAppointments = allAppointments.sort((a, b) => {
+            const _a = DateTime.fromISO(a.start).toMillis();
+            const _b = DateTime.fromISO(b.start).toMillis();
+            return _a - _b;
+        });
 
+        let sortedWithPosition: Appointment[] = [];
+        sortedAppointments.forEach((appointment, index) => {
+            sortedWithPosition.push({ ...appointment, position: index + 1 });
+        });
+
+        return sortedWithPosition;
+    };
+    const allAppointmentsToShow = getAllAppointmentsToShow();
     return (
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>
@@ -161,8 +188,8 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
             <Heading fontSize="xl" marginBottom={space['1']}>
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
-            <Box maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnly={true} appointments={allAppointmentsToShow} />
+            <Box minH={300} maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>
@@ -181,7 +208,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                                 name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
                                 documentTitle: 'Helfer Kurs erstellen',
                             });
-                            update();
+                            update(appointmentsToBeCreated);
                         }}
                         isDisabled={isDisabled}
                     >

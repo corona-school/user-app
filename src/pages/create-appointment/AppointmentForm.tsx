@@ -5,14 +5,19 @@ import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { FormErrors } from './AppointmentCreation';
+import { isDateToday } from '../../helper/appointment-helper';
+import { DateTime } from 'luxon';
 
 type FormProps = {
-    errors: {};
+    errors: FormErrors;
     appointmentsCount: number;
+    onSetDate: () => void;
+    isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => {
-    const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, isCourse }) => {
+    const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const inputWidth = useBreakpointValue({
@@ -20,28 +25,51 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
         lg: '50%',
     });
 
-    const handleTitleInput = useCallback(
-        (e: any) => {
-            dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: e.target.value });
-        },
-        [dispatchCreateAppointment]
-    );
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [isToday, setIsToday] = useState<boolean>(false);
+
+    const handleTitleInput = (e: any) => {
+        setTitle(e.target.value);
+    };
 
     const handleDurationSelection = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.SELECT_CHANGE, field: 'duration', value: e });
+        dispatchCreateAppointment({ type: FormReducerActionType.SELECT_CHANGE, field: 'duration', value: parseFloat(e) });
     };
 
     const handleDescriptionInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: e });
+        setDescription(e);
     };
 
     const handleDateInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: e.target.value });
+        setDate(e.target.value);
+        onSetDate();
+    };
+
+    const handleDateBlur = () => {
+        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
+        setIsToday(isDateToday(date));
     };
 
     const handleTimeInput = (e: any) => {
-        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: e.target.value });
+        setTime(e.target.value);
     };
+
+    const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
+        let date = DateTime.now();
+        if (type === 'date') {
+            if (isCourse) date = date.plus({ days: 7 });
+            return date.toFormat('yyyy-MM-dd');
+        }
+
+        if (type === 'time') {
+            if (!isCourse && isToday) date = date.plus({ minutes: 5 });
+            return date.toFormat('HH:mm');
+        }
+        return undefined;
+    }, []);
 
     return (
         <Box>
@@ -50,13 +78,23 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                     {/* TITLE */}
                     <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
-                        <InputSuffix appointmentsCount={appointmentsCount + 1} inputValue={appointmentToCreate.title} handleInput={handleTitleInput} />
+                        <InputSuffix
+                            appointmentsCount={appointmentsCount + 1}
+                            inputValue={title}
+                            handleInput={handleTitleInput}
+                            handleBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
+                        />
                     </FormControl>
 
                     {/* DATE */}
                     <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker onChange={(e) => handleDateInput(e)} value={appointmentToCreate.date} />
+                        <DatePicker
+                            onChange={(e) => handleDateInput(e)}
+                            value={date}
+                            onBlur={handleDateBlur}
+                            min={getMinForDatePicker('date', isCourse, isToday)}
+                        />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyDateError')}
@@ -72,14 +110,25 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
 
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TIME */}
-                    <FormControl isInvalid={'time' in errors} width={inputWidth}>
+                    <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
                         <Box width="full">
-                            <DatePicker type="time" onChange={(e) => handleTimeInput(e)} value={appointmentToCreate.time} min={'08:00'} />
+                            <DatePicker
+                                type="time"
+                                onChange={(e) => handleTimeInput(e)}
+                                value={time}
+                                onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
+                                min={getMinForDatePicker('time', isCourse, isToday)}
+                            />
                         </Box>
                         {'time' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptyTimeError')}
+                            </FormControl.ErrorMessage>
+                        )}
+                        {'timeNotInFiveMin' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.errors.timeNotInFiveMin')}
                             </FormControl.ErrorMessage>
                         )}
                     </FormControl>
@@ -109,8 +158,9 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount }) => 
                 <FormControl isInvalid={'description' in errors} width={inputWidth}>
                     <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
                     <TextArea
-                        value={appointmentToCreate.description}
+                        value={description}
                         onChangeText={(e) => handleDescriptionInput(e)}
+                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
                         placeholder={t('appointment.create.descriptionPlaceholder')}
                         _light={{ placeholderTextColor: 'primary.500' }}
                         autoCompleteType={'normal'}

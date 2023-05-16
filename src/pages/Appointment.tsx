@@ -2,33 +2,52 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
-import { AppointmentTypes } from '../types/lernfair/Appointment';
+import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import NotificationAlert from '../components/notifications/NotificationAlert';
+
+const APPOINTMENT = gql`
+    query appointment($appointmentId: Float!) {
+        appointment(appointmentId: $appointmentId) {
+            id
+            start
+            duration
+            title
+            description
+            isCanceled
+            position
+            appointmentType
+            total
+            displayName
+            participants(skip: 0, take: 10) {
+                id
+                userID
+                firstname
+                lastname
+            }
+            organizers(skip: 0, take: 10) {
+                id
+                userID
+                firstname
+                lastname
+            }
+            declinedBy
+        }
+    }
+`;
 
 const Appointment = () => {
-    const { id: appointmentId } = useParams();
-    // const { data: appointment } = useQuery(appointmentQuery, {variables: {id: appointmentId}});
+    const { id } = useParams();
+    const appointmentId = parseFloat(id ? id : '');
+    const { data, error } = useQuery(APPOINTMENT, { variables: { appointmentId } });
 
     return (
-        <WithNavigation showBack>
-            <AppointmentDetail
-                appointment={{
-                    id: 1,
-                    title: 'Termin #1',
-                    description: 'Test',
-                    start: '2023-02-28T15:00:00Z',
-                    duration: 60,
-                    meetingLink: '',
-                    subcourseId: 3,
-                    organizers: [],
-                    participants: [],
-                    appointmentType: AppointmentTypes.GROUP,
-                }}
-                course={{
-                    name: 'Grundlagen Tutorium',
-                    description:
-                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-                }}
-            />
+        <WithNavigation showBack headerLeft={<NotificationAlert />}>
+            {!error && data?.appointment && (
+                <AppointmentDetail
+                    appointment={data?.appointment}
+                    id={data?.appointment?.appointmentType === Lecture_Appointmenttype_Enum.Group ? data?.appointment?.subcourseId : data?.appointment?.matchId}
+                />
+            )}
         </WithNavigation>
     );
 };

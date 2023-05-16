@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Match, Pupil_Schooltype_Enum } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import { LFMatch } from '../../types/lernfair/Match';
 import AlertMessage from '../../widgets/AlertMessage';
 import LearningPartner from '../../widgets/LearningPartner';
 
@@ -19,7 +18,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
     const { isMobile } = useLayoutHelper();
     const { space } = useTheme();
 
-    const cardGridWidth = useBreakpointValue({
+    const CardGrid = useBreakpointValue({
         base: '100%',
         lg: '50%',
     });
@@ -40,7 +39,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
     const renderMatch = useCallback(
         (match: Match, index: number) => {
             return (
-                <Box key={match.id} width={cardGridWidth} paddingY={space['0.5']} paddingRight={isMobile ? 0 : space['1']}>
+                <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
                     <LearningPartner
                         key={index}
                         matchId={match.id}
@@ -53,7 +52,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
                 </Box>
             );
         },
-        [cardGridWidth, getMatchPartnerName, isMobile, space]
+        [CardGrid, getMatchPartnerName]
     );
 
     return (

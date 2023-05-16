@@ -7,14 +7,15 @@ import InstructionProgress from '../widgets/InstructionProgress';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import AppointmentAssignment from './create-appointment/AppointmentAssignment';
 import AppointmentsInsight from './create-appointment/AppointmentsInsight';
-import { useNavigate } from 'react-router-dom';
+import { CreateAppointmentProvider } from '../context/AppointmentContext';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [noAppointments, setNoAppointments] = useState<boolean>(false);
-    const [id, setId] = useState<number>(0);
+    const [courseOrMatchId, setCourseOrMatchId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
-    const navigate = useNavigate();
+    const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
 
     const { t } = useTranslation();
 
@@ -34,14 +35,15 @@ const CreateAppointment = () => {
 
     const skipStepTwo = useCallback(
         (id: number, isCourse?: boolean) => {
-            console.log('isCourse? ', isCourse, id);
             if (isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(true);
+                setAppointmentsTotal(0);
             }
             if (!isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(false);
+                setAppointmentsTotal(0);
             }
             setCurrentIndex((prev) => prev + 2);
             setNoAppointments(true);
@@ -51,46 +53,54 @@ const CreateAppointment = () => {
 
     const goToStepTwo = useCallback(
         (id: number, isCourse?: boolean) => {
-            console.log('isCourse? ', isCourse, id);
-
             if (isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(true);
             }
             if (!isCourse) {
-                setId(id);
+                setCourseOrMatchId(id);
                 setIsCourse(false);
             }
             onNext();
         },
-        [setId, onNext]
+        [setCourseOrMatchId, onNext]
     );
 
     return (
         <AsNavigationItem path="create-appointments">
-            <WithNavigation>
-                <Box mx="4">
-                    <View position="sticky" mb={2} overflow="hidden">
-                        <InstructionProgress
-                            currentIndex={currentIndex}
-                            instructions={[
-                                { label: t('appointment.create.assignmentProgress') },
-                                { label: t('appointment.create.appointmentViewProgress') },
-                                { label: t('appointment.create.appointmentAdd') },
-                            ]}
-                        />
-                    </View>
-                    {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
-                    {currentIndex === 1 && <AppointmentsInsight id={id} isCourse={isCourse} next={onNext} back={onBack} />}
-                    {currentIndex === 2 && (
-                        <AppointmentCreation
-                            back={noAppointments ? returnToStepOne : onBack}
-                            navigateTo={() => navigate('/appointments')}
-                            id={id}
-                            isCourse={isCourse}
-                        />
-                    )}
-                </Box>
+            <WithNavigation headerLeft={<NotificationAlert />}>
+                <CreateAppointmentProvider>
+                    <Box mx="4">
+                        <View position="sticky" mb={2} overflow="hidden">
+                            <InstructionProgress
+                                currentIndex={currentIndex}
+                                instructions={[
+                                    { label: t('appointment.create.assignmentProgress') },
+                                    { label: t('appointment.create.appointmentViewProgress') },
+                                    { label: t('appointment.create.appointmentAdd') },
+                                ]}
+                            />
+                        </View>
+                        {currentIndex === 0 && <AppointmentAssignment next={goToStepTwo} skipStepTwo={skipStepTwo} />}
+                        {currentIndex === 1 && (
+                            <AppointmentsInsight
+                                id={courseOrMatchId}
+                                isCourse={isCourse}
+                                next={onNext}
+                                back={onBack}
+                                setAppointmentsTotal={setAppointmentsTotal}
+                            />
+                        )}
+                        {currentIndex === 2 && (
+                            <AppointmentCreation
+                                back={noAppointments ? returnToStepOne : onBack}
+                                courseOrMatchId={courseOrMatchId}
+                                isCourse={isCourse}
+                                appointmentsTotal={appointmentsTotal}
+                            />
+                        )}
+                    </Box>
+                </CreateAppointmentProvider>
             </WithNavigation>
         </AsNavigationItem>
     );

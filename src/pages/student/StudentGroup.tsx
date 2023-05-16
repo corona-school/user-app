@@ -20,6 +20,7 @@ import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import { LFSubCourse } from '../../types/lernfair/Course';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import HelpNavigation from '../../components/HelpNavigation';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -177,7 +178,16 @@ const StudentGroup: React.FC = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                headerContent={<Hello />}
+                headerTitle={t('matching.group.helper.header')}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
                     {loading && <CenterLoadingSpinner />}
 

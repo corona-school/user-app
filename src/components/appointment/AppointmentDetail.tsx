@@ -1,17 +1,21 @@
-import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
-import { Appointment, Course } from '../../types/lernfair/Appointment';
+import { Appointment } from '../../types/lernfair/Appointment';
 import MetaDetails from './MetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
 import Buttons from './Buttons';
 import { DateTime } from 'luxon';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import useApollo from '../../hooks/useApollo';
+import { useNavigate } from 'react-router-dom';
+import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    course?: Course;
+    id?: number;
 };
 
 type AppointmentDates = {
@@ -20,15 +24,59 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, course }) => {
+const QUERY_MATCH = gql`
+    query match($id: Int!) {
+        match(matchId: $id) {
+            id
+            pupil {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+const QUERY_SUBCOURSE = gql`
+    query course($id: Int!) {
+        subcourse(subcourseId: $id) {
+            course {
+                name
+                description
+            }
+            instructors {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
+    const { user } = useApollo();
     const [canceled, setCanceled] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const { data } = useQuery(appointment.matchId ? QUERY_MATCH : QUERY_SUBCOURSE, { variables: { id } });
+
     const containerWidth = useBreakpointValue({
         base: 'full',
         lg: sizes['containerWidth'],
     });
+
+    const [cancelAppointment] = useMutation(gql`
+        mutation cancelAppointment($appointmentId: Float!) {
+            appointmentCancel(appointmentId: $appointmentId)
+        }
+    `);
+
+    const [declineAppointment] = useMutation(gql`
+        mutation declineAppointment($appointmentId: Float!) {
+            appointmentDecline(appointmentId: $appointmentId)
+        }
+    `);
 
     const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
         const start = DateTime.fromISO(appointmentStart).setLocale('de');
@@ -53,10 +101,21 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
 
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
-    const cancelAppointment = useCallback(() => {
+    const isPastAppointment = useMemo(() => {
+        return DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
+    }, [appointment.duration, appointment.start]);
+
+    const handleCancelClick = useCallback(() => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        // TODO mutation to set participant declined
+        cancelAppointment({ variables: { appointmentId: appointment.id } });
+        navigate('/appointments');
+    }, []);
+
+    const handleDeclineClick = useCallback(() => {
+        toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
+        setCanceled(true);
+        declineAppointment({ variables: { appointmentId: appointment.id } });
     }, []);
 
     const attendees = useMemo(() => {
@@ -64,24 +123,43 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, cour
     }, [appointment.organizers, appointment.participants]);
 
     return (
-        <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
-            <Avatars attendees={attendees} />
-            <Header appointmentType={appointment.appointmentType} organizers={[]} title={appointment.title} />
-            <MetaDetails
-                date={date}
-                startTime={startTime}
-                endTime={endTime}
-                duration={appointment.duration}
-                count={1}
-                total={5}
-                attendeesCount={attendeesCount}
-                organizers={appointment.organizers}
-                participants={appointment.participants}
-                declinedBy={appointment.declinedBy}
-            />
-            <Description appointmentType={appointment.appointmentType} courseName={course?.name} courseDescription={course?.description} />
-            <Buttons onPress={cancelAppointment} canceled={canceled} />
-        </Box>
+        <>
+            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+                <DeleteAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} />
+            </Modal>
+            <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
+                <Avatars attendees={attendees} />
+                <Header
+                    appointmentType={appointment.appointmentType}
+                    organizers={appointment.organizers}
+                    courseName={data?.subcourse?.course?.name}
+                    appointmentTitle={appointment.title}
+                    displayName={appointment.displayName}
+                    position={appointment.position}
+                />
+                <MetaDetails
+                    date={date}
+                    startTime={startTime}
+                    endTime={endTime}
+                    duration={appointment.duration}
+                    count={appointment.position ? appointment.position : 0}
+                    total={appointment.total ? appointment.total : 0}
+                    attendeesCount={attendeesCount}
+                    organizers={appointment.organizers ?? []}
+                    participants={appointment.participants ?? []}
+                    declinedBy={appointment?.declinedBy ?? []}
+                />
+                <Description description={appointment.description} />
+
+                <Buttons
+                    onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick}
+                    onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
+                    canceled={canceled}
+                    declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
+                    canEdit={!isPastAppointment}
+                />
+            </Box>
+        </>
     );
 };
 

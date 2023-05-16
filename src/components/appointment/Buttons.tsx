@@ -5,9 +5,12 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 
 type AvatarsProps = {
     onPress: () => void;
+    onEditPress: () => void;
     canceled: boolean;
+    declined: boolean;
+    canEdit: boolean;
 };
-const Buttons: React.FC<AvatarsProps> = ({ onPress, canceled }) => {
+const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, declined, canEdit }) => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const { user } = useApollo();
@@ -22,16 +25,16 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, canceled }) => {
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
                 {user?.student && (
                     <>
-                        <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth}>
+                        <Button _text={{ color: 'white' }} onPress={onPress} bgColor="danger.100" width={buttonWidth}>
                             {t('appointment.detail.deleteButton')}
                         </Button>
-                        <Button variant="outline" width={buttonWidth}>
+                        <Button variant="outline" width={buttonWidth} onPress={onEditPress} isDisabled={!canEdit}>
                             {t('appointment.detail.editButton')}
                         </Button>
                     </>
                 )}
                 {user?.pupil && (
-                    <Button _text={{ color: 'white' }} bgColor="amber.700" width={buttonWidth} onPress={onPress} isDisabled={canceled}>
+                    <Button _text={{ color: 'white' }} bgColor="danger.100" width={buttonWidth} onPress={onPress} isDisabled={canceled || declined}>
                         {t('appointment.detail.cancelButton')}
                     </Button>
                 )}

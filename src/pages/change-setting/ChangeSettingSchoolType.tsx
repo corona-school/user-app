@@ -1,6 +1,7 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
+import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue, Stack } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -26,7 +28,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     const navigate = useNavigate();
 
     const { data, loading } = useQuery(
-        gql`
+        gql(`
             query GetPupilSchooltype {
                 me {
                     pupil {
@@ -34,17 +36,19 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
                     }
                 }
             }
-        `,
+        `),
         {
             fetchPolicy: 'no-cache',
         }
     );
 
-    const [updateSchooltype, _updateSchooltype] = useMutation(gql`
+    const [updateSchooltype, _updateSchooltype] = useMutation(
+        gql(`
         mutation updateSchooltypePupil($schooltype: SchoolType!) {
             meUpdate(update: { pupil: { schooltype: $schooltype } })
         }
-    `);
+    `)
+    );
 
     const [selections, setSelections] = useState<string>('');
 
@@ -86,7 +90,17 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
     }, []);
 
     return (
-        <WithNavigation headerTitle={t('profile.SchoolType.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={t('profile.SchoolType.single.header')}
+            showBack
+            isLoading={loading}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.SchoolType.single.title')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

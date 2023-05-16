@@ -1,5 +1,6 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, CloseIcon, Heading, Modal, Row, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -28,8 +29,11 @@ import FurtherInstructors from './course-creation/FurtherInstructors';
 
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
+import { AppointmentCreateGroupInput } from '../gql/graphql';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
+import { Appointment } from '../types/lernfair/Appointment';
+import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -95,18 +99,20 @@ const CreateCourse: React.FC = () => {
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
+    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
 
     const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
     const [imageLoading, setImageLoading] = useState<boolean>(false);
-    const { appointmentsToBeCreated } = useCreateCourseAppointments();
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
 
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
-    const { data: studentData, loading } = useQuery(gql`
+    const { data: studentData, loading } = useQuery(
+        gql(`
         query StudentCanCreateCourse {
             me {
                 student {
@@ -120,9 +126,11 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
+    `)
+    );
 
-    const [courseQuery] = useLazyQuery(gql`
+    const [courseQuery] = useLazyQuery(
+        gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -151,25 +159,51 @@ const CreateCourse: React.FC = () => {
                         name
                     }
                 }
+                appointments {
+                    id
+                    start
+                    duration
+                    title
+                    description
+                    displayName
+                    position
+                    total
+                    appointmentType
+                    participants(skip: 0, take: 10) {
+                        firstname
+                        lastname
+                      
+                    }
+                    organizers(skip: 0, take: 10) {
+                        firstname
+                        lastname
+                    }
+                }
             }
         }
-    `);
+    `)
+    );
 
-    const [createCourse, { reset: resetCourse }] = useMutation(gql`
+    const [createCourse, { reset: resetCourse }] = useMutation(
+        gql(`
         mutation createCourse($course: PublicCourseCreateInput!) {
             courseCreate(course: $course) {
                 id
             }
         }
-    `);
-    const [updateCourse, { reset: resetEditCourse }] = useMutation(gql`
+    `)
+    );
+    const [updateCourse, { reset: resetEditCourse }] = useMutation(
+        gql(`
         mutation updateCourse($course: PublicCourseEditInput!, $id: Float!) {
             courseEdit(course: $course, courseId: $id) {
                 id
             }
         }
-    `);
-    const [createSubcourse, { reset: resetSubcourse }] = useMutation(gql`
+    `)
+    );
+    const [createSubcourse, { reset: resetSubcourse }] = useMutation(
+        gql(`
         mutation createSubcourse($courseId: Float!, $subcourse: PublicSubcourseCreateInput!) {
             subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
                 id
@@ -179,48 +213,65 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `);
-    const [createAppointments, { reset: resetAppointments }] = useMutation(gql`
-        mutation createAppointments($appointments: [AppointmentCreateInputFull!]!) {
-            appointmentsCreate(appointments: $appointments)
+    `)
+    );
+
+    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(
+        gql(`
+        mutation appointmentsCourseCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
+            appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
         }
-    `);
-    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(gql`
+    `)
+    );
+
+    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(
+        gql(`
         mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
             subcourseEdit(subcourse: $course, subcourseId: $id) {
                 id
             }
         }
-    `);
+    `)
+    );
 
-    const [setCourseImage] = useMutation(gql`
+    const [setCourseImage] = useMutation(
+        gql(`
         mutation setCourseImage($courseId: Float!, $fileId: String!) {
             courseSetImage(courseId: $courseId, fileId: $fileId)
         }
-    `);
+    `)
+    );
 
-    const [addCourseInstructor] = useMutation(gql`
+    const [addCourseInstructor] = useMutation(
+        gql(`
         mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
-    const [removeCourseInstructor] = useMutation(gql`
+    `)
+    );
+    const [removeCourseInstructor] = useMutation(
+        gql(`
         mutation removeCourseInstructor($studentId: Float!, $courseId: Float!) {
             subcourseDeleteInstructor(studentId: $studentId, subcourseId: $courseId)
         }
-    `);
+    `)
+    );
 
-    const [setCourseTags] = useMutation(gql`
+    const [setCourseTags] = useMutation(
+        gql(`
         mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
             courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
         }
-    `);
+    `)
+    );
 
-    const [submitCourse] = useMutation(gql`
+    const [submitCourse] = useMutation(
+        gql(`
         mutation SubmitCourse($courseId: Float!) {
             courseSubmit(courseId: $courseId)
         }
-    `);
+    `)
+    );
 
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -266,6 +317,7 @@ const CreateCourse: React.FC = () => {
         setAllowContact(!!prefillCourse.course.allowContact);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
+        setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -326,6 +378,7 @@ const CreateCourse: React.FC = () => {
             maxGrade: number;
             maxParticipants: number;
             joinAfterStart: boolean;
+            lectures?: LFLecture[];
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
@@ -339,8 +392,12 @@ const CreateCourse: React.FC = () => {
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
             setIsLoading(true);
-
             const errors: CreateCourseError[] = [];
+            if (appointmentsToBeCreated.length === 0) {
+                errors.push('appointments');
+                finishCourseCreation(errors);
+                return;
+            }
 
             /**
              * Course Creation
@@ -383,6 +440,7 @@ const CreateCourse: React.FC = () => {
              * Subcourse Creation
              */
             const subcourse = _getSubcourseData();
+            subcourse.lectures = [];
 
             const subRes = await createSubcourse({
                 variables: {
@@ -419,17 +477,24 @@ const CreateCourse: React.FC = () => {
             /**
              * Appointment Creation
              */
-            const courseAppointmentsToBeCreatedWithSubcourseId = appointmentsToBeCreated.forEach((appointment) => {
-                appointment.subcourseId = subcourseId;
-            });
+            const addIdToAppointment = (a: AppointmentCreateGroupInput[], sId: number) => {
+                const appointments = a.map((appointment) => ({
+                    ...appointment,
+                    subcourseId,
+                }));
+                return appointments;
+            };
 
-            const appointmentsRes = await createAppointments({
-                variables: {
-                    courseAppointmentsToBeCreatedWithSubcourseId,
-                },
-            });
+            const appointments = addIdToAppointment(appointmentsToBeCreated, subcourseId);
 
-            if (!appointmentsRes.data && appointmentsRes.errors) {
+            if (appointments.length === 0) {
+                errors.push('appointments');
+            }
+
+            const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
+
+            // errors === undefined
+            if (appointmentsRes.errors) {
                 errors.push('appointments');
                 await resetAppointments();
                 await resetSubcourse();
@@ -438,6 +503,8 @@ const CreateCourse: React.FC = () => {
                 setIsLoading(false);
                 return;
             }
+
+            if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
 
             /**
              * Image upload
@@ -507,146 +574,183 @@ const CreateCourse: React.FC = () => {
             setCourseImage,
             setCourseTags,
             tags,
+            appointmentsToBeCreated,
         ]
     );
 
-    const editCourse = useCallback(async () => {
-        setIsLoading(true);
-        const errors: CreateCourseError[] = [];
+    const editCourse = useCallback(
+        async (newAppointments?: AppointmentCreateGroupInput[]) => {
+            setIsLoading(true);
+            const errors: CreateCourseError[] = [];
 
-        const course = _getCourseData();
-        const courseData = (await updateCourse({
-            variables: {
-                course,
-                id: courseId,
-            },
-        })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
-
-        if (!courseData.data && courseData.errors) {
-            errors.push('course');
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            return;
-        }
-
-        const _courseId = courseData?.data?.courseEdit?.id;
-
-        if (!_courseId) {
-            errors.push('course');
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-
-        const tagIds = tags.map((t: LFTag) => t.id);
-        const tagsRes = await setCourseTags({
-            variables: { courseTagIds: tagIds, courseId },
-        });
-        if (!tagsRes.data.courseSetTags && tagsRes.errors) {
-            errors.push('tags');
-        }
-
-        const subcourse = _getSubcourseData();
-        const subRes = await updateSubcourse({
-            variables: {
-                id: prefillCourseId,
-                course: subcourse,
-            },
-        });
-
-        if (!subRes.data && subRes.errors) {
-            errors.push('subcourse');
-            await resetEditSubcourse();
-            await resetEditCourse();
-            finishCourseCreation(errors);
-            setIsLoading(false);
-            return;
-        }
-
-        for await (const instructor of newInstructors) {
-            let res = await addCourseInstructor({
+            const course = _getCourseData();
+            const courseData = (await updateCourse({
                 variables: {
-                    courseId: prefillCourseId,
-                    studentId: instructor.id,
+                    course,
+                    id: courseId,
+                },
+            })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
+
+            if (!courseData.data && courseData.errors) {
+                errors.push('course');
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                return;
+            }
+
+            const _courseId = courseData?.data?.courseEdit?.id;
+
+            if (!_courseId) {
+                errors.push('course');
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
+            }
+
+            const tagIds = tags.map((t: LFTag) => t.id);
+            const tagsRes = await setCourseTags({
+                variables: { courseTagIds: tagIds, courseId },
+            });
+            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
+                errors.push('tags');
+            }
+
+            const subcourse = _getSubcourseData();
+            const subRes = await updateSubcourse({
+                variables: {
+                    id: prefillCourseId,
+                    course: subcourse,
                 },
             });
-            if (!res.data && res.errors) {
-                errors.push('instructors');
+
+            if (!subRes.data && subRes.errors) {
+                errors.push('subcourse');
+                await resetEditSubcourse();
+                await resetEditCourse();
+                finishCourseCreation(errors);
+                setIsLoading(false);
+                return;
             }
-        }
 
-        /**
-         * Image upload
-         */
-        if (!pickedPhoto) {
-            setIsLoading(false);
-            finishCourseCreation(errors);
-            return;
-        }
-        setImageLoading(true);
-        const formData: FormData = new FormData();
+            for await (const instructor of newInstructors) {
+                let res = await addCourseInstructor({
+                    variables: {
+                        courseId: prefillCourseId,
+                        studentId: instructor.id,
+                    },
+                });
+                if (!res.data && res.errors) {
+                    errors.push('instructors');
+                }
+            }
 
-        const base64 = await fetch(pickedPhoto);
+            const subcourseId = subRes?.data?.subcourseEdit?.id;
+            /**
+             * Appointment Creation
+             */
+            if (newAppointments && newAppointments?.length > 0) {
+                const addIdToAppointment = (a: AppointmentCreateGroupInput[]) => {
+                    const appointments = a.map((appointment) => ({
+                        ...appointment,
+                        subcourseId,
+                    }));
+                    return appointments;
+                };
 
-        const data = await base64.blob();
-        formData.append('file', data, 'img_course.jpeg');
+                const appointments = addIdToAppointment(newAppointments ?? []);
 
-        let uploadFileId;
-        try {
-            uploadFileId = await (
-                await fetch(BACKEND_URL + '/api/files/upload', {
-                    method: 'POST',
-                    body: formData,
-                })
-            ).text();
+                if (appointments.length === 0) {
+                    errors.push('appointments');
+                }
 
-            if (!uploadFileId) {
+                const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
+
+                if (appointmentsRes.errors) {
+                    errors.push('appointments');
+                    await resetAppointments();
+                    await resetSubcourse();
+                    await resetCourse();
+                    finishCourseCreation(errors);
+                    setIsLoading(false);
+                    return;
+                }
+
+                if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
+            }
+            /**
+             * Image upload
+             */
+            if (!pickedPhoto) {
+                setIsLoading(false);
+                finishCourseCreation(errors);
+                return;
+            }
+            setImageLoading(true);
+            const formData: FormData = new FormData();
+
+            const base64 = await fetch(pickedPhoto);
+
+            const data = await base64.blob();
+            formData.append('file', data, 'img_course.jpeg');
+
+            let uploadFileId;
+            try {
+                uploadFileId = await (
+                    await fetch(BACKEND_URL + '/api/files/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                ).text();
+
+                if (!uploadFileId) {
+                    errors.push('upload_image');
+                }
+            } catch (e) {
+                console.error(e);
                 errors.push('upload_image');
             }
-        } catch (e) {
-            console.error(e);
-            errors.push('upload_image');
-        }
 
-        if (!uploadFileId) {
+            if (!uploadFileId) {
+                finishCourseCreation(errors);
+                return;
+            }
+
+            /**
+             * Set image in course
+             */
+            const imageRes = (await setCourseImage({
+                variables: {
+                    courseId: courseId,
+                    fileId: uploadFileId,
+                },
+            })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
+
+            if (!imageRes.data && imageRes.errors) {
+                errors.push('set_image');
+            }
+
+            setImageLoading(false);
             finishCourseCreation(errors);
-            return;
-        }
-
-        /**
-         * Set image in course
-         */
-        const imageRes = (await setCourseImage({
-            variables: {
-                courseId: courseId,
-                fileId: uploadFileId,
-            },
-        })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
-
-        if (!imageRes.data && imageRes.errors) {
-            errors.push('set_image');
-        }
-
-        setImageLoading(false);
-        finishCourseCreation(errors);
-    }, [
-        _getCourseData,
-        updateCourse,
-        courseId,
-        tags,
-        setCourseTags,
-        _getSubcourseData,
-        updateSubcourse,
-        prefillCourseId,
-        pickedPhoto,
-        setCourseImage,
-        finishCourseCreation,
-        resetEditCourse,
-        resetEditSubcourse,
-        newInstructors,
-        addCourseInstructor,
-    ]);
+        },
+        [
+            _getCourseData,
+            updateCourse,
+            courseId,
+            tags,
+            setCourseTags,
+            _getSubcourseData,
+            updateSubcourse,
+            prefillCourseId,
+            pickedPhoto,
+            setCourseImage,
+            finishCourseCreation,
+            resetEditCourse,
+            resetEditSubcourse,
+            newInstructors,
+            addCourseInstructor,
+        ]
+    );
 
     const onNext = useCallback(() => {
         if (currentIndex >= 6) {
@@ -720,7 +824,12 @@ const CreateCourse: React.FC = () => {
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 isLoading={loading || isLoading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 <CreateCourseContext.Provider
                     value={{
@@ -780,7 +889,9 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
                             {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
                             {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && <CourseAppointments next={onNext} back={onBack} />}
+                            {currentIndex === 3 && (
+                                <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} appointments={courseAppointments ?? []} />
+                            )}
                             {currentIndex === 4 && (
                                 <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
                             )}
@@ -791,8 +902,11 @@ const CreateCourse: React.FC = () => {
                                         createOnly={prefillCourseId ? undefined : () => finishCreation(/* also submit */ false)}
                                         update={prefillCourseId ? editCourse : undefined}
                                         onBack={onBack}
+                                        courseId={prefillCourseId}
+                                        isEditing={isEditing}
                                         isError={showCourseError}
                                         isDisabled={loading || isLoading || imageLoading}
+                                        appointments={courseAppointments ?? []}
                                     />
                                     <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">
                                         <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">

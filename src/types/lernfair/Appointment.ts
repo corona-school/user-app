@@ -1,12 +1,4 @@
-import { AppointmentType as TAppointmentType } from './CreateAppointment';
-import { Organizer, Participant } from './User';
-
-export enum AppointmentTypes {
-    GROUP = 'group',
-    MATCH = 'match',
-    OTHER_INTERNAL = 'other_internal',
-    LEGACY_LECTURE = 'legacy_lecture',
-}
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -17,12 +9,17 @@ export type Appointment = {
     duration: number;
     subcourseId?: number;
     matchId?: number | null;
+    position?: number;
+    total?: number;
+    displayName?: string;
     meetingLink?: string | null;
     organizers?: Organizer[];
-    participants?: Participant[];
-    isCancelled?: boolean;
-    declinedBy?: number[];
-    appointmentType: AppointmentTypes;
+    participants?: AppointmentParticipant[];
+    isCanceled?: boolean;
+    declinedBy?: string[];
+    appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
+    isParticipant?: boolean;
 };
 
 // type of appointments to send to the BE
@@ -33,11 +30,6 @@ export type CreateAppointmentInput = {
     duration: number;
     subcourseId?: number;
     matchId?: number;
-    organizers?: number[];
-    appointmentType?: TAppointmentType;
-};
-
-export type Course = {
-    name: string;
-    description: string;
+    meetingLink: string;
+    appointmentType: Lecture_Appointmenttype_Enum;
 };

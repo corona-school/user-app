@@ -1,53 +1,94 @@
-import { Box, Button, Stack, useBreakpointValue, Text, ScrollView } from 'native-base';
-import React from 'react';
+import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
-import { appointmentsData } from '../../widgets/appointment/dummy/testdata';
-
+import { Appointment } from '../../types/lernfair/Appointment';
 type Props = {
     id: number;
     isCourse: boolean;
     next: () => void;
     back: () => void;
+    setAppointmentsTotal: Dispatch<SetStateAction<number>>;
 };
 
-const courseAppointmentsQuery = gql`
-    query courseLectures($id: Int!) {
+const GET_COURSE_APPOINTMENTS = gql`
+    query subcourseAppointments($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
                 name
             }
-            lectures {
-                id
-                start
-                duration
-            }
-        }
-    }
-`;
-
-const matchAppointmentsQuery = gql`
-    query match($id: Int!) {
-        match(matchId: $id) {
-            id
             appointments {
                 id
-                title
-                description
                 start
                 duration
+                title
+                description
+                displayName
+                position
+                total
+                appointmentType
+                participants(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isPupil
+                    isStudent
+                }
+                organizers(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                }
             }
         }
     }
 `;
 
-const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
-    const { data, loading, error } = useQuery(isCourse ? courseAppointmentsQuery : matchAppointmentsQuery, { variables: { id } });
+const GET_MATCH_APPOINTMENTS = gql`
+    query matchAppointments($id: Int!) {
+        match(matchId: $id) {
+            pupil {
+                id
+                firstname
+                lastname
+            }
+            appointments {
+                id
+                matchId
+                start
+                duration
+                title
+                description
+                displayName
+                position
+                total
+                appointmentType
+                participants(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                    isPupil
+                    isStudent
+                }
+                organizers(skip: 0, take: 10) {
+                    id
+                    firstname
+                    lastname
+                }
+            }
+        }
+    }
+`;
+
+const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setAppointmentsTotal }) => {
+    const { data, loading, error } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+
+    const appointments = (isCourse ? data?.subcourse?.appointments : data?.match?.appointments) ?? [];
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -59,7 +100,10 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
         lg: '25%',
     });
 
-    // TODO add empty state from upcoming story
+    useEffect(() => {
+        setAppointmentsTotal(appointments.length);
+    });
+
     return (
         <Box>
             {loading && <CenterLoadingSpinner />}
@@ -70,15 +114,13 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse }) => {
             ) : (
                 <Stack direction="row" py={6}>
                     <Text>
-                        {/* // TODO add match partner name */}
-                        {t('appointment.create.insightMatchHeader', { matchPartner: 'Leon Jackson' })}
+                        {t('appointment.create.insightMatchHeader', { matchPartner: `${data?.match?.pupil?.firstname} ${data?.match?.pupil?.lastname}` })}
                     </Text>
                 </Stack>
             )}
             {!error && (
-                <Box maxH={maxHeight} flex="1" mb="10">
-                    {/* // TODO change to appointments from query */}
-                    <AppointmentList isReadOnly={true} appointments={appointmentsData} />
+                <Box minH={isMobile ? 400 : 600} maxH={maxHeight} flex="1" mb="10">
+                    <AppointmentList isReadOnlyList={true} appointments={appointments as Appointment[]} />
                 </Box>
             )}
             <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
