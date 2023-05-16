@@ -36,6 +36,7 @@ const Chat: React.FC = () => {
     const handleNewChatPress = () => {
         setIsModalOpen(true);
     };
+
     return (
         <LFChatProvider>
             <AsNavigationItem path="chat">
@@ -53,7 +54,7 @@ const Chat: React.FC = () => {
                     {/*  TODO mobile version */}
                     <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
                     <ChatInbox />
-                    <ChatContactsModal isOpen={isModalOpen} />
+                    <ChatContactsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 </WithNavigation>
             </AsNavigationItem>
         </LFChatProvider>
