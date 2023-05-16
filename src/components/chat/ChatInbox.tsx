@@ -1,14 +1,14 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
-import Talk from 'talkjs';
+import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import { useChat } from '../../context/ChatContext';
 
 type InboxProps = {};
 
 const ChatInbox: React.FC<InboxProps> = ({}) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
-    const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
+    const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
         base: '90%',
@@ -29,28 +29,13 @@ const ChatInbox: React.FC<InboxProps> = ({}) => {
     });
 
     useEffect(() => {
-        Talk.ready.then(() => markTalkLoaded(true));
+        if (!session) return;
+        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        inbox.setFeedFilter({});
+        inbox.mount(inboxRef.current);
 
-        if (talkLoaded) {
-            const currentUser = new Talk.User({
-                id: '123',
-                name: 'Lomy W',
-                email: 'salome.wick@typedigital.de',
-                role: 'pupil',
-            });
-
-            const session = new Talk.Session({
-                appId: 't5NarFaG',
-                me: currentUser,
-            });
-
-            const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-            inbox.setFeedFilter({});
-            inbox.mount(inboxRef.current);
-
-            return () => session.destroy();
-        }
-    }, [talkLoaded]);
+        return () => session.destroy();
+    }, [isMobile, session]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };

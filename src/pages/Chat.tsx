@@ -8,12 +8,15 @@ import HelpNavigation from '../components/HelpNavigation';
 import ChatInbox from '../components/chat/ChatInbox';
 import FloatinActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
-import { useState } from 'react';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
+import { LFChatProvider } from '../context/ChatContext';
+import { useState } from 'react';
+import ChatContactsModal from '../modals/ChatContactsModal';
 
 const Chat: React.FC = () => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -30,30 +33,30 @@ const Chat: React.FC = () => {
         lg: '4%',
     });
 
+    const handleNewChatPress = () => {
+        setIsModalOpen(true);
+    };
     return (
-        <AsNavigationItem path="chat">
-            <WithNavigation
-                headerContent={<Hello />}
-                headerTitle={t('chat.title')}
-                headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
-                }
-                showBack={isMobile}
-            >
-                {/*  TODO mobile version */}
-                <FloatinActionButton
-                    mr={marginRight}
-                    mt={marginTop}
-                    handlePress={() => console.log('open start-new-chat-modal')}
-                    place={fabPlace}
-                    icon={<LFAddChatIcon />}
-                />
-                <ChatInbox />
-            </WithNavigation>
-        </AsNavigationItem>
+        <LFChatProvider>
+            <AsNavigationItem path="chat">
+                <WithNavigation
+                    headerContent={<Hello />}
+                    headerTitle={t('chat.title')}
+                    headerLeft={
+                        <Stack alignItems="center" direction="row">
+                            <HelpNavigation />
+                            <NotificationAlert />
+                        </Stack>
+                    }
+                    showBack={isMobile}
+                >
+                    {/*  TODO mobile version */}
+                    <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
+                    <ChatInbox />
+                    <ChatContactsModal isOpen={isModalOpen} />
+                </WithNavigation>
+            </AsNavigationItem>
+        </LFChatProvider>
     );
 };
 

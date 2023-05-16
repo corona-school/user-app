@@ -5,6 +5,10 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student_64.svg';
 
 const NewChat = () => {
     const { space } = useTheme();
+    // TODO list all conversations, which a user can start, depending on contact options
+    // TODO add query to get my contacts
+    // TODO add mutation to create a convo
+
     const getCoursePartnerReason = (reason: ContactReasons, role: Roles) => {
         if (reason === 'course' && role === 'student') return 'Kursleiter:in';
         if (reason === 'course' && role === 'pupil') return 'Kursteilnehmer:in';
