@@ -54,7 +54,7 @@ import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
-import LeftChat from './pages/chat/LeftChat';
+import LeftVideoChat from './pages/chat/LeftVideoChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
@@ -298,7 +298,7 @@ export default function NavigatorLazy() {
                 path="/left-chat/:id/:type"
                 element={
                     <RequireAuth>
-                        <LeftChat />
+                        <LeftVideoChat />
                     </RequireAuth>
                 }
             />

@@ -13,7 +13,7 @@ query appointmentOrganizer($appointmentId: Float!) {
     }
 }`);
 
-const LeftChat: React.FC = () => {
+const LeftVideoChat: React.FC = () => {
     const { id, type } = useParams();
     const idAsInt = parseInt(id!);
 
@@ -59,18 +59,18 @@ const LeftChat: React.FC = () => {
                 </Box>
                 <Stack space={space['1']} direction="column">
                     <Heading fontWeight="700" lineHeight="md" fontSize="lg" color="white" textAlign="center">
-                        {t(`chat.${chatType}.leftChat.title`)}
+                        {t(`chat.${chatType}.leftVideoChat.title`)}
                     </Heading>
                     <Text fontWeight="normal" fontSize="xs" color="white" textAlign="center">
-                        {t(`chat.${chatType}.leftChat.subtitle`)}
+                        {t(`chat.${chatType}.leftVideoChat.subtitle`)}
                     </Text>
                 </Stack>
                 <Button alignSelf="center" width={buttonWidth} onPress={() => saveAndFinish()}>
-                    <Text fontSize="sm">{t(`chat.${chatType}.leftChat.button`)}</Text>
+                    <Text fontSize="sm">{t(`chat.${chatType}.leftVideoChat.button`)}</Text>
                 </Button>
             </Stack>
         </View>
     );
 };
 
-export default LeftChat;
+export default LeftVideoChat;
