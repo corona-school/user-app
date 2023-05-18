@@ -1,17 +1,19 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
 
-type InboxProps = {};
+type InboxProps = {
+    onSelect: Dispatch<SetStateAction<boolean>>;
+};
 
-const ChatInbox: React.FC<InboxProps> = ({}) => {
+const ChatInbox: React.FC<InboxProps> = ({ onSelect }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
-        base: '90%',
+        base: '75%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
@@ -32,6 +34,7 @@ const ChatInbox: React.FC<InboxProps> = ({}) => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
         inbox.setFeedFilter({});
+        inbox.onConversationSelected(() => onSelect(true));
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();

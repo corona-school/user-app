@@ -21,10 +21,14 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     // TODO add query to get has unread messages
 
     const me = {
-        id: '123',
-        name: 'Lomy',
-        role: 'student',
-        email: 'salome.wick@typedigital.de',
+        id: '456',
+        name: 'AK',
+        role: 'pupil',
+        email: 'ak@example.com',
+        // id: '123',
+        // name: 'Lomy',
+        // role: 'student',
+        // email: 'salome.wick@typedigital.com',
     };
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));

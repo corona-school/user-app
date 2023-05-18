@@ -13,7 +13,7 @@ const NewChat = () => {
         if (reason === 'course' && role === 'student') return 'Kursleiter:in';
         if (reason === 'course' && role === 'pupil') return 'Kursteilnehmer:in';
         if (reason === 'prospect') return 'Interessent:in';
-        if (reason === 'match_partner') return 'Lernpartner:in';
+        if (reason === 'match') return 'Lernpartner:in';
     };
 
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {

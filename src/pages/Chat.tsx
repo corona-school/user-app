@@ -17,6 +17,7 @@ const Chat: React.FC = () => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selected, setSelected] = useState<boolean>(false);
 
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -37,11 +38,12 @@ const Chat: React.FC = () => {
         setIsModalOpen(true);
     };
 
+    console.log(isMobile, selected);
+
     return (
         <LFChatProvider>
             <AsNavigationItem path="chat">
                 <WithNavigation
-                    headerContent={<Hello />}
                     headerTitle={t('chat.title')}
                     headerLeft={
                         <Stack alignItems="center" direction="row">
@@ -51,9 +53,11 @@ const Chat: React.FC = () => {
                     }
                     showBack={isMobile}
                 >
-                    {/*  TODO mobile version */}
+                    {/* {isMobile && !selected && ( */}
                     <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
-                    <ChatInbox />
+                    {/* )} */}
+                    <ChatInbox onSelect={setSelected} />
+                    {/*  TODO if convo selected, than hide*/}
                     <ChatContactsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 </WithNavigation>
             </AsNavigationItem>

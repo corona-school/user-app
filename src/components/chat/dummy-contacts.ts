@@ -5,9 +5,12 @@ export type Contact = {
     lastname: string;
     role: Roles;
     reason: ContactReasons;
+    // user: User;
+    // chatID: string
+    // contactReason: ContactReasons;
 };
 
-export type ContactReasons = 'match_partner' | 'course' | 'prospect';
+export type ContactReasons = 'course' | 'match' | 'prospect' | 'participant';
 export type Roles = 'student' | 'pupil';
 
 const myContacts: Contact[] = [
@@ -15,24 +18,24 @@ const myContacts: Contact[] = [
         userID: 'student/1',
         talkJsId: 'student_1',
         role: 'student',
-        firstname: 'AK',
-        lastname: 'typedigital',
-        reason: 'match_partner',
+        firstname: 'Leon',
+        lastname: 'Musterstudent',
+        reason: 'match',
     },
     {
         userID: 'pupil/2',
         talkJsId: 'pupil_2',
         role: 'pupil',
-        firstname: 'Falko',
-        lastname: 'typedigital',
+        firstname: 'Max',
+        lastname: 'Musterschüler:in',
         reason: 'course',
     },
     {
         userID: 'student/3',
         talkJsId: 'student_3',
         role: 'pupil',
-        firstname: 'Jenny',
-        lastname: 'typedigital',
+        firstname: 'Emma',
+        lastname: 'Musterschüler:in',
         reason: 'prospect',
     },
 ];
