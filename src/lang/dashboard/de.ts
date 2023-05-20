@@ -64,8 +64,8 @@ const dashboard = {
         buttons: {
             course: 'Neuen Kurs eintragen',
             offer: 'Wichtige Meldungen',
-            requestMatchHuH: 'Ein neues Lernpaar bilden',
-            requestMatchSuS: 'Auf die Warteliste setzen',
+            requestMatchStudent: 'Ein neues Lernpaar bilden',
+            requestMatchPupil: 'Auf die Warteliste setzen',
             solveMatch: 'Lernpaar auflösen',
             recommend: 'Jetzt empfehlen',
         },

@@ -407,7 +407,7 @@ const Dashboard: React.FC<Props> = () => {
                                                     navigate('/request-match');
                                                 }}
                                             >
-                                                {t('dashboard.helpers.buttons.requestMatchSuS')}
+                                                {t('dashboard.helpers.buttons.requestMatchPupil')}
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (

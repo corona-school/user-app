@@ -130,7 +130,7 @@ const MatchingStudent: React.FC<Props> = () => {
                             <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
                             {(data?.me?.student?.canRequestMatch.allowed && (
                                 <Button width={ButtonContainer} marginBottom={space['1.5']} onPress={() => navigate('/request-match')}>
-                                    {t('dashboard.helpers.buttons.requestMatchHuH')}
+                                    {t('dashboard.helpers.buttons.requestMatchStudent')}
                                 </Button>
                             )) || (
                                 <AlertMessage
