@@ -10,3 +10,5 @@ export const WEBSOCKET_URL = window.liveConfig?.RUNTIME_WEBSOCKET_URL ?? process
 
 export const DEACTIVATE_PUPIL_MATCH_REQUESTS =
     window.liveConfig?.RUNTIME_DEACTIVATE_PUPIL_MATCH_REQUESTS ?? process.env.REACT_APP_DEACTIVATE_PUPIL_MATCH_REQUESTS;
+
+export const ZOOM_MEETING_SDK_KEY = 'oy00hCKEQvKyxcR49FzEyw';

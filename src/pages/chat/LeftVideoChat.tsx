@@ -14,6 +14,8 @@ query appointmentOrganizer($appointmentId: Float!) {
 }`);
 
 const LeftVideoChat: React.FC = () => {
+    document.getElementById('zmmtg-root')!.style.display = 'none';
+
     const { id, type } = useParams();
     const idAsInt = parseInt(id!);
 
@@ -33,7 +35,7 @@ const LeftVideoChat: React.FC = () => {
 
     const { space } = useTheme();
 
-    const chatType = type ? 'course' : 'oneOnOne';
+    const chatType = type === 'course' ? 'course' : 'oneOnOne';
 
     const [saveMeetingReport] = useMutation(
         gql(`

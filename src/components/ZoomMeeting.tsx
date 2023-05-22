@@ -4,6 +4,8 @@ import { ZoomMtg } from '@zoomus/websdk';
 import { useUserType } from '../hooks/useApollo';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
+import { useEffect } from 'react';
+import { ZOOM_MEETING_SDK_KEY } from '../config';
 
 const getappointmentMeetingData = gql(`
 query appointmentMeetingData($appointmentId: Float!) {
@@ -34,14 +36,20 @@ const ZoomMeeting: React.FC = () => {
     const { id, type } = useParams();
     const appointmentId = parseInt(id!) || 0;
 
-    window.onpopstate = (e) => {
-        e.preventDefault();
-        document.getElementById('zmmtg-root')!.style.display = 'none';
-        window.location.reload();
-    };
+    useEffect(() => {
+        const handlePopState = () => {
+            window.location.reload();
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
 
     const userType = useUserType();
-    const leaveUrl = type === 'match' ? `http://localhost:3000/left-chat/${appointmentId}/match` : `http://localhost:3000/left-chat/${appointmentId}/course`;
+    const leaveUrl = type === 'match' ? `/left-chat/${appointmentId}/match` : `/left-chat/${appointmentId}/course`;
     const role = userType === 'student' ? 1 : 0;
     console.log(appointmentId);
     const { data } = useQuery(getappointmentMeetingData, { variables: { appointmentId: appointmentId } });
@@ -61,15 +69,15 @@ const ZoomMeeting: React.FC = () => {
 
     const credentials = {
         authEndpoint: '',
-        sdkKey: 'oy00hCKEQvKyxcR49FzEyw',
+        sdkKey: ZOOM_MEETING_SDK_KEY,
         password: '',
         meetingNumber: data.appointment.zoomMeetingId,
-        signature: zoomData?.zoomSDKJWT || '',
-        userEmail: userType === 'student' ? zoomData?.me.student?.email : zoomData?.me.pupil?.email,
-        userName: userType === 'student' ? zoomData?.me.student?.firstname : zoomData?.me.pupil?.firstname,
+        signature: zoomData.zoomSDKJWT,
+        userEmail: userType === 'student' ? zoomData.me.student?.email : zoomData?.me.pupil?.email,
+        userName: userType === 'student' ? zoomData.me.student?.firstname : zoomData?.me.pupil?.firstname,
         leaveUrl: leaveUrl,
         role: role,
-        ...(zoomData?.zoomZAK ? { zak: zoomData.zoomZAK } : {}),
+        ...(zoomData.zoomZAK ? { zak: zoomData.zoomZAK } : {}),
     };
 
     ZoomMtg.init({
