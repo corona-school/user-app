@@ -1,6 +1,6 @@
 import { Modal } from 'native-base';
 import React, { Dispatch, SetStateAction } from 'react';
-import NewChat from '../components/chat/NewChat';
+import ContactList from '../components/chat/ContactList';
 import { useTranslation } from 'react-i18next';
 
 type ModalProps = {
@@ -16,7 +16,7 @@ const ChatContactsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <Modal.CloseButton />
 
                 <Modal.Body>
-                    <NewChat />
+                    <ContactList closeModal={onClose} />
                 </Modal.Body>
             </Modal.Content>
         </Modal>

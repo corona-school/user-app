@@ -3,7 +3,10 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil_64.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student_64.svg';
 import { useUserType } from '../../hooks/useApollo';
 import { gql } from '../../gql';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { Dispatch, SetStateAction } from 'react';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 export type Contact = {
     user: {
         userID: string;
@@ -15,7 +18,7 @@ export type Contact = {
 };
 export type ContactReasons = 'course' | 'match' | 'prospect' | 'participant';
 
-const ContactQuery = gql(`
+const myContacts = gql(`
 query me {
 	myContactOptions {
     user {
@@ -28,25 +31,41 @@ query me {
   }
 }`);
 
-const NewChat = () => {
+const matcheeChatMutation = gql(`
+mutation createMatcheeChat($matcheeId: String!) {
+  matchChatCreate(matcheeUserId: $matcheeId)
+}
+`);
+
+type NewChatProps = {
+    closeModal: Dispatch<SetStateAction<boolean>>;
+};
+const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
     const { space } = useTheme();
     const userType = useUserType();
+    const { t } = useTranslation();
 
-    const { data } = useQuery(ContactQuery);
-
+    const { data } = useQuery(myContacts);
+    const [createMatcheeChat] = useMutation(matcheeChatMutation);
     // TODO add mutation to create a convo
 
     const getCoursePartnerReason = (reason: ContactReasons) => {
-        if (reason === 'course' && userType === 'student') return 'Kursleiter:in';
-        if (reason === 'course' && userType === 'pupil') return 'Kursteilnehmer:in';
-        if (reason === 'prospect') return 'Interessent:in';
-        if (reason === 'match') return 'Lernpartner:in';
+        if (reason === 'course' && userType === 'pupil') return t('chat.instructor');
+        if (reason === 'course' && userType === 'student') return t('chat.participant');
+        if (reason === 'prospect') return t('chat.prospect');
+        if (reason === 'match') return t('chat.matchee');
     };
 
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
         return (
             <>
-                <Pressable onPress={() => console.log('create new chat')} _hover={{ backgroundColor: 'primary.100' }}>
+                <Pressable
+                    onPress={() => {
+                        createMatcheeChat({ variables: { matcheeId: contact.user.userID } });
+                        closeModal(false);
+                    }}
+                    _hover={{ backgroundColor: 'primary.100' }}
+                >
                     <Box m="2" justifyContent="center">
                         <Stack direction="row" space={space['1']} padding="1">
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
@@ -64,4 +83,4 @@ const NewChat = () => {
     return <FlatList data={data?.myContactOptions as Contact[]} renderItem={renderContacts} />;
 };
 
-export default NewChat;
+export default ContactList;

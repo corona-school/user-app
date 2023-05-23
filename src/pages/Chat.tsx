@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import Hello from '../widgets/Hello';
 import { Stack, useBreakpointValue } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import ChatInbox from '../components/chat/ChatInbox';
@@ -16,7 +15,7 @@ import ChatContactsModal from '../modals/ChatContactsModal';
 const Chat: React.FC = () => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [selected, setSelected] = useState<boolean>(false);
 
     const fabPlace = useBreakpointValue({
@@ -35,7 +34,7 @@ const Chat: React.FC = () => {
     });
 
     const handleNewChatPress = () => {
-        setIsModalOpen(true);
+        setIsContactModalOpen(true);
     };
 
     return (
@@ -56,7 +55,7 @@ const Chat: React.FC = () => {
                     {/* )} */}
                     <ChatInbox onSelect={setSelected} />
                     {/*  TODO if convo selected, than hide*/}
-                    <ChatContactsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                    <ChatContactsModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
                 </WithNavigation>
             </AsNavigationItem>
         </LFChatProvider>
