@@ -158,9 +158,7 @@ const SingleMatch = () => {
                                 {t('matching.shared.contactMail')}
                             </Button>
 
-                            <Button isDisabled variant="outline">
-                                {t('matching.shared.contactViaChat')}
-                            </Button>
+                            <Button>{t('matching.shared.contactViaChat')}</Button>
                             <Button isDisabled variant="outline">
                                 {t('matching.shared.directCall')}
                             </Button>
