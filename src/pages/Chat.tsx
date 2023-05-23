@@ -38,8 +38,6 @@ const Chat: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    console.log(isMobile, selected);
-
     return (
         <LFChatProvider>
             <AsNavigationItem path="chat">
