@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Talk from 'talkjs';
-import useApollo from '../hooks/useApollo';
+import { useUser, useUserType } from '../hooks/useApollo';
 
 type IChatContext = {
     session: Talk.Session | null;
@@ -14,21 +14,16 @@ const ChatContext = createContext<IChatContext>({
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
-    // TODO get userID from logged in user
-    // * const userType = useApollo();
-    // TODO add query for the current user
-    // TODO get signature from BE
+    const user = useUser();
+    const userType = useUserType();
+    // TODO add query for the current user signature
     // TODO add query to get has unread messages
 
     const me = {
-        id: '456',
-        name: 'AK',
-        role: 'pupil',
-        email: 'ak@example.com',
-        // id: '123',
-        // name: 'Lomy',
-        // role: 'student',
-        // email: 'salome.wick@typedigital.com',
+        id: user.userID,
+        name: user.firstname,
+        role: userType,
+        email: user.email,
     };
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
