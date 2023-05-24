@@ -1,28 +1,6 @@
 const dashboard = {
     appointmentcard: {
         header: 'Nächster Termin',
-
-        card: {
-            title: 'Mathe Grundlagen Klasse 6',
-            content: 'In diesem Kurs gehen wir die Schritte einer Kurvendiskussion von Nullstellen über Extrema bis hin zu Wendepunkten durch.',
-            url: '/',
-            tags: ['hallo'],
-        },
-        hint: {
-            pupil: 'Du kannst dem Videochat erst beitreten, wenn der:die Kursleiter:in das Meeting gestartet hat.',
-            student: 'Du kannst das Meeting erst eine Stunde vor Beginn des Termins starten.',
-        },
-        meeting: {
-            result: {
-                success: 'Deine Video-Konferenz wurde erfolgreich eingetragen.',
-                error: 'Deine Video-Konferenz konnt nicht eingetragen werden.',
-            },
-            modal: {
-                title: 'Videocall starten',
-                button: 'Jetzt starten',
-                text: 'Trage hier den Link zur Video-Konferenz ein',
-            },
-        },
     },
     myappointments: {
         header: 'Meine Termine',
@@ -30,17 +8,13 @@ const dashboard = {
     },
     learningpartner: {
         header: 'Dein:e Lernpartner:in',
-        username: 'Max Mustermann',
     },
     relatedcontent: {
         header: 'Vorschläge für dich',
     },
     offers: {
-        header: 'Angebote',
-        match: 'Match auflösen',
         noMatching: 'Du hast gerade kein aktives Lernpaar',
         requestCreated: 'Anfrage erstellt am:',
-        clock: 'Uhr',
         waitingTimeInfo: 'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in für dich zu Wartezeiten von 3 - 6 Monaten kommen kann.',
         removeRequest: 'Anfrage zurücknehmen',
     },
