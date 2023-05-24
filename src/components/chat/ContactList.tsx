@@ -59,7 +59,6 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
 
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
         const contactReasons = getCoursePartnerReason(contact.contactReasons);
-        console.log(contactReasons);
 
         return (
             <>
