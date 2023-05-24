@@ -98,7 +98,7 @@ const Matching: React.FC<Props> = () => {
         };
 
         if (res.pupilDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
+            toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.pupil?.id]);
