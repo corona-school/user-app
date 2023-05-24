@@ -37,6 +37,12 @@ mutation createMatcheeChat($matcheeId: String!) {
 }
 `);
 
+const participantChatMutation = gql(`
+mutation createParticipantChat($participantUserId: String!) {
+    participantChatCreate(participantUserId: $participantUserId)
+}
+`);
+
 type NewChatProps = {
     closeModal: Dispatch<SetStateAction<boolean>>;
 };
@@ -47,6 +53,7 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
 
     const { data } = useQuery(myContacts);
     const [createMatcheeChat] = useMutation(matcheeChatMutation);
+    const [createParticipantChat] = useMutation(participantChatMutation);
     // TODO add mutation to create a convo
 
     const getCoursePartnerReason = (reasons: ContactReasons[]): string[] => {
@@ -57,18 +64,17 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
         return reasonsTranslated;
     };
 
+    const handleContactPress = (reasons: string[]) => {
+        if (reasons.includes('match')) createMatcheeChat();
+        createParticipantChat();
+        closeModal(false);
+    };
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
         const contactReasons = getCoursePartnerReason(contact.contactReasons);
 
         return (
             <>
-                <Pressable
-                    onPress={() => {
-                        createMatcheeChat({ variables: { matcheeId: contact.user.userID } });
-                        closeModal(false);
-                    }}
-                    _hover={{ backgroundColor: 'primary.100' }}
-                >
+                <Pressable onPress={() => handleContactPress(contactReasons)} _hover={{ backgroundColor: 'primary.100' }}>
                     <Box m="2" justifyContent="center">
                         <Stack direction="row" space={space['1']} padding="1">
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
