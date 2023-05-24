@@ -53,7 +53,7 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
         let reasonsTranslated: string[] = [];
         if (reasons.includes('subcourse') && userType === 'pupil') reasonsTranslated.push(t('chat.instructor'));
         if (reasons.includes('subcourse') && userType === 'student') reasonsTranslated.push(t('chat.participant'));
-        if (reasons.includes('match') && userType === 'student') reasonsTranslated.push(t('chat.matchee'));
+        if (reasons.includes('match')) reasonsTranslated.push(t('chat.matchee'));
         return reasonsTranslated;
     };
 
