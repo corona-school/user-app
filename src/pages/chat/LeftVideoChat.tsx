@@ -16,8 +16,8 @@ query appointmentOrganizer($appointmentId: Float!) {
 const LeftVideoChat: React.FC = () => {
     document.getElementById('zmmtg-root')!.style.display = 'none';
 
-    const { id, type } = useParams();
-    const idAsInt = parseInt(id!);
+    const { id: appointmentId, type } = useParams();
+    const idAsInt = appointmentId ? parseInt(appointmentId) : null;
 
     const { data } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
     const isOrganizer = data?.appointment.isOrganizer;
@@ -37,18 +37,17 @@ const LeftVideoChat: React.FC = () => {
 
     const chatType = type === 'course' ? 'course' : 'oneOnOne';
 
-    const [saveMeetingReport] = useMutation(
+    const [appointmentSaveMeetingReport] = useMutation(
         gql(`
-        mutation saveMeetingReport($appointmentId: Float!) {
-            saveMeetingReport(appointmentId: $appointmentId)
+        mutation appointmentSaveMeetingReport($appointmentId: Float!) {
+            appointmentSaveMeetingReport(appointmentId: $appointmentId)
         }
     `)
     );
 
     const saveAndFinish = async () => {
-        console.log('save and finish');
         if (isOrganizer) {
-            await saveMeetingReport({ variables: { appointmentId: idAsInt } });
+            await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
         }
         navigate('/');
     };
