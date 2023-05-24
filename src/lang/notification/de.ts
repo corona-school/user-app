@@ -7,6 +7,7 @@ const notification = {
         now: 'gerade eben',
         beforeMinutes: '{{minutes}} Min.',
     },
+    send: 'Benachrichtigung verschickt',
     panel: {
         noNotifications: 'Keine Nachrichten vorhanden.',
         button: {
@@ -18,7 +19,6 @@ const notification = {
             button: 'Weiter zu externer Seite',
         },
     },
-
     controlPanel: {
         title: 'E-Mail-Benachrichtigungen',
         yourMail: 'Deine E-Mail: ',

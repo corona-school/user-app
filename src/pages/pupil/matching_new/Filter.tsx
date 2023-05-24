@@ -29,10 +29,10 @@ const Filter: React.FC = () => {
         <VStack>
             {currentIndex === 0 && (
                 <VStack space={space['0.5']}>
-                    <Heading fontSize="2xl">Die 1:1 Lernunterstützung</Heading>
-                    <Heading>Für wen ist die 1:1 Lernunterstützung gedacht?</Heading>
+                    <Heading fontSize="2xl">Die 1:1-Lernunterstützung</Heading>
+                    <Heading>Für wen ist die 1:1-Lernunterstützung gedacht?</Heading>
 
-                    <Text>Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1 Lernunterstützung bei uns beantragen:</Text>
+                    <Text>Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:</Text>
 
                     <Box my={space['0.5']}>
                         <Text>● Du brauchst Hilfe in der Schule</Text>

@@ -64,7 +64,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     const sendMessage = useCallback(async () => {
         const res = await contactSupport({
             variables: {
-                subject: 'Interesse an der 1:1 Lernunterstützung!',
+                subject: 'Interesse an der 1:1-Lernunterstützung!',
                 message: 'Hallo, ich habe Interesse an der Lernunterstützung!',
             },
         });

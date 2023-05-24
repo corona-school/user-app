@@ -1,6 +1,6 @@
 const introduction = {
     groupCourses: 'Gruppenkurse',
-    match: '1:1 Lernunterstützung',
+    match: '1:1-Lernunterstützung',
     imageGroupText: 'Gib dein Wissen weiter und leite Gruppen-Kurse.',
     imageMatchText: 'Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.',
     becomeAnInstructor: 'Jetzt Kursleiter:in werden',
@@ -25,7 +25,7 @@ const introduction = {
     },
     groupDescription: {
         first: 'In den Nachhilfe-Kursen hilfst du Schüler:innen, die sich in einem bestimmten schulischen Thema verbessern wollen. Besonders gefragt sind Themen aus den Hauptfächern (Deutsch, Mathe, Englisch). Die Kurse finden in der Regel wöchentlich für max. 12 Wochen statt.',
-        second: 'In den Deutsch-Kursen kannst du geflüchteten Schüler:innen beim Lernen der deutschen Sprache helfen. Wir stellen dir Unterrichtsmaterialien zur Verfügung, damit du Kurse gestalten kannst, in denen Sprechen und Üben im Vordergrund steht. Die Kurse finden wöchentlich statt.',
+        second: 'Bei Deutsch für Anfänger kannst du geflüchteten Schüler:innen beim Lernen der deutschen Sprache helfen. Wir stellen dir Unterrichtsmaterialien zur Verfügung, damit du Kurse gestalten kannst, in denen Sprechen und Üben im Vordergrund steht. Die Kurse finden wöchentlich statt.',
         third: 'In den Fokus-Kursen kannst du mit Schüler:innen an außerschulischen Themen arbeiten. Wir organisieren hierzu über das Jahr verteilt verschiedene Themenmonate. Die Kurse finden in der Regel als Einzeltermine statt.',
     },
     requestedDescription: {
@@ -38,7 +38,7 @@ const introduction = {
             three: 'Materialtauschbörse',
         },
         language: {
-            header: 'Deutsch-Kurse',
+            header: 'Deutsch für Anfänger',
             one: 'Lern-Fair bietet dir kostenlose online-Schulungen von Expert:innen an. Sofern du noch keine Erfahrung in der Kursleitung hast, möchten wir dich bitten, daran teilzunehmen. Aktuelle Schulungstermine findest du auf unserer Webseite, bitte registriere dich hier: ',
             two: 'Im Hilfestellungsbereich findest du Materialien, die dir bei der Vorbereitung und Durchführung der Kurse helfen.',
         },
