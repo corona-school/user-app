@@ -14,9 +14,9 @@ export type Contact = {
         lastname: string;
     };
     chatId: string;
-    contactReason: ContactReasons;
+    contactReasons: ContactReasons[];
 };
-export type ContactReasons = 'course' | 'match' | 'prospect' | 'participant';
+export type ContactReasons = 'subcourse' | 'match' | 'prospect' | 'participant';
 
 const myContacts = gql(`
 query me {
@@ -26,7 +26,7 @@ query me {
       firstname
       lastname
     }
-  	contactReason
+  	contactReasons
     chatId
   }
 }`);
@@ -49,14 +49,18 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
     const [createMatcheeChat] = useMutation(matcheeChatMutation);
     // TODO add mutation to create a convo
 
-    const getCoursePartnerReason = (reason: ContactReasons) => {
-        if (reason === 'course' && userType === 'pupil') return t('chat.instructor');
-        if (reason === 'course' && userType === 'student') return t('chat.participant');
-        if (reason === 'prospect') return t('chat.prospect');
-        if (reason === 'match') return t('chat.matchee');
+    const getCoursePartnerReason = (reasons: ContactReasons[]): string[] => {
+        let reasonsTranslated: string[] = [];
+        if (reasons.includes('subcourse') && userType === 'pupil') reasonsTranslated.push(t('chat.instructor'));
+        if (reasons.includes('subcourse') && userType === 'student') reasonsTranslated.push(t('chat.participant'));
+        if (reasons.includes('match') && userType === 'student') reasonsTranslated.push(t('chat.matchee'));
+        return reasonsTranslated;
     };
 
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
+        const contactReasons = getCoursePartnerReason(contact.contactReasons);
+        console.log(contactReasons);
+
         return (
             <>
                 <Pressable
@@ -71,7 +75,7 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
                             <VStack space={space['0.5']}>
                                 <Heading fontSize="sm">{contact.user.firstname + ' ' + contact.user.lastname}</Heading>
-                                <Text fontSize="xs">{getCoursePartnerReason(contact.contactReason)}</Text>
+                                <Text fontSize="xs">{contactReasons.join(', ')}</Text>
                             </VStack>
                         </Stack>
                     </Box>
