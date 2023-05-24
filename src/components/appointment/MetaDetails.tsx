@@ -52,9 +52,9 @@ const MetaDetails: React.FC<MetaProps> = ({
     });
 
     function isWithinAppointmentTime(appointmentStart: string, duration: number) {
-        const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
-        const start = new Date(new Date(appointmentStart).getTime() - TEN_MINUTES_IN_MS);
-        const end = new Date(start.getTime() + (duration + 10 || 0) * 60 * 1000 + TEN_MINUTES_IN_MS);
+        const THIRTY_MINUTES_IN_MS = 30 * 60 * 1000;
+        const start = new Date(new Date(appointmentStart).getTime() - THIRTY_MINUTES_IN_MS);
+        const end = new Date(start.getTime() + (duration + 10 || 0) * 60 * 1000 + THIRTY_MINUTES_IN_MS);
         const now = new Date();
 
         console.log(start, end, now);
