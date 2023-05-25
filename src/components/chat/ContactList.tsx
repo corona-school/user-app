@@ -5,18 +5,7 @@ import { useUserType } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { Dispatch, SetStateAction } from 'react';
-import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
-export type Contact = {
-    user: {
-        userID: string;
-        firstname: string;
-        lastname: string;
-    };
-    chatId: string;
-    contactReasons: ContactReasons[];
-};
-export type ContactReasons = 'subcourse' | 'match' | 'prospect' | 'participant';
 
 const myContacts = gql(`
 query me {
@@ -43,9 +32,21 @@ mutation createParticipantChat($participantUserId: String!) {
 }
 `);
 
+export type Contact = {
+    user: {
+        userID: string;
+        firstname: string;
+        lastname: string;
+    };
+    chatId: string;
+    contactReasons: ContactReasons[];
+};
+export type ContactReasons = 'subcourse' | 'match' | 'prospect' | 'participant';
+
 type NewChatProps = {
     closeModal: Dispatch<SetStateAction<boolean>>;
 };
+
 const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
     const { space } = useTheme();
     const userType = useUserType();
@@ -56,30 +57,47 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
     const [createParticipantChat] = useMutation(participantChatMutation);
     // TODO add mutation to create a convo
 
-    const getCoursePartnerReason = (reasons: ContactReasons[]): string[] => {
+    const hasReason = (reason: string, reasons: string[]) => {
+        if (reasons.includes(reason)) return true;
+        return false;
+    };
+
+    const transformToTranslatedReasons = (reasons: ContactReasons[]): string[] => {
         let reasonsTranslated: string[] = [];
-        if (reasons.includes('subcourse') && userType === 'pupil') reasonsTranslated.push(t('chat.instructor'));
-        if (reasons.includes('subcourse') && userType === 'student') reasonsTranslated.push(t('chat.participant'));
-        if (reasons.includes('match')) reasonsTranslated.push(t('chat.matchee'));
+
+        if (hasReason('subcourse', reasons)) {
+            if (userType === 'pupil') {
+                reasonsTranslated.push(t('chat.instructor'));
+            } else if (userType === 'student') {
+                reasonsTranslated.push(t('chat.participant'));
+            }
+        }
+
+        if (hasReason('match', reasons)) {
+            reasonsTranslated.push(t('chat.matchee'));
+        }
         return reasonsTranslated;
     };
 
-    const handleContactPress = (reasons: string[]) => {
-        if (reasons.includes('match')) createMatcheeChat();
-        createParticipantChat();
+    const handleContactPress = (reasons: string[], contactId: string) => {
+        if (hasReason('match', reasons)) {
+            createMatcheeChat({ variables: { matcheeId: contactId } });
+        } else {
+            createParticipantChat({ variables: { participantUserId: contactId } });
+        }
         closeModal(false);
     };
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
-        const contactReasons = getCoursePartnerReason(contact.contactReasons);
+        const contactReasons = transformToTranslatedReasons(contact.contactReasons);
 
         return (
             <>
-                <Pressable onPress={() => handleContactPress(contactReasons)} _hover={{ backgroundColor: 'primary.100' }}>
+                <Pressable onPress={() => handleContactPress(contact.contactReasons, contact.user.userID)} _hover={{ backgroundColor: 'primary.100' }}>
                     <Box m="2" justifyContent="center">
                         <Stack direction="row" space={space['1']} padding="1">
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
                             <VStack space={space['0.5']}>
-                                <Heading fontSize="sm">{contact.user.firstname + ' ' + contact.user.lastname}</Heading>
+                                <Heading fontSize="sm">{`${contact.user.firstname} ${contact.user.lastname} `}</Heading>
                                 <Text fontSize="xs">{contactReasons.join(', ')}</Text>
                             </VStack>
                         </Stack>
