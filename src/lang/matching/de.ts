@@ -120,7 +120,7 @@ const matching = {
             header: 'Gruppen-Kurse',
             title: 'Gruppen-Kurse',
             content:
-                'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und Deutsch für Anfänger.',
+                'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und "Deutsch für Anfänger".',
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',
@@ -150,7 +150,7 @@ const matching = {
     status: { dissolved: 'Das Lernpaar wurde aufgelöst.' },
     dissolve: {
         modal: {
-            title: 'Lernpaar auflösen',
+            title: 'Warum möchtest du das Lernpaar auflösen?',
             btn: 'Lernpaar auflösen',
         },
         newMatch: {

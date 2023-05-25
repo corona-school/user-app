@@ -55,7 +55,7 @@ const Filter: React.FC = () => {
                         Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.
                     </Text>
 
-                    <Heading fontSize="md">Bist du bereit 3-6 Monate zu warten?</Heading>
+                    <Heading fontSize="md">Bist du bereit, 3-6 Monate zu warten?</Heading>
                     <YesNoSelector
                         initialYes={isAcceptWaitingTime === 'yes'}
                         initialNo={isAcceptWaitingTime === 'no'}
