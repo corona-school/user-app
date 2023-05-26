@@ -25,7 +25,7 @@ const introduction = {
     },
     groupDescription: {
         first: 'In den Nachhilfe-Kursen hilfst du Schüler:innen, die sich in einem bestimmten schulischen Thema verbessern wollen. Besonders gefragt sind Themen aus den Hauptfächern (Deutsch, Mathe, Englisch). Die Kurse finden in der Regel wöchentlich für max. 12 Wochen statt.',
-        second: 'Bei Deutsch für Anfänger kannst du geflüchteten Schüler:innen beim Lernen der deutschen Sprache helfen. Wir stellen dir Unterrichtsmaterialien zur Verfügung, damit du Kurse gestalten kannst, in denen Sprechen und Üben im Vordergrund steht. Die Kurse finden wöchentlich statt.',
+        second: 'Bei "Deutsch für Anfänger" kannst du geflüchteten Schüler:innen beim Lernen der deutschen Sprache helfen. Wir stellen dir Unterrichtsmaterialien zur Verfügung, damit du Kurse gestalten kannst, in denen Sprechen und Üben im Vordergrund steht. Die Kurse finden wöchentlich statt.',
         third: 'In den Fokus-Kursen kannst du mit Schüler:innen an außerschulischen Themen arbeiten. Wir organisieren hierzu über das Jahr verteilt verschiedene Themenmonate. Die Kurse finden in der Regel als Einzeltermine statt.',
     },
     requestedDescription: {
