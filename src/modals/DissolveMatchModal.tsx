@@ -59,7 +59,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Footer>
                     </>
                 )}
-                //TODO: move dissolve logic in this modal.
+                {/* TODO: move dissolve logic in this modal.*/}
                 {currentIndex === 1 && (
                     <>
                         <Modal.Header>{t('matching.dissolve.newMatch.title')}</Modal.Header>
