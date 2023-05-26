@@ -1,21 +1,4 @@
-import {
-    Box,
-    Button,
-    Column,
-    Container,
-    Flex,
-    FormControl,
-    Heading,
-    Modal,
-    Row,
-    Stack,
-    Text,
-    TextArea,
-    useBreakpointValue,
-    useTheme,
-    useToast,
-    VStack,
-} from 'native-base';
+import { Box, Button, Column, Container, Flex, FormControl, Heading, Modal, Row, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -116,7 +99,6 @@ const ProfileStudent: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
-    const toast = useToast();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
 
@@ -279,15 +261,15 @@ const ProfileStudent: React.FC<Props> = () => {
                                                         text={t(`lernfair.states.${data?.me?.student.state}`)}
                                                     />
                                                 </CSSWrapper>
-                                            )) || <Text>Keine Angabe</Text>}
+                                            )) || <Text>{t('profile.noInfo')}</Text>}
                                         </Column>
                                     )) || <Text>{t('profile.State.empty')}</Text>}
                                 </Row>
                             </ProfileSettingItem>
                         </ProfileSettingRow>
-                        <ProfileSettingRow title={'Meine Bescheinigungen'}>
+                        <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
                             <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
-                                Neue Bescheinigung beantragen
+                                {t('profile.Helper.certificate.button')}
                             </Button>
                             <VStack display="flex" flexDirection="row" flexWrap="wrap">
                                 {data?.me.student?.participationCertificates.map((certificate) => (

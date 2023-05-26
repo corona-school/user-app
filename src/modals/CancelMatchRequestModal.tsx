@@ -18,24 +18,13 @@ const CancelMatchRequestModal: React.FC<Props> = ({ showModal, onClose, onShareF
         <Modal isOpen={showModal} onClose={onClose}>
             <Modal.Content>
                 <Modal.CloseButton />
-                <Modal.Header>Anfrage zurücknehmen</Modal.Header>
+                <Modal.Header>{t('matching.pending.modal.title')}</Modal.Header>
                 <Modal.Body>
-                    <Text>
-                        Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere
-                        Schüler:innen vergeben.
-                    </Text>
+                    <Text>{t('matching.pending.modal.description')}</Text>
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
-                        <Button
-                            // isDisabled={!feedback}
-                            onPress={() => onShareFeedback(feedback!)}
-                        >
-                            {t('matching.pending.modal.buttons.dissolve')}
-                        </Button>
-                        {/* <Button variant={'outline'} onPress={onSkipShareFeedback}>
-              {t('matching.pending.modal.buttons.nothing')}
-            </Button> */}
+                        <Button onPress={() => onShareFeedback(feedback!)}>{t('matching.pending.modal.buttons.dissolve')}</Button>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>
