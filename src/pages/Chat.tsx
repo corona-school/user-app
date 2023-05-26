@@ -10,10 +10,15 @@ import FloatinActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { LFChatProvider } from '../context/ChatContext';
+import { useLocation } from 'react-router-dom';
 
 const Chat: React.FC = () => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+
+    const location = useLocation();
+    const locationState = location.state as { conversationId: string };
+    const conversationId = locationState?.conversationId;
 
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -52,7 +57,7 @@ const Chat: React.FC = () => {
                         place={fabPlace}
                         icon={<LFAddChatIcon />}
                     />
-                    <ChatInbox />
+                    <ChatInbox selectedId={conversationId} />
                 </WithNavigation>
             </AsNavigationItem>
         </LFChatProvider>
