@@ -5,7 +5,7 @@ import Tabs, { Tab } from '../components/Tabs';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
@@ -25,29 +25,37 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolveReason
     pupil {
-      firstname
-      lastname
-      schooltype
-      grade
-      state
-      subjectsFormatted {
-        name
-      }
-      aboutMe
+        id
+        firstname
+        lastname
+        schooltype
+        grade
+        state
+        subjectsFormatted {
+            name
+        }
+        aboutMe
     }
     pupilEmail
     student {
-      firstname
-      lastname
-      state
-      subjectsFormatted {
-        name
-      }
-      aboutMe
+        id
+        firstname
+        lastname
+        state
+        subjectsFormatted {
+            name
+        }
+        aboutMe
     }
     studentEmail
   }
 }`);
+
+const matchChatMutation = gql(`
+mutation createMatcheeChat($matcheeId: String!) {
+  matchChatCreate(matcheeUserId: $matcheeId)
+}
+`);
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
@@ -60,12 +68,15 @@ const SingleMatch = () => {
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [toastShown, setToastShown] = useState<boolean>();
+    const navigate = useNavigate();
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
         },
     });
+
+    const [createMatcheeChat] = useMutation(matchChatMutation);
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
@@ -94,6 +105,14 @@ const SingleMatch = () => {
         },
         [dissolveMatch, matchId, refetch, trackEvent]
     );
+
+    const chatContact = () => {
+        let contactId: string = '';
+        if (userType === 'student') contactId = `pupil/${data?.match?.pupil.id}`;
+        if (userType === 'pupil') contactId = `student/${data?.match?.student.id}`;
+        createMatcheeChat({ variables: { matcheeId: contactId } });
+        navigate('/chat');
+    };
 
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
@@ -158,7 +177,7 @@ const SingleMatch = () => {
                                 {t('matching.shared.contactMail')}
                             </Button>
 
-                            <Button>{t('matching.shared.contactViaChat')}</Button>
+                            <Button onPress={() => chatContact()}>{t('matching.shared.contactViaChat')}</Button>
                             <Button isDisabled variant="outline">
                                 {t('matching.shared.directCall')}
                             </Button>
