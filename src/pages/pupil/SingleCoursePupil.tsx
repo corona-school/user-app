@@ -174,7 +174,7 @@ const SingleCoursePupil = () => {
 
     async function doContact(title: string, body: string, fileIDs: string[]) {
         await contact({ variables: { subcourseId, title, body, fileIDs } });
-        toast.show({ description: 'Benachrichtigung verschickt', placement: 'top' });
+        toast.show({ description: t('notification.send'), placement: 'top' });
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);

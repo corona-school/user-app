@@ -53,10 +53,10 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
 
     return (
         <Stack space={5}>
-            {languageCourses && languageCourses.length > 0 && (
+            {focusCourses && focusCourses.length > 0 && (
                 <Box>
-                    <HSection scrollable title={t('matching.group.pupil.tabs.tab2.language')}>
-                        {languageCourses?.map((subcourse: any, index: number) => {
+                    <HSection scrollable title={t('matching.group.pupil.tabs.tab2.focus')}>
+                        {focusCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index, true);
                         })}
                     </HSection>
@@ -71,10 +71,10 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                     </HSection>
                 </Box>
             )}
-            {focusCourses && focusCourses.length > 0 && (
+            {languageCourses && languageCourses.length > 0 && (
                 <Box>
-                    <HSection scrollable title={t('matching.group.pupil.tabs.tab2.focus')}>
-                        {focusCourses?.map((subcourse: any, index: number) => {
+                    <HSection scrollable title={t('matching.group.pupil.tabs.tab2.language')}>
+                        {languageCourses?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index, true);
                         })}
                     </HSection>
