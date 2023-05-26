@@ -106,12 +106,12 @@ const SingleMatch = () => {
         [dissolveMatch, matchId, refetch, trackEvent]
     );
 
-    const chatContact = () => {
+    const openChatContact = async () => {
         let contactId: string = '';
         if (userType === 'student') contactId = `pupil/${data?.match?.pupil.id}`;
         if (userType === 'pupil') contactId = `student/${data?.match?.student.id}`;
-        createMatcheeChat({ variables: { matcheeId: contactId } });
-        navigate('/chat');
+        const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
     };
 
     useEffect(() => {
@@ -177,7 +177,7 @@ const SingleMatch = () => {
                                 {t('matching.shared.contactMail')}
                             </Button>
 
-                            <Button onPress={() => chatContact()}>{t('matching.shared.contactViaChat')}</Button>
+                            <Button onPress={() => openChatContact()}>{t('matching.shared.contactViaChat')}</Button>
                             <Button isDisabled variant="outline">
                                 {t('matching.shared.directCall')}
                             </Button>
