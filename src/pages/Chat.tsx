@@ -51,7 +51,6 @@ const Chat: React.FC = () => {
                     }
                     showBack={showBackButton}
                 >
-                    {/*  TODO mobile version */}
                     {showAddButton && (
                         <FloatinActionButton
                             mr={marginRight}

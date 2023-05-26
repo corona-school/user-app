@@ -34,8 +34,8 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showBackButton, showAddBu
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        inbox.select(null);
         selectedId && inbox.select(selectedId);
+        isMobile && inbox.select(null);
         isMobile &&
             inbox.onConversationSelected(() => {
                 showBackButton(true);
