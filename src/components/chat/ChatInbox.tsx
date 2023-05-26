@@ -1,12 +1,14 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
 
 type InboxProps = {
     selectedId: string;
+    showBackButton: Dispatch<SetStateAction<boolean>>;
+    showAddButton: Dispatch<SetStateAction<boolean>>;
 };
-const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
+const ChatInbox: React.FC<InboxProps> = ({ selectedId, showBackButton, showAddButton }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
@@ -32,13 +34,23 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        {
-            selectedId && inbox.select(selectedId);
-        }
+        inbox.select(null);
+        selectedId && inbox.select(selectedId);
+        isMobile &&
+            inbox.onConversationSelected(() => {
+                showBackButton(true);
+                showAddButton(false);
+            });
+        isMobile &&
+            inbox.onBlur(() => {
+                showBackButton(false);
+                showAddButton(true);
+            });
+
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
-    }, [isMobile, session]);
+    }, [isMobile, selectedId, session, showBackButton]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
