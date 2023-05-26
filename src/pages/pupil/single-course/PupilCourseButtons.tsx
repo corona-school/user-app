@@ -33,7 +33,7 @@ type ActionButtonProps = {
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: (title: string, body: string, fileIDs: string[]) => Promise<void>;
+    doContactInstructor: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -61,17 +61,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
-    const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
-
-    async function contactInstructor(title: string, body: string, fileIDs: string[]) {
-        doContactInstructor(title, body, fileIDs);
-        setShowMessageModal(false);
-    }
 
     const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
@@ -140,7 +134,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </VStack>
                 )}
                 {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => setShowMessageModal(true)}>
+                    <Button variant="outline" onPress={() => doContactInstructor()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
@@ -186,14 +180,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     onConfirm={handleWaitinglistLeave}
                 />
             </Modal>
-
-            <SendParticipantsMessageModal
-                isInstructor={false}
-                isOpen={showMessageModal}
-                onClose={() => setShowMessageModal(false)}
-                onSend={contactInstructor}
-                isDisabled={loadingContactInstructor}
-            />
         </>
     );
 };

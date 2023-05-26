@@ -3,12 +3,11 @@ import { gql } from '../../gql';
 import { DateTime } from 'luxon';
 import { Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Lecture, Participant } from '../../gql/graphql';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
 import { useMemo } from 'react';
@@ -66,6 +65,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
             duration
         }
         instructors{
+            id
             firstname
             lastname
         }
@@ -100,7 +100,7 @@ const SingleCoursePupil = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
-    const toast = useToast();
+    const navigate = useNavigate();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -172,9 +172,18 @@ const SingleCoursePupil = () => {
     `)
     );
 
-    async function doContact(title: string, body: string, fileIDs: string[]) {
-        await contact({ variables: { subcourseId, title, body, fileIDs } });
-        toast.show({ description: t('notification.send'), placement: 'top' });
+    const [chatInstructor, { loading: loadingChatInstructor }] = useMutation(
+        gql(`
+            mutation createParticipantChat($participantUserId: String!) {
+                participantChatCreate(participantUserId: $participantUserId)
+            }       
+        `)
+    );
+
+    async function doContact() {
+        const conversation = await chatInstructor({ variables: { participantUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        console.log(conversation);
+        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
