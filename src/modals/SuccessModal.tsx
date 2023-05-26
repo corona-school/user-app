@@ -1,6 +1,8 @@
 import { useTheme, Box, Heading, Row, Text, Button } from 'native-base';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
+import { useTranslation } from 'react-i18next';
 import useModal from '../hooks/useModal';
+import single from '../lang/single/de';
 
 // Usage:
 // const { show } = useModal();
@@ -9,6 +11,7 @@ import useModal from '../hooks/useModal';
 export function SuccessModal({ title, content }: { title: string; content: string }) {
     const { space } = useTheme();
     const { hide } = useModal();
+    const { t } = useTranslation();
 
     return (
         <>
@@ -26,7 +29,7 @@ export function SuccessModal({ title, content }: { title: string; content: strin
             <Box padding={space['1']} width="100%">
                 <Row marginBottom={space['0.5']} display="flex" flexDirection="row">
                     <Button onPress={hide} width="100%" maxWidth="400px" alignSelf="center" marginX="auto">
-                        Schließen
+                        {t('done')}
                     </Button>
                 </Row>
             </Box>
