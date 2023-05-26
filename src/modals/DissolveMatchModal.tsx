@@ -29,27 +29,6 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
 
     const reasons = useMemo(() => (userType === 'student' && studentReasonOptions) || pupilReasonOptions, [userType]);
 
-    const { data } = useQuery(gql`
-        query PupilMatchOnboarding {
-            me {
-                pupil {
-                    id
-                    canRequestMatch {
-                        allowed
-                        reason
-                        limit
-                    }
-                    schooltype
-                    gradeAsInt
-                    subjectsFormatted {
-                        name
-                        mandatory
-                    }
-                }
-            }
-        }
-    `);
-
     return (
         <Modal isOpen={showDissolveModal} onClose={onPressBack}>
             <Modal.Content>
@@ -70,7 +49,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason) && setCurrentIndex(1)}>
+                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason)}>
                                     {t('matching.dissolve.modal.btn')}
                                 </Button>
                                 <Button onPress={onPressBack} variant="ghost">
@@ -80,6 +59,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Footer>
                     </>
                 )}
+                //TODO: move dissolve logic in this modal.
                 {currentIndex === 1 && (
                     <>
                         <Modal.Header>{t('matching.dissolve.newMatch.title')}</Modal.Header>
