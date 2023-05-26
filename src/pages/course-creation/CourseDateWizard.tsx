@@ -44,7 +44,7 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete, showInvalidDa
                         {t('course.CourseDate.Wizard.headline')}
                         {`${index + 1}`.padStart(2, ' 0')}
                     </Heading>
-                    {index > 0 && <Link onPress={onPressDelete}>Termin löschen</Link>}
+                    {index > 0 && <Link onPress={onPressDelete}>{t('appointment.deleteModal.delete')}</Link>}
                 </Row>
             )}
             <FormControl maxWidth={ContainerWidth}>
@@ -68,7 +68,7 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete, showInvalidDa
             </FormControl>
             <FormControl marginY={space['1']}>
                 <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
-                    {t('course.CourseDate.Wizard.time')}
+                    {t('time')}
                 </FormControl.Label>
                 <DatePicker
                     type="time"
@@ -83,7 +83,7 @@ const CourseDateWizard: React.FC<Props> = ({ index, onPressDelete, showInvalidDa
             </FormControl>
             <FormControl marginY={space['1']}>
                 <FormControl.Label isRequired _text={{ color: 'primary.900' }}>
-                    {t('course.CourseDate.Wizard.duration')}
+                    {t('duration')}
                 </FormControl.Label>
 
                 <Select
