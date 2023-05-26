@@ -53,8 +53,7 @@ const Chat: React.FC = () => {
                     {/* {isMobile && !selected && ( */}
                     <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
                     {/* )} */}
-                    <ChatInbox onSelect={setSelected} />
-                    {/*  TODO if convo selected, than hide*/}
+                    <ChatInbox />
                     <ChatContactsModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
                 </WithNavigation>
             </AsNavigationItem>
