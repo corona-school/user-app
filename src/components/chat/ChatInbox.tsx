@@ -1,14 +1,13 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
 
 type InboxProps = {
     selectedId: string;
-    showBackButton: Dispatch<SetStateAction<boolean>>;
-    showAddButton: Dispatch<SetStateAction<boolean>>;
+    showAddButton: (show: boolean) => void;
 };
-const ChatInbox: React.FC<InboxProps> = ({ selectedId, showBackButton, showAddButton }) => {
+const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
@@ -33,24 +32,22 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showBackButton, showAddBu
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: true });
         selectedId && inbox.select(selectedId);
         isMobile && inbox.select(null);
-        isMobile &&
-            inbox.onConversationSelected(() => {
-                showBackButton(true);
-                showAddButton(false);
-            });
-        isMobile &&
-            inbox.onBlur(() => {
-                showBackButton(false);
-                showAddButton(true);
-            });
+        // isMobile &&
+        //     inbox.onConversationSelected(() => {
+        //         showAddButton(false);
+        //     });
+        // isMobile &&
+        //     inbox.onBlur(() => {
+        //         showAddButton(true);
+        //     });
 
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
-    }, [isMobile, selectedId, session, showBackButton]);
+    }, [isMobile, selectedId, session, showAddButton]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
