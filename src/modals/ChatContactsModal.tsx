@@ -1,13 +1,13 @@
 import { Modal } from 'native-base';
-import React, { Dispatch, SetStateAction } from 'react';
 import ContactList from '../components/chat/ContactList';
 import { useTranslation } from 'react-i18next';
 
 type ModalProps = {
     isOpen: boolean;
-    onClose: Dispatch<SetStateAction<boolean>>;
+    setChatId: (id: string) => void;
+    onClose: () => void;
 };
-const ChatContactsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const ChatContactsModal: React.FC<ModalProps> = ({ isOpen, setChatId, onClose }) => {
     const { t } = useTranslation();
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -16,7 +16,7 @@ const ChatContactsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <Modal.CloseButton />
 
                 <Modal.Body>
-                    <ContactList closeModal={onClose} />
+                    <ContactList onClose={onClose} setChatId={(id: string) => setChatId(id)} />
                 </Modal.Body>
             </Modal.Content>
         </Modal>

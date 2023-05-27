@@ -16,7 +16,7 @@ const Chat: React.FC = () => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-    const [selected, setSelected] = useState<boolean>(false);
+    const [selectedChatId, setSelectedChatId] = useState<string>('');
 
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -37,6 +37,10 @@ const Chat: React.FC = () => {
         setIsContactModalOpen(true);
     };
 
+    const onClose = () => {
+        setIsContactModalOpen(false);
+    };
+
     return (
         <LFChatProvider>
             <AsNavigationItem path="chat">
@@ -50,11 +54,9 @@ const Chat: React.FC = () => {
                     }
                     showBack={isMobile}
                 >
-                    {/* {isMobile && !selected && ( */}
                     <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
-                    {/* )} */}
-                    <ChatInbox />
-                    <ChatContactsModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+                    <ChatInbox selectedId={selectedChatId} />
+                    <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </WithNavigation>
             </AsNavigationItem>
         </LFChatProvider>

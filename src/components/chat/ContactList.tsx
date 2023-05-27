@@ -4,7 +4,6 @@ import StudentAvatar from '../../assets/icons/lernfair/avatar_student_64.svg';
 import { useUserType } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
-import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const myContacts = gql(`
@@ -41,13 +40,14 @@ export type Contact = {
     chatId: string;
     contactReasons: ContactReasons[];
 };
-export type ContactReasons = 'subcourse' | 'match' | 'prospect' | 'participant';
+export type ContactReasons = 'subcourse' | 'match';
 
 type NewChatProps = {
-    closeModal: Dispatch<SetStateAction<boolean>>;
+    onClose: () => void;
+    setChatId: (id: string) => void;
 };
 
-const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
+const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     const { space } = useTheme();
     const userType = useUserType();
     const { t } = useTranslation();
@@ -55,13 +55,11 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
     const { data } = useQuery(myContacts);
     const [createMatcheeChat] = useMutation(matcheeChatMutation);
     const [createParticipantChat] = useMutation(participantChatMutation);
-    // TODO add mutation to create a convo
 
     const hasReason = (reason: string, reasons: string[]) => {
         if (reasons.includes(reason)) return true;
         return false;
     };
-
     const transformToTranslatedReasons = (reasons: ContactReasons[]): string[] => {
         let reasonsTranslated: string[] = [];
 
@@ -78,14 +76,15 @@ const ContactList: React.FC<NewChatProps> = ({ closeModal }) => {
         }
         return reasonsTranslated;
     };
-
-    const handleContactPress = (reasons: string[], contactId: string) => {
+    const handleContactPress = async (reasons: string[], contactId: string) => {
         if (hasReason('match', reasons)) {
-            createMatcheeChat({ variables: { matcheeId: contactId } });
+            const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
+            setChatId(conversation.data?.matchChatCreate ?? '');
         } else {
-            createParticipantChat({ variables: { participantUserId: contactId } });
+            const conversation = await createParticipantChat({ variables: { participantUserId: contactId } });
+            setChatId(conversation.data?.participantChatCreate ?? '');
         }
-        closeModal(false);
+        onClose();
     };
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
         const contactReasons = transformToTranslatedReasons(contact.contactReasons);

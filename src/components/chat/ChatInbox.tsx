@@ -2,11 +2,12 @@ import { Box, useBreakpointValue } from 'native-base';
 import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
-import { SelectConversationEvent } from 'talkjs/all';
 
-type InboxProps = {};
+type InboxProps = {
+    selectedId: string;
+};
 
-const ChatInbox: React.FC<InboxProps> = ({}) => {
+const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
@@ -29,16 +30,9 @@ const ChatInbox: React.FC<InboxProps> = ({}) => {
         lg: '90%',
     });
 
-    const conversationSelected = (e: SelectConversationEvent) => {
-        // TODO if mobile -> hide add button in chat
-        // e.preventDefault();
-        console.log('Selected', e);
-    };
-
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        inbox.onSelectConversation(conversationSelected);
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
