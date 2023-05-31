@@ -3,15 +3,16 @@ import { InputHTMLAttributes, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFilePicker } from 'use-file-picker';
 import AlertMessage from '../widgets/AlertMessage';
+import { BACKEND_URL } from '../config';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     handleFileChange: (files: File[]) => void;
 }
 
-const FileUploader: React.FC<Props> = ({ handleFileChange }) => {
+const FilePicker: React.FC<Props> = ({ handleFileChange }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
-    const maxFileSize = 50; // in MB
+    const maxFileSize = 10; // in MB
     const [openFileSelector, { plainFiles, errors }] = useFilePicker({ maxFileSize, minFileSize: 0, multiple: true });
 
     // unforunately useFilePicker doesnt return state change of file content.
@@ -66,4 +67,20 @@ const FileUploader: React.FC<Props> = ({ handleFileChange }) => {
         </>
     );
 };
-export default FileUploader;
+export default FilePicker;
+
+export const uploadFiles = async (files: File[]): Promise<string[]> => {
+    let fileIDs: string[] = [];
+    for (const file of files) {
+        const formData: FormData = new FormData();
+        const data = new Blob([file], { type: file.type });
+        formData.append('file', data, file.name);
+        const resp = await fetch(BACKEND_URL + '/api/files/upload', {
+            method: 'POST',
+            body: formData,
+        });
+        const fileID = await resp.text();
+        fileIDs.push(fileID);
+    }
+    return fileIDs;
+};

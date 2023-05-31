@@ -98,7 +98,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                             requestButtonText={t('introduction.becomeTutor')}
                             bannerHeadline={t('introduction.banner.tutorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open('https://calendly.com/d/2fy-7hr-wrz/kennenlerngesprach', '_blank')}
+                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
                         />
                     </Box>
