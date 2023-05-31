@@ -7,18 +7,16 @@ import HelpNavigation from '../components/HelpNavigation';
 import ChatInbox from '../components/chat/ChatInbox';
 import FloatinActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { LFChatProvider } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import ChatContactsModal from '../modals/ChatContactsModal';
 
 const Chat: React.FC = () => {
-    const { t } = useTranslation();
-    const { isMobile } = useLayoutHelper();
+    const [showAddButton, setShowAddButton] = useState<boolean>(true);
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
-
+    const { t } = useTranslation();
     const location = useLocation();
     const locationState = location.state as { conversationId: string };
     const conversationId = locationState?.conversationId;
@@ -57,10 +55,11 @@ const Chat: React.FC = () => {
                             <NotificationAlert />
                         </Stack>
                     }
-                    showBack={isMobile}
                 >
-                    <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
-                    <ChatInbox selectedId={conversationId ?? selectedChatId} />
+                    {showAddButton && (
+                        <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
+                    )}
+                    <ChatInbox selectedId={conversationId ?? selectedChatId} showAddButton={(show: boolean) => setShowAddButton(show)} />
                     <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </WithNavigation>
             </AsNavigationItem>
