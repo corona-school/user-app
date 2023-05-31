@@ -104,15 +104,7 @@ const profile = {
     Helper: {
         certificate: {
             title: 'Meine Bescheinigungen',
-            tabbestaetigt: 'Bestätigt',
-            tabausstehend: 'Ausstehend',
             button: 'Bescheinigung anfordern',
-            status: {
-                awaiting: 'ausstehend',
-                manual: 'manuell bestätigt',
-                approved: 'genehmigt',
-                unknown: 'unbekannt',
-            },
         },
     },
     Notice: {
@@ -120,7 +112,7 @@ const profile = {
         noState: 'Es wurde kein Bundesland angegeben',
         noSchoolType: 'Es wurde keine Schulform angegeben',
         noSchoolGrade: 'Es wurde keine Klasse angegeben',
-        noSchoolSubject: 'Es wurde keine Fächer angegeben',
+        noSchoolSubject: 'Es wurden keine Fächer angegeben',
     },
     Deactivate: {
         error: 'Dein Account konnte nicht deaktiviert werden.',
@@ -131,9 +123,9 @@ const profile = {
                 placeholder: 'Deaktivierungsgrund',
             },
             description: {
-                pupil: 'Sobald du deinen Account deaktivierst, werden deine Zuordnungen aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.',
+                pupil: 'Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.',
                 student:
-                    'Sobald du deinen Account deaktivierst, werden deine Zuordnungen aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.',
+                    'Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.',
             },
         },
         pupil: {

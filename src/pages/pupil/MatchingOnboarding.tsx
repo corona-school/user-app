@@ -80,7 +80,7 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                     width={ButtonContainer}
                     onPress={onRequestMatch}
                 >
-                    {t('dashboard.helpers.buttons.requestMatchSuS')}
+                    {t('dashboard.helpers.buttons.requestMatchPupil')}
                 </Button>
                 {(!data?.me?.pupil?.canRequestMatch?.allowed && (
                     <AlertMessage

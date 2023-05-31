@@ -99,7 +99,7 @@ const MatchingStudent: React.FC<Props> = () => {
         };
 
         if (res.studentDeleteMatchRequest) {
-            toast.show({ description: 'Die Anfrage wurde gelöscht', placement: 'top' });
+            toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.me?.student?.id]);
@@ -141,7 +141,7 @@ const MatchingStudent: React.FC<Props> = () => {
                             <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
                             {(data?.me?.student?.canRequestMatch.allowed && (
                                 <Button width={ButtonContainer} marginBottom={space['1.5']} onPress={() => navigate('/request-match')}>
-                                    {t('dashboard.helpers.buttons.requestMatchHuH')}
+                                    {t('dashboard.helpers.buttons.requestMatchStudent')}
                                 </Button>
                             )) || (
                                 <AlertMessage
