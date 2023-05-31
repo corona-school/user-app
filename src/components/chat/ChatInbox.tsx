@@ -13,7 +13,7 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
     const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
-        base: '90%',
+        base: '75%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
