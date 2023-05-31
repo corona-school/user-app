@@ -57,8 +57,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     const [createParticipantChat] = useMutation(participantChatMutation);
 
     const hasReason = (reason: string, reasons: string[]) => {
-        if (reasons.includes(reason)) return true;
-        return false;
+       return reasons.includes(reason);
     };
     const transformToTranslatedReasons = (reasons: ContactReasons[]): string[] => {
         let reasonsTranslated: string[] = [];
