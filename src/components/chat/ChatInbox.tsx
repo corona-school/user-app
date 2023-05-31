@@ -13,7 +13,7 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
     const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
-        base: '90%',
+        base: '75%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
@@ -34,7 +34,7 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: true });
         selectedId && inbox.select(selectedId);
-        isMobile && inbox.select(null);
+        // isMobile && inbox.select(null);
         // isMobile &&
         //     inbox.onConversationSelected(() => {
         //         showAddButton(false);
@@ -47,7 +47,7 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
-    }, [isMobile, selectedId, session, showAddButton]);
+    }, [session]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
