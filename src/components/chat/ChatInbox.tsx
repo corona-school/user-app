@@ -5,9 +5,9 @@ import { useChat } from '../../context/ChatContext';
 
 type InboxProps = {
     selectedId: string;
+    showAddButton: (show: boolean) => void;
 };
-
-const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
+const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
@@ -32,11 +32,22 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: true });
+        selectedId && inbox.select(selectedId);
+        // isMobile && inbox.select(null);
+        // isMobile &&
+        //     inbox.onConversationSelected(() => {
+        //         showAddButton(false);
+        //     });
+        // isMobile &&
+        //     inbox.onBlur(() => {
+        //         showAddButton(true);
+        //     });
+
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
-    }, [isMobile, session]);
+    }, [session]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
