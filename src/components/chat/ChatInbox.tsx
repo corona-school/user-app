@@ -1,18 +1,19 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
-import Talk from 'talkjs';
+import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
 
-type InboxProps = {};
+type InboxProps = {
+    selectedId: string;
+};
 
-const ChatInbox: React.FC<InboxProps> = ({}) => {
+const ChatInbox: React.FC<InboxProps> = ({ selectedId }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
-        base: '90%',
+        base: '75%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
@@ -32,7 +33,6 @@ const ChatInbox: React.FC<InboxProps> = ({}) => {
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        inbox.setFeedFilter({});
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
