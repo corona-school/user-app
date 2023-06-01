@@ -18,15 +18,41 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
     const { space } = useTheme();
     const { t } = useTranslation();
 
-    const { joinAfterStart, setJoinAfterStart, allowContact, setAllowContact, addedInstructors, newInstructors, myself } = useContext(CreateCourseContext);
+    const {
+        joinAfterStart,
+        setJoinAfterStart,
+        allowProspectContact,
+        setAllowProspectContact,
+        allowParticipantContact,
+        setAllowParticipantContact,
+        allowChatWritting,
+        setAllowChatWritting,
+        addedInstructors,
+        newInstructors,
+        myself,
+    } = useContext(CreateCourseContext);
     const [join, setJoin] = useState<boolean>(joinAfterStart || false);
-    const [allow, setAllow] = useState<boolean>(allowContact || false);
+    const [allowProspect, setAllowProspect] = useState<boolean>(allowProspectContact || false);
+    const [allowParticipant, setAllowParticipant] = useState<boolean>(allowParticipantContact || false);
+    const [allowWrite, setAllowWrite] = useState<boolean>(allowChatWritting || false);
 
     const onNextStep = useCallback(() => {
         setJoinAfterStart && setJoinAfterStart(join);
-        setAllowContact && setAllowContact(allow);
+        setAllowProspectContact && setAllowProspectContact(allowProspect);
+        setAllowParticipantContact && setAllowParticipantContact(allowParticipant);
+        setAllowChatWritting && setAllowChatWritting(allowWrite);
         onNext();
-    }, [allow, join, onNext, setAllowContact, setJoinAfterStart]);
+    }, [
+        allowParticipant,
+        allowProspect,
+        allowWrite,
+        join,
+        onNext,
+        setAllowChatWritting,
+        setAllowParticipantContact,
+        setAllowProspectContact,
+        setJoinAfterStart,
+    ]);
 
     return (
         <>
@@ -49,8 +75,8 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                         <AddInstructorWidget addInstructor={addInstructor} />
                     </Row>
                 </FormControl>
-                <VStack space={space['0.5']}>
-                    <Heading fontSize="md">{t('course.CourseDate.form.otherHeadline')}</Heading>
+                <VStack space={space['1']}>
+                    <Heading fontSize="lg">{t('course.CourseDate.form.otherHeadline')}</Heading>
                     <Row>
                         <Text flex="1">
                             {t('course.CourseDate.form.otherOptionStart')}
@@ -60,14 +86,39 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                         </Text>
                         <Switch value={join} onValueChange={setJoin} />
                     </Row>
-                    <Row marginBottom={space['2']}>
-                        <Text flex="1" justifyContent="center">
-                            {t('course.CourseDate.form.otherOptionContact')}
-                            <Tooltip maxWidth={500} label={t('course.CourseDate.form.otherOptionContactToolTip')}>
-                                <InfoIcon paddingLeft="5px" position="relative" top="3px" color="danger.100" />
+                    <Heading fontSize="md">{t('course.CourseDate.form.otherContactHeadline')}</Heading>
+                    <Text flex="1" justifyContent="center">
+                        {t('course.CourseDate.form.otherOptionContact')}
+                    </Text>
+
+                    <Row ml="10">
+                        <Text flex="1">
+                            {t('course.CourseDate.form.otherProspects')}
+                            <Tooltip maxWidth={500} label={t('course.CourseDate.form.prospectContactTooltip')}>
+                                <InfoIcon position="relative" top="3px" paddingLeft="5px" color="danger.100" />
                             </Tooltip>
                         </Text>
-                        <Switch value={allow} onValueChange={setAllow} />
+                        <Switch value={allowProspect} onValueChange={setAllowProspect} />
+                    </Row>
+
+                    <Row ml="10">
+                        <Text flex="1">
+                            {t('course.CourseDate.form.otherParticipants')}
+                            <Tooltip maxWidth={500} label={t('course.CourseDate.form.participantsContactTooltip')}>
+                                <InfoIcon position="relative" top="3px" paddingLeft="5px" color="danger.100" />
+                            </Tooltip>
+                        </Text>
+                        <Switch value={allowParticipant} onValueChange={setAllowParticipant} />
+                    </Row>
+
+                    <Heading mt="5" fontSize="md">
+                        {t('course.CourseDate.form.otherGroupChatHeadline')}
+                    </Heading>
+                    <Row marginBottom={space['2']}>
+                        <Text flex="1" justifyContent="center">
+                            {t('course.CourseDate.form.allowChatContact')}
+                        </Text>
+                        <Switch value={allowWrite} onValueChange={setAllowWrite} />
                     </Row>
                 </VStack>
             </VStack>
