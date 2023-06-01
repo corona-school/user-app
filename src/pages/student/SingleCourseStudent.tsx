@@ -4,7 +4,7 @@ import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToas
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -58,6 +58,7 @@ const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
+        conversationId
         participantsCount
         maxParticipants
         minGrade
@@ -121,7 +122,6 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
-
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
         lg: space['4'],
