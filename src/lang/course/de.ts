@@ -126,8 +126,6 @@ const course = {
             participantsContactTooltip: 'Schüler:innen, die sich für deinen Kurs angemeldet haben',
             otherOptionStartToolTip:
                 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
-            otherOptionContactToolTip:
-                'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
         },
         tags: {
             header: 'Tags wählen',

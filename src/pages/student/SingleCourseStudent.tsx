@@ -59,6 +59,9 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         conversationId
+        allowChatContactProspects
+        allowChatContactParticipants
+        groupChatType
         participantsCount
         maxParticipants
         minGrade

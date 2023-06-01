@@ -7,6 +7,7 @@ import JoinMeeting from '../../subcourse/JoinMeeting';
 import ContactParticipants from './ContactParticipants';
 import StudentSetMeetingUrl from './StudentSetMeetingUrl';
 import OpenSubcourseChat from '../../subcourse/OpenSubcourseChat';
+import { Chat_Type } from '../../../gql/graphql';
 
 type SubcourseOfStudent = {
     id: number;
@@ -17,6 +18,9 @@ type SubcourseOfStudent = {
     canContactParticipants: { allowed: boolean };
     canEdit: { allowed: boolean };
     conversationId?: string | null | undefined;
+    allowChatContactProspects: boolean;
+    allowChatContactParticipants: boolean;
+    groupChatType: Chat_Type;
 };
 
 type ActionButtonProps = {
@@ -29,7 +33,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const navigate = useNavigate();
-
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
@@ -37,6 +40,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
                 {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
                 {subcourse.published && (
                     <OpenSubcourseChat
+                        groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
                         subcourseId={subcourse.id}
                         participantsCount={subcourse.participantsCount}
