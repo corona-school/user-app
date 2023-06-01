@@ -19,7 +19,7 @@ const Chat: React.FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const locationState = location.state as { conversationId: string };
-    const matchConversationId = locationState?.conversationId;
+    const conversationId = locationState?.conversationId;
 
     const fabPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -59,7 +59,7 @@ const Chat: React.FC = () => {
                     {showAddButton && (
                         <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
                     )}
-                    <ChatInbox selectedId={matchConversationId ?? selectedChatId} showAddButton={(show: boolean) => setShowAddButton(show)} />
+                    <ChatInbox selectedId={conversationId ?? selectedChatId} showAddButton={(show: boolean) => setShowAddButton(show)} />
                     <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </WithNavigation>
             </AsNavigationItem>

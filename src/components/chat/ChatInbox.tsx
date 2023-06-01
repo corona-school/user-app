@@ -32,18 +32,8 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: true });
+        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
         selectedId && inbox.select(selectedId);
-        // isMobile && inbox.select(null);
-        // isMobile &&
-        //     inbox.onConversationSelected(() => {
-        //         showAddButton(false);
-        //     });
-        // isMobile &&
-        //     inbox.onBlur(() => {
-        //         showAddButton(true);
-        //     });
-
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
