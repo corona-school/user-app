@@ -31,7 +31,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         tags,
         classRange: courseClasses,
         joinAfterStart,
-        allowContact,
+        allowParticipantContact: allowContact,
         lectures,
         newLectures,
         pickedPhoto,

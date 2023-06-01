@@ -9,7 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
+import { Course_Coursestate_Enum } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
