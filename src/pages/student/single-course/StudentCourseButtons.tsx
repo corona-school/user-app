@@ -2,7 +2,6 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Button, Stack, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import ContactParticipants from './ContactParticipants';
@@ -17,6 +16,7 @@ type SubcourseOfStudent = {
     canCancel: { allowed: boolean };
     canContactParticipants: { allowed: boolean };
     canEdit: { allowed: boolean };
+    conversationId?: string | null | undefined;
 };
 
 type ActionButtonProps = {
@@ -35,7 +35,14 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
                 {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
-                {subcourse.published && <OpenSubcourseChat subcourseId={subcourse.id} participantsCount={subcourse.participantsCount} refresh={refresh} />}
+                {subcourse.published && (
+                    <OpenSubcourseChat
+                        conversationId={subcourse.conversationId}
+                        subcourseId={subcourse.id}
+                        participantsCount={subcourse.participantsCount}
+                        refresh={refresh}
+                    />
+                )}
                 {subcourse.canEdit.allowed && (
                     <>
                         <Button

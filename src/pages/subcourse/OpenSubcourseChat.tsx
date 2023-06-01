@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 
 type OpenSubcourseChatProps = {
     subcourseId: number;
+    conversationId: string | null | undefined;
     participantsCount: number;
     refresh: () => void;
 };
 
-const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ subcourseId, participantsCount, refresh }) => {
+const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ conversationId, subcourseId, participantsCount, refresh }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -23,8 +24,14 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ subcourseId, part
     );
 
     const openSubcourseGroupChat = async () => {
-        const conversation = await createSubcourseGroupChat({ variables: { subcourseId: subcourseId ?? 1 } });
-        navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+        if (conversationId !== null) {
+            console.log('extisting', conversationId);
+            navigate('/chat', { state: { conversationId: conversationId } });
+        } else {
+            const conversation = await createSubcourseGroupChat({ variables: { subcourseId: subcourseId ?? 1 } });
+            console.log('new', conversation?.data?.subcourseGroupChatCreate);
+            navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+        }
     };
 
     return (

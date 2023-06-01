@@ -58,6 +58,7 @@ const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
+        conversationId
         participantsCount
         maxParticipants
         minGrade
@@ -121,7 +122,6 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
-    const navigate = useNavigate();
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
         lg: space['4'],
