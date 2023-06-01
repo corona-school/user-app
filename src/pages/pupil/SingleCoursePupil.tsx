@@ -172,17 +172,16 @@ const SingleCoursePupil = () => {
     `)
     );
 
-    const [chatInstructor, { loading: loadingChatInstructor }] = useMutation(
+    const [chatCreateForSubcourse, { loading: loadingChatInstructor }] = useMutation(
         gql(`
-            mutation createParticipantChat($participantUserId: String!) {
-                participantChatCreate(participantUserId: $participantUserId)
+            mutation createParticipantChat($memberUserId: String!) {
+                participantChatCreate(participantUserId: $memberUserId)
             }       
         `)
     );
 
     async function doContact() {
-        const conversation = await chatInstructor({ variables: { participantUserId: `student/${data?.subcourse?.instructors[0].id}` } });
-        console.log(conversation);
+        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     }
 
