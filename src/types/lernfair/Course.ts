@@ -33,8 +33,8 @@ export interface LFSubCourse {
     firstLecture?: LFLecture;
     minGrade?: number;
     maxGrade?: number;
-    allowProspectContact?: boolean;
-    allowParticipantContact?: boolean;
+    allowChatContactProspects?: boolean;
+    allowChatContactParticipants?: boolean;
     groupChatType?: string;
 }
 

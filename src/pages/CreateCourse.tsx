@@ -148,7 +148,9 @@ const CreateCourse: React.FC = () => {
                     lastname
                 }
                 joinAfterStart
-
+                allowChatContactParticipants
+                allowChatContactProspects
+                groupChatType
                 course {
                     id
                     name
@@ -287,10 +289,9 @@ const CreateCourse: React.FC = () => {
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowProspectContact(!!prefillCourse.allowProspectContact);
-        setAllowParticipantContact(!!prefillCourse.allowParticipantContact);
-        // TODO if normal -> allowed = true, if announcement -> allowed = false
-        setAllowChatWritting(!!prefillCourse.groupChatType);
+        setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
+        setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
+        setAllowChatWritting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
@@ -352,6 +353,7 @@ const CreateCourse: React.FC = () => {
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
+            allowContact: false,
             ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
         [courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
@@ -378,7 +380,7 @@ const CreateCourse: React.FC = () => {
         };
 
         return subcourse;
-    }, [courseClasses, joinAfterStart, maxParticipantCount]);
+    }, [allowChatWritting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
 
     const _convertLecture: (lecture: Lecture) => LFLecture = useCallback((lecture) => {
         const l: LFLecture = {
@@ -399,6 +401,9 @@ const CreateCourse: React.FC = () => {
 
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
+            const test = _getSubcourseData();
+
+            console.log('SUBCOURSE DATA', test);
             setIsLoading(true);
 
             const errors: CreateCourseError[] = [];

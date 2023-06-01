@@ -42,7 +42,17 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
         setAllowParticipantContact && setAllowParticipantContact(allowParticipant);
         setAllowChatWritting && setAllowChatWritting(allowWrite);
         onNext();
-    }, [join, onNext, setJoinAfterStart]);
+    }, [
+        allowParticipant,
+        allowProspect,
+        allowWrite,
+        join,
+        onNext,
+        setAllowChatWritting,
+        setAllowParticipantContact,
+        setAllowProspectContact,
+        setJoinAfterStart,
+    ]);
 
     return (
         <>
