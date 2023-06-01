@@ -31,6 +31,10 @@ import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags';
+export enum ChatType {
+    NORMAL = 'NORMAL',
+    ANNOUNCEMENT = 'ANNOUNCEMENT',
+}
 
 export type Lecture = {
     id?: string | number;
@@ -56,8 +60,12 @@ type ICreateCourseContext = {
     setMaxParticipantCount?: Dispatch<SetStateAction<string>>;
     joinAfterStart?: boolean;
     setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
-    allowContact?: boolean;
-    setAllowContact?: Dispatch<SetStateAction<boolean>>;
+    allowProspectContact?: boolean;
+    setAllowProspectContact?: Dispatch<SetStateAction<boolean>>;
+    allowParticipantContact?: boolean;
+    setAllowParticipantContact?: Dispatch<SetStateAction<boolean>>;
+    allowChatWritting?: boolean;
+    setAllowChatWritting?: Dispatch<SetStateAction<boolean>>;
     lectures?: LFLecture[];
     setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
     newLectures?: Lecture[];
@@ -90,7 +98,9 @@ const CreateCourse: React.FC = () => {
     const [tags, setTags] = useState<LFTag[]>([]);
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
-    const [allowContact, setAllowContact] = useState<boolean>(false);
+    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
+    const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
+    const [allowChatWritting, setAllowChatWritting] = useState<boolean>(false);
     const [lectures, setLectures] = useState<LFLecture[]>([]);
     const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
@@ -277,7 +287,10 @@ const CreateCourse: React.FC = () => {
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowContact(!!prefillCourse.course.allowContact);
+        setAllowProspectContact(!!prefillCourse.allowProspectContact);
+        setAllowParticipantContact(!!prefillCourse.allowParticipantContact);
+        // TODO if normal -> allowed = true, if announcement -> allowed = false
+        setAllowChatWritting(!!prefillCourse.groupChatType);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
@@ -339,10 +352,9 @@ const CreateCourse: React.FC = () => {
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
-            allowContact,
             ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [allowContact, courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
+        [courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -352,11 +364,17 @@ const CreateCourse: React.FC = () => {
             maxParticipants: number;
             joinAfterStart: boolean;
             lectures?: LFLecture[];
+            allowChatContactProspects: boolean;
+            allowChatContactParticipants: boolean;
+            groupChatType: string;
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
             maxParticipants: parseInt(maxParticipantCount),
             joinAfterStart,
+            allowChatContactProspects: allowProspectContact,
+            allowChatContactParticipants: allowParticipantContact,
+            groupChatType: allowChatWritting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
         };
 
         return subcourse;
@@ -427,6 +445,7 @@ const CreateCourse: React.FC = () => {
              */
             const subcourse = _getSubcourseData();
 
+            console.log('SUBCOURSE DATA', subcourse);
             subcourse.lectures = [];
 
             const subRes = await createSubcourse({
@@ -835,8 +854,12 @@ const CreateCourse: React.FC = () => {
                         setMaxParticipantCount,
                         joinAfterStart,
                         setJoinAfterStart,
-                        allowContact,
-                        setAllowContact,
+                        allowProspectContact,
+                        setAllowProspectContact,
+                        allowParticipantContact,
+                        setAllowParticipantContact,
+                        allowChatWritting,
+                        setAllowChatWritting,
                         lectures,
                         setLectures,
                         newLectures,
