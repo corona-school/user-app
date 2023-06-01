@@ -100,7 +100,7 @@ const CreateCourse: React.FC = () => {
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
     const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
     const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
-    const [allowChatWritting, setAllowChatWritting] = useState<boolean>(false);
+    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(false);
     const [lectures, setLectures] = useState<LFLecture[]>([]);
     const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
@@ -291,7 +291,7 @@ const CreateCourse: React.FC = () => {
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
         setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
-        setAllowChatWritting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
+        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
@@ -368,7 +368,7 @@ const CreateCourse: React.FC = () => {
             lectures?: LFLecture[];
             allowChatContactProspects: boolean;
             allowChatContactParticipants: boolean;
-            groupChatType: string;
+            groupChatType: ChatType;
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
@@ -376,11 +376,11 @@ const CreateCourse: React.FC = () => {
             joinAfterStart,
             allowChatContactProspects: allowProspectContact,
             allowChatContactParticipants: allowParticipantContact,
-            groupChatType: allowChatWritting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
+            groupChatType: allowChatWriting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
         };
 
         return subcourse;
-    }, [allowChatWritting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
+    }, [allowChatWriting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
 
     const _convertLecture: (lecture: Lecture) => LFLecture = useCallback((lecture) => {
         const l: LFLecture = {
@@ -401,9 +401,6 @@ const CreateCourse: React.FC = () => {
 
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
-            const test = _getSubcourseData();
-
-            console.log('SUBCOURSE DATA', test);
             setIsLoading(true);
 
             const errors: CreateCourseError[] = [];
@@ -450,7 +447,6 @@ const CreateCourse: React.FC = () => {
              */
             const subcourse = _getSubcourseData();
 
-            console.log('SUBCOURSE DATA', subcourse);
             subcourse.lectures = [];
 
             const subRes = await createSubcourse({
@@ -863,8 +859,8 @@ const CreateCourse: React.FC = () => {
                         setAllowProspectContact,
                         allowParticipantContact,
                         setAllowParticipantContact,
-                        allowChatWritting,
-                        setAllowChatWritting,
+                        allowChatWritting: allowChatWriting,
+                        setAllowChatWritting: setAllowChatWriting,
                         lectures,
                         setLectures,
                         newLectures,

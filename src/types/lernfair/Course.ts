@@ -1,5 +1,6 @@
 import { Course_Coursestate_Enum } from '../../gql/graphql';
 import { Pupil } from '../../gql/graphql';
+import { ChatType } from '../../pages/CreateCourse';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
@@ -35,7 +36,7 @@ export interface LFSubCourse {
     maxGrade?: number;
     allowChatContactProspects?: boolean;
     allowChatContactParticipants?: boolean;
-    groupChatType?: string;
+    groupChatType?: ChatType;
 }
 
 export type LFLecture = {
