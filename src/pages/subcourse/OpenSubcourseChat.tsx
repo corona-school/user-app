@@ -25,11 +25,9 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ conversationId, s
 
     const openSubcourseGroupChat = async () => {
         if (conversationId !== null) {
-            console.log('extisting', conversationId);
             navigate('/chat', { state: { conversationId: conversationId } });
         } else {
             const conversation = await createSubcourseGroupChat({ variables: { subcourseId: subcourseId ?? 1 } });
-            console.log('new', conversation?.data?.subcourseGroupChatCreate);
             navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
         }
     };
