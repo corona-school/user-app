@@ -1,6 +1,8 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Talk from 'talkjs';
-import useApollo from '../hooks/useApollo';
+import { useUser, useUserType } from '../hooks/useApollo';
+import { gql } from '../gql';
+import { useQuery } from '@apollo/client';
 
 type IChatContext = {
     session: Talk.Session | null;
@@ -11,20 +13,32 @@ const ChatContext = createContext<IChatContext>({
     talkLoaded: false,
 });
 
+const userIdToTalkJsId = (userId: string): string => {
+    return userId.replace('/', '_');
+};
+
+const getMyChatSignature = gql(`
+query myChatSignature {
+    me {
+      userID
+      chatSignature
+    }
+  }`);
+
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
-    // TODO get userID from logged in user
-    // * const userType = useApollo();
-    // TODO add query for the current user
-    // TODO get signature from BE
+    const user = useUser();
+    const userType = useUserType();
+
+    const { data } = useQuery(getMyChatSignature);
     // TODO add query to get has unread messages
 
     const me = {
-        id: '123',
-        name: 'Lomy',
-        role: 'student',
-        email: 'salome.wick@typedigital.de',
+        id: userIdToTalkJsId(user.userID),
+        name: user.firstname,
+        role: userType,
+        email: user.email,
     };
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
@@ -37,7 +51,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             const session = new Talk.Session({
                 appId: 't5NarFaG',
                 me: currentUser,
-                // signature:
+                signature: data?.me.chatSignature,
             });
             setSession(session);
             return () => session.destroy();

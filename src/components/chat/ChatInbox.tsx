@@ -1,18 +1,19 @@
 import { Box, useBreakpointValue } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
-import Talk from 'talkjs';
+import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
 
-type InboxProps = {};
-
-const ChatInbox: React.FC<InboxProps> = ({}) => {
+type InboxProps = {
+    selectedId: string;
+    showAddButton: (show: boolean) => void;
+};
+const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
 
     const chatHeight = useBreakpointValue({
-        base: '90%',
+        base: '75%',
         lg: '90%',
     });
     const paddingRight = useBreakpointValue({
@@ -31,12 +32,22 @@ const ChatInbox: React.FC<InboxProps> = ({}) => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        inbox.setFeedFilter({});
+        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: true });
+        selectedId && inbox.select(selectedId);
+        // isMobile && inbox.select(null);
+        // isMobile &&
+        //     inbox.onConversationSelected(() => {
+        //         showAddButton(false);
+        //     });
+        // isMobile &&
+        //     inbox.onBlur(() => {
+        //         showAddButton(true);
+        //     });
+
         inbox.mount(inboxRef.current);
 
         return () => session.destroy();
-    }, [isMobile, session]);
+    }, [session]);
 
     return <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />;
 };
