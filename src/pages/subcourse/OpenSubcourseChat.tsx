@@ -31,7 +31,7 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ groupChatType, co
         } else {
             const conversation = await createSubcourseGroupChat({
                 variables: {
-                    subcourseId: subcourseId ?? 1,
+                    subcourseId: subcourseId,
                     groupChatType: groupChatType === Chat_Type.Announcement ? Chat_Type.Announcement : Chat_Type.Normal,
                 },
             });
