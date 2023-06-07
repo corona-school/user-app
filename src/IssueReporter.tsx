@@ -31,8 +31,8 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
 
     const [reportToBackend] = useMutation(
         gql(`
-        mutation ReportIssue($userAgent: String!, $logs: [String!]!, $stack: String!, $message: String!, $issueTag: String!) {
-            userReportIssue(userAgent: $userAgent, logs: $logs, errorStack: $stack, errorMessage: $message, issueTag: $issueTag)
+        mutation ReportIssue($userAgent: String!, $logs: [String!]!, $stack: String!, $message: String!, $issueTag: String!, $componentStack: String!) {
+            userReportIssue(userAgent: $userAgent, logs: $logs, errorStack: $stack, errorMessage: $message, issueTag: $issueTag, componentStack: $componentStack)
         }
     `)
     );
@@ -49,8 +49,9 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                 issueTag,
                 userAgent: window.navigator.userAgent,
                 logs: getLastLogs(),
-                stack: `Error Stack:\n${error.stack}\n\nReact Stack:\n${errorInfo.componentStack}`,
+                stack: error.stack ?? '',
                 message: error.message,
+                componentStack: errorInfo.componentStack,
             },
         });
 
