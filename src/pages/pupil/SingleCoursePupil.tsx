@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
-import { Heading, Row, Stack, Text, useTheme, useToast } from 'native-base';
+import { Heading, Row, Stack, Text, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -172,15 +172,15 @@ const SingleCoursePupil = () => {
     `)
     );
 
-    const [chatCreateForSubcourse, { loading: loadingChatInstructor }] = useMutation(
+    const [chatCreateForSubcourse, { loading: isLoadingChatCreation }] = useMutation(
         gql(`
-            mutation createParticipantChat($memberUserId: String!) {
+            mutation createInstructorChat($memberUserId: String!) {
                 participantChatCreate(participantUserId: $memberUserId)
             }       
         `)
     );
 
-    async function doContact() {
+    async function contactInstructor() {
         const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     }
@@ -280,7 +280,7 @@ const SingleCoursePupil = () => {
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
                         leaveWaitinglist={() => leaveWaitingList()}
-                        doContactInstructor={doContact}
+                        contactInstructor={contactInstructor}
                         refresh={refetch}
                     />
                 )}

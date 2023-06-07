@@ -5,7 +5,6 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
-import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
@@ -33,7 +32,7 @@ type ActionButtonProps = {
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: () => Promise<void>;
+    contactInstructor: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -54,7 +53,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    doContactInstructor,
+    contactInstructor,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
@@ -134,7 +133,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </VStack>
                 )}
                 {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => doContactInstructor()}>
+                    <Button variant="outline" onPress={() => contactInstructor()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
