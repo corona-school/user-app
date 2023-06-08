@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AppointmentsEmptyState from '../AppointmentsEmptyState';
 import { ScrollDirection } from '../../pages/Appointments';
 import { isAppointmentNow } from '../../helper/appointment-helper';
+import useInterval from '../../hooks/useInterval';
 
 type Props = {
     appointments: Appointment[];
@@ -159,6 +160,12 @@ const AppointmentList: React.FC<Props> = ({
             </Box>
         );
     };
+
+    const [_, setRefresh] = React.useState(0);
+
+    useInterval(() => {
+        setRefresh(new Date().getTime());
+    }, 60_000);
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;

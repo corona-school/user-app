@@ -26,6 +26,13 @@ type Props = {
     chatType?: Appointment['appointmentType'];
 };
 
+export const canJoinMeeting = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
+    const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
+    const end = startDate.plus({ minutes: duration });
+
+    return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
+};
+
 const AppointmentDay: React.FC<Props> = ({
     start,
     duration,
@@ -52,14 +59,6 @@ const AppointmentDay: React.FC<Props> = ({
         return sameMonth && sameYear;
     }, []);
 
-    const isAppointmentNow = (start: string, duration: number): boolean => {
-        const now = DateTime.now();
-        const startDate = DateTime.fromISO(start);
-        const end = startDate.plus({ minutes: duration });
-
-        return startDate <= now && now < end;
-    };
-
     const getAppointmentTimeText = (start: string, duration: number): string => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
@@ -69,13 +68,13 @@ const AppointmentDay: React.FC<Props> = ({
         const endTime = end.setLocale('de-DE').toFormat('T');
         const i18n = getI18n();
 
-        if (startDate <= now && now < end) {
+        if (startDate <= now && now <= end) {
             return i18n.t('appointment.clock.nowToEnd', { end: endTime });
         }
         return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
-    const isCurrent = isAppointmentNow(start, duration);
+    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
     const currentMonth = isCurrentMonth(start);
 
     const width = useBreakpointValue({

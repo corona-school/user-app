@@ -8,11 +8,11 @@ import Avatars from './Avatars';
 import Description from './Description';
 import Buttons from './Buttons';
 import { DateTime } from 'luxon';
-// eslint-disable-next-line lernfair-app-linter/typed-gql
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
+import { gql } from '../../gql';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -26,33 +26,6 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const QUERY_MATCH = gql(`
-    query match($id: Int!) {
-        match(matchId: $id) {
-            id
-            pupil {
-                firstname
-                lastname
-            }
-        }
-    }
-`);
-
-const QUERY_SUBCOURSE = gql(`
-    query course($id: Int!) {
-        subcourse(subcourseId: $id) {
-            course {
-                name
-                description
-            }
-            instructors {
-                firstname
-                lastname
-            }
-        }
-    }
-`);
-
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, startMeeting }) => {
     const { t } = useTranslation();
     const toast = useToast();
@@ -61,7 +34,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
     const [canceled, setCanceled] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { data } = useQuery(appointment.matchId ? QUERY_MATCH : QUERY_SUBCOURSE, { variables: { id } });
 
     const containerWidth = useBreakpointValue({
         base: 'full',
@@ -136,9 +108,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
                 <Header
-                    appointmentType={appointment.appointmentType}
                     organizers={appointment.organizers}
-                    courseName={data?.subcourse?.course?.name}
                     appointmentTitle={appointment.title}
                     displayName={appointment.displayName}
                     position={appointment.position}
@@ -157,6 +127,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
                     declinedBy={appointment?.declinedBy ?? []}
                     appointmentId={appointment.id}
                     chatType={appointment.appointmentType}
+                    isOrganizer={appointment.isOrganizer}
                 />
                 <Description description={appointment.description} />
 

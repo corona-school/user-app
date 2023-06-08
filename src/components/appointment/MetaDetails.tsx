@@ -10,6 +10,9 @@ import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
+import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { Appointment } from '../../types/lernfair/Appointment';
+import { DateTime } from 'luxon';
 
 type MetaProps = {
     date: string;
@@ -25,6 +28,7 @@ type MetaProps = {
     declinedBy: string[];
     appointmentId?: number;
     chatType?: string;
+    isOrganizer?: Appointment['isOrganizer'];
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
@@ -40,6 +44,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     declinedBy,
     appointmentId,
     chatType,
+    isOrganizer,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const { isMobile } = useLayoutHelper();
@@ -50,17 +55,6 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
-
-    function isWithinAppointmentTime(appointmentStart: string, duration: number) {
-        const THIRTY_MINUTES_IN_MS = 30 * 60 * 1000;
-        const start = new Date(new Date(appointmentStart).getTime() - THIRTY_MINUTES_IN_MS);
-        const end = new Date(start.getTime() + (duration + 10 || 0) * 60 * 1000 + THIRTY_MINUTES_IN_MS);
-        const now = new Date();
-
-        console.log(start, end, now);
-
-        return now >= start && now <= end;
-    }
 
     return (
         <>
@@ -99,7 +93,7 @@ const MetaDetails: React.FC<MetaProps> = ({
                 onPress={() => {
                     navigate(`/video-chat/${appointmentId}/${chatType}`);
                 }}
-                isDisabled={!appointmentId || !isWithinAppointmentTime(startDateTime, duration)}
+                isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
             >
                 {t('appointment.detail.videochatButton')}
             </Button>

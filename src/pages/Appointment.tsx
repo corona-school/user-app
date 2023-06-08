@@ -19,6 +19,7 @@ const APPOINTMENT = gql(`
             appointmentType
             total
             displayName
+            isOrganizer
             participants(skip: 0, take: 10) {
                 id
                 userID

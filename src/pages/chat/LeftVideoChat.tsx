@@ -4,6 +4,7 @@ import { Box, Button, Heading, Stack, Text, useBreakpointValue, useTheme, View }
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import PartyIcon from '../../assets/icons/lernfair/lf-party.svg';
+import { useEffect } from 'react';
 
 const getAppointmentOrganizer = gql(`
 query appointmentOrganizer($appointmentId: Float!) {
@@ -45,10 +46,15 @@ const LeftVideoChat: React.FC = () => {
     `)
     );
 
+    useEffect(() => {
+        (async () => {
+            if (isOrganizer) {
+                await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
+            }
+        })();
+    }, []);
+
     const saveAndFinish = async () => {
-        if (isOrganizer) {
-            await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
-        }
         navigate('/');
     };
 
