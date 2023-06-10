@@ -142,7 +142,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                 newLectures.map((lec, i) => (
                     <VStack marginBottom={space['1']}>
                         <Heading mb={space['0.5']} fontSize="lg">
-                            {t('course.CourseDate.Preview.appointmentLabel')} {`${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
+                            {t('appointment') + `${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
                         </Heading>
                         <VStack>
                             <Row>
@@ -154,16 +154,16 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                             </Row>
                             <Row>
                                 <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentTime')}
+                                    {t('time')}
                                 </Text>
                                 <Text fontSize="md">
                                     {Utility.handleDateString(lec.time, 'hh:mm', undefined, DateTime.TIME_24_SIMPLE)}
-                                    {' Uhr'}
+                                    {' ' + t('clock')}
                                 </Text>
                             </Row>
                             <Row>
                                 <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentDuration')}
+                                    {t('duration') + ':'}
                                 </Text>
                                 <Text fontSize="md">{convertTime(lec.duration)}</Text>
                             </Row>

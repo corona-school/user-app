@@ -1,7 +1,12 @@
 import { Button, Modal, Radio, Row, Text, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../config';
+import { useNavigate } from 'react-router-dom';
+import AlertMessage from '../widgets/AlertMessage';
 import { useTranslation } from 'react-i18next';
+import { gql, useQuery } from '@apollo/client';
+import UserType from '../pages/registration/UserType';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
@@ -17,6 +22,7 @@ export const pupilReasonOptions = new Array(9).fill(0);
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, onPressDissolve, onPressBack }) => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { space } = useTheme();
     const userType = useUserType();
     const [reason, setReason] = useState<string>('');
@@ -29,7 +35,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                 <Modal.CloseButton />
                 {currentIndex === 0 && (
                     <>
-                        <Modal.Header>{t('matching.dissolveModal.title')}</Modal.Header>
+                        <Modal.Header>{t('matching.dissolve.modal.title')}</Modal.Header>
                         <Modal.Body>
                             <Radio.Group name="dissolve-reason" value={reason} onChange={setReason}>
                                 <VStack space={space['1']}>
@@ -44,7 +50,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <Button isDisabled={!reason} onPress={() => onPressDissolve(reason)}>
-                                    {t('matching.dissolveModal.btn')}
+                                    {t('matching.dissolve.modal.btn')}
                                 </Button>
                                 <Button onPress={onPressBack} variant="ghost">
                                     {t('back')}
@@ -53,33 +59,31 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Footer>
                     </>
                 )}
+                {/* TODO: move dissolve logic in this modal.*/}
                 {currentIndex === 1 && (
                     <>
-                        <Modal.Header>Neue Lernpartner:in anfordern</Modal.Header>
+                        <Modal.Header>{t('matching.dissolve.newMatch.title')}</Modal.Header>
                         <Modal.Body>
                             <Text>
-                                Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte dabei, dass du wieder einige Zeit warten musst bis wir
-                                jemanden für dich finden können.
+                                {userType === 'student' ? t('matching.dissolve.newMatch.descriptionStudent') : t('matching.dissolve.newMatch.descriptionPupil')}
                             </Text>
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button onPress={onPressBack} variant="secondary">
-                                    {t('cancel')}
-                                </Button>
                                 <Button
-                                    isDisabled={!reason}
-                                    onPress={() => {
-                                        const res = onPressDissolve(reason);
-                                        if (res) {
-                                            setCurrentIndex(1);
-                                        } else {
-                                            onPressBack();
-                                        }
-                                    }}
+                                    isDisabled={userType === 'student' || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                                    onPress={() => navigate('/request-match')}
                                 >
-                                    Neue Lernpartner:in
+                                    <Button onPress={() => navigate('/matching')} variant="secondary">
+                                        {t('done')}
+                                    </Button>
+                                    {userType === 'student'
+                                        ? t('dashboard.helpers.buttons.requestMatchStudent')
+                                        : t('dashboard.helpers.buttons.requestMatchPupil')}
                                 </Button>
+                                {userType === 'pupil' && DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
+                                    <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
+                                )}
                             </Row>
                         </Modal.Footer>
                     </>

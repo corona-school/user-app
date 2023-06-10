@@ -407,7 +407,7 @@ const Dashboard: React.FC<Props> = () => {
                                                     navigate('/request-match');
                                                 }}
                                             >
-                                                {t('dashboard.helpers.buttons.requestMatchSuS')}
+                                                {t('dashboard.helpers.buttons.requestMatchPupil')}
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
@@ -415,8 +415,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 {data?.me?.pupil?.firstMatchRequest && (
                                                     <Text>
                                                         {t('dashboard.offers.requestCreated')}{' '}
-                                                        {DateTime.fromISO(data?.me?.pupil?.firstMatchRequest).toFormat('dd.MM.yyyy, HH:mm')}{' '}
-                                                        {t('dashboard.offers.clock')}
+                                                        {DateTime.fromISO(data?.me?.pupil?.firstMatchRequest).toFormat('dd.MM.yyyy, HH:mm')} {t('clock')}
                                                     </Text>
                                                 )}
                                                 <Alert maxWidth="520px" alignItems="start" marginY={space['0.5']} colorScheme="info">

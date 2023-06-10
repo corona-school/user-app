@@ -11,7 +11,6 @@ const single = {
         duration: 'Dauer',
         tutor: 'Tutor:innen',
         more_tutors: 'Weitere Tutor:innen',
-        years: 'Jahre',
         hours: 'Stunde(n)',
         state: 'Status:',
         status: {
@@ -29,7 +28,6 @@ const single = {
         },
         noMembers: 'Es sind noch keine Teilnehmer:innen vorhanden.',
         noLections: 'Es wurden keine Lektionen eingetragen.',
-        close: 'Fenster schließen',
         leaveCourse: 'Kurs verlassen',
         signOut: 'Vom Kurs abmelden',
     },
@@ -75,8 +73,8 @@ const single = {
     },
     modals: {
         contactMessage: {
-            alertParticipants: ' Wir teilen deinen Teilnehmer:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
-            alertInstructors: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+            alertParticipants: ' Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
+            alertInstructors: ' Wir teilen deinen Schüler:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.',
         },
     },
     buttonPromote: {

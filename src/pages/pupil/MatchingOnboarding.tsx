@@ -80,14 +80,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                     width={ButtonContainer}
                     onPress={onRequestMatch}
                 >
-                    {t('dashboard.helpers.buttons.requestMatchSuS')}
+                    {t('dashboard.helpers.buttons.requestMatchPupil')}
                 </Button>
                 {(!data?.me?.pupil?.canRequestMatch?.allowed && (
-                        <AlertMessage
-                            content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
-                        />
-                 )) ||
-                 (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
+                    <AlertMessage
+                        content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
+                    />
+                )) ||
+                    (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
             </VStack>
         </VStack>
     );

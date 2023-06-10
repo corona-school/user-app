@@ -9,8 +9,8 @@ const matching = {
         dissolve: 'Lernpaar auflösen',
         active: 'aktiv',
         inactive: 'inaktiv',
-        activeMatches: 'Aktive Zuordnungen',
-        inactiveMatches: 'Aufgelöste Zuordnungen',
+        activeMatches: 'Aktive Lernpaare',
+        inactiveMatches: 'Aufgelöste Lernpaare',
         schoolGrade: '{{schooltype}} • {{grade}} ',
         showMore: 'Mehr anzeigen',
         showLess: 'Weniger anzeigen',
@@ -38,6 +38,9 @@ const matching = {
     },
     pending: {
         modal: {
+            title: 'Anfrage zurücknehmen',
+            description:
+                'Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere Schüler:innen vergeben.',
             buttons: {
                 dissolve: 'Anfrage zurücknehmen',
                 nothing: 'Keine Angabe machen',
@@ -59,12 +62,12 @@ const matching = {
             editRequest: 'Anfrage bearbeiten',
             deleteRequest: 'Anfrage löschen',
             areyousuretodelete: 'Möchtest du die Anfrage wirklich löschen?',
+            deleteSucess: 'Die Anfrage wurde gelöscht',
             noMatches: 'Du hast (noch) keine Lernpartner:in.',
-            noDissolvedMatches: 'Du hast keine aufgelösten Zuordnungen.',
+            noDissolvedMatches: 'Du hast keine aufgelösten Lernpaare.',
             editRequestDescription:
-                ' Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.',
-            noRequestsTutee:
-                'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich. Drücke auf "Lernpaar bilden"-Button, um mit einer:m Helfer:in verbunden zu werden.',
+                ' Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.',
+            noRequestsTutee: 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.',
             noRequestsTutor:
                 'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
             resolveMatch: 'Das Lernpaar wurde aufgelöst',
@@ -107,7 +110,7 @@ const matching = {
                     title: 'Alle Kurse',
                     current: 'Aktuelle Kurse',
                     past: 'Vergangene Kurse',
-                    language: 'Deutsch-Kurse',
+                    language: 'Deutsch für Anfänger',
                     focus: 'Fokus-Kurse',
                     courses: 'Nachhilfe-Kurse',
                 },
@@ -117,7 +120,7 @@ const matching = {
             header: 'Gruppen-Kurse',
             title: 'Gruppen-Kurse',
             content:
-                'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Deutsch-Kurse und Fokus-Kurse.',
+                'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und "Deutsch für Anfänger".',
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',
@@ -145,9 +148,18 @@ const matching = {
         },
     },
     status: { dissolved: 'Das Lernpaar wurde aufgelöst.' },
-    dissolveModal: {
-        title: 'Lernpaar auflösen',
-        btn: 'Lernpaar auflösen',
+    dissolve: {
+        modal: {
+            title: 'Warum möchtest du das Lernpaar auflösen?',
+            btn: 'Lernpaar auflösen',
+        },
+        newMatch: {
+            title: 'Neues Lernpaar bilden',
+            descriptionPupil:
+                'Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte bitte, dass es wieder einige Zeit dauert bis wir jemanden für dich finden können.',
+            descriptionStudent:
+                'Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Wir freuen uns, wenn du (noch) eine:n Schüler:in unterstützt. Danke für dein Engagement!',
+        },
     },
     dissolveReasons: {
         student: {
