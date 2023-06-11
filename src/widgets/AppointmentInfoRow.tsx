@@ -17,9 +17,9 @@ const AppointmentInfoRow: React.FC<Props> = ({ lecture, index, onPressDelete }) 
         <VStack marginBottom={space['1']}>
             <Row>
                 <Heading mb={space['0.5']} fontSize="lg" flex="1">
-                    {t('course.CourseDate.Preview.appointmentLabel')} {`${index + 1}`.padStart(2, '0')}
+                    {t('appointment') + `${index + 1}`.padStart(2, '0')}
                 </Heading>
-                {onPressDelete && <Link onPress={onPressDelete}>Termin löschen</Link>}
+                {onPressDelete && <Link onPress={onPressDelete}>{t('appointment.deleteModal.delete')}</Link>}
             </Row>
 
             <VStack>
@@ -32,18 +32,20 @@ const AppointmentInfoRow: React.FC<Props> = ({ lecture, index, onPressDelete }) 
                 </Row>
                 <Row>
                     <Text bold minW="100px" fontSize="md">
-                        {t('course.CourseDate.Preview.appointmentTime')}
+                        {t('time') + ':'}
                     </Text>
                     <Text fontSize="md">
                         {DateTime.fromISO(lecture.start).toFormat('HH:mm')}
-                        {' Uhr'}
+                        {' ' + t('clock')}
                     </Text>
                 </Row>
                 <Row>
                     <Text bold minW="100px" fontSize="md">
-                        {t('course.CourseDate.Preview.appointmentDuration')}
+                        {t('duration') + ':'}
                     </Text>
-                    <Text fontSize="md">{`${(typeof lecture.duration === 'string' ? parseInt(lecture.duration) : lecture.duration) / 60} Stunden`}</Text>
+                    <Text fontSize="md">
+                        {`${(typeof lecture.duration === 'string' ? parseInt(lecture.duration) : lecture.duration) / 60} ` + t('single.global.hours')}
+                    </Text>
                 </Row>
             </VStack>
         </VStack>

@@ -321,45 +321,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     />
                                 </VStack>
                             )}
-                            {sortedAppointments.length > 1 && (
-                                <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }) => {
-                                        const { course } = subcourse;
 
-                                        return (
-                                            <AppointmentCard
-                                                key={subcourse.id}
-                                                description={course.description}
-                                                tags={course.tags}
-                                                date={lecture.start}
-                                                image={course?.image || ''}
-                                                title={course.name}
-                                                countCourse={subcourse.lectures.length}
-                                                maxParticipants={subcourse.maxParticipants}
-                                                participantsCount={subcourse.participantsCount}
-                                                minGrade={subcourse.minGrade}
-                                                maxGrade={subcourse.maxGrade}
-                                                statusText={getTrafficStatusText(subcourse)}
-                                                isFullHeight
-                                                showSchoolclass
-                                                showCourseTraffic
-                                                showStatus
-                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                onPressToCourse={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Helfer Dashboard Kachelklick  ' + course.name,
-                                                        documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
-                                                    });
-
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </HSection>
-                            )}
                             {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
                                 <HSection
                                     title={t('dashboard.helpers.headlines.course')}
@@ -464,7 +426,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                             marginY={space['1']}
                                             onPress={requestMatch}
                                         >
-                                            {t('dashboard.helpers.buttons.requestMatchHuH')}
+                                            {t('dashboard.helpers.buttons.requestMatchStudent')}
                                         </Button>
                                     ) : (
                                         <AlertMessage

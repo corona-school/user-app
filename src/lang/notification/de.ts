@@ -5,15 +5,16 @@ const notification = {
         lastWeek: 'letzte Woche',
         lastMonth: 'letzten Monat',
         now: 'gerade eben',
-        beforeMinutes: '{{minutes}} Min',
+        beforeMinutes: '{{minutes}} Min.',
     },
+    send: 'Benachrichtigung verschickt',
     panel: {
         noNotifications: 'Keine Nachrichten vorhanden.',
         button: {
             text: 'Ältere Benachrichtigungen anzeigen',
         },
         leavePageModal: {
-            text: 'Du bist dabei Lernfair zu verlassen',
+            text: 'Du bist dabei, Lern-Fair zu verlassen',
             description: 'Du wirst zu folgender Seite weitergeleitet',
             button: 'Weiter zu externer Seite',
         },
@@ -65,7 +66,7 @@ const notification = {
                     'Wir möchten dich gerne über neue Features und Funktionen informieren und dich auf Vorteile aufmerksam machen, die du über Lern-Fair erhalten kannst.',
             },
             event: {
-                title: 'Events & Happenings',
+                title: 'Veranstaltungen',
                 modalBody:
                     'Bei Lern-Fair organisieren wir regelmäßig coole Events und wertvolle Fortbildungen. Wir halten dich auf dem Laufenden und vernetzen dich mit anderen Nutzer:innen auf unserer Plattform.',
             },
