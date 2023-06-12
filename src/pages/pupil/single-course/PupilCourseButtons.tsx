@@ -2,17 +2,31 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Subcourse } from '../../../gql/graphql';
+import { Chat_Type } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
+import OpenSubcourseChat from '../../subcourse/OpenSubcourseChat';
 
 type CanJoin = {
     allowed: boolean;
     reason?: 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full' | null;
+};
+
+type SubcourseOfPupil = {
+    id: number;
+    participantsCount: number;
+    maxParticipants: number;
+    isParticipant: boolean;
+    isOnWaitingList: boolean;
+    canContactInstructor: { allowed: boolean };
+    conversationId?: string | null | undefined;
+    allowChatContactProspects?: boolean;
+    allowChatContactParticipants?: boolean;
+    groupChatType: Chat_Type;
 };
 
 type ActionButtonProps = {
@@ -27,7 +41,7 @@ type ActionButtonProps = {
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
+    subcourse: SubcourseOfPupil;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
@@ -118,9 +132,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
 
                 {subcourse.isParticipant && (
-                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
-                        {t('single.actions.leaveSubcourse')}
-                    </Button>
+                    <OpenSubcourseChat
+                        groupChatType={subcourse.groupChatType}
+                        conversationId={subcourse.conversationId}
+                        subcourseId={subcourse.id}
+                        participantsCount={subcourse.participantsCount}
+                        isParticipant={subcourse.isParticipant}
+                        refresh={refresh}
+                    />
                 )}
                 {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
@@ -132,12 +151,17 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
                 )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                {subcourse.isParticipant && subcourse.allowChatContactParticipants && (
                     <Button variant="outline" onPress={() => contactInstructor()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
                 {subcourse.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse.isParticipant && (
+                    <Button variant="outline" onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
+                        {t('single.actions.leaveSubcourse')}
+                    </Button>
+                )}
             </Stack>
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>

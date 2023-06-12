@@ -21,13 +21,22 @@ import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import HelpNavigation from '../../components/HelpNavigation';
 
-function Participants({ subcourseId }: { subcourseId: number }) {
+function Participants({
+    subcourseId,
+    contactParticipant,
+    isInstructor,
+}: {
+    subcourseId: number;
+    contactParticipant: (participantId: string) => void;
+    isInstructor: boolean;
+}) {
     const { t } = useTranslation();
     const { data, loading } = useQuery(
         gql(`
         query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 participants {
+                    id
                     firstname
                     lastname
                     schooltype
@@ -48,7 +57,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} />
+                <ParticipantRow participant={participant} isInstructor={isInstructor} contactParticipant={contactParticipant} />
             ))}
         </>
     );
@@ -125,6 +134,8 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+    const navigate = useNavigate();
+
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
         lg: space['4'],
@@ -189,6 +200,14 @@ const SingleCourseStudent = () => {
         refetchBasics();
     }, []);
 
+    const [contactParticipant] = useMutation(
+        gql(`
+mutation contactCourseParticipant($participantUserId: String!) {
+    participantChatCreate(participantUserId: $participantUserId)
+}
+`)
+    );
+
     const [cancelSubcourse, { data: canceldData }] = useMutation(
         gql(`mutation CancelSubcourse($subcourseId: Float!) {
         subcourseCancel(subcourseId: $subcourseId)
@@ -246,7 +265,11 @@ const SingleCourseStudent = () => {
             badge: subcourse?.participantsCount,
             content: (
                 <>
-                    <Participants subcourseId={subcourseId} />
+                    <Participants
+                        subcourseId={subcourseId}
+                        isInstructor={subcourse.isInstructor}
+                        contactParticipant={(participantUserId: string) => doContactParticipant(participantUserId)}
+                    />
                 </>
             ),
         });
@@ -323,6 +346,11 @@ const SingleCourseStudent = () => {
                 return () => submitCourse();
         }
     }, [course?.courseState, doPublish, submitCourse]);
+
+    const doContactParticipant = async (participantUserId: string) => {
+        const conversation = await contactParticipant({ variables: { participantUserId: participantUserId } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    };
 
     return (
         <WithNavigation

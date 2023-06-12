@@ -23,6 +23,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
         query GetOtherParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 otherParticipants{
+                    id
                     firstname
                     grade
                 }
@@ -54,11 +55,15 @@ const singleSubcoursePupilQuery = gql(`
 query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
     subcourse(subcourseId: $subcourseId){
         id
+        conversationId
         participantsCount
         maxParticipants
         minGrade
         maxGrade
         capacity
+        groupChatType
+        allowChatContactProspects
+        allowChatContactParticipants
         alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start

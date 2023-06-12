@@ -36,17 +36,17 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
-                {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
                 {subcourse.published && (
                     <OpenSubcourseChat
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
                         subcourseId={subcourse.id}
                         participantsCount={subcourse.participantsCount}
+                        isInstructor={subcourse.isInstructor}
                         refresh={refresh}
                     />
                 )}
+                {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
                 {subcourse.canEdit.allowed && (
                     <>
                         <Button
