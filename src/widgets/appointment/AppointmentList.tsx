@@ -22,13 +22,14 @@ type Props = {
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
+    if (!appointments) return 0;
     const now = DateTime.now();
     const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
     const current = appointments.find((appointment) => isAppointmentNow(appointment.start, appointment.duration));
     const nextId = next?.id ?? 0;
     const currentId = current?.id;
 
-    return currentId || nextId || 0;
+    return currentId || nextId;
 };
 const AppointmentList: React.FC<Props> = ({
     appointments,
