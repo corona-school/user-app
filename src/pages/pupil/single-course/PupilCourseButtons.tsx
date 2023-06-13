@@ -27,12 +27,18 @@ type ActionButtonProps = {
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
+    subcourse: Required<
+        Pick<
+            Subcourse,
+            'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor' | 'allowChatContactProspects'
+        >
+    >;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    contactInstructor: () => Promise<void>;
+    contactInstructorAsParticipant: () => Promise<void>;
+    contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -53,7 +59,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    contactInstructor,
+    contactInstructorAsParticipant,
+    contactInstructorAsProspect,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
@@ -133,7 +140,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </VStack>
                 )}
                 {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => contactInstructor()}>
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
