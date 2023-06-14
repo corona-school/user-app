@@ -55,7 +55,6 @@ const singleSubcoursePupilQuery = gql(`
 query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
     subcourse(subcourseId: $subcourseId){
         id
-        conversationId
         participantsCount
         maxParticipants
         minGrade

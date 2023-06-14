@@ -2,7 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Chat_Type } from '../../../gql/graphql';
+import { Chat_Type, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
@@ -16,7 +16,16 @@ type CanJoin = {
     reason?: 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full' | null;
 };
 
-type SubcourseOfPupil = Subcourse & {
+type SubcourseOfPupil = {
+    id: number;
+    participantsCount: number;
+    maxParticipants: number;
+    isParticipant: boolean;
+    isOnWaitingList: boolean;
+    canContactInstructor: { allowed: boolean };
+    conversationId?: string | null | undefined;
+    allowChatContactProspects?: boolean;
+    allowChatContactParticipants?: boolean;
     groupChatType: Chat_Type;
 };
 
