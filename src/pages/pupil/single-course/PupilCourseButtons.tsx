@@ -16,16 +16,7 @@ type CanJoin = {
     reason?: 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full' | null;
 };
 
-type SubcourseOfPupil = {
-    id: number;
-    participantsCount: number;
-    maxParticipants: number;
-    isParticipant: boolean;
-    isOnWaitingList: boolean;
-    canContactInstructor: { allowed: boolean };
-    conversationId?: string | null | undefined;
-    allowChatContactProspects?: boolean;
-    allowChatContactParticipants?: boolean;
+type SubcourseOfPupil = Subcourse & {
     groupChatType: Chat_Type;
 };
 
