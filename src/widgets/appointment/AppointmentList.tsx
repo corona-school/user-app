@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AppointmentsEmptyState from '../AppointmentsEmptyState';
 import { ScrollDirection } from '../../pages/Appointments';
 import { isAppointmentNow } from '../../helper/appointment-helper';
+import useInterval from '../../hooks/useInterval';
 
 type Props = {
     appointments: Appointment[];
@@ -21,13 +22,14 @@ type Props = {
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
+    if (!appointments) return 0;
     const now = DateTime.now();
     const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
     const current = appointments.find((appointment) => isAppointmentNow(appointment.start, appointment.duration));
     const nextId = next?.id ?? 0;
     const currentId = current?.id;
 
-    return currentId || nextId || 0;
+    return currentId || nextId;
 };
 const AppointmentList: React.FC<Props> = ({
     appointments,
@@ -152,11 +154,19 @@ const AppointmentList: React.FC<Props> = ({
                         total={appointment.total}
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
+                        appointmentId={appointment.id}
+                        chatType={appointment.appointmentType}
                     />
                 </Box>
             </Box>
         );
     };
+
+    const [_, setRefresh] = React.useState(0);
+
+    useInterval(() => {
+        setRefresh(new Date().getTime());
+    }, 60_000);
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;

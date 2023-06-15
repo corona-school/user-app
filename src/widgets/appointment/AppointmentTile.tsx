@@ -6,6 +6,7 @@ import { Pressable } from 'react-native';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
 import { Appointment } from '../../types/lernfair/Appointment';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     timeDescriptionText: string;
@@ -21,6 +22,8 @@ type Props = {
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
+    appointmentId?: Appointment['id'];
+    chatType?: Appointment['appointmentType'];
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -34,7 +37,10 @@ const AppointmentTile: React.FC<Props> = ({
     onPress,
     position,
     displayName,
+    appointmentId,
+    chatType,
 }) => {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
@@ -88,7 +94,16 @@ const AppointmentTile: React.FC<Props> = ({
                                 </Text>
                             )}
                         </Box>
-                        {isCurrentlyTakingPlace && <Button mt={2}>{t('appointment.tile.videoButton')}</Button>}
+                        {isCurrentlyTakingPlace && (
+                            <Button
+                                mt={2}
+                                onPress={() => {
+                                    appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
+                                }}
+                            >
+                                {t('appointment.tile.videoButton')}
+                            </Button>
+                        )}
                     </VStack>
                 </Pressable>
             </Card>

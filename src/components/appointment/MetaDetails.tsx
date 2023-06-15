@@ -9,11 +9,16 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { useNavigate } from 'react-router-dom';
+import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { Appointment } from '../../types/lernfair/Appointment';
+import { DateTime } from 'luxon';
 
 type MetaProps = {
     date: string;
     startTime: string;
     endTime: string;
+    startDateTime: string;
     duration: number;
     count: number;
     total: number;
@@ -21,12 +26,15 @@ type MetaProps = {
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     declinedBy: string[];
-    meetingLink?: string;
+    appointmentId?: number;
+    chatType?: string;
+    isOrganizer?: Appointment['isOrganizer'];
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
     startTime,
     endTime,
+    startDateTime,
     duration,
     count,
     total,
@@ -34,11 +42,14 @@ const MetaDetails: React.FC<MetaProps> = ({
     organizers,
     participants,
     declinedBy,
-    meetingLink,
+    appointmentId,
+    chatType,
+    isOrganizer,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -77,7 +88,13 @@ const MetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            <Button width={buttonWidth} isDisabled={meetingLink ? false : true} onPress={() => window.open(meetingLink, '_blank')}>
+            <Button
+                width={`${buttonWidth}`}
+                onPress={() => {
+                    navigate(`/video-chat/${appointmentId}/${chatType}`);
+                }}
+                isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
+            >
                 {t('appointment.detail.videochatButton')}
             </Button>
         </>

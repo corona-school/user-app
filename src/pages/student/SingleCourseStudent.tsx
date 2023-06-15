@@ -108,13 +108,6 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
                 firstname
                 lastname
               }
-              participants(skip: 0, take: 50) {
-                id
-                firstname
-                lastname
-                isPupil
-                isStudent
-              }
             }
     }
 }
@@ -135,6 +128,15 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
+        appointments {
+            participants(skip: 0, take: 50) {
+                id
+                firstname
+                lastname
+                isPupil
+                isStudent
+            }
+        }
     }
 }
 `);

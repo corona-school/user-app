@@ -54,12 +54,14 @@ import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import LeftVideoChat from './pages/chat/LeftVideoChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import Chat from './pages/Chat';
+import ZoomMeeting from './components/ZoomMeeting';
 
 export default function NavigatorLazy() {
     return (
@@ -285,6 +287,23 @@ export default function NavigatorLazy() {
             ></Route>
 
             <Route
+                path="/video-chat/:id/:type"
+                element={
+                    <RequireAuth>
+                        <ZoomMeeting />
+                    </RequireAuth>
+                }
+            ></Route>
+            <Route
+                path="/left-chat/:id/:type"
+                element={
+                    <RequireAuth>
+                        <LeftVideoChat />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
                 path="/create-appointment"
                 element={
                     <RequireAuth>
@@ -292,7 +311,6 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
-
             <Route
                 path="/edit-appointment/:id"
                 element={

@@ -8,6 +8,8 @@
         border-radius: 5px;
         position: relative;
         background-color: var(--color-primary_light);
+        font-size: 12px;
+        line-height: unset;
 
         &:focus {
             outline: 2px solid var(--color-primary) !important;
