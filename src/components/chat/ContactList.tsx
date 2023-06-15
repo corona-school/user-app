@@ -19,15 +19,9 @@ query me {
   }
 }`);
 
-const matcheeChatMutation = gql(`
-mutation createMatcheeChat($matcheeId: String!) {
-  matchChatCreate(matcheeUserId: $matcheeId)
-}
-`);
-
-const participantChatMutation = gql(`
-mutation createParticipantChat($participantUserId: String!) {
-    participantChatCreate(participantUserId: $participantUserId)
+const contactChatMutation = gql(`
+mutation createContactChat($contactUserId: String!) {
+  contactChatCreate(contactUserId: $contactUserId)
 }
 `);
 
@@ -38,9 +32,16 @@ export type Contact = {
         lastname: string;
     };
     chatId: string;
-    contactReasons: ContactReasons[];
+    contactReasons: ContactReason[];
 };
-export type ContactReasons = 'subcourse' | 'match';
+export enum ContactReason {
+    COURSE = 'course',
+    MATCH = 'match',
+    ANNOUNCEMENT = 'announcement',
+    PARTICIPANT = 'participant',
+    PROSPECT = 'prospect',
+    CONTACT = 'contact',
+}
 
 type NewChatProps = {
     onClose: () => void;
@@ -53,16 +54,15 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     const { t } = useTranslation();
 
     const { data } = useQuery(myContacts);
-    const [createMatcheeChat] = useMutation(matcheeChatMutation);
-    const [createParticipantChat] = useMutation(participantChatMutation);
+    const [createContactChat] = useMutation(contactChatMutation);
 
     const hasReason = (reason: string, reasons: string[]) => {
         return reasons.includes(reason);
     };
-    const transformToTranslatedReasons = (reasons: ContactReasons[]): string[] => {
+    const transformToTranslatedReasons = (reasons: ContactReason[]): string[] => {
         let reasonsTranslated: string[] = [];
 
-        if (hasReason('subcourse', reasons)) {
+        if (hasReason(ContactReason.COURSE, reasons)) {
             if (userType === 'pupil') {
                 reasonsTranslated.push(t('chat.instructor'));
             } else if (userType === 'student') {
@@ -70,19 +70,14 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
             }
         }
 
-        if (hasReason('match', reasons)) {
+        if (hasReason(ContactReason.MATCH, reasons)) {
             reasonsTranslated.push(t('chat.matchee'));
         }
         return reasonsTranslated;
     };
-    const handleContactPress = async (reasons: string[], contactId: string) => {
-        if (hasReason('match', reasons)) {
-            const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
-            setChatId(conversation.data?.matchChatCreate ?? '');
-        } else {
-            const conversation = await createParticipantChat({ variables: { participantUserId: contactId } });
-            setChatId(conversation.data?.participantChatCreate ?? '');
-        }
+    const handleContactPress = async (contactId: string) => {
+        const conversation = await createContactChat({ variables: { contactUserId: contactId } });
+        setChatId(conversation.data?.contactChatCreate ?? '');
         onClose();
     };
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
@@ -90,7 +85,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
 
         return (
             <>
-                <Pressable onPress={() => handleContactPress(contact.contactReasons, contact.user.userID)} _hover={{ backgroundColor: 'primary.100' }}>
+                <Pressable onPress={() => handleContactPress(contact.user.userID)} _hover={{ backgroundColor: 'primary.100' }}>
                     <Box m="2" justifyContent="center">
                         <Stack direction="row" space={space['1']} padding="1">
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
