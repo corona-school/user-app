@@ -32,7 +32,11 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({
+            showChatHeader: !isMobile,
+            showMobileBackButton: false,
+            messageField: { placeholder: 'Schreibe etwas...' },
+        });
         selectedId && inbox.select(selectedId);
         inbox.mount(inboxRef.current);
 
