@@ -177,7 +177,7 @@ const SingleCoursePupil = () => {
     `)
     );
 
-    const [chatCreateForSubcourse, { loading: isLoadingChatCreation }] = useMutation(
+    const [chatCreateForSubcourse] = useMutation(
         gql(`
             mutation createInstructorChat($memberUserId: String!) {
                 participantChatCreate(participantUserId: $memberUserId)
@@ -185,9 +185,22 @@ const SingleCoursePupil = () => {
         `)
     );
 
-    async function contactInstructor() {
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($instructorUserId: String!) {
+                prospectChatCreate(instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsParticipant() {
         const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    }
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -285,7 +298,8 @@ const SingleCoursePupil = () => {
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
                         leaveWaitinglist={() => leaveWaitingList()}
-                        contactInstructor={contactInstructor}
+                        contactInstructorAsParticipant={contactInstructorAsParticipant}
+                        contactInstructorAsProspect={contactInstructorAsProspect}
                         refresh={refetch}
                     />
                 )}

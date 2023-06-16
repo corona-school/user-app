@@ -46,7 +46,8 @@ type ActionButtonProps = {
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    contactInstructor: () => Promise<void>;
+    contactInstructorAsParticipant: () => Promise<void>;
+    contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -67,7 +68,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    contactInstructor,
+    contactInstructorAsParticipant,
+    contactInstructorAsProspect,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
@@ -151,8 +153,13 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
                 )}
-                {subcourse.isParticipant && subcourse.allowChatContactParticipants && (
-                    <Button variant="outline" onPress={() => contactInstructor()}>
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
