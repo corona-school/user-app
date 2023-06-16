@@ -83,12 +83,12 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.date;
         }
-        if (!isCourse && !isCourseCreation && !isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time)) {
-            setErrors({ ...errors, timeNotInFiveMin: t('appointment.errors.timeNotInFiveMin') });
-            return false;
-        } else {
-            delete errors.timeNotInFiveMin;
-        }
+        // if (!isCourse && !isCourseCreation && !isTimeMinFiveMinutesLater(appointmentToCreate.date, appointmentToCreate.time)) {
+        //     setErrors({ ...errors, timeNotInFiveMin: t('appointment.errors.timeNotInFiveMin') });
+        //     return false;
+        // } else {
+        //     delete errors.timeNotInFiveMin;
+        // }
         if (!appointmentToCreate.time.length) {
             setErrors({ ...errors, time: t('appointment.errors.time') });
             return false;
