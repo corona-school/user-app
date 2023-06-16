@@ -45,6 +45,7 @@ const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, u
                             onChange={(e) => {
                                 setUpdatedAppointment({ ...updatedAppointment, date: e.target.value });
                             }}
+                            min={updatedAppointment.date}
                         />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>

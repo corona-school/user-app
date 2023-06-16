@@ -45,12 +45,22 @@ const isDateToday = (dateString: string): boolean => {
     return same;
 };
 
+const isDateInFuture = (dateString: string): boolean => {
+    const date = DateTime.fromISO(dateString);
+    const now = DateTime.now();
+    return date > now;
+};
+
 const isTimeMinFiveMinutesLater = (date: string, time: string): boolean => {
     const convertedDate = convertStartDate(date, time);
     const start = DateTime.fromISO(convertedDate);
-    let diff: number = 0;
-    if (isDateToday(date)) diff = start.diffNow('minutes').minutes;
-    if (diff >= 5) return true;
-    return false;
+    const now = DateTime.now();
+
+    if (isDateToday(date)) {
+        const diffMinutes = start.diff(now, 'minutes').minutes;
+        return diffMinutes >= 5;
+    }
+
+    return isDateInFuture(date);
 };
 export { convertStartDate, calcNewAppointmentInOneWeek, formatStart, isDateToday, isAppointmentNow, isDateMinOneWeekLater, isTimeMinFiveMinutesLater };
