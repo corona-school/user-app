@@ -11,9 +11,10 @@ type Props = {
     userNotification: Concrete_Notification;
     isStandalone?: boolean;
     isRead?: boolean;
+    updateLastTimeChecked?: () => void;
 };
 
-const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
+const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead }) => {
 
     const navigateToLink = () => {
         if (typeof navigateTo !== 'string') return null;
+        updateLastTimeChecked && updateLastTimeChecked();
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
         }
