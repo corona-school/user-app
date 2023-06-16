@@ -15,6 +15,7 @@ import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
 import HelpNavigation from '../../components/HelpNavigation';
+import { Subcourse } from '../../gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -269,7 +270,7 @@ const SingleCoursePupil = () => {
                 {course && subcourse && !isInPast && (
                     <PupilCourseButtons
                         courseFull={courseFull}
-                        subcourse={subcourse}
+                        subcourse={subcourse as Subcourse}
                         canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}
                         joinedSubcourse={joinedSubcourseData?.subcourseJoin}
                         joinedWaitinglist={joinedWaitinglist?.subcourseJoinWaitinglist}

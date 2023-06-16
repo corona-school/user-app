@@ -41,7 +41,7 @@ type ActionButtonProps = {
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: SubcourseOfPupil;
+    subcourse: Subcourse;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
