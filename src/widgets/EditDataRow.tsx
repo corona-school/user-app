@@ -6,9 +6,10 @@ type Props = {
     value?: string;
     onPress?: () => any;
     isDisabled?: boolean;
+    hideArrowIcon?: boolean;
 };
 
-const EditDataRow: React.FC<Props> = ({ label, value, onPress, isDisabled }) => {
+const EditDataRow: React.FC<Props> = ({ label, value, onPress, isDisabled, hideArrowIcon }) => {
     const { space } = useTheme();
     const textColor = isDisabled ? 'gray.300' : 'darkText';
     return (
@@ -22,7 +23,7 @@ const EditDataRow: React.FC<Props> = ({ label, value, onPress, isDisabled }) => 
                         {value}
                     </Text>
                 )}
-                <ChevronRightIcon color={textColor} />
+                {hideArrowIcon ? <></> : <ChevronRightIcon color={textColor} />}
             </DataRow>
         </Pressable>
     );

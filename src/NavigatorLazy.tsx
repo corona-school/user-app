@@ -2,7 +2,6 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/pupil/Dashboard';
 import ProfilePupil from './pages/pupil/ProfilePupil';
 
-import Settings from './pages/Settings';
 import OnboardingTourList from './pages/OnboardingTourList';
 import HelpCenter from './pages/Helpcenter';
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType';
@@ -108,15 +107,6 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth isRetainPath>
                         <NotficationControlPanel />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/settings"
-                element={
-                    <RequireAuth>
-                        <Settings />
                     </RequireAuth>
                 }
             />
