@@ -1,6 +1,6 @@
 const helpcenter = {
     title: 'Du brauchst Hilfe?',
-    subtitle: 'Klicke dich hier durch unsere Häufigen Fragen oder Kontaktiere unser Team.',
+    subtitle: 'Klicke dich hier durch häufig gestellte Fragen oder kontaktiere unser Team.',
     onboarding: {
         title: 'Onboarding',
         content: 'Hier geht es zum Onboarding.',
