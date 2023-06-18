@@ -36,7 +36,7 @@ datadogRum.init({
     env: 'dev',
     // Specify a version number to identify the deployed version of your application in Datadog
     version: '1.0.0',
-    sessionSampleRate: 100,
+    sessionSampleRate: 99,
     sessionReplaySampleRate: 100,
     trackUserInteractions: true,
     trackResources: true,
