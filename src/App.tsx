@@ -1,6 +1,7 @@
 import { NativeBaseProvider } from 'native-base';
 import Theme from './Theme';
 import Navigator from './Navigator';
+import { datadogRum } from '@datadog/browser-rum';
 
 import { LFApolloProvider } from './hooks/useApollo';
 import matomo from './matomo';
@@ -26,6 +27,26 @@ function LogRouting() {
 
     return null;
 }
+
+datadogRum.init({
+    applicationId: 'be3c1e11-36bb-4648-9529-2e6824e559a8',
+    clientToken: 'pub3381d1dae35d209652b233c1d576d111',
+    site: 'datadoghq.eu',
+    service: 'daniel-test',
+    env: 'dev',
+    // Specify a version number to identify the deployed version of your application in Datadog
+    version: '1.0.0',
+    sessionSampleRate: 100,
+    sessionReplaySampleRate: 100,
+    trackUserInteractions: true,
+    trackResources: true,
+    trackLongTasks: true,
+    traceSampleRate: 100,
+    defaultPrivacyLevel: 'mask',
+    allowedTracingUrls: ['localhost:3000', 'localhost:4000', 'lernfair.de', (url) => url.startsWith('https://backend-feat-enable-dd--nbzptz.herokuapp.com')],
+});
+
+datadogRum.startSessionReplayRecording();
 
 function App() {
     return (
