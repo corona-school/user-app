@@ -14,7 +14,6 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-
       - name: Install Dependencies
         run: npm ci
 
@@ -22,3 +21,4 @@ jobs:
         env:
           CI: false # TODO: Remove once all build warnings were fixed
         run: npm run build
+
