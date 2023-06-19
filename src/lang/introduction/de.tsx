@@ -7,7 +7,11 @@ const introduction = {
     becomeTutor: 'Jetzt Tutor:in werden',
     talkWithTeam: 'Mit dem Team sprechen',
     moreInfos: 'Mehr Informationen',
-    courseTypes: 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Format an:',
+    courseTypes: {
+        groupCourses: 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Format an:',
+        oneToOneLearningSupport:
+            'Bei der Lern-Fair Nachhilfe verbinden wir dich mit einem:r Schüler:in zu einem Lernpaar. Diese Schüler:innen haben besonderen Bedarf an einer Einzelhilfe in schulischen Themen.',
+    },
     groupRequestedDescription:
         'Vielen Dank, dass du dich für eine Kursleitung interessierst. Bevor es mit deinem Kurs losgehen kann, haben wir noch einige Hinweise für dich:',
     toast: { success: 'Anfrage erfolgreich versendet', fail: 'Anfrage konnte nicht versendet werden' },

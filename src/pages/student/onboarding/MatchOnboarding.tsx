@@ -8,7 +8,7 @@ import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
 import OneToOneMobileImage from '../../../assets/images/matching/1-1-onboarding-mobile.png';
 import i18next from 'i18next';
 import { useMutation } from '@apollo/client';
-import { gql } from '../../../gql/gql';
+import { gql } from './../../../gql';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import WithNavigation from '../../../components/WithNavigation';
 import Hello from '../../../widgets/Hello';
@@ -89,7 +89,8 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                     <Box justifyContent="center" alignItems="center">
                         <OnboardingCard
                             headline={t('introduction.match')}
-                            Description={matchDescriptions}
+                            Description={t('introduction.courseTypes.oneToOneLearningSupport')}
+                            BulletPoints={matchDescriptions}
                             cardImage={OneToOneImage}
                             mobileCardImage={OneToOneMobileImage}
                             Icon={MatchIcon}
