@@ -14,9 +14,10 @@ type FormProps = {
     errors: FormErrors;
     appointmentsCount: number;
     onSetDate: () => void;
+    onSetTime: () => void;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, isCourse }) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, onSetTime, isCourse }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -55,6 +56,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
 
     const handleTimeInput = (e: any) => {
         setTime(e.target.value);
+        onSetTime();
     };
 
     const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
