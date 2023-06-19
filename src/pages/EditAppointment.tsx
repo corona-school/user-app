@@ -11,7 +11,7 @@ const EditAppointment = () => {
 
     return (
         <AsNavigationItem path="create-appointments">
-            <WithNavigation headerLeft={<NotificationAlert />}>
+            <WithNavigation headerLeft={<NotificationAlert />} showBack>
                 <Box mx="4">
                     <AppointmentEdit appointmentId={appointmentId} />
                 </Box>
