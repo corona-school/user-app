@@ -81,7 +81,7 @@ const query = gql(`
                     }
                 }
             }
-            appointments(take: 1 ) {
+            appointments(take: 10) {
                 id
                 title
                 description
@@ -227,30 +227,10 @@ const DashboardStudent: React.FC<Props> = () => {
 
         return courses;
     }, [publishedSubcourses]);
-    //     const lectures: { subcourse: typeof publishedSubcourses[number]; lecture: Pick<Lecture, 'start' | 'duration'> }[] = [];
-
-    //     for (const subcourse of publishedSubcourses) {
-    //         const futureAndOngoingLectures = subcourse.lectures.filter(
-    //             (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
-    //         );
-
-    //         for (const lecture of futureAndOngoingLectures) {
-    //             lectures.push({ subcourse, lecture });
-    //         }
-    //     }
-
-    //     return lectures.sort((a, b) => {
-    //         const _a = DateTime.fromISO(a.lecture.start).toMillis();
-    //         const _b = DateTime.fromISO(b.lecture.start).toMillis();
-
-    //         return _a - _b;
-    //     });
-    // }, [publishedSubcourses]);
-
-    // const highlightedAppointment = sortedAppointments[0];
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
+    console.log(data?.me?.appointments);
     return (
         <AsNavigationItem path="start">
             <WithNavigation
