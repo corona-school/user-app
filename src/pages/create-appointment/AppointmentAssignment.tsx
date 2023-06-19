@@ -90,7 +90,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
             if (!a.firstLecture) return 1;
             const aInMillis = DateTime.fromISO(a.firstLecture.start).toMillis();
             const bInMillis = DateTime.fromISO(b.firstLecture.start).toMillis();
-            return aInMillis - bInMillis;
+            return bInMillis - aInMillis;
         });
 
         const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
@@ -104,7 +104,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                 coursesNewerThanThirtyDays = coursesWithLectures.filter((c) => c.id !== course.id);
             }
         }
-        const coursesToShow = coursesWitoutLectures.concat(coursesNewerThanThirtyDays);
+        const coursesToShow = coursesNewerThanThirtyDays.concat(coursesWitoutLectures);
 
         return coursesToShow;
     }, [publishedSubcourses]);
