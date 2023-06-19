@@ -62,25 +62,13 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const { isMobile } = useLayoutHelper();
 
     const validateInputs = () => {
-        const isDateMinOneWeekLater = (date: string): boolean => {
-            const startDate = DateTime.fromISO(date);
-            const diff = startDate.diffNow('days').days;
-            if (diff >= 6) return true;
-            return false;
-        };
-
         if (!updatedAppointment.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
         } else {
             delete errors.date;
         }
-        if (isDateMinOneWeekLater(updatedAppointment.date) === false) {
-            setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
-            return false;
-        } else {
-            delete errors.date;
-        }
+
         if (!updatedAppointment.time.length) {
             setErrors({ ...errors, time: t('appointment.errors.time') });
             return false;

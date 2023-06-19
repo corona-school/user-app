@@ -35,9 +35,10 @@ type Props = {
     appointmentsTotal?: number;
     back: () => void;
     closeModal?: () => void;
+    navigateToMatch?: () => void;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal, navigateToMatch }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
@@ -237,7 +238,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            navigate('/appointments');
+            // navigate(`/match/${courseOrMatchId}`);
+            navigateToMatch && navigateToMatch();
         }
     };
 
