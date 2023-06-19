@@ -10,12 +10,9 @@
         background-color: var(--color-primary_light);
         font-size: 12px;
         line-height: unset;
-
+        color: #252e2f;
         &:focus {
             outline: 2px solid var(--color-primary) !important;
-        }
-        &::placeholder {
-            color: #82b1b0;
         }
         &[type='date']::-webkit-calendar-picker-indicator {
             background-position: right;
@@ -28,6 +25,7 @@
             left: 0;
             right: 0;
             top: 0;
+            margin-right: 10px;
         }
         &[type='time']::-webkit-calendar-picker-indicator {
             background-position: right;
@@ -40,6 +38,7 @@
             left: 0;
             right: 0;
             top: 0;
+            margin-right: 10px;
         }
     }
 }

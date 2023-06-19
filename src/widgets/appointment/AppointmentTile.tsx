@@ -49,22 +49,22 @@ const AppointmentTile: React.FC<Props> = ({
 
     return (
         <Box w={width}>
-            <Card bg={isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
+            <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
                 <Pressable onPress={onPress}>
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
-                                {isCurrentlyTakingPlace && (
+                                {!isReadOnly && isCurrentlyTakingPlace && (
                                     <Box mr={2}>
                                         <WarningIcon />
                                     </Box>
                                 )}
-                                <Text fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                <Text fontSize={'xs'} color={!isReadOnly && isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                                     {timeDescriptionText}
                                 </Text>
                             </HStack>
                             <Spacer />
-                            {!isReadOnly && organizers && participants && (
+                            {organizers && participants && (
                                 <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                                     {organizers
                                         ?.map((i, idx) => (
@@ -83,18 +83,18 @@ const AppointmentTile: React.FC<Props> = ({
                             )}
                         </HStack>
                         <Box>
-                            <Heading fontSize={'md'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                            <Heading fontSize={'md'} color={!isReadOnly && isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                                 {displayName}
                             </Heading>
 
                             {position && (
-                                <Text mt={1} fontSize={'xs'} color={isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
+                                <Text mt={1} fontSize={'xs'} color={!isReadOnly && isCurrentlyTakingPlace ? 'white' : 'primary.900'}>
                                     {t('appointment.appointmentTile.lecture', { position: position }) +
                                         (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
                                 </Text>
                             )}
                         </Box>
-                        {isCurrentlyTakingPlace && (
+                        {!isReadOnly && isCurrentlyTakingPlace && (
                             <Button
                                 mt={2}
                                 onPress={() => {

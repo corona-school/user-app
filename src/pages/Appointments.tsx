@@ -66,7 +66,7 @@ const Appointments: React.FC = () => {
 
     const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
-        lg: 'top-right',
+        lg: 'bottom-right',
     });
 
     const appointments = myAppointments?.me?.appointments ?? [];
@@ -126,9 +126,11 @@ const Appointments: React.FC = () => {
                         noOldAppointments={noOldAppointments}
                     />
                 ) : (
-                    <Box h={800} justifyContent="center">
-                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                    </Box>
+                    !loadingMyAppointments && (
+                        <Box h={800} justifyContent="center">
+                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                        </Box>
+                    )
                 )}
             </WithNavigation>
         </AsNavigationItem>
