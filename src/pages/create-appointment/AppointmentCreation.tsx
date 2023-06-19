@@ -259,7 +259,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={!dateSelected && !timeSelected}
+                    isDisabled={!dateSelected || !timeSelected}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
