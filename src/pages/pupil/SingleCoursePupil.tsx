@@ -59,6 +59,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         minGrade
         maxGrade
         capacity
+        allowChatContactProspects
         alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start
@@ -164,14 +165,6 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [contact, { loading: loadingContactInstructor }] = useMutation(
-        gql(`
-        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!, $fileIDs: [String!]!) {
-            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: $fileIDs title: $title body: $body)
-        }
-    `)
-    );
-
     const [chatCreateForSubcourse] = useMutation(
         gql(`
             mutation createInstructorChat($memberUserId: String!, $subcourseId: Float!) {
@@ -180,11 +173,22 @@ const SingleCoursePupil = () => {
         `)
     );
 
-    async function contactInstructor() {
-        const conversation = await chatCreateForSubcourse({
-            variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}`, subcourseId: subcourse?.id ?? 0 },
-        });
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($instructorUserId: String!) {
+                prospectChatCreate(instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsParticipant() {
+        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    }
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -282,7 +286,8 @@ const SingleCoursePupil = () => {
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
                         leaveWaitinglist={() => leaveWaitingList()}
-                        contactInstructor={contactInstructor}
+                        contactInstructorAsParticipant={contactInstructorAsParticipant}
+                        contactInstructorAsProspect={contactInstructorAsProspect}
                         refresh={refetch}
                     />
                 )}
