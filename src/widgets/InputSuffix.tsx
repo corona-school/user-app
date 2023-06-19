@@ -25,7 +25,6 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, hand
                 borderBottomRightRadius={5}
                 borderTopRightRadius={5}
                 placeholder={t('appointment.create.inputPlaceholder')}
-                _light={{ placeholderTextColor: 'primary.500' }}
                 value={inputValue}
                 onBlur={handleBlur}
             />

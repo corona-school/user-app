@@ -124,6 +124,11 @@ const SingleMatch = () => {
     );
     const appointments = data?.match?.appointments ?? [];
 
+    const goBackToMatch = () => {
+        // TODO: reload list, created appointment out of match does not appear after go back
+        refetch();
+        setCreateAppointment(false);
+    };
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -153,6 +158,7 @@ const SingleMatch = () => {
                                 courseOrMatchId={matchId}
                                 isCourse={false}
                                 appointmentsTotal={appointments.length}
+                                navigateToMatch={() => goBackToMatch()}
                             />
                         ) : (
                             <>

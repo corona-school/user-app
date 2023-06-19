@@ -1,13 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Button, Modal, Stack, useToast } from 'native-base';
+import { Button, Stack, useToast } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { gql } from '../../gql';
 import { AppointmentUpdateInput } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 import AppointmentEditForm from './AppointmentEditForm';
 import { convertStartDate, formatStart } from '../../helper/appointment-helper';
 
@@ -61,28 +60,15 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const navigate = useNavigate();
     const toast = useToast();
     const { isMobile } = useLayoutHelper();
-    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     const validateInputs = () => {
-        const isDateMinOneWeekLater = (date: string): boolean => {
-            const startDate = DateTime.fromISO(date);
-            const diff = startDate.diffNow('days').days;
-            if (diff >= 6) return true;
-            return false;
-        };
-
         if (!updatedAppointment.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
         } else {
             delete errors.date;
         }
-        if (isDateMinOneWeekLater(updatedAppointment.date) === false) {
-            setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
-            return false;
-        } else {
-            delete errors.date;
-        }
+
         if (!updatedAppointment.time.length) {
             setErrors({ ...errors, time: t('appointment.errors.time') });
             return false;
@@ -98,13 +84,6 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         return true;
     };
 
-    const [cancelAppointment] = useMutation(
-        gql(`
-        mutation cancelAppointment($appointmentId: Float!) {
-            appointmentCancel(appointmentId: $appointmentId)
-        }
-    `)
-    );
     const [updateAppointment, { data: updateResponse, error: updateError }] = useMutation(
         gql(`
         mutation updateAppointment($appointmentToBeUpdated: AppointmentUpdateInput!) {
@@ -112,12 +91,6 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
             }
     `)
     );
-
-    const handleCancelClick = useCallback(() => {
-        toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
-        cancelAppointment({ variables: { appointmentId: appointmentId } });
-        navigate('/appointments');
-    }, []);
 
     const handleUpdateClick = useCallback(() => {
         if (validateInputs()) {
@@ -129,7 +102,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 duration: updatedAppointment.duration,
             };
             updateAppointment({ variables: { appointmentToBeUpdated } });
-            navigate('/appointments');
+            navigate(`/appointment/${updatedAppointment.id}`);
             toast.show({ description: t('appointment.editSuccess'), placement: 'top' });
         }
     }, [
@@ -148,9 +121,6 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
 
     return (
         <>
-            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                <DeleteAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} />
-            </Modal>
             <AppointmentEditForm
                 errors={errors}
                 appointmentsCount={data?.appointment.position ?? 0}
@@ -158,13 +128,10 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 setUpdatedAppointment={setUpdatedAppointment}
             />
             <Stack space={3} mt={5} direction={isMobile ? 'column' : 'row'}>
-                <Button onPress={() => handleUpdateClick()}>{t('appointment.saveChanges')}</Button>
-                <Button onPress={() => setShowDeleteModal(true)} bgColor="danger.100" _text={{ color: 'white' }}>
-                    {t('appointment.deleteAppointment')}
-                </Button>
-                <Button onPress={() => navigate(-1)} variant="outline" _text={{ color: 'primary.400' }}>
+                <Button onPress={() => navigate(-1)} variant="outline">
                     {t('appointment.goBack')}
                 </Button>
+                <Button onPress={() => handleUpdateClick()}>{t('appointment.saveChanges')}</Button>
             </Stack>
         </>
     );

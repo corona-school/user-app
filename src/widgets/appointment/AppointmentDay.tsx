@@ -113,7 +113,7 @@ const AppointmentDay: React.FC<Props> = ({
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <Box w={width} mt={3}>
                         <HStack>
-                            <AppointmentDate current={isCurrent} date={start} />
+                            <AppointmentDate current={isCurrent} date={start} isReadOnly={isReadOnly} />
                             <AppointmentTile
                                 timeDescriptionText={getAppointmentTimeText(start, duration)}
                                 title={title}
@@ -124,6 +124,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 onPress={onPress}
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
+                                isReadOnly={isReadOnly}
                             />
                         </HStack>
                     </Box>

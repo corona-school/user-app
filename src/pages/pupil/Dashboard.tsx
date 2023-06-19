@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import { LFLecture } from '../../types/lernfair/Course';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 import { DateTime } from 'luxon';
@@ -25,6 +24,7 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
 import { PupilDashboardQuery } from '../../gql/graphql';
 import HelpNavigation from '../../components/HelpNavigation';
+import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 
 type Props = {};
 
@@ -84,6 +84,33 @@ const query = gql(`
                     cancelled
                 }
             }
+            appointments(take: 10 ) {
+                id
+                title
+                description
+                start
+                duration
+                appointmentType
+                total
+                position
+                displayName
+                isOrganizer
+                isParticipant
+                organizers(skip: 0, take: 5) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                participants(skip: 0, take: 30) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                declinedBy
+                zoomMeetingId
+    }
         }
 
         subcoursesPublic(take: 10, skip: 0, excludeKnown: true, onlyJoinable: true) {
@@ -155,31 +182,6 @@ const Dashboard: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const sortedAppointments = useMemo(() => {
-        const lectures: { subcourse: JoinedSubcourse; lecture: LFLecture }[] = [];
-
-        if (!data?.me?.pupil?.subcoursesJoined) return [];
-
-        for (const subcourse of data?.me?.pupil?.subcoursesJoined) {
-            const futureAndOngoingLectures = subcourse.lectures.filter(
-                (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
-            );
-
-            for (const lecture of futureAndOngoingLectures) {
-                lectures.push({ lecture, subcourse });
-            }
-        }
-
-        return lectures.sort((a, b) => {
-            const _a = DateTime.fromISO(a.lecture.start).toMillis();
-            const _b = DateTime.fromISO(b.lecture.start).toMillis();
-
-            return _a - _b;
-        });
-    }, [data?.me?.pupil?.subcoursesJoined]);
-
-    const highlightedAppointment: { subcourse: JoinedSubcourse; lecture: LFLecture } | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments]);
-
     const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
         gql(`
             mutation cancelMatchRequest {
@@ -244,31 +246,8 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
-    const getMeetingLink = useCallback(async () => {
-        const subcourseId = highlightedAppointment?.subcourse.id;
-        if (!subcourseId) return;
-
-        const windowRef = window.open(undefined, '_blank');
-
-        try {
-            const res = await joinMeeting({ variables: { subcourseId } });
-
-            if (res.data?.subcourseJoinMeeting) {
-                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
-            } else {
-                setShowMeetingNotStarted(true);
-                windowRef?.close();
-            }
-        } catch (e) {
-            windowRef?.close();
-            setShowMeetingNotStarted(true);
-        }
-    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
-
-    const disableMeetingButton: boolean = useMemo(() => {
-        if (!highlightedAppointment) return true;
-        return DateTime.fromISO(highlightedAppointment?.lecture?.start).diffNow('minutes').minutes > 5;
-    }, [highlightedAppointment]);
+    const nextAppointment = data?.me?.appointments ?? [];
+    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
 
     return (
         <AsNavigationItem path="start">
@@ -298,19 +277,24 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <ImportantInformation variant="dark" />
                         <VStack>
-                            {highlightedAppointment && (
+                            {myNextAppointment && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
                                     <AppointmentCard
                                         videoButton={
                                             <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
                                                     <Button
                                                         width="100%"
                                                         marginTop={space['1']}
-                                                        onPress={getMeetingLink}
-                                                        isDisabled={disableMeetingButton || _joinMeeting.loading}
+                                                        onPress={() => {
+                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
+                                                        }}
+                                                        isDisabled={
+                                                            !myNextAppointment.id ||
+                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 10, DateTime.now())
+                                                        }
                                                     >
                                                         {t('course.meeting.videobutton.pupil')}
                                                     </Button>
@@ -324,17 +308,15 @@ const Dashboard: React.FC<Props> = () => {
                                             trackEvent({
                                                 category: 'dashboard',
                                                 action: 'click-event',
-                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + sortedAppointments[0]?.subcourse.course?.name,
+                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + myNextAppointment.displayName,
                                                 documentTitle: 'Schüler Dashboard',
                                             });
-                                            navigate(`/single-course/${sortedAppointments[0]?.subcourse.id}`);
+                                            navigate(`/appointment/${myNextAppointment.id}`);
                                         }}
-                                        tags={highlightedAppointment?.subcourse?.course?.tags}
-                                        date={highlightedAppointment?.lecture.start}
-                                        duration={highlightedAppointment?.lecture.duration}
-                                        image={highlightedAppointment?.subcourse.course?.image ?? undefined}
-                                        title={highlightedAppointment?.subcourse.course?.name}
-                                        description={'' /* highlightedAppointment?.subcourse.course?.description?.substring(0, 64) */}
+                                        date={myNextAppointment.start}
+                                        duration={myNextAppointment.duration}
+                                        title={myNextAppointment.displayName}
+                                        description={myNextAppointment.description ?? ''}
                                     />
                                 </VStack>
                             )}

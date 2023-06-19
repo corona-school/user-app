@@ -35,9 +35,10 @@ type Props = {
     appointmentsTotal?: number;
     back: () => void;
     closeModal?: () => void;
+    navigateToMatch?: () => void;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal }) => {
+const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal, navigateToMatch }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
@@ -48,6 +49,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const navigate = useNavigate();
 
     const [dateSelected, setDateSelected] = useState(false);
+    const [timeSelected, setTimeSelected] = useState(false);
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -236,7 +238,8 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            navigate('/appointments');
+            // navigate(`/match/${courseOrMatchId}`);
+            navigateToMatch && navigateToMatch();
         }
     };
 
@@ -248,6 +251,9 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 onSetDate={() => {
                     setDateSelected(true);
                 }}
+                onSetTime={() => {
+                    setTimeSelected(true);
+                }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
             <Box py="8">
@@ -255,7 +261,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={!dateSelected}
+                    isDisabled={!dateSelected || !timeSelected}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>
