@@ -18,7 +18,7 @@ const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
 
     const marginBottom = useBreakpointValue({
         base: '20%',
-        lg: 0,
+        lg: '5%',
     });
 
     return (

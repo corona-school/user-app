@@ -66,7 +66,7 @@ const Appointments: React.FC = () => {
 
     const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
-        lg: 'top-right',
+        lg: 'bottom-right',
     });
 
     const appointments = myAppointments?.me?.appointments ?? [];
