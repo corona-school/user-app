@@ -48,6 +48,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const navigate = useNavigate();
 
     const [dateSelected, setDateSelected] = useState(false);
+    const [timeSelected, setTimeSelected] = useState(false);
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -248,6 +249,9 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 onSetDate={() => {
                     setDateSelected(true);
                 }}
+                onSetTime={() => {
+                    setTimeSelected(true);
+                }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
             <Box py="8">
@@ -255,7 +259,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
                     value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={!dateSelected}
+                    isDisabled={!dateSelected || !timeSelected}
                 >
                     {t('appointment.create.weeklyRepeat')}
                 </Checkbox>

@@ -5,11 +5,12 @@ type Props = {
     current: boolean;
     date: string;
     color?: string;
+    isReadOnly?: boolean;
 };
 
-const AppointmentDate: React.FC<Props> = ({ current, date, color }) => {
+const AppointmentDate: React.FC<Props> = ({ current, date, color, isReadOnly = false }) => {
     return (
-        <Box bg={current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
+        <Box bg={!isReadOnly && current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
             <Text fontSize="xs" color={color ? color : 'black'}>
                 {DateTime.fromISO(date).setLocale('de').toFormat('ccc')}.
             </Text>
