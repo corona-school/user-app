@@ -10,7 +10,7 @@ const EditAppointment = () => {
     const appointmentId = parseFloat(id ? id : '');
 
     return (
-        <AsNavigationItem path="create-appointments">
+        <AsNavigationItem path="appointments">
             <WithNavigation headerLeft={<NotificationAlert />} showBack>
                 <Box mx="4">
                     <AppointmentEdit appointmentId={appointmentId} />

@@ -10,7 +10,7 @@ const CreateCourseAppointment = () => {
     const navigate = useNavigate();
 
     return (
-        <AsNavigationItem path="create-course-appointment">
+        <AsNavigationItem path="course">
             <WithNavigation
                 headerTitle="Termin erstellen"
                 showBack

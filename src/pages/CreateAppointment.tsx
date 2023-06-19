@@ -67,7 +67,7 @@ const CreateAppointment = () => {
     );
 
     return (
-        <AsNavigationItem path="create-appointments">
+        <AsNavigationItem path="appointments">
             <WithNavigation headerLeft={<NotificationAlert />} showBack>
                 <CreateAppointmentProvider>
                     <Box mx="4">
