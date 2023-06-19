@@ -4,7 +4,7 @@ const appointment = {
     editSuccess: 'Termin erfolgreich geändert',
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
-    loadPastAppointments: 'Weitere vergangene Termine laden',
+    loadPastAppointments: 'Vergagenene Termine laden',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
