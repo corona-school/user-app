@@ -57,18 +57,17 @@ const ZoomMeeting: React.FC = () => {
         variables: { appointmentId: appointmentId },
     });
 
-    const role = appointmentMeetingData?.appointment.isOrganizer ? ZoomMeetingRole.Host : ZoomMeetingRole.Participant;
     const meetingId = appointmentMeetingData?.appointment.zoomMeetingId;
 
     if (!isLoadingAppointmentData && !meetingId) throw new Error('No meeting id provided in ZoomMeeting component');
 
     const { data: zoomDataOrganizer, loading: isLoadingOrganizerData } = useQuery(getZoomCredentialsOrganizer, {
-        variables: { meetingId: meetingId!, role: role },
+        variables: { meetingId: meetingId!, role: ZoomMeetingRole.Host },
         skip: !meetingId || isLoadingAppointmentData || !appointmentMeetingData.appointment.isOrganizer,
     });
 
     const { data: zoomDataParticipant, loading: isLoadingParticipantData } = useQuery(getZoomCredentialsParticipant, {
-        variables: { meetingId: meetingId!, role: role },
+        variables: { meetingId: meetingId!, role: ZoomMeetingRole.Participant },
         skip: !meetingId || isLoadingAppointmentData || !appointmentMeetingData.appointment.isParticipant,
     });
 
@@ -104,16 +103,18 @@ const ZoomMeeting: React.FC = () => {
             throw new Error('No JWT provided');
         }
 
+        const me = (zoomDataOrganizer ?? zoomDataParticipant)?.me;
+
         const credentials = {
             authEndpoint: '',
             sdkKey: ZOOM_MEETING_SDK_KEY,
             password: '',
             meetingNumber: meetingId,
-            signature: appointmentMeetingData.appointment.isOrganizer ? zoomDataOrganizer?.me.zoomSDKJWT : zoomDataParticipant?.me.zoomSDKJWT,
-            userEmail: appointmentMeetingData.appointment.isOrganizer ? zoomDataOrganizer?.me.email : zoomDataParticipant?.me.email,
-            userName: appointmentMeetingData.appointment.isOrganizer ? zoomDataOrganizer?.me.firstname : zoomDataParticipant?.me.firstname,
+            signature: me?.zoomSDKJWT,
+            userEmail: me?.email,
+            userName: me?.firstname,
             leaveUrl: leaveUrl,
-            role: role,
+            role: appointmentMeetingData?.appointment.isOrganizer ? ZoomMeetingRole.Host : ZoomMeetingRole.Participant,
             ...(appointmentMeetingData.appointment.isOrganizer ? { zak: zoomDataOrganizer?.me.zoomZAK } : {}),
         };
 
@@ -130,6 +131,7 @@ const ZoomMeeting: React.FC = () => {
                     zak: credentials.zak,
                     success: () => console.log('User joined Zoom meeting successfully'),
                     error: (error: Error) => {
+                        console.log(error);
                         throw new Error("User couldn't join Zoom meeting", { cause: error });
                     },
                 });
@@ -138,7 +140,7 @@ const ZoomMeeting: React.FC = () => {
                 throw new Error("Couldn't init Zoom SDK", { cause: error });
             },
         });
-    }, [zoomDataParticipant, zoomDataOrganizer, meetingId, appointmentMeetingData, role, leaveUrl, isLoadingOrganizerData, isLoadingParticipantData]);
+    }, [zoomDataParticipant, zoomDataOrganizer, meetingId, appointmentMeetingData, leaveUrl, isLoadingOrganizerData, isLoadingParticipantData]);
 
     if (!zoomDataParticipant || !zoomDataOrganizer) return <CenterLoadingSpinner />;
 
