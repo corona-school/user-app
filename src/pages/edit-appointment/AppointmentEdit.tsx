@@ -114,7 +114,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 duration: updatedAppointment.duration,
             };
             updateAppointment({ variables: { appointmentToBeUpdated } });
-            navigate('/appointments');
+            navigate(`/appointment/${updatedAppointment.id}`);
             toast.show({ description: t('appointment.editSuccess'), placement: 'top' });
         }
     }, [
