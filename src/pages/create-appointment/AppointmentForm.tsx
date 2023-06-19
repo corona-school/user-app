@@ -162,7 +162,6 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                         onChangeText={(e) => handleDescriptionInput(e)}
                         onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
                         placeholder={t('appointment.create.descriptionPlaceholder')}
-                        _light={{ placeholderTextColor: 'primary.500' }}
                         autoCompleteType={'normal'}
                         h="100"
                     />
