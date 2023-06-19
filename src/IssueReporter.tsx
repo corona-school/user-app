@@ -4,9 +4,10 @@ import { AlertDialog, Button } from 'native-base';
 import React, { ErrorInfo, useEffect, useRef, useState } from 'react';
 import useApollo from './hooks/useApollo';
 import { getLastLogs } from './log';
+import StackTrace from 'stacktrace-js';
 
 // c.f. https://reactjs.org/docs/error-boundaries.html
-type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
+type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo, stack: string) => void }>;
 class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     state = { hasError: false };
 
@@ -15,8 +16,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        this.props.onError(error, errorInfo);
         this.setState({ hasError: true });
+        StackTrace.fromError(error).then((stack) => {
+            this.props.onError(error, errorInfo, stack.toString());
+        });
     }
 
     render() {
@@ -37,7 +40,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     `)
     );
 
-    function reportIssue(error: Error, errorInfo: ErrorInfo) {
+    function reportIssue(error: Error, errorInfo: ErrorInfo, stack: string) {
         if (process.env.NODE_ENV !== 'production') return;
 
         if (issue) return; // Only return the first error occuring
@@ -49,7 +52,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
                 issueTag,
                 userAgent: window.navigator.userAgent,
                 logs: getLastLogs(),
-                stack: error.stack ?? '',
+                stack: stack,
                 message: error.message,
                 componentStack: errorInfo.componentStack,
             },
@@ -64,11 +67,11 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
 
     useEffect(() => {
         const errorHandler = (event: ErrorEvent) => {
-            reportIssue(event.error, { componentStack: 'unknown error' });
+            reportIssue(event.error, { componentStack: 'unknown error' }, '');
             return true;
         };
         const unhandledHandler = (event: PromiseRejectionEvent) => {
-            reportIssue(event.reason, { componentStack: 'unhandled rejection' });
+            reportIssue(event.reason, { componentStack: 'unhandled rejection' }, '');
             return true;
         };
 
