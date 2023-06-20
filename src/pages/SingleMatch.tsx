@@ -125,8 +125,6 @@ const SingleMatch = () => {
     const appointments = data?.match?.appointments ?? [];
 
     const goBackToMatch = () => {
-        // TODO: reload list, created appointment out of match does not appear after go back
-        refetch();
         setCreateAppointment(false);
     };
     useEffect(() => {
@@ -135,6 +133,10 @@ const SingleMatch = () => {
             toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
+
+    useEffect(() => {
+        refetch();
+    }, [createAppointment, refetch]);
 
     return (
         <WithNavigation

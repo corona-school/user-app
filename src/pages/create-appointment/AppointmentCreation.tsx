@@ -238,7 +238,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            // navigate(`/match/${courseOrMatchId}`);
             navigateToMatch && navigateToMatch();
         }
     };

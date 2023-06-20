@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import PartyIcon from '../../assets/icons/lernfair/lf-party.svg';
 import { useEffect } from 'react';
+import { removeZoomStyles } from '../../components/ZoomMeeting';
 
 const getAppointmentOrganizer = gql(`
 query appointmentOrganizer($appointmentId: Float!) {
@@ -15,8 +16,6 @@ query appointmentOrganizer($appointmentId: Float!) {
 }`);
 
 const LeftVideoChat: React.FC = () => {
-    document.getElementById('zmmtg-root')!.style.display = 'none';
-
     const { id: appointmentId, type } = useParams();
     const idAsInt = appointmentId ? parseInt(appointmentId) : null;
 
@@ -47,6 +46,7 @@ const LeftVideoChat: React.FC = () => {
     );
 
     useEffect(() => {
+        removeZoomStyles();
         (async () => {
             if (isOrganizer) {
                 await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
