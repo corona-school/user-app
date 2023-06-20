@@ -124,9 +124,8 @@ const SingleMatch = () => {
     );
     const appointments = data?.match?.appointments ?? [];
 
-    const goBackToMatch = () => {
-        // TODO: reload list, created appointment out of match does not appear after go back
-        refetch();
+    const goBackToMatch = async () => {
+        await refetch();
         setCreateAppointment(false);
     };
     useEffect(() => {
@@ -158,7 +157,7 @@ const SingleMatch = () => {
                                 courseOrMatchId={matchId}
                                 isCourse={false}
                                 appointmentsTotal={appointments.length}
-                                navigateToMatch={() => goBackToMatch()}
+                                navigateToMatch={async () => await goBackToMatch()}
                             />
                         ) : (
                             <>

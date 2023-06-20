@@ -52,6 +52,7 @@ const isDateInFuture = (dateString: string): boolean => {
 };
 
 const isTimeMinFiveMinutesLater = (date: string, time: string): boolean => {
+    if (!date || !time) return false;
     const convertedDate = convertStartDate(date, time);
     const start = DateTime.fromISO(convertedDate);
     const now = DateTime.now();

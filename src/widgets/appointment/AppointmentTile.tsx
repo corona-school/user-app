@@ -47,6 +47,11 @@ const AppointmentTile: React.FC<Props> = ({
         lg: isFullWidth ? '95%' : '90%',
     });
 
+    const buttonWidth = useBreakpointValue({
+        base: 'full',
+        lg: '300',
+    });
+
     return (
         <Box w={width}>
             <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
@@ -97,6 +102,7 @@ const AppointmentTile: React.FC<Props> = ({
                         {!isReadOnly && isCurrentlyTakingPlace && (
                             <Button
                                 mt={2}
+                                w={buttonWidth}
                                 onPress={() => {
                                     appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
                                 }}

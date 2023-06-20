@@ -42,6 +42,10 @@ query zoomCredentialsParticipant($meetingId: String!, $role: Float!) {
     }
 }`);
 
+export function removeZoomStyles() {
+    document.getElementById('zmmtg-root')!.style.display = 'none';
+}
+
 const ZoomMeeting: React.FC = () => {
     const { id, type } = useParams();
 
@@ -131,12 +135,13 @@ const ZoomMeeting: React.FC = () => {
                     zak: credentials.zak,
                     success: () => console.log('User joined Zoom meeting successfully'),
                     error: (error: Error) => {
-                        console.log(error);
+                        removeZoomStyles();
                         throw new Error("User couldn't join Zoom meeting", { cause: error });
                     },
                 });
             },
             error: (error: Error) => {
+                removeZoomStyles();
                 throw new Error("Couldn't init Zoom SDK", { cause: error });
             },
         });

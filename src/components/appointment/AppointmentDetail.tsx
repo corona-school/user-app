@@ -87,7 +87,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
         cancelAppointment({ variables: { appointmentId: appointment.id } });
-        navigate('/appointments');
+        navigate(-1);
     }, []);
 
     const handleDeclineClick = useCallback(() => {
