@@ -38,8 +38,6 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
     );
 
     function reportIssue(error: Error, errorInfo: ErrorInfo) {
-        if (process.env.NODE_ENV !== 'production') return;
-
         if (issue) return; // Only return the first error occuring
 
         const issueTag = Date.now().toString(36);
@@ -48,7 +46,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
             variables: {
                 issueTag,
                 userAgent: window.navigator.userAgent,
-                logs: getLastLogs(),
+                logs: [],
                 stack: error.stack ?? '',
                 message: error.message,
                 componentStack: errorInfo.componentStack,
