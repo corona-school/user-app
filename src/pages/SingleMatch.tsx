@@ -124,7 +124,8 @@ const SingleMatch = () => {
     );
     const appointments = data?.match?.appointments ?? [];
 
-    const goBackToMatch = () => {
+    const goBackToMatch = async () => {
+        await refetch();
         setCreateAppointment(false);
     };
     useEffect(() => {
@@ -133,10 +134,6 @@ const SingleMatch = () => {
             toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
-
-    useEffect(() => {
-        refetch();
-    }, [createAppointment, refetch]);
 
     return (
         <WithNavigation
@@ -160,7 +157,7 @@ const SingleMatch = () => {
                                 courseOrMatchId={matchId}
                                 isCourse={false}
                                 appointmentsTotal={appointments.length}
-                                navigateToMatch={() => goBackToMatch()}
+                                navigateToMatch={async () => await goBackToMatch()}
                             />
                         ) : (
                             <>
