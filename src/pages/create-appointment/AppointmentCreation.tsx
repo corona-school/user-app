@@ -152,7 +152,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         }
     };
     // * create appointments for an existing course
-    const handleCreateCourseAppointment = () => {
+    const handleCreateCourseAppointment = async () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
             let appointments: AppointmentCreateGroupInput[] = [];
@@ -187,7 +187,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 appointments.push(...weeklyAppointments);
             }
 
-            createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            await createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -238,7 +238,12 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
             toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
-            navigateToMatch && (await navigateToMatch());
+
+            if (navigateToMatch) {
+                await navigateToMatch();
+            } else {
+                navigate('/appointments');
+            }
         }
     };
 
