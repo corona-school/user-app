@@ -5,8 +5,8 @@ import RequestInstructorTutorBanner from './RequestInstructorTutorBanner';
 
 type CardProps = {
     headline: string;
-    Description: string;
-    BulletPoints: React.FC;
+    description: string;
+    bulletPoints: React.FC;
     cardImage: string;
     mobileCardImage: string;
     Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -22,8 +22,8 @@ type CardProps = {
 
 const OnboardingCard: React.FC<CardProps> = ({
     headline,
-    Description,
-    BulletPoints,
+    description,
+    bulletPoints: BulletPoints,
     cardImage,
     mobileCardImage,
     Icon,
@@ -48,7 +48,7 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Icon />
                             <Heading>{headline}</Heading>
                             <Text ellipsizeMode="tail" numberOfLines={3}>
-                                {Description}
+                                {description}
                             </Text>
                             <Box>
                                 <BulletPoints />
@@ -88,7 +88,7 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Icon />
                             <Heading>{headline}</Heading>
                             <Text ellipsizeMode="tail" numberOfLines={10}>
-                                {Description}
+                                {description}
                             </Text>
                             <BulletPoints />
 

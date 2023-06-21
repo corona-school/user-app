@@ -37,7 +37,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const matchDescriptions: React.FC = () => {
+    const matchBulletPoints: React.FC = () => {
         return (
             <FlatList
                 data={matchTexts}
@@ -89,8 +89,8 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                     <Box justifyContent="center" alignItems="center">
                         <OnboardingCard
                             headline={t('introduction.match')}
-                            Description={t('introduction.courseTypes.oneToOneLearningSupport')}
-                            BulletPoints={matchDescriptions}
+                            description={t('introduction.courseTypes.oneToOneLearningSupport')}
+                            bulletPoints={matchBulletPoints}
                             cardImage={OneToOneImage}
                             mobileCardImage={OneToOneMobileImage}
                             Icon={MatchIcon}

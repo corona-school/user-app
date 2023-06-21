@@ -65,8 +65,8 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                     <Box justifyContent="center" alignItems="center">
                         <OnboardingCard
                             headline={t('introduction.groupCourses')}
-                            Description={t('introduction.courseTypes.groupCourses')}
-                            BulletPoints={waitForSupport ? GroupRequestedInfos : GroupOnboardingInfos}
+                            description={t('introduction.courseTypes.groupCourses')}
+                            bulletPoints={waitForSupport ? GroupRequestedInfos : GroupOnboardingInfos}
                             cardImage={LFImageGroupOnboarding}
                             mobileCardImage={LFImageGroupHorizontal}
                             Icon={IconGroup}
