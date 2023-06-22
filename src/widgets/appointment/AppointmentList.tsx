@@ -18,7 +18,8 @@ type Props = {
     noNewAppointments?: boolean;
     noOldAppointments?: boolean;
     isLoadingAppointments?: boolean;
-    loadMoreAppointments?: (cursor: number, direction: ScrollDirection) => void;
+    loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
+    lastAppointmentId?: number | null;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -39,6 +40,7 @@ const AppointmentList: React.FC<Props> = ({
     noOldAppointments,
     isLoadingAppointments,
     loadMoreAppointments,
+    lastAppointmentId,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -58,12 +60,16 @@ const AppointmentList: React.FC<Props> = ({
     };
 
     const handleLoadMore = () => {
-        loadMoreAppointments && loadMoreAppointments(appointments[appointments.length - 1].id, 'next');
+        loadMoreAppointments && loadMoreAppointments(1, appointments[appointments.length - 1]?.id, 'next');
     };
 
     const handleLoadPast = useCallback(() => {
-        loadMoreAppointments && loadMoreAppointments(appointments[0].id, 'last');
-    }, [appointments, loadMoreAppointments]);
+        if (loadMoreAppointments && appointments.length > 0) {
+            loadMoreAppointments(1, appointments[0].id, 'last');
+        } else {
+            loadMoreAppointments && lastAppointmentId && loadMoreAppointments(0, lastAppointmentId, 'last');
+        }
+    }, [appointments, loadMoreAppointments, lastAppointmentId]);
 
     const renderFooter = () => {
         if (noNewAppointments || appointments.length === 0)

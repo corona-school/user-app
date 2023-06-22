@@ -17,9 +17,9 @@ import AppointmentList from '../widgets/appointment/AppointmentList';
 import HelpNavigation from '../components/HelpNavigation';
 
 const getMyAppointments = gql(`
-    query myAppointments($take: Float, $cursor: Float, $direction: String) {
+    query myAppointments($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
         me {
-            appointments(take: $take, cursor: $cursor, direction: $direction) {
+            appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
                 id
                 title
                 description
@@ -45,7 +45,15 @@ const getMyAppointments = gql(`
                 }
                 declinedBy
                 zoomMeetingId
-            }
+            }            
+        }
+    }
+`);
+const APPOINTMENTS_META_DATA = gql(`
+    query appoimtmentsMetaData {
+        me {
+            hasAppointments
+            lastAppointmentId
         }
     }
 `);
@@ -62,7 +70,8 @@ const Appointments: React.FC = () => {
     const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
     const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
-    const { data: myAppointments, loading: loadingMyAppointments, error, fetchMore } = useQuery(getMyAppointments, { variables: { take } });
+    const { data: myAppointments, loading: loadingMyAppointments, error, fetchMore } = useQuery(getMyAppointments, { variables: { take, skip: 0 } });
+    const { data: hasAppointments, loading: isLoadingHasAppointments } = useQuery(APPOINTMENTS_META_DATA);
 
     const buttonPlace = useBreakpointValue({
         base: 'bottom-right',
@@ -71,9 +80,9 @@ const Appointments: React.FC = () => {
 
     const appointments = myAppointments?.me?.appointments ?? [];
 
-    const loadMoreAppointments = (cursor: number, scrollDirection: ScrollDirection) => {
+    const loadMoreAppointments = (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         fetchMore({
-            variables: { take: take, cursor: cursor, direction: scrollDirection },
+            variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
                 const prevAppointments = previousAppointments?.me?.appointments ?? [];
@@ -114,9 +123,16 @@ const Appointments: React.FC = () => {
                     </Stack>
                 }
             >
-                {loadingMyAppointments && !myAppointments && <CenterLoadingSpinner />}
+                {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}
                 {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
-                {!error && appointments.length > 0 ? (
+
+                {!isLoadingHasAppointments && !hasAppointments?.me.hasAppointments && (
+                    <Box h={500} justifyContent="center">
+                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                    </Box>
+                )}
+
+                {!error && hasAppointments?.me.hasAppointments && (
                     <AppointmentList
                         appointments={appointments as Appointment[]}
                         isLoadingAppointments={loadingMyAppointments}
@@ -124,13 +140,8 @@ const Appointments: React.FC = () => {
                         loadMoreAppointments={loadMoreAppointments}
                         noNewAppointments={noNewAppointments}
                         noOldAppointments={noOldAppointments}
+                        lastAppointmentId={hasAppointments?.me?.lastAppointmentId}
                     />
-                ) : (
-                    !loadingMyAppointments && (
-                        <Box h={800} justifyContent="center">
-                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                        </Box>
-                    )
                 )}
             </WithNavigation>
         </AsNavigationItem>

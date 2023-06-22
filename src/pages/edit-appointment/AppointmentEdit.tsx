@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { DateTime } from 'luxon';
 import { Button, Stack, useToast } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +8,7 @@ import { AppointmentUpdateInput } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentEditForm from './AppointmentEditForm';
 import { convertStartDate, formatStart } from '../../helper/appointment-helper';
+import { APPOINTMENT } from '../Appointment';
 
 type FormErrors = {
     title?: string;
@@ -61,7 +61,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const toast = useToast();
     const { isMobile } = useLayoutHelper();
 
-    const validateInputs = () => {
+    const isInputValid = () => {
         if (!updatedAppointment.date) {
             setErrors({ ...errors, date: t('appointment.errors.date') });
             return false;
@@ -84,16 +84,17 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         return true;
     };
 
-    const [updateAppointment, { data: updateResponse, error: updateError }] = useMutation(
+    const [updateAppointment] = useMutation(
         gql(`
         mutation updateAppointment($appointmentToBeUpdated: AppointmentUpdateInput!) {
             appointmentUpdate(appointmentToBeUpdated: $appointmentToBeUpdated)
             }
-    `)
+    `),
+        { refetchQueries: [APPOINTMENT] }
     );
 
-    const handleUpdateClick = useCallback(() => {
-        if (validateInputs()) {
+    const handleUpdateClick = useCallback(async () => {
+        if (isInputValid()) {
             const appointmentToBeUpdated: AppointmentUpdateInput = {
                 id: updatedAppointment.id,
                 title: updatedAppointment.title,
@@ -101,14 +102,16 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 start: convertStartDate(updatedAppointment.date, updatedAppointment.time),
                 duration: updatedAppointment.duration,
             };
-            updateAppointment({ variables: { appointmentToBeUpdated } });
-            navigate(`/appointment/${updatedAppointment.id}`);
+
+            await updateAppointment({ variables: { appointmentToBeUpdated } });
             toast.show({ description: t('appointment.editSuccess'), placement: 'top' });
+            navigate(`/appointment/${updatedAppointment.id}`);
         }
     }, [
         navigate,
         t,
         toast,
+        updatedAppointment,
         updateAppointment,
         updatedAppointment.date,
         updatedAppointment.description,
@@ -116,7 +119,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         updatedAppointment.id,
         updatedAppointment.time,
         updatedAppointment.title,
-        validateInputs,
+        isInputValid,
     ]);
 
     return (
@@ -131,7 +134,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                 <Button onPress={() => navigate(-1)} variant="outline">
                     {t('appointment.goBack')}
                 </Button>
-                <Button onPress={() => handleUpdateClick()}>{t('appointment.saveChanges')}</Button>
+                <Button onPress={async () => await handleUpdateClick()}>{t('appointment.saveChanges')}</Button>
             </Stack>
         </>
     );

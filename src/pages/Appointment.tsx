@@ -6,7 +6,7 @@ import WithNavigation from '../components/WithNavigation';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
-const APPOINTMENT = gql(`
+export const APPOINTMENT = gql(`
     query appointment($appointmentId: Float!) {
         appointment(appointmentId: $appointmentId) {
             id

@@ -84,7 +84,7 @@ const query = gql(`
                     cancelled
                 }
             }
-            appointments(take: 10 ) {
+            appointments(take: 10, skip: 0) {
                 id
                 title
                 description

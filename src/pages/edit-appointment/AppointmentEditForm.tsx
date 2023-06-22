@@ -5,6 +5,7 @@ import DatePicker from '../../components/DatePicker';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
 import { UpdateAppointment } from './AppointmentEdit';
+import { DateTime } from 'luxon';
 
 type EditProps = {
     errors: {};
@@ -45,7 +46,7 @@ const AppointmentEditForm: React.FC<EditProps> = ({ errors, appointmentsCount, u
                             onChange={(e) => {
                                 setUpdatedAppointment({ ...updatedAppointment, date: e.target.value });
                             }}
-                            min={updatedAppointment.date}
+                            min={DateTime.now().toISODate()}
                         />
                         {'date' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
