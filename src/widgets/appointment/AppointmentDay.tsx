@@ -28,8 +28,7 @@ type Props = {
 
 export const canJoinMeeting = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
     const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
-    const end = startDate.plus({ minutes: duration });
-
+    const end = DateTime.fromISO(start).plus({ minutes: duration });
     return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
 };
 
