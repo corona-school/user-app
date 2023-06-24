@@ -4,7 +4,7 @@ import PupilIcon from '../../assets/icons/lernfair/avatar_pupil_32.svg';
 import PupilAvatarCanceled from '../../assets/icons/lernfair/avatar_pupil_cancel.svg';
 import StudentAvatarCancelled from '../../assets/icons/lernfair/avatar_student_cancel.svg';
 import { useTranslation } from 'react-i18next';
-import { AttendanceStatus } from '../../types/lernfair/User';
+import { AttendanceStatus } from '../../types/lernfair/Appointment';
 
 type BoxProps = {
     name: string;

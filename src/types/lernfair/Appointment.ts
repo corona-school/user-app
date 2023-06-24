@@ -34,3 +34,8 @@ export type CreateAppointmentInput = {
     meetingLink: string;
     appointmentType: Lecture_Appointmenttype_Enum;
 };
+
+export enum AttendanceStatus {
+    ACCEPTED = 'accepted',
+    DECLINED = 'declined',
+}

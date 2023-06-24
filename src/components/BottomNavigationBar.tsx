@@ -27,27 +27,6 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
             }
         `)
     );
-
-    function sortNavItems(navItems: NavigationItems): NavigationItems {
-        const newNavItems: NavigationItems = {};
-
-        let index = 1;
-        for (const key in navItems) {
-            if (Object.prototype.hasOwnProperty.call(navItems, key)) {
-                if (index === 3) {
-                    newNavItems.chat = navItems.chat;
-                    index++;
-                }
-                if (key !== 'chat') {
-                    newNavItems[key] = navItems[key];
-                    index++;
-                }
-            }
-        }
-
-        return newNavItems;
-    }
-
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
         return !data?.myRoles.includes('PARTICIPANT');
@@ -83,7 +62,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         shadowOffset: { width: -1, height: -3 },
                     }}
                 >
-                    {Object.entries(sortNavItems(navItems)).map(([key, { label, icon: Icon }]) => {
+                    {Object.entries(navItems).map(([key, { label, icon: Icon }]) => {
                         return (
                             <Pressable
                                 onPress={() => {

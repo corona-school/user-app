@@ -57,7 +57,6 @@ const WithNavigation: React.FC<Props> = ({
         appointments: { label: t('navigation.label.appointments'), icon: LFAppointmentIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
-        chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
     };
 
     // const [view, setView] = useState(null)

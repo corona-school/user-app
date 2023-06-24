@@ -84,6 +84,7 @@ const ZoomMeeting: React.FC = () => {
 
         return () => {
             window.removeEventListener('popstate', handlePopState);
+            removeZoomStyles();
         };
     }, []);
 
@@ -134,15 +135,8 @@ const ZoomMeeting: React.FC = () => {
                     userEmail: credentials.userEmail,
                     zak: credentials.zak,
                     success: () => console.log('User joined Zoom meeting successfully'),
-                    error: (error: Error) => {
-                        removeZoomStyles();
-                        throw new Error("User couldn't join Zoom meeting", { cause: error });
-                    },
+                    error: (error: Error) => undefined,
                 });
-            },
-            error: (error: Error) => {
-                removeZoomStyles();
-                throw new Error("Couldn't init Zoom SDK", { cause: error });
             },
         });
     }, [zoomDataParticipant, zoomDataOrganizer, meetingId, appointmentMeetingData, leaveUrl, isLoadingOrganizerData, isLoadingParticipantData]);

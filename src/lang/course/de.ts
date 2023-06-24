@@ -36,7 +36,7 @@ const course = {
         },
         hint: {
             pupil: 'Du kannst dem Videochat erst beitreten, wenn der:die Kursleiter:in das Meeting gestartet hat.',
-            student: 'Du kannst das Meeting erst eine Stunde vor Beginn des Termins starten.',
+            student: 'Du kannst das Meeting erst 30 Minuten vor Beginn des Termins starten.',
         },
     },
     blocker: {

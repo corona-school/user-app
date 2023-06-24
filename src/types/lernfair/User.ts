@@ -6,10 +6,6 @@ export enum UserType {
     PUPIL = 'pupil',
 }
 
-export enum AttendanceStatus {
-    ACCEPTED = 'accepted',
-    DECLINED = 'declined',
-}
 // c.f. https://github.com/corona-school/backend/blob/master/common/user/roles.ts
 // This list only includes the subset of roles that make sense to use in the frontend
 export type Role =

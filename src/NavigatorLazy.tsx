@@ -59,7 +59,6 @@ import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
-import Chat from './pages/Chat';
 import ZoomMeeting from './components/ZoomMeeting';
 
 export default function NavigatorLazy() {
@@ -332,15 +331,6 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
-                    </RequireAuth>
-                }
-            />
-            {/* Chat feature */}
-            <Route
-                path="/chat"
-                element={
-                    <RequireAuth>
-                        <Chat />
                     </RequireAuth>
                 }
             />

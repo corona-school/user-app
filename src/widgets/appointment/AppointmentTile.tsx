@@ -72,14 +72,14 @@ const AppointmentTile: React.FC<Props> = ({
                             {organizers && participants && (
                                 <Avatar.Group _avatar={{ size: 'xs' }} space={-1} max={5}>
                                     {organizers
-                                        ?.map((i, idx) => (
-                                            <Avatar key={i.lastname + '-' + idx}>
+                                        ?.map((i) => (
+                                            <Avatar key={`org_${i.id}`}>
                                                 <StudentAvatar style={{ marginTop: '-1' }} />
                                             </Avatar>
                                         ))
                                         .concat(
-                                            participants?.map((p, index) => (
-                                                <Avatar key={p.firstname + '-' + index}>
+                                            participants?.map((p) => (
+                                                <Avatar key={`par_${p.id}`}>
                                                     <PupilAvatar style={{ marginTop: '-1' }} />
                                                 </Avatar>
                                             ))

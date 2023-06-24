@@ -8,7 +8,8 @@ import { AppointmentUpdateInput } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AppointmentEditForm from './AppointmentEditForm';
 import { convertStartDate, formatStart } from '../../helper/appointment-helper';
-import { APPOINTMENT } from '../Appointment';
+import { PUPIL_APPOINTMENT, STUDENT_APPOINTMENT } from '../Appointment';
+import { DateTime } from 'luxon';
 
 type FormErrors = {
     title?: string;
@@ -52,7 +53,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         title: data?.appointment?.title ?? '',
         description: data?.appointment?.description ?? '',
         date: formatStart(data?.appointment.start).date,
-        time: formatStart(data?.appointment.start).time,
+        time: DateTime.fromISO(data?.appointment.start).toFormat('HH:mm'),
         duration: data?.appointment.duration ?? 0,
     });
 
@@ -90,7 +91,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
             appointmentUpdate(appointmentToBeUpdated: $appointmentToBeUpdated)
             }
     `),
-        { refetchQueries: [APPOINTMENT] }
+        { refetchQueries: [PUPIL_APPOINTMENT, STUDENT_APPOINTMENT] }
     );
 
     const handleUpdateClick = useCallback(async () => {

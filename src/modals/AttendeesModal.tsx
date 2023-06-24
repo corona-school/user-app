@@ -1,6 +1,6 @@
 import { Box, Text, Modal, ScrollView, Button } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AttendanceStatus } from '../types/lernfair/User';
+import { AttendanceStatus } from '../types/lernfair/Appointment';
 import AttendeeBox from '../components/appointment/AttendeeBox';
 import { AppointmentParticipant, Organizer } from '../gql/graphql';
 
@@ -35,6 +35,7 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                 {sortedOrganizers?.map((organizer) => {
                                     return (
                                         <AttendeeBox
+                                            key={`org_${organizer.id}`}
                                             name={`${organizer.firstname} ${organizer.lastname}`}
                                             isOrganizer={true}
                                             declined={declinedBy.includes(organizer.userID!) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
@@ -44,7 +45,8 @@ const AttendeesModal: React.FC<ModalProps> = ({ organizers, participants, declin
                                 {sortedParticipants?.map((participant) => {
                                     return (
                                         <AttendeeBox
-                                            name={`${participant.firstname} ${participant.lastname}`}
+                                            key={`par_${participant.id}`}
+                                            name={`${participant.firstname}` + (participant.lastname ? ` ${participant.lastname}` : '')}
                                             declined={declinedBy.includes(participant.userID!) ? AttendanceStatus.DECLINED : AttendanceStatus.ACCEPTED}
                                         />
                                     );
