@@ -31,25 +31,23 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && (
-                    <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />
+                {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
+                {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
+                {subcourse.canEdit.allowed && (
+                    <>
+                        <Button
+                            onPress={() => {
+                                navigate('/edit-course', {
+                                    state: { courseId: subcourse.id },
+                                });
+                            }}
+                            variant="outline"
+                        >
+                            {t('single.courseInfo.editCourse')}
+                        </Button>
+                        <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
+                    </>
                 )}
-                {subcourse.published && subcourse.canContactParticipants.allowed && (
-                        <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />
-                )}
-                {subcourse.canEdit.allowed && (<>
-                    <Button
-                        onPress={() => {
-                            navigate('/edit-course', {
-                                state: { courseId: subcourse.id },
-                            });
-                        }}
-                        variant="outline"
-                    >
-                        {t('single.courseInfo.editCourse')}
-                    </Button>
-                    <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
-                </>)}
             </Stack>
         </>
     );

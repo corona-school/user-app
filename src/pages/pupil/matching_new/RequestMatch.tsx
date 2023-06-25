@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, useTheme } from 'native-base';
+import { Box, Stack, useTheme } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
@@ -14,6 +14,7 @@ import German from './German';
 import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
+import HelpNavigation from '../../../components/HelpNavigation';
 
 const query = gql(`
     query PupilMatchRequestInfo {
@@ -105,7 +106,16 @@ const RequestMatch: React.FC = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation showBack isLoading={loading || isLoading} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 <RequestMatchContext.Provider value={{ isEdit, matchRequest, setSubject, removeSubject, setCurrentIndex, setMessage }}>
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>

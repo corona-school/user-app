@@ -1,28 +1,35 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { DateTime } from 'luxon';
 import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
-import { useCallback, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
-import { LFLecture } from '../../types/lernfair/Course';
-import Utility from '../../Utility';
+import { useCreateCourseAppointments } from '../../context/AppointmentContext';
+import { AppointmentCreateGroupInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Appointment } from '../../types/lernfair/Appointment';
 import AlertMessage from '../../widgets/AlertMessage';
-import AppointmentInfoRow from '../../widgets/AppointmentInfoRow';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
+import { DateTime } from 'luxon';
+import { useQuery } from '@apollo/client';
+import { gql } from '../../gql';
 
 type Props = {
     onBack: () => void;
     isDisabled?: boolean;
     isError?: boolean;
+    courseId?: number;
+    isEditing?: boolean;
     createAndSubmit?: () => void;
     createOnly?: () => void;
-    update?: () => void;
+    update?: (newAppointments?: AppointmentCreateGroupInput[]) => void;
+    appointments: Appointment[];
 };
 
-const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAndSubmit, createOnly, update }) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, appointments, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+    const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const {
         courseName,
         subject,
@@ -32,8 +39,6 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         classRange: courseClasses,
         joinAfterStart,
         allowContact,
-        lectures,
-        newLectures,
         pickedPhoto,
     } = useContext(CreateCourseContext);
 
@@ -47,6 +52,11 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         lg: 'row',
     });
 
+    const maxHeight = useBreakpointValue({
+        base: 400,
+        lg: 600,
+    });
+
     const { trackPageView, trackEvent } = useMatomo();
 
     useEffect(() => {
@@ -56,17 +66,60 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const convertTime = useCallback((_time: string) => {
-        let time = parseInt(_time);
+    const convertAppointments = () => {
+        let convertedAppointments: Appointment[] = [];
 
-        return time >= 60 ? time / 60 + ' Stunden' : time + ' Minuten';
-    }, []);
+        appointmentsToBeCreated.forEach((appointment) => {
+            convertedAppointments.push({
+                id: 1,
+                start: appointment.start,
+                duration: appointment.duration,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
+                displayName: courseName,
+                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
+                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
+            });
+        });
 
+        return convertedAppointments;
+    };
+
+    const getAllAppointmentsToShow = () => {
+        if (isEditing) {
+            const convertedAppointments = convertAppointments();
+            const allAppointments = appointments.concat(convertedAppointments);
+            const sortedAppointments = allAppointments.sort((a, b) => {
+                const _a = DateTime.fromISO(a.start).toMillis();
+                const _b = DateTime.fromISO(b.start).toMillis();
+                return _a - _b;
+            });
+            let sortedWithPosition: Appointment[] = [];
+            sortedAppointments.forEach((appointment, index) => {
+                sortedWithPosition.push({ ...appointment, position: index + 1 });
+            });
+            return sortedWithPosition;
+        }
+        const newAppointments: Appointment[] = [];
+        const convertedAppointments = convertAppointments();
+        const allAppointments = newAppointments.concat(convertedAppointments);
+        const sortedAppointments = allAppointments.sort((a, b) => {
+            const _a = DateTime.fromISO(a.start).toMillis();
+            const _b = DateTime.fromISO(b.start).toMillis();
+            return _a - _b;
+        });
+
+        let sortedWithPosition: Appointment[] = [];
+        sortedAppointments.forEach((appointment, index) => {
+            sortedWithPosition.push({ ...appointment, position: index + 1 });
+        });
+
+        return sortedWithPosition;
+    };
+    const allAppointmentsToShow = getAllAppointmentsToShow();
     return (
         <VStack space={space['1']}>
             <Heading paddingTop={space['1']}>{t('course.CourseDate.Preview.headline')}</Heading>
             <Text>{t('course.CourseDate.Preview.content')}</Text>
-
             <Heading>{t('course.CourseDate.Preview.infoHeadline')}</Heading>
             <Row alignItems="end" space={space['0.5']}>
                 <Text bold fontSize="md">
@@ -135,42 +188,9 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
             <Heading fontSize="xl" marginBottom={space['1']}>
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
-            {lectures && lectures.map((lecture: LFLecture, index: number) => <AppointmentInfoRow index={index} lecture={lecture} />)}
-            {newLectures &&
-                newLectures.length > 0 &&
-                newLectures[0].date &&
-                newLectures.map((lec, i) => (
-                    <VStack marginBottom={space['1']}>
-                        <Heading mb={space['0.5']} fontSize="lg">
-                            {t('appointment') + `${i + ((lectures?.length || 0) + 1 || 1)}`.padStart(2, '0')}
-                        </Heading>
-                        <VStack>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('course.CourseDate.Preview.appointmentDate')}
-                                </Text>
-
-                                <Text fontSize="md">{Utility.handleDateString(lec.date, 'yyyy-MM-dd', undefined, DateTime.DATE_MED)}</Text>
-                            </Row>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('time')}
-                                </Text>
-                                <Text fontSize="md">
-                                    {Utility.handleDateString(lec.time, 'hh:mm', undefined, DateTime.TIME_24_SIMPLE)}
-                                    {' ' + t('clock')}
-                                </Text>
-                            </Row>
-                            <Row>
-                                <Text bold minW="100px" fontSize="md">
-                                    {t('duration') + ':'}
-                                </Text>
-                                <Text fontSize="md">{convertTime(lec.duration)}</Text>
-                            </Row>
-                        </VStack>
-                    </VStack>
-                ))}
-
+            <Box minH={300} maxH={maxHeight} flex="1" mb="10">
+                <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+            </Box>
             {isError && (
                 <Box mt={space['1']}>
                     <AlertMessage content={t('course.error.course')} />
@@ -188,7 +208,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, createAnd
                                 name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
                                 documentTitle: 'Helfer Kurs erstellen',
                             });
-                            update();
+                            update(appointmentsToBeCreated);
                         }}
                         isDisabled={isDisabled}
                     >

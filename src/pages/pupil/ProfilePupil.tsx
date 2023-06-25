@@ -1,4 +1,4 @@
-import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -15,6 +15,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import useLernfair from '../../hooks/useLernfair';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -251,9 +252,10 @@ const ProfilePupil: React.FC<Props> = () => {
                     </Flex>
                 }
                 headerLeft={
-                    <Row space={space['1']}>
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
                         <NotificationAlert />
-                    </Row>
+                    </Stack>
                 }
             >
                 {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}

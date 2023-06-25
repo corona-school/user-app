@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -45,7 +45,7 @@ type Props = {
     minGrade?: number;
     maxGrade?: number;
     child?: string;
-    avatar?: string;
+    avatar?: ReactElement;
     avatarname?: string;
     button?: ReactNode;
     buttonlink?: string;
@@ -196,29 +196,31 @@ const AppointmentCard: React.FC<Props> = ({
                 <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
-                            <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
-                                <Image
-                                    position="absolute"
-                                    left={0}
-                                    right={0}
-                                    top={0}
-                                    width="100%"
-                                    bgColor="gray.300"
-                                    height="100%"
-                                    alt={title}
-                                    source={{
-                                        uri: image,
-                                    }}
-                                />
-                                {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
-                                {isTeaser && (
-                                    <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
-                                        {tags?.map((tag, i) => (
-                                            <Tag key={`tag-${i}`} text={tag.name} />
-                                        ))}
-                                    </Row>
-                                )}
-                            </Box>
+                            {image && (
+                                <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
+                                    <Image
+                                        position="absolute"
+                                        left={0}
+                                        right={0}
+                                        top={0}
+                                        width="100%"
+                                        bgColor="gray.300"
+                                        height="100%"
+                                        alt={title}
+                                        source={{
+                                            uri: image,
+                                        }}
+                                    />
+                                    {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
+                                    {isTeaser && (
+                                        <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                                            {tags?.map((tag, i) => (
+                                                <Tag key={`tag-${i}`} text={tag.name} />
+                                            ))}
+                                        </Row>
+                                    )}
+                                </Box>
+                            )}
 
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
                                 {!isTeaser && date && (
@@ -366,23 +368,25 @@ const AppointmentCard: React.FC<Props> = ({
             ) : (
                 <Pressable onPress={onPressToCourse} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                     <Flex flexDirection="row" height="100%" marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
-                        <Box width="26%" display="block" marginRight="3px" position={'relative'}>
-                            <Image
-                                width="120px"
-                                height="100%"
-                                borderTopLeftRadius="15px"
-                                borderBottomLeftRadius="15px"
-                                bgColor="gray.300"
-                                source={{
-                                    uri: image,
-                                }}
-                            />
-                            {showTrafficLight && (
-                                <Box position="absolute" top={space['0.5']} left={space['0.5']}>
-                                    <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />
-                                </Box>
-                            )}
-                        </Box>
+                        {image && (
+                            <Box width="26%" display="block" marginRight="3px" position={'relative'}>
+                                <Image
+                                    width="120px"
+                                    height="100%"
+                                    borderTopLeftRadius="15px"
+                                    borderBottomLeftRadius="15px"
+                                    bgColor="gray.300"
+                                    source={{
+                                        uri: image,
+                                    }}
+                                />
+                                {showTrafficLight && (
+                                    <Box position="absolute" top={space['0.5']} left={space['0.5']}>
+                                        <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />
+                                    </Box>
+                                )}
+                            </Box>
+                        )}
 
                         <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
                             <Row space={1} marginTop={space['0.5']}>
