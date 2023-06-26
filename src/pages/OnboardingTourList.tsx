@@ -55,7 +55,6 @@ const OnboardingTourList: React.FC<Props> = () => {
                 </Stack>
             }
         >
-            {' '}
             <VStack marginX="auto" maxWidth={ContainerWidth} width="100%" paddingBottom={7} paddingX={space['1.5']}>
                 <Heading paddingBottom={space['0.5']}>{t('onboardingList.title')}</Heading>
                 <Text maxWidth={ContentContainerWidth}>{t('onboardingList.content')}</Text>

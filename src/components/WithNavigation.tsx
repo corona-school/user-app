@@ -5,9 +5,9 @@ import BottomNavigationBar from './BottomNavigationBar';
 import { ReactNode } from 'react';
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
+import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
-import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';

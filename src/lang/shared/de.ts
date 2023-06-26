@@ -31,6 +31,8 @@ const shared = {
     important: 'Wichtig',
     error: 'Es ist ein Fehler aufgetreten.',
     characterLimitNotice: 'Max. Zeichenanzahl: {{limit}}',
+    datepickerPlaceholder: 'Wähle ein Datum...',
+    timepickerPlaceholder: '00:00',
     registrationTitle: 'Anmeldung',
     deregistrationTitle: 'Abmeldung',
     moreInfoButton: 'Mehr erfahren',

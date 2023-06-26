@@ -104,7 +104,6 @@ const RequestMatching: React.FC = () => {
                     </Stack>
                 }
             >
-                {' '}
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>

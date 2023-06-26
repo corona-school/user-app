@@ -1,40 +1,41 @@
-export type AppointmentType = {
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
+
+export type Appointment = {
+    __typename?: 'Lecture' | undefined;
     id: number;
     title: string;
-    organizers: {
-        firstname: string;
-        lastname: string;
-    }[];
-    startDate: string;
+    description: string;
+    start: string;
     duration: number;
+    subcourseId?: number;
+    matchId?: number | null;
+    position?: number;
+    total?: number;
+    displayName?: string;
+    meetingLink?: string | null;
+    organizers?: Organizer[];
+    participants?: AppointmentParticipant[];
+    isCanceled?: boolean;
+    declinedBy?: string[];
+    appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
+    isParticipant?: boolean;
+    zoomMeetingId?: string;
+};
+
+// type of appointments to send to the BE
+export type CreateAppointmentInput = {
+    title: string;
+    description: string;
+    start: string;
+    duration: number;
+    subcourseId?: number;
+    matchId?: number;
     meetingLink: string;
-    subcourseId: number;
-    lectureId: number;
-    participants: {
-        firstname: string;
-        lastname: string;
-    }[];
-    declinedBy: { id: number }[];
-    isCancelled: boolean;
-    appointmentType: string;
+    appointmentType: Lecture_Appointmenttype_Enum;
 };
 
-export type CalendarDates = {
-    [year: number]: {
-        [month: number]: {
-            [week: number]: AppointmentType[];
-        };
-    };
-};
-
-export type Year = {
-    [year: number]: Month;
-};
-
-export type Month = {
-    [month: number]: Week;
-};
-
-export type Week = {
-    [week: number]: AppointmentType[];
-};
+export enum AttendanceStatus {
+    ACCEPTED = 'accepted',
+    DECLINED = 'declined',
+}

@@ -54,7 +54,6 @@ const NotficationControlPanel = () => {
                     </Stack>
                 }
             >
-                {' '}
                 <View py={5} width={width}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>

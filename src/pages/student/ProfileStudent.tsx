@@ -23,7 +23,7 @@ import ProfileSettingRow from '../../widgets/ProfileSettingRow';
 
 import UserProgress from '../../widgets/UserProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
