@@ -15,9 +15,9 @@ import course from './course/de';
 import archive from './archive/de';
 import notification from './notification/de';
 import appointment from './appointment/de';
+import chat from './chat/de';
 import introduction from './introduction/de';
 import navigation from './navigation/de';
-import chat from './chat/de';
 
 const de = {
     ...shared,
@@ -37,8 +37,8 @@ const de = {
     archive,
     notification,
     appointment,
+    chat,
     introduction,
     navigation,
-    chat,
 };
 export default de;

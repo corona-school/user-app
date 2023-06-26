@@ -1,76 +1,67 @@
-import { getI18n } from 'react-i18next';
-
 import { DateTime } from 'luxon';
-import { AppointmentType } from '../types/lernfair/Appointment';
-import appointments from '../widgets/appointment/dummy/appointments';
 
-type CourseTimes = {
-    start: DateTime;
-    end: DateTime;
-    now: DateTime;
-};
-const getCourseTimes = (courseStart: string, duration: number): CourseTimes => {
-    const now = DateTime.now();
-    const start = DateTime.fromISO(courseStart);
-    const end = start.plus({ minutes: duration });
-    return { start, end, now };
-};
+const convertStartDate = (date: string, time: string): string => {
+    const dt = DateTime.fromISO(date);
+    const t = DateTime.fromISO(time);
 
-const isCourseTakingPlaceRightNow = (courseStart: string, duration: number): boolean => {
-    const { start, end, now } = getCourseTimes(courseStart, duration);
-    return start <= now && now < end;
-};
-
-const getCourseTimeText = (courseStart: string, duration: number): string => {
-    const { start, now, end } = getCourseTimes(courseStart, duration);
-    const startTime = start.setLocale('de-DE').toFormat('T');
-    const endTime = end.setLocale('de-DE').toFormat('T');
-    const i18n = getI18n();
-
-    if (start <= now && now < end) {
-        return i18n.t('appointment.clock.nowToEnd', { end: endTime });
-    }
-    return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-};
-
-type CourseDay = {
-    courseDay: string;
-    courseDateDay: string;
-};
-
-const getCourseDay = (courseDate: string): CourseDay => {
-    const courseDay = DateTime.fromISO(courseDate).setLocale('de').toFormat('ccc');
-    const courseDateDay = DateTime.fromISO(courseDate).setLocale('de').toFormat('dd');
-    return { courseDay, courseDateDay };
-};
-
-const getNextCourseId = (appointments: AppointmentType[]): number => {
-    const now = DateTime.now();
-    const nextCourse = appointments.find((appointment) => {
-        return DateTime.fromISO(appointment.startDate) > now;
+    const newDate = dt.set({
+        hour: t.hour,
+        minute: t.minute,
+        second: t.second,
     });
-    return nextCourse?.id ?? 0;
+    return newDate.toISO();
 };
 
-const isCurrentMonth = (courseStart: string): boolean => {
+const calcNewAppointmentInOneWeek = (date: string): string => {
+    const startDate = DateTime.fromISO(date);
+    const nextDate = startDate.plus({ days: 7 }).toISO();
+    return nextDate;
+};
+
+const formatStart = (start: string): { date: string; time: string } => {
+    const date = DateTime.fromISO(start).toFormat('yyyy-MM-dd');
+    const time = DateTime.fromISO(start).toFormat('HH:mm:ss');
+    return { date, time };
+};
+
+const isAppointmentNow = (start: string, duration: number): boolean => {
     const now = DateTime.now();
-    const start = DateTime.fromISO(courseStart);
-    const sameMonth = now.hasSame(start, 'month');
-    const sameYear = now.hasSame(start, 'year');
-    if (sameMonth && sameYear) return true;
+    const startDate = DateTime.fromISO(start);
+    const end = startDate.plus({ minutes: duration });
+    return startDate <= now && now < end;
+};
+
+const isDateMinOneWeekLater = (date: string): boolean => {
+    const startDate = DateTime.fromISO(date);
+    const diff = startDate.diffNow('days').days;
+    if (diff >= 6) return true;
     return false;
 };
 
-const getScrollToId = (): number => {
-    const currentId = appointments.currentCourseId;
-    const nextId = appointments.nextCourseId;
-
-    if (currentId) {
-        return currentId;
-    } else if (!currentId) {
-        return nextId;
-    }
-    return 0;
+const isDateToday = (dateString: string): boolean => {
+    const date = DateTime.fromISO(dateString);
+    const today = DateTime.local();
+    const same = date.hasSame(today, 'day') && date.hasSame(today, 'month') && date.hasSame(today, 'year');
+    return same;
 };
 
-export { getCourseDay, isCurrentMonth, isCourseTakingPlaceRightNow, getCourseTimeText, getNextCourseId, getScrollToId };
+const isDateInFuture = (dateString: string): boolean => {
+    const date = DateTime.fromISO(dateString);
+    const now = DateTime.now();
+    return date > now;
+};
+
+const isTimeMinFiveMinutesLater = (date: string, time: string): boolean => {
+    if (!date || !time) return false;
+    const convertedDate = convertStartDate(date, time);
+    const start = DateTime.fromISO(convertedDate);
+    const now = DateTime.now();
+
+    if (isDateToday(date)) {
+        const diffMinutes = start.diff(now, 'minutes').minutes;
+        return diffMinutes >= 5;
+    }
+
+    return isDateInFuture(date);
+};
+export { convertStartDate, calcNewAppointmentInOneWeek, formatStart, isDateToday, isAppointmentNow, isDateMinOneWeekLater, isTimeMinFiveMinutesLater };

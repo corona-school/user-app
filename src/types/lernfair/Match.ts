@@ -1,5 +1,5 @@
+import { Appointment } from './Appointment';
 import { Subject } from '../../gql/graphql';
-import { LFPupil, LFStudent } from './User';
 
 export type LFMatch = {
     id: number;
@@ -10,4 +10,5 @@ export type LFMatch = {
     uuid: string;
     studentEmail: string;
     pupilEmail: string;
+    appointments?: Appointment[];
 };

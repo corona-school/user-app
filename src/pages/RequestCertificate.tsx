@@ -1,8 +1,8 @@
 import { useApolloClient } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Stack, Text, useTheme, VStack } from 'native-base';
+import { Stack, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import { gql } from '../gql';

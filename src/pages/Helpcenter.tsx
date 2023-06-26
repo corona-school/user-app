@@ -150,7 +150,6 @@ const HelpCenter: React.FC = () => {
                     </Stack>
                 }
             >
-                {' '}
                 <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
                     <Box maxWidth={ContentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
                         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
