@@ -5,6 +5,7 @@ import { useUserType } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
+import ContactEmptyState from './ContactEmptyState';
 
 const myContacts = gql(`
 query me {
@@ -105,7 +106,19 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
             </>
         );
     };
-    return <FlatList data={data?.myContactOptions as Contact[]} renderItem={renderContacts} />;
+    return (
+        <FlatList
+            // data={data?.myContactOptions as Contact[]}
+            data={[]}
+            renderItem={renderContacts}
+            ListEmptyComponent={
+                <ContactEmptyState
+                    title={'Keine Kontaktoptionen'}
+                    subtitle={'Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.'}
+                />
+            }
+        />
+    );
 };
 
 export default ContactList;
