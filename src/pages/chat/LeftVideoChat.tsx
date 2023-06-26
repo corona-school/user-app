@@ -54,6 +54,14 @@ const LeftVideoChat: React.FC = () => {
         })();
     }, []);
 
+    useEffect(() => {
+        (async () => {
+            if (isOrganizer) {
+                await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
+            }
+        })();
+    }, [isOrganizer]);
+
     const saveAndFinish = async () => {
         navigate('/');
     };
