@@ -6,6 +6,7 @@ import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import LeavePageModal from './LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
+import AppointmentCancelledModal from './NotificationModal';
 
 type Props = {
     userNotification: Concrete_Notification;
@@ -15,13 +16,14 @@ type Props = {
 };
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
+    const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
     const { sentAt } = userNotification || { sentAt: '' };
-    const { headline, body, type, navigateTo } = userNotification.message;
+    const { headline, body, type, navigateTo, modalText } = userNotification.message;
 
     const boxProps = {
         mb: 2,
@@ -37,12 +39,15 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
     };
 
     const navigateToLink = () => {
+        if (modalText) {
+            setNotificationModalOpen(true);
+        }
         if (typeof navigateTo !== 'string') return null;
         updateLastTimeChecked && updateLastTimeChecked();
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
         }
-        setIsModalOpen(true);
+        setLeavePageModalOpen(true);
     };
 
     const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
@@ -57,8 +62,24 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                     <Pressable onPress={navigateToLink}>
                         <Component />
                     </Pressable>
-                    <Modal isOpen={isModalOpen}>
-                        <LeavePageModal url={navigateTo} messageType={type} onClose={() => setIsModalOpen(false)} navigateTo={navigateExternal} />
+                    <Modal isOpen={leavePageModalOpen}>
+                        <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
+                    </Modal>
+                </>
+            );
+        } else if (modalText) {
+            return (
+                <>
+                    <Pressable onPress={navigateToLink}>
+                        <Component />
+                    </Pressable>
+                    <Modal isOpen={notificationModalOpen}>
+                        <AppointmentCancelledModal
+                            messageType={type}
+                            onClose={() => setNotificationModalOpen(false)}
+                            modalText={modalText}
+                            headline={headline}
+                        />
                     </Modal>
                 </>
             );

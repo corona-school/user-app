@@ -45,7 +45,7 @@ const single = {
         courseCancelled: 'Dieser Kurs wurde abgesagt.',
     },
     card: {
-        expandCardButton: 'Mehr Kurs-Infos',
+        expandCardButton: 'Mehr Infos',
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',

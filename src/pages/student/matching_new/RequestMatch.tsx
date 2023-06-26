@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, useTheme } from 'native-base';
+import { Box, Stack, useTheme } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
@@ -12,6 +12,7 @@ import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
+import HelpNavigation from '../../../components/HelpNavigation';
 
 const query = gql(`
     query StudentMatchRequestCount {
@@ -93,7 +94,16 @@ const RequestMatching: React.FC = () => {
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation showBack isLoading={loading || isLoading} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                showBack
+                isLoading={loading || isLoading}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>

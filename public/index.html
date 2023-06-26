@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="de">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="Lern-Fair" />
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Lern-Fair" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="shortcut icon" href="/favicons/favicon.ico" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+        <meta name="theme-color" content="#ffffff" />
 
+        <link type="text/css" rel="preload" href="https://source.zoom.us/2.11.5/css/bootstrap.css" />
+        <link type="text/css" rel="preload" href="https://source.zoom.us/2.11.5/css/react-select.css" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="/favicons/favicon.ico">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-config" content="/favicons/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <!-- Dynamically inject a new configuration each time the app is reloaded -->
+        <script src="/config.js"></script>
 
-  <!-- Dynamically inject a new configuration each time the app is reloaded -->
-  <script src="/config.js"></script>
+        <title>Lern-Fair</title>
+    </head>
 
-  <title>Lern-Fair</title>
-</head>
-
-<body>
-  <noscript>Bitte erlaube das Ausführen von JavaScript, um die App zu starten.</noscript>
-  <div id="root" style="width: 100vw; overflow: hidden;"></div>
-</body>
-
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root" style="width: 100vw; overflow: hidden"></div>
+        <div id="zmmtg-root" style="display: none"></div>
+        <!-- <div id="aria-notify-area"></div> -->
+    </body>
 </html>
+
