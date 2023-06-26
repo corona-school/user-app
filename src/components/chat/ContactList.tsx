@@ -108,15 +108,9 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     };
     return (
         <FlatList
-            // data={data?.myContactOptions as Contact[]}
-            data={[]}
+            data={data?.myContactOptions as Contact[]}
             renderItem={renderContacts}
-            ListEmptyComponent={
-                <ContactEmptyState
-                    title={'Keine Kontaktoptionen'}
-                    subtitle={'Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.'}
-                />
-            }
+            ListEmptyComponent={<ContactEmptyState title={t('chat.noContactOptions')} subtitle={t('chat.noContactOptionsHint')} />}
         />
     );
 };
