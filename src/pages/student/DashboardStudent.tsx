@@ -196,7 +196,10 @@ const DashboardStudent: React.FC<Props> = () => {
     });
 
     const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
+    const myNextAppointments = nextAppointment.filter((appointment) => {
+        const { start, duration, isOrganizer } = appointment;
+        return canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+    });
 
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
@@ -230,7 +233,6 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
-    console.log(data?.me?.appointments);
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -259,45 +261,51 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {myNextAppointment && (
+                            {myNextAppointments && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
-                                    <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.student')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                        }}
-                                                        isDisabled={
-                                                            !myNextAppointment.id ||
-                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 30, DateTime.now())
-                                                        }
-                                                    >
-                                                        {t('course.meeting.videobutton.student')}
-                                                    </Button>
-                                                </Tooltip>
-                                            </VStack>
-                                        }
-                                        onPressToCourse={() => {
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Helfer Dashboard Kachelklick   ' + myNextAppointment.displayName || '',
-                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + myNextAppointment.displayName || '',
-                                            });
-                                            navigate(`/appointment/${myNextAppointment.id}`);
-                                        }}
-                                        date={myNextAppointment.start || ''}
-                                        duration={myNextAppointment.duration}
-                                        isTeaser={true}
-                                        title={myNextAppointment.displayName || ''}
-                                        description={myNextAppointment.description || ''}
-                                    />
+                                    <VStack space={space['1']}>
+                                        {myNextAppointments.map((myNextAppointment) => {
+                                            return (
+                                                <AppointmentCard
+                                                    videoButton={
+                                                        <VStack w="100%" space={space['0.5']}>
+                                                            <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.student')}>
+                                                                <Button
+                                                                    width="100%"
+                                                                    marginTop={space['1']}
+                                                                    onPress={() => {
+                                                                        navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
+                                                                    }}
+                                                                    isDisabled={
+                                                                        !myNextAppointment.id ||
+                                                                        !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 30, DateTime.now())
+                                                                    }
+                                                                >
+                                                                    {t('course.meeting.videobutton.student')}
+                                                                </Button>
+                                                            </Tooltip>
+                                                        </VStack>
+                                                    }
+                                                    onPressToCourse={() => {
+                                                        trackEvent({
+                                                            category: 'dashboard',
+                                                            action: 'click-event',
+                                                            name: 'Helfer Dashboard Kachelklick   ' + myNextAppointment.displayName || '',
+                                                            documentTitle: 'Helfer Dashboard – Nächster Termin ' + myNextAppointment.displayName || '',
+                                                        });
+                                                        navigate(`/appointment/${myNextAppointment.id}`);
+                                                    }}
+                                                    date={myNextAppointment.start || ''}
+                                                    duration={myNextAppointment.duration}
+                                                    isTeaser={true}
+                                                    title={myNextAppointment.displayName || ''}
+                                                    description={myNextAppointment.description || ''}
+                                                />
+                                            );
+                                        })}
+                                    </VStack>
                                 </VStack>
                             )}
 
