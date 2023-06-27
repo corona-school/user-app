@@ -2,7 +2,7 @@ import { Button, HStack } from 'native-base';
 import { useWeeklyAppointments } from '../context/AppointmentContext';
 import { WeeklyReducerActionType } from '../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import AppointmentDate from './appointment/AppointmentDate';
+import AppointmentDate from '../components/AppointmentDate';
 
 type ButtonProps = {
     length: number;

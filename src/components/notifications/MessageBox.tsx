@@ -4,9 +4,9 @@ import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
 import { FC, useState } from 'react';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import LeavePageModal from './LeavePageModal';
+import LeavePageModal from '../../modals/LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
-import AppointmentCancelledModal from './NotificationModal';
+import AppointmentCancelledModal from '../../modals/NotificationModal';
 
 type Props = {
     userNotification: Concrete_Notification;

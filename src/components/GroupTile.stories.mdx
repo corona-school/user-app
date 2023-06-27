@@ -1,0 +1,12 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import GroupTile from './GroupTile';
+
+<Meta title="Appointment/GroupTile" component={GroupTile} />
+
+# GroupTile
+
+<Story name="GroupTile">
+    <GroupTile courseId={1} courseTitle="Cooler Kurs" courseStatus="free" start="2023-08-01T15:00:00Z" />
+    <GroupTile courseId={1} courseTitle="Kurs 2.0" courseStatus="last" start="2023-08-10T15:00:00Z" />
+    <GroupTile courseId={1} courseTitle="Voller Kurs" courseStatus="full" start="2023-08-15T15:00:00Z" />
+</Story>

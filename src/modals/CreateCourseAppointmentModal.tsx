@@ -1,7 +1,7 @@
 import { Modal } from 'native-base';
 import React from 'react';
-import AppointmentCreation from '../create-appointment/AppointmentCreation';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import AppointmentCreation from '../pages/create-appointment/AppointmentCreation';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 type ModalProps = {
     total: number;

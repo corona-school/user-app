@@ -1,15 +1,15 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
-import { Appointment } from '../../types/lernfair/Appointment';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import AppointmentDay from './AppointmentDay';
+import { Appointment } from '../types/lernfair/Appointment';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import AppointmentDay from '../components/AppointmentDay';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AppointmentsEmptyState from '../AppointmentsEmptyState';
-import { ScrollDirection } from '../../pages/Appointments';
-import { isAppointmentNow } from '../../helper/appointment-helper';
-import useInterval from '../../hooks/useInterval';
+import AppointmentsEmptyState from './AppointmentsEmptyState';
+import { ScrollDirection } from '../pages/Appointments';
+import { isAppointmentNow } from '../helper/appointment-helper';
+import useInterval from '../hooks/useInterval';
 
 type Props = {
     appointments: Appointment[];
@@ -183,7 +183,6 @@ const AppointmentList: React.FC<Props> = ({
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
-            height={100}
             maxW={maxListWidth}
             data={appointments}
             renderItem={renderItems}

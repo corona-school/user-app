@@ -1,0 +1,14 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import Banner from './Banner';
+
+<Meta title="Course/CourseStatusBanner" component={Banner} />
+
+# Banner
+
+<Story name="CourseStatusBanner">
+    <Banner courseState="created" />
+    <Banner courseState="submitted" />
+    <Banner courseState="allowed" published={false} />
+    <Banner courseState="allowed" published={true} />
+    <Banner courseState="denied" />
+</Story>

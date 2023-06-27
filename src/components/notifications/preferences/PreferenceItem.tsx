@@ -2,7 +2,7 @@ import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, Switch, useBreakp
 import { useTranslation } from 'react-i18next';
 import { FC, useState } from 'react';
 import { NotificationCategoryDetails } from '../../../helper/notification-preferences';
-import InformationModal from './InformationModal';
+import InformationModal from '../../../modals/InformationModal';
 import { getNotificationCategoriesData } from '../../../helper/notification-helper';
 import InformationBadge from './InformationBadge';
 

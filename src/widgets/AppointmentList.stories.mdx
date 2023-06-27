@@ -1,0 +1,65 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import AppointmentList from './AppointmentList';
+
+<Meta title="Appointment/AppointmentList" component={AppointmentList} />
+
+# AppointmentList
+
+<Story name="AppointmentList">
+    <AppointmentList
+        isReadOnlyList={true}
+        appointments={[
+            {
+                id: 1,
+                title: 'Typedigital: Web 3.0',
+                description: '',
+                displayName: 'Webentwicklung',
+                start: '2023-08-15T15:30:00.000Z',
+                duration: 60,
+                isOrganizer: true,
+                isParticipant: false,
+                isCanceled: false,
+                organizers: [
+                    {
+                        id: 1,
+                        firstname: 'Leon',
+                    },
+                ],
+                participants: [],
+                declinedBy: [],
+                total: 19,
+                position: 4,
+            },
+            {
+                id: 2,
+                title: 'AI, KI, ChatGPT',
+                description: '',
+                displayName: 'Künstliche Intelligenz',
+                start: '2023-09-01T15:30:00.000Z',
+                duration: 60,
+                isOrganizer: true,
+                isParticipant: false,
+                isCanceled: false,
+                organizers: [
+                    {
+                        id: 1,
+                        firstname: 'Leon',
+                    },
+                ],
+                participants: [
+                    {
+                        id: 1,
+                        firstname: 'Leon',
+                    },
+                    {
+                        id: 2,
+                        firstname: 'Leon',
+                    },
+                ],
+                declinedBy: [],
+                total: 13,
+                position: 1,
+            },
+        ]}
+    />
+</Story>

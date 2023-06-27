@@ -1,6 +1,6 @@
 import { Box, CloseIcon, Heading, Modal, Pressable, Text, Row, Button, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { getIconForNotificationPreferenceModal, getNotificationCategoriesData } from '../../../helper/notification-helper';
+import { getIconForNotificationPreferenceModal, getNotificationCategoriesData } from '../helper/notification-helper';
 
 type Props = {
     onPressClose?: () => any;

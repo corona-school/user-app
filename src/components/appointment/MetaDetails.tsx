@@ -10,7 +10,7 @@ import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { canJoinMeeting } from '../AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 

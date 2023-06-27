@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ApolloError } from '@apollo/client';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { Appointment } from '../types/lernfair/Appointment';
-import AppointmentList from '../widgets/appointment/AppointmentList';
+import AppointmentList from '../widgets/AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 type MatchAppointmentsProps = {

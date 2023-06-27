@@ -7,7 +7,7 @@ import { useCreateCourseAppointments } from '../../context/AppointmentContext';
 import { AppointmentCreateGroupInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AlertMessage from '../../widgets/AlertMessage';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/AppointmentList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 import { DateTime } from 'luxon';

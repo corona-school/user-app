@@ -1,0 +1,48 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import AppointmentDay from './AppointmentDay';
+
+<Meta title="Appointment/AppointmentDay" component={AppointmentDay} />
+
+# Example Component
+
+<Story name="Appointment Day">
+    <AppointmentDay
+        start="2023-01-03T16:00:00.547Z"
+        title="Kennenlernen Max"
+        displayName="Match Max"
+        appointmentType="match"
+        position="1"
+        duration={15}
+        organizers={[
+            {
+                id: '1',
+                firstname: 'Andreas',
+            },
+        ]}
+        participants={[{ id: '1', firstname: 'Max' }]}
+    />
+    <AppointmentDay
+        start={new Date().toISOString()}
+        duration={15}
+        title="UX Design"
+        position="2"
+        displayName="Grundlagen Design"
+        organizers={[
+            {
+                id: '1',
+                firstname: 'Andreas',
+            },
+            {
+                id: '2',
+                firstname: 'Claudia',
+            },
+        ]}
+        participants={[
+            { id: '1', firstname: 'Max' },
+            { id: '2', firstname: 'Tim' },
+            { id: '3', firstname: 'Tom' },
+            { id: '4', firstname: 'Nina' },
+            { id: '5', firstname: 'Emma' },
+        ]}
+    />
+</Story>

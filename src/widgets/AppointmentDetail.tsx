@@ -1,18 +1,18 @@
 import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
-import { Appointment } from '../../types/lernfair/Appointment';
-import MetaDetails from './MetaDetails';
-import Header from './Header';
-import Avatars from './Avatars';
-import Description from './Description';
-import Buttons from './Buttons';
+import { Appointment } from '../types/lernfair/Appointment';
+import MetaDetails from '../components/appointment/MetaDetails';
+import Header from '../components/appointment/Header';
+import Avatars from '../components/appointment/Avatars';
+import Description from '../components/appointment/Description';
+import Buttons from '../components/appointment/Buttons';
 import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
-import useApollo from '../../hooks/useApollo';
+import useApollo from '../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
-import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
-import { gql } from '../../gql';
+import DeleteAppointmentModal from '../modals/DeleteAppointmentModal';
+import { gql } from '../gql';
 
 type AppointmentDetailProps = {
     appointment: Appointment;

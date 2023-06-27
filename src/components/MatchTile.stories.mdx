@@ -1,0 +1,10 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import MatchTile from './MatchTile';
+
+<Meta title="Appointment/MatchTile" component={MatchTile} />
+
+# MatchTile
+
+<Story name="MatchTile">
+    <MatchTile matchId={1} schooltype="grundschule" grade="3. Klasse" pupil={{ firstname: 'Emma', lastname: 'Müller' }} />
+</Story>

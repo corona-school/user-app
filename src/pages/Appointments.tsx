@@ -13,7 +13,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
-import AppointmentList from '../widgets/appointment/AppointmentList';
+import AppointmentList from '../widgets/AppointmentList';
 import HelpNavigation from '../components/HelpNavigation';
 
 const getMyAppointments = gql(`

@@ -24,7 +24,7 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { canJoinMeeting } from '../../components/AppointmentDay';
 
 type Props = {};
 

@@ -1,9 +1,9 @@
 import { Box, HStack, VStack, Text, Center, Pressable, useBreakpointValue } from 'native-base';
-import PupilAvatar from '../../../assets/icons/lernfair/avatar_pupil_56.svg';
-import Tag from '../../../components/Tag';
-import { LFPupil } from '../../../types/lernfair/User';
+import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_56.svg';
+import Tag from '../components/Tag';
+import { LFPupil } from '../types/lernfair/User';
 import { useMemo } from 'react';
-import { Pupil_Schooltype_Enum } from '../../../gql/graphql';
+import { Pupil_Schooltype_Enum } from '../gql/graphql';
 import { useTranslation } from 'react-i18next';
 
 type MatchTileProps = {
