@@ -7,6 +7,8 @@ const chat = {
     participant: 'Kursteilnehmer:in',
     prospect: 'Interessent:in',
     matchee: 'Lernpartner:in',
+    placeholder: 'Schreibe etwas...',
+    errorToast: 'Chat konnte nicht erstellt werden.',
     modal: {
         startChat: 'Chat starten',
     },

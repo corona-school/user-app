@@ -179,27 +179,31 @@ const SingleCoursePupil = () => {
 
     const [chatCreateForSubcourse] = useMutation(
         gql(`
-            mutation createInstructorChat($memberUserId: String!, $subcourseId: Float!) {
-                participantChatCreate(memberUserId: $memberUserId, subcourseId: $subcourseId)
+            mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
+                participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
             }       
         `)
     );
 
     const [chatCreateAsProspect] = useMutation(
         gql(`
-            mutation createProspectChat($instructorUserId: String!) {
-                prospectChatCreate(instructorUserId: $instructorUserId)
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
             }       
         `)
     );
 
     async function contactInstructorAsParticipant() {
-        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        const conversation = await chatCreateForSubcourse({
+            variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     }
 
     async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
         navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
     }
 
@@ -278,7 +282,6 @@ const SingleCoursePupil = () => {
                         loadingSubcourseLeft={loadingSubcourseLeft}
                         loadingJoinedWaitinglist={loadingJoinedWaitinglist}
                         loadingWaitinglistLeft={loadingLeftWaitinglist}
-                        loadingContactInstructor={loadingContactInstructor}
                         joinSubcourse={() => joinSubcourse()}
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
