@@ -1,4 +1,4 @@
-import { Box, useTheme, Heading, Row, useBreakpointValue, HStack, Stack } from 'native-base';
+import { Box, useTheme, Row, useBreakpointValue, Stack, Heading } from 'native-base';
 import { ReactNode } from 'react';
 import BackButton from './BackButton';
 

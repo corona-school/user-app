@@ -132,7 +132,6 @@ const MatchingStudent: React.FC<Props> = () => {
                     </Stack>
                 }
             >
-                {' '}
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">

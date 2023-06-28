@@ -5,7 +5,7 @@ import WithNavigation from '../components/WithNavigation';
 import { Stack, useBreakpointValue } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import ChatInbox from '../components/chat/ChatInbox';
-import FloatinActionButton from '../widgets/FloatingActionButton';
+import FloatingActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { LFChatProvider } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
@@ -57,7 +57,7 @@ const Chat: React.FC = () => {
                     }
                 >
                     {showAddButton && (
-                        <FloatinActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
+                        <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
                     )}
                     <ChatInbox selectedId={conversationId ?? selectedChatId} showAddButton={(show: boolean) => setShowAddButton(show)} />
                     <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />

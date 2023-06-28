@@ -49,7 +49,7 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ subcourse, isInstructor = fal
         setInterval(() => {
             const currentOrNextLecture = subcourse.lectures?.find((lecture) => {
                 const minutes = DateTime.fromISO(lecture.start).diffNow('minutes').minutes;
-                return minutes < 60 && minutes > -lecture.duration;
+                return minutes <= 30 && minutes > -lecture.duration;
             });
             setDisableMeetingButton(!currentOrNextLecture);
         }, 1000);

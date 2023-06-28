@@ -1,3 +1,4 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, useTheme, VStack, Row, Column, useBreakpointValue, Heading, Stack } from 'native-base';
@@ -124,7 +125,6 @@ const ChangeSettingState: React.FC<Props> = () => {
                 </Stack>
             }
         >
-            {' '}
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                 <Heading>{t('profile.State.single.selectedStates')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>

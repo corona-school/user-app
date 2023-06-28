@@ -1,4 +1,5 @@
-import { AddIcon, Box, Fab, useBreakpointValue } from 'native-base';
+import { Box, Fab, useBreakpointValue } from 'native-base';
+import CalendarAddIcon from '../assets/icons/calendar_add.svg';
 
 type FabProps = {
     place?: any;
@@ -8,7 +9,7 @@ type FabProps = {
     mb?: number;
     mt?: number;
 };
-const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr, mb, mt }) => {
+const FloatingActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr, mb, mt }) => {
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 50,
@@ -21,7 +22,7 @@ const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr,
 
     const marginBottom = useBreakpointValue({
         base: '20%',
-        lg: 0,
+        lg: '5%',
     });
 
     return (
@@ -35,11 +36,11 @@ const FloatinActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr,
                 backgroundColor="primary.900"
                 rounded="md"
                 size="md"
-                icon={icon ? icon : <AddIcon />}
+                icon={<CalendarAddIcon />}
                 onPress={handlePress}
             />
         </Box>
     );
 };
 
-export default FloatinActionButton;
+export default FloatingActionButton;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue, Stack } from 'native-base';

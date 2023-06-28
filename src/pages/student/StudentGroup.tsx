@@ -188,7 +188,6 @@ const StudentGroup: React.FC = () => {
                     </Stack>
                 }
             >
-                {' '}
                 <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
                     {loading && <CenterLoadingSpinner />}
 

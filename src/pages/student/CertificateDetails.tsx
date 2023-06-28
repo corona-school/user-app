@@ -2,7 +2,6 @@ import { DateTime } from 'luxon';
 import { Text, VStack, useTheme, Heading, Button, Stack } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import BackButton from '../../components/BackButton';
 import Card from '../../components/Card';
 import CollapsibleContent from '../../components/CollapsibleContent';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -113,7 +112,6 @@ const CertificateList: React.FC = () => {
                 </Stack>
             }
         >
-            {' '}
             {/* {!certificate.uuid && <Text>Fehler beim Laden des Zertifikates</Text>} */}
             {(certificate.uuid || true) && (
                 <VStack space={space['1']} paddingX={space['1']}>

@@ -1,21 +1,14 @@
-import { Button, HamburgerIcon, Popover } from 'native-base';
-import SettingsPopover from './SettingsPopover';
+import { Button, HamburgerIcon } from 'native-base';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
 const SettingsButton: React.FC<Props> = () => {
+    const navigate = useNavigate();
     return (
-        <Popover
-            trigger={(triggerProps) => {
-                return (
-                    <Button {...triggerProps} variant={'ghost'}>
-                        <HamburgerIcon size="xl" color="lightText" />
-                    </Button>
-                );
-            }}
-        >
-            <SettingsPopover />
-        </Popover>
+        <Button variant={'ghost'} onPress={() => navigate('/settings')}>
+            <HamburgerIcon size="xl" color="lightText" />
+        </Button>
     );
 };
 export default SettingsButton;

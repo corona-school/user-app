@@ -277,7 +277,6 @@ const PupilGroup: React.FC<Props> = () => {
                     </Stack>
                 }
             >
-                {' '}
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>

@@ -1,10 +1,34 @@
 import { Meta, Story } from '@storybook/addon-docs';
 import AppointmentList from './AppointmentList';
 
-<Meta title="Appointment/List" component={AppointmentList} />
+<Meta title="Appointment/AppointmentList" component={AppointmentList} />
 
-# Appointment Liste Example
+# AppointmentList
 
 <Story name="AppointmentList">
-    <AppointmentList courseStart={new Date().toISOString()} duration={30} />
+    <AppointmentList
+        isReadOnlyList={true}
+        appointments={[
+            {
+                id: 44,
+                title: 'Typedigital: Web 3.0',
+                description: '',
+                start: '2023-01-15T15:30:00.000Z',
+                duration: 60,
+                isOrganizer: true,
+                isParticipant: false,
+                isCanceled: false,
+                organizers: [
+                    {
+                        id: 1,
+                        firstname: 'Leon',
+                    },
+                ],
+                participants: [],
+                declinedBy: [],
+                total: 19,
+                position: 4,
+            },
+        ]}
+    />
 </Story>
