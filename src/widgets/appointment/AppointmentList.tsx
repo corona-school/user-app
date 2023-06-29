@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useEffect, useCallback } from 'react';
-import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
+import React, { useMemo, useRef, useEffect, useCallback, useState } from 'react';
+import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button, Spinner } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../../types/lernfair/Appointment';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -90,17 +90,10 @@ const AppointmentList: React.FC<Props> = ({
 
     const renderHeader = () => {
         if (noOldAppointments) return null;
-        if (isLoadingAppointments) {
-            return (
-                <Box h={50} justifyContent="center">
-                    <CenterLoadingSpinner />
-                </Box>
-            );
-        }
         return (
             <Box pb={10} justifyContent="center" alignItems="center">
                 <Button variant="outline" onPress={handleLoadPast}>
-                    {t('appointment.loadPastAppointments')}
+                    {isLoadingAppointments ? <Spinner /> : t('appointment.loadPastAppointments')}
                 </Button>
             </Box>
         );
@@ -178,7 +171,7 @@ const AppointmentList: React.FC<Props> = ({
         if (scrollViewRef.current === null) return;
         if (isReadOnlyList) return;
         return handleScrollIntoView(scrollViewRef.current);
-    }, [isReadOnlyList]);
+    }, [isReadOnlyList, scrollId]);
 
     return (
         <FlatList
