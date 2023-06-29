@@ -195,11 +195,14 @@ const DashboardStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointments = nextAppointment.filter((appointment) => {
-        const { start, duration, isOrganizer } = appointment;
-        return canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-    });
+    const myNextAppointments = useMemo(() => {
+        const nextAppointment = data?.me?.appointments ?? [];
+        const nextAvailableAppointments = nextAppointment.filter((appointment) => {
+            const { start, duration, isOrganizer } = appointment;
+            return canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+        });
+        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : [nextAppointment[0]];
+    }, [data?.me?.appointments]);
 
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),

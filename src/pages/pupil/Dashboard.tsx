@@ -218,6 +218,7 @@ const Dashboard: React.FC<Props> = () => {
         setDissolveData(match);
         setShowDissolveModal(true);
     }, []);
+
     useEffect(() => {
         if (_dissolve?.data?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -232,11 +233,14 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointments = nextAppointment.filter((appointment) => {
-        const { start, duration, isOrganizer } = appointment;
-        return canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-    });
+    const myNextAppointments = useMemo(() => {
+        const nextAppointment = data?.me?.appointments ?? [];
+        const nextAvailableAppointments = nextAppointment.filter((appointment) => {
+            const { start, duration, isOrganizer } = appointment;
+            return canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+        });
+        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : [nextAppointment[0]];
+    }, [data?.me?.appointments]);
 
     return (
         <AsNavigationItem path="start">
