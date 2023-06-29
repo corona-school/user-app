@@ -54,8 +54,8 @@ const AppointmentTile: React.FC<Props> = ({
 
     return (
         <Box w={width}>
-            <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <Pressable onPress={onPress}>
+            <Pressable onPress={onPress}>
+                <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
@@ -111,8 +111,8 @@ const AppointmentTile: React.FC<Props> = ({
                             </Button>
                         )}
                     </VStack>
-                </Pressable>
-            </Card>
+                </Card>
+            </Pressable>
         </Box>
     );
 };
