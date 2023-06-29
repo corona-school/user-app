@@ -1,4 +1,4 @@
-import { Box, Stack, useBreakpointValue } from 'native-base';
+import { Box, Stack, useBreakpointValue, useToast } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -63,7 +63,7 @@ const take = 10;
 
 const Appointments: React.FC = () => {
     const userType = useUserType();
-
+    const toast = useToast();
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -80,8 +80,8 @@ const Appointments: React.FC = () => {
 
     const appointments = myAppointments?.me?.appointments ?? [];
 
-    const loadMoreAppointments = (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
-        fetchMore({
+    const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        await fetchMore({
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
@@ -109,6 +109,8 @@ const Appointments: React.FC = () => {
                 }
             },
         });
+
+        !noOldAppointments && toast.show({ description: 'Vergangene Termine geladen', placement: 'top' });
     };
 
     return (
