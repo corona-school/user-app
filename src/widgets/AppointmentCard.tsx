@@ -33,6 +33,7 @@ import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
+import MatchAvatarImage from '../components/MatchAvatarImage';
 
 type Props = {
     tags?: { name: string }[];
@@ -57,6 +58,7 @@ type Props = {
     isHorizontalCardCourseChecked?: boolean;
     isOnWaitinglist?: boolean;
     image?: string;
+    isMatch?: boolean;
     onPressToCourse?: () => any;
     videoButton?: ReactNode | ReactNode[];
     countCourse?: number;
@@ -93,6 +95,7 @@ const AppointmentCard: React.FC<Props> = ({
     isHorizontalCardCourseChecked = false,
     isOnWaitinglist,
     image,
+    isMatch,
     onPressToCourse,
     showTrafficLight,
     showStatus,
@@ -142,7 +145,7 @@ const AppointmentCard: React.FC<Props> = ({
 
     const CardMobileImage = useBreakpointValue({
         base: '100%',
-        lg: '300px',
+        lg: isMatch ? '200px' : '300px',
     });
 
     const CardMobilePadding = useBreakpointValue({
@@ -196,8 +199,8 @@ const AppointmentCard: React.FC<Props> = ({
                 <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
-                            {image && (
-                                <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
+                            <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
+                                {!isMatch && (
                                     <Image
                                         position="absolute"
                                         left={0}
@@ -211,16 +214,17 @@ const AppointmentCard: React.FC<Props> = ({
                                             uri: image,
                                         }}
                                     />
-                                    {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
-                                    {isTeaser && (
-                                        <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
-                                            {tags?.map((tag, i) => (
-                                                <Tag key={`tag-${i}`} text={tag.name} />
-                                            ))}
-                                        </Row>
-                                    )}
-                                </Box>
-                            )}
+                                )}
+                                {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
+                                {isTeaser && (
+                                    <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                                        {tags?.map((tag, i) => (
+                                            <Tag key={`tag-${i}`} text={tag.name} />
+                                        ))}
+                                    </Row>
+                                )}
+                                {isMatch && <MatchAvatarImage />}
+                            </Box>
 
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
                                 {!isTeaser && date && (

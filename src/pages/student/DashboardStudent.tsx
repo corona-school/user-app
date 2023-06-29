@@ -25,6 +25,7 @@ import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 
 type Props = {};
 
@@ -107,6 +108,12 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                course {
+                  image
+                  subject
+                }
+              }
     }
         }
 
@@ -297,6 +304,8 @@ const DashboardStudent: React.FC<Props> = () => {
                                         isTeaser={true}
                                         title={myNextAppointment.displayName || ''}
                                         description={myNextAppointment.description || ''}
+                                        image={myNextAppointment.subcourse?.course.image ?? ''}
+                                        isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
                                     />
                                 </VStack>
                             )}

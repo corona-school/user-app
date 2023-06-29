@@ -20,7 +20,7 @@ import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import { PupilDashboardQuery } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum, PupilDashboardQuery } from '../../gql/graphql';
 import HelpNavigation from '../../components/HelpNavigation';
 import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 
@@ -108,6 +108,11 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                course {
+                  image
+                }
+              }
     }
         }
 
@@ -315,6 +320,8 @@ const Dashboard: React.FC<Props> = () => {
                                         duration={myNextAppointment.duration}
                                         title={myNextAppointment.displayName}
                                         description={myNextAppointment.description ?? ''}
+                                        image={myNextAppointment.subcourse?.course.image ?? ''}
+                                        isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
                                     />
                                 </VStack>
                             )}
