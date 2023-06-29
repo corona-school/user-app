@@ -184,14 +184,6 @@ const SingleMatch = () => {
                                     space={isMobile ? space['0.5'] : space['2']}
                                 >
                                     <Button
-                                        onPress={() => {
-                                            window.open(`https://meet.jit.si/CoronaSchool-${data?.match?.uuid}`);
-                                        }}
-                                        my={isMobile ? '0' : '1'}
-                                    >
-                                        {t('matching.shared.videochat')}
-                                    </Button>
-                                    <Button
                                         onPress={() =>
                                             (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
                                         }
