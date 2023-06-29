@@ -209,7 +209,7 @@ const SingleMatch = () => {
                                     <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
                                 </Stack>
                                 <MatchAppointments appointments={appointments as Appointment[]} minimumHeight={'30vh'} loading={loading} error={error} />
-                                {userType === 'student' && (
+                                {userType === 'student' && !data?.match?.dissolved && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />
                                         <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
