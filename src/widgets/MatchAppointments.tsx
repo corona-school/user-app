@@ -2,9 +2,9 @@ import { Box, Stack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ApolloError } from '@apollo/client';
-import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
+import AppointmentsEmptyState from './AppointmentsEmptyState';
 import { Appointment } from '../types/lernfair/Appointment';
-import AppointmentList from '../widgets/AppointmentList';
+import AppointmentList from './AppointmentList';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 type MatchAppointmentsProps = {
