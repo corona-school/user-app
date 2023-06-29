@@ -54,7 +54,7 @@ const AppointmentTile: React.FC<Props> = ({
 
     return (
         <Box w={width}>
-            <Pressable onPress={onPress}>
+            <Pressable disabled={isReadOnly} onPress={onPress}>
                 <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
                     <VStack>
                         <HStack alignItems={'center'}>
