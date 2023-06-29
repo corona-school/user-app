@@ -21,6 +21,11 @@ const appointment = {
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
     },
+    declineModal: {
+        title: 'Bist du dir sicher, dass du diesen Termin absagen möchtest?',
+        description: 'Du kannst dem Termin nicht wieder beitreten.',
+        decline: 'Termin absagen',
+    },
     appointmentTile: {
         lecture: 'Lektion #{{position}}',
         title: ': {{appointmentTitle}}',
