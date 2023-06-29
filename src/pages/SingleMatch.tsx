@@ -4,9 +4,9 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from './../gql';
+import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
 import { Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useState } from 'react';
@@ -14,10 +14,10 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
-import AppointmentCreation from './create-appointment/AppointmentCreation';
-import MatchAppointments from './MatchAppointments';
 import HelpNavigation from '../components/HelpNavigation';
+import MatchAppointments from './MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
+import AppointmentCreation from './create-appointment/AppointmentCreation';
 
 const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -27,27 +27,27 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolveReason
     pupil {
-      id
-      firstname
-      lastname
-      schooltype
-      grade
-      state
-      subjectsFormatted {
-        name
-      }
-      aboutMe
+        id
+        firstname
+        lastname
+        schooltype
+        grade
+        state
+        subjectsFormatted {
+            name
+        }
+        aboutMe
     }
     pupilEmail
     student {
-      id
-      firstname
-      lastname
-      state
-      subjectsFormatted {
-        name
-      }
-      aboutMe
+        id
+        firstname
+        lastname
+        state
+        subjectsFormatted {
+            name
+        }
+        aboutMe
     }
     studentEmail
     appointments {
@@ -76,6 +76,12 @@ query SingleMatch($matchId: Int! ) {
   }
 }`);
 
+const matchChatMutation = gql(`
+mutation createMatcheeChat($matcheeId: String!) {
+  matchChatCreate(matcheeUserId: $matcheeId)
+}
+`);
+
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
     const { id: _matchId } = useParams();
@@ -89,11 +95,15 @@ const SingleMatch = () => {
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
         },
     });
+
+    const [createMatcheeChat] = useMutation(matchChatMutation);
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
@@ -122,12 +132,22 @@ const SingleMatch = () => {
         },
         [dissolveMatch, matchId, refetch, trackEvent]
     );
+
     const appointments = data?.match?.appointments ?? [];
 
     const goBackToMatch = async () => {
         await refetch();
         setCreateAppointment(false);
     };
+
+    const openChatContact = async () => {
+        let contactId: string = '';
+        if (userType === 'student') contactId = `pupil/${data?.match?.pupil.id}`;
+        if (userType === 'pupil') contactId = `student/${data?.match?.student.id}`;
+        const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
+    };
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -200,7 +220,7 @@ const SingleMatch = () => {
                                         {t('matching.shared.contactMail')}
                                     </Button>
 
-                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
+                                    <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.contactViaChat')}
                                     </Button>
                                     <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>

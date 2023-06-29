@@ -55,6 +55,7 @@ const WithNavigation: React.FC<Props> = ({
     const navItems: NavigationItems = {
         start: { label: t('navigation.label.start'), icon: LFHomeIcon },
         appointments: { label: t('navigation.label.appointments'), icon: LFAppointmentIcon },
+        chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
     };

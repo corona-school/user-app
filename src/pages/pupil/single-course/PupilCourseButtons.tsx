@@ -5,7 +5,6 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
-import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
@@ -28,12 +27,18 @@ type ActionButtonProps = {
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
     loadingContactInstructor: boolean;
-    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
+    subcourse: Required<
+        Pick<
+            Subcourse,
+            'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor' | 'allowChatContactProspects'
+        >
+    >;
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: (title: string, body: string, fileIDs: string[]) => Promise<void>;
+    contactInstructorAsParticipant: () => Promise<void>;
+    contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -54,24 +59,19 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    doContactInstructor,
+    contactInstructorAsParticipant,
+    contactInstructorAsProspect,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
-    const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
-
-    async function contactInstructor(title: string, body: string, fileIDs: string[]) {
-        doContactInstructor(title, body, fileIDs);
-        setShowMessageModal(false);
-    }
 
     const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
@@ -140,7 +140,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </VStack>
                 )}
                 {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => setShowMessageModal(true)}>
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
@@ -186,14 +191,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     onConfirm={handleWaitinglistLeave}
                 />
             </Modal>
-
-            <SendParticipantsMessageModal
-                isInstructor={false}
-                isOpen={showMessageModal}
-                onClose={() => setShowMessageModal(false)}
-                onSend={contactInstructor}
-                isDisabled={loadingContactInstructor}
-            />
         </>
     );
 };

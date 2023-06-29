@@ -3,7 +3,7 @@ import { gql } from '../../gql';
 import { DateTime } from 'luxon';
 import { Box, Stack, Text, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -61,12 +61,14 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         minGrade
         maxGrade
         capacity
+        allowChatContactProspects
         alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start
             duration
         }
         instructors{
+            id
             firstname
             lastname
         }
@@ -111,7 +113,7 @@ const SingleCoursePupil = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
-    const toast = useToast();
+    const navigate = useNavigate();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -183,9 +185,30 @@ const SingleCoursePupil = () => {
     `)
     );
 
-    async function doContact(title: string, body: string, fileIDs: string[]) {
-        await contact({ variables: { subcourseId, title, body, fileIDs } });
-        toast.show({ description: t('notification.send'), placement: 'top' });
+    const [chatCreateForSubcourse] = useMutation(
+        gql(`
+            mutation createInstructorChat($memberUserId: String!) {
+                participantChatCreate(participantUserId: $memberUserId)
+            }       
+        `)
+    );
+
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($instructorUserId: String!) {
+                prospectChatCreate(instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsParticipant() {
+        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    }
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -268,7 +291,8 @@ const SingleCoursePupil = () => {
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
                         leaveWaitinglist={() => leaveWaitingList()}
-                        doContactInstructor={doContact}
+                        contactInstructorAsParticipant={contactInstructorAsParticipant}
+                        contactInstructorAsProspect={contactInstructorAsProspect}
                         refresh={refetch}
                     />
                 )}

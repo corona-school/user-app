@@ -4,8 +4,12 @@ import CalendarAddIcon from '../assets/icons/calendar_add.svg';
 type FabProps = {
     place?: any;
     handlePress?: () => void;
+    icon?: JSX.Element;
+    mr?: number;
+    mb?: number;
+    mt?: number;
 };
-const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
+const FloatingActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr, mb, mt }) => {
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 50,
@@ -24,9 +28,9 @@ const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
     return (
         <Box>
             <Fab
-                mt={marginTop}
-                mb={marginBottom}
-                mr={marginRight}
+                mt={mt ? mt : marginTop}
+                mb={mb ? mb : marginBottom}
+                mr={mr ? mr : marginRight}
                 position="fixed"
                 placement={place}
                 backgroundColor="primary.900"
@@ -39,4 +43,4 @@ const AddAppointmentButton: React.FC<FabProps> = ({ handlePress, place }) => {
     );
 };
 
-export default AddAppointmentButton;
+export default FloatingActionButton;

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import AddAppointmentButton from '../widgets/AddAppointmentButton';
+import FloatinActionButton from '../widgets/FloatingActionButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
@@ -124,7 +124,7 @@ const Appointments: React.FC = () => {
                 }
             >
                 {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}
-                {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
+                {userType === 'student' && <FloatinActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
                 {!isLoadingHasAppointments && !hasAppointments?.me.hasAppointments && (
                     <Box h={500} justifyContent="center">

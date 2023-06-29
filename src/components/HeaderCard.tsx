@@ -72,4 +72,5 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
         </Box>
     );
 };
+
 export default HeaderCard;
