@@ -19,7 +19,7 @@ import MatchAppointments from './MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 
-const singleMatchQuery = gql(`
+export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
   match(matchId: $matchId){
     id
