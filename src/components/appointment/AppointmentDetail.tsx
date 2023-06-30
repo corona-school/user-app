@@ -13,10 +13,11 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
 import { gql } from '../../gql';
+import { singleMatchQuery } from '../../pages/SingleMatch';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    id?: number;
+    matchId?: number;
     startMeeting?: boolean;
 };
 
@@ -26,7 +27,7 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, startMeeting }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matchId }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -45,7 +46,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
         mutation cancelAppointment($appointmentId: Float!) {
             appointmentCancel(appointmentId: $appointmentId)
         }
-    `)
+    `),
+        {
+            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
+        }
     );
 
     const [declineAppointment] = useMutation(
@@ -53,7 +57,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, id, 
         mutation declineAppointment($appointmentId: Float!) {
             appointmentDecline(appointmentId: $appointmentId)
         }
-    `)
+    `),
+        {
+            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
+        }
     );
 
     const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
