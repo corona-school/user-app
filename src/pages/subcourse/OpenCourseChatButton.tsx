@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Tooltip } from 'native-base';
+import { Button, Tooltip, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
@@ -13,11 +13,12 @@ type OpenSubcourseChatProps = {
     refresh: () => void;
 };
 
-const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ groupChatType, conversationId, subcourseId, participantsCount, refresh }) => {
+const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({ groupChatType, conversationId, subcourseId, participantsCount, refresh }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const toast = useToast();
 
-    const [createSubcourseGroupChat] = useMutation(
+    const [createSubcourseGroupChat, { error }] = useMutation(
         gql(`
             mutation createNewGroupChat($subcourseId: Float!, $groupChatType: String!) {
                 subcourseGroupChatCreate(subcourseId: $subcourseId, groupChatType: $groupChatType)
@@ -35,7 +36,14 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ groupChatType, co
                     groupChatType: groupChatType === Chat_Type.Announcement ? Chat_Type.Announcement : Chat_Type.Normal,
                 },
             });
-            navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+            if (conversation && !error) {
+                navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+            } else if (error) {
+                toast.show({
+                    description: groupChatType === Chat_Type.Announcement ? t('chat.announcementChatError') : t('chat.groupChatError'),
+                    placement: 'top',
+                });
+            }
         }
     };
 
@@ -50,4 +58,4 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({ groupChatType, co
     );
 };
 
-export default OpenSubcourseChat;
+export default OpenCourseChatButton;
