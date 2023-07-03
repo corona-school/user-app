@@ -9,6 +9,10 @@ const chat = {
     matchee: 'Lernpartner:in',
     noContactOptions: 'Keine Kontaktoptionen',
     noContactOptionsHint: 'Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.',
+    placeholder: 'Schreibe etwas...',
+    chatError: 'Chat kann nicht geöffnet werden.',
+    groupChatError: 'Kurschat kann nicht geöffnet werden.',
+    announcementChatError: 'Ankündigungschat kann nicht geöffnet werden.',
     modal: {
         startChat: 'Chat starten',
     },
