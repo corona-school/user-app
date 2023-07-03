@@ -26,7 +26,6 @@ type ActionButtonProps = {
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
-    loadingContactInstructor: boolean;
     subcourse: Required<
         Pick<
             Subcourse,
@@ -54,7 +53,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     subcourse,
     loadingJoinedWaitinglist,
     loadingWaitinglistLeft,
-    loadingContactInstructor,
     joinSubcourse,
     leaveSubcourse,
     joinWaitinglist,
