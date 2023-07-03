@@ -16,6 +16,7 @@ import { BrowserRouter, useLocation } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';
 import { log } from './log';
 import { useEffect } from 'react';
+import { LFChatProvider } from './context/ChatContext';
 
 function LogRouting() {
     const location = useLocation();
@@ -39,8 +40,10 @@ function App() {
                                 <IssueReporter>
                                     <MatomoProvider value={matomo}>
                                         <NotificationsProvider>
-                                            <Navigator />
-                                            <ToastNotifications />
+                                            <LFChatProvider>
+                                                <Navigator />
+                                                <ToastNotifications />
+                                            </LFChatProvider>
                                         </NotificationsProvider>
                                     </MatomoProvider>
                                 </IssueReporter>

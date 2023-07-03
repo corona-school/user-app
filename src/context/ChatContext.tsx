@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Talk from 'talkjs';
-import { useUser, useUserType } from '../hooks/useApollo';
+import { useUserAuth } from '../hooks/useApollo';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 
@@ -13,6 +13,10 @@ const ChatContext = createContext<IChatContext>({
     talkLoaded: false,
 });
 
+enum UserRole {
+    STUDENT = 'student',
+    PUPIL = 'pupil',
+}
 const userIdToTalkJsId = (userId: string): string => {
     return userId.replace('/', '_');
 };
@@ -26,25 +30,29 @@ query myChatSignature {
   }`);
 
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { sessionState, userId, user } = useUserAuth();
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
-    const user = useUser();
-    const userType = useUserType();
 
-    const { data } = useQuery(getMyChatSignature);
+    const { data } = useQuery(getMyChatSignature, {
+        skip: sessionState !== 'logged-in',
+    });
     // TODO add query to get has unread messages
 
-    const me = {
-        id: userIdToTalkJsId(user.userID),
-        name: user.firstname,
-        role: userType,
-        email: user.email,
-    };
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
     }, []);
 
     useEffect(() => {
+        if (sessionState !== 'logged-in' || !userId || !user) return;
+
+        const me = {
+            id: userIdToTalkJsId(userId),
+            name: user?.firstname,
+            role: user.student ? UserRole.STUDENT : UserRole.PUPIL,
+            email: user.email,
+        };
+
         if (talkLoaded) {
             const currentUser = new Talk.User(me);
 
@@ -56,7 +64,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             setSession(session);
             return () => session.destroy();
         }
-    }, [talkLoaded]);
+    }, [sessionState, talkLoaded]);
 
     const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
 

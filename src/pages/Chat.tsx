@@ -74,40 +74,40 @@ const Chat: React.FC = () => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
         setInbox(inbox);
-
-        inbox.select(conversationId ?? selectedChatId);
         inbox.mount(inboxRef.current);
-        inbox.onConversationSelected(() => setIsConversationSelected(true));
-        inbox.onLeaveConversation(() => setIsConversationSelected(false));
+        !isMobile && inbox.select(conversationId ?? selectedChatId);
+        inbox.onConversationSelected(() => {
+            setIsConversationSelected(true);
+            isMobile && setShowAddButton(false);
+        });
+        inbox.onLeaveConversation(() => {
+            setIsConversationSelected(false);
+        });
 
         if (isMobile) {
             // inbox.select()
         }
-
-        return () => inbox.destroy();
     }, [session]);
 
     return (
-        <LFChatProvider>
-            <AsNavigationItem path="chat">
-                <WithNavigation
-                    headerTitle={t('chat.title')}
-                    headerLeft={
-                        <Stack alignItems="center" direction="row">
-                            <HelpNavigation />
-                            <NotificationAlert />
-                        </Stack>
-                    }
-                    showBack={isMobile}
-                >
-                    {showAddButton && (
-                        <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
-                    )}
-                    <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
-                    <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
-                </WithNavigation>
-            </AsNavigationItem>
-        </LFChatProvider>
+        <AsNavigationItem path="chat">
+            <WithNavigation
+                headerTitle={t('chat.title')}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+                showBack={isMobile}
+            >
+                {showAddButton && (
+                    <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
+                )}
+                <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
+                <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
+            </WithNavigation>
+        </AsNavigationItem>
     );
 };
 
