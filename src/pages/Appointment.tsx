@@ -22,6 +22,7 @@ export const STUDENT_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
+            matchId
             participants(skip: 0, take: 10) {
                 id
                 userID
@@ -51,6 +52,7 @@ export const PUPIL_APPOINTMENT = gql(`
             isCanceled
             position
             appointmentType
+            matchId  
             total
             displayName
             isOrganizer
@@ -98,11 +100,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
         <WithNavigation showBack headerLeft={<NotificationAlert />}>
             {loading && <CenterLoadingSpinner />}
             {!error && data?.appointment && (
-                <AppointmentDetail
-                    appointment={data?.appointment}
-                    id={data?.appointment?.appointmentType === Lecture_Appointmenttype_Enum.Group ? data?.appointment?.subcourseId : data?.appointment?.matchId}
-                    startMeeting={startMeeting}
-                />
+                <AppointmentDetail appointment={data?.appointment} matchId={data?.appointment?.matchId} startMeeting={startMeeting} />
             )}
         </WithNavigation>
     );
