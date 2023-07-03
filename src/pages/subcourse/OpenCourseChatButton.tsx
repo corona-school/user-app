@@ -18,7 +18,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({ groupChatType,
     const navigate = useNavigate();
     const toast = useToast();
 
-    const [createSubcourseGroupChat, { error }] = useMutation(
+    const [createSubcourseGroupChat] = useMutation(
         gql(`
             mutation createNewGroupChat($subcourseId: Float!, $groupChatType: String!) {
                 subcourseGroupChatCreate(subcourseId: $subcourseId, groupChatType: $groupChatType)
@@ -36,9 +36,9 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({ groupChatType,
                     groupChatType: groupChatType === Chat_Type.Announcement ? Chat_Type.Announcement : Chat_Type.Normal,
                 },
             });
-            if (conversation && !error) {
+            if (conversation) {
                 navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
-            } else if (error) {
+            } else {
                 toast.show({
                     description: groupChatType === Chat_Type.Announcement ? t('chat.announcementChatError') : t('chat.groupChatError'),
                     placement: 'top',

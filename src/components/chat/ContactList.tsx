@@ -56,7 +56,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     const toast = useToast();
 
     const { data } = useQuery(myContacts);
-    const [createContactChat, { error }] = useMutation(contactChatMutation);
+    const [createContactChat] = useMutation(contactChatMutation);
 
     const hasReason = (reason: string, reasons: string[]) => {
         return reasons.includes(reason);
@@ -79,7 +79,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
         if (conversation) {
             setChatId(conversation.data?.contactChatCreate ?? '');
             onClose();
-        } else if (error) {
+        } else {
             toast.show({ description: t('chat.chatError'), placement: 'top' });
         }
     };

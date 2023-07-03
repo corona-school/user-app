@@ -178,7 +178,7 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [chatCreateForSubcourse, { error: subcourseChatError }] = useMutation(
+    const [chatCreateForSubcourse] = useMutation(
         gql(`
             mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
                 participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
@@ -186,7 +186,7 @@ const SingleCoursePupil = () => {
         `)
     );
 
-    const [chatCreateAsProspect, { error: prospectChatError }] = useMutation(
+    const [chatCreateAsProspect] = useMutation(
         gql(`
             mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
                 prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
@@ -198,9 +198,9 @@ const SingleCoursePupil = () => {
         const conversation = await chatCreateForSubcourse({
             variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
         });
-        if (conversation && !subcourseChatError) {
+        if (conversation) {
             navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
-        } else if (subcourseChatError) {
+        } else {
             toast.show({ description: t('chat.chatError'), placement: 'top' });
         }
     }
@@ -209,9 +209,9 @@ const SingleCoursePupil = () => {
         const conversation = await chatCreateAsProspect({
             variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
         });
-        if (conversation && !prospectChatError) {
+        if (conversation) {
             navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
-        } else if (prospectChatError) {
+        } else {
             toast.show({ description: t('chat.chatError'), placement: 'top' });
         }
     }
