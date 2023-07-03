@@ -9,9 +9,10 @@ type Props = {
     userNotifications: Concrete_Notification[];
     loading: boolean;
     lastTimeCheckedNotifications: string;
+    updateLastTimeChecked: () => void;
 };
 
-const NotificationPanel: React.FC<Props> = ({ userNotifications, lastTimeCheckedNotifications, loading }) => {
+const NotificationPanel: React.FC<Props> = ({ userNotifications, lastTimeCheckedNotifications, loading, updateLastTimeChecked }) => {
     const [shouldShowAll, setShouldShowAll] = useState<boolean>(false);
     const [notificationsToShow, setNotificationsToShow] = useState<Concrete_Notification[]>([]);
 
@@ -57,6 +58,7 @@ const NotificationPanel: React.FC<Props> = ({ userNotifications, lastTimeChecked
                                 notificationsToShow={notificationsToShow}
                                 lastTimeChecked={lastTimeCheckedNotifications}
                                 handleClick={handleClick}
+                                updateLastTimeChecked={() => updateLastTimeChecked()}
                             />
                         )}
                         {shouldShowAll && <AllNotifications userNotifications={notificationsToShow} lastTimeChecked={lastTimeCheckedNotifications} />}

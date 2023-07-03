@@ -8,9 +8,10 @@ type NewProps = {
     notificationsToShow: Concrete_Notification[];
     lastTimeChecked: string;
     handleClick: () => void;
+    updateLastTimeChecked: () => void;
 };
 
-const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChecked, handleClick }) => {
+const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChecked, handleClick, updateLastTimeChecked }) => {
     const { t } = useTranslation();
 
     return (
@@ -24,6 +25,7 @@ const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChe
                                     key={notification.id}
                                     userNotification={notification}
                                     isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
+                                    updateLastTimeChecked={() => updateLastTimeChecked()}
                                 />
                             )
                     )}

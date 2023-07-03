@@ -67,7 +67,12 @@ const NotificationAlert: React.FC = () => {
     return (
         <>
             <Popover placement="bottom" trigger={(triggerprops) => handleTrigger(triggerprops)} onClose={onClose} onOpen={onOpen}>
-                <NotificationPanel loading={loading} userNotifications={userNotifications || []} lastTimeCheckedNotifications={lastTimeCheckedNotifications} />
+                <NotificationPanel
+                    loading={loading}
+                    userNotifications={userNotifications || []}
+                    lastTimeCheckedNotifications={lastTimeCheckedNotifications}
+                    updateLastTimeChecked={() => updateLastTimeChecked()}
+                />
             </Popover>
         </>
     );
