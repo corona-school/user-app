@@ -2,6 +2,7 @@ import { Box, useBreakpointValue } from 'native-base';
 import { useEffect, useRef } from 'react';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useChat } from '../../context/ChatContext';
+import { useTranslation } from 'react-i18next';
 
 type InboxProps = {
     selectedId: string;
@@ -11,6 +12,7 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
     const inboxRef = useRef(null);
     const { isMobile } = useLayoutHelper();
     const { session } = useChat();
+    const { t } = useTranslation();
 
     const chatHeight = useBreakpointValue({
         base: '75%',
@@ -32,7 +34,11 @@ const ChatInbox: React.FC<InboxProps> = ({ selectedId, showAddButton }) => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({
+            showChatHeader: !isMobile,
+            showMobileBackButton: false,
+            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+        });
         selectedId && inbox.select(selectedId);
         inbox.mount(inboxRef.current);
 

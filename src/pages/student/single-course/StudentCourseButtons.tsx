@@ -6,7 +6,7 @@ import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import ContactParticipants from './ContactParticipants';
 import StudentSetMeetingUrl from './StudentSetMeetingUrl';
-import OpenSubcourseChat from '../../subcourse/OpenSubcourseChat';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { Chat_Type } from '../../../gql/graphql';
 
 type SubcourseOfStudent = {
@@ -39,7 +39,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
                 {subcourse.published && <JoinMeeting subcourse={subcourse} isInstructor refresh={refresh} />}
                 {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
                 {subcourse.published && (
-                    <OpenSubcourseChat
+                    <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
                         subcourseId={subcourse.id}
