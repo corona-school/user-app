@@ -228,6 +228,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
                                                 {t('single.card.dateLecture', {
+                                                    weekday: t('single.global.weekdays', { returnObjects: true })[date.weekday - 1],
                                                     date: date.toFormat('dd.MM.yyyy'),
                                                     time: date.toFormat('HH:mm'),
                                                 })}
