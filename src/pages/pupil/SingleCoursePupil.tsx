@@ -114,6 +114,7 @@ const SingleCoursePupil = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -177,7 +178,7 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [chatCreateForSubcourse] = useMutation(
+    const [chatCreateForSubcourse, { error: subcourseChatError }] = useMutation(
         gql(`
             mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
                 participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
@@ -185,7 +186,7 @@ const SingleCoursePupil = () => {
         `)
     );
 
-    const [chatCreateAsProspect] = useMutation(
+    const [chatCreateAsProspect, { error: prospectChatError }] = useMutation(
         gql(`
             mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
                 prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
@@ -197,14 +198,22 @@ const SingleCoursePupil = () => {
         const conversation = await chatCreateForSubcourse({
             variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
         });
-        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        if (conversation && !subcourseChatError) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        } else if (subcourseChatError) {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
     }
 
     async function contactInstructorAsProspect() {
         const conversation = await chatCreateAsProspect({
             variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
         });
-        navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        if (conversation && !prospectChatError) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else if (prospectChatError) {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);

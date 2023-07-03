@@ -8,7 +8,9 @@ const chat = {
     prospect: 'Interessent:in',
     matchee: 'Lernpartner:in',
     placeholder: 'Schreibe etwas...',
-    errorToast: 'Chat konnte nicht erstellt werden.',
+    chatError: 'Chat kann nicht geöffnet werden.',
+    groupChatError: 'Kurschat kann nicht geöffnet werden.',
+    announcementChatError: 'Ankündigungschat kann nicht geöffnet werden.',
     modal: {
         startChat: 'Chat starten',
     },
