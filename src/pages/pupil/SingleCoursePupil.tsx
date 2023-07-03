@@ -18,6 +18,7 @@ import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import { Subcourse } from '../../gql/graphql';
+import { studentIdToUserId } from '../../helper/chat-helper';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -206,12 +207,14 @@ const SingleCoursePupil = () => {
     );
 
     async function contactInstructorAsParticipant() {
-        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        if (!data?.subcourse?.instructors[0].id) return;
+        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: studentIdToUserId(data?.subcourse?.instructors[0].id) } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     }
 
     async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: `student/${data?.subcourse?.instructors[0].id}` } });
+        if (!data?.subcourse?.instructors[0].id) return;
+        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: studentIdToUserId(data?.subcourse?.instructors[0].id) } });
         navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
     }
 

@@ -2,6 +2,7 @@ import { Heading, useTheme, Text, Button, HStack, VStack, Spacer } from 'native-
 import { Participant } from '../../gql/graphql';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import NewChatIcon from '../../assets/icons/lernfair/ic_new_chat.svg';
+import { pupilIdToUserId } from '../../helper/chat-helper';
 
 type RowProps = {
     participant: Pick<Participant, 'id' | 'firstname' | 'grade'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
@@ -25,7 +26,7 @@ const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contact
             </VStack>
             <Spacer />
             {isInstructor && contactParticipant && (
-                <Button variant="outlinelight" ml={space['3']} onPress={() => contactParticipant(`pupil/${participant.id}`)}>
+                <Button variant="outlinelight" ml={space['3']} onPress={() => contactParticipant(pupilIdToUserId(participant.id))}>
                     <NewChatIcon />
                 </Button>
             )}
