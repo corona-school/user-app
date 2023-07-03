@@ -1,13 +1,10 @@
-import { Box, Center, useBreakpointValue } from 'native-base';
+import { Box, Center } from 'native-base';
 import React from 'react';
 import { useUserType } from '../hooks/useApollo';
 import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_120.svg';
 import StudentAvatar from '../assets/icons/lernfair/avatar_student_120.svg';
 
-type Props = {
-    isDissolved?: boolean;
-};
-const MatchAvatarImage: React.FC<Props> = ({ isDissolved = false }) => {
+const MatchAvatarImage: React.FC = () => {
     const userType = useUserType();
 
     return (
