@@ -7,6 +7,10 @@ const chat = {
     participant: 'Kursteilnehmer:in',
     prospect: 'Interessent:in',
     matchee: 'Lernpartner:in',
+    placeholder: 'Schreibe etwas...',
+    chatError: 'Chat kann nicht geöffnet werden.',
+    groupChatError: 'Kurschat kann nicht geöffnet werden.',
+    announcementChatError: 'Ankündigungschat kann nicht geöffnet werden.',
     modal: {
         startChat: 'Chat starten',
     },

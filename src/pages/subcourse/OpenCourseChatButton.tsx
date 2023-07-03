@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Tooltip } from 'native-base';
+import { Button, Tooltip, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
@@ -16,17 +16,18 @@ type OpenSubcourseChatProps = {
     refresh: () => void;
 };
 
-const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({
+const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     groupChatType,
     conversationId,
     subcourseId,
-    participantsCount,
-    isParticipant,
     isInstructor,
+    isParticipant,
+    participantsCount,
     refresh,
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const [createSubcourseGroupChat] = useMutation(
         gql(`
@@ -46,7 +47,14 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({
                     groupChatType: groupChatType === Chat_Type.Announcement ? Chat_Type.Announcement : Chat_Type.Normal,
                 },
             });
-            navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+            if (conversation) {
+                navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
+            } else {
+                toast.show({
+                    description: groupChatType === Chat_Type.Announcement ? t('chat.announcementChatError') : t('chat.groupChatError'),
+                    placement: 'top',
+                });
+            }
         }
     };
 
@@ -71,4 +79,4 @@ const OpenSubcourseChat: React.FC<OpenSubcourseChatProps> = ({
     );
 };
 
-export default OpenSubcourseChat;
+export default OpenCourseChatButton;

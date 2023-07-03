@@ -228,10 +228,10 @@ const SingleCourseStudent = () => {
 
     const [contactParticipant] = useMutation(
         gql(`
-mutation contactCourseParticipant($participantUserId: String!) {
-    participantChatCreate(participantUserId: $participantUserId)
-}
-`)
+            mutation contactCourseParticipant($memberUserId: String!, $subcourseId: Float!) {
+                participantChatCreate(memberUserId: $memberUserId, subcourseId: $subcourseId)
+            }
+        `)
     );
 
     const [cancelSubcourse, { data: canceldData }] = useMutation(
@@ -278,7 +278,7 @@ mutation contactCourseParticipant($participantUserId: String!) {
                     <Participants
                         subcourseId={subcourseId}
                         isInstructor={subcourse.isInstructor}
-                        contactParticipant={(participantUserId: string) => doContactParticipant(participantUserId)}
+                        contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
                     />
                 </>
             ),
@@ -357,8 +357,8 @@ mutation contactCourseParticipant($participantUserId: String!) {
         }
     }, [course?.courseState, doPublish, submitCourse]);
 
-    const doContactParticipant = async (participantUserId: string) => {
-        const conversation = await contactParticipant({ variables: { participantUserId: participantUserId } });
+    const doContactParticipant = async (memberUserId: string) => {
+        const conversation = await contactParticipant({ variables: { memberUserId: memberUserId, subcourseId: subcourseId } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 

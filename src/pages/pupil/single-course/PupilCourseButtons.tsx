@@ -9,7 +9,7 @@ import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
-import OpenSubcourseChat from '../../subcourse/OpenSubcourseChat';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 
 type CanJoin = {
     allowed: boolean;
@@ -27,7 +27,6 @@ type ActionButtonProps = {
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
-    loadingContactInstructor: boolean;
     subcourse: Pick<
         Subcourse,
         | 'id'
@@ -41,6 +40,7 @@ type ActionButtonProps = {
         | 'allowChatContactParticipants'
         | 'groupChatType'
     >;
+
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
@@ -62,7 +62,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     subcourse,
     loadingJoinedWaitinglist,
     loadingWaitinglistLeft,
-    loadingContactInstructor,
     joinSubcourse,
     leaveSubcourse,
     joinWaitinglist,
@@ -133,7 +132,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
 
                 {subcourse.isParticipant && (
-                    <OpenSubcourseChat
+                    <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
                         subcourseId={subcourse.id}

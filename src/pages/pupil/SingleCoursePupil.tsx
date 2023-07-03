@@ -18,7 +18,6 @@ import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import { Subcourse } from '../../gql/graphql';
-import { studentIdToUserId } from '../../helper/chat-helper';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -119,6 +118,7 @@ const SingleCoursePupil = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -182,40 +182,42 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [contact, { loading: loadingContactInstructor }] = useMutation(
-        gql(`
-        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!, $fileIDs: [String!]!) {
-            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: $fileIDs title: $title body: $body)
-        }
-    `)
-    );
-
     const [chatCreateForSubcourse] = useMutation(
         gql(`
-            mutation createInstructorChat($memberUserId: String!) {
-                participantChatCreate(participantUserId: $memberUserId)
+            mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
+                participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
             }       
         `)
     );
 
     const [chatCreateAsProspect] = useMutation(
         gql(`
-            mutation createProspectChat($instructorUserId: String!) {
-                prospectChatCreate(instructorUserId: $instructorUserId)
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
             }       
         `)
     );
 
     async function contactInstructorAsParticipant() {
-        if (!data?.subcourse?.instructors[0].id) return;
-        const conversation = await chatCreateForSubcourse({ variables: { memberUserId: studentIdToUserId(data?.subcourse?.instructors[0].id) } });
-        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        const conversation = await chatCreateForSubcourse({
+            variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
     }
 
     async function contactInstructorAsProspect() {
-        if (!data?.subcourse?.instructors[0].id) return;
-        const conversation = await chatCreateAsProspect({ variables: { instructorUserId: studentIdToUserId(data?.subcourse?.instructors[0].id) } });
-        navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -293,7 +295,6 @@ const SingleCoursePupil = () => {
                         loadingSubcourseLeft={loadingSubcourseLeft}
                         loadingJoinedWaitinglist={loadingJoinedWaitinglist}
                         loadingWaitinglistLeft={loadingLeftWaitinglist}
-                        loadingContactInstructor={loadingContactInstructor}
                         joinSubcourse={() => joinSubcourse()}
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}

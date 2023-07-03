@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import StudentSetMeetingUrl from './StudentSetMeetingUrl';
-import OpenSubcourseChat from '../../subcourse/OpenSubcourseChat';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { Subcourse } from '../../../gql/graphql';
 
 type ActionButtonProps = {
@@ -35,7 +35,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh 
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {subcourse.published && (
-                    <OpenSubcourseChat
+                    <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
                         subcourseId={subcourse.id}
