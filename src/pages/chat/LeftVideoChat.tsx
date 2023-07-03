@@ -19,7 +19,7 @@ const LeftVideoChat: React.FC = () => {
     const { id: appointmentId, type } = useParams();
     const idAsInt = appointmentId ? parseInt(appointmentId) : null;
 
-    const { data } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
+    const { data, loading } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
     const isOrganizer = data?.appointment.isOrganizer;
 
     const width = useBreakpointValue({
@@ -53,6 +53,16 @@ const LeftVideoChat: React.FC = () => {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (!loading && data) {
+            (async () => {
+                if (isOrganizer) {
+                    await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
+                }
+            })();
+        }
+    }, [loading]);
 
     const saveAndFinish = async () => {
         navigate('/');
