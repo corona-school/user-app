@@ -49,8 +49,7 @@ const single = {
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',
-        dateLectures: '{{date}}, {{time}} Uhr • {{count}} Lektionen ',
-        oneLecture: '{{date}}, {{time}} Uhr • {{count}} Lektion ',
+        dateLecture: '{{date}}, {{time}} Uhr',
         time: {
             notStarted: 'Startet:',
             ongoing: 'Läuft seit',

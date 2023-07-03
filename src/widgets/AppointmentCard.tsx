@@ -227,17 +227,10 @@ const AppointmentCard: React.FC<Props> = ({
                                     <>
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
-                                                {countCourse && countCourse > 1
-                                                    ? t('single.card.dateLectures', {
-                                                          date: date.toFormat('dd.MM.yyyy'),
-                                                          time: date.toFormat('HH:mm'),
-                                                          count: countCourse,
-                                                      })
-                                                    : t('single.card.oneLecture', {
-                                                          date: date.toFormat('dd.MM.yyyy'),
-                                                          time: date.toFormat('HH:mm'),
-                                                          count: countCourse,
-                                                      })}
+                                                {t('single.card.dateLecture', {
+                                                    date: date.toFormat('dd.MM.yyyy'),
+                                                    time: date.toFormat('HH:mm'),
+                                                })}
                                             </Text>
                                         </Row>
                                     </>
