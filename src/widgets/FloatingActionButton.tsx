@@ -36,7 +36,7 @@ const FloatingActionButton: React.FC<FabProps> = ({ handlePress, place, icon, mr
                 backgroundColor="primary.900"
                 rounded="md"
                 size="md"
-                icon={<CalendarAddIcon />}
+                icon={icon ? icon : <CalendarAddIcon />}
                 onPress={handlePress}
             />
         </Box>

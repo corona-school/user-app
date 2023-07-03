@@ -7,16 +7,13 @@ import { Stack, useBreakpointValue, Box } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import FloatingActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
-import { LFChatProvider, useChat } from '../context/ChatContext';
+import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import { Inbox } from 'talkjs/all';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
-    const [inbox, setInbox] = useState<Inbox | null>();
-    const [showAddButton, setShowAddButton] = useState<boolean>(true);
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [isConverstationSelected, setIsConversationSelected] = useState(false);
@@ -44,10 +41,6 @@ const Chat: React.FC = () => {
         lg: '4%',
     });
 
-    const chatHeight = useBreakpointValue({
-        base: '75%',
-        lg: '90%',
-    });
     const paddingRight = useBreakpointValue({
         base: '2',
         lg: '10px',
@@ -73,21 +66,16 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
-        setInbox(inbox);
         inbox.mount(inboxRef.current);
-        !isMobile && inbox.select(conversationId ?? selectedChatId);
-        inbox.onConversationSelected(() => {
-            setIsConversationSelected(true);
-            isMobile && setShowAddButton(false);
-        });
-        inbox.onLeaveConversation(() => {
-            setIsConversationSelected(false);
-        });
+        inbox.select(conversationId ?? selectedChatId);
 
         if (isMobile) {
-            // inbox.select()
+            inbox.onConversationSelected(({ conversation }) => {
+                if (conversation) return setIsConversationSelected(true);
+                setIsConversationSelected(false);
+            });
         }
-    }, [session]);
+    }, [session, selectedChatId]);
 
     return (
         <AsNavigationItem path="chat">
@@ -99,12 +87,14 @@ const Chat: React.FC = () => {
                         <NotificationAlert />
                     </Stack>
                 }
-                showBack={isMobile}
+                headerRight={[]}
+                showBack={isMobile && isConverstationSelected}
             >
-                {showAddButton && (
+                {!isConverstationSelected && (
                     <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
                 )}
-                <Box h={chatHeight} pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
+
+                <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
                 <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
             </WithNavigation>
         </AsNavigationItem>
