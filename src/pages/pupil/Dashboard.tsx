@@ -222,14 +222,6 @@ const Dashboard: React.FC<Props> = () => {
         }
     );
 
-    const [joinMeeting, _joinMeeting] = useMutation(
-        gql(`
-        mutation joinMeetingPupil($subcourseId: Float!) {
-            subcourseJoinMeeting(subcourseId: $subcourseId)
-        }
-    `)
-    );
-
     const dissolveMatch = useCallback((match: { id: number }) => {
         setDissolveData(match);
         setShowDissolveModal(true);

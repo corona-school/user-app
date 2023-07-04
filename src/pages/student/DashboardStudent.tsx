@@ -237,7 +237,6 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
-    console.log(data?.me?.appointments);
     return (
         <AsNavigationItem path="start">
             <WithNavigation
