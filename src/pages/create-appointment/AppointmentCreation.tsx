@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
-import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
@@ -260,7 +259,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
-            <Box py="8">
+            <Box py="5">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}
@@ -273,7 +272,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             {appointmentToCreate.isRecurring && (
                 <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
             )}
-            <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
+            <Stack direction={isMobile ? 'column' : 'row'} space={3}>
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
                     {t('appointment.create.backButton')}
                 </Button>
