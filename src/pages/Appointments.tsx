@@ -110,7 +110,7 @@ const Appointments: React.FC = () => {
             },
         });
 
-        !noOldAppointments && toast.show({ description: 'Vergangene Termine geladen', placement: 'top' });
+        !noOldAppointments && scrollDirection === 'last' && toast.show({ description: 'Vergangene Termine geladen', placement: 'top' });
     };
 
     return (
