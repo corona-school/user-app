@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
+import AlertMessage from '../../widgets/AlertMessage';
 
 type MetaProps = {
     date: string;
@@ -29,6 +30,7 @@ type MetaProps = {
     appointmentId?: number;
     chatType?: string;
     isOrganizer?: Appointment['isOrganizer'];
+    subcoursePublished?: boolean;
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
@@ -45,6 +47,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     appointmentId,
     chatType,
     isOrganizer,
+    subcoursePublished,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const { isMobile } = useLayoutHelper();
@@ -93,10 +96,11 @@ const MetaDetails: React.FC<MetaProps> = ({
                 onPress={() => {
                     navigate(`/video-chat/${appointmentId}/${chatType}`);
                 }}
-                isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
+                isDisabled={!subcoursePublished || !appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
             >
                 {t('appointment.detail.videochatButton')}
             </Button>
+            {!subcoursePublished && <AlertMessage content={'Kurs noch nicht veröffentlicht!'} />}
         </>
     );
 };

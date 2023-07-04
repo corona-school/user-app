@@ -21,6 +21,9 @@ export type Appointment = {
     isOrganizer?: boolean;
     isParticipant?: boolean;
     zoomMeetingId?: string;
+    subcourse?: {
+        published?: boolean;
+    };
 };
 
 // type of appointments to send to the BE

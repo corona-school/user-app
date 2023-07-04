@@ -139,6 +139,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     chatType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
+                    subcoursePublished={appointment.subcourse?.published}
                 />
                 <Description description={appointment.description} />
 

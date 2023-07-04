@@ -45,6 +45,9 @@ const getMyAppointments = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                    published
+                }
             }            
         }
     }

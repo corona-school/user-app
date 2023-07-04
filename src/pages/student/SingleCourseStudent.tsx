@@ -233,7 +233,11 @@ const SingleCourseStudent = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList={!subcourse?.isInstructor} appointments={appointments as Appointment[]} noOldAppointments />
+                    <AppointmentList
+                        isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                        appointments={appointments as Appointment[]}
+                        noOldAppointments
+                    />
                 </Box>
             ),
         },

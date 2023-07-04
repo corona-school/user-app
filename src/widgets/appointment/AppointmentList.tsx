@@ -155,6 +155,7 @@ const AppointmentList: React.FC<Props> = ({
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
                         chatType={appointment.appointmentType}
+                        subcoursePublished={appointment.subcourse?.published}
                     />
                 </Box>
             </Box>
