@@ -71,6 +71,9 @@ export const PUPIL_APPOINTMENT = gql(`
             }
             declinedBy
             zoomMeetingId
+            subcourse {
+                published
+            }
         }
     }
 `);

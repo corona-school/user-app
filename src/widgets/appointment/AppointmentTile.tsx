@@ -24,7 +24,7 @@ type Props = {
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
     chatType?: Appointment['appointmentType'];
-    subcoursePublished?: boolean;
+    isSubcoursePublished?: boolean;
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -40,7 +40,7 @@ const AppointmentTile: React.FC<Props> = ({
     displayName,
     appointmentId,
     chatType,
-    subcoursePublished,
+    isSubcoursePublished,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -101,7 +101,7 @@ const AppointmentTile: React.FC<Props> = ({
                                 </Text>
                             )}
                         </Box>
-                        {subcoursePublished && !isReadOnly && isCurrentlyTakingPlace && (
+                        {!isReadOnly && isCurrentlyTakingPlace && (
                             <Button
                                 mt={2}
                                 w={buttonWidth}
