@@ -1,7 +1,6 @@
 import { Button, Tooltip } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
-import AlertMessage from '../../widgets/AlertMessage';
 import { useNavigate } from 'react-router-dom';
 
 type JoinMeetingProps = {
@@ -22,7 +21,6 @@ const JoinMeeting: React.FC<JoinMeetingProps> = ({ isInstructor = false, appoint
                     {t('single.actions.videochat')}
                 </Button>
             </Tooltip>
-            {!canJoinMeeting && <AlertMessage content="Der Videochat wurde noch nicht gestartet." />}
         </>
     );
 };
