@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Tooltip, Stack } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -22,7 +22,6 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
 import { Lecture_Appointmenttype_Enum, PupilDashboardQuery } from '../../gql/graphql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 
 type Props = {};
 
@@ -109,9 +108,10 @@ const query = gql(`
                 declinedBy
                 zoomMeetingId
                 subcourse {
-                course {
-                  image
-                }
+                    published
+                    course {
+                        image
+                    }
               }
     }
         }
@@ -159,7 +159,6 @@ const Dashboard: React.FC<Props> = () => {
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
     const [dissolveData, setDissolveData] = useState<{ id: number }>();
     const [toastShown, setToastShown] = useState<boolean>();
-    const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -241,8 +240,11 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
+    const appointments = data?.me?.appointments ?? [];
+    const myNextAppointment = useMemo(() => {
+        const appointmentsWithPublishedSubcourses = appointments.filter((appointment) => appointment.subcourse?.published);
+        return appointmentsWithPublishedSubcourses[0];
+    }, [appointments]);
 
     return (
         <AsNavigationItem path="start">
@@ -277,26 +279,7 @@ const Dashboard: React.FC<Props> = () => {
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
                                     <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                        }}
-                                                        isDisabled={
-                                                            !myNextAppointment.id ||
-                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 10, DateTime.now())
-                                                        }
-                                                    >
-                                                        {t('course.meeting.videobutton.pupil')}
-                                                    </Button>
-                                                </Tooltip>
-                                                {showMeetingNotStarted && <Text color="lightText">{t('course.meeting.videotext')}</Text>}
-                                            </VStack>
-                                        }
+                                        hasVideoButton
                                         isTeaser={true}
                                         onPressToCourse={() => {
                                             DateTime.now().plus({ days: 7 }).toISODate();
@@ -314,6 +297,8 @@ const Dashboard: React.FC<Props> = () => {
                                         description={myNextAppointment.description ?? ''}
                                         image={myNextAppointment.subcourse?.course.image ?? ''}
                                         isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
+                                        appointmentId={myNextAppointment.id}
+                                        appointmentType={myNextAppointment.appointmentType}
                                     />
                                 </VStack>
                             )}

@@ -24,7 +24,6 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 
 type Props = {};
@@ -109,10 +108,11 @@ const query = gql(`
                 declinedBy
                 zoomMeetingId
                 subcourse {
-                course {
-                  image
-                  subject
-                }
+                    published
+                    course {
+                        image
+                        subject
+                    }
               }
     }
         }
@@ -202,8 +202,11 @@ const DashboardStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
+    const appointments = data?.me?.appointments ?? [];
+    const myNextAppointment = useMemo(() => {
+        const appointmentsWithPublishedSubcourses = appointments.filter((appointment) => appointment.subcourse?.published);
+        return appointmentsWithPublishedSubcourses[0];
+    }, [appointments]);
 
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
@@ -270,25 +273,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
                                     <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.student')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                        }}
-                                                        isDisabled={
-                                                            !myNextAppointment.id ||
-                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 30, DateTime.now())
-                                                        }
-                                                    >
-                                                        {t('course.meeting.videobutton.student')}
-                                                    </Button>
-                                                </Tooltip>
-                                            </VStack>
-                                        }
+                                        hasVideoButton
                                         onPressToCourse={() => {
                                             trackEvent({
                                                 category: 'dashboard',
@@ -305,6 +290,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                         description={myNextAppointment.description || ''}
                                         image={myNextAppointment.subcourse?.course.image ?? ''}
                                         isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
+                                        appointmentId={myNextAppointment.id}
+                                        appointmentType={myNextAppointment.appointmentType}
+                                        isOrganizer={myNextAppointment.isOrganizer}
                                     />
                                 </VStack>
                             )}
