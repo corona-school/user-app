@@ -30,8 +30,9 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
     const user = useUser();
     const userType = useUserType();
+    const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
 
-    const { data } = useQuery(getMyChatSignature);
+    const { data, loading } = useQuery(getMyChatSignature);
     // TODO add query to get has unread messages
 
     const me = {
@@ -45,18 +46,18 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }, []);
 
     useEffect(() => {
-        if (talkLoaded) {
+        if (talkLoaded && !loading && TALKJS_APP_ID) {
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
-                appId: 't5NarFaG',
+                appId: TALKJS_APP_ID,
                 me: currentUser,
                 signature: data?.me.chatSignature,
             });
             setSession(session);
             return () => session.destroy();
         }
-    }, [talkLoaded]);
+    }, [talkLoaded, loading]);
 
     const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
 
