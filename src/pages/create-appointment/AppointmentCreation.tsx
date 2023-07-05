@@ -272,7 +272,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             {appointmentToCreate.isRecurring && (
                 <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
             )}
-            <Stack direction={isMobile ? 'column' : 'row'} space={3}>
+            <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
                     {t('appointment.create.backButton')}
                 </Button>

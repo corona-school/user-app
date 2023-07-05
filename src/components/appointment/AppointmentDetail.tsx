@@ -148,7 +148,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
                     canceled={canceled}
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
-                    canEdit={!isPastAppointment}
+                    canEdit={isPastAppointment}
                 />
             </Box>
         </>

@@ -208,7 +208,13 @@ const SingleMatch = () => {
                                 <Stack space={space['1']}>
                                     <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
                                 </Stack>
-                                <MatchAppointments appointments={appointments as Appointment[]} minimumHeight={'30vh'} loading={loading} error={error} />
+                                <MatchAppointments
+                                    appointments={appointments as Appointment[]}
+                                    minimumHeight={'30vh'}
+                                    loading={loading}
+                                    error={error}
+                                    dissolved={data?.match?.dissolved}
+                                />
                                 {userType === 'student' && !data?.match?.dissolved && (
                                     <Box>
                                         <Divider thickness={1} mb={4} />
