@@ -370,7 +370,11 @@ const AppointmentCard: React.FC<Props> = ({
 
                                 {isTeaser && hasVideoButton && appointmentId && _date && duration && appointmentType && (
                                     <VStack w="100%" space={space['0.5']}>
-                                        <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                                        <Tooltip
+                                            isDisabled={true}
+                                            maxWidth={300}
+                                            label={isOrganizer ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
+                                        >
                                             <VideoButton
                                                 appointmentId={appointmentId}
                                                 start={_date}
