@@ -1,6 +1,6 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
-import { View, Text, VStack, Center, CircleIcon, Row, useTheme, Pressable, Badge, Spacer, Circle } from 'native-base';
+import { View, Text, VStack, Center, CircleIcon, Row, useTheme, Pressable, Badge, Spacer } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
@@ -13,9 +13,10 @@ type Props = {
     navItems: NavigationItems;
     paddingTop?: string | number;
     hasUnreadMessages?: boolean;
+    unreadMessagesCount?: number;
 };
 
-const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, hasUnreadMessages }) => {
+const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, hasUnreadMessages, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const { rootPath, setRootPath } = useLernfair();
     const navigate = useNavigate();
@@ -91,10 +92,12 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, hasUnreadMes
                                         {label}
                                     </Text>
 
-                                    {key === 'chat' && hasUnreadMessages && (
+                                    {key === 'chat' && hasUnreadMessages && !!unreadMessagesCount && (
                                         <>
                                             <Spacer />
-                                            <Circle bgColor="danger.500" _text={{ color: 'white' }} size="10px"></Circle>
+                                            <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full">
+                                                {unreadMessagesCount}
+                                            </Badge>
                                         </>
                                     )}
                                 </Row>

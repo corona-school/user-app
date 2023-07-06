@@ -11,6 +11,7 @@ import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
+import { UnreadConversation } from 'talkjs/all';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
@@ -18,6 +19,7 @@ const Chat: React.FC = () => {
     const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
     const [hasUnreadMessage, setHasUnreadMessages] = useState<boolean>(false);
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
 
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
@@ -81,8 +83,10 @@ const Chat: React.FC = () => {
         if (!session) return;
         const unreads = session.unreads;
 
-        unreads.onChange(() => {
+        unreads.onChange((message) => {
+            console.log('ONCHANGE MESSAGE', message);
             setHasUnreadMessages(true);
+            setUnreadMessagesCount(message.length);
         });
     }, []);
 
@@ -98,6 +102,7 @@ const Chat: React.FC = () => {
                 }
                 showBack={isMobile && isConverstationSelected}
                 hasUnreadMessages={hasUnreadMessage}
+                unreadMessagesCount={unreadMessagesCount}
             >
                 {!isConverstationSelected && (
                     <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
