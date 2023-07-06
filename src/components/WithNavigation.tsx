@@ -13,6 +13,7 @@ import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { useChat } from '../context/ChatContext';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -24,8 +25,7 @@ type Props = {
     showBack?: boolean;
     hideMenu?: boolean;
     isLoading?: boolean;
-    hasUnreadMessages?: boolean;
-    unreadMessagesCount?: number;
+
     onBack?: () => any;
 };
 
@@ -39,8 +39,7 @@ const WithNavigation: React.FC<Props> = ({
     showBack,
     hideMenu,
     isLoading,
-    hasUnreadMessages,
-    unreadMessagesCount,
+
     onBack,
 }) => {
     const { sizes, space } = useTheme();
@@ -53,6 +52,8 @@ const WithNavigation: React.FC<Props> = ({
         base: 0,
         lg: space['1'],
     });
+
+    const { hasUnreadMessages, unreadMessagesCount } = useChat();
 
     const { t } = useTranslation();
 

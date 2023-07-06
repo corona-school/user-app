@@ -9,10 +9,14 @@ const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
 type IChatContext = {
     session: Talk.Session | null;
     talkLoaded: boolean;
+    hasUnreadMessages: boolean;
+    unreadMessagesCount: number;
 };
 const ChatContext = createContext<IChatContext>({
     session: null,
     talkLoaded: false,
+    hasUnreadMessages: false,
+    unreadMessagesCount: 0,
 });
 
 const userIdToTalkJsId = (userId: string): string => {
@@ -30,6 +34,9 @@ query myChatSignature {
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
+    const [hasUnreadMessages, setHasUnreadMessages] = useState<boolean>(false);
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
+
     const { sessionState, user, userId } = useUserAuth();
 
     const { data, loading } = useQuery(getMyChatSignature, {
@@ -65,12 +72,26 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         }
     }, [talkLoaded, loading, sessionState]);
 
-    const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
+    useEffect(() => {
+        if (!session) return;
+        const unreads = session.unreads;
+
+        unreads.onChange((message) => {
+            console.log('ONCHANGE MESSAGE', message);
+            setHasUnreadMessages(true);
+            setUnreadMessagesCount(message.length);
+        });
+    }, [session]);
+
+    const contextValue = useMemo(
+        () => ({ session, talkLoaded, hasUnreadMessages, unreadMessagesCount }),
+        [hasUnreadMessages, session, talkLoaded, unreadMessagesCount]
+    );
 
     return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };
 
 export const useChat = () => {
-    const { session, talkLoaded } = useContext(ChatContext);
-    return { session, talkLoaded };
+    const { session, talkLoaded, hasUnreadMessages, unreadMessagesCount } = useContext(ChatContext);
+    return { session, talkLoaded, hasUnreadMessages, unreadMessagesCount };
 };
