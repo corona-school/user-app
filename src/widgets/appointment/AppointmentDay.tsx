@@ -24,6 +24,7 @@ type Props = {
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
     chatType?: Appointment['appointmentType'];
+    isSubcoursePublished?: boolean;
 };
 
 export const canJoinMeeting = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
@@ -49,6 +50,7 @@ const AppointmentDay: React.FC<Props> = ({
     displayName,
     appointmentId,
     chatType,
+    isSubcoursePublished,
 }) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
@@ -84,7 +86,7 @@ const AppointmentDay: React.FC<Props> = ({
     return (
         <>
             {!isReadOnly && organizers && participants ? (
-                <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
+                <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 50 : 100 }}>
                     <Box w={width} mt={3}>
                         <HStack>
                             <AppointmentDate current={isCurrent} date={start} />
@@ -104,6 +106,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 displayName={displayName}
                                 appointmentId={appointmentId}
                                 chatType={chatType}
+                                isSubcoursePublished={isSubcoursePublished}
                             />
                         </HStack>
                     </Box>
@@ -124,6 +127,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 isReadOnly={isReadOnly}
+                                isSubcoursePublished={isSubcoursePublished}
                             />
                         </HStack>
                     </Box>

@@ -24,6 +24,7 @@ type Props = {
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
     chatType?: Appointment['appointmentType'];
+    isSubcoursePublished?: boolean;
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -39,6 +40,7 @@ const AppointmentTile: React.FC<Props> = ({
     displayName,
     appointmentId,
     chatType,
+    isSubcoursePublished,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -54,8 +56,8 @@ const AppointmentTile: React.FC<Props> = ({
 
     return (
         <Box w={width}>
-            <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
-                <Pressable onPress={onPress}>
+            <Pressable disabled={isReadOnly} onPress={onPress}>
+                <Card bg={!isReadOnly && isCurrentlyTakingPlace ? 'primary.900' : 'primary.100'} shadow="none">
                     <VStack>
                         <HStack alignItems={'center'}>
                             <HStack>
@@ -111,8 +113,8 @@ const AppointmentTile: React.FC<Props> = ({
                             </Button>
                         )}
                     </VStack>
-                </Pressable>
-            </Card>
+                </Card>
+            </Pressable>
         </Box>
     );
 };

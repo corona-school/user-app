@@ -108,6 +108,12 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                    published
+                    course {
+                        image
+                    }
+              }
     }
         }
 

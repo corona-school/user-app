@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Lecture } from '../gql/graphql';
+import { Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { canJoinMeeting } from './appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { Box, Button, Heading, Tooltip, VStack, useTheme, Text } from 'native-base';
@@ -40,26 +40,7 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                         {myNextAppointments.map((myNextAppointment) => {
                             return (
                                 <AppointmentCard
-                                    videoButton={
-                                        <VStack w="100%" space={space['0.5']}>
-                                            <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                                                <Button
-                                                    width="100%"
-                                                    marginTop={space['1']}
-                                                    onPress={() => {
-                                                        navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                    }}
-                                                    isDisabled={
-                                                        !myNextAppointment.id ||
-                                                        !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 10, DateTime.now())
-                                                    }
-                                                >
-                                                    {t('course.meeting.videobutton.pupil')}
-                                                </Button>
-                                            </Tooltip>
-                                            {showMeetingNotStarted && <Text color="lightText">{t('course.meeting.videotext')}</Text>}
-                                        </VStack>
-                                    }
+                                    hasVideoButton
                                     isTeaser={true}
                                     onPressToCourse={() => {
                                         trackEvent({
@@ -74,6 +55,11 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                     duration={myNextAppointment.duration}
                                     title={myNextAppointment.displayName}
                                     description={myNextAppointment.description ?? ''}
+                                    image={myNextAppointment.subcourse?.course.image ?? ''}
+                                    isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
+                                    appointmentId={myNextAppointment.id}
+                                    appointmentType={myNextAppointment.appointmentType}
+                                    isOrganizer={myNextAppointment.isOrganizer}
                                 />
                             );
                         })}

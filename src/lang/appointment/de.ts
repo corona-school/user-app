@@ -5,6 +5,7 @@ const appointment = {
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Vergangene Termine laden',
+    courseNotPublished: 'Kurs noch nicht veröffentlicht.',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
@@ -20,6 +21,11 @@ const appointment = {
         description: 'Der Termin wird dadurch für alle Teilnehmer:innen abgesagt. Du kannst dies nicht rückgängig machen.',
         delete: 'Termin löschen',
         cancel: 'Abbrechen',
+    },
+    declineModal: {
+        title: 'Bist du dir sicher, dass du diesen Termin absagen möchtest?',
+        description: 'Du kannst dem Termin nicht wieder beitreten.',
+        decline: 'Termin absagen',
     },
     appointmentTile: {
         lecture: 'Lektion #{{position}}',

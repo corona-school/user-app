@@ -33,8 +33,15 @@ import CSSWrapper from '../components/CSSWrapper';
 import CourseTrafficLamp from './CourseTrafficLamp';
 import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
+import MatchAvatarImage from '../components/MatchAvatarImage';
+import VideoButton from '../components/VideoButton';
+import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
+    appointmentId?: number;
+    appointmentType?: Lecture_Appointmenttype_Enum;
+    isOrganizer?: boolean;
     tags?: { name: string }[];
     date?: string;
     duration?: number; // in minutes
@@ -57,8 +64,9 @@ type Props = {
     isHorizontalCardCourseChecked?: boolean;
     isOnWaitinglist?: boolean;
     image?: string;
+    isMatch?: boolean;
     onPressToCourse?: () => any;
-    videoButton?: ReactNode | ReactNode[];
+    hasVideoButton?: boolean;
     countCourse?: number;
     statusText?: string;
     showTrafficLight?: boolean;
@@ -69,6 +77,8 @@ type Props = {
 };
 
 const AppointmentCard: React.FC<Props> = ({
+    appointmentId,
+    appointmentType,
     tags,
     date: _date,
     duration,
@@ -93,19 +103,23 @@ const AppointmentCard: React.FC<Props> = ({
     isHorizontalCardCourseChecked = false,
     isOnWaitinglist,
     image,
+    isMatch,
     onPressToCourse,
     showTrafficLight,
     showStatus,
     showCourseTraffic,
     showSchoolclass,
     trafficLightStatus,
-    videoButton,
+    hasVideoButton,
+    isOrganizer,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
     const date = _date && DateTime.fromISO(_date);
+
+    const navigate = useNavigate();
 
     useInterval(() => {
         setCurrentTime(Date.now());
@@ -142,7 +156,7 @@ const AppointmentCard: React.FC<Props> = ({
 
     const CardMobileImage = useBreakpointValue({
         base: '100%',
-        lg: '300px',
+        lg: isMatch ? '200px' : '300px',
     });
 
     const CardMobilePadding = useBreakpointValue({
@@ -196,8 +210,8 @@ const AppointmentCard: React.FC<Props> = ({
                 <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
-                            {image && (
-                                <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']}>
+                            <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
+                                {!isMatch && (
                                     <Image
                                         position="absolute"
                                         left={0}
@@ -211,16 +225,17 @@ const AppointmentCard: React.FC<Props> = ({
                                             uri: image,
                                         }}
                                     />
-                                    {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
-                                    {isTeaser && (
-                                        <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
-                                            {tags?.map((tag, i) => (
-                                                <Tag key={`tag-${i}`} text={tag.name} />
-                                            ))}
-                                        </Row>
-                                    )}
-                                </Box>
-                            )}
+                                )}
+                                {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
+                                {isTeaser && (
+                                    <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
+                                        {tags?.map((tag, i) => (
+                                            <Tag key={`tag-${i}`} text={tag.name} />
+                                        ))}
+                                    </Row>
+                                )}
+                                {isMatch && <MatchAvatarImage />}
+                            </Box>
 
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
                                 {!isTeaser && date && (
@@ -353,7 +368,21 @@ const AppointmentCard: React.FC<Props> = ({
                                     </Button>
                                 )}
 
-                                {isTeaser && videoButton}
+                                {isTeaser && hasVideoButton && appointmentId && _date && duration && appointmentType && (
+                                    <VStack w="100%" space={space['0.5']}>
+                                        <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
+                                            <VideoButton
+                                                appointmentId={appointmentId}
+                                                start={_date}
+                                                duration={duration}
+                                                joinMeeting={() => {
+                                                    navigate(`/video-chat/${appointmentId}/${appointmentType}`);
+                                                }}
+                                                isOrganizer={isOrganizer}
+                                            />
+                                        </Tooltip>
+                                    </VStack>
+                                )}
                             </Box>
                             {isHorizontalCardCourseChecked && (
                                 <Box position="absolute" right="20px" bottom="13px">
