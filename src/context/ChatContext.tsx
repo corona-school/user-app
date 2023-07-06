@@ -4,6 +4,8 @@ import { useUserAuth } from '../hooks/useApollo';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 
+const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
+
 type IChatContext = {
     session: Talk.Session | null;
     talkLoaded: boolean;
@@ -13,10 +15,6 @@ const ChatContext = createContext<IChatContext>({
     talkLoaded: false,
 });
 
-enum UserRole {
-    STUDENT = 'student',
-    PUPIL = 'pupil',
-}
 const userIdToTalkJsId = (userId: string): string => {
     return userId.replace('/', '_');
 };
@@ -30,14 +28,15 @@ query myChatSignature {
   }`);
 
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { sessionState, userId, user } = useUserAuth();
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
+    const { sessionState, user, userId } = useUserAuth();
 
-    const { data } = useQuery(getMyChatSignature, {
+    const { data, loading } = useQuery(getMyChatSignature, {
         skip: sessionState !== 'logged-in',
     });
     // TODO add query to get has unread messages
+    const myChatSignature = data?.me.chatSignature;
 
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
@@ -48,23 +47,23 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
         const me = {
             id: userIdToTalkJsId(userId),
-            name: user?.firstname,
-            role: user.student ? UserRole.STUDENT : UserRole.PUPIL,
-            email: user.email,
+            name: `${user?.firstname} ${user?.lastname}`,
+            role: user?.pupil ? 'pupil' : 'student',
+            email: user?.email,
         };
 
-        if (talkLoaded) {
+        if (talkLoaded && !loading) {
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
                 appId: 't5NarFaG',
                 me: currentUser,
-                signature: data?.me.chatSignature,
+                signature: myChatSignature,
             });
             setSession(session);
             return () => session.destroy();
         }
-    }, [sessionState, talkLoaded]);
+    }, [talkLoaded, loading, sessionState]);
 
     const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
 
