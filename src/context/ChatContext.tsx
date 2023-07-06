@@ -77,7 +77,6 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         const unreads = session.unreads;
 
         unreads.onChange((message) => {
-            console.log('ONCHANGE MESSAGE', message);
             setHasUnreadMessages(true);
             setUnreadMessagesCount(message.length);
         });
