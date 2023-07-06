@@ -7,6 +7,8 @@ const chat = {
     participant: 'Kursteilnehmer:in',
     prospect: 'Interessent:in',
     matchee: 'Lernpartner:in',
+    noContactOptions: 'Keine Kontaktoptionen',
+    noContactOptionsHint: 'Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.',
     placeholder: 'Schreibe etwas...',
     chatError: 'Chat kann nicht geöffnet werden.',
     groupChatError: 'Kurschat kann nicht geöffnet werden.',

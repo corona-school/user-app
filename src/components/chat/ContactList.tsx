@@ -5,6 +5,7 @@ import { useUserType } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
+import ContactEmptyState from './ContactEmptyState';
 import { useCallback } from 'react';
 
 const myContacts = gql(`
@@ -103,7 +104,13 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
             </>
         );
     };
-    return <FlatList data={data?.myContactOptions as Contact[]} renderItem={renderContacts} />;
+    return (
+        <FlatList
+            data={data?.myContactOptions as Contact[]}
+            renderItem={renderContacts}
+            ListEmptyComponent={<ContactEmptyState title={t('chat.noContactOptions')} subtitle={t('chat.noContactOptionsHint')} />}
+        />
+    );
 };
 
 export default ContactList;
