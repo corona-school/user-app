@@ -14,9 +14,10 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
-    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+    const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
-    const [isConverstationSelected, setIsConversationSelected] = useState(false);
+    const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
+    const [hasUnreadMessage, setHasUnreadMessages] = useState<boolean>(false);
 
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
@@ -68,7 +69,6 @@ const Chat: React.FC = () => {
         const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
-
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
                 if (conversation) return setIsConversationSelected(true);
@@ -76,6 +76,15 @@ const Chat: React.FC = () => {
             });
         }
     }, [session, selectedChatId]);
+
+    useEffect(() => {
+        if (!session) return;
+        const unreads = session.unreads;
+
+        unreads.onChange(() => {
+            setHasUnreadMessages(true);
+        });
+    }, []);
 
     return (
         <AsNavigationItem path="chat">
@@ -88,6 +97,7 @@ const Chat: React.FC = () => {
                     </Stack>
                 }
                 showBack={isMobile && isConverstationSelected}
+                hasUnreadMessages={hasUnreadMessage}
             >
                 {!isConverstationSelected && (
                     <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />

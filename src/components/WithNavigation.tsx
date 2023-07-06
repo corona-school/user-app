@@ -24,6 +24,7 @@ type Props = {
     showBack?: boolean;
     hideMenu?: boolean;
     isLoading?: boolean;
+    hasUnreadMessages?: boolean;
     onBack?: () => any;
 };
 
@@ -37,6 +38,7 @@ const WithNavigation: React.FC<Props> = ({
     showBack,
     hideMenu,
     isLoading,
+    hasUnreadMessages,
     onBack,
 }) => {
     const { sizes, space } = useTheme();
@@ -79,7 +81,7 @@ const WithNavigation: React.FC<Props> = ({
                     <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
                         {!hideMenu && (
                             <Column>
-                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} />
+                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} hasUnreadMessages={hasUnreadMessages} />
                             </Column>
                         )}
                         <Column flex="1" padding={innerPaddingContent}>
@@ -99,7 +101,7 @@ const WithNavigation: React.FC<Props> = ({
                     </Row>
                 </View>
             </View>
-            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} />}
+            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} hasUnreadMessages={hasUnreadMessages} />}
         </View>
     );
 };

@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Spacer, Circle } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -12,9 +12,10 @@ import { useUserType } from '../hooks/useApollo';
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
+    hasUnreadMessages?: boolean;
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, hasUnreadMessages }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -72,6 +73,11 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                 key={key}
                             >
                                 <CSSWrapper className="navigation__item">
+                                    {key === 'chat' && hasUnreadMessages && (
+                                        <Box alignSelf={'end'}>
+                                            <Circle bgColor="danger.500" _text={{ color: 'white' }} size="10px"></Circle>
+                                        </Box>
+                                    )}
                                     <Center>
                                         <Box>
                                             <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
