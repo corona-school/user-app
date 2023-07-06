@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Spacer, Circle, Badge, useBreakpointValue } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Circle, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -12,11 +12,10 @@ import { useUserType } from '../hooks/useApollo';
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
-    hasUnreadMessages?: boolean;
     unreadMessagesCount?: number;
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, hasUnreadMessages, unreadMessagesCount }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -78,7 +77,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, hasUnread
                                 }}
                                 key={key}
                             >
-                                {key === 'chat' && hasUnreadMessages && !!unreadMessagesCount && (
+                                {key === 'chat' && !!unreadMessagesCount && (
                                     <Circle bgColor="danger.500" size="4" position="absolute" zIndex="1" mx="6">
                                         <Text fontSize="xs" color="white">
                                             {unreadMessagesCount}

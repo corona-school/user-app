@@ -53,7 +53,7 @@ const WithNavigation: React.FC<Props> = ({
         lg: space['1'],
     });
 
-    const { hasUnreadMessages, unreadMessagesCount } = useChat();
+    const { unreadMessagesCount } = useChat();
 
     const { t } = useTranslation();
 
@@ -84,13 +84,7 @@ const WithNavigation: React.FC<Props> = ({
                     <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
                         {!hideMenu && (
                             <Column>
-                                <SideBarMenu
-                                    show={!isMobile}
-                                    navItems={navItems}
-                                    paddingTop={'72px'}
-                                    hasUnreadMessages={hasUnreadMessages}
-                                    unreadMessagesCount={unreadMessagesCount}
-                                />
+                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
                             </Column>
                         )}
                         <Column flex="1" padding={innerPaddingContent}>
@@ -110,9 +104,7 @@ const WithNavigation: React.FC<Props> = ({
                     </Row>
                 </View>
             </View>
-            {!hideMenu && (
-                <BottomNavigationBar show={isMobile} navItems={navItems} hasUnreadMessages={hasUnreadMessages} unreadMessagesCount={unreadMessagesCount} />
-            )}
+            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
         </View>
     );
 };

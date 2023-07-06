@@ -12,11 +12,10 @@ type Props = {
     show?: boolean;
     navItems: NavigationItems;
     paddingTop?: string | number;
-    hasUnreadMessages?: boolean;
     unreadMessagesCount?: number;
 };
 
-const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, hasUnreadMessages, unreadMessagesCount }) => {
+const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const { rootPath, setRootPath } = useLernfair();
     const navigate = useNavigate();
@@ -92,7 +91,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, hasUnreadMes
                                         {label}
                                     </Text>
 
-                                    {key === 'chat' && hasUnreadMessages && !!unreadMessagesCount && (
+                                    {key === 'chat' && !!unreadMessagesCount && (
                                         <>
                                             <Spacer />
                                             <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full">
