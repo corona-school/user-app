@@ -78,7 +78,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.date;
         }
-        if (isCourse && !isDateMinOneWeekLater(appointmentToCreate.date)) {
+        if ((isCourse || isCourseCreation) && !isDateMinOneWeekLater(appointmentToCreate.date)) {
             setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
             return false;
         } else {
