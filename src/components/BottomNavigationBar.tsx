@@ -78,14 +78,14 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, hasUnread
                                 }}
                                 key={key}
                             >
+                                {key === 'chat' && hasUnreadMessages && !!unreadMessagesCount && (
+                                    <Circle bgColor="danger.500" size="4" position="absolute" zIndex="1" mx="6">
+                                        <Text fontSize="xs" color="white">
+                                            {unreadMessagesCount}
+                                        </Text>
+                                    </Circle>
+                                )}
                                 <CSSWrapper className="navigation__item">
-                                    {key === 'chat' && hasUnreadMessages && !!unreadMessagesCount && (
-                                        <Circle bgColor="danger.500" size="3.5">
-                                            <Text fontSize="xs" color="white">
-                                                {unreadMessagesCount}
-                                            </Text>
-                                        </Circle>
-                                    )}
                                     <Center>
                                         <Box>
                                             <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
