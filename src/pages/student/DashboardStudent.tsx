@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip, Stack } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -24,7 +24,8 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import NextAppointmentCard from '../../widgets/NextAppointmentCard';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -202,12 +203,6 @@ const DashboardStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const appointments = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => {
-        const appointmentsWithPublishedSubcourses = appointments.filter((appointment) => appointment.subcourse?.published);
-        return appointmentsWithPublishedSubcourses[0];
-    }, [appointments]);
-
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
         [data?.me?.student?.subcoursesInstructing]
@@ -268,34 +263,12 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {myNextAppointment && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
-                                    <AppointmentCard
-                                        hasVideoButton
-                                        onPressToCourse={() => {
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Helfer Dashboard Kachelklick   ' + myNextAppointment.displayName || '',
-                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + myNextAppointment.displayName || '',
-                                            });
-                                            navigate(`/appointment/${myNextAppointment.id}`);
-                                        }}
-                                        date={myNextAppointment.start || ''}
-                                        duration={myNextAppointment.duration}
-                                        isTeaser={true}
-                                        title={myNextAppointment.displayName || ''}
-                                        description={myNextAppointment.description || ''}
-                                        image={myNextAppointment.subcourse?.course.image ?? ''}
-                                        isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
-                                        appointmentId={myNextAppointment.id}
-                                        appointmentType={myNextAppointment.appointmentType}
-                                        isOrganizer={myNextAppointment.isOrganizer}
-                                    />
+                            <VStack marginBottom={space['1.5']}>
+                                <VStack space={space['1']}>
+                                    <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
                                 </VStack>
-                            )}
+                            </VStack>
 
                             {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
                                 <HSection
