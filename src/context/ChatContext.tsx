@@ -5,6 +5,8 @@ import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import { userIdToTalkJsId } from '../helper/chat-helper';
 
+const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
+
 type IChatContext = {
     session: Talk.Session | null;
     talkLoaded: boolean;
@@ -28,9 +30,9 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const user = useUser();
     const userType = useUserType();
 
-    const { data } = useQuery(getMyChatSignature);
+    const { data, loading } = useQuery(getMyChatSignature);
     // TODO add query to get has unread messages
-
+    const myChatSignature = data?.me.chatSignature;
     const me = {
         id: userIdToTalkJsId(user.userID),
         name: user.firstname,
@@ -42,18 +44,18 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }, []);
 
     useEffect(() => {
-        if (talkLoaded) {
+        if (talkLoaded && !loading) {
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
                 appId: 't5NarFaG',
                 me: currentUser,
-                signature: data?.me.chatSignature,
+                signature: myChatSignature,
             });
             setSession(session);
             return () => session.destroy();
         }
-    }, [talkLoaded]);
+    }, [talkLoaded, loading]);
 
     const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
 
