@@ -258,8 +258,6 @@ const DashboardStudent: React.FC<Props> = () => {
                             {/* Next Appointment */}
 
                             <VStack marginBottom={space['1.5']}>
-                                <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-
                                 <VStack space={space['1']}>
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
                                 </VStack>

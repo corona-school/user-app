@@ -62,7 +62,6 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                     }
                                     isTeaser={true}
                                     onPressToCourse={() => {
-                                        DateTime.now().plus({ days: 7 }).toISODate();
                                         trackEvent({
                                             category: 'dashboard',
                                             action: 'click-event',
