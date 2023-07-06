@@ -87,7 +87,6 @@ const Chat: React.FC = () => {
                         <NotificationAlert />
                     </Stack>
                 }
-                headerRight={[]}
                 showBack={isMobile && isConverstationSelected}
             >
                 {!isConverstationSelected && (
