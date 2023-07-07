@@ -3,6 +3,7 @@ import Talk from 'talkjs';
 import { useUserAuth } from '../hooks/useApollo';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
+import { userIdToTalkJsId } from '../helper/chat-helper';
 
 const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
 
@@ -14,10 +15,6 @@ const ChatContext = createContext<IChatContext>({
     session: null,
     talkLoaded: false,
 });
-
-const userIdToTalkJsId = (userId: string): string => {
-    return userId.replace('/', '_');
-};
 
 const getMyChatSignature = gql(`
 query myChatSignature {
