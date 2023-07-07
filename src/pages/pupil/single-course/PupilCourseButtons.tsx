@@ -2,7 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Subcourse } from '../../../gql/graphql';
+import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
@@ -10,6 +10,8 @@ import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
+import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
+import { DateTime } from 'luxon';
 
 type CanJoin = {
     allowed: boolean;
@@ -17,6 +19,7 @@ type CanJoin = {
 };
 
 type ActionButtonProps = {
+    appointment: Lecture;
     courseFull: boolean;
     canJoinSubcourse?: CanJoin;
     joinedSubcourse?: boolean;
@@ -51,6 +54,7 @@ type ActionButtonProps = {
 };
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
+    appointment,
     courseFull,
     canJoinSubcourse,
     joinedSubcourse,
@@ -161,11 +165,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
                 {subcourse.isParticipant && (
-                    <Button variant="outline" onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
-                        {t('single.actions.leaveSubcourse')}
-                    </Button>
+                    <JoinMeeting
+                        appointmentId={appointment.id}
+                        appointmentType={appointment.appointmentType}
+                        canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
+                    />
                 )}
             </Stack>
 

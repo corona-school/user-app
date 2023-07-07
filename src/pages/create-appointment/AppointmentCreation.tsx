@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
-import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
@@ -79,7 +78,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.date;
         }
-        if (isCourse && !isDateMinOneWeekLater(appointmentToCreate.date)) {
+        if ((isCourse || isCourseCreation) && !isDateMinOneWeekLater(appointmentToCreate.date)) {
             setErrors({ ...errors, dateNotInOneWeek: t('appointment.errors.dateMinOneWeek') });
             return false;
         } else {
@@ -260,7 +259,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
-            <Box py="8">
+            <Box py="5">
                 <Checkbox
                     _checked={{ backgroundColor: 'danger.900' }}
                     onChange={() => handleWeeklyCheck()}

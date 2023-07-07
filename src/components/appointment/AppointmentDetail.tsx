@@ -11,7 +11,7 @@ import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
-import DeleteAppointmentModal from '../../modals/DeleteAppointmentModal';
+import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
 import { singleMatchQuery } from '../../pages/SingleMatch';
 
@@ -34,6 +34,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
     const { user } = useApollo();
     const [canceled, setCanceled] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const containerWidth = useBreakpointValue({
@@ -110,7 +111,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                <DeleteAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} />
+                <RejectAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} rejectType={RejectType.CANCEL} />
+            </Modal>
+            <Modal isOpen={showDeclineModal} onClose={() => setShowDeclineModal(false)}>
+                <RejectAppointmentModal onDelete={() => handleDeclineClick()} close={() => setShowDeclineModal(false)} rejectType={RejectType.DECLINE} />
             </Modal>
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
@@ -135,15 +139,16 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     chatType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
+                    isSubcoursePublished={appointment.subcourse?.published}
                 />
                 <Description description={appointment.description} />
 
                 <Buttons
-                    onPress={user?.student ? () => setShowDeleteModal(true) : handleDeclineClick}
+                    onPress={user?.student ? () => setShowDeleteModal(true) : () => setShowDeclineModal(true)}
                     onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
                     canceled={canceled}
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
-                    canEdit={!isPastAppointment}
+                    canEdit={isPastAppointment}
                 />
             </Box>
         </>
