@@ -18,6 +18,7 @@ import HelpNavigation from '../components/HelpNavigation';
 import MatchAppointments from '../widgets/MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
+import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -142,8 +143,8 @@ const SingleMatch = () => {
 
     const openChatContact = async () => {
         let contactId: string = '';
-        if (userType === 'student') contactId = `pupil/${data?.match?.pupil.id}`;
-        if (userType === 'pupil') contactId = `student/${data?.match?.student.id}`;
+        if (userType === 'student' && data?.match?.pupil.id) contactId = pupilIdToUserId(data?.match?.pupil.id);
+        if (userType === 'pupil' && data?.match?.student.id) contactId = studentIdToUserId(data?.match?.student.id);
         const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
         navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
     };

@@ -4,16 +4,27 @@ import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
 import { Chat_Type } from '../../gql/graphql';
+import { useMemo } from 'react';
 
 type OpenSubcourseChatProps = {
     groupChatType: Chat_Type;
     subcourseId: number;
     conversationId: string | null | undefined;
     participantsCount: number;
+    isParticipant?: boolean;
+    isInstructor?: boolean;
     refresh: () => void;
 };
 
-const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({ groupChatType, conversationId, subcourseId, participantsCount, refresh }) => {
+const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
+    groupChatType,
+    conversationId,
+    subcourseId,
+    isInstructor,
+    isParticipant,
+    participantsCount,
+    refresh,
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const toast = useToast();
@@ -47,10 +58,20 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({ groupChatType,
         }
     };
 
+    const disableButton = useMemo(() => {
+        if (isParticipant && conversationId === null) {
+            return true;
+        }
+        if (isInstructor && participantsCount < 2) {
+            return true;
+        }
+        return false;
+    }, [conversationId, isInstructor, isParticipant, participantsCount]);
+
     return (
         <>
             <Tooltip maxWidth={300} label={t('chat.hint')}>
-                <Button onPress={openSubcourseGroupChat} isDisabled={participantsCount < 2}>
+                <Button onPress={openSubcourseGroupChat} isDisabled={disableButton}>
                     {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
                 </Button>
             </Tooltip>

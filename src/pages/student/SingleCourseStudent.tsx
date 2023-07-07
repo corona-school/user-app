@@ -9,7 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
@@ -23,13 +23,22 @@ import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 
-function Participants({ subcourseId }: { subcourseId: number }) {
+function Participants({
+    subcourseId,
+    contactParticipant,
+    isInstructor,
+}: {
+    subcourseId: number;
+    contactParticipant: (participantId: string) => void;
+    isInstructor: boolean;
+}) {
     const { t } = useTranslation();
     const { data, loading } = useQuery(
         gql(`
         query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 participants {
+                    id
                     firstname
                     lastname
                     schooltype
@@ -50,7 +59,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} />
+                <ParticipantRow participant={participant} isInstructor={isInstructor} contactParticipant={contactParticipant} />
             ))}
         </>
     );
@@ -151,6 +160,8 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+    const navigate = useNavigate();
+
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
         lg: space['4'],
@@ -215,6 +226,14 @@ const SingleCourseStudent = () => {
         refetchBasics();
     }, []);
 
+    const [contactParticipant] = useMutation(
+        gql(`
+            mutation contactCourseParticipant($memberUserId: String!, $subcourseId: Float!) {
+                participantChatCreate(memberUserId: $memberUserId, subcourseId: $subcourseId)
+            }
+        `)
+    );
+
     const [cancelSubcourse, { data: canceldData }] = useMutation(
         gql(`mutation CancelSubcourse($subcourseId: Float!) {
         subcourseCancel(subcourseId: $subcourseId)
@@ -256,7 +275,11 @@ const SingleCourseStudent = () => {
             badge: subcourse?.participantsCount,
             content: (
                 <>
-                    <Participants subcourseId={subcourseId} />
+                    <Participants
+                        subcourseId={subcourseId}
+                        isInstructor={subcourse.isInstructor}
+                        contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
+                    />
                 </>
             ),
         });
@@ -334,6 +357,11 @@ const SingleCourseStudent = () => {
         }
     }, [course?.courseState, doPublish, submitCourse]);
 
+    const doContactParticipant = async (memberUserId: string) => {
+        const conversation = await contactParticipant({ variables: { memberUserId: memberUserId, subcourseId: subcourseId } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    };
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -357,7 +385,7 @@ const SingleCourseStudent = () => {
                         hideTrafficStatus={canPromoteCourse}
                     />
                     {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
+                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! } as Subcourse} refresh={refetchBasics} />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner

@@ -1,8 +1,9 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Talk from 'talkjs';
-import { useUser, useUserType } from '../hooks/useApollo';
+import { useUserAuth } from '../hooks/useApollo';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
+import { userIdToTalkJsId } from '../helper/chat-helper';
 
 const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
 
@@ -15,10 +16,6 @@ const ChatContext = createContext<IChatContext>({
     talkLoaded: false,
 });
 
-const userIdToTalkJsId = (userId: string): string => {
-    return userId.replace('/', '_');
-};
-
 const getMyChatSignature = gql(`
 query myChatSignature {
     me {
@@ -30,23 +27,28 @@ query myChatSignature {
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
-    const user = useUser();
-    const userType = useUserType();
+    const { sessionState, user, userId } = useUserAuth();
 
-    const { data, loading } = useQuery(getMyChatSignature);
+    const { data, loading } = useQuery(getMyChatSignature, {
+        skip: sessionState !== 'logged-in',
+    });
     // TODO add query to get has unread messages
     const myChatSignature = data?.me.chatSignature;
-    const me = {
-        id: userIdToTalkJsId(user.userID),
-        name: user.firstname,
-        role: userType,
-        email: user.email,
-    };
+
     useEffect(() => {
         Talk.ready.then(() => markTalkLoaded(true));
     }, []);
 
     useEffect(() => {
+        if (sessionState !== 'logged-in' || !userId || !user) return;
+
+        const me = {
+            id: userIdToTalkJsId(userId),
+            name: `${user?.firstname} ${user?.lastname}`,
+            role: user?.pupil ? 'pupil' : 'student',
+            email: user?.email,
+        };
+
         if (talkLoaded && !loading) {
             const currentUser = new Talk.User(me);
 
@@ -58,7 +60,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             setSession(session);
             return () => session.destroy();
         }
-    }, [talkLoaded, loading]);
+    }, [talkLoaded, loading, sessionState]);
 
     const contextValue = useMemo(() => ({ session, talkLoaded }), [session, talkLoaded]);
 

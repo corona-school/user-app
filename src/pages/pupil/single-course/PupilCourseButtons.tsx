@@ -9,6 +9,7 @@ import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 
 type CanJoin = {
     allowed: boolean;
@@ -26,12 +27,20 @@ type ActionButtonProps = {
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
-    subcourse: Required<
-        Pick<
-            Subcourse,
-            'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor' | 'allowChatContactProspects'
-        >
+    subcourse: Pick<
+        Subcourse,
+        | 'id'
+        | 'participantsCount'
+        | 'maxParticipants'
+        | 'isParticipant'
+        | 'isOnWaitingList'
+        | 'canContactInstructor'
+        | 'conversationId'
+        | 'allowChatContactProspects'
+        | 'allowChatContactParticipants'
+        | 'groupChatType'
     >;
+
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
@@ -123,9 +132,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
 
                 {subcourse.isParticipant && (
-                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
-                        {t('single.actions.leaveSubcourse')}
-                    </Button>
+                    <OpenCourseChatButton
+                        groupChatType={subcourse.groupChatType}
+                        conversationId={subcourse.conversationId}
+                        subcourseId={subcourse.id}
+                        participantsCount={subcourse.participantsCount}
+                        isParticipant={subcourse.isParticipant}
+                        refresh={refresh}
+                    />
                 )}
                 {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
@@ -148,6 +162,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </Button>
                 )}
                 {subcourse.isParticipant && <JoinMeeting subcourse={subcourse} refresh={refresh} />}
+                {subcourse.isParticipant && (
+                    <Button variant="outline" onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
+                        {t('single.actions.leaveSubcourse')}
+                    </Button>
+                )}
             </Stack>
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>

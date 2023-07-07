@@ -17,6 +17,7 @@ import { getTrafficStatus } from '../../Utility';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
+import { Subcourse } from '../../gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -25,6 +26,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
         query GetOtherParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 otherParticipants{
+                    id
                     firstname
                     grade
                 }
@@ -61,7 +63,9 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         minGrade
         maxGrade
         capacity
+        groupChatType
         allowChatContactProspects
+        allowChatContactParticipants
         alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start
@@ -281,7 +285,7 @@ const SingleCoursePupil = () => {
                 {course && subcourse && !isInPast && (
                     <PupilCourseButtons
                         courseFull={courseFull}
-                        subcourse={subcourse}
+                        subcourse={subcourse as Subcourse}
                         canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}
                         joinedSubcourse={joinedSubcourseData?.subcourseJoin}
                         joinedWaitinglist={joinedWaitinglist?.subcourseJoinWaitinglist}
