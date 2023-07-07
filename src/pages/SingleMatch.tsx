@@ -19,6 +19,7 @@ import MatchAppointments from './MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
+import AsNavigationItem from '../components/AsNavigationItem';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -157,109 +158,113 @@ const SingleMatch = () => {
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
     return (
-        <WithNavigation
-            headerTitle={''}
-            showBack={!createAppointment}
-            headerLeft={
-                <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
-                    <NotificationAlert />
-                </Stack>
-            }
-        >
-            {loading || !data ? (
-                <CenterLoadingSpinner />
-            ) : (
-                !error && (
-                    <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
-                        {createAppointment ? (
-                            <AppointmentCreation
-                                back={() => setCreateAppointment(false)}
-                                courseOrMatchId={matchId}
-                                isCourse={false}
-                                appointmentsTotal={appointments.length}
-                                navigateToMatch={async () => await goBackToMatch()}
-                            />
-                        ) : (
-                            <>
-                                {userType === 'student' ? (
-                                    <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
-                                ) : (
-                                    <MatchPartner partner={(data?.match?.student as Student) || {}} />
-                                )}
-
-                                {data?.match?.dissolved && (
-                                    <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                                        <AlertMessage
-                                            content={t('matching.shared.dissolvedAlert', {
-                                                partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
-                                            })}
-                                        />
-                                    </Stack>
-                                )}
-
-                                <Stack
-                                    direction={isMobile ? 'column' : 'row'}
-                                    flexWrap={isMobile ? 'nowrap' : 'wrap'}
-                                    justifyContent="center"
-                                    space={isMobile ? space['0.5'] : space['2']}
-                                >
-                                    <Button
-                                        onPress={() =>
-                                            (window.location.href = `mailto:${userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail}`)
-                                        }
-                                        my={isMobile ? '0' : '1'}
-                                    >
-                                        {t('matching.shared.contactMail')}
-                                    </Button>
-
-                                    <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
-                                        {t('matching.shared.contactViaChat')}
-                                    </Button>
-                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
-                                        {t('matching.shared.directCall')}
-                                    </Button>
-                                    {!data?.match?.dissolved && (
-                                        <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
-                                            {t('matching.shared.dissolveMatch')}
-                                        </Button>
-                                    )}
-                                </Stack>
-                                <Divider thickness={1} mb={4} />
-                                <Stack space={space['1']}>
-                                    <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
-                                </Stack>
-                                <MatchAppointments
-                                    appointments={appointments as Appointment[]}
-                                    minimumHeight={'30vh'}
-                                    loading={loading}
-                                    error={error}
-                                    dissolved={data?.match?.dissolved}
-                                />
-                                {userType === 'student' && !data?.match?.dissolved && (
-                                    <Box>
-                                        <Divider thickness={1} mb={4} />
-                                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
-                                            <Button variant="outline" onPress={() => setCreateAppointment(true)}>
-                                                {t('matching.shared.createAppointment')}
-                                            </Button>
-                                        </Stack>
-                                    </Box>
-                                )}
-                            </>
-                        )}
+        <AsNavigationItem path="matching">
+            <WithNavigation
+                headerTitle={''}
+                showBack={!createAppointment}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
                     </Stack>
-                )
-            )}
+                }
+            >
+                {loading || !data ? (
+                    <CenterLoadingSpinner />
+                ) : (
+                    !error && (
+                        <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
+                            {createAppointment ? (
+                                <AppointmentCreation
+                                    back={() => setCreateAppointment(false)}
+                                    courseOrMatchId={matchId}
+                                    isCourse={false}
+                                    appointmentsTotal={appointments.length}
+                                    navigateToMatch={async () => await goBackToMatch()}
+                                />
+                            ) : (
+                                <>
+                                    {userType === 'student' ? (
+                                        <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
+                                    ) : (
+                                        <MatchPartner partner={(data?.match?.student as Student) || {}} />
+                                    )}
 
-            <DissolveMatchModal
-                showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: string) => {
-                    return await dissolve(reason);
-                }}
-                onPressBack={() => setShowDissolveModal(false)}
-            />
-        </WithNavigation>
+                                    {data?.match?.dissolved && (
+                                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
+                                            <AlertMessage
+                                                content={t('matching.shared.dissolvedAlert', {
+                                                    partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
+                                                })}
+                                            />
+                                        </Stack>
+                                    )}
+
+                                    <Stack
+                                        direction={isMobile ? 'column' : 'row'}
+                                        flexWrap={isMobile ? 'nowrap' : 'wrap'}
+                                        justifyContent="center"
+                                        space={isMobile ? space['0.5'] : space['2']}
+                                    >
+                                        <Button
+                                            onPress={() =>
+                                                (window.location.href = `mailto:${
+                                                    userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
+                                                }`)
+                                            }
+                                            my={isMobile ? '0' : '1'}
+                                        >
+                                            {t('matching.shared.contactMail')}
+                                        </Button>
+
+                                        <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
+                                            {t('matching.shared.contactViaChat')}
+                                        </Button>
+                                        <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
+                                            {t('matching.shared.directCall')}
+                                        </Button>
+                                        {!data?.match?.dissolved && (
+                                            <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
+                                                {t('matching.shared.dissolveMatch')}
+                                            </Button>
+                                        )}
+                                    </Stack>
+                                    <Divider thickness={1} mb={4} />
+                                    <Stack space={space['1']}>
+                                        <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
+                                    </Stack>
+                                    <MatchAppointments
+                                        appointments={appointments as Appointment[]}
+                                        minimumHeight={'30vh'}
+                                        loading={loading}
+                                        error={error}
+                                        dissolved={data?.match?.dissolved}
+                                    />
+                                    {userType === 'student' && !data?.match?.dissolved && (
+                                        <Box>
+                                            <Divider thickness={1} mb={4} />
+                                            <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
+                                                <Button variant="outline" onPress={() => setCreateAppointment(true)}>
+                                                    {t('matching.shared.createAppointment')}
+                                                </Button>
+                                            </Stack>
+                                        </Box>
+                                    )}
+                                </>
+                            )}
+                        </Stack>
+                    )
+                )}
+
+                <DissolveMatchModal
+                    showDissolveModal={showDissolveModal}
+                    onPressDissolve={async (reason: string) => {
+                        return await dissolve(reason);
+                    }}
+                    onPressBack={() => setShowDissolveModal(false)}
+                />
+            </WithNavigation>
+        </AsNavigationItem>
     );
 };
 

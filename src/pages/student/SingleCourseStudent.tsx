@@ -22,6 +22,7 @@ import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
+import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 
 function Participants({
     subcourseId,
@@ -256,15 +257,20 @@ const SingleCourseStudent = () => {
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),
-            content: (
-                <Box minH={300}>
-                    <AppointmentList
-                        isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
-                        appointments={appointments as Appointment[]}
-                        noOldAppointments
-                    />
-                </Box>
-            ),
+            content:
+                appointments.length > 0 ? (
+                    <Box minH={300}>
+                        <AppointmentList
+                            isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                            appointments={appointments as Appointment[]}
+                            noOldAppointments
+                        />
+                    </Box>
+                ) : (
+                    <Box h={500} justifyContent="center">
+                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                    </Box>
+                ),
         },
         {
             title: t('single.tabs.description'),

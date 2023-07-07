@@ -26,11 +26,6 @@ const Chat: React.FC = () => {
     const locationState = location.state as { conversationId: string };
     const conversationId = locationState?.conversationId;
 
-    const fabPlace = useBreakpointValue({
-        base: 'bottom-right',
-        lg: 'top-right',
-    });
-
     const marginRight = useBreakpointValue({
         base: 5,
         lg: 70,
@@ -92,7 +87,7 @@ const Chat: React.FC = () => {
                 showBack={isMobile && isConverstationSelected}
             >
                 {!isConverstationSelected && (
-                    <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={fabPlace} icon={<LFAddChatIcon />} />
+                    <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />
                 )}
 
                 <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />

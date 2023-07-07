@@ -11,7 +11,7 @@ const ChatContactsModal: React.FC<ModalProps> = ({ isOpen, setChatId, onClose })
     const { t } = useTranslation();
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content minW="500">
+            <Modal.Content minW="400">
                 <Modal.Header>{t('chat.modal.startChat')}</Modal.Header>
                 <Modal.CloseButton />
                 <Modal.Body>
