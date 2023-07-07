@@ -108,6 +108,9 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
                 firstname
                 lastname
               }
+              subcourse {
+                published
+              }
             }
     }
 }
