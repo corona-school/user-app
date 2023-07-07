@@ -1,79 +1,26 @@
-import { gql, useMutation } from '@apollo/client';
-import { DateTime } from 'luxon';
-import { Box, Button, Modal, Tooltip, useTheme } from 'native-base';
-import { useCallback, useEffect, useState } from 'react';
+import { Button, Tooltip } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { Subcourse } from '../../gql/graphql';
-import AlertMessage from '../../widgets/AlertMessage';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { useNavigate } from 'react-router-dom';
 
 type JoinMeetingProps = {
-    subcourse: Pick<Subcourse, 'id'> & { lectures?: { start: string; duration: number }[] | null };
+    appointmentId: number;
+    appointmentType: Lecture_Appointmenttype_Enum;
+    canJoinMeeting: boolean;
     isInstructor?: boolean;
-    refresh: () => void;
 };
 
-const JoinMeeting: React.FC<JoinMeetingProps> = ({ subcourse, isInstructor = false, refresh }) => {
-    const [disableMeetingButton, setDisableMeetingButton] = useState(true);
-    const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
-    const [showJoinedModal, setShowJoinedModal] = useState<boolean>(false);
-
+const JoinMeeting: React.FC<JoinMeetingProps> = ({ isInstructor = false, appointmentId, appointmentType, canJoinMeeting }) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
-
-    const [joinMeeting, _joinMeeting] = useMutation(
-        gql(`mutation SubcourseJoinMeeting($subcourseId: Float!) {
-        subcourseJoinMeeting(subcourseId: $subcourseId)
-      }`),
-        { variables: { subcourseId: subcourse.id } }
-    );
-
-    const getMeetingLink = useCallback(async () => {
-        const windowRef = window.open(undefined, '_blank');
-        try {
-            const res = await joinMeeting({ variables: { subcourseId: subcourse.id } });
-
-            if (res.data?.subcourseJoinMeeting) {
-                setShowJoinedModal(true);
-                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
-            } else {
-                setShowMeetingNotStarted(true);
-                windowRef?.close();
-            }
-        } catch (e) {
-            windowRef?.close();
-            setShowMeetingNotStarted(true);
-        }
-    }, [subcourse, joinMeeting]);
-
-    useEffect(() => {
-        setInterval(() => {
-            const currentOrNextLecture = subcourse.lectures?.find((lecture) => {
-                const minutes = DateTime.fromISO(lecture.start).diffNow('minutes').minutes;
-                return minutes <= 30 && minutes > -lecture.duration;
-            });
-            setDisableMeetingButton(!currentOrNextLecture);
-        }, 1000);
-    }, [subcourse]);
+    const navigate = useNavigate();
 
     return (
         <>
             <Tooltip maxWidth={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}>
-                <Button onPress={getMeetingLink} isDisabled={_joinMeeting.loading || disableMeetingButton}>
+                <Button onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)} isDisabled={!canJoinMeeting}>
                     {t('single.actions.videochat')}
                 </Button>
             </Tooltip>
-            {showMeetingNotStarted && <AlertMessage content="Der Videochat wurde noch nicht gestartet." />}
-            <Modal isOpen={showJoinedModal} onClose={() => setShowJoinedModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Body>
-                        <Box padding={space['2']}>
-                            {t('single.actions.videochatShouldOpen')}
-                            <Button href={_joinMeeting.data?.subcourseJoinMeeting}>{t('single.actions.openVideochatAgain')}</Button>
-                        </Box>
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
         </>
     );
 };

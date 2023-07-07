@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Tooltip, Stack } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -20,9 +20,9 @@ import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import { PupilDashboardQuery } from '../../gql/graphql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import NextAppointmentCard from '../../widgets/NextAppointmentCard';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -108,6 +108,12 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                    published
+                    course {
+                        image
+                    }
+              }
     }
         }
 
@@ -138,8 +144,6 @@ const query = gql(`
     }
 `);
 
-type JoinedSubcourse = Exclude<PupilDashboardQuery['me']['pupil'], null | undefined>['subcoursesJoined'][number];
-
 const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
@@ -154,7 +158,6 @@ const Dashboard: React.FC<Props> = () => {
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
     const [dissolveData, setDissolveData] = useState<{ id: number }>();
     const [toastShown, setToastShown] = useState<boolean>();
-    const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -217,14 +220,6 @@ const Dashboard: React.FC<Props> = () => {
         }
     );
 
-    const [joinMeeting, _joinMeeting] = useMutation(
-        gql(`
-        mutation joinMeetingPupil($subcourseId: Float!) {
-            subcourseJoinMeeting(subcourseId: $subcourseId)
-        }
-    `)
-    );
-
     const dissolveMatch = useCallback((match: { id: number }) => {
         setDissolveData(match);
         setShowDissolveModal(true);
@@ -243,9 +238,6 @@ const Dashboard: React.FC<Props> = () => {
     const activeMatches = useMemo(() => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
-
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
 
     return (
         <AsNavigationItem path="start">
@@ -275,49 +267,7 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <ImportantInformation variant="dark" />
                         <VStack>
-                            {myNextAppointment && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-
-                                    <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                        }}
-                                                        isDisabled={
-                                                            !myNextAppointment.id ||
-                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 10, DateTime.now())
-                                                        }
-                                                    >
-                                                        {t('course.meeting.videobutton.pupil')}
-                                                    </Button>
-                                                </Tooltip>
-                                                {showMeetingNotStarted && <Text color="lightText">{t('course.meeting.videotext')}</Text>}
-                                            </VStack>
-                                        }
-                                        isTeaser={true}
-                                        onPressToCourse={() => {
-                                            DateTime.now().plus({ days: 7 }).toISODate();
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + myNextAppointment.displayName,
-                                                documentTitle: 'Schüler Dashboard',
-                                            });
-                                            navigate(`/appointment/${myNextAppointment.id}`);
-                                        }}
-                                        date={myNextAppointment.start}
-                                        duration={myNextAppointment.duration}
-                                        title={myNextAppointment.displayName}
-                                        description={myNextAppointment.description ?? ''}
-                                    />
-                                </VStack>
-                            )}
+                            <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&

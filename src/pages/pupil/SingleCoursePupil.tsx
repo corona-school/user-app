@@ -18,6 +18,7 @@ import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import { Subcourse } from '../../gql/graphql';
+import { Lecture } from '../../gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -107,6 +108,9 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
               displayName
               position
               total
+              subcourse {
+                published
+              }
             }
     }
 }
@@ -128,6 +132,8 @@ const SingleCoursePupil = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+    const appointments = subcourse?.appointments ?? [];
+    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
 
     const { data: canJoinData } = useQuery(
         gql(`
@@ -234,7 +240,11 @@ const SingleCoursePupil = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
+                    <AppointmentList
+                        isReadOnlyList={!subcourse?.isParticipant}
+                        appointments={data?.subcourse?.appointments as Appointment[]}
+                        noOldAppointments
+                    />
                 </Box>
             ),
         },
@@ -284,6 +294,7 @@ const SingleCoursePupil = () => {
 
                 {course && subcourse && !isInPast && (
                     <PupilCourseButtons
+                        appointment={myNextAppointment as Lecture}
                         courseFull={courseFull}
                         subcourse={subcourse as Subcourse}
                         canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}

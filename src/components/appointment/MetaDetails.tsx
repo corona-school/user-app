@@ -8,11 +8,13 @@ import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useState } from 'react';
-import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
+import AlertMessage from '../../widgets/AlertMessage';
+import useInterval from '../../hooks/useInterval';
 
 type MetaProps = {
     date: string;
@@ -27,8 +29,9 @@ type MetaProps = {
     participants?: AppointmentParticipant[];
     declinedBy: string[];
     appointmentId?: number;
-    chatType?: string;
+    chatType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
+    isSubcoursePublished?: boolean;
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
@@ -45,8 +48,10 @@ const MetaDetails: React.FC<MetaProps> = ({
     appointmentId,
     chatType,
     isOrganizer,
+    isSubcoursePublished,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [_, setCurrentTime] = useState(0);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -55,6 +60,9 @@ const MetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+    useInterval(() => {
+        setCurrentTime(new Date().getTime());
+    }, 30_000);
 
     return (
         <>
@@ -88,15 +96,30 @@ const MetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            <Button
-                width={`${buttonWidth}`}
-                onPress={() => {
-                    navigate(`/video-chat/${appointmentId}/${chatType}`);
-                }}
-                isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
-            >
-                {t('appointment.detail.videochatButton')}
-            </Button>
+            {chatType === Lecture_Appointmenttype_Enum.Group ? (
+                <>
+                    <Button
+                        width={`${buttonWidth}`}
+                        onPress={() => {
+                            navigate(`/video-chat/${appointmentId}/${chatType}`);
+                        }}
+                        isDisabled={!isSubcoursePublished || !appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
+                    >
+                        {t('appointment.detail.videochatButton')}
+                    </Button>
+                    {!isSubcoursePublished && isOrganizer && <AlertMessage content={t('appointment.courseNotPublished')} />}
+                </>
+            ) : (
+                <Button
+                    width={`${buttonWidth}`}
+                    onPress={() => {
+                        navigate(`/video-chat/${appointmentId}/${chatType}`);
+                    }}
+                    isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
+                >
+                    {t('appointment.detail.videochatButton')}
+                </Button>
+            )}
         </>
     );
 };

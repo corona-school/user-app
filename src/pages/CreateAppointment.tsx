@@ -92,12 +92,14 @@ const CreateAppointment = () => {
                             />
                         )}
                         {currentIndex === 2 && (
-                            <AppointmentCreation
-                                back={noAppointments ? returnToStepOne : onBack}
-                                courseOrMatchId={courseOrMatchId}
-                                isCourse={isCourse}
-                                appointmentsTotal={appointmentsTotal}
-                            />
+                            <Box mt="10">
+                                <AppointmentCreation
+                                    back={noAppointments ? returnToStepOne : onBack}
+                                    courseOrMatchId={courseOrMatchId}
+                                    isCourse={isCourse}
+                                    appointmentsTotal={appointmentsTotal}
+                                />
+                            </Box>
                         )}
                     </Box>
                 </CreateAppointmentProvider>

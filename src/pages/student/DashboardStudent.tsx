@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip, Stack } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -24,7 +24,8 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import NextAppointmentCard from '../../widgets/NextAppointmentCard';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -107,6 +108,13 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                subcourse {
+                    published
+                    course {
+                        image
+                        subject
+                    }
+              }
     }
         }
 
@@ -195,9 +203,6 @@ const DashboardStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const nextAppointment = data?.me?.appointments ?? [];
-    const myNextAppointment = useMemo(() => nextAppointment[0], [nextAppointment]);
-
     const publishedSubcourses = useMemo(
         () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
         [data?.me?.student?.subcoursesInstructing]
@@ -230,7 +235,6 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
-    console.log(data?.me?.appointments);
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -259,47 +263,12 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {myNextAppointment && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
-                                    <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={true} maxWidth={300} label={t('course.meeting.hint.student')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            navigate(`/video-chat/${myNextAppointment.id}/${myNextAppointment.appointmentType}`);
-                                                        }}
-                                                        isDisabled={
-                                                            !myNextAppointment.id ||
-                                                            !canJoinMeeting(myNextAppointment.start, myNextAppointment.duration, 30, DateTime.now())
-                                                        }
-                                                    >
-                                                        {t('course.meeting.videobutton.student')}
-                                                    </Button>
-                                                </Tooltip>
-                                            </VStack>
-                                        }
-                                        onPressToCourse={() => {
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Helfer Dashboard Kachelklick   ' + myNextAppointment.displayName || '',
-                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + myNextAppointment.displayName || '',
-                                            });
-                                            navigate(`/appointment/${myNextAppointment.id}`);
-                                        }}
-                                        date={myNextAppointment.start || ''}
-                                        duration={myNextAppointment.duration}
-                                        isTeaser={true}
-                                        title={myNextAppointment.displayName || ''}
-                                        description={myNextAppointment.description || ''}
-                                    />
+                            <VStack marginBottom={space['1.5']}>
+                                <VStack space={space['1']}>
+                                    <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
                                 </VStack>
-                            )}
+                            </VStack>
 
                             {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
                                 <HSection

@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import RejectAppointmentModal from './RejectAppointmentModal';
+
+<Meta title="Appointment/Modal" component={RejectAppointmentModal} />
+
+# RejectAppointmentModal
+
+<Story name="Reject Appointment Modal">
+    <RejectAppointmentModal
+        onDelete={() => console.log('delete appointment')}
+        close={() => console.log('close modal because canceled')}
+        headerText="Löschen"
+        description="löschen"
+    />
+</Story>
