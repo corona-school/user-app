@@ -13,6 +13,7 @@ import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { useChat } from '../context/ChatContext';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -24,6 +25,7 @@ type Props = {
     showBack?: boolean;
     hideMenu?: boolean;
     isLoading?: boolean;
+
     onBack?: () => any;
 };
 
@@ -37,6 +39,7 @@ const WithNavigation: React.FC<Props> = ({
     showBack,
     hideMenu,
     isLoading,
+
     onBack,
 }) => {
     const { sizes, space } = useTheme();
@@ -49,6 +52,8 @@ const WithNavigation: React.FC<Props> = ({
         base: 0,
         lg: space['1'],
     });
+
+    const { unreadMessagesCount } = useChat();
 
     const { t } = useTranslation();
 
@@ -79,7 +84,7 @@ const WithNavigation: React.FC<Props> = ({
                     <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
                         {!hideMenu && (
                             <Column>
-                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} />
+                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
                             </Column>
                         )}
                         <Column flex="1" padding={innerPaddingContent}>
@@ -99,7 +104,7 @@ const WithNavigation: React.FC<Props> = ({
                     </Row>
                 </View>
             </View>
-            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} />}
+            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
         </View>
     );
 };

@@ -14,9 +14,9 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
-    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+    const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
-    const [isConverstationSelected, setIsConversationSelected] = useState(false);
+    const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
 
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
@@ -65,10 +65,13 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({
+            showChatHeader: !isMobile,
+            showMobileBackButton: false,
+            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+        });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
-
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
                 if (conversation) return setIsConversationSelected(true);
