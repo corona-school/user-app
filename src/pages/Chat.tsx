@@ -66,7 +66,6 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({
-            showChatHeader: !isMobile,
             showMobileBackButton: false,
             messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
         });
