@@ -37,6 +37,7 @@ import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
+import { canJoinMeeting } from './appointment/AppointmentDay';
 
 type Props = {
     appointmentId?: number;
@@ -147,7 +148,8 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const textColor = useMemo(() => (isTeaser ? 'lightText' : 'darkText'), [isTeaser]);
+    const isCurrent = _date && duration && isOrganizer ? canJoinMeeting(_date, duration, isOrganizer ? 30 : 10, DateTime.now()) : false;
+    const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
         base: 'column',
@@ -207,7 +209,7 @@ const AppointmentCard: React.FC<Props> = ({
     return (
         <View height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
-                <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser ? 'dark' : 'normal'}>
+                <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser && isCurrent ? 'dark' : 'normal'}>
                     <Pressable onPress={onPressToCourse}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { canJoinMeeting } from './appointment/AppointmentDay';
 import { DateTime } from 'luxon';
@@ -22,12 +22,12 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
         const nextAppointments = appointments;
         const nextAvailableAppointments = nextAppointments.filter((appointment) => {
             const { start, duration, isOrganizer, subcourse } = appointment;
-            const canStartMeeting = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+            const canStart = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
             const isSubcoursePublished = subcourse?.published;
             if (!isSubcoursePublished) {
                 return false;
             }
-            return canStartMeeting ? canStartMeeting : isSubcoursePublished;
+            return canStart ? canStart : isSubcoursePublished;
         });
 
         return nextAvailableAppointments;
