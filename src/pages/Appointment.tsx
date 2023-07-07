@@ -3,7 +3,6 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
-import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -37,6 +36,9 @@ export const STUDENT_APPOINTMENT = gql(`
             }
             declinedBy
             zoomMeetingId
+            subcourse {
+                published
+            }
         }
     }
 `);
@@ -69,6 +71,9 @@ export const PUPIL_APPOINTMENT = gql(`
             }
             declinedBy
             zoomMeetingId
+            subcourse {
+                published
+            }
         }
     }
 `);

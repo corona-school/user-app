@@ -75,7 +75,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
 
     return (
         <Box>
-            <VStack space={5} width="full">
+            <VStack space={1} width="full">
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TITLE */}
                     <FormControl width={inputWidth}>

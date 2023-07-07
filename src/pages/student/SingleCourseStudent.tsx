@@ -9,7 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
@@ -108,6 +108,9 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
                 firstname
                 lastname
               }
+              subcourse {
+                published
+              }
             }
     }
 }
@@ -181,6 +184,8 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+    const appointments = subcourse?.appointments ?? [];
+    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
 
     const [publish] = useMutation(
         gql(`
@@ -231,7 +236,11 @@ const SingleCourseStudent = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList appointments={data?.subcourse?.appointments as Appointment[]} />
+                    <AppointmentList
+                        isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                        appointments={appointments as Appointment[]}
+                        noOldAppointments
+                    />
                 </Box>
             ),
         },
@@ -354,7 +363,11 @@ const SingleCourseStudent = () => {
                         hideTrafficStatus={canPromoteCourse}
                     />
                     {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
+                        <StudentCourseButtons
+                            subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
+                            refresh={refetchBasics}
+                            appointment={myNextAppointment as Lecture}
+                        />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner
