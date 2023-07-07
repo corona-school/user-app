@@ -65,7 +65,11 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (!session) return;
-        const inbox = session.createInbox({ showChatHeader: !isMobile, showMobileBackButton: false });
+        const inbox = session.createInbox({
+            showChatHeader: !isMobile,
+            showMobileBackButton: false,
+            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+        });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
         if (isMobile) {
