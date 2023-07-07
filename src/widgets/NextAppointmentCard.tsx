@@ -1,41 +1,43 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { canJoinMeeting } from './appointment/AppointmentDay';
 import { DateTime } from 'luxon';
-import { Box, Button, Heading, Tooltip, VStack, useTheme, Text } from 'native-base';
+import { Box, Heading, VStack, useTheme } from 'native-base';
 import AppointmentCard from './AppointmentCard';
 import { useNavigate } from 'react-router-dom';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTranslation } from 'react-i18next';
+import AlertMessage from './AlertMessage';
 
 type Props = {
     appointments: Lecture[];
 };
 const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
-    const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
     const { trackEvent } = useMatomo();
     const { space } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
     const myNextAppointments = useMemo(() => {
-        const nextAppointment = appointments;
-        const nextAvailableAppointments = nextAppointment.filter((appointment) => {
-            const { start, duration, isOrganizer } = appointment;
+        const nextAppointments = appointments;
+        const nextAvailableAppointments = nextAppointments.filter((appointment) => {
+            const { start, duration, isOrganizer, subcourse } = appointment;
             const canStartMeeting = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            canStartMeeting ? setShowMeetingNotStarted(true) : setShowMeetingNotStarted(false);
-            return canStartMeeting;
+            const isSubcoursePublished = subcourse?.published;
+            if (!isSubcoursePublished) {
+                return false;
+            }
+            return canStartMeeting ? canStartMeeting : isSubcoursePublished;
         });
 
-        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : [nextAppointment[0]];
+        return nextAvailableAppointments;
     }, [appointments]);
 
     return (
         <Box>
-            {myNextAppointments && (
-                <VStack marginBottom={space['1.5']}>
-                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-
+            <VStack marginBottom={space['1.5']}>
+                <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
+                {myNextAppointments.length > 0 ? (
                     <VStack space={space['1']}>
                         {myNextAppointments.map((myNextAppointment) => {
                             return (
@@ -64,8 +66,10 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                             );
                         })}
                     </VStack>
-                </VStack>
-            )}
+                ) : (
+                    <AlertMessage content={t('appointment.noNextAppointment')} />
+                )}
+            </VStack>
         </Box>
     );
 };

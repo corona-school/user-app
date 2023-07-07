@@ -6,6 +6,7 @@ const appointment = {
     goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Vergangene Termine laden',
     courseNotPublished: 'Kurs noch nicht veröffentlicht.',
+    noNextAppointment: 'Kein nächster Termin.',
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
