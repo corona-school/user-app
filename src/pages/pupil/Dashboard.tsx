@@ -311,7 +311,7 @@ const Dashboard: React.FC<Props> = () => {
                                             });
                                             navigate(`/appointment/${myNextAppointment.id}`);
                                         }}
-                                        date={myNextAppointment.start}
+                                        dateFirstLecture={myNextAppointment.start}
                                         duration={myNextAppointment.duration}
                                         title={myNextAppointment.displayName}
                                         description={myNextAppointment.description ?? ''}
@@ -397,7 +397,7 @@ const Dashboard: React.FC<Props> = () => {
                                             key={subcourse.id}
                                             description={subcourse.course.description}
                                             tags={subcourse.course.tags}
-                                            date={subcourse?.firstLecture?.start ?? undefined}
+                                            dateFirstLecture={subcourse?.firstLecture?.start ?? undefined}
                                             image={subcourse.course.image ?? undefined}
                                             title={subcourse.course.name}
                                             countCourse={subcourse.lectures.length}

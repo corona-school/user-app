@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -36,7 +36,8 @@ import { useUserType } from '../hooks/useApollo';
 
 type Props = {
     tags?: { name: string }[];
-    date?: string;
+    dateFirstLecture?: string;
+    dateNextLecture?: string;
     duration?: number; // in minutes
     title: string;
     description: string;
@@ -70,7 +71,8 @@ type Props = {
 
 const AppointmentCard: React.FC<Props> = ({
     tags,
-    date: _date,
+    dateFirstLecture: _dateFirst,
+    dateNextLecture: _dateNext,
     duration,
     title,
     countCourse,
@@ -105,7 +107,8 @@ const AppointmentCard: React.FC<Props> = ({
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
-    const date = _date && DateTime.fromISO(_date);
+    const dateFirstLecture = _dateFirst && DateTime.fromISO(_dateFirst);
+    const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
 
     useInterval(() => {
         setCurrentTime(Date.now());
@@ -115,13 +118,13 @@ const AppointmentCard: React.FC<Props> = ({
     let ongoingTime: string | null = null;
     let ended = false;
 
-    if (date) {
-        if (currentTime < date.toMillis()) {
+    if (dateFirstLecture) {
+        if (currentTime < dateFirstLecture.toMillis()) {
             // appointment not yet started
-            remainingTime = toTimerString(date.toMillis(), currentTime);
-        } else if (duration && currentTime < date.toMillis() + duration * 60 * 1000) {
+            remainingTime = toTimerString(dateFirstLecture.toMillis(), currentTime);
+        } else if (duration && currentTime < dateFirstLecture.toMillis() + duration * 60 * 1000) {
             // appointment not yet ended -> ongoing
-            ongoingTime = '' + Math.floor((currentTime - date.toMillis()) / 1000 / 60) + ' Minuten';
+            ongoingTime = '' + Math.floor((currentTime - dateFirstLecture.toMillis()) / 1000 / 60) + ' Minuten';
         } else {
             ended = true;
         }
@@ -223,20 +226,23 @@ const AppointmentCard: React.FC<Props> = ({
                             )}
 
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
-                                {!isTeaser && date && (
+                                {!isTeaser && dateFirstLecture && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
                                                 {t('single.card.dateLecture', {
-                                                    weekday: t('single.global.weekdays', { returnObjects: true })[date.weekday - 1],
-                                                    date: date.toFormat('dd.MM.yyyy'),
-                                                    time: date.toFormat('HH:mm'),
+                                                    /* TODO: change used date here from first lecture to upcoming lecture (dateNextLecture). 
+                                                    Access to the date of next lecture for all components, that render this component, must be implemented before, 
+                                                    so they can pass the prop down. (See issue #755)*/
+                                                    weekday: t('single.global.weekdays', { returnObjects: true })[dateFirstLecture.weekday - 1],
+                                                    date: dateFirstLecture.toFormat('dd.MM.yyyy'),
+                                                    time: dateFirstLecture.toFormat('HH:mm'),
                                                 })}
                                             </Text>
                                         </Row>
                                     </>
                                 )}
-                                {date && isTeaser && (
+                                {dateFirstLecture && isTeaser && (
                                     <Row marginBottom={space['1']} alignItems="center">
                                         <Column marginRight="10px">
                                             <Text>{<LFTimerIcon />}</Text>
@@ -384,12 +390,12 @@ const AppointmentCard: React.FC<Props> = ({
 
                         <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
                             <Row space={1} marginTop={space['0.5']}>
-                                {date && (
+                                {dateFirstLecture && (
                                     <Text>
-                                        {t('from')} {date.toFormat('dd.MM.yyyy')}
+                                        {t('from')} {dateFirstLecture.toFormat('dd.MM.yyyy')}
                                     </Text>
                                 )}
-                                {date && countCourse && (
+                                {dateFirstLecture && countCourse && (
                                     <>
                                         <Text>•</Text>
                                         <Text>{t('single.card.appointments', { count: countCourse })}</Text>

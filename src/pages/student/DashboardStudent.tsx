@@ -292,7 +292,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                             });
                                             navigate(`/appointment/${myNextAppointment.id}`);
                                         }}
-                                        date={myNextAppointment.start || ''}
+                                        dateFirstLecture={myNextAppointment.start || ''}
                                         duration={myNextAppointment.duration}
                                         isTeaser={true}
                                         title={myNextAppointment.displayName || ''}
@@ -320,7 +320,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                         key={index}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        date={firstLecture.start}
+                                                        dateFirstLecture={firstLecture.start}
                                                         image={sub.course.image || ''}
                                                         title={sub.course.name}
                                                         countCourse={sub.lectures.length}
