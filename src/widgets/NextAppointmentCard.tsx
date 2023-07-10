@@ -1,6 +1,5 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { canJoinMeeting } from './appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { Box, Heading, VStack, useTheme } from 'native-base';
 import AppointmentCard from './AppointmentCard';
@@ -12,6 +11,13 @@ import AlertMessage from './AlertMessage';
 type Props = {
     appointments: Lecture[];
 };
+
+const isCurrentOrOver = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
+    const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
+    const end = DateTime.fromISO(start).plus({ minutes: duration }).plus({ minutes: 10 });
+    return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
+};
+
 const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     const { trackEvent } = useMatomo();
     const { space } = useTheme();
@@ -19,15 +25,15 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     const navigate = useNavigate();
 
     const myNextAppointments = useMemo(() => {
-        const nextAppointments = appointments;
-        const nextAvailableAppointments = nextAppointments.filter((appointment) => {
+        const nextAvailableAppointments = appointments.filter((appointment) => {
             const { start, duration, isOrganizer, subcourse } = appointment;
-            const canStart = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+            const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
             const isSubcoursePublished = subcourse?.published;
-            if (!isSubcoursePublished) {
+            if (subcourse && !isSubcoursePublished) {
                 return false;
+            } else {
+                return isCurrent;
             }
-            return canStart ? canStart : isSubcoursePublished;
         });
 
         return nextAvailableAppointments;
