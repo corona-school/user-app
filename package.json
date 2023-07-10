@@ -197,7 +197,7 @@
         ]
     },
     "dependencies": {
-        "@zoomus/websdk": "^2.11.0",
+        "@zoomus/websdk": "^2.14.0",
         "compression": "^1.7.4",
         "express": "^4.18.2",
         "jsrsasign": "^10.8.1",
