@@ -239,7 +239,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 {isMatch && <MatchAvatarImage />}
                             </Box>
 
-                            <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
+                            <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="400px" space="2">
                                 {!isTeaser && date && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
@@ -355,7 +355,6 @@ const AppointmentCard: React.FC<Props> = ({
                             </Stack>
 
                             <Box
-                                flex="1"
                                 maxWidth={ButtonVideoContainer}
                                 marginLeft={ButtonVideoContainerMargin}
                                 alignItems="flex-end"

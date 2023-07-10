@@ -116,12 +116,17 @@ const course = {
             maxMembersLabel: 'Max. Teilnehmer:innenzahl',
             maxMembersInfo: 'Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.',
             otherHeadline: 'Sonstiges',
+            otherContactHeadline: 'Kontaktaufnahme',
             otherOptionStart: 'Schüler:innen können sich nach dem ersten Kurstermin anmelden',
+            otherProspects: 'Interessent:innen',
+            otherParticipants: 'Teilnehmer:innen',
+            otherOptionContact: 'Kontaktaufnahme erlauben',
+            otherGroupChatHeadline: 'Gruppen- bzw. Ankündigungchat',
+            allowChatContact: 'Teilnehmer:innen erlauben in den Chat zu schreiben',
+            prospectContactTooltip: 'Schüler:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)',
+            participantsContactTooltip: 'Schüler:innen, die sich für deinen Kurs angemeldet haben',
             otherOptionStartToolTip:
                 'Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.',
-            otherOptionContact: 'Kontaktaufnahme erlauben',
-            otherOptionContactToolTip:
-                'Wenn du die Kontaktaufnahme erlaubst, können Schüler:innen, die Interesse am Kurs haben oder bereits angemeldet sind, Kontakt per E-Mail mit dir aufnehmen',
         },
         tags: {
             header: 'Tags wählen',

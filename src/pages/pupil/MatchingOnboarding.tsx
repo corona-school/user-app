@@ -4,15 +4,17 @@ import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AlertMessage from '../../widgets/AlertMessage';
+import { gql } from '../../gql';
 
 type Props = {
     onRequestMatch: () => any;
 };
 
 const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
-    const { data } = useQuery(gql`
+    const { data } = useQuery(
+        gql(`
         query PupilMatchOnboarding {
             me {
                 pupil {
@@ -31,7 +33,8 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                 }
             }
         }
-    `);
+    `)
+    );
 
     const { t } = useTranslation();
     const { space, sizes } = useTheme();

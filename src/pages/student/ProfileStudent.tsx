@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     Column,
     Container,
@@ -12,7 +13,6 @@ import {
     TextArea,
     useBreakpointValue,
     useTheme,
-    useToast,
     VStack,
 } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';

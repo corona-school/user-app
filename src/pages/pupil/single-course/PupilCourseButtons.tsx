@@ -5,11 +5,11 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
-import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 
@@ -30,13 +30,26 @@ type ActionButtonProps = {
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
-    loadingContactInstructor: boolean;
-    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
+    subcourse: Pick<
+        Subcourse,
+        | 'id'
+        | 'participantsCount'
+        | 'maxParticipants'
+        | 'isParticipant'
+        | 'isOnWaitingList'
+        | 'canContactInstructor'
+        | 'conversationId'
+        | 'allowChatContactProspects'
+        | 'allowChatContactParticipants'
+        | 'groupChatType'
+    >;
+
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: (title: string, body: string, fileIDs: string[]) => Promise<void>;
+    contactInstructorAsParticipant: () => Promise<void>;
+    contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -53,29 +66,23 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     subcourse,
     loadingJoinedWaitinglist,
     loadingWaitinglistLeft,
-    loadingContactInstructor,
     joinSubcourse,
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    doContactInstructor,
+    contactInstructorAsParticipant,
+    contactInstructorAsProspect,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
-    const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
-
-    async function contactInstructor(title: string, body: string, fileIDs: string[]) {
-        doContactInstructor(title, body, fileIDs);
-        setShowMessageModal(false);
-    }
 
     const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
@@ -129,9 +136,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
 
                 {subcourse.isParticipant && (
-                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
-                        {t('single.actions.leaveSubcourse')}
-                    </Button>
+                    <OpenCourseChatButton
+                        groupChatType={subcourse.groupChatType}
+                        conversationId={subcourse.conversationId}
+                        subcourseId={subcourse.id}
+                        participantsCount={subcourse.participantsCount}
+                        isParticipant={subcourse.isParticipant}
+                        refresh={refresh}
+                    />
                 )}
                 {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
@@ -144,7 +156,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </VStack>
                 )}
                 {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => setShowMessageModal(true)}>
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
@@ -196,14 +213,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     onConfirm={handleWaitinglistLeave}
                 />
             </Modal>
-
-            <SendParticipantsMessageModal
-                isInstructor={false}
-                isOpen={showMessageModal}
-                onClose={() => setShowMessageModal(false)}
-                onSend={contactInstructor}
-                isDisabled={loadingContactInstructor}
-            />
         </>
     );
 };

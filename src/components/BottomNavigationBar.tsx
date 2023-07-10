@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Circle, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -12,9 +12,10 @@ import { useUserType } from '../hooks/useApollo';
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
+    unreadMessagesCount?: number;
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -36,6 +37,11 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
         if (!data) return true;
         return !data?.myRoles.includes('TUTEE');
     }, [data]);
+
+    const badgeAlign = useBreakpointValue({
+        base: 0,
+        lg: 2,
+    });
 
     if (loading) return <></>;
 
@@ -71,6 +77,13 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                 }}
                                 key={key}
                             >
+                                {key === 'chat' && !!unreadMessagesCount && (
+                                    <Circle bgColor="danger.500" size="4" position="absolute" zIndex="1" mx="6">
+                                        <Text fontSize="xs" color="white">
+                                            {unreadMessagesCount}
+                                        </Text>
+                                    </Circle>
+                                )}
                                 <CSSWrapper className="navigation__item">
                                     <Center>
                                         <Box>

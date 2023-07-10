@@ -8,13 +8,12 @@ import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { gql } from './../../gql';
-import {} from '../../gql/gql';
 import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
+import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};

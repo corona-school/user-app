@@ -1,4 +1,21 @@
 const chat = {
+    title: 'Chat',
+    openSubcourseChat: 'Kurschat öffnen',
+    openAnnouncementChat: 'Ankündigungschat öffnen',
+    hint: 'Kurschat kann erst geöffnet werden, wenn es mindestens 2 Teilnehmer gibt.',
+    instructor: 'Kursleiter:in',
+    participant: 'Kursteilnehmer:in',
+    prospect: 'Interessent:in',
+    matchee: 'Lernpartner:in',
+    noContactOptions: 'Keine Kontaktoptionen',
+    noContactOptionsHint: 'Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.',
+    placeholder: 'Schreibe etwas...',
+    chatError: 'Chat kann nicht geöffnet werden.',
+    groupChatError: 'Kurschat kann nicht geöffnet werden.',
+    announcementChatError: 'Ankündigungschat kann nicht geöffnet werden.',
+    modal: {
+        startChat: 'Chat starten',
+    },
     course: {
         leftVideoChat: {
             title: 'Du hast den Videochat verlassen',
@@ -14,4 +31,5 @@ const chat = {
         },
     },
 };
+
 export default chat;
