@@ -12,6 +12,7 @@ const single = {
         tutor: 'Tutor:innen',
         more_tutors: 'Weitere Tutor:innen',
         hours: 'Stunde(n)',
+        weekdays: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
         state: 'Status:',
         status: {
             free: 'Freie Plätze',
@@ -49,7 +50,7 @@ const single = {
         alreadyRegistered: 'Du bist bereits für diesen Kurs angemeldet.',
         waitingListMember: 'Du bist bereits auf der Warteliste dieses Kurses',
         appointments: '{{count}} Termin(e)',
-        dateLectures: '{{date}}, {{time}} Uhr',
+        dateLectures: '{{weekday}} {{date}}, {{time}} Uhr',
         time: {
             notStarted: 'Startet:',
             ongoing: 'Läuft seit',
