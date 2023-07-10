@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import JoinMeeting from '../../subcourse/JoinMeeting';
-import StudentSetMeetingUrl from './StudentSetMeetingUrl';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
@@ -69,7 +68,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         >
                             {t('single.courseInfo.editCourse')}
                         </Button>
-                        <StudentSetMeetingUrl subcourseId={subcourse.id} refresh={refresh} />
                     </>
                 )}
             </Stack>

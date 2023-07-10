@@ -24,7 +24,7 @@ type Props = {
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
     chatType?: Appointment['appointmentType'];
-    isSubcoursePublished?: boolean;
+    canJoinVideochat?: boolean;
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -40,7 +40,7 @@ const AppointmentTile: React.FC<Props> = ({
     displayName,
     appointmentId,
     chatType,
-    isSubcoursePublished,
+    canJoinVideochat,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -108,7 +108,7 @@ const AppointmentTile: React.FC<Props> = ({
                                 onPress={() => {
                                     appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
                                 }}
-                                isDisabled={!isSubcoursePublished}
+                                isDisabled={!canJoinVideochat}
                             >
                                 {t('appointment.tile.videoButton')}
                             </Button>
