@@ -108,9 +108,6 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
               displayName
               position
               total
-              subcourse {
-                published
-              }
             }
     }
 }
