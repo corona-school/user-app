@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import { UnreadConversation } from 'talkjs/all';
 import { userIdToTalkJsId } from '../helper/chat-helper';
 
-const TALKJS_APP_ID = process.env.TALKJS_APP_ID;
+const TALKJS_APP_ID = process.env.REACT_APP_TALKJS_APP_ID;
 
 type IChatContext = {
     session: Talk.Session | null;
@@ -54,11 +54,12 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             email: user?.email,
         };
 
-        if (talkLoaded && !loading) {
+        if (talkLoaded && !loading && TALKJS_APP_ID) {
+            console.log('CHAT SIGNATURE', myChatSignature);
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
-                appId: 't5NarFaG',
+                appId: TALKJS_APP_ID,
                 me: currentUser,
                 signature: myChatSignature,
             });
