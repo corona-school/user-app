@@ -26,17 +26,13 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
 
     const myNextAppointments = useMemo(() => {
         const nextAvailableAppointments = appointments.filter((appointment) => {
-            const { start, duration, isOrganizer, subcourse } = appointment;
+            const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            const isSubcoursePublished = subcourse?.published;
-            if (subcourse && !isSubcoursePublished) {
-                return false;
-            } else {
-                return isCurrent;
-            }
+
+            return isCurrent;
         });
 
-        return nextAvailableAppointments;
+        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : appointments.slice(0, 1);
     }, [appointments]);
 
     return (

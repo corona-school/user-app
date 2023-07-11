@@ -103,7 +103,7 @@ const MetaDetails: React.FC<MetaProps> = ({
                         onPress={() => {
                             navigate(`/video-chat/${appointmentId}/${chatType}`);
                         }}
-                        isDisabled={!isSubcoursePublished || !appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
+                        isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
                     >
                         {t('appointment.detail.videochatButton')}
                     </Button>

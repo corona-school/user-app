@@ -108,7 +108,6 @@ const AppointmentTile: React.FC<Props> = ({
                                 onPress={() => {
                                     appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
                                 }}
-                                isDisabled={!canJoinVideochat}
                             >
                                 {t('appointment.tile.videoButton')}
                             </Button>
