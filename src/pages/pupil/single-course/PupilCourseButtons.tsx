@@ -145,6 +145,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         refresh={refresh}
                     />
                 )}
+                {subcourse.isParticipant && (
+                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
+                        {t('single.actions.leaveSubcourse')}
+                    </Button>
+                )}
                 {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
                         {t('single.actions.joinWaitinglist')}
