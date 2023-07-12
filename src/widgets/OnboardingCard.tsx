@@ -5,7 +5,8 @@ import RequestInstructorTutorBanner from './RequestInstructorTutorBanner';
 
 type CardProps = {
     headline: string;
-    Description: React.FC;
+    description: string;
+    bulletPoints: React.FC;
     cardImage: string;
     mobileCardImage: string;
     Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -21,7 +22,8 @@ type CardProps = {
 
 const OnboardingCard: React.FC<CardProps> = ({
     headline,
-    Description,
+    description,
+    bulletPoints: BulletPoints,
     cardImage,
     mobileCardImage,
     Icon,
@@ -45,11 +47,11 @@ const OnboardingCard: React.FC<CardProps> = ({
                         <Stack maxW="50%" px="5" space={space['1']}>
                             <Icon />
                             <Heading>{headline}</Heading>
-                            <Text ellipsizeMode="tail" numberOfLines={2}>
-                                {t('introduction.courseTypes')}
+                            <Text ellipsizeMode="tail" numberOfLines={3}>
+                                {description}
                             </Text>
                             <Box>
-                                <Description />
+                                <BulletPoints />
                             </Box>
 
                             <Stack space={space['0.5']}>
@@ -86,9 +88,9 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Icon />
                             <Heading>{headline}</Heading>
                             <Text ellipsizeMode="tail" numberOfLines={10}>
-                                {t('introduction.courseTypes')}
+                                {description}
                             </Text>
-                            <Description />
+                            <BulletPoints />
 
                             <Stack space={space['0.5']}>
                                 {showRequestButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
