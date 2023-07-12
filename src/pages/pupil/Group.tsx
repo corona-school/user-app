@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue } from 'native-base';
+import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -16,6 +16,7 @@ import Hello from '../../widgets/Hello';
 import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
+import HelpNavigation from '../../components/HelpNavigation';
 
 type Props = {};
 
@@ -266,7 +267,16 @@ const PupilGroup: React.FC<Props> = () => {
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.pupil.header')} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                headerContent={<Hello />}
+                headerTitle={t('matching.group.pupil.header')}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>

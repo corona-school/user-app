@@ -1,30 +1,28 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Column, Box, Tooltip } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
-import SignInCard from '../../widgets/SignInCard';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import { LFLecture } from '../../types/lernfair/Course';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
-
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-
 import AsNavigationItem from '../../components/AsNavigationItem';
 import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
-import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import { PupilDashboardQuery } from '../../gql/graphql';
+import HelpNavigation from '../../components/HelpNavigation';
+import NextAppointmentCard from '../../widgets/NextAppointmentCard';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -84,6 +82,39 @@ const query = gql(`
                     cancelled
                 }
             }
+            appointments(take: 10, skip: 0) {
+                id
+                title
+                description
+                start
+                duration
+                appointmentType
+                total
+                position
+                displayName
+                isOrganizer
+                isParticipant
+                organizers(skip: 0, take: 5) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                participants(skip: 0, take: 30) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                declinedBy
+                zoomMeetingId
+                subcourse {
+                    published
+                    course {
+                        image
+                    }
+              }
+    }
         }
 
         subcoursesPublic(take: 10, skip: 0, excludeKnown: true, onlyJoinable: true) {
@@ -113,8 +144,6 @@ const query = gql(`
     }
 `);
 
-type JoinedSubcourse = Exclude<PupilDashboardQuery['me']['pupil'], null | undefined>['subcoursesJoined'][number];
-
 const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
@@ -129,7 +158,6 @@ const Dashboard: React.FC<Props> = () => {
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
     const [dissolveData, setDissolveData] = useState<{ id: number }>();
     const [toastShown, setToastShown] = useState<boolean>();
-    const [showMeetingNotStarted, setShowMeetingNotStarted] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -154,31 +182,6 @@ const Dashboard: React.FC<Props> = () => {
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
-
-    const sortedAppointments = useMemo(() => {
-        const lectures: { subcourse: JoinedSubcourse; lecture: LFLecture }[] = [];
-
-        if (!data?.me?.pupil?.subcoursesJoined) return [];
-
-        for (const subcourse of data?.me?.pupil?.subcoursesJoined) {
-            const futureAndOngoingLectures = subcourse.lectures.filter(
-                (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
-            );
-
-            for (const lecture of futureAndOngoingLectures) {
-                lectures.push({ lecture, subcourse });
-            }
-        }
-
-        return lectures.sort((a, b) => {
-            const _a = DateTime.fromISO(a.lecture.start).toMillis();
-            const _b = DateTime.fromISO(b.lecture.start).toMillis();
-
-            return _a - _b;
-        });
-    }, [data?.me?.pupil?.subcoursesJoined]);
-
-    const highlightedAppointment: { subcourse: JoinedSubcourse; lecture: LFLecture } | undefined = useMemo(() => sortedAppointments[0], [sortedAppointments]);
 
     const [cancelMatchRequest, _cancelMatchRequest] = useMutation(
         gql(`
@@ -217,14 +220,6 @@ const Dashboard: React.FC<Props> = () => {
         }
     );
 
-    const [joinMeeting, _joinMeeting] = useMutation(
-        gql(`
-        mutation joinMeetingPupil($subcourseId: Float!) {
-            subcourseJoinMeeting(subcourseId: $subcourseId)
-        }
-    `)
-    );
-
     const dissolveMatch = useCallback((match: { id: number }) => {
         setDissolveData(match);
         setShowDissolveModal(true);
@@ -244,32 +239,6 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
-    const getMeetingLink = useCallback(async () => {
-        const subcourseId = highlightedAppointment?.subcourse.id;
-        if (!subcourseId) return;
-
-        const windowRef = window.open(undefined, '_blank');
-
-        try {
-            const res = await joinMeeting({ variables: { subcourseId } });
-
-            if (res.data?.subcourseJoinMeeting) {
-                if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
-            } else {
-                setShowMeetingNotStarted(true);
-                windowRef?.close();
-            }
-        } catch (e) {
-            windowRef?.close();
-            setShowMeetingNotStarted(true);
-        }
-    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
-
-    const disableMeetingButton: boolean = useMemo(() => {
-        if (!highlightedAppointment) return true;
-        return DateTime.fromISO(highlightedAppointment?.lecture?.start).diffNow('minutes').minutes > 5;
-    }, [highlightedAppointment]);
-
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -286,91 +255,19 @@ const Dashboard: React.FC<Props> = () => {
                         </HStack>
                     )
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <ImportantInformation variant="dark" />
                         <VStack>
-                            {highlightedAppointment && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-
-                                    <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.pupil')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={getMeetingLink}
-                                                        isDisabled={disableMeetingButton || _joinMeeting.loading}
-                                                    >
-                                                        {t('course.meeting.videobutton.pupil')}
-                                                    </Button>
-                                                </Tooltip>
-                                                {showMeetingNotStarted && <Text color="lightText">{t('course.meeting.videotext')}</Text>}
-                                            </VStack>
-                                        }
-                                        isTeaser={true}
-                                        onPressToCourse={() => {
-                                            DateTime.now().plus({ days: 7 }).toISODate();
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Schüler Dashboard – Termin Teaser | Klick auf' + sortedAppointments[0]?.subcourse.course?.name,
-                                                documentTitle: 'Schüler Dashboard',
-                                            });
-                                            navigate(`/single-course/${sortedAppointments[0]?.subcourse.id}`);
-                                        }}
-                                        tags={highlightedAppointment?.subcourse?.course?.tags}
-                                        date={highlightedAppointment?.lecture.start}
-                                        duration={highlightedAppointment?.lecture.duration}
-                                        image={highlightedAppointment?.subcourse.course?.image ?? undefined}
-                                        title={highlightedAppointment?.subcourse.course?.name}
-                                        description={'' /* highlightedAppointment?.subcourse.course?.description?.substring(0, 64) */}
-                                    />
-                                </VStack>
-                            )}
-
-                            {/* Appointments */}
-                            <HSection marginBottom={space['1.5']} title={t('dashboard.myappointments.header')}>
-                                {(sortedAppointments.length > 1 &&
-                                    sortedAppointments.slice(1, 5).map(({ subcourse, lecture }) => {
-                                        return (
-                                            <AppointmentCard
-                                                key={`${subcourse.course.description}+${lecture.start}`}
-                                                description={subcourse.course.description}
-                                                tags={subcourse.course.tags}
-                                                date={lecture.start}
-                                                image={subcourse.course.image ?? undefined}
-                                                title={subcourse.course.name}
-                                                countCourse={subcourse.lectures.length}
-                                                maxParticipants={subcourse.maxParticipants}
-                                                participantsCount={subcourse.participantsCount}
-                                                minGrade={subcourse.minGrade}
-                                                maxGrade={subcourse.maxGrade}
-                                                statusText={getTrafficStatusText(subcourse)}
-                                                isFullHeight
-                                                isHorizontalCardCourseChecked={subcourse.isParticipant}
-                                                showCourseTraffic
-                                                showSchoolclass
-                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                onPressToCourse={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Schüler Dashboard – Meine Termin | Klick auf' + subcourse.course.name,
-                                                        documentTitle: 'Schüler Dashboard',
-                                                    });
-
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                            />
-                                        );
-                                    })) || <AlertMessage content={t('dashboard.myappointments.noappointments')} />}
-                            </HSection>
+                            <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&

@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Tooltip } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -11,7 +11,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
-import { LFLecture, LFSubCourse } from '../../types/lernfair/Course';
 import { DateTime } from 'luxon';
 import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -21,11 +20,12 @@ import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
-import { log } from '../../log';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
-import { gql } from '../../gql/gql';
-import { Lecture, Match, Subcourse } from '../../gql/graphql';
+import { gql } from './../../gql';
+import HelpNavigation from '../../components/HelpNavigation';
+import NextAppointmentCard from '../../widgets/NextAppointmentCard';
+import { Lecture } from '../../gql/graphql';
 
 type Props = {};
 
@@ -82,6 +82,40 @@ const query = gql(`
                     }
                 }
             }
+            appointments(take: 10, skip: 0) {
+                id
+                title
+                description
+                start
+                duration
+                appointmentType
+                total
+                position
+                displayName
+                isOrganizer
+                isParticipant
+                organizers(skip: 0, take: 5) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                participants(skip: 0, take: 30) {
+                    id
+                    userID
+                    firstname
+                    lastname
+                }
+                declinedBy
+                zoomMeetingId
+                subcourse {
+                    published
+                    course {
+                        image
+                        subject
+                    }
+              }
+    }
         }
 
         subcoursesPublic(take: 10, skip: 2) {
@@ -115,6 +149,11 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const { trackPageView, trackEvent } = useMatomo();
 
+    const CardGrid = useBreakpointValue({
+        base: '100%',
+        lg: '50%',
+    });
+
     useEffect(() => {
         trackPageView({
             documentTitle: 'Helfer Dashboard',
@@ -131,14 +170,6 @@ const DashboardStudent: React.FC<Props> = () => {
         {
             refetchQueries: [query],
         }
-    );
-
-    const [joinMeeting, _joinMeeting] = useMutation(
-        gql(`
-        mutation joinMeetingStudent($subcourseId: Float!) {
-            subcourseJoinMeeting(subcourseId: $subcourseId)
-        }
-    `)
     );
 
     const requestMatch = useCallback(async () => {
@@ -202,50 +233,7 @@ const DashboardStudent: React.FC<Props> = () => {
         return courses;
     }, [publishedSubcourses]);
 
-    const sortedAppointments = useMemo(() => {
-        if (!publishedSubcourses) return [];
-        const lectures: { subcourse: typeof publishedSubcourses[number]; lecture: Pick<Lecture, 'start' | 'duration'> }[] = [];
-
-        for (const subcourse of publishedSubcourses) {
-            const futureAndOngoingLectures = subcourse.lectures.filter(
-                (lecture) => DateTime.now().toMillis() < DateTime.fromISO(lecture.start).toMillis() + 1000 * 60 * lecture.duration
-            );
-
-            for (const lecture of futureAndOngoingLectures) {
-                lectures.push({ subcourse, lecture });
-            }
-        }
-
-        return lectures.sort((a, b) => {
-            const _a = DateTime.fromISO(a.lecture.start).toMillis();
-            const _b = DateTime.fromISO(b.lecture.start).toMillis();
-
-            return _a - _b;
-        });
-    }, [publishedSubcourses]);
-
-    const highlightedAppointment = sortedAppointments[0];
-
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
-
-    const getMeetingLink = useCallback(async () => {
-        const subcourseId = highlightedAppointment?.subcourse.id;
-        if (!subcourseId) return;
-
-        const windowRef = window.open(undefined, '_blank');
-
-        try {
-            const res = await joinMeeting({ variables: { subcourseId } });
-            if (windowRef) windowRef.location = res.data!.subcourseJoinMeeting;
-        } catch (e) {
-            log('DashboardStudent', `Student failed to join Meeting: ${(e as Error)?.message}`, e);
-        }
-    }, [highlightedAppointment?.subcourse.id, joinMeeting]);
-
-    const disableMeetingButton: boolean = useMemo(() => {
-        if (!highlightedAppointment) return true;
-        return DateTime.fromISO(highlightedAppointment.lecture.start).diffNow('minutes').minutes > 60;
-    }, [highlightedAppointment]);
 
     return (
         <AsNavigationItem path="start">
@@ -260,7 +248,12 @@ const DashboardStudent: React.FC<Props> = () => {
                         </HStack>
                     )
                 }
-                headerLeft={<NotificationAlert />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
             >
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
@@ -270,85 +263,13 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-                            {highlightedAppointment && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
 
-                                    <AppointmentCard
-                                        videoButton={
-                                            <VStack w="100%" space={space['0.5']}>
-                                                <Tooltip isDisabled={!disableMeetingButton} maxWidth={300} label={t('course.meeting.hint.student')}>
-                                                    <Button
-                                                        width="100%"
-                                                        marginTop={space['1']}
-                                                        onPress={() => {
-                                                            getMeetingLink();
-                                                        }}
-                                                        isDisabled={disableMeetingButton}
-                                                    >
-                                                        {t('course.meeting.videobutton.student')}
-                                                    </Button>
-                                                </Tooltip>
-                                            </VStack>
-                                        }
-                                        onPressToCourse={() => {
-                                            trackEvent({
-                                                category: 'dashboard',
-                                                action: 'click-event',
-                                                name: 'Helfer Dashboard Kachelklick   ' + highlightedAppointment.subcourse.course?.name || '',
-                                                documentTitle: 'Helfer Dashboard – Nächster Termin ' + highlightedAppointment.subcourse.course?.name || '',
-                                            });
-                                            navigate(`/single-course/${highlightedAppointment.subcourse.id}`);
-                                        }}
-                                        tags={highlightedAppointment.subcourse.course?.tags}
-                                        date={highlightedAppointment.lecture.start || ''}
-                                        duration={highlightedAppointment.lecture.duration}
-                                        isTeaser={true}
-                                        image={highlightedAppointment?.subcourse?.course?.image || ''}
-                                        title={highlightedAppointment.subcourse.course?.name || ''}
-                                        description={highlightedAppointment.subcourse.course?.description || ''}
-                                    />
+                            <VStack marginBottom={space['1.5']}>
+                                <VStack space={space['1']}>
+                                    <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
                                 </VStack>
-                            )}
-                            {sortedAppointments.length > 1 && (
-                                <HSection title={t('dashboard.myappointments.header')} marginBottom={space['1.5']}>
-                                    {sortedAppointments.slice(1, 5).map(({ lecture, subcourse }) => {
-                                        const { course } = subcourse;
+                            </VStack>
 
-                                        return (
-                                            <AppointmentCard
-                                                key={subcourse.id}
-                                                description={course.description}
-                                                tags={course.tags}
-                                                date={lecture.start}
-                                                image={course?.image || ''}
-                                                title={course.name}
-                                                countCourse={subcourse.lectures.length}
-                                                maxParticipants={subcourse.maxParticipants}
-                                                participantsCount={subcourse.participantsCount}
-                                                minGrade={subcourse.minGrade}
-                                                maxGrade={subcourse.maxGrade}
-                                                statusText={getTrafficStatusText(subcourse)}
-                                                isFullHeight
-                                                showSchoolclass
-                                                showCourseTraffic
-                                                showStatus
-                                                trafficLightStatus={getTrafficStatus(subcourse?.participantsCount || 0, subcourse?.maxParticipants || 0)}
-                                                onPressToCourse={() => {
-                                                    trackEvent({
-                                                        category: 'dashboard',
-                                                        action: 'click-event',
-                                                        name: 'Helfer Dashboard Kachelklick  ' + course.name,
-                                                        documentTitle: 'Helfer Dashboard – Meine Termin  ' + course.name,
-                                                    });
-
-                                                    navigate(`/single-course/${subcourse.id}`);
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </HSection>
-                            )}
                             {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
                                 <HSection
                                     title={t('dashboard.helpers.headlines.course')}
@@ -426,22 +347,24 @@ const DashboardStudent: React.FC<Props> = () => {
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <CSSWrapper className="course-list__wrapper">
+                                    <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
-                                                    <LearningPartner
-                                                        key={index}
-                                                        matchId={match.id}
-                                                        name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
-                                                        subjects={match?.pupil?.subjectsFormatted}
-                                                        schooltype={match?.pupil?.schooltype || ''}
-                                                        grade={match?.pupil?.grade || ''}
-                                                    />
+                                                    <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
+                                                        <LearningPartner
+                                                            key={index}
+                                                            matchId={match.id}
+                                                            name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
+                                                            subjects={match?.pupil?.subjectsFormatted}
+                                                            schooltype={match?.pupil?.schooltype || ''}
+                                                            grade={match?.pupil?.grade || ''}
+                                                        />
+                                                    </Box>
                                                 );
                                             })) ||
                                             (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
-                                    </CSSWrapper>
+                                    </Stack>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (
                                         <Button

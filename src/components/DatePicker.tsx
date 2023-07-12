@@ -1,23 +1,27 @@
-import { DateTime } from 'luxon';
-import { InputHTMLAttributes, useMemo } from 'react';
+import { Spacer } from 'native-base';
+import { InputHTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../web/scss/components/DatePicker.scss';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-    useMin?: boolean;
-}
+interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 
-const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, useMin = true }) => {
-    const _min = useMemo(() => {
-        let date = DateTime.now();
-        date = date.plus({ days: 7 });
-        return date.toFormat('yyyy-MM-dd');
-    }, []);
+const DatePicker: React.FC<Props> = ({ type = 'date', onChange, value, min, onBlur }) => {
+    const { t } = useTranslation();
 
     return (
         <>
             <div className="lf__datepicker">
-                <input type={type} onChange={onChange} value={value} min={(type === 'date' && useMin && _min) || undefined} />
+                <input
+                    placeholder={type === 'date' ? t('datepickerPlaceholder') : t('timepickerPlaceholder')}
+                    type={type}
+                    onChange={onChange}
+                    value={value}
+                    min={min}
+                    onBlur={onBlur}
+                    height={'100%'}
+                />
             </div>
+            <Spacer m={3} />
         </>
     );
 };

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum, Lecture, Participant } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
@@ -19,6 +19,9 @@ import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
+import AppointmentList from '../../widgets/appointment/AppointmentList';
+import { Appointment } from '../../types/lernfair/Appointment';
+import HelpNavigation from '../../components/HelpNavigation';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -91,6 +94,24 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             start
             duration
         }
+        appointments {
+              id
+              title
+              description
+              start
+              duration
+              displayName
+              position
+              total
+              organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+              }
+              subcourse {
+                published
+              }
+            }
     }
 }
 `);
@@ -110,6 +131,15 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
+        appointments {
+            participants(skip: 0, take: 50) {
+                id
+                firstname
+                lastname
+                isPupil
+                isStudent
+            }
+        }
     }
 }
 `);
@@ -154,6 +184,8 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+    const appointments = subcourse?.appointments ?? [];
+    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
 
     const [publish] = useMutation(
         gql(`
@@ -201,36 +233,24 @@ const SingleCourseStudent = () => {
 
     const tabs: Tab[] = [
         {
+            title: t('single.tabs.lessons'),
+            content: (
+                <Box minH={300}>
+                    <AppointmentList
+                        isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                        appointments={appointments as Appointment[]}
+                        noOldAppointments
+                    />
+                </Box>
+            ),
+        },
+        {
             title: t('single.tabs.description'),
             content: (
                 <>
                     <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
                         {course?.description}
                     </Text>
-                </>
-            ),
-        },
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <>
-                    {((subcourse?.lectures?.length ?? 0) > 0 &&
-                        subcourse!.lectures.map((lecture, i) => (
-                            <Row maxWidth={sizes['imageHeaderWidth']} flexDirection="column" marginBottom={space['1.5']}>
-                                <Heading paddingBottom={space['0.5']} fontSize="md">
-                                    {t('single.global.lesson')} {`${i + 1}`.padStart(2, '0')}
-                                </Heading>
-                                <Text paddingBottom={space['0.5']}>
-                                    {DateTime.fromISO(lecture.start).toFormat('dd.MM.yyyy')}
-                                    <Text marginX="3px">•</Text>
-                                    {DateTime.fromISO(lecture.start).toFormat('HH:mm')} {t('single.global.clock')}
-                                </Text>
-                                <Text>
-                                    <Text bold>{t('single.global.duration')}: </Text>{' '}
-                                    {(typeof lecture?.duration !== 'number' ? parseInt(lecture?.duration) : lecture?.duration) / 60} {t('single.global.hours')}
-                                </Text>
-                            </Row>
-                        ))) || <Text>{t('single.global.noLections')}</Text>}
                 </>
             ),
         },
@@ -290,9 +310,7 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every(
-                (lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()
-            ),
+            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -323,7 +341,17 @@ const SingleCourseStudent = () => {
     }, [course?.courseState, doPublish, submitCourse]);
 
     return (
-        <WithNavigation headerTitle={course?.name.substring(0, 20)} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            headerTitle={course?.name.substring(0, 20)}
+            showBack
+            isLoading={loading}
+            headerLeft={
+                <Stack alignItems="center" direction="row">
+                    <HelpNavigation />
+                    <NotificationAlert />
+                </Stack>
+            }
+        >
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
@@ -334,8 +362,12 @@ const SingleCourseStudent = () => {
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {(isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading) && (
-                        <StudentCourseButtons subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }} refresh={refetchBasics} />
+                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                        <StudentCourseButtons
+                            subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
+                            refresh={refetchBasics}
+                            appointment={myNextAppointment as Lecture}
+                        />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner

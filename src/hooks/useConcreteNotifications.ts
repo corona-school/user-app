@@ -12,6 +12,7 @@ const userNotificationQuery = gql(`
                 message {
                     headline
                     body
+                    modalText
                     type
                     navigateTo
                 }

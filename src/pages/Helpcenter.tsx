@@ -1,4 +1,20 @@
-import { Box, Heading, useTheme, Text, Link, Row, FormControl, TextArea, Checkbox, Button, InfoIcon, useBreakpointValue, View, Input } from 'native-base';
+import {
+    Box,
+    Heading,
+    useTheme,
+    Text,
+    Link,
+    Row,
+    FormControl,
+    TextArea,
+    Checkbox,
+    Button,
+    InfoIcon,
+    useBreakpointValue,
+    View,
+    Input,
+    Stack,
+} from 'native-base';
 import Tabs from '../components/Tabs';
 import WithNavigation from '../components/WithNavigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,6 +31,8 @@ import Hello from '../widgets/Hello';
 import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import HelpNavigation from '../components/HelpNavigation';
+import { SwitchUserType } from '../User';
 
 type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
 
@@ -123,11 +141,23 @@ const HelpCenter: React.FC = () => {
 
     return (
         <AsNavigationItem path="hilfebereich">
-            <WithNavigation headerTitle="Hilfebereich" headerContent={<Hello />} headerLeft={<NotificationAlert />}>
+            <WithNavigation
+                headerTitle="Hilfebereich"
+                headerContent={<Hello />}
+                headerLeft={
+                    <Stack alignItems="center" direction="row">
+                        <HelpNavigation />
+                        <NotificationAlert />
+                    </Stack>
+                }
+            >
                 <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
                     <Box maxWidth={ContentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
                         <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
-                        <Text>{t('helpcenter.subtitle')}</Text>
+                        <SwitchUserType
+                            pupilComponent={<Text>{t('helpcenter.subtitle.pupil')}</Text>}
+                            studentComponent={<Text>{t('helpcenter.subtitle.student')}</Text>}
+                        />
                     </Box>
                     {/* <Box
             maxWidth={ContentContainerWidth}

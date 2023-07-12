@@ -2,6 +2,7 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/pupil/Dashboard';
 import ProfilePupil from './pages/pupil/ProfilePupil';
 
+import Settings from './pages/Settings';
 import OnboardingTourList from './pages/OnboardingTourList';
 import HelpCenter from './pages/Helpcenter';
 import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType';
@@ -47,13 +48,19 @@ import Matching from './pages/pupil/Matching';
 import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
+import CreateAppointment from './pages/CreateAppointment';
+import Appointment from './pages/Appointment';
+import CreateCourseAppointment from './pages/CreateCourseAppointment';
+import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
+import LeftVideoChat from './pages/chat/LeftVideoChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
+import ZoomMeeting from './components/ZoomMeeting';
 
 export default function NavigatorLazy() {
     return (
@@ -100,6 +107,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth isRetainPath>
                         <NotficationControlPanel />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/settings"
+                element={
+                    <RequireAuth>
+                        <Settings />
                     </RequireAuth>
                 }
             />
@@ -223,6 +239,15 @@ export default function NavigatorLazy() {
                 }
             />
 
+            <Route
+                path="/create-course-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
             {/* Edit Course */}
             <Route
                 path="/edit-course"
@@ -248,6 +273,48 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Appointments />
+                    </RequireAuth>
+                }
+            ></Route>
+            <Route
+                path="/appointment/:id"
+                element={
+                    <RequireAuth>
+                        <Appointment />
+                    </RequireAuth>
+                }
+            ></Route>
+
+            <Route
+                path="/video-chat/:id/:type"
+                element={
+                    <RequireAuth>
+                        <ZoomMeeting />
+                    </RequireAuth>
+                }
+            ></Route>
+            <Route
+                path="/left-chat/:id/:type"
+                element={
+                    <RequireAuth>
+                        <LeftVideoChat />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/create-appointment"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateAppointment />} />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/edit-appointment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
                     </RequireAuth>
                 }
             />
