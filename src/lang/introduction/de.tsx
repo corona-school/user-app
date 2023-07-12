@@ -5,10 +5,10 @@ const introduction = {
     imageMatchText: 'Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.',
     becomeAnInstructor: 'Jetzt Kursleiter:in werden',
     becomeTutor: 'Jetzt Tutor:in werden',
-    talkWithTeam: 'Mit dem Team sprechen',
+    talkWithTeam: 'Beratungstermin vereinbaren',
     moreInfos: 'Mehr Informationen',
     courseTypes: {
-        groupCourses: 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Format an:',
+        groupCourses: 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an:',
         oneToOneLearningSupport:
             'Bei der Lern-Fair Nachhilfe verbinden wir dich mit einem:r Schüler:in zu einem Lernpaar. Diese Schüler:innen haben besonderen Bedarf an einer Einzelhilfe in schulischen Themen.',
     },
