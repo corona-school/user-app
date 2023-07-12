@@ -55,7 +55,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         isInstructor={subcourse.isInstructor}
                         refresh={refresh}
                     />
-                )}{' '}
+                )}
                 {subcourse.canEdit.allowed && (
                     <>
                         <Button
