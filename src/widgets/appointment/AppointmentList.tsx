@@ -154,7 +154,6 @@ const AppointmentList: React.FC<Props> = ({
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
-                        chatType={appointment.appointmentType}
                         canJoinVideochat={appointment?.subcourse ? appointment.subcourse?.published : true}
                     />
                 </Box>
