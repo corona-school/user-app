@@ -59,7 +59,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     };
 
     const disableButton = useMemo(() => {
-        if (isParticipant && conversationId === null) {
+        if (isParticipant && !conversationId) {
             return true;
         }
         if (isInstructor && participantsCount < 2) {
@@ -70,7 +70,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
 
     return (
         <>
-            <Tooltip maxWidth={300} label={t('chat.hint')}>
+            <Tooltip maxWidth={300} label={t('chat.hint')} isDisabled={isParticipant || !disableButton}>
                 <Button onPress={openSubcourseGroupChat} isDisabled={disableButton}>
                     {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
                 </Button>

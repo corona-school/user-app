@@ -1,4 +1,4 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { ApolloQueryResult, useQuery } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
@@ -12,6 +12,7 @@ import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
+import { gql } from '../../../gql';
 
 type CanJoin = {
     allowed: boolean;
@@ -38,7 +39,6 @@ type ActionButtonProps = {
         | 'isParticipant'
         | 'isOnWaitingList'
         | 'canContactInstructor'
-        | 'conversationId'
         | 'allowChatContactProspects'
         | 'allowChatContactParticipants'
         | 'groupChatType'
@@ -52,6 +52,14 @@ type ActionButtonProps = {
     contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
+
+const courseConversationId = gql(`
+query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
+    subcourse (subcourseId: $subcourseId) {
+        conversationId @include(if: $isParticipant)
+    }
+}
+`);
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     appointment,
@@ -83,6 +91,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
+
+    const { data, loading } = useQuery(courseConversationId, {
+        variables: { subcourseId: subcourse.id, isParticipant: subcourse?.isParticipant! },
+    });
+
+    const conversationId = data?.subcourse?.conversationId || '';
 
     const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
@@ -136,14 +150,31 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                 )}
 
                 {subcourse.isParticipant && (
+                    <JoinMeeting
+                        appointmentId={appointment.id}
+                        appointmentType={appointment.appointmentType}
+                        canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
+                    />
+                )}
+                {subcourse.isParticipant && !loading && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
-                        conversationId={subcourse.conversationId}
+                        conversationId={conversationId}
                         subcourseId={subcourse.id}
                         participantsCount={subcourse.participantsCount}
                         isParticipant={subcourse.isParticipant}
                         refresh={refresh}
                     />
+                )}
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
                 )}
                 {subcourse.isParticipant && (
                     <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
@@ -159,23 +190,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     <VStack space={space['0.5']} mb="5">
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
-                )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
-                        {t('single.actions.contactInstructor')}
-                    </Button>
-                )}
-                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
-                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
-                        {t('single.actions.contactInstructor')}
-                    </Button>
-                )}
-                {subcourse.isParticipant && (
-                    <JoinMeeting
-                        appointmentId={appointment.id}
-                        appointmentType={appointment.appointmentType}
-                        canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
-                    />
                 )}
             </Stack>
 

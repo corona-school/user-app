@@ -56,7 +56,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 }
 
 const singleSubcoursePupilQuery = gql(`
-query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
+query GetSingleSubcoursePupil($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -67,7 +67,6 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         groupChatType
         allowChatContactProspects
         allowChatContactParticipants
-        alreadyPromoted @include(if: $isStudent)
         nextLecture{
             start
             duration
@@ -128,10 +127,11 @@ const SingleCoursePupil = () => {
     });
 
     const { subcourse } = data ?? {};
+
     const { course } = subcourse ?? {};
     const appointments = subcourse?.appointments ?? [];
-    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
 
+    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
     const { data: canJoinData } = useQuery(
         gql(`
         query CanJoin($subcourseId: Int!) { 

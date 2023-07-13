@@ -2,7 +2,7 @@ const chat = {
     title: 'Chat',
     openSubcourseChat: 'Kurschat öffnen',
     openAnnouncementChat: 'Ankündigungschat öffnen',
-    hint: 'Kurschat kann erst geöffnet werden, wenn es mindestens 2 Teilnehmer gibt.',
+    hint: 'Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.',
     instructor: 'Kursleiter:in',
     participant: 'Kursteilnehmer:in',
     prospect: 'Interessent:in',
