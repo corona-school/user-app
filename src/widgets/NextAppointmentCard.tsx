@@ -36,7 +36,7 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
             }
         });
 
-        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : appointments.slice(0, 1);
+        return nextAvailableAppointments;
     }, [appointments]);
 
     return (
