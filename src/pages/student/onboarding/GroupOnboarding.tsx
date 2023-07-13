@@ -7,7 +7,7 @@ import IconGroup from '../../../assets/icons/Icon_Gruppe.svg';
 import LFImageGroupOnboarding from '../../../assets/images/course/group-onboarding.png';
 import LFImageGroupHorizontal from '../../../assets/images/course/group-onboarding-horizontal.png';
 import { useMutation } from '@apollo/client';
-import { gql } from '../../../gql/gql';
+import { gql } from './../../../gql';
 import GroupRequestedInfos from './GroupRequestedInfos';
 import GroupOnboardingInfos from './GroupOnboardingInfos';
 import WithNavigation from '../../../components/WithNavigation';
@@ -65,7 +65,8 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                     <Box justifyContent="center" alignItems="center">
                         <OnboardingCard
                             headline={t('introduction.groupCourses')}
-                            Description={waitForSupport ? GroupRequestedInfos : GroupOnboardingInfos}
+                            description={t('introduction.courseTypes.groupCourses')}
+                            bulletPoints={waitForSupport ? GroupRequestedInfos : GroupOnboardingInfos}
                             cardImage={LFImageGroupOnboarding}
                             mobileCardImage={LFImageGroupHorizontal}
                             Icon={IconGroup}
