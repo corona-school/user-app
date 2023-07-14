@@ -14,7 +14,7 @@ import useInterval from '../../hooks/useInterval';
 type Props = {
     appointments: Appointment[];
     isReadOnlyList: boolean;
-    isStatic?: boolean;
+    disableScroll?: boolean;
     isFullWidth?: boolean;
     noNewAppointments?: boolean;
     noOldAppointments?: boolean;
@@ -36,7 +36,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
 const AppointmentList: React.FC<Props> = ({
     appointments,
     isReadOnlyList,
-    isStatic = false,
+    disableScroll = false,
     isFullWidth,
     noNewAppointments,
     noOldAppointments,
@@ -172,7 +172,7 @@ const AppointmentList: React.FC<Props> = ({
 
     useEffect(() => {
         if (scrollViewRef.current === null) return;
-        if (isReadOnlyList || isStatic) return;
+        if (isReadOnlyList || disableScroll) return;
         return handleScrollIntoView(scrollViewRef.current);
     }, [isReadOnlyList, scrollId]);
 
