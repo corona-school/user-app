@@ -6,7 +6,8 @@ import { gql } from '../../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import ContactEmptyState from './ContactEmptyState';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import CenterLoadingSpinner from '../CenterLoadingSpinner';
 
 const myContacts = gql(`
 query me {
@@ -56,7 +57,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
     const { t } = useTranslation();
     const toast = useToast();
 
-    const { data } = useQuery(myContacts);
+    const { data, loading, refetch } = useQuery(myContacts);
     const [createContactChat] = useMutation(contactChatMutation);
 
     const hasReason = (reason: string, reasons: string[]) => {
@@ -84,6 +85,11 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
             toast.show({ description: t('chat.chatError'), placement: 'top' });
         }
     };
+
+    useEffect(() => {
+        refetch();
+    }, []);
+
     const renderContacts = ({ item: contact, index }: { item: Contact; index: number }) => {
         const contactReasons = transformToTranslatedReasons(contact.contactReasons);
 
@@ -105,11 +111,16 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
         );
     };
     return (
-        <FlatList
-            data={data?.myContactOptions as Contact[]}
-            renderItem={renderContacts}
-            ListEmptyComponent={<ContactEmptyState title={t('chat.noContactOptions')} subtitle={t('chat.noContactOptionsHint')} />}
-        />
+        <>
+            {loading && <CenterLoadingSpinner />}
+            {!loading && data && (
+                <FlatList
+                    data={data?.myContactOptions as Contact[]}
+                    renderItem={renderContacts}
+                    ListEmptyComponent={<ContactEmptyState title={t('chat.noContactOptions')} subtitle={t('chat.noContactOptionsHint')} />}
+                />
+            )}
+        </>
     );
 };
 

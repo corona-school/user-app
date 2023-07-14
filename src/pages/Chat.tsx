@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import { Stack, useBreakpointValue, Box } from 'native-base';
+import { Stack, useBreakpointValue, Box, Modal } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import FloatingActionButton from '../widgets/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
@@ -91,7 +91,9 @@ const Chat: React.FC = () => {
                 )}
 
                 <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
-                <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
+                <Modal isOpen={isContactModalOpen} onClose={onClose}>
+                    <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
+                </Modal>
             </WithNavigation>
         </AsNavigationItem>
     );
