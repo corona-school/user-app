@@ -28,12 +28,7 @@ const Chat: React.FC = () => {
 
     const marginRight = useBreakpointValue({
         base: 5,
-        lg: 70,
-    });
-
-    const marginTop = useBreakpointValue({
-        base: 0,
-        lg: '4%',
+        lg: '5rem',
     });
 
     const paddingRight = useBreakpointValue({
@@ -41,10 +36,6 @@ const Chat: React.FC = () => {
         lg: '10px',
     });
 
-    const marginBottom = useBreakpointValue({
-        base: '0',
-        lg: '0',
-    });
     const chatWidth = useBreakpointValue({
         base: '100%',
         lg: '90%',
@@ -86,11 +77,9 @@ const Chat: React.FC = () => {
                 }
                 showBack={isMobile && isConverstationSelected}
             >
-                {!isConverstationSelected && (
-                    <FloatingActionButton mr={marginRight} mt={marginTop} handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />
-                )}
+                {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
-                <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} mb={marginBottom} w={chatWidth} ref={inboxRef} />
+                <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
                 <ChatContactsModal isOpen={isContactModalOpen} onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
             </WithNavigation>
         </AsNavigationItem>
