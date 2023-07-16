@@ -249,11 +249,22 @@ const AppointmentCard: React.FC<Props> = ({
                                             <Text color={textColor}>
                                                 {/* TODO: Replace dateFirstLecture here with dateNextLecture. Data for that must be fetched
                                                 in all parent components of this one first and passed down as prop. See issue #755 */}
-                                                {t('single.card.dateLectures', {
-                                                    weekday: t('single.global.weekdays', { returnObjects: true })[dateFirstLecture.weekday - 1],
-                                                    date: dateFirstLecture.toFormat('dd.MM.yyyy'),
-                                                    time: dateFirstLecture.toFormat('HH:mm'),
-                                                })}
+                                                {dateFirstLecture.toLocaleString(
+                                                    //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
+                                                    {
+                                                        weekday: 'short',
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: '2-digit',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    },
+                                                    {
+                                                        locale: t('single.global.timeFormatLocale'),
+                                                    }
+                                                ) +
+                                                    ' ' +
+                                                    t('single.global.clock')}
                                             </Text>
                                         </Row>
                                     </>
