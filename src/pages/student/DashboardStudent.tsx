@@ -289,7 +289,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                         key={index}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        date={firstLecture.start}
+                                                        dateFirstLecture={firstLecture.start}
                                                         image={sub.course.image || ''}
                                                         title={sub.course.name}
                                                         countCourse={sub.lectures.length}
