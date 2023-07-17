@@ -66,7 +66,7 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                         });
                                         navigate(`/appointment/${myNextAppointment.id}`);
                                     }}
-                                    date={myNextAppointment.start}
+                                    dateFirstLecture={myNextAppointment.start}
                                     duration={myNextAppointment.duration}
                                     title={myNextAppointment.displayName}
                                     description={myNextAppointment.description ?? ''}
