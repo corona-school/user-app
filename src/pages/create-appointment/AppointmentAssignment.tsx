@@ -96,7 +96,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
         const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
 
         const coursesNewerThanThirtyDays = coursesWithLectures.filter((course) => {
-            const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
+            const lastLecture = course.lectures[course.lectures.length - 1];
 
             if (lastLecture) {
                 const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;
