@@ -9,7 +9,6 @@ import { getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
-import LearningPartner from '../../widgets/LearningPartner';
 import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
 
 type AssignmentProps = {
@@ -93,17 +92,19 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
             return bInMillis - aInMillis;
         });
 
-        const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
         const coursesWitoutLectures = sortedCourses.filter((course) => course.lectures.length === 0);
-        let coursesNewerThanThirtyDays = coursesWithLectures;
+        const coursesWithLectures = sortedCourses.filter((course) => course.lectures.length > 0);
 
-        for (const course of coursesWithLectures) {
-            const lastLecture = course.lectures.length > 0 ? course.lectures[course.lectures.length - 1] : course.lectures[1];
-            const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;
-            if (daysDiffFromNow < -30) {
-                coursesNewerThanThirtyDays = coursesWithLectures.filter((c) => c.id !== course.id);
+        const coursesNewerThanThirtyDays = coursesWithLectures.filter((course) => {
+            const lastLecture = course.lectures[course.lectures.length - 1];
+
+            if (lastLecture) {
+                const daysDiffFromNow = DateTime.fromISO(lastLecture.start).diffNow('days').days;
+                return daysDiffFromNow > -30;
             }
-        }
+            return false;
+        });
+
         const coursesToShow = coursesNewerThanThirtyDays.concat(coursesWitoutLectures);
 
         return coursesToShow;
