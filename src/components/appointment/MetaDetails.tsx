@@ -101,22 +101,8 @@ const MetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            {appointmentType === Lecture_Appointmenttype_Enum.Group && appointmentId && appointmentType ? (
+            {appointmentId && appointmentType && (
                 <>
-                    <VideoButton
-                        isInstructor={isOrganizer}
-                        appointmentId={appointmentId}
-                        appointmentType={appointmentType}
-                        canStartMeeting={isSubcoursePublished && canStartMeeting}
-                        buttonText={t('appointment.detail.videochatButton')}
-                        width={buttonWidth}
-                        isOver={isAppointmentOver}
-                    />
-                    {!isSubcoursePublished && isOrganizer && <AlertMessage content={t('appointment.courseNotPublished')} />}
-                </>
-            ) : (
-                appointmentId &&
-                appointmentType && (
                     <VideoButton
                         isInstructor={isOrganizer}
                         appointmentId={appointmentId}
@@ -126,7 +112,8 @@ const MetaDetails: React.FC<MetaProps> = ({
                         width={buttonWidth}
                         isOver={isAppointmentOver}
                     />
-                )
+                    {!isSubcoursePublished && isOrganizer && <AlertMessage content={t('appointment.courseNotPublished')} />}
+                </>
             )}
         </>
     );

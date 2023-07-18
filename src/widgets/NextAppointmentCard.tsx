@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { DateTime } from 'luxon';
 import { Box, Heading, VStack, useTheme } from 'native-base';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTranslation } from 'react-i18next';
 import AlertMessage from './AlertMessage';
+import useInterval from '../hooks/useInterval';
 
 type Props = {
     appointments: Lecture[];
@@ -14,7 +15,7 @@ type Props = {
 
 const isCurrentOrOver = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
     const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
-    const end = DateTime.fromISO(start).plus({ minutes: duration }).plus({ minutes: 10 });
+    const end = DateTime.fromISO(start).plus({ minutes: duration }).plus({ minutes: 5 });
     return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
 };
 
@@ -23,27 +24,33 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [currentTime, setCurrentTime] = useState(Date.now());
+
+    // TODO interval to update dashboard? (second interval in appointment card)
+    useInterval(() => {
+        setCurrentTime(Date.now());
+    }, 30_000);
 
     const myNextAppointments = useMemo(() => {
-        const nextAvailableAppointments = appointments.filter((appointment) => {
-            const { start, duration, isOrganizer, subcourse } = appointment;
+        const nextPublishedAppointment = appointments.filter((appointment) => {
+            const { subcourse } = appointment;
+            return subcourse?.published;
+        });
+
+        const nextAvailableAppointments = nextPublishedAppointment.filter((appointment) => {
+            const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            const isSubcoursePublished = subcourse?.published;
-            if (subcourse && !isSubcoursePublished) {
-                return false;
-            } else {
-                return isCurrent;
-            }
+            return isCurrent;
         });
 
         return nextAvailableAppointments;
-    }, [appointments]);
+    }, [appointments, currentTime]);
 
     return (
         <Box>
-            <VStack marginBottom={space['1.5']}>
-                <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-                {myNextAppointments.length > 0 ? (
+            {myNextAppointments.length > 0 && (
+                <VStack marginBottom={space['1.5']}>
+                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
                     <VStack space={space['1']}>
                         {myNextAppointments.map((myNextAppointment) => {
                             return (
@@ -72,10 +79,8 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                             );
                         })}
                     </VStack>
-                ) : (
-                    <AlertMessage content={t('appointment.noNextAppointment')} />
-                )}
-            </VStack>
+                </VStack>
+            )}
         </Box>
     );
 };
