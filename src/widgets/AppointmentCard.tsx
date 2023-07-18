@@ -380,22 +380,13 @@ const AppointmentCard: React.FC<Props> = ({
                                 )}
 
                                 {isTeaser && hasVideoButton && appointmentId && _dateFirst && duration && appointmentType && (
-                                    <VStack w="100%" space={space['0.5']}>
-                                        <Tooltip
-                                            isDisabled={true}
-                                            maxWidth={300}
-                                            label={isOrganizer ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
-                                        >
-                                            <VideoButton
-                                                appointmentId={appointmentId}
-                                                start={_dateFirst}
-                                                duration={duration}
-                                                joinMeeting={() => {
-                                                    navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-                                                }}
-                                                isOrganizer={isOrganizer}
-                                            />
-                                        </Tooltip>
+                                    <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
+                                        <VideoButton
+                                            appointmentId={appointmentId}
+                                            appointmentType={appointmentType}
+                                            isInstructor={isOrganizer}
+                                            canStartMeeting={isCurrent}
+                                        />
                                     </VStack>
                                 )}
                             </Box>

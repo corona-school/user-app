@@ -1,4 +1,4 @@
-import { Button, HStack, Modal, Pressable, Spacer, Stack, Text, useBreakpointValue } from 'native-base';
+import { HStack, Modal, Pressable, Spacer, Stack, Text, useBreakpointValue } from 'native-base';
 import InformationBadge from '../notifications/preferences/InformationBadge';
 import DateIcon from '../../assets/icons/lernfair/appointments/appointment_date.svg';
 import TimeIcon from '../../assets/icons/lernfair/appointments/appointment_time.svg';
@@ -7,14 +7,14 @@ import RepeatIcon from '../../assets/icons/lernfair/appointments/appointment_rep
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 import AlertMessage from '../../widgets/AlertMessage';
 import useInterval from '../../hooks/useInterval';
+import VideoButton from '../VideoButton';
 
 type MetaProps = {
     date: string;
@@ -29,7 +29,7 @@ type MetaProps = {
     participants?: AppointmentParticipant[];
     declinedBy: string[];
     appointmentId?: number;
-    chatType?: Lecture_Appointmenttype_Enum;
+    appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
     isSubcoursePublished?: boolean;
 };
@@ -46,7 +46,7 @@ const MetaDetails: React.FC<MetaProps> = ({
     participants,
     declinedBy,
     appointmentId,
-    chatType,
+    appointmentType,
     isOrganizer,
     isSubcoursePublished,
 }) => {
@@ -54,7 +54,6 @@ const MetaDetails: React.FC<MetaProps> = ({
     const [_, setCurrentTime] = useState(0);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -63,6 +62,12 @@ const MetaDetails: React.FC<MetaProps> = ({
     useInterval(() => {
         setCurrentTime(new Date().getTime());
     }, 30_000);
+
+    const canStartMeeting = useMemo(() => canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now()), []);
+    const isAppointmentOver = useMemo(() => {
+        const end = DateTime.fromISO(startDateTime).plus({ minutes: duration + 15 });
+        return end < DateTime.now();
+    }, []);
 
     return (
         <>
@@ -96,29 +101,32 @@ const MetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             </Stack>
             <Spacer py={3} />
-            {chatType === Lecture_Appointmenttype_Enum.Group ? (
+            {appointmentType === Lecture_Appointmenttype_Enum.Group && appointmentId && appointmentType ? (
                 <>
-                    <Button
-                        width={`${buttonWidth}`}
-                        onPress={() => {
-                            navigate(`/video-chat/${appointmentId}/${chatType}`);
-                        }}
-                        isDisabled={!isSubcoursePublished || !appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
-                    >
-                        {t('appointment.detail.videochatButton')}
-                    </Button>
+                    <VideoButton
+                        isInstructor={isOrganizer}
+                        appointmentId={appointmentId}
+                        appointmentType={appointmentType}
+                        canStartMeeting={isSubcoursePublished && canStartMeeting}
+                        buttonText={t('appointment.detail.videochatButton')}
+                        width={buttonWidth}
+                        isOver={isAppointmentOver}
+                    />
                     {!isSubcoursePublished && isOrganizer && <AlertMessage content={t('appointment.courseNotPublished')} />}
                 </>
             ) : (
-                <Button
-                    width={`${buttonWidth}`}
-                    onPress={() => {
-                        navigate(`/video-chat/${appointmentId}/${chatType}`);
-                    }}
-                    isDisabled={!appointmentId || !canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now())}
-                >
-                    {t('appointment.detail.videochatButton')}
-                </Button>
+                appointmentId &&
+                appointmentType && (
+                    <VideoButton
+                        isInstructor={isOrganizer}
+                        appointmentId={appointmentId}
+                        appointmentType={appointmentType}
+                        canStartMeeting={canStartMeeting}
+                        buttonText={t('appointment.detail.videochatButton')}
+                        width={buttonWidth}
+                        isOver={isAppointmentOver}
+                    />
+                )
             )}
         </>
     );
