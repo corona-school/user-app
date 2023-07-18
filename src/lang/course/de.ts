@@ -21,10 +21,6 @@ const course = {
             student: 'Videochat starten',
         },
         videotext: 'Videochat noch nicht gestartet.',
-        videotooltip: {
-            pupil: 'Der Videochat noch nicht gestartet oder du hast keine Berechtigung diesen aufzurufen.',
-            student: 'Der Videochat kann noch nicht gestartet werden',
-        },
         result: {
             success: 'Deine Video-Konferenz wurde erfolgreich eingetragen.',
             error: 'Deine Video-Konferenz konnt nicht eingetragen werden.',
@@ -35,7 +31,7 @@ const course = {
             text: 'Trage hier den Link zur Video-Konferenz ein',
         },
         hint: {
-            pupil: 'Du kannst dem Videochat erst beitreten, wenn der:die Kursleiter:in das Meeting gestartet hat.',
+            pupil: 'Du kannst das Meeting erst 10 Minuten vor Beginn eines Termins starten.',
             student: 'Du kannst das Meeting erst 30 Minuten vor Beginn des Termins starten.',
         },
     },
