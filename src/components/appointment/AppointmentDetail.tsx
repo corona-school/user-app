@@ -108,6 +108,11 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return appointment.organizers && appointment.participants ? [...appointment.organizers, ...appointment.participants] : [];
     }, [appointment.organizers, appointment.participants]);
 
+    const isAppointmentOver = useMemo(() => {
+        const end = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
+        return end < DateTime.now();
+    }, []);
+
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -137,7 +142,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     participants={appointment.participants ?? []}
                     declinedBy={appointment?.declinedBy ?? []}
                     appointmentId={appointment.id}
-                    chatType={appointment.appointmentType}
+                    appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
                     isSubcoursePublished={appointment.subcourse?.published}
                 />
@@ -149,6 +154,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     canceled={canceled}
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
                     canEdit={isPastAppointment}
+                    isOver={isAppointmentOver}
                 />
             </Box>
         </>

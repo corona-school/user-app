@@ -1,4 +1,4 @@
-import { Box, Card, HStack, VStack, Text, Avatar, Button, Heading, useBreakpointValue, Spacer } from 'native-base';
+import { Box, Card, HStack, VStack, Text, Avatar, Heading, useBreakpointValue, Spacer } from 'native-base';
 import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
 import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
@@ -6,7 +6,7 @@ import { Pressable } from 'react-native';
 import { AppointmentParticipant, Organizer } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
 import { Appointment } from '../../types/lernfair/Appointment';
-import { useNavigate } from 'react-router-dom';
+import VideoButton from '../../components/VideoButton';
 
 type Props = {
     timeDescriptionText: string;
@@ -23,7 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
-    chatType?: Appointment['appointmentType'];
     canJoinVideochat?: boolean;
 };
 
@@ -39,10 +38,10 @@ const AppointmentTile: React.FC<Props> = ({
     position,
     displayName,
     appointmentId,
-    chatType,
+    appointmentType,
     canJoinVideochat,
+    isOrganizer,
 }) => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
@@ -53,7 +52,6 @@ const AppointmentTile: React.FC<Props> = ({
         base: 'full',
         lg: '300',
     });
-
     return (
         <Box w={width}>
             <Pressable disabled={isReadOnly} onPress={onPress}>
@@ -101,17 +99,14 @@ const AppointmentTile: React.FC<Props> = ({
                                 </Text>
                             )}
                         </Box>
-                        {!isReadOnly && isCurrentlyTakingPlace && (
-                            <Button
-                                mt={2}
-                                w={buttonWidth}
-                                onPress={() => {
-                                    appointmentId && navigate(`/video-chat/${appointmentId}/${chatType}`);
-                                }}
-                                isDisabled={!canJoinVideochat}
-                            >
-                                {t('appointment.tile.videoButton')}
-                            </Button>
+                        {!isReadOnly && isCurrentlyTakingPlace && appointmentId && appointmentType && (
+                            <VideoButton
+                                isInstructor={isOrganizer}
+                                canStartMeeting={canJoinVideochat}
+                                appointmentId={appointmentId}
+                                appointmentType={appointmentType}
+                                width={buttonWidth}
+                            />
                         )}
                     </VStack>
                 </Card>

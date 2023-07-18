@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Lecture } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import JoinMeeting from '../../subcourse/JoinMeeting';
 import ContactParticipants from './ContactParticipants';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
+import VideoButton from '../../../components/VideoButton';
 
 type SubcourseOfStudent = {
     id: number;
@@ -38,8 +38,8 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && (
-                    <JoinMeeting isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canJoinMeeting={canJoin} />
+                {subcourse.published && appointment && (
+                    <VideoButton isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canStartMeeting={canJoin} />
                 )}
                 {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
                 {subcourse.canEdit.allowed && (
