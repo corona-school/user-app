@@ -23,7 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
-    chatType?: Appointment['appointmentType'];
     canJoinVideochat?: boolean;
 };
 
@@ -49,7 +48,6 @@ const AppointmentDay: React.FC<Props> = ({
     isOrganizer,
     displayName,
     appointmentId,
-    chatType,
     canJoinVideochat,
 }) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
@@ -105,7 +103,6 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 appointmentId={appointmentId}
-                                chatType={chatType}
                                 canJoinVideochat={canJoinVideochat}
                             />
                         </HStack>

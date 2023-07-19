@@ -7,12 +7,12 @@ import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
-import JoinMeeting from '../../subcourse/JoinMeeting';
 import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
+import VideoButton from '../../../components/VideoButton';
 
 type CanJoin = {
     allowed: boolean;
@@ -149,13 +149,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)} />
                 )}
 
-                {subcourse.isParticipant && (
-                    <JoinMeeting
-                        appointmentId={appointment.id}
-                        appointmentType={appointment.appointmentType}
-                        canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
-                    />
-                )}
                 {subcourse.isParticipant && !loading && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
@@ -177,9 +170,16 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     </Button>
                 )}
                 {subcourse.isParticipant && (
-                    <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
-                        {t('single.actions.leaveSubcourse')}
-                    </Button>
+                    <>
+                        <VideoButton
+                            appointmentId={appointment.id}
+                            appointmentType={appointment.appointmentType}
+                            canStartMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
+                        />
+                        <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
+                            {t('single.actions.leaveSubcourse')}
+                        </Button>
+                    </>
                 )}
                 {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>

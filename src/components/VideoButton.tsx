@@ -1,30 +1,41 @@
-import { DateTime } from 'luxon';
-import { Button, useTheme } from 'native-base';
+import { Button, Tooltip } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { canJoinMeeting } from '../widgets/appointment/AppointmentDay';
+import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { useNavigate } from 'react-router-dom';
 
 type VideoButtonProps = {
+    isInstructor?: boolean;
     appointmentId: number;
-    start: string;
-    duration: number;
-    isOrganizer?: boolean;
-    joinMeeting: () => void;
+    appointmentType: Lecture_Appointmenttype_Enum;
+    canStartMeeting?: boolean;
+    width?: number;
+    buttonText?: string;
+    isOver?: boolean;
 };
 
-const VideoButton: React.FC<VideoButtonProps> = ({ appointmentId, start, duration, isOrganizer, joinMeeting }) => {
-    const { space } = useTheme();
+const VideoButton: React.FC<VideoButtonProps> = ({
+    isInstructor = false,
+    canStartMeeting,
+    appointmentId,
+    appointmentType,
+    width,
+    buttonText,
+    isOver = false,
+}) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     return (
         <>
-            <Button
-                width="100%"
-                marginTop={space['1']}
-                onPress={joinMeeting}
-                isDisabled={!appointmentId || !canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now())}
-            >
-                {t('course.meeting.videobutton.pupil')}
-            </Button>
+            <Tooltip maxW={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')} isDisabled={canStartMeeting || isOver}>
+                <Button
+                    width={width ?? width}
+                    onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}
+                    isDisabled={!canStartMeeting || isOver}
+                >
+                    {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
+                </Button>
+            </Tooltip>
         </>
     );
 };

@@ -4,11 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import JoinMeeting from '../../subcourse/JoinMeeting';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
+import ContactParticipants from './ContactParticipants';
+import VideoButton from '../../../components/VideoButton';
+
+type SubcourseOfStudent = {
+    id: number;
+    published: boolean;
+    isInstructor: boolean;
+    canCancel: { allowed: boolean };
+    canContactParticipants: { allowed: boolean };
+    canEdit: { allowed: boolean };
+};
 
 type ActionButtonProps = {
     subcourse: Pick<
@@ -43,9 +53,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && appointment && (
-                    <JoinMeeting isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canJoinMeeting={canJoin} />
-                )}
                 {subcourse.published && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
@@ -55,6 +62,9 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         isInstructor={subcourse.isInstructor}
                         refresh={refresh}
                     />
+                )}
+                {subcourse.published && appointment && (
+                    <VideoButton isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canStartMeeting={canJoin} />
                 )}
                 {subcourse.canEdit.allowed && (
                     <>

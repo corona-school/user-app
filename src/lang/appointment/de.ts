@@ -5,7 +5,7 @@ const appointment = {
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Vergangene Termine laden',
-    courseNotPublished: 'Kurs noch nicht veröffentlicht.',
+    courseNotPublished: 'Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.',
     noNextAppointment: 'Kein nächster Termin.',
     empty: {
         noAppointments: 'Keine Termine',
