@@ -239,7 +239,7 @@ const SingleCoursePupil = () => {
                 <Box minH={300}>
                     <AppointmentList
                         isReadOnlyList={!subcourse?.isParticipant}
-                        disableScroll={true}
+                        disableScroll
                         appointments={data?.subcourse?.appointments as Appointment[]}
                         noOldAppointments
                     />
