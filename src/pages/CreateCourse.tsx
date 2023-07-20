@@ -496,6 +496,7 @@ const CreateCourse: React.FC = () => {
             // errors === undefined
             if (appointmentsRes.errors) {
                 errors.push('appointments');
+                setAppointmentsToBeCreated([]);
                 await resetAppointments();
                 await resetSubcourse();
                 await resetCourse();
@@ -816,6 +817,10 @@ const CreateCourse: React.FC = () => {
 
     const goToStep = useCallback((index: number) => {
         setCurrentIndex(index);
+    }, []);
+
+    useEffect(() => {
+        setAppointmentsToBeCreated([]);
     }, []);
 
     return (
