@@ -1,0 +1,14 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import CourseBanner from './CourseBanner';
+
+<Meta title="Course/CourseBanner" component={CourseBanner} />
+
+# CourseBanner
+
+<Story name="CourseBanner">
+    <CourseBanner courseState={'allowed'} isCourseCancelled={false} isPublished handleButtonClick={() => console.log('handle click')} />
+    <CourseBanner courseState={'allowed'} isCourseCancelled={false} isPublished={false} handleButtonClick={() => console.log('handle click')} />
+    <CourseBanner courseState={'created'} isCourseCancelled={false} isPublished handleButtonClick={() => console.log('handle click')} />
+    <CourseBanner courseState={'denied'} isCourseCancelled={false} isPublished handleButtonClick={() => console.log('handle click')} />
+    <CourseBanner courseState={'submitted'} isCourseCancelled={false} isPublished handleButtonClick={() => console.log('handle click')} />
+</Story>
