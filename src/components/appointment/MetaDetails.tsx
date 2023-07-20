@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useMemo, useState } from 'react';
 import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
-import { canJoinMeeting } from '../../widgets/appointment/AppointmentDay';
+import { canJoinMeeting } from '../../widgets/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 import AlertMessage from '../../widgets/AlertMessage';

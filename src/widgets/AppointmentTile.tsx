@@ -1,12 +1,12 @@
 import { Box, Card, HStack, VStack, Text, Avatar, Heading, useBreakpointValue, Spacer } from 'native-base';
-import WarningIcon from '../../assets/icons/lernfair/icon_achtung.svg';
-import StudentAvatar from '../../assets/icons/lernfair/avatar_student.svg';
-import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil.svg';
+import WarningIcon from '../assets/icons/lernfair/icon_achtung.svg';
+import StudentAvatar from '../assets/icons/lernfair/avatar_student.svg';
+import PupilAvatar from '../assets/icons/lernfair/avatar_pupil.svg';
 import { Pressable } from 'react-native';
-import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import { useTranslation } from 'react-i18next';
-import { Appointment } from '../../types/lernfair/Appointment';
-import VideoButton from '../../components/VideoButton';
+import { Appointment } from '../types/lernfair/Appointment';
+import VideoButton from '../components/VideoButton';
 
 type Props = {
     timeDescriptionText: string;

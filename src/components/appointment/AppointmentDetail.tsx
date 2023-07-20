@@ -123,12 +123,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
             </Modal>
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
-                <Header
-                    organizers={appointment.organizers}
-                    appointmentTitle={appointment.title}
-                    displayName={appointment.displayName}
-                    position={appointment.position}
-                />
+                <Header appointmentTitle={appointment.title} displayName={appointment.displayName} position={appointment.position} />
                 <MetaDetails
                     date={date}
                     startTime={startTime}

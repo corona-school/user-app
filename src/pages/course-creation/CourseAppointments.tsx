@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/AppointmentList';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
 import ButtonRow from './ButtonRow';

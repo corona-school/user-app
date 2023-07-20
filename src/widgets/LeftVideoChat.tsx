@@ -3,9 +3,9 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Heading, Stack, Text, useBreakpointValue, useTheme, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import PartyIcon from '../../assets/icons/lernfair/lf-party.svg';
+import PartyIcon from '../assets/icons/lernfair/lf-party.svg';
 import { useEffect } from 'react';
-import { removeZoomStyles } from '../../components/ZoomMeeting';
+import { removeZoomStyles } from '../components/ZoomMeeting';
 
 const getAppointmentOrganizer = gql(`
 query appointmentOrganizer($appointmentId: Float!) {

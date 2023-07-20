@@ -15,7 +15,7 @@ import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
 import HelpNavigation from '../components/HelpNavigation';
-import MatchAppointments from './MatchAppointments';
+import MatchAppointments from '../widgets/MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';

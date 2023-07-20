@@ -37,7 +37,7 @@ import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { canJoinMeeting } from './appointment/AppointmentDay';
+import { canJoinMeeting } from './AppointmentDay';
 
 type Props = {
     appointmentId?: number;
