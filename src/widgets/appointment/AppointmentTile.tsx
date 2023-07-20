@@ -100,13 +100,15 @@ const AppointmentTile: React.FC<Props> = ({
                             )}
                         </Box>
                         {!isReadOnly && isCurrentlyTakingPlace && appointmentId && appointmentType && (
-                            <VideoButton
-                                isInstructor={isOrganizer}
-                                canStartMeeting={canJoinVideochat}
-                                appointmentId={appointmentId}
-                                appointmentType={appointmentType}
-                                width={buttonWidth}
-                            />
+                            <Box mt={2}>
+                                <VideoButton
+                                    isInstructor={isOrganizer}
+                                    canStartMeeting={canJoinVideochat}
+                                    appointmentId={appointmentId}
+                                    appointmentType={appointmentType}
+                                    width={buttonWidth}
+                                />
+                            </Box>
                         )}
                     </VStack>
                 </Card>

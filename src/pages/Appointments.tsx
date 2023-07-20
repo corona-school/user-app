@@ -45,9 +45,9 @@ const getMyAppointments = gql(`
                 }
                 declinedBy
                 zoomMeetingId
-                subcourse {
-                    published
-                }
+                # subcourse {
+                #     published
+                # }
             }            
         }
     }
@@ -82,7 +82,7 @@ const Appointments: React.FC = () => {
     });
 
     const appointments = myAppointments?.me?.appointments ?? [];
-
+    console.log('APPOINTMENTS', appointments);
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         await fetchMore({
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
