@@ -252,8 +252,7 @@ const AppointmentCard: React.FC<Props> = ({
                                                 {dateFirstLecture.toLocaleString(
                                                     //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
                                                     {
-                                                        weekday: 'short',
-                                                        year: 'numeric',
+                                                        weekday: 'long',
                                                         month: 'long',
                                                         day: '2-digit',
                                                         hour: '2-digit',
