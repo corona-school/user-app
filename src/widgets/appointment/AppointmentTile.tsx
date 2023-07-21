@@ -39,7 +39,6 @@ const AppointmentTile: React.FC<Props> = ({
     displayName,
     appointmentId,
     appointmentType,
-    canJoinVideochat,
     isOrganizer,
 }) => {
     const { t } = useTranslation();
@@ -103,7 +102,7 @@ const AppointmentTile: React.FC<Props> = ({
                             <Box mt={2}>
                                 <VideoButton
                                     isInstructor={isOrganizer}
-                                    canStartMeeting={canJoinVideochat}
+                                    canStartMeeting
                                     appointmentId={appointmentId}
                                     appointmentType={appointmentType}
                                     width={buttonWidth}

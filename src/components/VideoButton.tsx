@@ -7,7 +7,7 @@ type VideoButtonProps = {
     isInstructor?: boolean;
     appointmentId: number;
     appointmentType: Lecture_Appointmenttype_Enum;
-    canStartMeeting?: boolean;
+    canStartMeeting: boolean;
     width?: number;
     buttonText?: string;
     isOver?: boolean;

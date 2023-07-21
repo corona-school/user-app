@@ -39,9 +39,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && appointment && (
-                    <VideoButton isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canStartMeeting={canJoin} />
-                )}
                 {subcourse.published && subcourse.canContactParticipants.allowed && <ContactParticipants subcourseId={subcourse.id} refresh={refresh} />}
                 {subcourse.canEdit.allowed && (
                     <>
