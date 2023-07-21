@@ -174,7 +174,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         <VideoButton
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
-                            canStartMeeting={canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now())}
+                            canStartMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
                         />
                         <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
                             {t('single.actions.leaveSubcourse')}

@@ -107,6 +107,11 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
               displayName
               position
               total
+              isOrganizer
+              isParticipant
+              subcourse {
+                published
+              }
             }
     }
 }
