@@ -30,24 +30,32 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     }, 30_000);
 
     const myNextAppointments = useMemo(() => {
-        const nextPublishedAppointment = appointments.filter((appointment) => {
+        const nextPublishedAppointments = appointments.filter((appointment) => {
             const { subcourse } = appointment;
             if (subcourse) return subcourse?.published;
             return true;
         });
 
-        const nextAvailableAppointments = nextPublishedAppointment.filter((appointment) => {
+        const nextAvailableAppointments = nextPublishedAppointments.filter((appointment) => {
             const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            return isCurrent;
+            if (isCurrent) return true;
         });
 
-        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : nextPublishedAppointment.slice(0, 1);
+        if (nextAvailableAppointments.length === 0) {
+            const futureAppointments = nextPublishedAppointments.filter((appointment) => {
+                const startDate = DateTime.fromISO(appointment.start).plus(appointment.duration);
+                const now = DateTime.now();
+                return startDate > now;
+            });
+            return futureAppointments.length > 0 ? [futureAppointments[0]] : [];
+        }
+
+        return nextAvailableAppointments;
     }, [appointments, currentTime]);
 
     return (
         <Box>
-            {/* {myNextAppointments.length > 0 && ( */}
             <VStack marginBottom={space['1.5']}>
                 <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
                 <VStack space={space['1']}>
@@ -79,7 +87,6 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                     })}
                 </VStack>
             </VStack>
-            {/* )} */}
         </Box>
     );
 };

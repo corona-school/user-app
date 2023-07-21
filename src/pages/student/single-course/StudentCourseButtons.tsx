@@ -31,11 +31,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     const { isMobile } = useLayoutHelper();
     const navigate = useNavigate();
 
-    const canJoin = useMemo(() => {
-        if (!appointment) return false;
-        return canJoinMeeting(appointment.start, appointment.duration || 0, 30, DateTime.now());
-    }, [appointment]);
-
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>

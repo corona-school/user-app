@@ -9,9 +9,6 @@ import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessag
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import AlertMessage from '../../../widgets/AlertMessage';
-import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
-import { DateTime } from 'luxon';
-import VideoButton from '../../../components/VideoButton';
 
 type CanJoin = {
     allowed: boolean;
@@ -41,7 +38,6 @@ type ActionButtonProps = {
 };
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
-    appointment,
     courseFull,
     canJoinSubcourse,
     joinedSubcourse,
