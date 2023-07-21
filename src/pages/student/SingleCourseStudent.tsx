@@ -103,6 +103,8 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
               displayName
               position
               total
+              isOrganizer
+              isParticipant
               organizers(skip: 0, take: 5) {
                 id
                 firstname

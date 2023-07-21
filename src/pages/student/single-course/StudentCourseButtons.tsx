@@ -21,7 +21,7 @@ type SubcourseOfStudent = {
 
 type ActionButtonProps = {
     subcourse: SubcourseOfStudent;
-    appointment: Lecture;
+    appointment?: Lecture;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
 
@@ -32,8 +32,9 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     const navigate = useNavigate();
 
     const canJoin = useMemo(() => {
-        return canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now());
-    }, [appointment.duration, appointment.start]);
+        if (!appointment) return false;
+        return canJoinMeeting(appointment.start, appointment.duration || 0, 30, DateTime.now());
+    }, [appointment]);
 
     return (
         <>
