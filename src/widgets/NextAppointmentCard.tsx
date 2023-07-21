@@ -25,7 +25,6 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     const navigate = useNavigate();
     const [currentTime, setCurrentTime] = useState(Date.now());
 
-    // TODO interval to update dashboard? (second interval in appointment card)
     useInterval(() => {
         setCurrentTime(Date.now());
     }, 30_000);
@@ -37,15 +36,13 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
             return true;
         });
 
-        console.log(appointments, nextPublishedAppointment);
         const nextAvailableAppointments = nextPublishedAppointment.filter((appointment) => {
-            const { start, duration, isOrganizer, subcourse } = appointment;
-
+            const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
             return isCurrent;
         });
 
-        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : nextPublishedAppointment;
+        return nextAvailableAppointments.length > 0 ? nextAvailableAppointments : nextPublishedAppointment.slice(0, 1);
     }, [appointments, currentTime]);
 
     return (
