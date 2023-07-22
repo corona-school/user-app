@@ -267,6 +267,22 @@ const AppointmentCard: React.FC<Props> = ({
                                                     t('single.global.clock')}
                                             </Text>
                                         </Row>
+                                        {/* TEMPORARY REMOVE LATER */}
+                                        {dateNextLecture
+                                            ? '\n' +
+                                              dateNextLecture.toLocaleString(
+                                                  {
+                                                      weekday: 'long',
+                                                      month: '2-digit',
+                                                      year: 'numeric',
+                                                      day: '2-digit',
+                                                      hour: '2-digit',
+                                                      minute: '2-digit',
+                                                  },
+                                                  { locale: t('single.global.timeFormatLocale') }
+                                              )
+                                            : ''}
+                                        {/*  */}
                                     </>
                                 )}
                                 {dateFirstLecture && isTeaser && (
