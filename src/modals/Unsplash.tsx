@@ -48,7 +48,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
             );
             const res = await data.json();
             setTotalPages(res.total_pages);
-            setPhotos(res.results);
+            setPhotos(res.results || []);
         } catch (e) {
             setIsLoading(false);
             console.error(e);

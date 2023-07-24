@@ -58,7 +58,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
         return convertedAppointments;
     };
     const canGoFurther = () => {
-        if (isEditing) return appointments.length === 0 ? true : false;
         return allAppointmentsToShow.length === 0 ? true : false;
     };
     const getAllAppointmentsToShow = () => {
