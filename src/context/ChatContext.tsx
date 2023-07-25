@@ -8,6 +8,21 @@ import { userIdToTalkJsId } from '../helper/chat-helper';
 
 const TALKJS_APP_ID = process.env.REACT_APP_TALKJS_APP_ID;
 
+interface UserType {
+    userID: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    pupil: {
+        id: number;
+        verifiedAt: Date | null;
+    } | null;
+    student: {
+        id: number;
+        verifiedAt: Date | null;
+    } | null;
+}
+
 type IChatContext = {
     session: Talk.Session | null;
     talkLoaded: boolean;
@@ -26,6 +41,20 @@ query myChatSignature {
       chatSignature
     }
   }`);
+
+const shortenLastName = (lastname: string) => {
+    if (lastname.length > 0) {
+        return lastname.charAt(0).concat('.');
+    }
+    return '';
+};
+
+const getChatName = (user: UserType) => {
+    if (user.pupil) {
+        return `${user.firstname} ${shortenLastName(user.lastname)}`;
+    }
+    return `${user.firstname} ${user.lastname}`;
+};
 
 export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Talk.Session | null>(null);
@@ -49,7 +78,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
         const me = {
             id: userIdToTalkJsId(userId),
-            name: `${user?.firstname} ${user?.lastname}`,
+            name: getChatName(user),
             role: user?.pupil ? 'pupil' : 'student',
             email: user?.email,
         };
