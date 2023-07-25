@@ -95,6 +95,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         published
         appointments {
               id
+              appointmentType
               title
               description
               start
