@@ -2,7 +2,6 @@ const appointment = {
     title: 'Termine',
     saveChanges: 'Änderungen speichern',
     editSuccess: 'Termin erfolgreich geändert',
-    createSuccess: 'Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Vergangene Termine laden',
