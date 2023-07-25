@@ -39,12 +39,12 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
         const nextAvailableAppointments = nextPublishedAppointments.filter((appointment) => {
             const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            if (isCurrent) return true;
+            if (isCurrent) return isCurrent;
         });
-
+        // if there is no current we show the next upcoming appointment
         if (nextAvailableAppointments.length === 0) {
             const futureAppointments = nextPublishedAppointments.filter((appointment) => {
-                const startDate = DateTime.fromISO(appointment.start).plus(appointment.duration);
+                const startDate = DateTime.fromISO(appointment.start);
                 const now = DateTime.now();
                 return startDate > now;
             });
@@ -56,37 +56,39 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
 
     return (
         <Box>
-            <VStack marginBottom={space['1.5']}>
-                <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
-                <VStack space={space['1']}>
-                    {myNextAppointments.map((myNextAppointment) => {
-                        return (
-                            <AppointmentCard
-                                hasVideoButton
-                                isTeaser={true}
-                                onPressToCourse={() => {
-                                    trackEvent({
-                                        category: 'dashboard',
-                                        action: 'click-event',
-                                        name: 'Schüler Dashboard – Termin Teaser | Klick auf' + myNextAppointment.displayName,
-                                        documentTitle: 'Schüler Dashboard',
-                                    });
-                                    navigate(`/appointment/${myNextAppointment.id}`);
-                                }}
-                                dateFirstLecture={myNextAppointment.start}
-                                duration={myNextAppointment.duration}
-                                title={myNextAppointment.displayName}
-                                description={myNextAppointment.description ?? ''}
-                                image={myNextAppointment.subcourse?.course.image ?? ''}
-                                isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
-                                appointmentId={myNextAppointment.id}
-                                appointmentType={myNextAppointment.appointmentType}
-                                isOrganizer={myNextAppointment.isOrganizer}
-                            />
-                        );
-                    })}
+            {myNextAppointments.length > 0 && (
+                <VStack marginBottom={space['1.5']}>
+                    <Heading marginBottom={space['1']}>{t('dashboard.appointmentcard.header')}</Heading>
+                    <VStack space={space['1']}>
+                        {myNextAppointments.map((myNextAppointment) => {
+                            return (
+                                <AppointmentCard
+                                    hasVideoButton
+                                    isTeaser={true}
+                                    onPressToCourse={() => {
+                                        trackEvent({
+                                            category: 'dashboard',
+                                            action: 'click-event',
+                                            name: 'Schüler Dashboard – Termin Teaser | Klick auf' + myNextAppointment.displayName,
+                                            documentTitle: 'Schüler Dashboard',
+                                        });
+                                        navigate(`/appointment/${myNextAppointment.id}`);
+                                    }}
+                                    dateFirstLecture={myNextAppointment.start}
+                                    duration={myNextAppointment.duration}
+                                    title={myNextAppointment.displayName}
+                                    description={myNextAppointment.description ?? ''}
+                                    image={myNextAppointment.subcourse?.course.image ?? ''}
+                                    isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
+                                    appointmentId={myNextAppointment.id}
+                                    appointmentType={myNextAppointment.appointmentType}
+                                    isOrganizer={myNextAppointment.isOrganizer}
+                                />
+                            );
+                        })}
+                    </VStack>
                 </VStack>
-            </VStack>
+            )}
         </Box>
     );
 };
