@@ -110,6 +110,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
         }
         appointments {
               id
+              appointmentType
               title
               description
               start

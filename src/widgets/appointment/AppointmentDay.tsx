@@ -103,7 +103,6 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 appointmentId={appointmentId}
-                                canJoinVideochat={canJoinVideochat}
                             />
                         </HStack>
                     </Box>
@@ -124,7 +123,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 isReadOnly={isReadOnly}
-                                canJoinVideochat={canJoinVideochat}
+                                appointmentId={appointmentId}
                             />
                         </HStack>
                     </Box>
