@@ -2,11 +2,16 @@ const appointment = {
     title: 'Termine',
     saveChanges: 'Änderungen speichern',
     editSuccess: 'Termin erfolgreich geändert',
+    createSuccess: 'Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
     deleteAppointment: 'Termin löschen',
     goBack: 'zur vorherigen Seite',
     loadPastAppointments: 'Vergangene Termine laden',
     courseNotPublished: 'Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.',
     noNextAppointment: 'Kein nächster Termin.',
+    toast: {
+        createOneAppointmentSuccess: 'Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
+        createAppointmentsSuccess: 'Termine wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
+    },
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
