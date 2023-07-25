@@ -386,7 +386,7 @@ const AppointmentCard: React.FC<Props> = ({
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
                                             isInstructor={isOrganizer}
-                                            canStartMeeting={isCurrent}
+                                            canJoinMeeting={isCurrent}
                                         />
                                     </VStack>
                                 )}
