@@ -146,7 +146,10 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
-            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
+            toast.show({
+                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
+                placement: 'top',
+            });
             closeModal && closeModal();
         }
     };
@@ -191,7 +194,10 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
-            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
+            toast.show({
+                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
+                placement: 'top',
+            });
             navigate('/appointments');
         }
     };
@@ -236,7 +242,10 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
-            toast.show({ description: weeklies.length > 0 ? 'Termine hinzugefügt' : 'Termin hinzugefügt', placement: 'top' });
+            toast.show({
+                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
+                placement: 'top',
+            });
 
             if (navigateToMatch) {
                 await navigateToMatch();
