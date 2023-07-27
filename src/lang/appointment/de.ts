@@ -7,6 +7,10 @@ const appointment = {
     loadPastAppointments: 'Vergangene Termine laden',
     courseNotPublished: 'Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.',
     noNextAppointment: 'Kein nächster Termin.',
+    toast: {
+        createOneAppointmentSuccess: 'Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
+        createAppointmentsSuccess: 'Termine wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.',
+    },
     empty: {
         noAppointments: 'Keine Termine',
         noAppointmentsDesc: 'Dir wurden aktuell noch keine Termine zugeordnet.',
