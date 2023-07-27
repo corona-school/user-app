@@ -139,7 +139,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
-                    isSubcoursePublished={appointment.subcourse?.published}
                 />
                 <Description description={appointment.description} />
 

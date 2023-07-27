@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useCallback, useState } from 'react';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button, Spinner } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../types/lernfair/Appointment';
@@ -156,7 +156,6 @@ const AppointmentList: React.FC<Props> = ({
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
-                        canJoinVideochat={appointment?.subcourse ? appointment.subcourse?.published : true}
                     />
                 </Box>
             </Box>

@@ -54,7 +54,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                     />
                 )}
                 {subcourse.published && appointment && (
-                    <VideoButton isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canStartMeeting={canJoin} />
+                    <VideoButton isInstructor appointmentId={appointment.id} appointmentType={appointment.appointmentType} canJoinMeeting={canJoin} />
                 )}
                 {subcourse.canEdit.allowed && (
                     <>

@@ -6,7 +6,6 @@ import AppointmentCard from './AppointmentCard';
 import { useNavigate } from 'react-router-dom';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTranslation } from 'react-i18next';
-import AlertMessage from './AlertMessage';
 import useInterval from '../hooks/useInterval';
 
 type Props = {
@@ -26,22 +25,31 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
     const navigate = useNavigate();
     const [currentTime, setCurrentTime] = useState(Date.now());
 
-    // TODO interval to update dashboard? (second interval in appointment card)
     useInterval(() => {
         setCurrentTime(Date.now());
     }, 30_000);
 
     const myNextAppointments = useMemo(() => {
-        const nextPublishedAppointment = appointments.filter((appointment) => {
+        const nextPublishedAppointments = appointments.filter((appointment) => {
             const { subcourse } = appointment;
-            return subcourse?.published;
+            if (subcourse) return subcourse?.published;
+            return true;
         });
 
-        const nextAvailableAppointments = nextPublishedAppointment.filter((appointment) => {
+        const nextAvailableAppointments = nextPublishedAppointments.filter((appointment) => {
             const { start, duration, isOrganizer } = appointment;
             const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
-            return isCurrent;
+            if (isCurrent) return isCurrent;
         });
+        // if there is no current we show the next upcoming appointment
+        if (nextAvailableAppointments.length === 0) {
+            const futureAppointments = nextPublishedAppointments.filter((appointment) => {
+                const startDate = DateTime.fromISO(appointment.start);
+                const now = DateTime.now();
+                return startDate > now;
+            });
+            return futureAppointments.length > 0 ? [futureAppointments[0]] : [];
+        }
 
         return nextAvailableAppointments;
     }, [appointments, currentTime]);

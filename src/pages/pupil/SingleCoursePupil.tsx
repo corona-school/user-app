@@ -100,6 +100,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
         published
         appointments {
               id
+              appointmentType
               title
               description
               start

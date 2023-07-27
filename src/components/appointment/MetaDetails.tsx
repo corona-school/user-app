@@ -12,7 +12,6 @@ import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from 
 import { canJoinMeeting } from '../../widgets/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
-import AlertMessage from '../../widgets/AlertMessage';
 import useInterval from '../../hooks/useInterval';
 import VideoButton from '../VideoButton';
 
@@ -31,7 +30,6 @@ type MetaProps = {
     appointmentId?: number;
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
-    isSubcoursePublished?: boolean;
 };
 const MetaDetails: React.FC<MetaProps> = ({
     date,
@@ -48,7 +46,6 @@ const MetaDetails: React.FC<MetaProps> = ({
     appointmentId,
     appointmentType,
     isOrganizer,
-    isSubcoursePublished,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [_, setCurrentTime] = useState(0);
@@ -107,12 +104,11 @@ const MetaDetails: React.FC<MetaProps> = ({
                         isInstructor={isOrganizer}
                         appointmentId={appointmentId}
                         appointmentType={appointmentType}
-                        canStartMeeting={canStartMeeting}
+                        canJoinMeeting={canStartMeeting}
                         buttonText={t('appointment.detail.videochatButton')}
                         width={buttonWidth}
                         isOver={isAppointmentOver}
                     />
-                    {!isSubcoursePublished && isOrganizer && <AlertMessage content={t('appointment.courseNotPublished')} />}
                 </>
             )}
         </>
