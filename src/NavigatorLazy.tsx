@@ -50,7 +50,6 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
-import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
@@ -236,15 +235,6 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <CreateCourse />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
-                path="/create-course-appointment"
-                element={
-                    <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
                     </RequireAuth>
                 }
             />
