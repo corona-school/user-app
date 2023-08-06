@@ -11,8 +11,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
-import { DateTime } from 'luxon';
-import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -59,7 +58,7 @@ const query = gql(`
                     }
                     pupilEmail
                 }
-                subcoursesInstructing {
+                subcoursesInstructing(excludePast: true) {
                     id
                     minGrade
                     maxGrade
@@ -80,6 +79,8 @@ const query = gql(`
                         }
                         image
                     }
+                    firstLecture { start duration }
+                    nextLecture { start duration }
                 }
             }
             appointments(take: 10, skip: 0) {
@@ -119,16 +120,26 @@ const query = gql(`
         }
 
         subcoursesPublic(take: 10, skip: 2) {
+            id
+            minGrade
+            maxGrade
             participantsCount
             maxParticipants
             course {
                 name
                 description
+                courseState
                 tags {
                     name
                 }
                 image
             }
+            lectures {
+                start
+                duration
+            }
+            firstLecture { start duration }
+            nextLecture { start duration }
         }
     }
 `);
@@ -203,36 +214,6 @@ const DashboardStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const publishedSubcourses = useMemo(
-        () => data?.me?.student?.subcoursesInstructing.filter((sub) => sub.published),
-        [data?.me?.student?.subcoursesInstructing]
-    );
-
-    const sortedPublishedSubcourses = useMemo(() => {
-        if (!publishedSubcourses) return [];
-
-        const courses = [...publishedSubcourses];
-
-        courses.sort((a, b) => {
-            const aLecture = getFirstLectureFromSubcourse(a.lectures);
-            const bLecture = getFirstLectureFromSubcourse(b.lectures);
-
-            if (bLecture === null) return -1;
-            if (aLecture === null) return 1;
-
-            const aDate = DateTime.fromISO(aLecture.start).toMillis();
-            const bDate = DateTime.fromISO(bLecture.start).toMillis();
-
-            if (aDate < DateTime.now().toMillis()) return 1;
-            if (bDate < DateTime.now().toMillis()) return 1;
-
-            if (aDate === bDate) return 0;
-            return aDate > bDate ? 1 : -1;
-        });
-
-        return courses;
-    }, [publishedSubcourses]);
-
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
     return (
@@ -270,7 +251,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                 </VStack>
                             </VStack>
 
-                            {(data?.me?.student?.canCreateCourse?.allowed || sortedPublishedSubcourses.length > 0) && (
+                            {data?.me?.student?.canCreateCourse?.allowed && (
                                 <HSection
                                     title={t('dashboard.helpers.headlines.course')}
                                     showAll
@@ -280,41 +261,45 @@ const DashboardStudent: React.FC<Props> = () => {
                                     scrollable={false}
                                 >
                                     <CSSWrapper className="course-list__wrapper">
-                                        {sortedPublishedSubcourses.length > 0 ? (
-                                            sortedPublishedSubcourses.slice(0, 4).map((sub, index) => {
-                                                const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
-                                                if (!firstLecture) return <></>;
-                                                return (
-                                                    <AppointmentCard
-                                                        key={index}
-                                                        description={sub.course.description}
-                                                        tags={sub.course.tags}
-                                                        dateFirstLecture={firstLecture.start}
-                                                        image={sub.course.image || ''}
-                                                        title={sub.course.name}
-                                                        countCourse={sub.lectures.length}
-                                                        maxParticipants={sub.maxParticipants}
-                                                        participantsCount={sub.participantsCount}
-                                                        minGrade={sub.minGrade}
-                                                        maxGrade={sub.maxGrade}
-                                                        statusText={getTrafficStatusText(sub)}
-                                                        showCourseTraffic
-                                                        showSchoolclass
-                                                        showStatus
-                                                        trafficLightStatus={getTrafficStatus(sub?.participantsCount || 0, sub?.maxParticipants || 0)}
-                                                        onPressToCourse={() => {
-                                                            trackEvent({
-                                                                category: 'dashboard',
-                                                                action: 'click-event',
-                                                                name: 'Helfer Dashboard Kachelklick  ' + sub.course.name,
-                                                                documentTitle: 'Helfer Dashboard – Meine Kurse  ' + sub.course.name,
-                                                            });
+                                        {data?.me?.student?.subcoursesInstructing.length > 0 ? (
+                                            data?.me?.student?.subcoursesInstructing
+                                                .filter((subcourse) => subcourse.published)
+                                                .slice(0, 4)
+                                                .map((subcourse) => {
+                                                    return (
+                                                        <AppointmentCard
+                                                            key={subcourse.id}
+                                                            description={subcourse.course.description}
+                                                            tags={subcourse.course.tags}
+                                                            dateFirstLecture={subcourse?.firstLecture?.start ?? undefined}
+                                                            dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
+                                                            image={subcourse.course.image ?? undefined}
+                                                            title={subcourse.course.name}
+                                                            countCourse={subcourse.lectures.length}
+                                                            maxParticipants={subcourse.maxParticipants}
+                                                            participantsCount={subcourse.participantsCount}
+                                                            minGrade={subcourse.minGrade}
+                                                            statusText={getTrafficStatusText(subcourse)}
+                                                            showCourseTraffic
+                                                            showSchoolclass
+                                                            showStatus
+                                                            trafficLightStatus={getTrafficStatus(
+                                                                subcourse.participantsCount ?? 0,
+                                                                subcourse.maxParticipants ?? 0
+                                                            )}
+                                                            onPressToCourse={() => {
+                                                                trackEvent({
+                                                                    category: 'dashboard',
+                                                                    action: 'click-event',
+                                                                    name: 'Helfer Dashboard Kachelklick  ' + subcourse.course.name,
+                                                                    documentTitle: 'Helfer Dashboard – Meine Kurse  ' + subcourse.course.name,
+                                                                });
 
-                                                            navigate(`/single-course/${sub.id}`);
-                                                        }}
-                                                    />
-                                                );
-                                            })
+                                                                navigate(`/single-course/${subcourse.id}`);
+                                                            }}
+                                                        />
+                                                    );
+                                                })
                                         ) : (
                                             <AlertMessage content={t('course.empty.nocourses')} />
                                         )}

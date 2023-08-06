@@ -99,32 +99,6 @@ export const handleDateString: (datetime: string, format: string, locale?: strin
     });
 };
 
-export const getFirstLectureFromSubcourse: (lectures: LFLecture[], pastLectures?: boolean) => LFLecture = (lectures, pastLectures) => {
-    let firstDate: DateTime = null!;
-    let firstLecture: LFLecture = null!;
-
-    const now = DateTime.now().toMillis();
-
-    for (const lecture of lectures) {
-        const date = DateTime.fromISO(lecture.start);
-
-        if (!pastLectures && date.toMillis() < now) continue;
-
-        if (!firstLecture) {
-            firstLecture = lecture;
-            firstDate = date;
-            continue;
-        }
-
-        if (date.toMillis() < firstDate.toMillis()) {
-            firstLecture = lecture;
-            firstDate = date;
-        }
-    }
-
-    return firstLecture;
-};
-
 export const getTrafficStatus: (participants: number, maxParticipants: number) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
     return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
 };
@@ -173,7 +147,6 @@ const Utility = {
     findMinMaxClassRange,
     formatDate,
     handleDateString,
-    getFirstLectureFromSubcourse,
     getTrafficStatus,
     sortByDate,
 };
