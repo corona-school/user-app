@@ -4,7 +4,7 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
 import { useUserType } from '../hooks/useApollo';
@@ -78,6 +78,7 @@ query SingleMatch($matchId: Int! ) {
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
+    const navigate = useNavigate();
     const { id: _matchId } = useParams();
     const matchId = parseInt(_matchId ?? '', 10);
     const { space } = useTheme();
@@ -99,6 +100,14 @@ const SingleMatch = () => {
         gql(`
             mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+            }
+        `)
+    );
+
+    const [createAdHocMeeting, { data: adHocMeetingData }] = useMutation(
+        gql(`
+            mutation createAdHocMeeting($matchId: Int!){
+                matchCreateAdHocMeeting(matchId: $matchId)
             }
         `)
     );
@@ -128,6 +137,15 @@ const SingleMatch = () => {
         await refetch();
         setCreateAppointment(false);
     };
+
+    const startAdHocMeeting = async () => {
+        const meetingData = await createAdHocMeeting({ variables: { matchId: matchId } });
+        const appointmentId = meetingData && meetingData.data?.matchCreateAdHocMeeting.id;
+        const appointmentType = meetingData && meetingData.data?.matchCreateAdHocMeeting.appointmentType;
+        await refetch();
+        navigate(`/video-chat/${appointmentId}/${appointmentType}`);
+    };
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -195,7 +213,7 @@ const SingleMatch = () => {
                                     <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.contactViaChat')}
                                     </Button>
-                                    <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
+                                    <Button onPress={() => startAdHocMeeting()} variant="outline" my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.directCall')}
                                     </Button>
                                     {!data?.match?.dissolved && (
