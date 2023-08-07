@@ -18,6 +18,7 @@ import AppointmentCreation from './create-appointment/AppointmentCreation';
 import MatchAppointments from './MatchAppointments';
 import HelpNavigation from '../components/HelpNavigation';
 import { Appointment } from '../types/lernfair/Appointment';
+import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -87,6 +88,7 @@ const SingleMatch = () => {
     const userType = useUserType();
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
+    const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>();
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
 
@@ -213,9 +215,11 @@ const SingleMatch = () => {
                                     <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
                                         {t('matching.shared.contactViaChat')}
                                     </Button>
-                                    <Button onPress={() => startAdHocMeeting()} variant="outline" my={isMobile ? '0' : '1'}>
-                                        {t('matching.shared.directCall')}
-                                    </Button>
+                                    {userType === 'student' && (
+                                        <Button onPress={() => setShowAdHocMeetingModal(true)} variant="outline" my={isMobile ? '0' : '1'}>
+                                            {t('matching.shared.directCall')}
+                                        </Button>
+                                    )}
                                     {!data?.match?.dissolved && (
                                         <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
                                             {t('matching.shared.dissolveMatch')}
@@ -255,6 +259,13 @@ const SingleMatch = () => {
                     return await dissolve(reason);
                 }}
                 onPressBack={() => setShowDissolveModal(false)}
+            />
+            <AdHocMeetingModal
+                showAdHocModal={showAdHocMeetingModal}
+                onPressAdHocMeeting={async () => {
+                    await startAdHocMeeting();
+                }}
+                onPressBack={() => setShowAdHocMeetingModal(false)}
             />
         </WithNavigation>
     );
