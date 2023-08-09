@@ -1,11 +1,8 @@
 import { Button, Modal, Row, Text, useBreakpointValue, useTheme } from 'native-base';
-import { useMemo, useState } from 'react';
-import { useUserType } from '../hooks/useApollo';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-type AdHocMeetingModal = {
-    showAdHocModal: boolean | undefined;
+type ModalProps = {
+    showAdHocModal: boolean;
     onPressAdHocMeeting: () => void;
     onPressBack: () => void;
 };
@@ -13,7 +10,7 @@ type AdHocMeetingModal = {
 export const studentReasonOptions = new Array(9).fill(0);
 export const pupilReasonOptions = new Array(9).fill(0);
 
-const AdHocMeetingModal: React.FC<AdHocMeetingModal> = ({ showAdHocModal, onPressAdHocMeeting, onPressBack }) => {
+const AdHocMeetingModal: React.FC<ModalProps> = ({ showAdHocModal, onPressAdHocMeeting, onPressBack }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
 

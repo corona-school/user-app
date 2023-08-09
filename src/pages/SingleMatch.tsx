@@ -88,7 +88,7 @@ const SingleMatch = () => {
     const userType = useUserType();
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>();
+    const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
 
@@ -106,7 +106,7 @@ const SingleMatch = () => {
         `)
     );
 
-    const [createAdHocMeeting, { data: adHocMeetingData }] = useMutation(
+    const [createAdHocMeeting] = useMutation(
         gql(`
             mutation createAdHocMeeting($matchId: Int!){
                 matchCreateAdHocMeeting(matchId: $matchId)
@@ -140,13 +140,18 @@ const SingleMatch = () => {
         setCreateAppointment(false);
     };
 
-    const startAdHocMeeting = async () => {
+    const startAdHocMeeting = useCallback(async () => {
         const meetingData = await createAdHocMeeting({ variables: { matchId: matchId } });
         const appointmentId = meetingData && meetingData.data?.matchCreateAdHocMeeting.id;
         const appointmentType = meetingData && meetingData.data?.matchCreateAdHocMeeting.appointmentType;
         await refetch();
+
+        if (!appointmentId || !appointmentType) {
+            throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
+        }
+
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    };
+    }, [createAdHocMeeting, matchId, navigate, refetch]);
 
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
