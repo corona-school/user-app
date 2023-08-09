@@ -13,7 +13,7 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { singleMatchQuery } from '../../pages/SingleMatch';
+import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -47,10 +47,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         mutation cancelAppointment($appointmentId: Float!) {
             appointmentCancel(appointmentId: $appointmentId)
         }
-    `),
-        {
-            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
-        }
+    `)
     );
 
     const [declineAppointment] = useMutation(
@@ -60,7 +57,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         }
     `),
         {
-            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
+            refetchQueries: [{ query: PUPIL_APPOINTMENT, variables: { appointmentId: appointment.id } }],
         }
     );
 
@@ -102,6 +99,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
         declineAppointment({ variables: { appointmentId: appointment.id } });
+        setShowDeclineModal(false);
     }, []);
 
     const attendees = useMemo(() => {
