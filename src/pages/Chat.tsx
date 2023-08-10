@@ -12,6 +12,20 @@ import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import ContactSupportModal from '../modals/ContactSupportModal';
+import { MessageActionEvent } from 'talkjs/all';
+import { DateTime } from 'luxon';
+
+export type ReportInfos = {
+    messageId: string;
+    message: string;
+    messageType: string;
+    sender: string;
+    senderId: string;
+    sentAt: string;
+    conversationType: string;
+    subject?: string;
+    conversationId: string;
+};
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
@@ -19,6 +33,17 @@ const Chat: React.FC = () => {
     const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
+    const [reportInfos, setReportInfos] = useState<ReportInfos>({
+        message: '',
+        messageId: '',
+        messageType: '',
+        sender: '',
+        senderId: '',
+        sentAt: '',
+        conversationType: '',
+        subject: '',
+        conversationId: '',
+    });
 
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
@@ -46,7 +71,21 @@ const Chat: React.FC = () => {
         setIsContactModalOpen(false);
     };
 
-    const handleContactSupport = () => {
+    const handleContactSupport = (event: MessageActionEvent) => {
+        const { id, body, sender, senderId, type, timestamp, conversation } = event.message;
+        const sentAt = DateTime.fromMillis(timestamp).toISO();
+
+        setReportInfos({
+            message: body,
+            messageId: id,
+            messageType: type,
+            sender: sender?.name ?? '',
+            senderId: senderId ?? '',
+            sentAt: sentAt,
+            conversationType: conversation.custom.groupType ? 'group' : 'one-on-one',
+            conversationId: conversation.id,
+            ...(conversation.subject ? { subject: conversation.subject } : {}),
+        });
         setIsSupportContactModalOpen(true);
     };
 
@@ -58,7 +97,8 @@ const Chat: React.FC = () => {
         });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
-        inbox.onCustomMessageAction('contact-support', handleContactSupport);
+        inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
+
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
                 if (conversation) return setIsConversationSelected(true);
@@ -90,6 +130,7 @@ const Chat: React.FC = () => {
                     onClose={() => {
                         setIsSupportContactModalOpen(false);
                     }}
+                    reportInfos={reportInfos}
                 />
             </WithNavigation>
         </AsNavigationItem>
