@@ -11,10 +11,12 @@ import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
+import ContactSupportModal from '../modals/ContactSupportModal';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
+    const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
 
@@ -44,6 +46,10 @@ const Chat: React.FC = () => {
         setIsContactModalOpen(false);
     };
 
+    const handleContactSupport = () => {
+        setIsSupportContactModalOpen(true);
+    };
+
     useEffect(() => {
         if (!session) return;
         const inbox = session.createInbox({
@@ -52,6 +58,7 @@ const Chat: React.FC = () => {
         });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
+        inbox.onCustomMessageAction('contact-support', handleContactSupport);
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
                 if (conversation) return setIsConversationSelected(true);
@@ -78,6 +85,12 @@ const Chat: React.FC = () => {
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </Modal>
+                <ContactSupportModal
+                    isOpen={isSupportContactModalOpen}
+                    onClose={() => {
+                        setIsSupportContactModalOpen(false);
+                    }}
+                />
             </WithNavigation>
         </AsNavigationItem>
     );
