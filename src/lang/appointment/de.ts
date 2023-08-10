@@ -80,6 +80,7 @@ const appointment = {
         cancelButton: 'Termin absagen',
         editButton: 'Termin bearbeiten',
         canceledToast: 'Termin wurde abgesagt',
+        deleteTooltip: 'Der letzte Termin kann nicht gelöscht werden.',
     },
     attendeesModal: {
         title: 'Teilnehmer:innen',
