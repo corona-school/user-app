@@ -13,6 +13,7 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
@@ -111,6 +112,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return end < DateTime.now();
     }, []);
 
+    const isLastAppointment = useMemo(
+        () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        [appointment.total]
+    );
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -152,6 +157,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
                     canEdit={isPastAppointment}
                     isOver={isAppointmentOver}
+                    isLast={isLastAppointment}
                 />
             </Box>
         </>
