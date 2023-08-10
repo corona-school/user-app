@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
 import { singleMatchQuery } from '../../pages/SingleMatch';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -113,7 +114,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return end < DateTime.now();
     }, []);
 
-    const isLastAppointment = useMemo(() => (appointment.total === 1 ? true : false), [appointment.total]);
+    const isLastAppointment = useMemo(
+        () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        [appointment.total]
+    );
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
