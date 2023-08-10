@@ -89,7 +89,7 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
             setShowError(true);
         }
 
-        if (isReport) toast.show({ description: 'Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft.', placement: 'top' });
+        if (isReport) toast.show({ description: t('helpcenter.reportSuccessToast'), placement: 'top' });
     }, [contactSupport, message, subject]);
 
     const isButtonDisabled = useMemo(() => {
