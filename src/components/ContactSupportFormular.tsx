@@ -1,4 +1,4 @@
-import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue, Button } from 'native-base';
+import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue, Button, useToast } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AlertMessage from '../widgets/AlertMessage';
@@ -6,6 +6,7 @@ import { FetchResult, useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { ContactSupportMutation } from '../gql/graphql';
 import { ReportInfos } from '../pages/Chat';
+import useApollo from '../hooks/useApollo';
 
 type FormularProps = {
     onCloseModal?: () => void;
@@ -21,6 +22,8 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
 
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+    const toast = useToast();
+    const { user } = useApollo();
 
     const ContentContainerWidth = useBreakpointValue({
         base: '100%',
@@ -43,7 +46,26 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
         let response: FetchResult<ContactSupportMutation, Record<string, any>, Record<string, any>>;
         if (isReport) {
             const reportMessage = reportInfos
-                ? `Nachricht ${reportInfos.message} melden von ${reportInfos.sender} mit context: ${reportInfos}`
+                ? `Sehr geehrtes Support-Team,
+
+                ich möchte hiermit eine Nachricht melden, die in unserer aktuellen Unterhaltung aufgetreten ist. Die Details lauten wie folgt:
+                
+                In unserer Konversation sind folgende Daten relevant:
+                
+                Message: ${reportInfos.message}
+                MessageId: ${reportInfos.messageId}
+                MessageType: ${reportInfos.messageType}
+                ConversationId: ${reportInfos.conversationId}
+                ConversationType: ${reportInfos.conversationType}
+                MessageSender: ${reportInfos.sender}
+                MessageSenderId: ${reportInfos.senderId}
+                SentAt: ${reportInfos.sentAt}
+                
+                Bitte die genannten Informationen überprüfen und gegebenenfalls erforderliche Maßnahmen ergreifen.
+
+                Mit freundlichen Grüßen,
+                ${user?.firstname} ${user?.lastname}
+                `
                 : 'Nachricht melden (keine Informationen)';
 
             response = await contactSupport({
@@ -66,6 +88,8 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
         } else {
             setShowError(true);
         }
+
+        if (isReport) toast.show({ description: 'Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft.', placement: 'top' });
     }, [contactSupport, message, subject]);
 
     const isButtonDisabled = useMemo(() => {
