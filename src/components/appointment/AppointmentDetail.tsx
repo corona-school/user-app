@@ -113,6 +113,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return end < DateTime.now();
     }, []);
 
+    const isLastAppointment = useMemo(() => (appointment.total === 1 ? true : false), [appointment.total]);
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -154,6 +155,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
                     canEdit={isPastAppointment}
                     isOver={isAppointmentOver}
+                    isLast={isLastAppointment}
                 />
             </Box>
         </>
