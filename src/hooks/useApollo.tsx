@@ -156,7 +156,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
             nextChain.subscribe(
                 (it) => {
                     if (it.errors?.length) {
-                        const isAuthError = it.errors!.some((it) => it.extensions.code === 'UNAUTHENTICATED');
+                        const isAuthError = it.errors!.some((it) => it.extensions?.code === 'UNAUTHENTICATED');
                         if (isAuthError) {
                             if (!getDeviceToken()) {
                                 log('GraphQL AuthRetry', 'authentication failure, no device token present');
