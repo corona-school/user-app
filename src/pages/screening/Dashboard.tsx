@@ -10,6 +10,7 @@ import SearchBar from '../../components/SearchBar';
 import Tag from '../../components/Tag';
 import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
+import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening } from '../../types';
 import { RequireAuth } from '../../User';
 import HSection from '../../widgets/HSection';
@@ -18,14 +19,20 @@ import { MatchStudentCard } from '../../widgets/matching/MatchStudentCard';
 import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
 
 function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
+    const { space } = useTheme();
+
     return (
         <Pressable onPress={onClick}>
             <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" minW="400px">
-                <VStack>
-                    <Heading color="white" fontSize="20px">
-                        {pupil.firstname} {pupil.lastname}
-                    </Heading>
-                    <Text>registriert seit {new Date(pupil!.createdAt).toLocaleDateString()}</Text>
+                <VStack space={space['1.5']}>
+                    <VStack space={space['0.5']}>
+                        <Heading color="white" fontSize="20px">
+                            {pupil.firstname} {pupil.lastname}
+                        </Heading>
+                        <Text color="white" fontSize="15px">
+                            registriert seit {new Date(pupil!.createdAt).toLocaleDateString()}
+                        </Text>
+                    </VStack>
                     <HStack>
                         {pupil!.matches!.length && <Tag variant="orange" padding="5px" text="Hat Lernpaar" />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
@@ -41,8 +48,13 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
     );
 }
 
+const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
+
+const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+
 export function ScreeningDashboard() {
     const { space, sizes } = useTheme();
+    const user = useUser();
 
     const [searchQuery, setSearchQuery] = useState('');
     const { data: searchResult, loading: searchLoading } = useQuery(
@@ -80,7 +92,7 @@ export function ScreeningDashboard() {
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
 
     return (
-        <WithNavigation headerTitle="Screening" showBack hideMenu>
+        <WithNavigation headerTitle="Screening" hideMenu>
             <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
                 <SearchBar
                     placeholder="Name oder E-Mail eines Schülers oder Helfers"
@@ -103,6 +115,19 @@ export function ScreeningDashboard() {
                     </HStack>
                 )}
                 {selectedPupil && <ScreenPupilCard pupil={selectedPupil} />}
+
+                {!searchQuery && !selectedPupil && (
+                    <>
+                        <InfoCard
+                            title={`${greeting}, ${user.firstname}!`}
+                            message="Nutze die Suchleiste um den Schüler oder Helfer zu finden den du screenen möchtest."
+                        />
+                        <HStack space={space['1']} display="flex" flexWrap="wrap">
+                            <Button isDisabled>Schüler mit offenen Screenings</Button>
+                            <Button isDisabled>Helfer mit offnen Screenings</Button>
+                        </HStack>
+                    </>
+                )}
             </VStack>
         </WithNavigation>
     );
