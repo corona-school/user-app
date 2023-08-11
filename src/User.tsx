@@ -15,7 +15,7 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 
     if (sessionState === 'logged-in') {
-        if (user && !(user.pupil ?? user.student)!.verifiedAt) return <VerifyEmailModal email={user.email} />;
+        if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) return <VerifyEmailModal email={user.email} />;
 
         return children;
     }
@@ -23,7 +23,15 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
     return <Navigate to="/welcome" state={{ from: location }} replace />;
 };
 
-export const SwitchUserType = ({ pupilComponent, studentComponent }: { pupilComponent?: JSX.Element; studentComponent?: JSX.Element }) => {
+export const SwitchUserType = ({
+    pupilComponent,
+    studentComponent,
+    screenerComponent,
+}: {
+    pupilComponent?: JSX.Element;
+    studentComponent?: JSX.Element;
+    screenerComponent?: JSX.Element;
+}) => {
     const location = useLocation();
     const { sessionState, user } = useApollo();
 
@@ -36,8 +44,11 @@ export const SwitchUserType = ({ pupilComponent, studentComponent }: { pupilComp
     if (user!.student) {
         if (studentComponent) return studentComponent;
         else return <Navigate to="/dashboard" state={{ from: location }} replace />;
-    } else {
+    } else if (user!.pupil) {
         if (pupilComponent) return pupilComponent;
         else return <Navigate to="/dashboard" state={{ from: location }} replace />;
+    } else {
+        if (screenerComponent) return screenerComponent;
+        else return <>Huh?</>;
     }
 };

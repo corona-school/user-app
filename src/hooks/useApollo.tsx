@@ -35,6 +35,9 @@ interface UserType {
         id: number;
         verifiedAt: Date | null;
     } | null;
+    screener: {
+        id: number;
+    } | null;
 }
 
 export type LFApollo = {
@@ -369,6 +372,7 @@ const useApolloInternal = () => {
             email
             pupil { id verifiedAt }
             student { id verifiedAt }
+            screener { id }
           }
           myRoles
         }
