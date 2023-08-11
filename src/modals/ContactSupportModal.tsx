@@ -1,7 +1,6 @@
 import { Button, Modal } from 'native-base';
-import ContactSupportFormular from '../components/ContactSupportFormular';
+import ContactSupportForm, { ReportInfos } from '../components/ContactSupportForm';
 import { useTranslation } from 'react-i18next';
-import { ReportInfos } from '../pages/Chat';
 
 type ModalProps = {
     isOpen?: boolean;
@@ -18,7 +17,7 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
                 <Modal.CloseButton />
                 <Modal.Header>{t('chat.report.modalHeader')}</Modal.Header>
                 <Modal.Body>
-                    <ContactSupportFormular onCloseModal={onClose} isReport reportInfos={reportInfos} />
+                    <ContactSupportForm onCloseModal={onClose} isChatReport reportInfos={reportInfos} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onPress={onClose}>{t('cancel')}</Button>

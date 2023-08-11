@@ -5,15 +5,27 @@ import AlertMessage from '../widgets/AlertMessage';
 import { FetchResult, useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { ContactSupportMutation } from '../gql/graphql';
-import { ReportInfos } from '../pages/Chat';
 import useApollo from '../hooks/useApollo';
+
+export type ReportInfos = {
+    messageId: string;
+    message: string;
+    messageType: string;
+    sender: string;
+    senderId: string;
+    sentAt: string;
+    conversationType: string;
+    subject?: string;
+    conversationId: string;
+};
 
 type FormularProps = {
     onCloseModal?: () => void;
-    isReport?: boolean;
+    isChatReport?: boolean;
     reportInfos?: ReportInfos;
 };
-const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isReport, reportInfos }) => {
+
+const ContactSupportForm: React.FC<FormularProps> = ({ onCloseModal, isChatReport, reportInfos }) => {
     const [subject, setSubject] = useState<string>('');
     const [dsgvo, setDSGVO] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
@@ -44,7 +56,7 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
 
     const sendContactMessage = useCallback(async () => {
         let response: FetchResult<ContactSupportMutation, Record<string, any>, Record<string, any>>;
-        if (isReport) {
+        if (isChatReport) {
             const reportMessage = reportInfos
                 ? `Sehr geehrtes Support-Team,
 
@@ -89,13 +101,13 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
             setShowError(true);
         }
 
-        if (isReport) toast.show({ description: t('helpcenter.reportSuccessToast'), placement: 'top' });
+        if (isChatReport) toast.show({ description: t('helpcenter.reportSuccessToast'), placement: 'top' });
     }, [contactSupport, message, subject]);
 
     const isButtonDisabled = useMemo(() => {
-        if (isReport) return dsgvo ? false : true;
+        if (isChatReport) return dsgvo ? false : true;
         return !dsgvo || message?.length < 5 || subject?.length < 5;
-    }, [dsgvo, isReport, message?.length, subject?.length]);
+    }, [dsgvo, isChatReport, message?.length, subject?.length]);
 
     useEffect(() => {
         if (onCloseModal) {
@@ -107,7 +119,7 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
 
     return (
         <View paddingLeft={space['1.5']}>
-            {!isReport && (
+            {!isChatReport && (
                 <>
                     <Heading paddingBottom={space['0.5']}>{t('helpcenter.contact.title')}</Heading>
                     <Text paddingBottom={space['1.5']}>{t('helpcenter.contact.content')}</Text>
@@ -143,7 +155,7 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
                             lit. c DSGVO. Alternativ ist eine Kontaktierung per E-Mail an{' '}
                             <Link
                                 onPress={() =>
-                                    (window.location.href = isReport
+                                    (window.location.href = isChatReport
                                         ? 'mailto:support@lern-fair.de?subject=Nachricht%20melden'
                                         : 'mailto:support@lern-fair.de?subject=Kontakt%20Userbereich')
                                 }
@@ -166,4 +178,4 @@ const ContactSupportFormular: React.FC<FormularProps> = ({ onCloseModal, isRepor
     );
 };
 
-export default ContactSupportFormular;
+export default ContactSupportForm;

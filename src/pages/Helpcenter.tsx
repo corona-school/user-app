@@ -33,7 +33,7 @@ import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import HelpNavigation from '../components/HelpNavigation';
 import { SwitchUserType } from '../User';
-import ContactSupportFormular from '../components/ContactSupportFormular';
+import ContactSupportForm from '../components/ContactSupportForm';
 
 type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
 
@@ -196,7 +196,7 @@ const HelpCenter: React.FC = () => {
                             },
                             {
                                 title: t('helpcenter.contact.tabName'),
-                                content: <ContactSupportFormular />,
+                                content: <ContactSupportForm />,
                             },
                         ]}
                     />

@@ -14,18 +14,7 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import ContactSupportModal from '../modals/ContactSupportModal';
 import { MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
-
-export type ReportInfos = {
-    messageId: string;
-    message: string;
-    messageType: string;
-    sender: string;
-    senderId: string;
-    sentAt: string;
-    conversationType: string;
-    subject?: string;
-    conversationId: string;
-};
+import { ReportInfos } from '../components/ContactSupportForm';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
