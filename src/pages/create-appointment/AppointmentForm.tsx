@@ -1,4 +1,4 @@
-import { Box, FormControl, Stack, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
+import { Box, FormControl, Select, Stack, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import DatePicker from '../../components/DatePicker';
 import { useCreateAppointment } from '../../context/AppointmentContext';
@@ -9,7 +9,6 @@ import { useCallback, useState } from 'react';
 import { FormErrors } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
-import Select from '../../widgets/Select';
 
 type FormProps = {
     errors: FormErrors;
@@ -27,14 +26,14 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
         lg: '50%',
     });
 
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [date, setDate] = useState<string>('');
-    const [time, setTime] = useState<string>('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
     const [isToday, setIsToday] = useState<boolean>(false);
 
-    const handleTitleInput = (text: string) => {
-        setTitle(text);
+    const handleTitleInput = (e: any) => {
+        setTitle(e.target.value);
     };
 
     const handleDurationSelection = (e: any) => {
@@ -139,7 +138,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                     {/* DURATION */}
                     <FormControl isInvalid={'duration' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
-                        <Select placeholder="Dauer der Unterrichtseinheit" onValueChange={(duration: string) => handleDurationSelection(duration)}>
+                        <Select placeholder="Dauer der Unterrichtseinheit" onValueChange={(e) => handleDurationSelection(e)}>
                             <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
                             <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
                             <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
