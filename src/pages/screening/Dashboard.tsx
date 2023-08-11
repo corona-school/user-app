@@ -1,10 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
 import { Button } from 'native-base';
-import { Box } from 'native-base';
 import { useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import HeaderCard from '../../components/HeaderCard';
 import { InfoCard } from '../../components/InfoCard';
 import SearchBar from '../../components/SearchBar';
 import Tag from '../../components/Tag';
@@ -12,10 +10,6 @@ import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening } from '../../types';
-import { RequireAuth } from '../../User';
-import HSection from '../../widgets/HSection';
-import LearningPartner from '../../widgets/LearningPartner';
-import { MatchStudentCard } from '../../widgets/matching/MatchStudentCard';
 import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
 
 function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
@@ -103,7 +97,7 @@ export function ScreeningDashboard() {
                 />
                 {searchLoading && <CenterLoadingSpinner />}
                 {searchResult?.usersSearch.length === 0 && (
-                    <InfoCard title="Nichts gefunden" message="Suche nach dem vollen Namen oder der E-Mail eines Schülers oder Helfers" />
+                    <InfoCard icon="no" title="Nichts gefunden" message="Suche nach dem vollen Namen oder der E-Mail eines Schülers oder Helfers" />
                 )}
                 {!selectedPupil && (
                     <HStack marginTop="20px">
@@ -119,6 +113,7 @@ export function ScreeningDashboard() {
                 {!searchQuery && !selectedPupil && (
                     <>
                         <InfoCard
+                            icon="loki"
                             title={`${greeting}, ${user.firstname}!`}
                             message="Nutze die Suchleiste um den Schüler oder Helfer zu finden den du screenen möchtest."
                         />

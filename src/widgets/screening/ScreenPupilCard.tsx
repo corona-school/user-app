@@ -1,4 +1,5 @@
-import { VStack, Heading, HStack, Button, TextArea, useTheme } from 'native-base';
+import { VStack, Heading, HStack, Button, TextArea, useTheme, Stack, useMediaQuery } from 'native-base';
+import { Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { PupilForScreening } from '../../types';
 import HSection from '../HSection';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
@@ -21,33 +22,55 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
                     Ablehnen
                 </Button>
             </HStack>
-            <HStack space={space['2']} paddingTop="20px" display="flex">
+            <VStack space={space['2']} paddingTop="20px">
                 <VStack flexGrow="1" space={space['1']}>
-                    <TextArea minH="500px" width="100%" maxW="600px" autoCompleteType="" />
+                    <TextArea minH="500px" width="100%" autoCompleteType="" />
                     <Button isDisabled variant="outline">
                         Speichern & Vier Augen
                     </Button>
                 </VStack>
-                <VStack>
-                    <HSection title="Aktive Zuordnungen">
-                        {pupil!
-                            .matches!.filter((it) => !it!.dissolved)
-                            .map((it) => (
-                                <MatchStudentCard match={it} />
-                            ))}
-                    </HSection>
-                    <HSection title="Aufgelöste Zuordnungen">
-                        {pupil
-                            .matches!.filter((it) => it!.dissolved)
-                            .map((it) => (
-                                <MatchStudentCard match={it} />
-                            ))}
-                    </HSection>
-                </VStack>
-                {pupil!.screenings!.map((screening) => (
-                    <PupilScreeningCard pupil={pupil} screening={screening} />
-                ))}
-            </HStack>
+                <HStack space={space['2']}>
+                    <VStack>
+                        <HSection title="Aktive Zuordnungen">
+                            {pupil!
+                                .matches!.filter((it) => !it!.dissolved)
+                                .map((it) => (
+                                    <MatchStudentCard match={it} />
+                                ))}
+                        </HSection>
+                        <HSection title="Aufgelöste Zuordnungen">
+                            {pupil
+                                .matches!.filter((it) => it!.dissolved)
+                                .map((it) => (
+                                    <MatchStudentCard match={it} />
+                                ))}
+                        </HSection>
+                    </VStack>
+                    <VStack>
+                        <Heading>Vorherige Screenings</Heading>
+                        {pupil!.screenings!.map((screening) => (
+                            <PupilScreeningCard pupil={pupil} screening={screening} />
+                        ))}
+                        <PupilScreeningCard
+                            pupil={pupil}
+                            screening={{ createdAt: new Date(), invalidated: true, status: Pupil_Screening_Status_Enum.Pending, comment: 'Kommentar von Maxi' }}
+                        />
+                        <PupilScreeningCard
+                            pupil={pupil}
+                            screening={{ createdAt: new Date(), invalidated: true, status: Pupil_Screening_Status_Enum.Success, comment: 'Kommentar von Maxi' }}
+                        />
+                        <PupilScreeningCard
+                            pupil={pupil}
+                            screening={{
+                                createdAt: new Date(),
+                                invalidated: true,
+                                status: Pupil_Screening_Status_Enum.Rejection,
+                                comment: 'Kommentar von Maxi',
+                            }}
+                        />
+                    </VStack>
+                </HStack>
+            </VStack>
         </VStack>
     );
 }
