@@ -30,6 +30,9 @@ const chat = {
             button: 'Zum Dashboard',
         },
     },
+    report: {
+        modalHeader: 'Nachricht melden',
+    },
 };
 
 export default chat;
