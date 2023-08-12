@@ -27,14 +27,18 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                             registriert seit {new Date(pupil!.createdAt).toLocaleDateString()}
                         </Text>
                     </VStack>
-                    <HStack>
+                    <HStack space={space['0.5']}>
                         {pupil!.matches!.length && <Tag variant="orange" padding="5px" text="Hat Lernpaar" />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
-                            <Tag variant="secondary-light" text="Unklares Screening" />
+                            <Tag variant="orange" padding="5px" text="Unklares Screening" />
                         )}
-                        {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'pending' && <Tag text="Ausstehendes Screening" />)}
-                        {pupil!.screenings!.some((it) => it!.status === 'success') && <Tag text="Erfolgreiches Screening" />}
-                        {pupil!.screenings!.some((it) => it!.status === 'rejection') && <Tag text="Screening nicht erfolgreich" />}
+                        {pupil!.screenings!.some(
+                            (it) => !it!.invalidated && it!.status === 'pending' && <Tag variant="orange" padding="5px" text="Ausstehendes Screening" />
+                        )}
+                        {pupil!.screenings!.some((it) => it!.status === 'success') && <Tag variant="orange" padding="5px" text="Erfolgreiches Screening" />}
+                        {pupil!.screenings!.some((it) => it!.status === 'rejection') && (
+                            <Tag variant="orange" padding="5px" text="Screening nicht erfolgreich" />
+                        )}
                     </HStack>
                 </VStack>
             </HStack>
@@ -68,6 +72,7 @@ export function ScreeningDashboard() {
                         subjectsFormatted { name }
                     }
                     screenings {
+                        id
                         invalidated
                         status
                         comment
@@ -78,7 +83,7 @@ export function ScreeningDashboard() {
             }
         }
     `),
-        { skip: !searchQuery, variables: { search: searchQuery } }
+        { skip: !searchQuery, variables: { search: searchQuery }, fetchPolicy: 'no-cache' }
     );
 
     console.log(searchResult);

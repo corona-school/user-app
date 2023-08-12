@@ -7,6 +7,6 @@ export type MatchWithStudent = Opt<
         student?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;
-export type PupilScreening = Opt<Pick<Pupil_Screening, 'createdAt' | 'comment' | 'status' | 'invalidated'>>;
+export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'comment' | 'status' | 'invalidated'>>;
 
 export type PupilForScreening = Pick<Pupil, 'firstname' | 'lastname' | 'createdAt'> & { screenings?: PupilScreening[]; matches?: MatchWithStudent[] };
