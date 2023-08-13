@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { InfoCard } from '../../components/InfoCard';
 import { Pupil_Screening_Status_Enum } from '../../gql/graphql';
-import { PupilForScreening, PupilScreening } from '../../types';
+import { PupilScreening } from '../../types';
 
-export function PupilScreeningCard({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
+export function PupilScreeningCard({ screening }: { screening: PupilScreening }) {
     const { t } = useTranslation();
 
     const icon = ({ success: 'yes', rejection: 'no', dispute: 'loki', pending: 'loki' } as const)[screening!.status];

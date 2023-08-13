@@ -147,7 +147,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
                 <VStack space={space['1']}>
                     <Heading>{t('screening.previous_screenings')}</Heading>
                     {previousScreenings.map((screening) => (
-                        <PupilScreeningCard pupil={pupil} screening={screening} />
+                        <PupilScreeningCard screening={screening} />
                     ))}
                 </VStack>
             )}
