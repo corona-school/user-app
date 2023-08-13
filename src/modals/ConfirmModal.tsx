@@ -1,4 +1,5 @@
 import { Box, Button, Modal, Text, useTheme, VStack } from 'native-base';
+import { useTranslation } from 'react-i18next';
 import { IconLoader } from '../components/IconLoader';
 
 export function ConfirmModal({
@@ -14,6 +15,7 @@ export function ConfirmModal({
     onClose: () => void;
     danger?: boolean;
 }) {
+    const { t } = useTranslation();
     const { space } = useTheme();
 
     return (
@@ -23,10 +25,10 @@ export function ConfirmModal({
                     {danger && <IconLoader iconPath="lf_caution.svg" />}
                     <Text>{text}</Text>
                     <Button onPress={onConfirmed} variant={danger ? 'outline' : 'solid'} width="90%">
-                        Ja
+                        {t('yes')}
                     </Button>
                     <Button onPress={onClose} variant={danger ? 'solid' : 'outline'} width="90%">
-                        Nein
+                        {t('no')}
                     </Button>
                 </VStack>
             </Box>

@@ -10,10 +10,10 @@ export function SubjectTag({ subject }: { subject: Subject }) {
 
     let text = t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray) as string;
     if (subject.mandatory) {
-        text += ' (erforderlich)';
+        text += ` (${t('required')})`;
     }
     if (subject.grade) {
-        text += ` (${subject.grade.min}. - ${subject.grade.max}. Klasse)`;
+        text += ` (${subject.grade.min}. - ${subject.grade.max}. ${t('grade')})`;
     }
 
     return <IconTagList key={subject.name} isDisabled text={text} iconPath={`subjects/icon_${(SUBJECT_TO_ICON as any)[subject.name] as string}.svg`} />;

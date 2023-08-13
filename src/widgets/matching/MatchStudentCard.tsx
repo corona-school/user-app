@@ -54,8 +54,14 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                                 <Tag key={`subject tag ${subject.name}`} text={subject.name} />
                             ))}
                         </HStack>
-                        <Text>seit {new Date(match!.createdAt).toLocaleDateString()}</Text>
-                        {match!.dissolvedAt && <Text>bis {new Date(match!.createdAt).toLocaleDateString()}</Text>}
+                        <Text>
+                            {t('since')} {new Date(match!.createdAt).toLocaleDateString()}
+                        </Text>
+                        {match!.dissolvedAt && (
+                            <Text>
+                                {t('till')} {new Date(match!.createdAt).toLocaleDateString()}
+                            </Text>
+                        )}
                     </VStack>
                 </HStack>
             </Pressable>

@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { VStack, Heading, HStack, Button, TextArea, useTheme, Stack, useMediaQuery, Text } from 'native-base';
+import { VStack, Heading, HStack, Button, TextArea, useTheme, Text } from 'native-base';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -8,9 +9,7 @@ import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
 import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
-import { SuccessModal } from '../../modals/SuccessModal';
 import { PupilForScreening, PupilScreening } from '../../types';
-import HSection from '../HSection';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 
@@ -18,6 +17,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
 
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
 
@@ -63,15 +63,15 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     return (
         <>
             {screening!.status! === Pupil_Screening_Status_Enum.Dispute && (
-                <InfoCard icon="loki" title="Vier Augen" message="Dieser Schüler wurde bereits gescreent, aber eine Entscheidung steht noch aus" />
+                <InfoCard icon="loki" title={t('screening.four_eyes')} message={t('screening.was_screened_but_no_decision')} />
             )}
             <VStack flexGrow="1" space={space['1']}>
                 <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
 
                 <HStack space={space['1']} display="flex">
                     {(loading || loadingDeactivation) && <CenterLoadingSpinner />}
-                    {data && <InfoCard icon="yes" title="Screening gespeichert" message="" />}
-                    {deactivateResult && <InfoCard icon="no" title="Account Deaktiviert" message="" />}
+                    {data && <InfoCard icon="yes" title="" message={t('screening.screening_saved')} />}
+                    {deactivateResult && <InfoCard icon="no" title={t('screening.account_deactivated')} message="" />}
                     {!loading && !loadingDeactivation && !data && !deactivateResult && (
                         <>
                             <Button
@@ -80,35 +80,35 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                                 }}
                                 variant={isDispute ? 'outline' : 'solid'}
                             >
-                                Speichern & Vier Augen
+                                {t('screening.save_and_four_eyes')}
                             </Button>
                             <Button onPress={() => setConfirmSuccess(true)} variant={isDispute ? 'solid' : 'outline'}>
-                                Annehmen
+                                {t('screening.success')}
                             </Button>
                             <Button onPress={() => setConfirmRejection(true)} variant={'outline'}>
-                                Ablehnen
+                                [t('screening.rejection')]
                             </Button>
                             <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
-                                Account Deaktivieren
+                                {t('screening.deactivate')}
                             </Button>
                             <ConfirmModal
                                 isOpen={confirmRejection}
                                 onClose={() => setConfirmRejection(false)}
                                 onConfirmed={rejection}
-                                text={`Willst du ${pupil.firstname} ${pupil.lastname} wirklich ablehnen?`}
+                                text={t('screening.confirm_rejection', { firstname: pupil.firstname, lastname: pupil.lastname })}
                             />
                             <ConfirmModal
                                 isOpen={confirmSuccess}
                                 onClose={() => setConfirmSuccess(false)}
                                 onConfirmed={success}
-                                text={`Willst du ${pupil.firstname} ${pupil.lastname} annehmen?`}
+                                text={t('screening.confirm_success', { firstname: pupil.firstname, lastname: pupil.lastname })}
                             />
                             <ConfirmModal
                                 danger
                                 isOpen={confirmDeactivation}
                                 onClose={() => setConfirmDeactivation(false)}
                                 onConfirmed={deactivate}
-                                text={`Willst du ${pupil.firstname} ${pupil.lastname} wirklich deaktivieren?`}
+                                text={t('screening.confirm_deactivate', { firstname: pupil.firstname, lastname: pupil.lastname })}
                             />
                         </>
                     )}
@@ -120,6 +120,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
 function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening; previousScreenings: PupilScreening[] }) {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const activeMatches = pupil!.matches!.filter((it) => !it!.dissolved);
     const dissolvedMatches = pupil.matches!.filter((it) => it!.dissolved);
@@ -128,7 +129,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
         <HStack space={space['2']}>
             {activeMatches.length > 0 && (
                 <VStack space={space['1']}>
-                    <Heading>Aktive Zuordnungen</Heading>
+                    <Heading>{t('screening.active_matches')}</Heading>
                     {activeMatches.map((it) => (
                         <MatchStudentCard match={it} />
                     ))}
@@ -136,7 +137,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
             )}
             {dissolvedMatches.length > 0 && (
                 <VStack space={space['1']}>
-                    <Heading>Aufgelöste Zuordnungen</Heading>
+                    <Heading>{t('screening.dissolved_matches')}</Heading>
                     {dissolvedMatches.map((it) => (
                         <MatchStudentCard match={it} />
                     ))}
@@ -144,7 +145,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
             )}
             {previousScreenings.length > 0 && (
                 <VStack space={space['1']}>
-                    <Heading>Vorherige Screenings</Heading>
+                    <Heading>{t('screening.previous_screenings')}</Heading>
                     {previousScreenings.map((screening) => (
                         <PupilScreeningCard pupil={pupil} screening={screening} />
                     ))}
@@ -156,6 +157,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
 
 export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const { previousScreenings, screeningToEdit } = useMemo(() => {
         const previousScreenings: PupilScreening[] = [...pupil!.screenings!];
@@ -177,7 +179,7 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
-                Schüler:in / {pupil.firstname} {pupil.lastname}
+                {t('pupil')} / {pupil.firstname} {pupil.lastname}
             </Heading>
             <HStack>
                 <Text fontSize="20px" lineHeight="50px">
@@ -190,9 +192,7 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
                 </Text>
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
             </HStack>
-            {!screeningToEdit && (
-                <InfoCard icon="loki" title="Kein offenes Screening" message="Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht." />
-            )}
+            {!screeningToEdit && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
             <PupilHistory pupil={pupil} previousScreenings={previousScreenings} />
         </VStack>

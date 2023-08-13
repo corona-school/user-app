@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
 import { Button } from 'native-base';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
 import SearchBar from '../../components/SearchBar';
@@ -53,6 +54,7 @@ const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 export function ScreeningDashboard() {
     const { space, sizes } = useTheme();
     const user = useUser();
+    const { t } = useTranslation();
 
     const [searchQuery, setSearchQuery] = useState('');
     const { data: searchResult, loading: searchLoading } = useQuery(
@@ -126,19 +128,17 @@ export function ScreeningDashboard() {
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
 
     return (
-        <WithNavigation headerTitle="Screening">
+        <WithNavigation headerTitle={t('screening.title')}>
             <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
                 <SearchBar
-                    placeholder="Name oder E-Mail eines Schülers oder Helfers"
+                    placeholder={t('screening.search.placeholder')}
                     onSearch={(search) => {
                         setSearchQuery(search);
                         setSelectedPupil(null);
                     }}
                 />
                 {searchLoading && <CenterLoadingSpinner />}
-                {searchResult?.usersSearch.length === 0 && (
-                    <InfoCard icon="no" title="Nichts gefunden" message="Suche nach dem vollen Namen oder der E-Mail eines Schülers oder Helfers" />
-                )}
+                {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
                 {!selectedPupil && (
                     <HStack marginTop="20px">
                         {searchResult?.usersSearch
@@ -152,16 +152,11 @@ export function ScreeningDashboard() {
 
                 {!searchQuery && !selectedPupil && (
                     <>
-                        <InfoCard
-                            key="screening-welcome"
-                            icon="loki"
-                            title={`${greeting}, ${user.firstname}!`}
-                            message="Nutze die Suchleiste um den Schüler oder Helfer zu finden den du screenen möchtest."
-                        />
+                        <InfoCard key="screening-welcome" icon="loki" title={`${greeting}, ${user.firstname}!`} message={t('screening.howto')} />
 
                         {disputedScreenings && disputedScreenings.pupilsToBeScreened.length !== 0 && (
                             <>
-                                <Heading>Schülerscreenings mit offener Entscheidung</Heading>
+                                <Heading>{t('screening.disputed_screenings')}</Heading>
                                 <HStack marginTop="20px">
                                     {disputedScreenings &&
                                         disputedScreenings.pupilsToBeScreened.map((it) => <PupilCard onClick={() => setSelectedPupil(it)} pupil={it} />)}
