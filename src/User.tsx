@@ -43,12 +43,12 @@ export const SwitchUserType = ({
 
     if (user!.student) {
         if (studentComponent) return studentComponent;
-        else return <Navigate to="/dashboard" state={{ from: location }} replace />;
+        else return <Navigate to="/start" state={{ from: location }} replace />;
     } else if (user!.pupil) {
         if (pupilComponent) return pupilComponent;
-        else return <Navigate to="/dashboard" state={{ from: location }} replace />;
+        else return <Navigate to="/start" state={{ from: location }} replace />;
     } else {
         if (screenerComponent) return screenerComponent;
-        else return <>Huh?</>;
+        else return <Navigate to="/start" state={{ from: location }} replace />;
     }
 };
