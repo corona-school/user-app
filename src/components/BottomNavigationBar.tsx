@@ -86,13 +86,17 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                                 <Flex>
                                                     <Icon
                                                         fill={
-                                                            key === rootPath ? colors['lightText'] : disabled ? colors['primary']['900'] : colors['gray']['300']
+                                                            key === rootPath
+                                                                ? colors['lightText']
+                                                                : !disabled
+                                                                ? colors['primary']['900']
+                                                                : colors['gray']['300']
                                                         }
                                                     />
                                                 </Flex>
                                             </CSSWrapper>
                                         </Box>
-                                        <Text fontSize="xs" color={colors['primary']['900']}>
+                                        <Text fontSize="xs" color={!disabled ? colors['primary']['900'] : colors['gray']['300']}>
                                             {label}
                                         </Text>
                                     </Center>
