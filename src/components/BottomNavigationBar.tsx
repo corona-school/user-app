@@ -29,13 +29,17 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
     );
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('PARTICIPANT');
-    }, [data]);
+        if (userType === 'screener') return true;
+        if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
+        return false;
+    }, [userType, data]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
-        return !data?.myRoles.includes('TUTEE');
-    }, [data]);
+        if (userType === 'screener') return true;
+        if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
+        return false;
+    }, [userType, data]);
 
     if (loading) return <></>;
 
@@ -62,10 +66,13 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                         shadowOffset: { width: -1, height: -3 },
                     }}
                 >
-                    {Object.entries(navItems).map(([key, { label, icon: Icon }]) => {
+                    {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
+                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+
                         return (
                             <Pressable
                                 onPress={() => {
+                                    if (disabled) return;
                                     setRootPath && setRootPath(`${key}`);
                                     navigate(`/${key}`);
                                 }}
@@ -77,7 +84,11 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                             <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
                                             <CSSWrapper className={`navigation__item__icon ${key === rootPath ? 'active' : ''}`}>
                                                 <Flex>
-                                                    <Icon fill={key === rootPath ? colors['lightText'] : colors['primary']['900']} />
+                                                    <Icon
+                                                        fill={
+                                                            key === rootPath ? colors['lightText'] : disabled ? colors['primary']['900'] : colors['gray']['300']
+                                                        }
+                                                    />
                                                 </Flex>
                                             </CSSWrapper>
                                         </Box>
