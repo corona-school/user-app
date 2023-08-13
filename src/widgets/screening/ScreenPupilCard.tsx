@@ -86,7 +86,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                                 {t('screening.success')}
                             </Button>
                             <Button onPress={() => setConfirmRejection(true)} variant={'outline'}>
-                                [t('screening.rejection')]
+                                {t('screening.rejection')}
                             </Button>
                             <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
                                 {t('screening.deactivate')}

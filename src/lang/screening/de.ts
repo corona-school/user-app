@@ -15,9 +15,9 @@ const screening = {
     success: 'Annehmen',
     rejection: 'Ablehnen',
     deactivate: 'Account Deaktivieren',
-    confirm_success: 'Willst du {firstname} {lastname} annehmen?',
-    confirm_rejection: 'Willst du {firstname} {lastname} wirklich ablehnen?',
-    confirm_deactivate: 'Willst du {firstname} {lastname} wirklich deaktivieren?',
+    confirm_success: 'Willst du {{firstname}} {{lastname}} annehmen?',
+    confirm_rejection: 'Willst du {{firstname}} {{lastname}} wirklich ablehnen?',
+    confirm_deactivate: 'Willst du {{firstname}} {{lastname}} wirklich deaktivieren?',
 
     active_matches: 'Aktive Zuordnungen',
     dissolved_matches: 'Aufgelöste Zuordnungen',
