@@ -18,18 +18,26 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const { space } = useTheme();
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
+
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
+    const [confirmDeactivation, setConfirmDeactivation] = useState(false);
 
     const [storeEdit, { loading, data }] = useMutation(
         gql(`
-        mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
-            pupilUpdateScreening(pupilScreeningId: $id, data: {
-                comment: $screeningComment,
-                status: $status
-            })
-        }
-    `)
+            mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
+                pupilUpdateScreening(pupilScreeningId: $id, data: {
+                    comment: $screeningComment,
+                    status: $status
+                })
+            }
+        `)
+    );
+
+    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
+        gql(`
+            mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
+        `)
     );
 
     // For privacy, we deliberately clear the comment field when storing the final decision:
@@ -44,6 +52,12 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
         storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success } });
     }
 
+    function deactivate() {
+        setConfirmDeactivation(false);
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
+        deactivateAccount({ variables: { pupilId: pupil!.id! } });
+    }
+
     return (
         <>
             {screening!.status! === Pupil_Screening_Status_Enum.Dispute && (
@@ -53,9 +67,10 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
 
                 <HStack space={space['1']} display="flex">
-                    {loading && <CenterLoadingSpinner />}
+                    {(loading || loadingDeactivation) && <CenterLoadingSpinner />}
                     {data && <InfoCard icon="yes" title="Screening gespeichert" message="" />}
-                    {!loading && !data && (
+                    {deactivateResult && <InfoCard icon="no" title="Account Deaktiviert" message="" />}
+                    {!loading && !loadingDeactivation && !data && !deactivateResult && (
                         <>
                             <Button
                                 onPress={() => {
@@ -71,6 +86,9 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                             <Button onPress={() => setConfirmRejection(true)} variant={'outline'}>
                                 Ablehnen
                             </Button>
+                            <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
+                                Account Deaktivieren
+                            </Button>
                             <ConfirmModal
                                 isOpen={confirmRejection}
                                 onClose={() => setConfirmRejection(false)}
@@ -82,6 +100,13 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                                 onClose={() => setConfirmSuccess(false)}
                                 onConfirmed={success}
                                 text={`Willst du ${pupil.firstname} ${pupil.lastname} annehmen?`}
+                            />
+                            <ConfirmModal
+                                danger
+                                isOpen={confirmDeactivation}
+                                onClose={() => setConfirmDeactivation(false)}
+                                onConfirmed={deactivate}
+                                text={`Willst du ${pupil.firstname} ${pupil.lastname} wirklich deaktivieren?`}
                             />
                         </>
                     )}

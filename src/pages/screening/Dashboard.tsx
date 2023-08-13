@@ -59,7 +59,8 @@ export function ScreeningDashboard() {
         gql(`
         query ScreenerSearchUsers($search: String!) {
             usersSearch(query: $search, take: 1) {
-                pupil { 
+                pupil {
+                    id
                     createdAt
                     firstname
                     lastname
@@ -90,6 +91,7 @@ export function ScreeningDashboard() {
         gql(`
         query GetDisputedScreenings {
             pupilsToBeScreened(onlyDisputed: true) {
+                id
                 createdAt
                 firstname
                 lastname
@@ -111,7 +113,8 @@ export function ScreeningDashboard() {
                 }
             }
         }
-    `)
+    `),
+        { fetchPolicy: 'no-cache' }
     );
 
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
