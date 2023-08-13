@@ -15,6 +15,7 @@ import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
 
 function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <Pressable onPress={onClick}>
@@ -25,20 +26,23 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                             {pupil.firstname} {pupil.lastname}
                         </Heading>
                         <Text color="white" fontSize="15px">
-                            registriert seit {new Date(pupil!.createdAt).toLocaleDateString()}
+                            {t('screening.registered_since')} {new Date(pupil!.createdAt).toLocaleDateString()}
                         </Text>
                     </VStack>
                     <HStack space={space['0.5']}>
-                        {pupil!.matches!.length && <Tag variant="orange" padding="5px" text="Hat Lernpaar" />}
+                        {pupil!.matches!.length && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
-                            <Tag variant="orange" padding="5px" text="Unklares Screening" />
+                            <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
                         )}
                         {pupil!.screenings!.some(
-                            (it) => !it!.invalidated && it!.status === 'pending' && <Tag variant="orange" padding="5px" text="Ausstehendes Screening" />
+                            (it) =>
+                                !it!.invalidated && it!.status === 'pending' && <Tag variant="orange" padding="5px" text={t('screening.pending_screening')} />
                         )}
-                        {pupil!.screenings!.some((it) => it!.status === 'success') && <Tag variant="orange" padding="5px" text="Erfolgreiches Screening" />}
+                        {pupil!.screenings!.some((it) => it!.status === 'success') && (
+                            <Tag variant="orange" padding="5px" text={t('screening.success_screening')} />
+                        )}
                         {pupil!.screenings!.some((it) => it!.status === 'rejection') && (
-                            <Tag variant="orange" padding="5px" text="Screening nicht erfolgreich" />
+                            <Tag variant="orange" padding="5px" text={t('screening.rejection_screening')} />
                         )}
                     </HStack>
                 </VStack>

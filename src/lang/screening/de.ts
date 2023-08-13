@@ -30,6 +30,9 @@ const screening = {
     rejection_screening: 'Abgelehntes Screening',
     dispute_screening: 'Unklares Screening',
     pending_screening: 'Ausstehendes Screening',
+
+    has_matches: 'Hat Lernpaar',
+    registered_since: 'registriert seit',
 };
 
 export default screening;
