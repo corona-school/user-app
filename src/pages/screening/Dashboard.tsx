@@ -86,7 +86,33 @@ export function ScreeningDashboard() {
         { skip: !searchQuery, variables: { search: searchQuery }, fetchPolicy: 'no-cache' }
     );
 
-    console.log(searchResult);
+    const { data: disputedScreenings } = useQuery(
+        gql(`
+        query GetDisputedScreenings {
+            pupilsToBeScreened(onlyDisputed: true) {
+                createdAt
+                firstname
+                lastname
+                matches {
+                    createdAt
+                    student { firstname lastname }
+                    dissolved
+                    dissolvedAt
+                    pupilFirstMatchRequest
+                    subjectsFormatted { name }
+                }
+                screenings {
+                    id
+                    invalidated
+                    status
+                    comment
+                    createdAt
+                    updatedAt
+                }
+            }
+        }
+    `)
+    );
 
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
 
@@ -118,14 +144,21 @@ export function ScreeningDashboard() {
                 {!searchQuery && !selectedPupil && (
                     <>
                         <InfoCard
+                            key="screening-welcome"
                             icon="loki"
                             title={`${greeting}, ${user.firstname}!`}
                             message="Nutze die Suchleiste um den Schüler oder Helfer zu finden den du screenen möchtest."
                         />
-                        <HStack space={space['1']} display="flex" flexWrap="wrap">
-                            <Button isDisabled>Schüler mit offenen Screenings</Button>
-                            <Button isDisabled>Helfer mit offnen Screenings</Button>
-                        </HStack>
+
+                        {disputedScreenings && disputedScreenings.pupilsToBeScreened.length !== 0 && (
+                            <>
+                                <Heading>Schülerscreenings mit offener Entscheidung</Heading>
+                                <HStack marginTop="20px">
+                                    {disputedScreenings &&
+                                        disputedScreenings.pupilsToBeScreened.map((it) => <PupilCard onClick={() => setSelectedPupil(it)} pupil={it} />)}
+                                </HStack>
+                            </>
+                        )}
                     </>
                 )}
             </VStack>
