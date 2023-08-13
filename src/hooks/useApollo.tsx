@@ -529,6 +529,8 @@ export const useUserType = () => {
     const { user } = useContext(ExtendedApolloContext)!;
     if (user?.pupil) return 'pupil';
     if (user?.student) return 'student';
+    if (user?.screener) return 'screener';
+
     throw new Error(`useUserType cannot determine user`);
 };
 

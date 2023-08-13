@@ -126,7 +126,7 @@ export function ScreeningDashboard() {
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
 
     return (
-        <WithNavigation headerTitle="Screening" hideMenu>
+        <WithNavigation headerTitle="Screening">
             <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
                 <SearchBar
                     placeholder="Name oder E-Mail eines Schülers oder Helfers"
