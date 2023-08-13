@@ -64,6 +64,9 @@ export function ScreeningDashboard() {
                     createdAt
                     firstname
                     lastname
+                    languages
+                    subjectsFormatted { name }
+                    grade
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -95,6 +98,9 @@ export function ScreeningDashboard() {
                 createdAt
                 firstname
                 lastname
+                languages
+                subjectsFormatted { name }
+                grade
                 matches {
                     createdAt
                     student { firstname lastname }

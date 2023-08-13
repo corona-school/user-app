@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client';
-import { VStack, Heading, HStack, Button, TextArea, useTheme, Stack, useMediaQuery } from 'native-base';
+import { VStack, Heading, HStack, Button, TextArea, useTheme, Stack, useMediaQuery, Text } from 'native-base';
 import { useMemo, useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
+import { LanguageTagList } from '../../components/LanguageTag';
+import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
 import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
@@ -177,6 +179,17 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
             <Heading fontSize="30px">
                 Schüler:in / {pupil.firstname} {pupil.lastname}
             </Heading>
+            <HStack>
+                <Text fontSize="20px" lineHeight="50px">
+                    {pupil.grade} -{' '}
+                </Text>
+                <LanguageTagList languages={pupil.languages} />
+                <Text fontSize="20px" lineHeight="50px">
+                    {' '}
+                    -{' '}
+                </Text>
+                <SubjectTagList subjects={pupil.subjectsFormatted} />
+            </HStack>
             {!screeningToEdit && (
                 <InfoCard icon="loki" title="Kein offenes Screening" message="Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht." />
             )}
