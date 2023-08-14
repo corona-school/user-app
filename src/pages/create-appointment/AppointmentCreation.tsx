@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Stack, useBreakpointValue, useToast } from 'native-base';
+import { Box, Button, Checkbox, Stack, Tooltip, Text, useBreakpointValue, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
@@ -268,16 +268,17 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
             />
-            <Box py="5">
-                <Checkbox
-                    _checked={{ backgroundColor: 'danger.900' }}
-                    onChange={() => handleWeeklyCheck()}
-                    value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    isDisabled={!dateSelected || !timeSelected}
-                >
-                    {t('appointment.create.weeklyRepeat')}
-                </Checkbox>
-            </Box>
+            {dateSelected && timeSelected && (
+                <Box py="5">
+                    <Checkbox
+                        _checked={{ backgroundColor: 'danger.900' }}
+                        onChange={() => handleWeeklyCheck()}
+                        value={appointmentToCreate.isRecurring ? 'true' : 'false'}
+                    >
+                        {t('appointment.create.weeklyRepeat')}
+                    </Checkbox>
+                </Box>
+            )}
             {appointmentToCreate.isRecurring && (
                 <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
             )}
