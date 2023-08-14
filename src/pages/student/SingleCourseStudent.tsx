@@ -188,7 +188,11 @@ const SingleCourseStudent = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
     const appointments = subcourse?.appointments ?? [];
-    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
+    const myNextAppointment = useMemo(() => {
+        const now = DateTime.now();
+        const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
+        return next;
+    }, [appointments]);
 
     const [publish] = useMutation(
         gql(`
