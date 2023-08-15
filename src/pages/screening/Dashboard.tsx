@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
 import { Button } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
@@ -61,11 +61,16 @@ export function ScreeningDashboard() {
     const { t } = useTranslation();
 
     const [searchQuery, setSearchQuery] = useState('');
-    const { data: searchResult, loading: searchLoading } = useQuery(
+    const {
+        data: searchResult,
+        loading: searchLoading,
+        refetch: refetchUserSearch,
+    } = useQuery(
         gql(`
         query ScreenerSearchUsers($search: String!) {
-            usersSearch(query: $search, take: 1) {
+            usersSearch(query: $search, take: 10) {
                 pupil {
+                    active
                     id
                     createdAt
                     firstname
@@ -96,10 +101,11 @@ export function ScreeningDashboard() {
         { skip: !searchQuery, variables: { search: searchQuery }, fetchPolicy: 'no-cache' }
     );
 
-    const { data: disputedScreenings } = useQuery(
+    const { data: disputedScreenings, refetch: refetchDisputedScreenings } = useQuery(
         gql(`
         query GetDisputedScreenings {
             pupilsToBeScreened(onlyDisputed: true) {
+                active
                 id
                 createdAt
                 firstname
@@ -130,6 +136,12 @@ export function ScreeningDashboard() {
     );
 
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
+
+    // Refetch user data when navigating between a certain user and the dashboard
+    useEffect(() => {
+        refetchDisputedScreenings();
+        refetchUserSearch();
+    }, [selectedPupil, refetchDisputedScreenings, refetchUserSearch]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>

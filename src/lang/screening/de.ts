@@ -11,6 +11,7 @@ const screening = {
 
     screening_saved: 'Screening gespeichert',
     account_deactivated: 'Account deaktiviert',
+    account_deactivated_details: 'Der Schüler kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.',
     save_and_four_eyes: 'Speichern & Vier Augen',
     success: 'Annehmen',
     rejection: 'Ablehnen',

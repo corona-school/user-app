@@ -59,7 +59,7 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                         </Text>
                         {match!.dissolvedAt && (
                             <Text>
-                                {t('till')} {new Date(match!.createdAt).toLocaleDateString()}
+                                {t('till')} {new Date(match!.dissolvedAt).toLocaleDateString()}
                             </Text>
                         )}
                     </VStack>
