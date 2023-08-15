@@ -122,8 +122,8 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
     const { space } = useTheme();
     const { t } = useTranslation();
 
-    const activeMatches = pupil!.matches!.filter((it) => !it!.dissolved);
-    const dissolvedMatches = pupil.matches!.filter((it) => it!.dissolved);
+    const activeMatches = pupil!.matches!.filter((it) => !it!.dissolved).sort((a, b) => b!.createdAt - a!.createdAt);
+    const dissolvedMatches = pupil.matches!.filter((it) => it!.dissolved).sort((a, b) => b!.createdAt - a!.createdAt);
 
     return (
         <HStack space={space['2']}>
