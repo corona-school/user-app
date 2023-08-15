@@ -1,0 +1,25 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading } from 'native-base';
+import { InfoCard } from './InfoCard';
+
+<Meta title="Layout/InfoCard" component={InfoCard} />
+
+# InfoCard
+
+The InfoCard is used to show some info text with a title and an icon next to it.
+
+<Story name="InfoCard / Loki">
+    <InfoCard icon="loki" title="Loki will dir was sagen" message="Kuckuck!" />
+</Story>
+
+<Story name="InfoCard / Yes">
+    <InfoCard icon="yes" title="Das war erfolgreich" message="Knöpfe klicken kannst du" />
+</Story>
+
+<Story name="InfoCard / No">
+    <InfoCard icon="no" title="Ne, das darfst du leider nicht" message="Nur Admins dürfen das" />
+</Story>
+
+<Story name="InfoCard / Loki with Orange Background">
+    <InfoCard icon="loki" background="orange.900" title="Loki will dir was gefährliches sagen ..." message="" />
+</Story>
