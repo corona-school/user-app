@@ -70,6 +70,7 @@ export function ScreeningDashboard() {
         query ScreenerSearchUsers($search: String!) {
             usersSearch(query: $search, take: 10) {
                 pupil {
+                    active
                     id
                     createdAt
                     firstname
@@ -104,6 +105,7 @@ export function ScreeningDashboard() {
         gql(`
         query GetDisputedScreenings {
             pupilsToBeScreened(onlyDisputed: true) {
+                active
                 id
                 createdAt
                 firstname
