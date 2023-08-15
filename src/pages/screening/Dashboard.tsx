@@ -64,7 +64,7 @@ export function ScreeningDashboard() {
     const { data: searchResult, loading: searchLoading } = useQuery(
         gql(`
         query ScreenerSearchUsers($search: String!) {
-            usersSearch(query: $search, take: 1) {
+            usersSearch(query: $search, take: 10) {
                 pupil {
                     id
                     createdAt
