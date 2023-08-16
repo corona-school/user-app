@@ -15,7 +15,8 @@ const dashboard = {
     offers: {
         noMatching: 'Du hast gerade kein aktives Lernpaar',
         requestCreated: 'Anfrage erstellt am:',
-        waitingTimeInfo: 'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in für dich zu Wartezeiten von 3 - 6 Monaten kommen kann.',
+        waitingTimeInfo:
+            'Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.',
         removeRequest: 'Anfrage zurücknehmen',
     },
     helpers: {
