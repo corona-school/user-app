@@ -30,12 +30,14 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop }) => {
 
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
+        if (userType === 'screener') return true;
         if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
         return false;
     }, [data, userType]);
 
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
+        if (userType === 'screener') return true;
         if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
         return false;
     }, [data, userType]);

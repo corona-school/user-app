@@ -8,7 +8,7 @@ type Props = {
     paddingX?: number | string;
     paddingY?: number | string;
     borderColor?: string;
-    variant?: 'normal' | 'outline' | 'rating' | 'secondary' | 'secondary-light';
+    variant?: 'normal' | 'outline' | 'rating' | 'secondary' | 'secondary-light' | 'orange';
     beforeElement?: ReactNode | ReactNode[];
     afterElement?: ReactNode | ReactNode[];
     isReview?: boolean;
@@ -43,6 +43,8 @@ const Tag: React.FC<Props> = ({
             case 'secondary':
             case 'secondary-light':
                 return 'primary.500';
+            case 'orange':
+                return 'yellow.500';
             default:
                 return colors.text['50'];
         }
@@ -53,6 +55,7 @@ const Tag: React.FC<Props> = ({
             case 'secondary':
             case 'outline':
             case 'rating':
+            case 'orange':
                 return 'darkText';
             case 'normal':
             case 'secondary-light':

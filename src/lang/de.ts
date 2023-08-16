@@ -18,6 +18,7 @@ import appointment from './appointment/de';
 import chat from './chat/de';
 import introduction from './introduction/de';
 import navigation from './navigation/de';
+import screening from './screening/de';
 
 const de = {
     ...shared,
@@ -40,5 +41,6 @@ const de = {
     chat,
     introduction,
     navigation,
+    screening,
 };
 export default de;

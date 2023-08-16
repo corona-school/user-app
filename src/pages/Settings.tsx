@@ -19,6 +19,7 @@ const Settings: React.FC = () => {
     const { logout } = useApollo();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
+    const userType = useUserType();
 
     const [showDeactivate, setShowDeactivate] = useState<boolean>(false);
 
@@ -63,14 +64,16 @@ const Settings: React.FC = () => {
                     </HStack>
                 </VStack>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
-                        <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
-                        </Column>
-                    </ProfileSettingRow>
+                    {userType !== 'screener' && (
+                        <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
+                            <Column mb={tabspace}>
+                                <EditDataRow label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
+                            </Column>
+                            <Column mb={tabspace}>
+                                <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
+                            </Column>
+                        </ProfileSettingRow>
+                    )}
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
                             <EditDataRow label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />

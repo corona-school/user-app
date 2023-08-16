@@ -34,6 +34,17 @@ import SomeComponent from "./SomeComponent";
 <Story name="Some Component used in some way">
   <Component />
 </Story>
+
+# Example Component with State
+
+You can also use `useState` like this:
+
+<Story name="Some stateful Component">
+{() => {
+  const [active, setActive] = useState(false);
+  return <Component active={active} onSomething={() => setActive(true)} />
+}}
+</Story>
 ```
 
 ## Structure
