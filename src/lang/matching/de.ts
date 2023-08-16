@@ -211,6 +211,12 @@ const matching = {
         success: 'Zertifikat bestätigt',
         successInfo: 'Vielen Dank, dass du uns unterstützt, die Arbeit unserer Helfer:innen zu würdigen.',
     },
+    adHocMeeting: {
+        title: 'Sofortbesprechung starten',
+        infoText:
+            'Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.',
+        startMeeting: 'Besprechung starten',
+    },
 };
 
 export default matching;
