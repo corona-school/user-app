@@ -28,7 +28,7 @@ export const decorators = [
             <BrowserRouter>
                 <NativeBaseProvider theme={Theme}>
                     <MockedProvider mocks={[]}>
-                        <Page />
+                        {Page()}
                     </MockedProvider>
                 </NativeBaseProvider>
             </BrowserRouter>

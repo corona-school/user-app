@@ -1,0 +1,65 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading, Button } from 'native-base';
+import { ScreenPupilCard } from './ScreenPupilCard';
+
+<Meta title="Screening/ScreenPupilCard" component={ScreenPupilCard} />
+
+Without an open Screening the ScreenPupilCard only shows the user information:
+
+<Story name="ScreenPupilCard / no screening">
+    <ScreenPupilCard
+        pupil={{
+            firstname: 'Jonas',
+            lastname: 'Wilms',
+            subjectsFormatted: [{ name: 'Mathematik', mandatory: true }],
+            languages: ['Deutsch'],
+            grade: '3. Klasse',
+            screenings: [{ status: 'success', createdAt: new Date(), invalidated: false }],
+            matches: [
+                { student: { firstname: 'Ein', lastname: 'Anderer' }, createdAt: new Date(), dissolved: false, subjectsFormatted: [{ name: 'Mathematik' }] },
+            ],
+        }}
+    />
+</Story>
+
+With an open Screening the ScreenPupilCard shows a form for the screener to fill:
+
+<Story name="ScreenPupilCard / pending screening">
+    <ScreenPupilCard
+        pupil={{
+            firstname: 'Jonas',
+            lastname: 'Wilms',
+            subjectsFormatted: [{ name: 'Mathematik', mandatory: true }],
+            languages: ['Deutsch'],
+            grade: '3. Klasse',
+            screenings: [
+                { status: 'pending', createdAt: new Date(), invalidated: false, comment: '' },
+                { status: 'rejection', createdAt: new Date(1970), invalidated: false },
+            ],
+            matches: [
+                { student: { firstname: 'Ein', lastname: 'Anderer' }, createdAt: new Date(), dissolved: false, subjectsFormatted: [{ name: 'Mathematik' }] },
+            ],
+        }}
+    />
+</Story>
+
+And with an open disputed Screening there is an additional hint:
+
+<Story name="ScreenPupilCard / disputed screening">
+    <ScreenPupilCard
+        pupil={{
+            firstname: 'Jonas',
+            lastname: 'Wilms',
+            subjectsFormatted: [{ name: 'Mathematik', mandatory: true }],
+            languages: ['Deutsch'],
+            grade: '3. Klasse',
+            screenings: [
+                { status: 'dispute', createdAt: new Date(), invalidated: false, comment: '' },
+                { status: 'rejection', createdAt: new Date(1970), invalidated: false },
+            ],
+            matches: [
+                { student: { firstname: 'Ein', lastname: 'Anderer' }, createdAt: new Date(), dissolved: false, subjectsFormatted: [{ name: 'Mathematik' }] },
+            ],
+        }}
+    />
+</Story>
