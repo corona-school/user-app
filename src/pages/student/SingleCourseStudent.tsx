@@ -190,7 +190,15 @@ const SingleCourseStudent = () => {
     const appointments = subcourse?.appointments ?? [];
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
-        const next = appointments.find((appointment) => DateTime.fromISO(appointment.start) > now);
+        const next = appointments.find((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
+
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 30 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+
+            return isWithinTimeFrame;
+        });
+
         return next;
     }, [appointments]);
 
