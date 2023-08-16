@@ -20,6 +20,7 @@ import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
 import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 import AsNavigationItem from '../components/AsNavigationItem';
+import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -86,6 +87,7 @@ mutation createMatcheeChat($matcheeId: String!) {
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
+    const navigate = useNavigate();
     const { id: _matchId } = useParams();
     const matchId = parseInt(_matchId ?? '', 10);
     const { space } = useTheme();
@@ -94,10 +96,9 @@ const SingleMatch = () => {
     const userType = useUserType();
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
+    const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
-
-    const navigate = useNavigate();
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
@@ -111,6 +112,14 @@ const SingleMatch = () => {
         gql(`
             mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
                 matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+            }
+        `)
+    );
+
+    const [createAdHocMeeting] = useMutation(
+        gql(`
+            mutation createAdHocMeeting($matchId: Int!){
+                matchCreateAdHocMeeting(matchId: $matchId)
             }
         `)
     );
@@ -149,6 +158,18 @@ const SingleMatch = () => {
         const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
         navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
     };
+    const startAdHocMeeting = useCallback(async () => {
+        const meetingData = await createAdHocMeeting({ variables: { matchId: matchId } });
+        const appointmentId = meetingData && meetingData.data?.matchCreateAdHocMeeting.id;
+        const appointmentType = meetingData && meetingData.data?.matchCreateAdHocMeeting.appointmentType;
+        await refetch();
+
+        if (!appointmentId || !appointmentType) {
+            throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
+        }
+
+        navigate(`/video-chat/${appointmentId}/${appointmentType}`);
+    }, [createAdHocMeeting, matchId, navigate, refetch]);
 
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
@@ -220,9 +241,11 @@ const SingleMatch = () => {
                                         <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
                                             {t('matching.shared.contactViaChat')}
                                         </Button>
-                                        <Button isDisabled variant="outline" my={isMobile ? '0' : '1'}>
-                                            {t('matching.shared.directCall')}
-                                        </Button>
+                                        {userType === 'student' && (
+                                            <Button onPress={() => setShowAdHocMeetingModal(true)} variant="outline" my={isMobile ? '0' : '1'}>
+                                                {t('matching.shared.directCall')}
+                                            </Button>
+                                        )}
                                         {!data?.match?.dissolved && (
                                             <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
                                                 {t('matching.shared.dissolveMatch')}
@@ -262,6 +285,13 @@ const SingleMatch = () => {
                         return await dissolve(reason);
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
+                />
+                <AdHocMeetingModal
+                    showAdHocModal={showAdHocMeetingModal}
+                    onPressAdHocMeeting={async () => {
+                        await startAdHocMeeting();
+                    }}
+                    onPressBack={() => setShowAdHocMeetingModal(false)}
                 />
             </WithNavigation>
         </AsNavigationItem>
