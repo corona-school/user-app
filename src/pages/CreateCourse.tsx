@@ -289,6 +289,7 @@ const CreateCourse: React.FC = () => {
             documentTitle: 'Kurs erstellen',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => setAppointmentsToBeCreated([]);
     }, []);
 
     const ContentContainerWidth = useBreakpointValue({
@@ -817,10 +818,6 @@ const CreateCourse: React.FC = () => {
 
     const goToStep = useCallback((index: number) => {
         setCurrentIndex(index);
-    }, []);
-
-    useEffect(() => {
-        setAppointmentsToBeCreated([]);
     }, []);
 
     return (
