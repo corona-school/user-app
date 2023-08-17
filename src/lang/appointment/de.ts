@@ -81,6 +81,7 @@ const appointment = {
         editButton: 'Termin bearbeiten',
         canceledToast: 'Termin wurde abgesagt',
         deleteTooltip: 'Der letzte Termin kann nicht gelöscht werden.',
+        editBlockedWarning: 'Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden.',
     },
     attendeesModal: {
         title: 'Teilnehmer:innen',
