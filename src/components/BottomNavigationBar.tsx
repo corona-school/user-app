@@ -35,6 +35,12 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
         return false;
     }, [userType, data]);
 
+    const disableChat: boolean = useMemo(() => {
+        if (!data) return true;
+        if (userType === 'screener') return true;
+        return false;
+    }, [userType, data]);
+
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
         if (userType === 'screener') return true;
@@ -73,7 +79,8 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                     }}
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
                         return (
                             <Pressable
