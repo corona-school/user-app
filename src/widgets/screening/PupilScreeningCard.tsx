@@ -10,7 +10,9 @@ export function PupilScreeningCard({ screening }: { screening: PupilScreening })
     const background = screening!.status === Pupil_Screening_Status_Enum.Rejection ? 'orange.500' : 'primary.900';
     const title = t(`screening.${screening!.status!}_screening`);
 
-    const message = `am ${new Date(screening!.createdAt).toLocaleDateString()}`;
-
+    let message = `Anfrage: ${new Date(screening!.createdAt).toLocaleDateString()}`;
+    if (screening!.updatedAt) {
+        message += ` Entscheidung: ${new Date(screening!.updatedAt).toLocaleDateString()}`;
+    }
     return <InfoCard noMargin icon={icon} background={background} title={title} message={message} />;
 }
