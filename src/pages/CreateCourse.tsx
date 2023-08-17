@@ -494,10 +494,9 @@ const CreateCourse: React.FC = () => {
 
             const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
 
-            // errors === undefined
+            setAppointmentsToBeCreated([]);
             if (appointmentsRes.errors) {
                 errors.push('appointments');
-                setAppointmentsToBeCreated([]);
                 await resetAppointments();
                 await resetSubcourse();
                 await resetCourse();
