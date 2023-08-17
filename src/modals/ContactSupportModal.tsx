@@ -76,8 +76,6 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
             toast.show({ description: t('helpcenter.reportSuccessToast'), placement: 'top' });
             onClose();
         } else setShowError(true);
-
-        console.log('SEND REPORT ON SUPPORT');
     };
 
     return (
