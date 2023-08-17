@@ -82,17 +82,13 @@ const Appointments: React.FC = () => {
     });
 
     const appointments = myAppointments?.me?.appointments ?? [];
-    const publishedAppointments = appointments.filter((appointment) => {
-        const { subcourse } = appointment;
-        if (subcourse) return subcourse.published;
-        return true;
-    });
+
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         await fetchMore({
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
-                const prevAppointments = previousAppointments?.me?.appointments ?? [];
+                const prevAppointments = appointments;
                 if (scrollDirection === 'next') {
                     if (!newAppointments || newAppointments.length === 0) {
                         setNoNewAppointments(true);
@@ -143,7 +139,7 @@ const Appointments: React.FC = () => {
 
                 {!error && hasAppointments?.me.hasAppointments && (
                     <AppointmentList
-                        appointments={publishedAppointments as Appointment[]}
+                        appointments={appointments as Appointment[]}
                         isLoadingAppointments={loadingMyAppointments}
                         isReadOnlyList={false}
                         loadMoreAppointments={loadMoreAppointments}
