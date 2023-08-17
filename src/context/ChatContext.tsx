@@ -74,7 +74,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }, []);
 
     useEffect(() => {
-        if (sessionState !== 'logged-in' || !userId || !user) return;
+        if (sessionState !== 'logged-in' || !userId || !user || user.screener) return;
 
         const me = {
             id: userIdToTalkJsId(userId),
