@@ -36,6 +36,12 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
         return false;
     }, [data, userType]);
 
+    const disableChat: boolean = useMemo(() => {
+        if (!data) return true;
+        if (userType === 'screener') return true;
+        return false;
+    }, [userType, data]);
+
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
         if (userType === 'screener') return true;
@@ -64,7 +70,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                     bottom="0"
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
                         return (
                             <Pressable
