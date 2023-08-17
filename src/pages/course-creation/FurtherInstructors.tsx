@@ -98,7 +98,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                                 <InfoIcon position="relative" top="3px" paddingLeft="5px" color="danger.100" />
                             </Tooltip>
                         </Text>
-                        <Switch value={allowProspect} onValueChange={setAllowProspect} />
+                        <Switch value={allowProspect} onToggle={() => setAllowProspect(!allowProspect)} />
                     </Row>
 
                     <Row ml="10">
@@ -108,7 +108,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                                 <InfoIcon position="relative" top="3px" paddingLeft="5px" color="danger.100" />
                             </Tooltip>
                         </Text>
-                        <Switch value={allowParticipant} onValueChange={setAllowParticipant} />
+                        <Switch value={allowParticipant} onToggle={() => setAllowParticipant(!allowParticipant)} />
                     </Row>
 
                     <Heading mt="5" fontSize="md">
@@ -118,7 +118,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                         <Text flex="1" justifyContent="center">
                             {t('course.CourseDate.form.allowChatContact')}
                         </Text>
-                        <Switch value={allowWrite} onValueChange={setAllowWrite} />
+                        <Switch value={allowWrite} onToggle={() => setAllowWrite(!allowWrite)} />
                     </Row>
                 </VStack>
             </VStack>
