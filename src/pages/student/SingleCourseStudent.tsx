@@ -22,6 +22,7 @@ import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
+import { useNavigate } from 'react-router-dom';
 
 function Participants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -153,6 +154,7 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
@@ -351,6 +353,8 @@ const SingleCourseStudent = () => {
                 return () => submitCourse();
             case Course_Coursestate_Enum.Allowed:
                 return () => doPublish();
+            case Course_Coursestate_Enum.Denied:
+                return () => navigate('/hilfebereich', { state: { tabID: 2 } });
             default:
                 return () => submitCourse();
         }
