@@ -32,6 +32,8 @@ const chat = {
     },
     report: {
         modalHeader: 'Nachricht melden',
+        modalMessage:
+            'Bist du dir sicher, dass du diese Nachricht melden möchtest? Wir überprüfen die Nachricht in den kommenden Tagen und werden die Nachricht löschen, falls sie gegen unsere Richtlinien verstößt.',
     },
 };
 
