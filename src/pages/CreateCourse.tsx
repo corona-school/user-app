@@ -289,6 +289,7 @@ const CreateCourse: React.FC = () => {
             documentTitle: 'Kurs erstellen',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => setAppointmentsToBeCreated([]);
     }, []);
 
     const ContentContainerWidth = useBreakpointValue({
@@ -493,7 +494,7 @@ const CreateCourse: React.FC = () => {
 
             const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
 
-            // errors === undefined
+            setAppointmentsToBeCreated([]);
             if (appointmentsRes.errors) {
                 errors.push('appointments');
                 await resetAppointments();
