@@ -383,6 +383,8 @@ const SingleCourseStudent = () => {
                 return () => submitCourse();
             case Course_Coursestate_Enum.Allowed:
                 return () => doPublish();
+            case Course_Coursestate_Enum.Denied:
+                return () => navigate('/hilfebereich', { state: { tabID: 2 } });
             default:
                 return () => submitCourse();
         }
