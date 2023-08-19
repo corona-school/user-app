@@ -18,7 +18,8 @@ datadogRum.init({
     // Specify a version number to identify the deployed version of your application in Datadog
     version: APP_VERSION,
     sessionSampleRate: 100,
-    sessionReplaySampleRate: 100,
+    // TODO: stopping session replay for now as it's not working properly
+    sessionReplaySampleRate: 0,
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,
@@ -33,7 +34,8 @@ datadogRum.init({
     },
 });
 
-datadogRum.startSessionReplayRecording();
+// TODO: stopping session replay for now as it's not working properly
+// datadogRum.startSessionReplayRecording();
 
 ReactDOM.render(
     <React.StrictMode>
