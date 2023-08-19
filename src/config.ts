@@ -18,3 +18,5 @@ export const ZOOM_MEETING_SDK_KEY = process.env.REACT_APP_ZOOM_SDK_KEY;
 export const DD_APP_ID = window.liveConfig?.RUNTIME_DD_APP_ID ?? process.env.REACT_APP_DD_APP_ID;
 export const DD_CLIENT_TOKEN = window.liveConfig?.RUNTIME_DD_CLIENT_TOKEN ?? process.env.REACT_APP_DD_CLIENT_TOKEN;
 export const DD_ENV = window.liveConfig?.RUNTIME_DD_ENV ?? process.env.REACT_APP_DD_ENV;
+
+export const TALKJS_APP_ID = window.liveConfig?.RUNTIME_TALKJS_APP_ID ?? process.env.REACT_APP_TALKJS_APP_ID;

@@ -5,8 +5,7 @@ import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import { UnreadConversation } from 'talkjs/all';
 import { userIdToTalkJsId } from '../helper/chat-helper';
-
-const TALKJS_APP_ID = process.env.REACT_APP_TALKJS_APP_ID;
+import { TALKJS_APP_ID } from '../config';
 
 interface UserType {
     userID: string;
