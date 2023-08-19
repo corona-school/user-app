@@ -3,7 +3,7 @@ import { gql } from '../../gql';
 import { DateTime } from 'luxon';
 import { Box, Stack, Text, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -17,6 +17,7 @@ import { getTrafficStatus } from '../../Utility';
 import AppointmentList from '../../widgets/appointment/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
+import { Subcourse } from '../../gql/graphql';
 import { Lecture } from '../../gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
@@ -26,6 +27,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
         query GetOtherParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 otherParticipants{
+                    id
                     firstname
                     grade
                 }
@@ -54,7 +56,7 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 }
 
 const singleSubcoursePupilQuery = gql(`
-query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
+query GetSingleSubcoursePupil($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
         participantsCount
@@ -62,12 +64,15 @@ query GetSingleSubcoursePupil($subcourseId: Int!, $isStudent: Boolean = false) {
         minGrade
         maxGrade
         capacity
-        alreadyPromoted @include(if: $isStudent)
+        groupChatType
+        allowChatContactProspects
+        allowChatContactParticipants
         nextLecture{
             start
             duration
         }
         instructors{
+            id
             firstname
             lastname
         }
@@ -118,6 +123,7 @@ const SingleCoursePupil = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
+    const navigate = useNavigate();
     const toast = useToast();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
@@ -127,10 +133,11 @@ const SingleCoursePupil = () => {
     });
 
     const { subcourse } = data ?? {};
+
     const { course } = subcourse ?? {};
     const appointments = subcourse?.appointments ?? [];
-    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
 
+    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
     const { data: canJoinData } = useQuery(
         gql(`
         query CanJoin($subcourseId: Int!) { 
@@ -184,17 +191,42 @@ const SingleCoursePupil = () => {
         }
     );
 
-    const [contact, { loading: loadingContactInstructor }] = useMutation(
+    const [chatCreateForSubcourse] = useMutation(
         gql(`
-        mutation NotifyInstructors($subcourseId: Int!, $title: String!, $body: String!, $fileIDs: [String!]!) {
-            subcourseNotifyInstructor(subcourseId: $subcourseId fileIDs: $fileIDs title: $title body: $body)
-        }
-    `)
+            mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
+                participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
+            }       
+        `)
     );
 
-    async function doContact(title: string, body: string, fileIDs: string[]) {
-        await contact({ variables: { subcourseId, title, body, fileIDs } });
-        toast.show({ description: t('notification.send'), placement: 'top' });
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsParticipant() {
+        const conversation = await chatCreateForSubcourse({
+            variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
+    }
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
     }
 
     const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
@@ -213,7 +245,7 @@ const SingleCoursePupil = () => {
                 <Box minH={300}>
                     <AppointmentList
                         isReadOnlyList={!subcourse?.isParticipant}
-                        disableScroll={true}
+                        disableScroll
                         appointments={data?.subcourse?.appointments as Appointment[]}
                         noOldAppointments
                     />
@@ -268,7 +300,7 @@ const SingleCoursePupil = () => {
                     <PupilCourseButtons
                         appointment={myNextAppointment as Lecture}
                         courseFull={courseFull}
-                        subcourse={subcourse}
+                        subcourse={subcourse as Subcourse}
                         canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}
                         joinedSubcourse={joinedSubcourseData?.subcourseJoin}
                         joinedWaitinglist={joinedWaitinglist?.subcourseJoinWaitinglist}
@@ -278,12 +310,12 @@ const SingleCoursePupil = () => {
                         loadingSubcourseLeft={loadingSubcourseLeft}
                         loadingJoinedWaitinglist={loadingJoinedWaitinglist}
                         loadingWaitinglistLeft={loadingLeftWaitinglist}
-                        loadingContactInstructor={loadingContactInstructor}
                         joinSubcourse={() => joinSubcourse()}
                         leaveSubcourse={() => leaveSubcourse()}
                         joinWaitinglist={() => joinWaitingList()}
                         leaveWaitinglist={() => leaveWaitingList()}
-                        doContactInstructor={doContact}
+                        contactInstructorAsParticipant={contactInstructorAsParticipant}
+                        contactInstructorAsProspect={contactInstructorAsProspect}
                         refresh={refetch}
                     />
                 )}

@@ -30,12 +30,16 @@ import FurtherInstructors from './course-creation/FurtherInstructors';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
 import { AppointmentCreateGroupInput } from '../gql/graphql';
+import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
-import { Appointment } from '../types/lernfair/Appointment';
 import HelpNavigation from '../components/HelpNavigation';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
+export enum ChatType {
+    NORMAL = 'NORMAL',
+    ANNOUNCEMENT = 'ANNOUNCEMENT',
+}
 
 export type Lecture = {
     id?: string | number;
@@ -61,8 +65,12 @@ type ICreateCourseContext = {
     setMaxParticipantCount?: Dispatch<SetStateAction<string>>;
     joinAfterStart?: boolean;
     setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
-    allowContact?: boolean;
-    setAllowContact?: Dispatch<SetStateAction<boolean>>;
+    allowProspectContact?: boolean;
+    setAllowProspectContact?: Dispatch<SetStateAction<boolean>>;
+    allowParticipantContact?: boolean;
+    setAllowParticipantContact?: Dispatch<SetStateAction<boolean>>;
+    allowChatWritting?: boolean;
+    setAllowChatWritting?: Dispatch<SetStateAction<boolean>>;
     lectures?: LFLecture[];
     setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
     newLectures?: Lecture[];
@@ -94,7 +102,11 @@ const CreateCourse: React.FC = () => {
     const [tags, setTags] = useState<LFTag[]>([]);
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
-    const [allowContact, setAllowContact] = useState<boolean>(false);
+    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
+    const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
+    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(false);
+    const [lectures, setLectures] = useState<LFLecture[]>([]);
+    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
@@ -145,7 +157,9 @@ const CreateCourse: React.FC = () => {
                     lastname
                 }
                 joinAfterStart
-
+                allowChatContactParticipants
+                allowChatContactProspects
+                groupChatType
                 course {
                     id
                     name
@@ -315,7 +329,9 @@ const CreateCourse: React.FC = () => {
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowContact(!!prefillCourse.course.allowContact);
+        setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
+        setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
+        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
         setCourseAppointments(prefillCourse.appointments ?? []);
@@ -367,10 +383,10 @@ const CreateCourse: React.FC = () => {
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
-            allowContact,
+            allowContact: false,
             ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [allowContact, courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
+        [courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -380,15 +396,21 @@ const CreateCourse: React.FC = () => {
             maxParticipants: number;
             joinAfterStart: boolean;
             lectures?: LFLecture[];
+            allowChatContactProspects: boolean;
+            allowChatContactParticipants: boolean;
+            groupChatType: ChatType;
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
             maxParticipants: parseInt(maxParticipantCount),
             joinAfterStart,
+            allowChatContactProspects: allowProspectContact,
+            allowChatContactParticipants: allowParticipantContact,
+            groupChatType: allowChatWriting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
         };
 
         return subcourse;
-    }, [courseClasses, joinAfterStart, maxParticipantCount]);
+    }, [allowChatWriting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
 
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
@@ -850,8 +872,16 @@ const CreateCourse: React.FC = () => {
                         setMaxParticipantCount,
                         joinAfterStart,
                         setJoinAfterStart,
-                        allowContact,
-                        setAllowContact,
+                        allowProspectContact,
+                        setAllowProspectContact,
+                        allowParticipantContact,
+                        setAllowParticipantContact,
+                        allowChatWritting: allowChatWriting,
+                        setAllowChatWritting: setAllowChatWriting,
+                        lectures,
+                        setLectures,
+                        newLectures,
+                        setNewLectures,
                         pickedPhoto,
                         setPickedPhoto,
                         addedInstructors,

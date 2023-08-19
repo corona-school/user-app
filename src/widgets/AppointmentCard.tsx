@@ -365,7 +365,6 @@ const AppointmentCard: React.FC<Props> = ({
                             </Stack>
 
                             <Box
-                                flex="1"
                                 maxWidth={ButtonVideoContainer}
                                 marginLeft={ButtonVideoContainerMargin}
                                 alignItems="flex-end"

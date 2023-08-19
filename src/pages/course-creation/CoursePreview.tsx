@@ -38,7 +38,9 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
         tags,
         classRange: courseClasses,
         joinAfterStart,
-        allowContact,
+        allowParticipantContact: allowContact,
+        lectures,
+        newLectures,
         pickedPhoto,
     } = useContext(CreateCourseContext);
 

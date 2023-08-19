@@ -1,16 +1,17 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { ApolloQueryResult, useQuery } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
-import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import AlertMessage from '../../../widgets/AlertMessage';
+import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { canJoinMeeting } from '../../../widgets/appointment/AppointmentDay';
 import { DateTime } from 'luxon';
+import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 
 type CanJoin = {
@@ -30,15 +31,35 @@ type ActionButtonProps = {
     loadingSubcourseLeft: boolean;
     loadingJoinedWaitinglist: boolean;
     loadingWaitinglistLeft: boolean;
-    loadingContactInstructor: boolean;
-    subcourse: Required<Pick<Subcourse, 'id' | 'participantsCount' | 'maxParticipants' | 'isParticipant' | 'isOnWaitingList' | 'canContactInstructor'>>;
+    subcourse: Pick<
+        Subcourse,
+        | 'id'
+        | 'participantsCount'
+        | 'maxParticipants'
+        | 'isParticipant'
+        | 'isOnWaitingList'
+        | 'canContactInstructor'
+        | 'allowChatContactProspects'
+        | 'allowChatContactParticipants'
+        | 'groupChatType'
+    >;
+
     joinSubcourse: () => Promise<any>;
     leaveSubcourse: () => void;
     joinWaitinglist: () => void;
     leaveWaitinglist: () => void;
-    doContactInstructor: (title: string, body: string, fileIDs: string[]) => Promise<void>;
+    contactInstructorAsParticipant: () => Promise<void>;
+    contactInstructorAsProspect: () => Promise<void>;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
 };
+
+const courseConversationId = gql(`
+query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
+    subcourse (subcourseId: $subcourseId) {
+        conversationId @include(if: $isParticipant)
+    }
+}
+`);
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     appointment,
@@ -53,29 +74,29 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     subcourse,
     loadingJoinedWaitinglist,
     loadingWaitinglistLeft,
-    loadingContactInstructor,
     joinSubcourse,
     leaveSubcourse,
     joinWaitinglist,
     leaveWaitinglist,
-    doContactInstructor,
+    contactInstructorAsParticipant,
+    contactInstructorAsProspect,
     refresh,
 }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
-    const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
 
-    async function contactInstructor(title: string, body: string, fileIDs: string[]) {
-        doContactInstructor(title, body, fileIDs);
-        setShowMessageModal(false);
-    }
+    const { data, loading } = useQuery(courseConversationId, {
+        variables: { subcourseId: subcourse.id, isParticipant: subcourse?.isParticipant! },
+    });
+
+    const conversationId = data?.subcourse?.conversationId || '';
 
     const handleSignInCourse = useCallback(async () => {
         setSignInModal(false);
@@ -128,6 +149,26 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)} />
                 )}
 
+                {subcourse.isParticipant && !loading && (
+                    <OpenCourseChatButton
+                        groupChatType={subcourse.groupChatType}
+                        conversationId={conversationId}
+                        subcourseId={subcourse.id}
+                        participantsCount={subcourse.participantsCount}
+                        isParticipant={subcourse.isParticipant}
+                        refresh={refresh}
+                    />
+                )}
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
                 {subcourse.isParticipant && (
                     <>
                         <VideoButton
@@ -149,11 +190,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     <VStack space={space['0.5']} mb="5">
                         <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
                     </VStack>
-                )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
-                    <Button variant="outline" onPress={() => setShowMessageModal(true)}>
-                        {t('single.actions.contactInstructor')}
-                    </Button>
                 )}
             </Stack>
 
@@ -196,14 +232,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                     onConfirm={handleWaitinglistLeave}
                 />
             </Modal>
-
-            <SendParticipantsMessageModal
-                isInstructor={false}
-                isOpen={showMessageModal}
-                onClose={() => setShowMessageModal(false)}
-                onSend={contactInstructor}
-                isDisabled={loadingContactInstructor}
-            />
         </>
     );
 };
