@@ -4,6 +4,7 @@ import App from './App';
 import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
+// import { getSessionToken } from './hooks/useApollo';
 
 const root = document.getElementById('root');
 
@@ -30,6 +31,10 @@ datadogRum.init({
         if (event.view.url.includes('token=')) {
             event.view.url = event.view.url.replace(/token=([^&]*)/, 'token=***');
         }
+        // Attach session token as context to RUM session
+        // event.context = { ...event.context, sessionToken: getSessionToken() };
+        event.context = { ...event.context, daniel: 'test' };
+
         return true;
     },
 });
