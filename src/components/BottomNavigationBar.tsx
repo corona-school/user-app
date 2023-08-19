@@ -1,4 +1,4 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex } from 'native-base';
+import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Circle, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
@@ -12,9 +12,10 @@ import { useUserType } from '../hooks/useApollo';
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
+    unreadMessagesCount?: number;
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -34,12 +35,23 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
         return false;
     }, [userType, data]);
 
+    const disableChat: boolean = useMemo(() => {
+        if (!data) return true;
+        if (userType === 'screener') return true;
+        return false;
+    }, [userType, data]);
+
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
         if (userType === 'screener') return true;
         if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
         return false;
     }, [userType, data]);
+
+    const badgeAlign = useBreakpointValue({
+        base: 0,
+        lg: 2,
+    });
 
     if (loading) return <></>;
 
@@ -67,7 +79,8 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                     }}
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
                         return (
                             <Pressable
@@ -78,6 +91,13 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems }) => {
                                 }}
                                 key={key}
                             >
+                                {key === 'chat' && !!unreadMessagesCount && (
+                                    <Circle bgColor="danger.500" size="4" position="absolute" zIndex="1" mx="6">
+                                        <Text fontSize="xs" color="white">
+                                            {unreadMessagesCount}
+                                        </Text>
+                                    </Circle>
+                                )}
                                 <CSSWrapper className="navigation__item">
                                     <Center>
                                         <Box>

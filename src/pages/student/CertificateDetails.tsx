@@ -113,7 +113,6 @@ const CertificateList: React.FC = () => {
             }
         >
             {/* {!certificate.uuid && <Text>Fehler beim Laden des Zertifikates</Text>} */}
-
             {(certificate.uuid || true) && (
                 <VStack space={space['1']} paddingX={space['1']}>
                     <Heading>{certificateType === 'group' ? 'Gruppen-Kurse' : 'Lernunterstützung'}</Heading>

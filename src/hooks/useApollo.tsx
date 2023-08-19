@@ -536,7 +536,7 @@ export const useUserType = () => {
 
 export const useUserAuth = () => {
     const { sessionState, user } = useContext(ExtendedApolloContext)!;
-    return { sessionState, userId: user?.userID };
+    return { sessionState, userId: user?.userID, user: user };
 };
 
 export default useApollo;
