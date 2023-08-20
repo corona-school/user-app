@@ -9,8 +9,7 @@ body {
 
     min-width: 0;
 
-    height: 100vh;
-    height: -webkit-fill-available;
+    height: 100dvh;
     // height: -moz-available;
     // max-height: 100vh;
     // max-height: -webkit-fill-available;
@@ -40,7 +39,7 @@ html {
 #root {
     display: flex;
     flex-wrap: nowrap;
-    height: 100vh;
+    height: 100dvh;
     // height: -webkit-fill-available;
     // height: -moz-available;
 }

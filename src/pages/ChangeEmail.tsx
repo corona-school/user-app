@@ -63,7 +63,7 @@ const ChangeEmail = () => {
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
-                <Flex overflowY="auto" height="100vh">
+                <Flex overflowY="auto" height="100dvh">
                     <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                         <Logo />
                         <Heading mt={space['1']}>{t('login.setNewEmail')}</Heading>
