@@ -62,7 +62,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
         window.open(`mailto:support@lern-fair.de?subject=Tech-Issue ${issue}`, '_blank');
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         const errorHandler = (event: ErrorEvent) => {
             reportIssue(event.error, { componentStack: 'unknown error' });
             return true;
@@ -79,7 +79,7 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
             window.removeEventListener('error', errorHandler);
             window.removeEventListener('unhandledrejection', unhandledHandler);
         };
-    }, []);
+    }, []); */
 
     const closeRef = useRef(null);
 
