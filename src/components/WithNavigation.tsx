@@ -70,7 +70,18 @@ const WithNavigation: React.FC<Props> = ({
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
     return (
         <View flex="1">
-            <View flex="1" display="flex" flexDirection="column" flexWrap="nowrap" overflow="hidden" w="100vw" h="100%">
+            <View
+                flex="1"
+                display="flex"
+                flexDirection="column"
+                flexWrap="nowrap"
+                overflow="hidden"
+                w="100vw"
+                h="100%"
+                flexBasis="auto"
+                flexGrow="1"
+                flexShrink="1"
+            >
                 <HeaderCard
                     onBack={onBack}
                     showBack={showBack}

@@ -5,6 +5,7 @@ import useApollo from '../hooks/useApollo';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import AlertMessage from '../widgets/AlertMessage';
+import { useLayoutHelper } from '../hooks/useLayoutHelper';
 
 export type ReportInfos = {
     messageId: string;
@@ -29,6 +30,7 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
     const { space } = useTheme();
     const { user } = useApollo();
     const toast = useToast();
+    const { isMobile } = useLayoutHelper();
 
     const [dsgvo, setDSGVO] = useState<boolean>(false);
     const [showError, setShowError] = useState<boolean>(false);
@@ -80,7 +82,7 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content minW={800}>
+            <Modal.Content minW={isMobile ? '90vw' : 800}>
                 <Modal.CloseButton />
                 <Modal.Header>{t('chat.report.modalHeader')}</Modal.Header>
                 <Modal.Body>

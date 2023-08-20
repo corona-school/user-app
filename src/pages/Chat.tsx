@@ -109,7 +109,7 @@ const Chat: React.FC = () => {
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
-                <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                <Box h="90%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </Modal>

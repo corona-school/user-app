@@ -69,7 +69,7 @@ const LeftVideoChat: React.FC = () => {
     };
 
     return (
-        <View position="fixed" top="0" left="0" right="0" w="100vw" h="100vh" background="primary.900">
+        <View position="fixed" top="0" left="0" right="0" w="100vw" h="100dvh" background="primary.900">
             <Stack w={width} h="inherit" padding="24px" flex={1} space={space['1']} direction="column" justifyContent="center">
                 <Box alignSelf="center">
                     <PartyIcon />
