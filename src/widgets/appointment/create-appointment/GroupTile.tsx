@@ -49,6 +49,7 @@ const GroupTile: React.FC<GroupTileProps> = ({ courseId, imageURL, tags, start, 
                                 }}
                                 borderTopLeftRadius="15px"
                                 borderBottomLeftRadius="15px"
+                                {...{ crossOrigin: 'anonymous' }}
                             />
                             {courseStatus && <CourseTrafficLamp status={courseStatus || 'full'} hideText showBorder paddingY={0} />}
                         </Box>

@@ -101,6 +101,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                             source={{
                                 uri: course?.image!,
                             }}
+                            {...{ crossOrigin: 'anonymous' }}
                         />
                     </Box>
                 </Stack>

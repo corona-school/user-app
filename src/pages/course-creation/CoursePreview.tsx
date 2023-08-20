@@ -138,7 +138,7 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
                 </Heading>
 
                 <Box bg="gray.500" h="180">
-                    <Image src={pickedPhoto} h="100%" />
+                    <Image src={pickedPhoto} h="100%" {...{ crossOrigin: 'anonymous' }} />
                 </Box>
             </Row>
             {subject && (

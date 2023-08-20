@@ -23,6 +23,7 @@ const ImageWidget: React.FC<WidgetProps> = ({ photo, onShowUnsplash, onDeletePho
                         source={{
                             uri: photo || prefill || ImagePlaceHolder,
                         }}
+                        {...{ crossOrigin: 'anonymous' }}
                     />
                 </Column>
                 <Column>

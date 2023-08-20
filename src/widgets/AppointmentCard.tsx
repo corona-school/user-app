@@ -229,6 +229,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         source={{
                                             uri: image,
                                         }}
+                                        {...{ crossOrigin: 'anonymous' }}
                                     />
                                 )}
                                 {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
@@ -414,6 +415,7 @@ const AppointmentCard: React.FC<Props> = ({
                                     source={{
                                         uri: image,
                                     }}
+                                    {...{ crossOrigin: 'anonymous' }}
                                 />
                                 {showTrafficLight && (
                                     <Box position="absolute" top={space['0.5']} left={space['0.5']}>

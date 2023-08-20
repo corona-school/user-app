@@ -117,6 +117,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                                                                 borderWidth={selectedPhoto === photo.urls.regular ? '3' : '0'}
                                                                 src={photo.urls.small}
                                                                 alt={photo.alt_description}
+                                                                {...{ crossOrigin: 'anonymous' }}
                                                             />
                                                         </Pressable>
                                                     </VStack>

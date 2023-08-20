@@ -37,6 +37,7 @@ const SignInCard: React.FC<Props> = ({ subcourse, onClickSignIn, flexibleWidth, 
                             source={{
                                 uri: subcourse.course.image,
                             }}
+                            {...{ crossOrigin: 'anonymous' }}
                         />
                     )}
                     {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
