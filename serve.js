@@ -36,8 +36,14 @@ app.use(Express.static(__dirname + '/build', {
     index: false
 }));
 
-// Entrypoint of the PWA - Do not cache to be able to invalidate logic changes fast
-app.use((req, res) => res.sendFile(__dirname + '/build/index.html', { headers: { 'Cache-Control': 'no-cache' } }));
+// Entrypoint of the PWA
+app.use((req, res) => res.sendFile(__dirname + '/build/index.html', { headers: { 
+    // Do not cache to be able to invalidate logic changes fast
+    'Cache-Control': 'no-cache',
+    // Required to use SharedArrayBuffer, which Zoom relies on 
+    'Cross-Origin-Embedder-Policy': 'require-corp',
+    'Cross-Origin-Opener-Policy': 'same-origin'
+} }));
 
 // Serve on the PORT Heroku wishes
 app.listen(process.env.PORT ?? 5000, () => console.info(`Express started and listening`));
