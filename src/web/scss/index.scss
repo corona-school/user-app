@@ -7,7 +7,8 @@ html,
 body {
     overscroll-behavior-y: contain;
 
-    min-width: 0;
+    // The Zoom SDK decides to set this to some nonsense value, lets override:
+    min-width: 0 !important;
 
     height: 100dvh;
     // height: -moz-available;
