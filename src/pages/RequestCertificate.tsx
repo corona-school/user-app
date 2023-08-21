@@ -75,8 +75,6 @@ const RequestCertificate: React.FC<Props> = () => {
     const client = useApolloClient();
 
     const onFinish = useCallback(async () => {
-        console.log('State', state);
-
         for (const match of state.pupilMatches) {
             const certificateData = state.requestData[match.uuid];
 
@@ -92,8 +90,6 @@ const RequestCertificate: React.FC<Props> = () => {
                     },
                 },
             });
-
-            console.log('Requested Certificate', result);
         }
 
         navigate(-1);

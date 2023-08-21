@@ -83,7 +83,6 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         };
 
         if (talkLoaded && !loading && TALKJS_APP_ID) {
-            console.log('CHAT SIGNATURE', myChatSignature);
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
