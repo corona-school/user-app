@@ -31,7 +31,7 @@ type MetaProps = {
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
 };
-const MetaDetails: React.FC<MetaProps> = ({
+const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
     startTime,
     endTime,
@@ -115,4 +115,4 @@ const MetaDetails: React.FC<MetaProps> = ({
     );
 };
 
-export default MetaDetails;
+export default AppointmentMetaDetails;
