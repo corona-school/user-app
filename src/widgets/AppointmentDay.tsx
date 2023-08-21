@@ -2,10 +2,10 @@ import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useCallback } from 'react';
 import { getI18n } from 'react-i18next';
-import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
-import { Appointment } from '../../types/lernfair/Appointment';
+import { Appointment } from '../types/lernfair/Appointment';
 
 type Props = {
     start: string;

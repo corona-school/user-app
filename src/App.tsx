@@ -10,7 +10,7 @@ import './web/scss/index.scss';
 import { LFModalProvider } from './hooks/useModal';
 import { LernfairProvider } from './hooks/useLernfair';
 import { IssueReporter } from './IssueReporter';
-import { NotificationsProvider } from './components/NotificationsProvider';
+import { NotificationsProvider } from './context/NotificationsProvider';
 import { ToastNotifications } from './components/ToastNotifications';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';

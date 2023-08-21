@@ -53,7 +53,7 @@ import Appointment from './pages/Appointment';
 import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
-import LeftVideoChat from './pages/chat/LeftVideoChat';
+import LeftVideoChat from './widgets/LeftVideoChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';

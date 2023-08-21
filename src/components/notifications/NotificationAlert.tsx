@@ -5,7 +5,7 @@ import BellIcon from '../../assets/icons/lernfair/lf-bell.svg';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
 import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
 import NotificationPanel from './NotificationPanel';
-import { NotificationsContext } from '../NotificationsProvider';
+import { NotificationsContext } from '../../context/NotificationsProvider';
 import { getNewNotifications } from '../../helper/notification-helper';
 
 const NotificationAlert: React.FC = () => {

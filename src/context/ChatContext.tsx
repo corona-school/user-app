@@ -65,7 +65,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const { data, loading } = useQuery(getMyChatSignature, {
         skip: sessionState !== 'logged-in',
     });
-    // TODO add query to get has unread messages
+
     const myChatSignature = data?.me.chatSignature;
 
     useEffect(() => {
@@ -83,7 +83,6 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         };
 
         if (talkLoaded && !loading && TALKJS_APP_ID) {
-            console.log('CHAT SIGNATURE', myChatSignature);
             const currentUser = new Talk.User(me);
 
             const session = new Talk.Session({
@@ -94,7 +93,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             setSession(session);
             return () => session.destroy();
         }
-    }, [talkLoaded, loading, sessionState]);
+    }, [talkLoaded, loading, sessionState, myChatSignature]);
 
     useEffect(() => {
         if (!session) return;

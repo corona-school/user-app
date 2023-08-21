@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 type Props = {
     id: number;

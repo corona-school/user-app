@@ -1,6 +1,6 @@
 import { Box, CloseIcon, Heading, Modal, Pressable, useTheme, Row, Button, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { getIconForNotificationPreferenceModal } from '../../helper/notification-helper';
+import { getIconForNotificationPreferenceModal } from '../helper/notification-helper';
 
 type Props = {
     url: string;
