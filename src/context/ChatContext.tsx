@@ -5,8 +5,7 @@ import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import { UnreadConversation } from 'talkjs/all';
 import { userIdToTalkJsId } from '../helper/chat-helper';
-
-const TALKJS_APP_ID = process.env.REACT_APP_TALKJS_APP_ID;
+import { TALKJS_APP_ID } from '../config';
 
 interface UserType {
     userID: string;
@@ -74,7 +73,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }, []);
 
     useEffect(() => {
-        if (sessionState !== 'logged-in' || !userId || !user) return;
+        if (sessionState !== 'logged-in' || !userId || !user || user.screener) return;
 
         const me = {
             id: userIdToTalkJsId(userId),

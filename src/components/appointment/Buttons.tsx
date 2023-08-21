@@ -2,6 +2,7 @@ import { Button, Stack, Tooltip, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import useApollo from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import AlertMessage from '../../widgets/AlertMessage';
 
 type AvatarsProps = {
     onPress: () => void;
@@ -24,6 +25,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, decli
 
     return (
         <>
+            {isOver && <AlertMessage content={t('appointment.detail.editBlockedWarning')} />}
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
                 {user?.student && (
                     <>

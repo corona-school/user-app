@@ -31,12 +31,20 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
 
     const disableGroup: boolean = useMemo(() => {
         if (!data) return true;
+        if (userType === 'screener') return true;
         if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
         return false;
     }, [data, userType]);
 
+    const disableChat: boolean = useMemo(() => {
+        if (!data) return true;
+        if (userType === 'screener') return true;
+        return false;
+    }, [userType, data]);
+
     const disableMatching: boolean = useMemo(() => {
         if (!data) return true;
+        if (userType === 'screener') return true;
         if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
         return false;
     }, [data, userType]);
@@ -45,7 +53,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
 
     return (
         (show && (
-            <View w="240" h="100vh">
+            <View w="240" h="100dvh">
                 <VStack
                     paddingTop={paddingTop}
                     position="fixed"
@@ -62,7 +70,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                     bottom="0"
                 >
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                        const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup);
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
                         return (
                             <Pressable

@@ -82,7 +82,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
 
     return (
         <>
-            <Flex overflowY={'auto'} height="100vh">
+            <Flex overflowY={'auto'} height="100dvh">
                 <>
                     {layout === 'new-pw' ? (
                         <Box paddingY={space['2']} justifyContent="center" alignItems="center">

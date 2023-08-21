@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import FloatinActionButton from '../widgets/FloatingActionButton';
+import FloatingActionButton from '../widgets/FloatingActionButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
@@ -82,17 +82,13 @@ const Appointments: React.FC = () => {
     });
 
     const appointments = myAppointments?.me?.appointments ?? [];
-    const publishedAppointments = appointments.filter((appointment) => {
-        const { subcourse } = appointment;
-        if (subcourse) return subcourse.published;
-        return true;
-    });
+
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         await fetchMore({
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
-                const prevAppointments = previousAppointments?.me?.appointments ?? [];
+                const prevAppointments = appointments;
                 if (scrollDirection === 'next') {
                     if (!newAppointments || newAppointments.length === 0) {
                         setNoNewAppointments(true);
@@ -133,7 +129,7 @@ const Appointments: React.FC = () => {
                 }
             >
                 {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}
-                {userType === 'student' && <FloatinActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
+                {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
                 {!isLoadingHasAppointments && !hasAppointments?.me.hasAppointments && (
                     <Box h={500} justifyContent="center">
@@ -143,7 +139,7 @@ const Appointments: React.FC = () => {
 
                 {!error && hasAppointments?.me.hasAppointments && (
                     <AppointmentList
-                        appointments={publishedAppointments as Appointment[]}
+                        appointments={appointments as Appointment[]}
                         isLoadingAppointments={loadingMyAppointments}
                         isReadOnlyList={false}
                         loadMoreAppointments={loadMoreAppointments}

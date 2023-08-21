@@ -84,7 +84,7 @@ const GET_MATCH_APPOINTMENTS = gql`
 `;
 
 const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setAppointmentsTotal }) => {
-    const { data, loading, error } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
+    const { data, loading, error, refetch } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -102,6 +102,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
 
     useEffect(() => {
         setAppointmentsTotal(appointments.length);
+        refetch();
     });
 
     return (

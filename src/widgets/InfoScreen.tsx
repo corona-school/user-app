@@ -48,7 +48,7 @@ const InfoScreen: React.FC<Props> = ({
     });
 
     return (
-        <View width="100vw" height="100vh" alignContent="center" justifyContent="center" backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
+        <View width="100vw" height="100dvh" alignContent="center" justifyContent="center" backgroundColor={variant === 'dark' ? 'primary.900' : 'white'}>
             <VStack>
                 <Row maxWidth={ContentContainerWidth} marginX="auto" flexDirection="column" paddingY={space['4']} justifyContent="center" alignItems="center">
                     {icon && (

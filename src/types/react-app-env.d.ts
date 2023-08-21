@@ -32,6 +32,11 @@ declare interface Window {
         readonly RUNTIME_WEBSOCKET_URL: string;
         readonly RUNTIME_DISABLE_MATOMO?: 'true' | 'false';
         readonly RUNTIME_DEACTIVATE_PUPIL_MATCH_REQUESTS?: 'true' | 'false';
+        readonly RUNTIME_APP_VERSION: string;
+        readonly RUNTIME_DD_APP_ID: string;
+        readonly RUNTIME_DD_CLIENT_TOKEN: string;
+        readonly RUNTIME_DD_ENV: string;
+        readonly RUNTIME_TALKJS_APP_ID: string;
     };
 }
 

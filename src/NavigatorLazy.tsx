@@ -61,6 +61,7 @@ import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import Chat from './pages/Chat';
 import ZoomMeeting from './components/ZoomMeeting';
+import { ScreeningDashboard } from './pages/screening/Dashboard';
 
 export default function NavigatorLazy() {
     return (
@@ -79,7 +80,7 @@ export default function NavigatorLazy() {
                 path="/start"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<DashboardStudent />} />
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<DashboardStudent />} screenerComponent={<ScreeningDashboard />} />
                     </RequireAuth>
                 }
             />

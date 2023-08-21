@@ -1,0 +1,19 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading } from 'native-base';
+import { LanguageTag, LanguageTagList } from './LanguageTag';
+
+<Meta title="Basic/LanguageTag" component={LanguageTag} />
+
+# LanguageTag
+
+The LanguageTag is used to show a language of a user with some icon next to it.
+
+<Story name="LanguageTag">
+    <LanguageTag language="Deutsch" />
+</Story>
+
+There is also a convenience wrapper to show a list of languages:
+
+<Story name="LanguageTagList">
+    <LanguageTagList languages={['Deutsch', 'Italienisch']} />
+</Story>

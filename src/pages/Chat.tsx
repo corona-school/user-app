@@ -11,10 +11,9 @@ import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import ContactSupportModal from '../modals/ContactSupportModal';
+import ContactSupportModal, { ReportInfos } from '../modals/ContactSupportModal';
 import { MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
-import { ReportInfos } from '../components/ContactSupportForm';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
@@ -110,7 +109,7 @@ const Chat: React.FC = () => {
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
-                <Box h="90%" pl={isMobile ? 2 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                <Box h="90%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </Modal>
