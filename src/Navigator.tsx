@@ -14,6 +14,11 @@ import { lazyWithRetry } from './lazy';
 // All other pages load lazy:
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
 
+// This component only exists to reliably test our support process:
+function CrashMe() {
+    return ({} as any).very.stupid;
+}
+
 export default function Navigator() {
     return (
         <>
@@ -40,6 +45,10 @@ export default function Navigator() {
                         </Suspense>
                     }
                 />
+
+                <Route path="/crash-me">
+                    <CrashMe />
+                </Route>
             </Routes>
             <FullPageModal />
         </>
