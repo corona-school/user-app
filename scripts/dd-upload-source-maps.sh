@@ -13,13 +13,13 @@ if [ "$env" == "dev" ]; then
 	exit 0
 fi
 
-pathPrefix="http://localhost:3000"
+paths=()
 case "$env" in
     "staging")
-				pathPrefix="https://lernfair-user-app-dev.herokuapp.com"
+				paths=("https://lernfair-user-app-dev.herokuapp.com")
         ;;
     "production")
-				pathPrefix="https://app.lern-fair.de"
+				paths=("https://app.lern-fair.de" "https://my.lern-fair.de" "https://my.corona-school.de")
         ;;
 		*)
 				echo "Invalid env: $env; Should be one of staging, production"
@@ -27,5 +27,7 @@ case "$env" in
 				;;
 esac
 
-echo "Running upload: env: $env, serviceName: $serviceName, appVersion: $appVersion, pathPrefix: $pathPrefix"
-./node_modules/.bin/datadog-ci sourcemaps upload ./build --service $serviceName --release-version $appVersion --minified-path-prefix $pathPrefix --repository-url https://github.com/corona-school/user-app --disable-git
+for path in "${paths[@]}"; do
+	echo "Running upload: env: $env, serviceName: $serviceName, appVersion: $appVersion, path: $path"
+	./node_modules/.bin/datadog-ci sourcemaps upload ./build --service $serviceName --release-version $appVersion --minified-path-prefix $path --repository-url https://github.com/corona-school/user-app --disable-git
+done
