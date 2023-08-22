@@ -1,6 +1,6 @@
 import { Divider, FormControl, HStack, IconButton, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import AppointmentDate from '../../widgets/appointment/AppointmentDate';
+import AppointmentDate from '../../widgets/AppointmentDate';
 import InputSuffix from '../../widgets/InputSuffix';
 import RemoveIcon from '../../assets/icons/lernfair/remove_circle_outline.svg';
 import { useWeeklyAppointments } from '../../context/AppointmentContext';

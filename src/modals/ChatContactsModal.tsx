@@ -1,5 +1,5 @@
 import { Modal } from 'native-base';
-import ContactList from '../components/chat/ContactList';
+import ContactList from '../widgets/ContactList';
 import { useTranslation } from 'react-i18next';
 
 type ModalProps = {
