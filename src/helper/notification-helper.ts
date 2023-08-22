@@ -119,7 +119,7 @@ const getAllPreferencesInCategorySetToValue = (
     return newPreferences;
 };
 
-const getPreferencesCopy = (preferences: NotificationPreferences): NotificationPreferences => JSON.parse(JSON.stringify(preferences));
+const getPreferencesCopy = (preferences: NotificationPreferences): NotificationPreferences => preferences;
 
 const isMessageValid = (message: NotificationMessage | null | undefined): boolean => {
     if (!message) return false;
