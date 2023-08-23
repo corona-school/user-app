@@ -41,8 +41,7 @@ const useUserPreferences = () => {
 
     useEffect(() => {
         if (!loading && !error && data?.me?.notificationPreferences) {
-            const userPreferences = data?.me?.notificationPreferences;
-            const preferences = userPreferences;
+            const preferences = data?.me?.notificationPreferences;
             setUserPreferencesPrivate(preferences);
         }
     }, [loading, error, data?.me?.notificationPreferences]);
