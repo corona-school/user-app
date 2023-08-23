@@ -12,11 +12,12 @@ import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import ContactSupportModal, { ReportInfos } from '../modals/ContactSupportModal';
-import { MessageActionEvent } from 'talkjs/all';
+import { Inbox, MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
+    const inboxObject = useRef<null | Inbox>(null);
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
@@ -59,6 +60,13 @@ const Chat: React.FC = () => {
         setIsContactModalOpen(false);
     };
 
+    const handleBack = () => {
+        if (!inboxObject.current) {
+            return;
+        }
+        inboxObject.current.select(null);
+    };
+
     const handleContactSupport = (event: MessageActionEvent) => {
         const { id, body, sender, senderId, type, timestamp, conversation } = event.message;
         const sentAt = DateTime.fromMillis(timestamp).toISO();
@@ -86,7 +94,7 @@ const Chat: React.FC = () => {
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
         inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
-
+        inboxObject.current = inbox;
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
                 if (conversation) return setIsConversationSelected(true);
@@ -106,6 +114,7 @@ const Chat: React.FC = () => {
                     </Stack>
                 }
                 showBack={isMobile && isConverstationSelected}
+                onBack={() => handleBack()}
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
