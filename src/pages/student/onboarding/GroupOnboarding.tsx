@@ -6,7 +6,7 @@ import OnboardingCard from '../../../widgets/OnboardingCard';
 import IconGroup from '../../../assets/icons/Icon_Gruppe.svg';
 import LFImageGroupOnboarding from '../../../assets/images/course/group-onboarding.png';
 import LFImageGroupHorizontal from '../../../assets/images/course/group-onboarding-horizontal.png';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { gql } from './../../../gql';
 import GroupRequestedInfos from './GroupRequestedInfos';
 import GroupOnboardingInfos from './GroupOnboardingInfos';
@@ -15,6 +15,7 @@ import AsNavigationItem from '../../../components/AsNavigationItem';
 import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
+import { useUser } from '../../../hooks/useApollo';
 
 type OnboardingProps = {
     // if student was screened, he can request role of TUTOR, if not screened, button does not appear
@@ -25,21 +26,11 @@ type OnboardingProps = {
     refetch?: () => void;
 };
 
-const query = gql(`
-query GetMeData {
-    me { 
-        email
-        firstname
-        lastname
-    }
-}
-`);
-
 const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitForSupport = false, loading, refetch }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { data } = useQuery(query);
+    const user = useUser();
 
     const [contactSupport] = useMutation(
         gql(`
@@ -70,11 +61,11 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
     const student_url =
         process.env.REACT_APP_SCREENING_URL +
         '?first_name=' +
-        encodeURIComponent(data?.me?.firstname ?? '') +
+        encodeURIComponent(user.firstname ?? '') +
         '&last_name=' +
-        encodeURIComponent(data?.me?.lastname ?? '') +
+        encodeURIComponent(user.lastname ?? '') +
         '&email=' +
-        encodeURIComponent(data?.me?.email ?? '');
+        encodeURIComponent(user.email ?? '');
 
     return (
         <AsNavigationItem path="group">

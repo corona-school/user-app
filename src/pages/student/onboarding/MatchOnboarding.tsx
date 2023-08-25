@@ -7,13 +7,14 @@ import MatchIcon from '../../../assets/icons/Icon_Einzel.svg';
 import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
 import OneToOneMobileImage from '../../../assets/images/matching/1-1-onboarding-mobile.png';
 import i18next from 'i18next';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { gql } from './../../../gql';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import WithNavigation from '../../../components/WithNavigation';
 import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
+import { useUser } from '../../../hooks/useApollo';
 
 const matchTexts: string[] = [
     i18next.t('introduction.matchDescription.first'),
@@ -31,22 +32,12 @@ type MatchProps = {
     refetch?: () => void;
 };
 
-const query = gql(`
-query GetMeData {
-    me { 
-        email
-        firstname
-        lastname
-    }
-}
-`);
-
 const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false, loading, refetch }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { data } = useQuery(query);
+    const user = useUser();
 
     const matchBulletPoints: React.FC = () => {
         return (
@@ -94,11 +85,11 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     const student_url =
         process.env.REACT_APP_SCREENING_URL +
         '?first_name=' +
-        encodeURIComponent(data?.me?.firstname ?? '') +
+        encodeURIComponent(user.firstname ?? '') +
         '&last_name=' +
-        encodeURIComponent(data?.me?.lastname ?? '') +
+        encodeURIComponent(user.lastname ?? '') +
         '&email=' +
-        encodeURIComponent(data?.me?.email ?? '');
+        encodeURIComponent(user.email ?? '');
 
     return (
         <AsNavigationItem path="matching">
