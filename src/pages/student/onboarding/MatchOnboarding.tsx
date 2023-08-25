@@ -7,7 +7,7 @@ import MatchIcon from '../../../assets/icons/Icon_Einzel.svg';
 import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
 import OneToOneMobileImage from '../../../assets/images/matching/1-1-onboarding-mobile.png';
 import i18next from 'i18next';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../../../gql';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import WithNavigation from '../../../components/WithNavigation';
@@ -31,11 +31,22 @@ type MatchProps = {
     refetch?: () => void;
 };
 
+const query = gql(`
+query GetMeData {
+    me { 
+        email
+        firstname
+        lastname
+    }
+}
+`);
+
 const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupport = false, loading, refetch }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { data } = useQuery(query);
 
     const matchBulletPoints: React.FC = () => {
         return (
@@ -80,6 +91,15 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
         }
     }, [becomeTutor, contactSupport, t, toast]);
 
+    const student_url =
+        process.env.REACT_APP_SCREENING_URL +
+        '?first_name=' +
+        encodeURIComponent(data?.me?.firstname ?? '') +
+        '&last_name=' +
+        encodeURIComponent(data?.me?.lastname ?? '') +
+        '&email=' +
+        encodeURIComponent(data?.me?.email ?? '');
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
@@ -99,7 +119,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                             requestButtonText={t('introduction.becomeTutor')}
                             bannerHeadline={t('introduction.banner.tutorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
+                            onTalkToTeam={() => window.open(student_url, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
                         />
                     </Box>

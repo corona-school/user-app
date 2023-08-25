@@ -6,7 +6,7 @@ import OnboardingCard from '../../../widgets/OnboardingCard';
 import IconGroup from '../../../assets/icons/Icon_Gruppe.svg';
 import LFImageGroupOnboarding from '../../../assets/images/course/group-onboarding.png';
 import LFImageGroupHorizontal from '../../../assets/images/course/group-onboarding-horizontal.png';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../../../gql';
 import GroupRequestedInfos from './GroupRequestedInfos';
 import GroupOnboardingInfos from './GroupOnboardingInfos';
@@ -25,10 +25,21 @@ type OnboardingProps = {
     refetch?: () => void;
 };
 
+const query = gql(`
+query GetMeData {
+    me { 
+        email
+        firstname
+        lastname
+    }
+}
+`);
+
 const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitForSupport = false, loading, refetch }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { data } = useQuery(query);
 
     const [contactSupport] = useMutation(
         gql(`
@@ -56,6 +67,15 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
         }
     }, [becomeInstructor, contactSupport, t, toast]);
 
+    const student_url =
+        process.env.REACT_APP_SCREENING_URL +
+        '?first_name=' +
+        encodeURIComponent(data?.me?.firstname ?? '') +
+        '&last_name=' +
+        encodeURIComponent(data?.me?.lastname ?? '') +
+        '&email=' +
+        encodeURIComponent(data?.me?.email ?? '');
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
@@ -75,7 +95,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                             requestButtonText={t('introduction.becomeAnInstructor')}
                             bannerHeadline={t('introduction.banner.instuctorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
+                            onTalkToTeam={() => window.open(student_url, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/gruppenkurse', '_blank')}
                         />
                     </Box>
