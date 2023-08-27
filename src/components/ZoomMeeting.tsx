@@ -6,6 +6,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useEffect } from 'react';
 import { ZOOM_MEETING_SDK_KEY } from '../config';
 import { useQuery } from '@apollo/client';
+import { log } from '../log';
 
 enum ZoomMeetingRole {
     Host = 1,
@@ -134,7 +135,7 @@ const ZoomMeeting: React.FC = () => {
                     userName: credentials.userName || '',
                     userEmail: credentials.userEmail,
                     zak: credentials.zak,
-                    success: () => console.log('User joined Zoom meeting successfully'),
+                    success: () => log('Zoom', 'User joined Zoom meeting successfully'),
                     error: (error: Error) => undefined,
                 });
             },
