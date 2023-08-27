@@ -353,7 +353,7 @@ const CreateCourse: React.FC = () => {
     }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
 
     useEffect(() => {
-        if (prefillCourseId !== null) queryCourse();
+        if (prefillCourseId != null) queryCourse();
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
@@ -796,7 +796,7 @@ const CreateCourse: React.FC = () => {
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
-            if (prefillCourseId === null) {
+            if (!prefillCourseId) {
                 if (addedInstructors.findIndex((i) => i.id === instructor.id) === -1) {
                     setAddedInstructors((prev) => [...prev, instructor]);
                 }
