@@ -86,7 +86,7 @@ const Filter: React.FC = () => {
                     <Text>Bei Fragen kannst du dich gerne jederzeit bei uns melden.</Text>
 
                     <NextPrevButtons
-                        altPrevText="Zu Edu-Cloud"
+                        altPrevText="Zur Edu-Cloud"
                         altNextText="Zu den Gruppen-Kursen"
                         onPressPrev={() => window.open('https://edu-cloud.org', '_blank')}
                         onPressNext={() => navigate('/group')}

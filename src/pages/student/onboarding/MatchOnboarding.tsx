@@ -14,6 +14,7 @@ import WithNavigation from '../../../components/WithNavigation';
 import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
+import { useUser } from '../../../hooks/useApollo';
 
 const matchTexts: string[] = [
     i18next.t('introduction.matchDescription.first'),
@@ -36,6 +37,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const user = useUser();
 
     const matchBulletPoints: React.FC = () => {
         return (
@@ -80,6 +82,15 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
         }
     }, [becomeTutor, contactSupport, t, toast]);
 
+    const student_url =
+        process.env.REACT_APP_SCREENING_URL +
+        '?first_name=' +
+        encodeURIComponent(user.firstname ?? '') +
+        '&last_name=' +
+        encodeURIComponent(user.lastname ?? '') +
+        '&email=' +
+        encodeURIComponent(user.email ?? '');
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
@@ -99,7 +110,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                             requestButtonText={t('introduction.becomeTutor')}
                             bannerHeadline={t('introduction.banner.tutorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
+                            onTalkToTeam={() => window.open(student_url, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/now', '_blank')}
                         />
                     </Box>
