@@ -46,9 +46,7 @@ export default function Navigator() {
                     }
                 />
 
-                <Route path="/crash-me">
-                    <CrashMe />
-                </Route>
+                <Route path="/crash-me" element={<CrashMe />} />
             </Routes>
             <FullPageModal />
         </>
