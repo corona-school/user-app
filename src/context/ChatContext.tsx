@@ -73,7 +73,19 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }, []);
 
     useEffect(() => {
-        if (sessionState !== 'logged-in' || !userId || !user || user.screener) return;
+        // TalkJS is enabled by config:
+        if (!TALKJS_APP_ID) return;
+
+        // Wait for the User to be logged in and the User information is determined:
+        if (sessionState !== 'logged-in' || !userId || !user) return;
+        // Screeners are currently excluded from the Chat:
+        if (user.screener) return;
+
+        // Wait for TalkJS to be loaded:
+        if (!talkLoaded) return;
+
+        // Wait for the User's Chat Signature to be fetched from the Backend:
+        if (loading) return;
 
         const me = {
             id: userIdToTalkJsId(userId),
@@ -82,18 +94,16 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             email: user?.email,
         };
 
-        if (talkLoaded && !loading && TALKJS_APP_ID) {
-            const currentUser = new Talk.User(me);
+        const currentUser = new Talk.User(me);
 
-            const session = new Talk.Session({
-                appId: TALKJS_APP_ID,
-                me: currentUser,
-                signature: myChatSignature,
-            });
-            setSession(session);
-            return () => session.destroy();
-        }
-    }, [talkLoaded, loading, sessionState, myChatSignature]);
+        const session = new Talk.Session({
+            appId: TALKJS_APP_ID,
+            me: currentUser,
+            signature: myChatSignature,
+        });
+        setSession(session);
+        return () => session.destroy();
+    }, [user, userId, talkLoaded, loading, sessionState, myChatSignature]);
 
     useEffect(() => {
         if (!session) return;
