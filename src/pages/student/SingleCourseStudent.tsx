@@ -70,7 +70,6 @@ const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
-        conversationId
         allowChatContactProspects
         allowChatContactParticipants
         groupChatType
@@ -136,6 +135,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
 const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
+        conversationId
         alreadyPromoted
         pupilsWaitingCount
         pupilsOnWaitinglist {
