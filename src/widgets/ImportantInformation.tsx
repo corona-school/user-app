@@ -181,8 +181,17 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             student?.canRequestMatch?.reason === 'not-screened' ||
             student?.canCreateCourse?.reason === 'not-screened' ||
             (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
-        )
-            infos.push({ label: 'kennenlernen', btnfn: [() => window.open(process.env.REACT_APP_SCREENING_URL)], lang: {} });
+        ) {
+            const student_url =
+                process.env.REACT_APP_SCREENING_URL +
+                '?first_name=' +
+                encodeURIComponent(data?.me?.firstname ?? '') +
+                '&last_name=' +
+                encodeURIComponent(data?.me?.lastname ?? '') +
+                '&email=' +
+                encodeURIComponent(email ?? '');
+            infos.push({ label: 'kennenlernen', btnfn: [() => window.open(student_url)], lang: {} });
+        }
 
         // -------- Pupil Screening --------
         if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {

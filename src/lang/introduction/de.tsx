@@ -5,7 +5,7 @@ const introduction = {
     imageMatchText: 'Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.',
     becomeAnInstructor: 'Jetzt Kursleiter:in werden',
     becomeTutor: 'Jetzt Tutor:in werden',
-    talkWithTeam: 'Beratungstermin vereinbaren',
+    talkWithTeam: 'Kennenlerngespräch vereinbaren',
     moreInfos: 'Mehr Informationen',
     courseTypes: {
         groupCourses: 'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an:',
@@ -22,7 +22,7 @@ const introduction = {
         desc: 'Wir freuen uns, dass du Interesse daran hast dich weiter bei Lern-Fair einzubringen. Da du bereits ein Kennenlerngespräch mit uns geführt hast, kennst du dich bestens aus. Wir melden uns schnellsmöglich per E-Mail bei dir sobald wir die zusätzliche Rolle für dich freigeschaltet haben.',
     },
     matchDescription: {
-        first: 'Gemeinsam bestimmst ihr Themen und Inhalte',
+        first: 'Gemeinsam bestimmt ihr Themen und Inhalte',
         second: 'Du bestimmst den Zeitpunkt der Nachhilfe',
         third: 'Ihr trefft euch einmal die Woche, über einen Zeitraum, den ihr gemeinsam festgelegt habt',
         fourth: 'Du bist gut in Mathe, Deutsch oder Englisch? Super, denn diese Nachhilfelehrer:innen werden besonders dringend gebraucht!',
