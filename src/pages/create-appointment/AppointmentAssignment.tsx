@@ -8,8 +8,8 @@ import { LFSubCourse } from '../../types/lernfair/Course';
 import { getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import GroupTile from '../../widgets/appointment/create-appointment/GroupTile';
-import MatchTile from '../../widgets/appointment/create-appointment/MatchTile';
+import GroupTile from '../../widgets/GroupTile';
+import MatchTile from '../../widgets/MatchTile';
 
 type AssignmentProps = {
     next: (id: number, isCourse?: boolean) => void;

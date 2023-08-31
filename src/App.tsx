@@ -10,22 +10,11 @@ import './web/scss/index.scss';
 import { LFModalProvider } from './hooks/useModal';
 import { LernfairProvider } from './hooks/useLernfair';
 import { IssueReporter } from './IssueReporter';
-import { NotificationsProvider } from './components/NotificationsProvider';
+import { NotificationsProvider } from './context/NotificationsProvider';
 import { ToastNotifications } from './components/ToastNotifications';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';
-import { log } from './log';
-import { useEffect } from 'react';
-
-function LogRouting() {
-    const location = useLocation();
-
-    useEffect(() => {
-        log('Routing', location.pathname);
-    }, [location]);
-
-    return null;
-}
+import { LFChatProvider } from './context/ChatContext';
 
 function App() {
     return (
@@ -34,13 +23,14 @@ function App() {
                 <LFModalProvider>
                     <LFApolloProvider>
                         <BrowserRouter>
-                            <LogRouting />
                             <NativeBaseProvider theme={Theme}>
                                 <IssueReporter>
                                     <MatomoProvider value={matomo}>
                                         <NotificationsProvider>
-                                            <Navigator />
-                                            <ToastNotifications />
+                                            <LFChatProvider>
+                                                <Navigator />
+                                                <ToastNotifications />
+                                            </LFChatProvider>
                                         </NotificationsProvider>
                                     </MatomoProvider>
                                 </IssueReporter>

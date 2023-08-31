@@ -4,7 +4,7 @@ import { Box, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs, { Tab } from '../../components/Tabs';
@@ -13,23 +13,33 @@ import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
-import Banner from '../../widgets/Banner';
+import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
+import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 
-function Participants({ subcourseId }: { subcourseId: number }) {
+function Participants({
+    subcourseId,
+    contactParticipant,
+    isInstructor,
+}: {
+    subcourseId: number;
+    contactParticipant: (participantId: string) => void;
+    isInstructor: boolean;
+}) {
     const { t } = useTranslation();
     const { data, loading } = useQuery(
         gql(`
         query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
                 participants {
+                    id
                     firstname
                     lastname
                     schooltype
@@ -50,7 +60,7 @@ function Participants({ subcourseId }: { subcourseId: number }) {
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} />
+                <ParticipantRow participant={participant} isInstructor={isInstructor} contactParticipant={contactParticipant} />
             ))}
         </>
     );
@@ -60,6 +70,9 @@ const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
+        allowChatContactProspects
+        allowChatContactParticipants
+        groupChatType
         participantsCount
         maxParticipants
         minGrade
@@ -96,6 +109,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
         }
         appointments {
               id
+              appointmentType
               title
               description
               start
@@ -121,6 +135,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
 const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
+        conversationId
         alreadyPromoted
         pupilsWaitingCount
         pupilsOnWaitinglist {
@@ -152,6 +167,7 @@ const SingleCourseStudent = () => {
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
@@ -187,7 +203,19 @@ const SingleCourseStudent = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
     const appointments = subcourse?.appointments ?? [];
-    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
+    const myNextAppointment = useMemo(() => {
+        const now = DateTime.now();
+        const next = appointments.find((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
+
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 30 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+
+            return isWithinTimeFrame;
+        });
+
+        return next;
+    }, [appointments]);
 
     const [publish] = useMutation(
         gql(`
@@ -219,6 +247,14 @@ const SingleCourseStudent = () => {
         refetchBasics();
     }, []);
 
+    const [contactParticipant] = useMutation(
+        gql(`
+            mutation contactCourseParticipant($memberUserId: String!, $subcourseId: Float!) {
+                participantChatCreate(memberUserId: $memberUserId, subcourseId: $subcourseId)
+            }
+        `)
+    );
+
     const [cancelSubcourse, { data: canceldData }] = useMutation(
         gql(`mutation CancelSubcourse($subcourseId: Float!) {
         subcourseCancel(subcourseId: $subcourseId)
@@ -236,16 +272,21 @@ const SingleCourseStudent = () => {
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),
-            content: (
-                <Box minH={300}>
-                    <AppointmentList
-                        isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
-                        disableScroll={true}
-                        appointments={appointments as Appointment[]}
-                        noOldAppointments
-                    />
-                </Box>
-            ),
+            content:
+                appointments.length > 0 ? (
+                    <Box minH={300}>
+                        <AppointmentList
+                            isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                            disableScroll
+                            appointments={appointments as Appointment[]}
+                            noOldAppointments
+                        />
+                    </Box>
+                ) : (
+                    <Box h={500} justifyContent="center">
+                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                    </Box>
+                ),
         },
         {
             title: t('single.tabs.description'),
@@ -265,7 +306,11 @@ const SingleCourseStudent = () => {
             badge: subcourse?.participantsCount,
             content: (
                 <>
-                    <Participants subcourseId={subcourseId} />
+                    <Participants
+                        subcourseId={subcourseId}
+                        isInstructor={subcourse.isInstructor}
+                        contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
+                    />
                 </>
             ),
         });
@@ -338,10 +383,17 @@ const SingleCourseStudent = () => {
                 return () => submitCourse();
             case Course_Coursestate_Enum.Allowed:
                 return () => doPublish();
+            case Course_Coursestate_Enum.Denied:
+                return () => navigate('/hilfebereich', { state: { tabID: 2 } });
             default:
                 return () => submitCourse();
         }
     }, [course?.courseState, doPublish, submitCourse]);
+
+    const doContactParticipant = async (memberUserId: string) => {
+        const conversation = await contactParticipant({ variables: { memberUserId: memberUserId, subcourseId: subcourseId } });
+        navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+    };
 
     return (
         <WithNavigation

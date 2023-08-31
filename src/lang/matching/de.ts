@@ -31,8 +31,8 @@ const matching = {
             'Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.',
         headlineContent: 'Wichtig',
         contentBox1: 'Es kommt bei der Lernunterstützung zu',
-        contentBox2: 'langen Wartezeiten von 3-6 Monaten.',
-        contentBox3: 'Schau dir daher auch unsere Gruppen-Kurse an.',
+        contentBox2: 'längeren Wartezeiten.',
+        contentBox3: 'Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.',
         button: 'Unterstützung anfragen',
         ctaCardHeader: 'Gruppen-Kurse',
         ctaCardContent: 'Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…',
@@ -210,6 +210,12 @@ const matching = {
         signatureYour: 'Deine Unterschrift',
         success: 'Zertifikat bestätigt',
         successInfo: 'Vielen Dank, dass du uns unterstützt, die Arbeit unserer Helfer:innen zu würdigen.',
+    },
+    adHocMeeting: {
+        title: 'Sofortbesprechung starten',
+        infoText:
+            'Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.',
+        startMeeting: 'Besprechung starten',
     },
 };
 

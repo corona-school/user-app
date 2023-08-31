@@ -7,7 +7,7 @@ type VideoButtonProps = {
     isInstructor?: boolean;
     appointmentId: number;
     appointmentType: Lecture_Appointmenttype_Enum;
-    canStartMeeting?: boolean;
+    canJoinMeeting: boolean;
     width?: number;
     buttonText?: string;
     isOver?: boolean;
@@ -15,7 +15,7 @@ type VideoButtonProps = {
 
 const VideoButton: React.FC<VideoButtonProps> = ({
     isInstructor = false,
-    canStartMeeting,
+    canJoinMeeting,
     appointmentId,
     appointmentType,
     width,
@@ -27,11 +27,11 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 
     return (
         <>
-            <Tooltip maxW={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')} isDisabled={canStartMeeting || isOver}>
+            <Tooltip maxW={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')} isDisabled={canJoinMeeting || isOver}>
                 <Button
                     width={width ?? width}
                     onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}
-                    isDisabled={!canStartMeeting || isOver}
+                    isDisabled={!canJoinMeeting || isOver}
                 >
                     {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
                 </Button>

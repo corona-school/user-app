@@ -2,7 +2,7 @@ import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base'
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
-import MetaDetails from './MetaDetails';
+import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
@@ -13,7 +13,8 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { singleMatchQuery } from '../../pages/SingleMatch';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -47,10 +48,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         mutation cancelAppointment($appointmentId: Float!) {
             appointmentCancel(appointmentId: $appointmentId)
         }
-    `),
-        {
-            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
-        }
+    `)
     );
 
     const [declineAppointment] = useMutation(
@@ -60,7 +58,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         }
     `),
         {
-            refetchQueries: [{ query: singleMatchQuery, variables: { matchId: matchId } }],
+            refetchQueries: [{ query: PUPIL_APPOINTMENT, variables: { appointmentId: appointment.id } }],
         }
     );
 
@@ -102,6 +100,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
         declineAppointment({ variables: { appointmentId: appointment.id } });
+        setShowDeclineModal(false);
     }, []);
 
     const attendees = useMemo(() => {
@@ -113,6 +112,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return end < DateTime.now();
     }, []);
 
+    const isLastAppointment = useMemo(
+        () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        [appointment.total]
+    );
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -123,13 +126,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
             </Modal>
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
-                <Header
-                    organizers={appointment.organizers}
-                    appointmentTitle={appointment.title}
-                    displayName={appointment.displayName}
-                    position={appointment.position}
-                />
-                <MetaDetails
+                <Header appointmentTitle={appointment.title} displayName={appointment.displayName} position={appointment.position} />
+                <AppointmentMetaDetails
                     date={date}
                     startTime={startTime}
                     endTime={endTime}
@@ -144,7 +142,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
-                    isSubcoursePublished={appointment.subcourse?.published}
                 />
                 <Description description={appointment.description} />
 
@@ -155,6 +152,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
                     canEdit={isPastAppointment}
                     isOver={isAppointmentOver}
+                    isLast={isLastAppointment}
                 />
             </Box>
         </>

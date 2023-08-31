@@ -89,6 +89,7 @@ const lernfair = {
             instructor: {
                 'not-instructor': 'Du bist noch nicht als Kursleiter:in registriert.',
                 'not-screened': 'Du bist noch nicht als Kursleiter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.',
+                null: 'Du darfst eigentlich neue Kurse erstellen ... Probier mal dich neu anzumelden ...',
             },
             // from backend/common/courses/participants.ts
             pupil: {

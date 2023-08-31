@@ -40,7 +40,7 @@ const UserType: React.FC = () => {
         show(
             { variant: 'dark' },
             <VStack space={space['1']} p={space['1']} flex="1" alignItems="center" justifyContent="center" marginX="auto" width={ModalContainerWidth}>
-                <Box alignItems="center" marginY={space['4']} overflowY={overflowBar} height="100vh">
+                <Box alignItems="center" marginY={space['4']} overflowY={overflowBar} height="100dvh">
                     <Box marginTop={space['3']} marginBottom={space['1']}>
                         <WarningIcon />
                     </Box>

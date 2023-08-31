@@ -1,0 +1,21 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import Avatars from './Avatars';
+
+<Meta title="Appointment/Details" component={Avatars} />
+
+# Avatars
+
+<Story name="Avatars">
+    <Avatars
+        attendees={[
+            {
+                id: 1,
+                firstname: 'Leon',
+            },
+            {
+                id: 2,
+                firstname: 'Max',
+            },
+        ]}
+    />
+</Story>

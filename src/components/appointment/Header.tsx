@@ -1,10 +1,8 @@
 import { Divider, Heading, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 
 type HeaderProps = {
-    organizers?: Organizer[];
     appointmentTitle: string;
     displayName: Appointment['displayName'];
     position: Appointment['position'];
