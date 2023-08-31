@@ -37,7 +37,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
 
     const canJoin = useMemo(() => {
         if (!appointment) return false;
-        return canJoinMeeting(appointment.start, appointment.duration, 30, DateTime.now());
+        return canJoinMeeting(appointment.start, appointment.duration, 240, DateTime.now());
     }, []);
 
     return (

@@ -73,7 +73,7 @@ const AppointmentDay: React.FC<Props> = ({
         return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
-    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());
     const currentMonth = isCurrentMonth(start);
 
     const width = useBreakpointValue({
