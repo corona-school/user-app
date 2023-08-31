@@ -182,7 +182,7 @@ const Registration: React.FC = () => {
     }, [show, hide, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, space, t]);
 
     return (
-        <Flex alignItems="center" w="100%" h="100vh">
+        <Flex alignItems="center" w="100%" h="100dvh">
             <Box w="100%" position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                 <Image
                     alt="Lernfair"

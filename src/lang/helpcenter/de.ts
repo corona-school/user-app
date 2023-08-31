@@ -45,6 +45,7 @@ const helpcenter = {
     btn: {
         formsubmit: 'Anfrage senden',
     },
+    reportSuccessToast: 'Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft.',
 };
 
 export default helpcenter;

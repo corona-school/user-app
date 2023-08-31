@@ -25,6 +25,7 @@ import { gql } from './../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
+import useApollo from '../../hooks/useApollo';
 
 type Props = {};
 
@@ -145,6 +146,7 @@ const query = gql(`
 `);
 
 const DashboardStudent: React.FC<Props> = () => {
+    const { roles } = useApollo();
     const toast = useToast();
     const { data, loading, called } = useQuery(query);
 
@@ -304,7 +306,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                             <AlertMessage content={t('course.empty.nocourses')} />
                                         )}
                                     </CSSWrapper>
-                                    {data?.me?.student?.canCreateCourse?.allowed ? (
+                                    {roles.includes('INSTRUCTOR') && data?.me?.student?.canCreateCourse?.allowed ? (
                                         <Button
                                             marginTop={space['1']}
                                             width={ButtonContainer}

@@ -37,5 +37,13 @@ const shared = {
     deregistrationTitle: 'Abmeldung',
     moreInfoButton: 'Mehr erfahren',
     delete: 'Löschen',
+    yes: 'Ja',
+    no: 'Nein',
+    not_found: 'Nichts gefunden',
+    pupil: 'Schüler:in',
+    required: 'erforderlich',
+    grade: 'Klasse',
+    since: 'seit',
+    till: 'bis',
 };
 export default shared;

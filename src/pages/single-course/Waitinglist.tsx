@@ -60,7 +60,6 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                 toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
                 refetch();
             } catch (error) {
-                console.log(error);
                 toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
             }
         },

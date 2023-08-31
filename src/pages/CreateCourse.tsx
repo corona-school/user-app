@@ -30,12 +30,17 @@ import FurtherInstructors from './course-creation/FurtherInstructors';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useCreateCourseAppointments } from '../context/AppointmentContext';
 import { AppointmentCreateGroupInput } from '../gql/graphql';
+import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
-import { Appointment } from '../types/lernfair/Appointment';
 import HelpNavigation from '../components/HelpNavigation';
+import useApollo from '../hooks/useApollo';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
+export enum ChatType {
+    NORMAL = 'NORMAL',
+    ANNOUNCEMENT = 'ANNOUNCEMENT',
+}
 
 export type Lecture = {
     id?: string | number;
@@ -61,8 +66,12 @@ type ICreateCourseContext = {
     setMaxParticipantCount?: Dispatch<SetStateAction<string>>;
     joinAfterStart?: boolean;
     setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
-    allowContact?: boolean;
-    setAllowContact?: Dispatch<SetStateAction<boolean>>;
+    allowProspectContact?: boolean;
+    setAllowProspectContact?: Dispatch<SetStateAction<boolean>>;
+    allowParticipantContact?: boolean;
+    setAllowParticipantContact?: Dispatch<SetStateAction<boolean>>;
+    allowChatWritting?: boolean;
+    setAllowChatWritting?: Dispatch<SetStateAction<boolean>>;
     lectures?: LFLecture[];
     setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
     newLectures?: Lecture[];
@@ -79,6 +88,8 @@ type ICreateCourseContext = {
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
 const CreateCourse: React.FC = () => {
+    const { roles } = useApollo();
+
     const toast = useToast();
 
     const location = useLocation();
@@ -94,7 +105,11 @@ const CreateCourse: React.FC = () => {
     const [tags, setTags] = useState<LFTag[]>([]);
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
     const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
-    const [allowContact, setAllowContact] = useState<boolean>(false);
+    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
+    const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
+    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(false);
+    const [lectures, setLectures] = useState<LFLecture[]>([]);
+    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<string>('');
     const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
@@ -145,7 +160,9 @@ const CreateCourse: React.FC = () => {
                     lastname
                 }
                 joinAfterStart
-
+                allowChatContactParticipants
+                allowChatContactProspects
+                groupChatType
                 course {
                     id
                     name
@@ -289,6 +306,7 @@ const CreateCourse: React.FC = () => {
             documentTitle: 'Kurs erstellen',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => setAppointmentsToBeCreated([]);
     }, []);
 
     const ContentContainerWidth = useBreakpointValue({
@@ -314,7 +332,9 @@ const CreateCourse: React.FC = () => {
         setDescription(prefillCourse.course.description);
         setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowContact(!!prefillCourse.course.allowContact);
+        setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
+        setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
+        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
         setIsPublished(prefillCourse.published ?? false);
         setCourseAppointments(prefillCourse.appointments ?? []);
@@ -333,7 +353,7 @@ const CreateCourse: React.FC = () => {
     }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
 
     useEffect(() => {
-        if (prefillCourseId !== null) queryCourse();
+        if (prefillCourseId != null) queryCourse();
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
@@ -366,10 +386,10 @@ const CreateCourse: React.FC = () => {
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
-            allowContact,
+            allowContact: false,
             ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [allowContact, courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
+        [courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -379,15 +399,21 @@ const CreateCourse: React.FC = () => {
             maxParticipants: number;
             joinAfterStart: boolean;
             lectures?: LFLecture[];
+            allowChatContactProspects: boolean;
+            allowChatContactParticipants: boolean;
+            groupChatType: ChatType;
         } = {
             minGrade: courseClasses[0],
             maxGrade: courseClasses[1],
             maxParticipants: parseInt(maxParticipantCount),
             joinAfterStart,
+            allowChatContactProspects: allowProspectContact,
+            allowChatContactParticipants: allowParticipantContact,
+            groupChatType: allowChatWriting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
         };
 
         return subcourse;
-    }, [courseClasses, joinAfterStart, maxParticipantCount]);
+    }, [allowChatWriting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
 
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
@@ -493,7 +519,7 @@ const CreateCourse: React.FC = () => {
 
             const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
 
-            // errors === undefined
+            setAppointmentsToBeCreated([]);
             if (appointmentsRes.errors) {
                 errors.push('appointments');
                 await resetAppointments();
@@ -770,7 +796,7 @@ const CreateCourse: React.FC = () => {
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
-            if (prefillCourseId === null) {
+            if (!prefillCourseId) {
                 if (addedInstructors.findIndex((i) => i.id === instructor.id) === -1) {
                     setAddedInstructors((prev) => [...prev, instructor]);
                 }
@@ -849,8 +875,16 @@ const CreateCourse: React.FC = () => {
                         setMaxParticipantCount,
                         joinAfterStart,
                         setJoinAfterStart,
-                        allowContact,
-                        setAllowContact,
+                        allowProspectContact,
+                        setAllowProspectContact,
+                        allowParticipantContact,
+                        setAllowParticipantContact,
+                        allowChatWritting: allowChatWriting,
+                        setAllowChatWritting: setAllowChatWriting,
+                        lectures,
+                        setLectures,
+                        newLectures,
+                        setNewLectures,
                         pickedPhoto,
                         setPickedPhoto,
                         addedInstructors,
@@ -859,7 +893,7 @@ const CreateCourse: React.FC = () => {
                         myself,
                     }}
                 >
-                    {(studentData?.me?.student?.canCreateCourse?.allowed && (
+                    {(roles.includes('INSTRUCTOR') && studentData?.me?.student?.canCreateCourse?.allowed && (
                         <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
                             <InstructionProgress
                                 isDark={false}

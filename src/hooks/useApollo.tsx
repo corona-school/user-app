@@ -35,6 +35,9 @@ interface UserType {
         id: number;
         verifiedAt: Date | null;
     } | null;
+    screener: {
+        id: number;
+    } | null;
 }
 
 export type LFApollo = {
@@ -156,7 +159,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
             nextChain.subscribe(
                 (it) => {
                     if (it.errors?.length) {
-                        const isAuthError = it.errors!.some((it) => it.extensions.code === 'UNAUTHENTICATED');
+                        const isAuthError = it.errors!.some((it) => it.extensions?.code === 'UNAUTHENTICATED');
                         if (isAuthError) {
                             if (!getDeviceToken()) {
                                 log('GraphQL AuthRetry', 'authentication failure, no device token present');
@@ -369,6 +372,7 @@ const useApolloInternal = () => {
             email
             pupil { id verifiedAt }
             student { id verifiedAt }
+            screener { id }
           }
           myRoles
         }
@@ -525,12 +529,14 @@ export const useUserType = () => {
     const { user } = useContext(ExtendedApolloContext)!;
     if (user?.pupil) return 'pupil';
     if (user?.student) return 'student';
+    if (user?.screener) return 'screener';
+
     throw new Error(`useUserType cannot determine user`);
 };
 
 export const useUserAuth = () => {
     const { sessionState, user } = useContext(ExtendedApolloContext)!;
-    return { sessionState, userId: user?.userID };
+    return { sessionState, userId: user?.userID, user: user };
 };
 
 export default useApollo;

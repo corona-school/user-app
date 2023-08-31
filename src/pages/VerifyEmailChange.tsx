@@ -31,7 +31,7 @@ const VerifyEmailChange: React.FC = () => {
     });
 
     return (
-        <Flex overflowY={'auto'} height="100vh">
+        <Flex overflowY={'auto'} height="100dvh">
             <>
                 <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                     <Image

@@ -5,6 +5,8 @@
     "devDependencies": {
         "@apollo/client": "^3.6.9",
         "@babel/core": "^7.16.0",
+        "@datadog/browser-rum": "https://gitpkg.now.sh/corona-school/browser-sdk/packages/rum?lern-fair-packages",
+        "@datadog/datadog-ci": "^2.18.0",
         "@graphql-codegen/cli": "2.15.0",
         "@graphql-codegen/client-preset": "^1.2.1",
         "@jonkoops/matomo-tracker-react": "^0.7.0",
@@ -53,6 +55,7 @@
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
+        "jsrsasign": "^10.8.1",
         "luxon": "^3.0.4",
         "mini-css-extract-plugin": "^2.6.1",
         "native-base": "^3.4.7",
@@ -84,15 +87,18 @@
         "source-map-loader": "^3.0.0",
         "storybook-react-i18next": "^1.1.2",
         "style-loader": "^3.3.1",
+        "talkjs": "^0.15.9",
         "terser-webpack-plugin": "^5.2.5",
         "typescript": "^4.7.4",
         "ua-parser-js": "^1.0.32",
+        "use-file-picker": "^1.5.2",
         "validator": "^13.9.0",
         "web-vitals": "^2.1.4",
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1"
+        "workbox-webpack-plugin": "^6.4.1",
+        "@zoomus/websdk": "2.15.2"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^6.5.14",
@@ -121,7 +127,8 @@
         "linter": "eslint . --ext .tsx",
         "graphql-fetch-schema": "node scripts/fetch-graphql-schema.js",
         "graphql-watch": "graphql-codegen --config config/graphql-codegen.ts --watch",
-        "graphql-build": "graphql-codegen --config config/graphql-codegen.ts"
+        "graphql-build": "graphql-codegen --config config/graphql-codegen.ts",
+        "heroku:release": "./scripts/dd-upload-source-maps.sh"
     },
     "eslintConfig": {
         "extends": [
@@ -197,11 +204,8 @@
         ]
     },
     "dependencies": {
-        "@zoomus/websdk": "^2.14.0",
         "compression": "^1.7.4",
-        "express": "^4.18.2",
-        "jsrsasign": "^10.8.1",
-        "use-file-picker": "^1.5.2"
+        "express": "^4.18.2"
     },
     "pre-commit": [
         "prettier"

@@ -50,17 +50,18 @@ import NotficationControlPanel from './pages/notification/NotficationControlPane
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
 import Appointment from './pages/Appointment';
-import CreateCourseAppointment from './pages/CreateCourseAppointment';
 import EditAppointment from './pages/EditAppointment';
 import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
 import SingleCourseStudent from './pages/student/SingleCourseStudent';
-import LeftVideoChat from './pages/chat/LeftVideoChat';
+import LeftVideoChat from './widgets/LeftVideoChat';
 import ChangeEmail from './pages/ChangeEmail';
 import VerifyEmailChange from './pages/VerifyEmailChange';
 import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
+import Chat from './pages/Chat';
 import ZoomMeeting from './components/ZoomMeeting';
+import { ScreeningDashboard } from './pages/screening/Dashboard';
 
 export default function NavigatorLazy() {
     return (
@@ -79,7 +80,7 @@ export default function NavigatorLazy() {
                 path="/start"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<DashboardStudent />} />
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<DashboardStudent />} screenerComponent={<ScreeningDashboard />} />
                     </RequireAuth>
                 }
             />
@@ -239,15 +240,6 @@ export default function NavigatorLazy() {
                 }
             />
 
-            <Route
-                path="/create-course-appointment"
-                element={
-                    <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CreateCourseAppointment />} />
-                    </RequireAuth>
-                }
-            />
-
             {/* Edit Course */}
             <Route
                 path="/edit-course"
@@ -341,6 +333,16 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                    </RequireAuth>
+                }
+            />
+
+            {/* Chat feature */}
+            <Route
+                path="/chat"
+                element={
+                    <RequireAuth>
+                        <Chat />
                     </RequireAuth>
                 }
             />

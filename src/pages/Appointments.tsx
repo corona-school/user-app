@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import AddAppointmentButton from '../widgets/AddAppointmentButton';
+import FloatingActionButton from '../widgets/FloatingActionButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
@@ -13,7 +13,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
-import AppointmentList from '../widgets/appointment/AppointmentList';
+import AppointmentList from '../widgets/AppointmentList';
 import HelpNavigation from '../components/HelpNavigation';
 
 const getMyAppointments = gql(`
@@ -88,7 +88,7 @@ const Appointments: React.FC = () => {
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
                 const newAppointments = fetchMoreResult?.me?.appointments;
-                const prevAppointments = previousAppointments?.me?.appointments ?? [];
+                const prevAppointments = appointments;
                 if (scrollDirection === 'next') {
                     if (!newAppointments || newAppointments.length === 0) {
                         setNoNewAppointments(true);
@@ -129,7 +129,7 @@ const Appointments: React.FC = () => {
                 }
             >
                 {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}
-                {userType === 'student' && <AddAppointmentButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
+                {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
                 {!isLoadingHasAppointments && !hasAppointments?.me.hasAppointments && (
                     <Box h={500} justifyContent="center">

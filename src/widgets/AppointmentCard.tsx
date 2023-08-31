@@ -37,7 +37,7 @@ import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { canJoinMeeting } from './appointment/AppointmentDay';
+import { canJoinMeeting } from './AppointmentDay';
 
 type Props = {
     appointmentId?: number;
@@ -381,7 +381,6 @@ const AppointmentCard: React.FC<Props> = ({
                             </Stack>
 
                             <Box
-                                flex="1"
                                 maxWidth={ButtonVideoContainer}
                                 marginLeft={ButtonVideoContainerMargin}
                                 alignItems="flex-end"
@@ -402,7 +401,7 @@ const AppointmentCard: React.FC<Props> = ({
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
                                             isInstructor={isOrganizer}
-                                            canStartMeeting={isCurrent}
+                                            canJoinMeeting={isCurrent}
                                         />
                                     </VStack>
                                 )}

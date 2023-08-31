@@ -9,8 +9,6 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
-import { gql } from './../../gql';
-import {} from '../../gql/gql';
 import { Match } from '../../gql/graphql';
 
 import AlertMessage from '../../widgets/AlertMessage';
@@ -18,6 +16,7 @@ import Hello from '../../widgets/Hello';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches from '../match/Matches';
 import HelpNavigation from '../../components/HelpNavigation';
+import { gql } from '../../gql';
 
 type Props = {};
 const query = gql(`
