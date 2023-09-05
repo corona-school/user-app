@@ -21,13 +21,14 @@ export const toTimerString = (refDate: number, compareDate: number) => {
     if (days > 1) return `In ${days} Tagen`;
 
     const tomorrow = new Date(refDate);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const subsequentAbsDate = new Date(refDate + diff * 1000);
-    if (tomorrow.getDate() === subsequentAbsDate.getDate()) {
-        // actual day of the month is one day ahead -> tomorrow
+    tomorrow.setDate(tomorrow.getDate() + 1); // current day of month + 1
+    const compareDateObj = new Date(compareDate);
+    if (tomorrow.getDate() === compareDateObj.getDate()) {
+        // compare days of the month
+        // date of compareDate is on current day of the month + 1
         return `Morgen`;
     } else if (days === 1) {
-        return `Übermorgen`; // date is one full day ahead, but is not the next day of the month
+        return `Übermorgen`; // date is at least 24h ahead, but is not the next day of the month, so it must be the day after tomorrow
     }
 
     return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
