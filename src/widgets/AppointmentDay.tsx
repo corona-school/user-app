@@ -2,10 +2,10 @@ import { DateTime } from 'luxon';
 import { Box, HStack, useBreakpointValue } from 'native-base';
 import { useCallback } from 'react';
 import { getI18n } from 'react-i18next';
-import { AppointmentParticipant, Organizer } from '../../gql/graphql';
+import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
-import { Appointment } from '../../types/lernfair/Appointment';
+import { Appointment } from '../types/lernfair/Appointment';
 
 type Props = {
     start: string;
@@ -73,7 +73,7 @@ const AppointmentDay: React.FC<Props> = ({
         return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
-    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());
     const currentMonth = isCurrentMonth(start);
 
     const width = useBreakpointValue({

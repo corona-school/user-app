@@ -37,7 +37,7 @@ import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
-import { canJoinMeeting } from './appointment/AppointmentDay';
+import { canJoinMeeting } from './AppointmentDay';
 
 type Props = {
     appointmentId?: number;
@@ -151,7 +151,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateFirst && duration ? canJoinMeeting(_dateFirst, duration, isOrganizer ? 30 : 10, DateTime.now()) : false;
+    const isCurrent = _dateFirst && duration ? canJoinMeeting(_dateFirst, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({

@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
 import { Box, HStack, VStack, Text, Pressable, useBreakpointValue, Image, useTheme, Row } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import Tag from '../../../components/Tag';
-import { LFTag, TrafficStatus } from '../../../types/lernfair/Course';
-import CourseTrafficLamp from '../../CourseTrafficLamp';
+import Tag from '../components/Tag';
+import { LFTag, TrafficStatus } from '../types/lernfair/Course';
+import CourseTrafficLamp from './CourseTrafficLamp';
 
 type GroupTileProps = {
     courseId: number;

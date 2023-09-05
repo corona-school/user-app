@@ -13,13 +13,13 @@ import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
-import Banner from '../../widgets/Banner';
+import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-import AppointmentList from '../../widgets/appointment/AppointmentList';
+import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
@@ -70,7 +70,6 @@ const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         id
-        conversationId
         allowChatContactProspects
         allowChatContactParticipants
         groupChatType
@@ -136,6 +135,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
 const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
+        conversationId
         alreadyPromoted
         pupilsWaitingCount
         pupilsOnWaitinglist {

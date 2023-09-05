@@ -34,6 +34,7 @@ import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import HelpNavigation from '../components/HelpNavigation';
+import useApollo from '../hooks/useApollo';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -87,6 +88,8 @@ type ICreateCourseContext = {
 export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
 const CreateCourse: React.FC = () => {
+    const { roles } = useApollo();
+
     const toast = useToast();
 
     const location = useLocation();
@@ -350,7 +353,7 @@ const CreateCourse: React.FC = () => {
     }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
 
     useEffect(() => {
-        if (prefillCourseId !== null) queryCourse();
+        if (prefillCourseId != null) queryCourse();
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
@@ -793,7 +796,7 @@ const CreateCourse: React.FC = () => {
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
-            if (prefillCourseId === null) {
+            if (!prefillCourseId) {
                 if (addedInstructors.findIndex((i) => i.id === instructor.id) === -1) {
                     setAddedInstructors((prev) => [...prev, instructor]);
                 }
@@ -890,7 +893,7 @@ const CreateCourse: React.FC = () => {
                         myself,
                     }}
                 >
-                    {(studentData?.me?.student?.canCreateCourse?.allowed && (
+                    {(roles.includes('INSTRUCTOR') && studentData?.me?.student?.canCreateCourse?.allowed && (
                         <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
                             <InstructionProgress
                                 isDark={false}

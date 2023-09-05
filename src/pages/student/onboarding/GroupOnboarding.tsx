@@ -15,6 +15,7 @@ import AsNavigationItem from '../../../components/AsNavigationItem';
 import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
+import { useUser } from '../../../hooks/useApollo';
 
 type OnboardingProps = {
     // if student was screened, he can request role of TUTOR, if not screened, button does not appear
@@ -29,6 +30,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
     const { t } = useTranslation();
     const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const user = useUser();
 
     const [contactSupport] = useMutation(
         gql(`
@@ -56,6 +58,15 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
         }
     }, [becomeInstructor, contactSupport, t, toast]);
 
+    const student_url =
+        process.env.REACT_APP_SCREENING_URL +
+        '?first_name=' +
+        encodeURIComponent(user.firstname ?? '') +
+        '&last_name=' +
+        encodeURIComponent(user.lastname ?? '') +
+        '&email=' +
+        encodeURIComponent(user.email ?? '');
+
     return (
         <AsNavigationItem path="group">
             <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
@@ -75,7 +86,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                             requestButtonText={t('introduction.becomeAnInstructor')}
                             bannerHeadline={t('introduction.banner.instuctorTitle')}
                             onRequest={() => setIsModalOpen(true)}
-                            onTalkToTeam={() => window.open(process.env.REACT_APP_SCREENING_URL, '_blank')}
+                            onTalkToTeam={() => window.open(student_url, '_blank')}
                             onMoreInfos={() => window.open('https://www.lern-fair.de/helfer/gruppenkurse', '_blank')}
                         />
                     </Box>

@@ -1,5 +1,5 @@
 import { Text, Box, Heading } from 'native-base';
-import EmptyStateIcon from '../../assets/icons/lernfair/empty-state-contacts.svg';
+import EmptyStateIcon from '../assets/icons/lernfair/empty-state-contacts.svg';
 
 type Props = {
     title: string;

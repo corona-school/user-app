@@ -16,7 +16,6 @@ const PupilPager: React.FC<Props> = ({ onFinished, onBack }) => {
         if (pupilIndex + 1 < state?.pupilMatches.length) {
             setPupilIndex((prev) => prev + 1);
         } else {
-            console.log('finished');
             onFinished();
         }
         window.scrollTo({ top: 0 });

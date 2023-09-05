@@ -2,7 +2,7 @@ import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base'
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
-import MetaDetails from './MetaDetails';
+import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
@@ -126,13 +126,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
             </Modal>
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
-                <Header
-                    organizers={appointment.organizers}
-                    appointmentTitle={appointment.title}
-                    displayName={appointment.displayName}
-                    position={appointment.position}
-                />
-                <MetaDetails
+                <Header appointmentTitle={appointment.title} displayName={appointment.displayName} position={appointment.position} />
+                <AppointmentMetaDetails
                     date={date}
                     startTime={startTime}
                     endTime={endTime}

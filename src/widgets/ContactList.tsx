@@ -1,13 +1,13 @@
 import { Box, Divider, FlatList, Heading, Pressable, Stack, Text, VStack, useTheme, useToast } from 'native-base';
-import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil_64.svg';
-import StudentAvatar from '../../assets/icons/lernfair/avatar_student_64.svg';
-import { useUserType } from '../../hooks/useApollo';
-import { gql } from '../../gql';
+import PupilAvatar from '../assets/icons/lernfair/avatar_pupil_64.svg';
+import StudentAvatar from '../assets/icons/lernfair/avatar_student_64.svg';
+import { useUserType } from '../hooks/useApollo';
+import { gql } from '../gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import ContactEmptyState from './ContactEmptyState';
 import { useCallback, useEffect } from 'react';
-import CenterLoadingSpinner from '../CenterLoadingSpinner';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 const myContacts = gql(`
 query me {
