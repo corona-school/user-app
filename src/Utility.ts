@@ -20,7 +20,15 @@ export const toTimerString = (refDate: number, compareDate: number) => {
 
     if (days > 1) return `In ${days} Tagen`;
 
-    if (days === 1) return `Morgen`;
+    const tomorrow = new Date(refDate);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const subsequentAbsDate = new Date(refDate + diff * 1000);
+    if (tomorrow.getDate() === subsequentAbsDate.getDate()) {
+        // actual day of the month is one day ahead -> tomorrow
+        return `Morgen`;
+    } else if (days === 1) {
+        return `Übermorgen`; // date is one full day ahead, but is not the next day of the month
+    }
 
     return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
