@@ -11,7 +11,6 @@ export const REDIRECT_PASSWORD = `/login`;
 
 export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
     const days = compareDate.startOf('day').diff(refDate.startOf('day'), 'days').days;
-    console.log('days:', days);
     if (days > 7) return `In einigen Wochen`;
 
     if (days > 1) return `In ${days} Tagen`;
@@ -26,8 +25,6 @@ export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
 
     return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
-// @ts-ignore
-window.toTimerString = (ref, cmp) => toTimerString(DateTime.fromJSDate(ref), DateTime.fromJSDate(cmp));
 
 export const createToken = () => {
     const subLength = 8;
