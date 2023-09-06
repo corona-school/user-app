@@ -9,30 +9,25 @@ export const TOKEN_LENGTH = 32;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
 
-export const toTimerString = (refDate: number, compareDate: number) => {
-    const diff = Math.abs(compareDate / 1000 - refDate / 1000);
-
-    const days = Math.floor(diff / (60 * 60 * 24));
-    const hrs = Math.floor((diff / (60 * 60)) % 24);
-    const mins = Math.floor((diff / 60) % 60);
-
+export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
+    const days = compareDate.startOf('day').diff(refDate.startOf('day'), 'days').days;
+    console.log('days:', days);
     if (days > 7) return `In einigen Wochen`;
 
     if (days > 1) return `In ${days} Tagen`;
 
-    const tomorrow = new Date(refDate);
-    tomorrow.setDate(tomorrow.getDate() + 1); // current day of month + 1
-    const compareDateObj = new Date(compareDate);
-    if (tomorrow.getDate() === compareDateObj.getDate()) {
-        // compare days of the month
-        // date of compareDate is on current day of the month + 1
+    if (days === 1) {
         return `Morgen`;
-    } else if (days === 1) {
-        return `Übermorgen`; // date is at least 24h ahead, but is not the next day of the month, so it must be the day after tomorrow
     }
+
+    const diff = Math.abs(compareDate.toUnixInteger() - refDate.toUnixInteger());
+    const hrs = Math.floor((diff / (60 * 60)) % 24);
+    const mins = Math.floor((diff / 60) % 60);
 
     return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
+// @ts-ignore
+window.toTimerString = (ref, cmp) => toTimerString(DateTime.fromJSDate(ref), DateTime.fromJSDate(cmp));
 
 export const createToken = () => {
     const subLength = 8;
