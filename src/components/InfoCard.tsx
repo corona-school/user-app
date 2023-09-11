@@ -34,14 +34,14 @@ export function InfoCard({
             space={space['1']}
             display="flex"
         >
-            <IconLoader iconPath={iconPath} />
-            <VStack flexGrow="1" display="flex">
+            <VStack>
+                <IconLoader iconPath={iconPath} />
+            </VStack>
+            <VStack flexGrow="1" flexShrink="1" display="flex">
                 <Heading color="white" paddingBottom="10px">
                     {title}
                 </Heading>
-                <Text color="white" overflow={'auto'}>
-                    {message}
-                </Text>
+                <Text color="white">{message}</Text>
             </VStack>
         </HStack>
     );
