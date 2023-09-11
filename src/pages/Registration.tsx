@@ -67,10 +67,10 @@ const mutPupil = gql(`
     }
 `);
 const mutStudent = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!, $cooperationTag: String) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, cooperationTag: $cooperationTag }
         ) {
             id
         }
@@ -89,9 +89,11 @@ const Registration: React.FC = () => {
     const retainPath = locState?.retainPath ?? '/start';
 
     const [currentIndex, setCurrentIndex] = useState<number>(
-        location?.pathname === '/registration/student' || location?.pathname === '/registration/pupil' ? 1 : 0
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil' ? 1 : 0
     );
-    const [userType, setUserType] = useState<'pupil' | 'student'>(location?.pathname === '/registration/student' ? 'student' : 'pupil');
+    const [userType, setUserType] = useState<'pupil' | 'student'>(
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
+    );
     const [firstname, setFirstname] = useState<string>('');
     const [lastname, setLastname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -141,7 +143,6 @@ const Registration: React.FC = () => {
                 password,
                 newsletter,
                 retainPath: retainPath,
-                cooperationTag,
             };
 
             let result =
@@ -155,7 +156,7 @@ const Registration: React.FC = () => {
                           },
                       })
                     : await registerStudent({
-                          variables: basicData,
+                          variables: { ...basicData, cooperationTag },
                       });
 
             if (!result.errors) {
