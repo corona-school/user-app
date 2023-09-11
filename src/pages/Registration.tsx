@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Text, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
@@ -8,10 +8,13 @@ import VerifyEmailModal from '../modals/VerifyEmailModal';
 import UserType from './registration/UserType';
 import PersonalData from './registration/PersonalData';
 import SchoolClass from './registration/SchoolClass';
-import SchoolType from './registration/SchoolType';
+import SchoolTypeUI from './registration/SchoolType';
 import UserState from './registration/UserState';
 import Legal from './registration/Legal';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { gql } from '../gql';
+import { SchoolType, State } from '../gql/graphql';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 type RegistrationContextType = {
     currentIndex: number;
@@ -40,7 +43,7 @@ type RegistrationContextType = {
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
 
-const mutPupil = gql`
+const mutPupil = gql(`
     mutation registerPupil(
         $firstname: String!
         $lastname: String!
@@ -62,8 +65,8 @@ const mutPupil = gql`
         meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType } })
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-`;
-const mutStudent = gql`
+`);
+const mutStudent = gql(`
     mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!) {
         meRegisterStudent(
             noEmail: true
@@ -74,7 +77,7 @@ const mutStudent = gql`
         passwordCreate(password: $password)
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-`;
+`);
 
 const Registration: React.FC = () => {
     const { space } = useTheme();
@@ -99,51 +102,70 @@ const Registration: React.FC = () => {
     const [userState, setUserState] = useState<string>('bw');
     const [newsletter, setNewsletter] = useState<boolean>(false);
 
-    const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent);
+    const [registerPupil] = useMutation(mutPupil);
+    const [registerStudent] = useMutation(mutStudent);
+
+    const { data: corpData } = useQuery(
+        gql(
+            `query Cooperations {
+            cooperations {
+                id
+                tag
+                name
+                welcomeTitle
+                welcomeMessage
+            }
+        }`
+        )
+    );
+
+    const cooperationTag = new URL(window.location.toString()).searchParams.get('cooperation');
+
+    const cooperation = useMemo(() => {
+        const result = corpData?.cooperations?.find((it) => it.tag === cooperationTag);
+
+        if (cooperationTag && corpData && !result) {
+            throw new Error(`Invalid Cooperation Tag '${cooperationTag}'`);
+        }
+
+        return result;
+    }, [cooperationTag, corpData]);
 
     const attemptRegister = useCallback(async () => {
         try {
             const validMail = email.toLowerCase();
-            const data = {
-                variables: {
-                    firstname,
-                    lastname,
-                    email: validMail,
-                    password,
-                    newsletter,
-                    retainPath: retainPath,
-                },
-            } as {
-                variables: {
-                    firstname: string;
-                    lastname: string;
-                    email: string;
-                    password: string;
-                    newsletter: boolean;
-                    schoolType?: string;
-                    grade?: number;
-                    state?: string;
-                    retainPath?: string;
-                };
+            const basicData = {
+                firstname,
+                lastname,
+                email: validMail,
+                password,
+                newsletter,
+                retainPath: retainPath,
             };
 
-            if (userType === 'pupil') {
-                data.variables.schoolType = schoolType;
-                data.variables.grade = schoolClass;
-                data.variables.state = userState;
-            }
+            let result =
+                userType === 'pupil'
+                    ? await registerPupil({
+                          variables: {
+                              ...basicData,
+                              schoolType: schoolType as SchoolType,
+                              grade: schoolClass,
+                              state: userState as State,
+                          },
+                      })
+                    : await registerStudent({
+                          variables: basicData,
+                      });
 
-            const res = await register(data);
-
-            if (!res.errors) {
+            if (!result.errors) {
                 show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
             } else {
                 show(
                     { variant: 'dark' },
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
-                            {t(`registration.result.error.message.${res.errors[0].message}` as unknown as TemplateStringsArray, {
-                                defaultValue: res.errors[0].message,
+                            {t(`registration.result.error.message.${result.errors[0].message}` as unknown as TemplateStringsArray, {
+                                defaultValue: result.errors[0].message,
                             })}
                         </Text>
                         <Button
@@ -179,7 +201,11 @@ const Registration: React.FC = () => {
                 </VStack>
             );
         }
-    }, [show, hide, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, space, t]);
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
+
+    if (cooperationTag && !corpData) {
+        return <CenterLoadingSpinner />;
+    }
 
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
@@ -230,9 +256,9 @@ const Registration: React.FC = () => {
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>
                         {currentIndex === 0 && <UserType />}
-                        {currentIndex === 1 && <PersonalData />}
+                        {currentIndex === 1 && <PersonalData cooperation={cooperation} />}
                         {currentIndex === 2 && <SchoolClass />}
-                        {currentIndex === 3 && <SchoolType />}
+                        {currentIndex === 3 && <SchoolTypeUI />}
                         {currentIndex === 4 && <UserState />}
                         {currentIndex === 5 && <Legal onRegister={attemptRegister} />}
                     </Box>

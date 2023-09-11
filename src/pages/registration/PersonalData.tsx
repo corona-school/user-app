@@ -9,8 +9,10 @@ import { gql, useMutation } from '@apollo/client';
 import { RegistrationContext } from '../Registration';
 import { useNavigate } from 'react-router-dom';
 import isEmail from 'validator/es/lib/isEmail';
+import { Cooperation } from '../../gql/graphql';
+import { InfoCard } from '../../components/InfoCard';
 
-const PersonalData: React.FC = () => {
+export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
         userType,
         setCurrentIndex,
@@ -72,6 +74,8 @@ const PersonalData: React.FC = () => {
 
     return (
         <VStack w="100%" space={space['1']} marginTop={space['1']}>
+            {cooperation && <InfoCard icon="loki" title={cooperation.welcomeTitle} message={cooperation.welcomeMessage} />}
+
             <TextInput value={firstname} placeholder={t('firstname')} onChangeText={setFirstname} />
             <TextInput value={lastname} placeholder={t('lastname')} onChangeText={setLastname} />
             {showNameMissing && <AlertMessage content={t('registration.hint.name')} />}
@@ -108,6 +112,4 @@ const PersonalData: React.FC = () => {
             </Box>
         </VStack>
     );
-};
-
-export default PersonalData;
+}
