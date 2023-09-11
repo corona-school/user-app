@@ -141,6 +141,7 @@ const Registration: React.FC = () => {
                 password,
                 newsletter,
                 retainPath: retainPath,
+                cooperationTag,
             };
 
             let result =
