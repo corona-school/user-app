@@ -63,7 +63,13 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     return (
         <>
             {screening!.status! === Pupil_Screening_Status_Enum.Dispute && (
-                <InfoCard icon="loki" title={t('screening.four_eyes')} message={t('screening.was_screened_but_no_decision')} />
+                <InfoCard
+                    icon="loki"
+                    title={t('screening.four_eyes')}
+                    message={
+                        t('screening.was_screened_but_no_decision') + '\n\n' + screening.screeners.map((it) => `${it.firstname} ${it.lastname}`).join(', ')
+                    }
+                />
             )}
             <VStack flexGrow="1" space={space['1']}>
                 <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
@@ -183,7 +189,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         // or in case the previous screening was already invalidated
         previousScreenings[0].invalidated;
 
-        // Otherwise the screening is successful and not invalidated yet, so no need to take action
+    // Otherwise the screening is successful and not invalidated yet, so no need to take action
 
     return (
         <VStack paddingTop="20px" space={space['2']}>
