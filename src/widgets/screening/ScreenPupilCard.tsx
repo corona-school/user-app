@@ -155,10 +155,11 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
     );
 }
 
-export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
+export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
 
+    const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
     const { previousScreenings, screeningToEdit } = useMemo(() => {
         const previousScreenings: PupilScreening[] = [...pupil!.screenings!];
         let screeningToEdit: PupilScreening | null = null;
@@ -170,11 +171,19 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
             !previousScreenings[0]!.invalidated &&
             (previousScreenings[0]!.status === Pupil_Screening_Status_Enum.Pending || previousScreenings[0]!.status === Pupil_Screening_Status_Enum.Dispute)
         ) {
-            screeningToEdit = previousScreenings.shift();
+            screeningToEdit = previousScreenings.shift()!;
         }
 
         return { previousScreenings, screeningToEdit };
     }, [pupil!.screenings!]);
+
+    const needsScreening =
+        // If the user was not yet invited for screening, they might need a new one
+        previousScreenings.length === 0 ||
+        // or in case the previous screening was already invalidated
+        previousScreenings[0].invalidated;
+
+        // Otherwise the screening is successful and not invalidated yet, so no need to take action
 
     return (
         <VStack paddingTop="20px" space={space['2']}>
@@ -193,7 +202,23 @@ export function ScreenPupilCard({ pupil }: { pupil: PupilForScreening }) {
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
             </HStack>
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
-            {!screeningToEdit && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
+            {!screeningToEdit && (
+                <>
+                    {!needsScreening && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
+                    {needsScreening && (
+                        <HStack>
+                            <Button
+                                onPress={async () => {
+                                    await createScreening({ variables: { pupilId: pupil.id } });
+                                    refresh();
+                                }}
+                            >
+                                Screening anlegen
+                            </Button>
+                        </HStack>
+                    )}
+                </>
+            )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
             <PupilHistory pupil={pupil} previousScreenings={previousScreenings} />
         </VStack>
