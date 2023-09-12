@@ -148,18 +148,26 @@ export function ScreeningDashboard() {
     // Refresh the currently open screening in case we got new info from the backend:
 
     useEffect(() => {
-        if (disputedScreenings && selectedPupil) {
-            const update = disputedScreenings.pupilsToBeScreened.find((it) => it.id === selectedPupil.id);
-            if (update && update !== selectedPupil) setSelectedPupil(update);
+        if (disputedScreenings) {
+            setSelectedPupil((current) => {
+                if (!current) return null;
+                const update = disputedScreenings.pupilsToBeScreened.find((it) => it.id === current.id);
+                if (update && update !== current) return update;
+                return current;
+            });
         }
-    }, [disputedScreenings, selectedPupil, setSelectedPupil]);
+    }, [disputedScreenings, setSelectedPupil]);
 
     useEffect(() => {
-        if (searchResult && selectedPupil) {
-            const update = searchResult.usersSearch.find((it) => it.pupil?.id === selectedPupil.id);
-            if (update && update.pupil! !== selectedPupil) setSelectedPupil(update.pupil!);
+        if (searchResult) {
+            setSelectedPupil((current) => {
+                if (!current) return null;
+                const update = searchResult.usersSearch.find((it) => it.pupil?.id === current.id);
+                if (update && update !== current) return update.pupil!;
+                return current;
+            });
         }
-    }, [searchResult, selectedPupil, setSelectedPupil]);
+    }, [searchResult, setSelectedPupil]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
