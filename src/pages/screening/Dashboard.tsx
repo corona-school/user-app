@@ -93,6 +93,7 @@ export function ScreeningDashboard() {
                         comment
                         createdAt
                         updatedAt
+                        screeners { firstname lastname }
                     }
                 }
             }
@@ -128,6 +129,7 @@ export function ScreeningDashboard() {
                     comment
                     createdAt
                     updatedAt
+                    screeners { firstname lastname }
                 }
             }
         }
@@ -142,6 +144,22 @@ export function ScreeningDashboard() {
         refetchDisputedScreenings();
         refetchUserSearch();
     }, [selectedPupil, refetchDisputedScreenings, refetchUserSearch]);
+
+    // Refresh the currently open screening in case we got new info from the backend:
+
+    useEffect(() => {
+        if (disputedScreenings && selectedPupil) {
+            const update = disputedScreenings.pupilsToBeScreened.find((it) => it.id === selectedPupil.id);
+            if (update && update !== selectedPupil) setSelectedPupil(update);
+        }
+    }, [disputedScreenings, selectedPupil, setSelectedPupil]);
+
+    useEffect(() => {
+        if (searchResult && selectedPupil) {
+            const update = searchResult.usersSearch.find((it) => it.pupil?.id === selectedPupil.id);
+            if (update && update.pupil! !== selectedPupil) setSelectedPupil(update.pupil!);
+        }
+    }, [searchResult, selectedPupil, setSelectedPupil]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
@@ -164,7 +182,15 @@ export function ScreeningDashboard() {
                             ))}
                     </HStack>
                 )}
-                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} />}
+                {selectedPupil && (
+                    <ScreenPupilCard
+                        pupil={selectedPupil}
+                        refresh={() => {
+                            refetchDisputedScreenings();
+                            refetchUserSearch();
+                        }}
+                    />
+                )}
 
                 {!searchQuery && !selectedPupil && (
                     <>
