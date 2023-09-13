@@ -11,7 +11,7 @@ type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> &
 type MySubcourse = Pick<
     Subcourse,
     'minGrade' | 'maxGrade' | 'participantsCount' | 'maxParticipants' | 'isOnWaitingList' | 'id' | 'isParticipant' | 'published' | 'cancelled'
-> & { lectures?: null | MyLecture[]; firstLecture?: null | MyLecture; course: MyCourse };
+> & { lectures?: null | MyLecture[]; firstLecture?: null | MyLecture; nextLecture?: null | MyLecture; course: MyCourse };
 
 type GroupProps = {
     currentCourses: MySubcourse[];
@@ -34,6 +34,7 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
             description={subcourse.course!.description}
             tags={subcourse.course!.tags}
             dateFirstLecture={(showDate && subcourse.firstLecture?.start) || ''}
+            dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
             image={subcourse.course!.image ?? undefined}
             title={subcourse.course!.name}
             countCourse={subcourse.lectures!.length}

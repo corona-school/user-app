@@ -43,6 +43,9 @@ const query = gql(`
                         start
                         duration
                     }
+                    nextLecture {
+                        start duration
+                    }
                     lectures {
                         start duration
                     }
@@ -71,6 +74,9 @@ const query = gql(`
                     firstLecture {
                         start
                         duration
+                    }
+                    nextLecture {
+                        start duration
                     }
                     lectures {
                         start duration
@@ -111,6 +117,9 @@ const queryPast = gql(`
                     minGrade
                     maxGrade
                     firstLecture {
+                        start duration
+                    }
+                    nextLecture {
                         start duration
                     }
                     lectures {
@@ -165,6 +174,9 @@ const PupilGroup: React.FC<Props> = () => {
                 id
                 isOnWaitingList
                 firstLecture {
+                    start duration
+                }
+                nextLecture {
                     start duration
                 }
                 lectures {
