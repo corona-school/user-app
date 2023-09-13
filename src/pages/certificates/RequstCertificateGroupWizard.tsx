@@ -5,6 +5,7 @@ import CardOverlay from '../../components/CardOverlay';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import CSSWrapper from '../../components/CSSWrapper';
 import { LFSubCourse } from '../../types/lernfair/Course';
+import { Subcourse } from '../../gql/graphql';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import SelectActionsWidget from '../../widgets/certificates/SelectActionsWidget';
 import { RequestCertificateContext } from '../RequestCertificate';
@@ -26,6 +27,9 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
                             duration
                         }
                         firstLecture {
+                            start
+                        }
+                        nextLecture {
                             start
                         }
                         course {
@@ -79,6 +83,7 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
                                                     description={course.course.description}
                                                     tags={course.course.tags}
                                                     dateFirstLecture={course.firstLecture?.start || ''}
+                                                    /* dateNextLecture={course.nextLecture?.start || ''} */
                                                     countCourse={course.lectures.length}
                                                     image={course.course.image}
                                                     title={course.course.name}
