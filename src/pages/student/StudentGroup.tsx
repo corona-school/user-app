@@ -44,6 +44,10 @@ const StudentGroup: React.FC = () => {
                                 start
                                 duration
                             }
+                            nextLecture {
+                                start
+                                duration
+                            }
                             lectures {
                                 start
                                 duration
@@ -73,6 +77,10 @@ const StudentGroup: React.FC = () => {
                     maxParticipants
                     isInstructor
                     firstLecture {
+                        start
+                        duration
+                    }
+                    nextLecture {
                         start
                         duration
                     }
