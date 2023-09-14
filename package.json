@@ -5,7 +5,7 @@
     "devDependencies": {
         "@apollo/client": "^3.6.9",
         "@babel/core": "^7.16.0",
-        "@datadog/browser-rum": "https://gitpkg.now.sh/corona-school/browser-sdk/packages/rum?lern-fair-packages",
+        "@datadog/browser-rum": "https://gitpkg.now.sh/corona-school/browser-sdk/packages/rum?v4.49-lern-fair-packages",
         "@datadog/datadog-ci": "^2.18.0",
         "@graphql-codegen/cli": "2.15.0",
         "@graphql-codegen/client-preset": "^1.2.1",
