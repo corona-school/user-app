@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Text, useTheme, VStack } from 'native-base';
+import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -205,13 +205,28 @@ const Registration: React.FC = () => {
         }
     }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
 
+    const logoSize = useBreakpointValue({
+        base: '50px',
+        lg: '100px',
+    });
+
+    const headerDirection = useBreakpointValue({
+        base: 'row',
+        lg: 'column',
+    });
+
+    const headerSpace = useBreakpointValue({
+        base: space['1'],
+        lg: space['2'],
+    });
+
     if (cooperationTag && !corpData) {
         return <CenterLoadingSpinner />;
     }
 
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
-            <Box w="100%" position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
+            <Box w="100%" display="flex" flexDirection={headerDirection} position="relative" padding={headerSpace} justifyContent="center" alignItems="center">
                 <Image
                     alt="Lernfair"
                     position="absolute"
@@ -223,11 +238,8 @@ const Registration: React.FC = () => {
                         uri: require('../assets/images/globals/lf-bg.png'),
                     }}
                 />
-                {/* <Box position="absolute" left={space['1']} top={space['1']}>
-          <BackButton onPress={goBack} />
-        </Box> */}
-                <Logo />
-                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
+                <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
+                <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider
