@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import CardOverlay from '../../components/CardOverlay';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import CSSWrapper from '../../components/CSSWrapper';
-import { LFSubCourse } from '../../types/lernfair/Course';
 import { Subcourse } from '../../gql/graphql';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import SelectActionsWidget from '../../widgets/certificates/SelectActionsWidget';
@@ -58,7 +57,7 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
                         {loading && <CenterLoadingSpinner />}
                         {!loading && (
                             <>
-                                {data.me.student.subcoursesInstructing.map((course: LFSubCourse, index: number) => {
+                                {data.me.student.subcoursesInstructing.map((course: Subcourse, index: number) => {
                                     const isSelected = state.courses.includes(course);
 
                                     return (
@@ -83,9 +82,9 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
                                                     description={course.course.description}
                                                     tags={course.course.tags}
                                                     dateFirstLecture={course.firstLecture?.start || ''}
-                                                    /* dateNextLecture={course.nextLecture?.start || ''} */
+                                                    dateNextLecture={course.nextLecture?.start || ''}
                                                     countCourse={course.lectures.length}
-                                                    image={course.course.image}
+                                                    image={course.course.image ?? undefined}
                                                     title={course.course.name}
                                                 />
                                             </CSSWrapper>
