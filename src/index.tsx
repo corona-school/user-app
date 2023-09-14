@@ -4,6 +4,7 @@ import App from './App';
 import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
+import { getSessionToken } from './hooks/useApollo';
 
 const root = document.getElementById('root');
 
@@ -33,6 +34,10 @@ datadogRum.init({
         return true;
     },
 });
+
+// This will make sure that we are setting the session token for the user right in the beginning.
+// Otherwise, we might miss some events.
+datadogRum.setGlobalContextProperty('sessionToken', getSessionToken());
 
 // TODO: stopping session replay for now as it's not working properly
 // datadogRum.startSessionReplayRecording();
