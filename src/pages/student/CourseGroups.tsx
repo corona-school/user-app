@@ -1,28 +1,29 @@
 import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LFSubCourse } from '../../types/lernfair/Course';
+import { Subcourse } from '../../gql/graphql';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
 type GroupProps = {
-    currentCourses: LFSubCourse[] | undefined;
-    draftCourses: LFSubCourse[] | undefined;
-    pastCourses: LFSubCourse[] | undefined;
+    currentCourses: Subcourse[] | undefined;
+    draftCourses: Subcourse[] | undefined;
+    pastCourses: Subcourse[] | undefined;
 };
 
 const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const renderSubcourse = (subcourse: LFSubCourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
+    const renderSubcourse = (subcourse: Subcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <AppointmentCard
             key={index}
             description={subcourse.course.description}
             tags={subcourse.course.tags}
             dateFirstLecture={(showDate && subcourse.firstLecture?.start) || ''}
+            dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
             image={subcourse.course.image ?? undefined}
             title={subcourse.course.name}
             countCourse={subcourse.lectures.length}
