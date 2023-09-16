@@ -370,7 +370,7 @@ module.exports = function (webpackEnv) {
                    svgo: true,
                    titleProp: false,
                    ref: false,
-                   svgProps: { className: "rr-block" }
+                   svgProps: { className: "dd-privacy-hidden" }
                  }
                 },
               ]
