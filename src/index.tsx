@@ -19,8 +19,7 @@ datadogRum.init({
     // Specify a version number to identify the deployed version of your application in Datadog
     version: APP_VERSION,
     sessionSampleRate: 100,
-    // TODO: stopping session replay for now as it's not working properly
-    sessionReplaySampleRate: 0,
+    sessionReplaySampleRate: 100,
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,
@@ -39,8 +38,9 @@ datadogRum.init({
 // Otherwise, we might miss some events.
 datadogRum.setGlobalContextProperty('sessionToken', getSessionToken());
 
-// TODO: stopping session replay for now as it's not working properly
-// datadogRum.startSessionReplayRecording();
+// Records the DOM the users sees, to be able to "watch" what happened in a User Session (and fix UI bugs)
+datadogRum.startSessionReplayRecording();
+console.log('Session Replay', datadogRum.getSessionReplayLink());
 
 ReactDOM.render(
     <React.StrictMode>

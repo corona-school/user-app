@@ -364,21 +364,15 @@ module.exports = function (webpackEnv) {
                   loader: 'babel-loader'
                 },
                 {
-                  loader: require.resolve('@svgr/webpack'),
-                  options: {
-                    prettier: true,
-                    svgo: true,
-                    titleProp: false,
-                    ref: false
-                  }
-                }
-                // ,
-                // {
-                //   loader: require.resolve('file-loader'),
-                //   options: {
-                //     name: 'static/media/[name].[hash].[ext]'
-                //   }
-                // }
+                 loader: require.resolve('@svgr/webpack'),
+                 options: {
+                   prettier: false,
+                   svgo: true,
+                   titleProp: false,
+                   ref: false,
+                   svgProps: { className: "dd-privacy-hidden" }
+                 }
+                },
               ]
               // issuer: {
               //   and: [/\.(ts|tsx|js|jsx|md|mdx)$/]

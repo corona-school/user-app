@@ -118,7 +118,9 @@ const Chat: React.FC = () => {
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
-                <Box h="90%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                <div className="dd-privacy-hidden">
+                    <Box h="90%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                </div>
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </Modal>
