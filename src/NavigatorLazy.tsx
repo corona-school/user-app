@@ -60,8 +60,12 @@ import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import Chat from './pages/Chat';
-import ZoomMeeting from './components/ZoomMeeting';
 import { ScreeningDashboard } from './pages/screening/Dashboard';
+import { lazyWithRetry } from './lazy';
+import { Suspense } from 'react';
+import CenterLoadingSpinner from './components/CenterLoadingSpinner';
+
+const ZoomMeeting = lazyWithRetry(() => import('./components/ZoomMeeting'), { prefetch: false });
 
 export default function NavigatorLazy() {
     return (
@@ -281,7 +285,9 @@ export default function NavigatorLazy() {
                 path="/video-chat/:id/:type"
                 element={
                     <RequireAuth>
-                        <ZoomMeeting />
+                        <Suspense fallback={<CenterLoadingSpinner />}>
+                            <ZoomMeeting />
+                        </Suspense>
                     </RequireAuth>
                 }
             ></Route>
