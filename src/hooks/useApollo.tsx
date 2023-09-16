@@ -21,6 +21,7 @@ import { BACKEND_URL } from '../config';
 import { debug, log } from '../log';
 import { gql } from '../gql';
 import { Role } from '../types/lernfair/User';
+import { datadogRum } from '@datadog/browser-rum';
 
 interface UserType {
     userID: string;
@@ -96,6 +97,7 @@ export const getSessionToken = () => {
 const refreshSessionToken = () => {
     let tok = Utility.createToken();
     STORAGE.setItem('lernfair:token', tok);
+    datadogRum.setGlobalContextProperty('sessionToken', tok);
     return tok;
 };
 
