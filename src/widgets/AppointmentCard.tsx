@@ -136,7 +136,7 @@ const AppointmentCard: React.FC<Props> = ({
     if (dateFirstLecture) {
         if (currentTime < dateFirstLecture.toMillis()) {
             // appointment not yet started
-            remainingTime = toTimerString(dateFirstLecture.toMillis(), currentTime);
+            remainingTime = toTimerString(dateFirstLecture, DateTime.fromMillis(currentTime));
         } else if (duration && currentTime < dateFirstLecture.toMillis() + duration * 60 * 1000) {
             // appointment not yet ended -> ongoing
             ongoingTime = '' + Math.floor((currentTime - dateFirstLecture.toMillis()) / 1000 / 60) + ' Minuten';
@@ -151,7 +151,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateFirst && duration ? canJoinMeeting(_dateFirst, duration, isOrganizer ? 30 : 10, DateTime.now()) : false;
+    const isCurrent = _dateFirst && duration ? canJoinMeeting(_dateFirst, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({

@@ -60,7 +60,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         setCurrentTime(new Date().getTime());
     }, 30_000);
 
-    const canStartMeeting = useMemo(() => canJoinMeeting(startDateTime, duration, isOrganizer ? 30 : 10, DateTime.now()), []);
+    const canStartMeeting = useMemo(() => canJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now()), []);
     const isAppointmentOver = useMemo(() => {
         const end = DateTime.fromISO(startDateTime).plus({ minutes: duration + 15 });
         return end < DateTime.now();

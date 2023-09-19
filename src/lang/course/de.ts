@@ -32,7 +32,7 @@ const course = {
         },
         hint: {
             pupil: 'Du kannst das Meeting erst 10 Minuten vor Beginn eines Termins starten.',
-            student: 'Du kannst das Meeting erst 30 Minuten vor Beginn des Termins starten.',
+            student: 'Du kannst das Meeting 4 Stunden vor Beginn des Termins starten.',
         },
     },
     blocker: {
