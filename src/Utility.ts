@@ -9,18 +9,19 @@ export const TOKEN_LENGTH = 32;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
 
-export const toTimerString = (refDate: number, compareDate: number) => {
-    const diff = Math.abs(compareDate / 1000 - refDate / 1000);
-
-    const days = Math.floor(diff / (60 * 60 * 24));
-    const hrs = Math.floor((diff / (60 * 60)) % 24);
-    const mins = Math.floor((diff / 60) % 60);
-
+export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
+    const days = compareDate.startOf('day').diff(refDate.startOf('day'), 'days').days;
     if (days > 7) return `In einigen Wochen`;
 
     if (days > 1) return `In ${days} Tagen`;
 
-    if (days === 1) return `Morgen`;
+    if (days === 1) {
+        return `Morgen`;
+    }
+
+    const diff = Math.abs(compareDate.toUnixInteger() - refDate.toUnixInteger());
+    const hrs = Math.floor((diff / (60 * 60)) % 24);
+    const mins = Math.floor((diff / 60) % 60);
 
     return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };

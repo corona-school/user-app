@@ -4,6 +4,7 @@ import App from './App';
 import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
+import { getSessionToken } from './hooks/useApollo';
 
 const root = document.getElementById('root');
 
@@ -18,8 +19,7 @@ datadogRum.init({
     // Specify a version number to identify the deployed version of your application in Datadog
     version: APP_VERSION,
     sessionSampleRate: 100,
-    // TODO: stopping session replay for now as it's not working properly
-    sessionReplaySampleRate: 0,
+    sessionReplaySampleRate: 100,
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,
@@ -34,8 +34,13 @@ datadogRum.init({
     },
 });
 
-// TODO: stopping session replay for now as it's not working properly
-// datadogRum.startSessionReplayRecording();
+// This will make sure that we are setting the session token for the user right in the beginning.
+// Otherwise, we might miss some events.
+datadogRum.setGlobalContextProperty('sessionToken', getSessionToken());
+
+// Records the DOM the users sees, to be able to "watch" what happened in a User Session (and fix UI bugs)
+datadogRum.startSessionReplayRecording();
+console.log('Session Replay', datadogRum.getSessionReplayLink());
 
 ReactDOM.render(
     <React.StrictMode>

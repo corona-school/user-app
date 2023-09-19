@@ -93,6 +93,7 @@ export function ScreeningDashboard() {
                         comment
                         createdAt
                         updatedAt
+                        screeners { firstname lastname }
                     }
                 }
             }
@@ -128,6 +129,7 @@ export function ScreeningDashboard() {
                     comment
                     createdAt
                     updatedAt
+                    screeners { firstname lastname }
                 }
             }
         }
@@ -142,6 +144,30 @@ export function ScreeningDashboard() {
         refetchDisputedScreenings();
         refetchUserSearch();
     }, [selectedPupil, refetchDisputedScreenings, refetchUserSearch]);
+
+    // Refresh the currently open screening in case we got new info from the backend:
+
+    useEffect(() => {
+        if (disputedScreenings) {
+            setSelectedPupil((current) => {
+                if (!current) return null;
+                const update = disputedScreenings.pupilsToBeScreened.find((it) => it.id === current.id);
+                if (update && update !== current) return update;
+                return current;
+            });
+        }
+    }, [disputedScreenings, setSelectedPupil]);
+
+    useEffect(() => {
+        if (searchResult) {
+            setSelectedPupil((current) => {
+                if (!current) return null;
+                const update = searchResult.usersSearch.find((it) => it.pupil?.id === current.id);
+                if (update && update !== current) return update.pupil!;
+                return current;
+            });
+        }
+    }, [searchResult, setSelectedPupil]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
@@ -164,7 +190,15 @@ export function ScreeningDashboard() {
                             ))}
                     </HStack>
                 )}
-                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} />}
+                {selectedPupil && (
+                    <ScreenPupilCard
+                        pupil={selectedPupil}
+                        refresh={() => {
+                            refetchDisputedScreenings();
+                            refetchUserSearch();
+                        }}
+                    />
+                )}
 
                 {!searchQuery && !selectedPupil && (
                     <>

@@ -8,6 +8,8 @@ import { ZOOM_MEETING_SDK_KEY } from '../config';
 import { useQuery } from '@apollo/client';
 import { log } from '../log';
 
+console.log('ZoomMeeting loaded');
+
 enum ZoomMeetingRole {
     Host = 1,
     Participant = 0,

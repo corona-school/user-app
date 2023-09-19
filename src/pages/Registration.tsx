@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Heading, Image, Text, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
@@ -8,10 +8,13 @@ import VerifyEmailModal from '../modals/VerifyEmailModal';
 import UserType from './registration/UserType';
 import PersonalData from './registration/PersonalData';
 import SchoolClass from './registration/SchoolClass';
-import SchoolType from './registration/SchoolType';
+import SchoolTypeUI from './registration/SchoolType';
 import UserState from './registration/UserState';
 import Legal from './registration/Legal';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { gql } from '../gql';
+import { SchoolType, State } from '../gql/graphql';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 type RegistrationContextType = {
     currentIndex: number;
@@ -40,7 +43,7 @@ type RegistrationContextType = {
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
 
-const mutPupil = gql`
+const mutPupil = gql(`
     mutation registerPupil(
         $firstname: String!
         $lastname: String!
@@ -62,19 +65,19 @@ const mutPupil = gql`
         meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType } })
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-`;
-const mutStudent = gql`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!) {
+`);
+const mutStudent = gql(`
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!, $cooperationTag: String) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, cooperationTag: $cooperationTag }
         ) {
             id
         }
         passwordCreate(password: $password)
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
-`;
+`);
 
 const Registration: React.FC = () => {
     const { space } = useTheme();
@@ -86,9 +89,11 @@ const Registration: React.FC = () => {
     const retainPath = locState?.retainPath ?? '/start';
 
     const [currentIndex, setCurrentIndex] = useState<number>(
-        location?.pathname === '/registration/student' || location?.pathname === '/registration/pupil' ? 1 : 0
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil' ? 1 : 0
     );
-    const [userType, setUserType] = useState<'pupil' | 'student'>(location?.pathname === '/registration/student' ? 'student' : 'pupil');
+    const [userType, setUserType] = useState<'pupil' | 'student'>(
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
+    );
     const [firstname, setFirstname] = useState<string>('');
     const [lastname, setLastname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -99,51 +104,70 @@ const Registration: React.FC = () => {
     const [userState, setUserState] = useState<string>('bw');
     const [newsletter, setNewsletter] = useState<boolean>(false);
 
-    const [register] = useMutation(userType === 'pupil' ? mutPupil : mutStudent);
+    const [registerPupil] = useMutation(mutPupil);
+    const [registerStudent] = useMutation(mutStudent);
+
+    const { data: corpData } = useQuery(
+        gql(
+            `query Cooperations {
+            cooperations {
+                id
+                tag
+                name
+                welcomeTitle
+                welcomeMessage
+            }
+        }`
+        )
+    );
+
+    const cooperationTag = new URL(window.location.toString()).searchParams.get('cooperation');
+
+    const cooperation = useMemo(() => {
+        const result = corpData?.cooperations?.find((it) => it.tag === cooperationTag);
+
+        if (cooperationTag && corpData && !result) {
+            throw new Error(`Invalid Cooperation Tag '${cooperationTag}'`);
+        }
+
+        return result;
+    }, [cooperationTag, corpData]);
 
     const attemptRegister = useCallback(async () => {
         try {
             const validMail = email.toLowerCase();
-            const data = {
-                variables: {
-                    firstname,
-                    lastname,
-                    email: validMail,
-                    password,
-                    newsletter,
-                    retainPath: retainPath,
-                },
-            } as {
-                variables: {
-                    firstname: string;
-                    lastname: string;
-                    email: string;
-                    password: string;
-                    newsletter: boolean;
-                    schoolType?: string;
-                    grade?: number;
-                    state?: string;
-                    retainPath?: string;
-                };
+            const basicData = {
+                firstname,
+                lastname,
+                email: validMail,
+                password,
+                newsletter,
+                retainPath: retainPath,
             };
 
-            if (userType === 'pupil') {
-                data.variables.schoolType = schoolType;
-                data.variables.grade = schoolClass;
-                data.variables.state = userState;
-            }
+            let result =
+                userType === 'pupil'
+                    ? await registerPupil({
+                          variables: {
+                              ...basicData,
+                              schoolType: schoolType as SchoolType,
+                              grade: schoolClass,
+                              state: userState as State,
+                          },
+                      })
+                    : await registerStudent({
+                          variables: { ...basicData, cooperationTag },
+                      });
 
-            const res = await register(data);
-
-            if (!res.errors) {
+            if (!result.errors) {
                 show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
             } else {
                 show(
                     { variant: 'dark' },
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
-                            {t(`registration.result.error.message.${res.errors[0].message}` as unknown as TemplateStringsArray, {
-                                defaultValue: res.errors[0].message,
+                            {t(`registration.result.error.message.${result.errors[0].message}` as unknown as TemplateStringsArray, {
+                                defaultValue: result.errors[0].message,
                             })}
                         </Text>
                         <Button
@@ -179,11 +203,30 @@ const Registration: React.FC = () => {
                 </VStack>
             );
         }
-    }, [show, hide, email, firstname, lastname, password, newsletter, userType, register, schoolType, schoolClass, userState, space, t]);
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
+
+    const logoSize = useBreakpointValue({
+        base: '50px',
+        lg: '100px',
+    });
+
+    const headerDirection = useBreakpointValue({
+        base: 'row',
+        lg: 'column',
+    });
+
+    const headerSpace = useBreakpointValue({
+        base: space['1'],
+        lg: space['2'],
+    });
+
+    if (cooperationTag && !corpData) {
+        return <CenterLoadingSpinner />;
+    }
 
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
-            <Box w="100%" position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
+            <Box w="100%" display="flex" flexDirection={headerDirection} position="relative" padding={headerSpace} justifyContent="center" alignItems="center">
                 <Image
                     alt="Lernfair"
                     position="absolute"
@@ -195,11 +238,8 @@ const Registration: React.FC = () => {
                         uri: require('../assets/images/globals/lf-bg.png'),
                     }}
                 />
-                {/* <Box position="absolute" left={space['1']} top={space['1']}>
-          <BackButton onPress={goBack} />
-        </Box> */}
-                <Logo />
-                <Heading mt={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
+                <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
+                <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider
@@ -230,9 +270,9 @@ const Registration: React.FC = () => {
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>
                         {currentIndex === 0 && <UserType />}
-                        {currentIndex === 1 && <PersonalData />}
+                        {currentIndex === 1 && <PersonalData cooperation={cooperation} />}
                         {currentIndex === 2 && <SchoolClass />}
-                        {currentIndex === 3 && <SchoolType />}
+                        {currentIndex === 3 && <SchoolTypeUI />}
                         {currentIndex === 4 && <UserState />}
                         {currentIndex === 5 && <Legal onRegister={attemptRegister} />}
                     </Box>

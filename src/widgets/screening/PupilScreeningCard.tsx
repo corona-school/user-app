@@ -14,5 +14,10 @@ export function PupilScreeningCard({ screening }: { screening: PupilScreening })
     if (screening!.updatedAt) {
         message += ` Entscheidung: ${new Date(screening!.updatedAt).toLocaleDateString()}`;
     }
+
+    if (screening!.screeners.length) {
+        message += `\nScreener: ` + screening!.screeners.map((it) => `${it.firstname} ${it.lastname}`).join(', ');
+    }
+
     return <InfoCard noMargin icon={icon} background={background} title={title} message={message} />;
 }
