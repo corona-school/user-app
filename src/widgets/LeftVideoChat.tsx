@@ -5,7 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import PartyIcon from '../assets/icons/lernfair/lf-party.svg';
 import { useEffect } from 'react';
-import { removeZoomStyles } from '../components/ZoomMeeting';
+
+// Duplicated from ZoomMeeting.tsx to avoid the dependency to the lazy loaded component
+export function removeZoomStyles() {
+    document.getElementById('zmmtg-root')!.style.display = 'none';
+}
 
 const getAppointmentOrganizer = gql(`
 query appointmentOrganizer($appointmentId: Float!) {

@@ -60,8 +60,24 @@ import SingleMatch from './pages/SingleMatch';
 import CoursePage from './pages/CoursePage';
 import MatchPage from './pages/MatchPage';
 import Chat from './pages/Chat';
-import ZoomMeeting from './components/ZoomMeeting';
 import { ScreeningDashboard } from './pages/screening/Dashboard';
+import { lazyWithRetry } from './lazy';
+import { Suspense } from 'react';
+import CenterLoadingSpinner from './components/CenterLoadingSpinner';
+import { datadogRum } from '@datadog/browser-rum';
+
+// Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
+// so we try to load that as late as possible (when a meeting is opened)
+const ZoomMeeting = lazyWithRetry(
+    () => {
+        // Disable Datadog Session Replay (for the Meeting window)
+        // When leaving the window we reload the page, which reenables session replay (in another session)
+        datadogRum.stopSessionReplayRecording();
+        // Then load Zoom
+        return import('./components/ZoomMeeting');
+    },
+    { prefetch: false }
+);
 
 export default function NavigatorLazy() {
     return (
@@ -281,7 +297,9 @@ export default function NavigatorLazy() {
                 path="/video-chat/:id/:type"
                 element={
                     <RequireAuth>
-                        <ZoomMeeting />
+                        <Suspense fallback={<CenterLoadingSpinner />}>
+                            <ZoomMeeting />
+                        </Suspense>
                     </RequireAuth>
                 }
             ></Route>

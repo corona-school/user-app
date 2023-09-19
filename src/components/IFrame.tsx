@@ -13,7 +13,7 @@ const IFrame: React.FC<Props> = (props) => {
 
     return (
         <CSSWrapper className="iframe-wrapper" style={{ height: props.height || '100%', width: props.width || '100%' }}>
-            <iframe {...props} height={props.height || '100%'} width={props.width || '100%'} />
+            <iframe className="dd-privacy-hidden" {...props} height={props.height || '100%'} width={props.width || '100%'} />
         </CSSWrapper>
     );
 };
