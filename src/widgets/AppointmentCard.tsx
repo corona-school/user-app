@@ -134,7 +134,7 @@ const AppointmentCard: React.FC<Props> = ({
     if (dateNextLecture) {
         if (currentTime < dateNextLecture.toMillis()) {
             // appointment not yet started
-            remainingTime = toTimerString(dateNextLecture.toMillis(), currentTime);
+            remainingTime = toTimerString(dateNextLecture, DateTime.fromMillis(currentTime));
         } else if (duration && currentTime < dateNextLecture.toMillis() + duration * 60 * 1000) {
             // appointment not yet ended -> ongoing
             ongoingTime = '' + Math.floor((currentTime - dateNextLecture.toMillis()) / 1000 / 60) + ' Minuten';
