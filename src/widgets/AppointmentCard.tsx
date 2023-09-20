@@ -44,7 +44,6 @@ type Props = {
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     tags?: { name: string }[];
-    dateFirstLecture?: string;
     dateNextLecture?: string;
     duration?: number; // in minutes
     title: string;

@@ -348,7 +348,6 @@ const Dashboard: React.FC<Props> = () => {
                                             key={subcourse.id}
                                             description={subcourse.course.description}
                                             tags={subcourse.course.tags}
-                                            dateFirstLecture={subcourse?.firstLecture?.start ?? undefined}
                                             dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
                                             image={subcourse.course.image ?? undefined}
                                             title={subcourse.course.name}

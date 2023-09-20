@@ -33,7 +33,6 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
             key={index}
             description={subcourse.course!.description}
             tags={subcourse.course!.tags}
-            dateFirstLecture={(showDate && subcourse.firstLecture?.start) || ''}
             dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
             image={subcourse.course!.image ?? undefined}
             title={subcourse.course!.name}

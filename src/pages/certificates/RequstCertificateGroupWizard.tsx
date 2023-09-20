@@ -81,7 +81,6 @@ const RequestCertificateGroupWizard: React.FC<Props> = ({ onNext }) => {
                                                     variant="horizontal"
                                                     description={course.course.description}
                                                     tags={course.course.tags}
-                                                    dateFirstLecture={course.firstLecture?.start || ''}
                                                     dateNextLecture={course.nextLecture?.start || ''}
                                                     countCourse={course.lectures.length}
                                                     image={course.course.image ?? undefined}
