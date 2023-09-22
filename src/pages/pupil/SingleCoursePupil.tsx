@@ -93,6 +93,9 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
             start
             duration
         }
+        canJoin {
+            allowed
+        }
         canContactInstructor { allowed reason }
         isParticipant
         isOnWaitingList
