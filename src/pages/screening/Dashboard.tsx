@@ -30,7 +30,7 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                         </Text>
                     </VStack>
                     <HStack space={space['0.5']}>
-                        {pupil!.matches!.length && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
+                        {pupil!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
                             <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
                         )}
@@ -182,7 +182,7 @@ export function ScreeningDashboard() {
                 {searchLoading && <CenterLoadingSpinner />}
                 {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
                 {!selectedPupil && (
-                    <HStack marginTop="20px">
+                    <HStack marginTop="20px" space={space['1']}>
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
                             .map((it) => (
