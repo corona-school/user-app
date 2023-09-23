@@ -12,6 +12,7 @@ import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
+import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -226,6 +227,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </>
             )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
+            {screeningToEdit && <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />}
             <PupilHistory pupil={pupil} previousScreenings={previousScreenings} />
         </VStack>
     );
