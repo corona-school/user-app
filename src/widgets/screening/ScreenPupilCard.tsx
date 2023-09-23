@@ -13,9 +13,11 @@ import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
+import { useUser } from '../../hooks/useApollo';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
+    const screener = useUser();
 
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -61,6 +63,20 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
         deactivateAccount({ variables: { pupilId: pupil!.id! } });
     }
 
+    function suggest(positive?: boolean) {
+        let resultComment = screeningComment;
+
+        if (positive === true) {
+            resultComment += `\n\n[${screener.firstname} ${screener.lastname}]: Annahme empfehlen\n\n`;
+        }
+
+        if (positive === false) {
+            resultComment += `\n\n[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
+        }
+
+        storeEdit({ variables: { id: screening!.id!, screeningComment: resultComment, status: PupilScreeningStatus.Dispute } });
+    }
+
     return (
         <>
             {screening!.status! === Pupil_Screening_Status_Enum.Dispute && (
@@ -81,14 +97,21 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                     {deactivateResult && <InfoCard icon="no" title={t('screening.account_deactivated')} message="" />}
                     {!loading && !loadingDeactivation && !data && !deactivateResult && (
                         <>
-                            <Button
-                                onPress={() => {
-                                    storeEdit({ variables: { id: screening!.id!, screeningComment, status: PupilScreeningStatus.Dispute } });
-                                }}
-                                variant={isDispute ? 'outline' : 'solid'}
-                            >
-                                {t('screening.save_and_four_eyes')}
+                            <Button onPress={() => suggest()} variant={isDispute ? 'outline' : 'solid'}>
+                                Speichern
                             </Button>
+                            <Button onPress={() => suggest(true)} variant={isDispute ? 'outline' : 'solid'}>
+                                Annahme empfehlen
+                            </Button>
+                            <Button onPress={() => suggest(false)} variant={isDispute ? 'outline' : 'solid'}>
+                                Ablehnung empfehlen
+                            </Button>
+                        </>
+                    )}
+                </HStack>
+                <HStack space={space['1']} display="flex">
+                    {!loading && !loadingDeactivation && !data && !deactivateResult && (
+                        <>
                             <Button onPress={() => setConfirmSuccess(true)} variant={isDispute ? 'solid' : 'outline'}>
                                 {t('screening.success')}
                             </Button>
