@@ -72,6 +72,11 @@ const MatchingStudent: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
+    });
+
     const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
         gql(`
             mutation StudentDeleteMatchRequest {
@@ -150,7 +155,6 @@ const MatchingStudent: React.FC<Props> = () => {
                                 />
                             )}
                         </VStack>
-
                         <Tabs
                             tabs={[
                                 {
@@ -184,6 +188,17 @@ const MatchingStudent: React.FC<Props> = () => {
                                 },
                             ]}
                         />
+                        <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                            <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
+                            <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                                {t('matching.homeworkhelp.texthelper')}
+                            </Text>
+                            <VStack marginBottom={space['1.5']}>
+                                <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                    {t('matching.homeworkhelp.button')}
+                                </Button>
+                            </VStack>
+                        </VStack>
                     </VStack>
                 )}
             </WithNavigation>
