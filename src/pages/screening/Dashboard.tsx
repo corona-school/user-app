@@ -19,7 +19,7 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
 
     return (
         <Pressable onPress={onClick}>
-            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" minW="400px">
+            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" margin="20px" minW="400px">
                 <VStack space={space['1.5']}>
                     <VStack space={space['0.5']}>
                         <Heading color="white" fontSize="20px">
@@ -33,7 +33,7 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                         </Text>
                     </VStack>
                     <HStack space={space['0.5']}>
-                        {pupil!.matches!.length && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
+                        {pupil!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
                             <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
                         )}
@@ -187,13 +187,13 @@ export function ScreeningDashboard() {
                 {searchLoading && <CenterLoadingSpinner />}
                 {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
                 {!selectedPupil && (
-                    <VStack marginTop="20px" space={space['1']}>
+                    <HStack display="flex" flexWrap="wrap">
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
                             .map((it, id) => (
                                 <PupilCard key={id} onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
                             ))}
-                    </VStack>
+                    </HStack>
                 )}
                 {selectedPupil && (
                     <ScreenPupilCard
