@@ -139,17 +139,19 @@ const Matching: React.FC<Props> = () => {
                     </Stack>
                 }
             >
-                <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
-                    <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
-                    <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
-                        {t('matching.homeworkhelp.textpupil')}
-                    </Text>
-                    <VStack marginBottom={space['1.5']}>
-                        <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                            {t('matching.homeworkhelp.button')}
-                        </Button>
+                {process.env.REACT_APP_HOMEWORKHELP !== '' && (
+                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                        <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
+                        <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                            {t('matching.homeworkhelp.textpupil')}
+                        </Text>
+                        <VStack marginBottom={space['1.5']}>
+                            <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                {t('matching.homeworkhelp.button')}
+                            </Button>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
                 <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                 <Box paddingX={space['1']}>
                     <Tabs

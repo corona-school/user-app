@@ -375,20 +375,22 @@ const Dashboard: React.FC<Props> = () => {
                                     ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
-                        <VStack marginBottom={space['1.5']}>
-                            <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                            <CTACard
-                                title={t('dashboard.homeworkhelp.catcher')}
-                                closeable={false}
-                                content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                button={
-                                    <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                        {t('matching.homeworkhelp.button')}
-                                    </Button>
-                                }
-                                icon={<BooksIcon />}
-                            />
-                        </VStack>
+                        {process.env.REACT_APP_HOMEWORKHELP !== '' && (
+                            <VStack marginBottom={space['1.5']}>
+                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                <CTACard
+                                    title={t('dashboard.homeworkhelp.catcher')}
+                                    closeable={false}
+                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                    button={
+                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                            {t('matching.homeworkhelp.button')}
+                                        </Button>
+                                    }
+                                    icon={<BooksIcon />}
+                                />
+                            </VStack>
+                        )}
                     </VStack>
                 )}
             </WithNavigation>
