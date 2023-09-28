@@ -136,24 +136,24 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
             {activeMatches.length > 0 && (
                 <VStack space={space['1']}>
                     <Heading>{t('screening.active_matches')}</Heading>
-                    {activeMatches.map((it) => (
-                        <MatchStudentCard match={it} />
+                    {activeMatches.map((it, id) => (
+                        <MatchStudentCard key={id} match={it} />
                     ))}
                 </VStack>
             )}
             {dissolvedMatches.length > 0 && (
                 <VStack space={space['1']}>
                     <Heading>{t('screening.dissolved_matches')}</Heading>
-                    {dissolvedMatches.map((it) => (
-                        <MatchStudentCard match={it} />
+                    {dissolvedMatches.map((it, id) => (
+                        <MatchStudentCard key={id} match={it} />
                     ))}
                 </VStack>
             )}
             {previousScreenings.length > 0 && (
                 <VStack space={space['1']}>
                     <Heading>{t('screening.previous_screenings')}</Heading>
-                    {previousScreenings.map((screening) => (
-                        <PupilScreeningCard screening={screening} />
+                    {previousScreenings.map((screening, id) => (
+                        <PupilScreeningCard key={id} screening={screening} />
                     ))}
                 </VStack>
             )}
