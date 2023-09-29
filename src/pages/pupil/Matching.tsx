@@ -15,6 +15,7 @@ import Matches from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
+import { Heading, useBreakpointValue } from 'native-base';
 
 type Props = {};
 
@@ -57,7 +58,7 @@ const query = gql(`
 
 const Matching: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
-    const { space } = useTheme();
+    const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const toast = useToast();
@@ -112,6 +113,21 @@ const Matching: React.FC<Props> = () => {
         return data?.me?.pupil?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
+    const ContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['containerWidth'],
+    });
+
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
+    });
+
+    const ButtonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
+    });
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -123,6 +139,19 @@ const Matching: React.FC<Props> = () => {
                     </Stack>
                 }
             >
+                {process.env.REACT_APP_HOMEWORKHELP !== '' && (
+                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                        <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
+                        <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                            {t('matching.homeworkhelp.textpupil')}
+                        </Text>
+                        <VStack marginBottom={space['1.5']}>
+                            <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                {t('matching.homeworkhelp.button')}
+                            </Button>
+                        </VStack>
+                    </VStack>
+                )}
                 <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                 <Box paddingX={space['1']}>
                     <Tabs
