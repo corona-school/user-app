@@ -26,6 +26,9 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                             {pupil.firstname} {pupil.lastname}
                         </Heading>
                         <Text color="white" fontSize="15px">
+                            E-Mail: <b>{pupil.email}</b>
+                        </Text>
+                        <Text color="white" fontSize="15px">
                             {t('screening.registered_since')} {new Date(pupil!.createdAt).toLocaleDateString()}
                         </Text>
                     </VStack>
@@ -75,6 +78,7 @@ export function ScreeningDashboard() {
                     createdAt
                     firstname
                     lastname
+                    email
                     languages
                     subjectsFormatted { name }
                     grade
@@ -111,6 +115,7 @@ export function ScreeningDashboard() {
                 createdAt
                 firstname
                 lastname
+                email
                 languages
                 subjectsFormatted { name }
                 grade
@@ -185,8 +190,8 @@ export function ScreeningDashboard() {
                     <HStack display="flex" flexWrap="wrap">
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
-                            .map((it) => (
-                                <PupilCard onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
+                            .map((it, id) => (
+                                <PupilCard key={id} onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
                             ))}
                     </HStack>
                 )}
@@ -207,10 +212,12 @@ export function ScreeningDashboard() {
                         {disputedScreenings && disputedScreenings.pupilsToBeScreened.length !== 0 && (
                             <>
                                 <Heading>{t('screening.disputed_screenings')}</Heading>
-                                <HStack marginTop="20px">
+                                <VStack marginTop="20px">
                                     {disputedScreenings &&
-                                        disputedScreenings.pupilsToBeScreened.map((it) => <PupilCard onClick={() => setSelectedPupil(it)} pupil={it} />)}
-                                </HStack>
+                                        disputedScreenings.pupilsToBeScreened.map((it, id) => (
+                                            <PupilCard key={id} onClick={() => setSelectedPupil(it)} pupil={it} />
+                                        ))}
+                                </VStack>
                             </>
                         )}
                     </>
