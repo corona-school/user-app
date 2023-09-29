@@ -38,6 +38,14 @@ const matching = {
         ctaCardContent: 'Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…',
         ctaCardButton: 'Zu den Gruppen-Kursen',
     },
+    homeworkhelp: {
+        title: 'Hausaufgabenhilfe',
+        textpupil:
+            'Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.',
+        texthelper:
+            'In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.',
+        button: 'Zur Hausaufgabenhilfe',
+    },
     pending: {
         modal: {
             title: 'Anfrage zurücknehmen',
