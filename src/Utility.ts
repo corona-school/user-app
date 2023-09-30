@@ -11,10 +11,9 @@ export const REDIRECT_PASSWORD = `/login`;
 
 export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
     const days = compareDate.startOf('day').diff(refDate.startOf('day'), 'days').days;
-    if (days > 7 && days < 14) return `Nächste Woche`;
-    if (days >= 14) return compareDate.toLocaleString();
 
-    if (days > 1) return `In ${days} Tagen`;
+    if (days > 1 && days <= 14) return `In ${days} Tagen`;
+    if (days > 14) return compareDate.toLocaleString();
 
     if (days === 1) {
         return `Morgen`;
