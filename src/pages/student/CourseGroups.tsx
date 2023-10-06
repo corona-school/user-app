@@ -7,17 +7,22 @@ import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
+type SubsetSubcourse = Pick<
+    Subcourse,
+    'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'isParticipant'
+>;
+
 type GroupProps = {
-    currentCourses: Subcourse[] | undefined;
-    draftCourses: Subcourse[] | undefined;
-    pastCourses: Subcourse[] | undefined;
+    currentCourses: SubsetSubcourse[] | undefined;
+    draftCourses: SubsetSubcourse[] | undefined;
+    pastCourses: SubsetSubcourse[] | undefined;
 };
 
 const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const renderSubcourse = (subcourse: Subcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
+    const renderSubcourse = (subcourse: SubsetSubcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <AppointmentCard
             key={index}
             description={subcourse.course.description}

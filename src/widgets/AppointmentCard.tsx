@@ -244,8 +244,6 @@ const AppointmentCard: React.FC<Props> = ({
                                     <>
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
-                                                {/* TODO: Replace dateNextLecture here with dateNextLecture. Data for that must be fetched
-                                                in all parent components of this one first and passed down as prop. See issue #755 */}
                                                 {dateNextLecture.toLocaleString(
                                                     //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
                                                     {

@@ -92,8 +92,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         !subcourse.isParticipant &&
                         Date.now() >= Date.parse(subcourse.lectures[0].start) &&
                         !isInPast &&
-                        subcourse?.canJoin?.allowed &&
-                        (trafficStatus === 'free' || 'last') && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
+                        subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
