@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack, Heading } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
+import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -23,6 +24,7 @@ import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
+import CTACard from '../../widgets/CTACard';
 
 type Props = {};
 
@@ -374,6 +376,22 @@ const Dashboard: React.FC<Props> = () => {
                                     ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
+                        {process.env.REACT_APP_HOMEWORKHELP !== '' && (
+                            <VStack marginBottom={space['1.5']}>
+                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                <CTACard
+                                    title={t('dashboard.homeworkhelp.catcher')}
+                                    closeable={false}
+                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                    button={
+                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                            {t('matching.homeworkhelp.button')}
+                                        </Button>
+                                    }
+                                    icon={<BooksIcon />}
+                                />
+                            </VStack>
+                        )}
                     </VStack>
                 )}
             </WithNavigation>

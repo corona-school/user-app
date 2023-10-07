@@ -316,22 +316,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         }
 
-        // -------- TEMP: Test of Homework help -----
-        // commented out due to summer break
-        //if (pupil)
-        //    infos.push({
-        //        label: 'homeworkHelpPupil',
-        //        btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
-        //        lang: {},
-        //    });
-
-        //if (roles.includes('TUTOR'))
-        //    infos.push({
-        //       label: 'homeworkHelpStudent',
-        //        btnfn: [() => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank')],
-        //        lang: {},
-        //    });
-
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
