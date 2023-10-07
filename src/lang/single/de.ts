@@ -44,6 +44,7 @@ const single = {
         editCourse: 'Kurs editieren',
         courseInPast: 'Dieser Kurs ist bereits vorbei.',
         courseCancelled: 'Dieser Kurs wurde abgesagt.',
+        courseStartedButJoinable: 'Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden',
     },
     card: {
         expandCardButton: 'Mehr Infos',

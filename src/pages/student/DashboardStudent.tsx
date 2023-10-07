@@ -12,7 +12,7 @@ import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { LFMatch } from '../../types/lernfair/Match';
 import { DateTime } from 'luxon';
-import { getFirstLectureFromSubcourse, getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -71,6 +71,9 @@ const query = gql(`
                     lectures {
                         start
                         duration
+                    }
+                    nextLecture {
+                        start
                     }
                     course {
                         name
@@ -216,11 +219,13 @@ const DashboardStudent: React.FC<Props> = () => {
         const courses = [...publishedSubcourses];
 
         courses.sort((a, b) => {
-            const aLecture = getFirstLectureFromSubcourse(a.lectures);
-            const bLecture = getFirstLectureFromSubcourse(b.lectures);
+            const aLecture = a.nextLecture;
+            const bLecture = b.nextLecture;
 
             if (bLecture === null) return -1;
             if (aLecture === null) return 1;
+
+            if (!aLecture || !bLecture) return 0;
 
             const aDate = DateTime.fromISO(aLecture.start).toMillis();
             const bDate = DateTime.fromISO(bLecture.start).toMillis();
@@ -284,14 +289,13 @@ const DashboardStudent: React.FC<Props> = () => {
                                     <CSSWrapper className="course-list__wrapper">
                                         {sortedPublishedSubcourses.length > 0 ? (
                                             sortedPublishedSubcourses.slice(0, 4).map((sub, index) => {
-                                                const firstLecture = getFirstLectureFromSubcourse(sub.lectures);
-                                                if (!firstLecture) return <></>;
+                                                if (!sub.nextLecture) return <></>;
                                                 return (
                                                     <AppointmentCard
                                                         key={index}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
-                                                        dateFirstLecture={firstLecture.start}
+                                                        dateNextLecture={sub?.nextLecture?.start ?? undefined}
                                                         image={sub.course.image || ''}
                                                         title={sub.course.name}
                                                         countCourse={sub.lectures.length}

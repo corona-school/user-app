@@ -13,7 +13,7 @@ import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
     subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
-        Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant'>> & {
+        Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
             lectures: Pick<Lecture, 'start' | 'duration'>[];
         };
@@ -88,6 +88,11 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
                     {!subcourse?.cancelled && isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
                     {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
+                    {userType === 'pupil' &&
+                        !subcourse.isParticipant &&
+                        Date.now() >= Date.parse(subcourse.lectures[0].start) &&
+                        !isInPast &&
+                        subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
