@@ -50,7 +50,7 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                             </Text>
                         </VStack>
                         <HStack space={space['0.5']} flexWrap="wrap" mr="3">
-                            {match!.subjectsFormatted.map((subject) => (
+                            {match!.subjectsFormatted.map((subject, id) => (
                                 <Tag key={`subject tag ${subject.name}`} text={subject.name} />
                             ))}
                         </HStack>
