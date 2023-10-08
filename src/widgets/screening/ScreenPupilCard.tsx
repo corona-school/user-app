@@ -190,6 +190,19 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { t } = useTranslation();
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
+
+    const [confirmDeactivation, setConfirmDeactivation] = useState(false);
+    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
+        gql(`
+            mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
+        `)
+    );
+    function deactivate() {
+        setConfirmDeactivation(false);
+        deactivateAccount({ variables: { pupilId: pupil!.id! } });
+        refresh();
+    }
+
     const { previousScreenings, screeningToEdit } = useMemo(() => {
         const previousScreenings: PupilScreening[] = [...pupil!.screenings!];
         let screeningToEdit: PupilScreening | null = null;
@@ -236,7 +249,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 <>
                     {!needsScreening && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
                     {needsScreening && (
-                        <HStack>
+                        <HStack space={space['1']}>
                             <Button
                                 onPress={async () => {
                                     await createScreening({ variables: { pupilId: pupil.id } });
@@ -245,6 +258,20 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                             >
                                 Screening anlegen
                             </Button>
+                            {pupil.active && !loadingDeactivation && !deactivateResult && (
+                                <>
+                                    <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
+                                        {t('screening.deactivate')}
+                                    </Button>
+                                    <ConfirmModal
+                                        danger
+                                        isOpen={confirmDeactivation}
+                                        onClose={() => setConfirmDeactivation(false)}
+                                        onConfirmed={deactivate}
+                                        text={t('screening.confirm_deactivate', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                    />
+                                </>
+                            )}
                         </HStack>
                     )}
                 </>

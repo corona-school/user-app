@@ -19,8 +19,8 @@ export function LanguageTagList({ languages }: { languages: string[] }) {
 
     return (
         <Row space={space['0.5']}>
-            {languages.map((it) => (
-                <LanguageTag language={it} />
+            {languages.map((it, id) => (
+                <LanguageTag key={id} language={it} />
             ))}
         </Row>
     );
