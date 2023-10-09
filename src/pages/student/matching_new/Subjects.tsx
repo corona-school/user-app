@@ -16,7 +16,7 @@ const Subjects: React.FC = () => {
             <Heading fontSize="2xl">Fachauswahl</Heading>
             <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
             <SubjectSelector
-                subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
                 removeSubject={removeSubject}
             />
