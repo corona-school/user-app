@@ -24,7 +24,7 @@ export const SubjectSelector = ({
 
     return (
         <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
-            {((selectable ?? SUBJECTS.filter((it) => it !== DAZ)) as string[]).map((subject) => (
+            {((selectable ?? SUBJECTS) as string[]).map((subject) => (
                 <Box margin={space['0.5']} maxW="250px" flexBasis="100px" flexGrow={1}>
                     <IconTagList
                         key={subject}
