@@ -236,6 +236,9 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     // Otherwise the screening is successful and not invalidated yet, so no need to take action
 
     const impersonate = async () => {
+        // We need to work around the popup blocker of modern browsers, as you can only
+        // call window.open(.., '_blank') in a synchronous event handler of onClick,
+        // so we open the window before we call any asynchronous functions and later set the URL when we have the data.
         const w = window.open('', '_blank');
         if (w != null) {
             const res = await createLoginToken({ variables: { userId: `pupil/${pupil!.id}` } });
