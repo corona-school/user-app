@@ -126,8 +126,6 @@ const AppointmentCard: React.FC<Props> = ({
         setCurrentTime(Date.now());
     }, 1000);
 
-    console.log('overrideLink (AppCard)', overrideLink);
-
     let remainingTime: string | null = null;
     let ongoingTime: string | null = null;
     let ended = false;
