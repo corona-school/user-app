@@ -1,7 +1,7 @@
 import { Text, Column, Box, Row, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import Tag from '../components/Tag';
 import { Subject } from '../gql/graphql';
+import SubjectList from './SubjectList';
 
 const OpenMatchRequest = ({
     cancelLoading,
@@ -35,16 +35,7 @@ const OpenMatchRequest = ({
                     <Text color="darkText" bold>
                         {t('matching.shared.subjects')}
                     </Text>
-                    <Row space={space['0.5']}>
-                        {subjects &&
-                            subjects.map((sub) => (
-                                <Tag
-                                    text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray) + (sub.mandatory ? ' (priorisiert)' : '')}
-                                    variant="secondary-light"
-                                    marginBottom={0}
-                                />
-                            ))}
-                    </Row>
+                    {subjects && <SubjectList subjects={subjects} />}
                 </Column>
                 <Button
                     isDisabled={cancelLoading}
