@@ -75,6 +75,7 @@ query SingleMatch($matchId: Int! ) {
                 firstname
                 lastname
             }
+            override_meeting_link
         }
   }
 }`);

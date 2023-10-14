@@ -39,6 +39,7 @@ export const STUDENT_APPOINTMENT = gql(`
             subcourse {
                 published
             }
+            override_meeting_link
         }
     }
 `);
@@ -74,6 +75,7 @@ export const PUPIL_APPOINTMENT = gql(`
             subcourse {
                 published
             }
+            override_meeting_link
         }
     }
 `);

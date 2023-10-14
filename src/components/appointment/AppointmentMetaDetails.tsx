@@ -28,6 +28,7 @@ type MetaProps = {
     participants?: AppointmentParticipant[];
     declinedBy: string[];
     appointmentId?: number;
+    overrideLink?: string;
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
 };
@@ -44,6 +45,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     participants,
     declinedBy,
     appointmentId,
+    overrideLink,
     appointmentType,
     isOrganizer,
 }) => {
@@ -108,6 +110,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         buttonText={t('appointment.detail.videochatButton')}
                         width={buttonWidth}
                         isOver={isAppointmentOver}
+                        overrideLink={overrideLink}
                     />
                 </>
             )}

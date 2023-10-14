@@ -155,6 +155,7 @@ const AppointmentList: React.FC<Props> = ({
                         total={appointment.total}
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
+                        overrideLink={appointment.override_meeting_link}
                         appointmentId={appointment.id}
                     />
                 </Box>

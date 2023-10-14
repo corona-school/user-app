@@ -24,6 +24,7 @@ export type Appointment = {
     subcourse?: {
         published?: boolean;
     };
+    override_meeting_link?: string;
 };
 
 // type of appointments to send to the BE

@@ -175,6 +175,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
                             canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
+                            overrideLink={appointment.override_meeting_link ?? undefined}
                         />
                         <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
                             {t('single.actions.leaveSubcourse')}

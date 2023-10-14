@@ -112,6 +112,7 @@ const query = gql(`
                 }
                 declinedBy
                 zoomMeetingId
+                override_meeting_link
                 subcourse {
                     published
                     course {

@@ -116,6 +116,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
               subcourse {
                 published
               }
+              override_meeting_link
             }
     }
 }
