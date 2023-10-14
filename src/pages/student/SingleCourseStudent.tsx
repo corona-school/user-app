@@ -297,7 +297,7 @@ const SingleCourseStudent = () => {
     const doRemoveParticipant = async (pupilId: number) => {
         await removeParticipant({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
         toast.show({ description: t('single.removeParticipantFromCourseModal.success'), placement: 'top' });
-        refetchBasics();
+        refetchInstructorData();
     };
 
     const cancelCourse = useCallback(async () => {
