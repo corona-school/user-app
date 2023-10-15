@@ -268,6 +268,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </Text>
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
             </HStack>
+            {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
+                <HStack space={space['1']}>
+                    <Button
+                        onPress={async () => {
+                            await impersonate();
+                        }}
+                    >
+                        Als Nutzer anmelden
+                    </Button>
+                </HStack>
+            )}
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
                 <>
@@ -282,15 +293,6 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                             >
                                 Screening anlegen
                             </Button>
-                            {myRoles.includes('TRUSTED_SCREENER') && (
-                                <Button
-                                    onPress={async () => {
-                                        await impersonate();
-                                    }}
-                                >
-                                    Als Nutzer anmelden
-                                </Button>
-                            )}
                             {pupil.active && !loadingDeactivation && !deactivateResult && (
                                 <>
                                     <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
