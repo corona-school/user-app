@@ -163,6 +163,11 @@ const matching = {
             title: 'Warum möchtest du das Lernpaar auflösen?',
             btn: 'Lernpaar auflösen',
         },
+        warningModal: {
+            title: 'Bist du sicher?',
+            body: 'Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Lernunterstützung geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.',
+            btn: 'Trotzdem auflösen',
+        },
         newMatch: {
             title: 'Neues Lernpaar bilden',
             descriptionPupil:
