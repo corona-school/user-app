@@ -161,6 +161,11 @@ const single = {
         amount: 'Anzahl Schüler:innen',
         success: 'Schüler:innen erfolgreich hinzugefügt',
     },
+    removeParticipantFromCourseModal: {
+        header: 'Schüler:in aus Kurs entfernen',
+        remove: 'Entfernen',
+        success: 'Schüler:in erfolgreich entfernt',
+    },
 };
 
 export default single;
