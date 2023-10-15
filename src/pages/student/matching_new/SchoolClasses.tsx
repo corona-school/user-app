@@ -104,7 +104,7 @@ const SchoolClasses: React.FC<Props> = () => {
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-            <NextPrevButtons onPressPrev={() => setCurrentIndex(2)} onPressNext={submit} />
+            <NextPrevButtons onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
         </VStack>
     );
 };
