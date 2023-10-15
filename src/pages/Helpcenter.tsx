@@ -160,20 +160,13 @@ const HelpCenter: React.FC = () => {
                             studentComponent={<Text>{t('helpcenter.subtitle.student')}</Text>}
                         />
                     </Box>
-                    {/* <Box
-            maxWidth={ContentContainerWidth}
-            paddingBottom={space['2.5']}
-            paddingX={space['1.5']}>
-            <Heading paddingBottom={space['0.5']}>
-              {t('helpcenter.onboarding.title')}
-            </Heading>
-            <Text paddingBottom={space['1.5']}>
-              {t('helpcenter.onboarding.content')}
-            </Text>
-            <Button width={buttonWidth} onPress={() => onboardingCheck()}>
-              {t('helpcenter.onboarding.button')}
-            </Button>
-          </Box> */}
+                    <Box maxWidth={ContentContainerWidth} paddingBottom={space['2.5']} paddingX={space['1.5']}>
+                        <Heading paddingBottom={space['0.5']}>{t('helpcenter.onboarding.title')}</Heading>
+                        <Text paddingBottom={space['1.5']}>{t('helpcenter.onboarding.content')}</Text>
+                        <Button width={buttonWidth} onPress={() => navigate(`/onboarding/${userType === 'pupil' ? 'students' : 'helper'}`)}>
+                            {t('helpcenter.onboarding.button')}
+                        </Button>
+                    </Box>
                 </Box>
                 <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
                     <Tabs

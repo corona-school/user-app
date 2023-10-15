@@ -72,6 +72,12 @@ const Settings: React.FC = () => {
                             <Column mb={tabspace}>
                                 <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                             </Column>
+                            <Column mb={tabspace}>
+                                <EditDataRow
+                                    label={t('settings.general.onboarding')}
+                                    onPress={() => navigate(`/onboarding/${userType === 'pupil' ? 'students' : 'helper'}`)}
+                                />
+                            </Column>
                         </ProfileSettingRow>
                     )}
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
