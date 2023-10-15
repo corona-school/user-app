@@ -17,11 +17,6 @@ const Welcome: React.FC = () => {
     const deactivated = locState?.deactivated;
     const retainPath = locState?.from?.pathname ?? '/start';
 
-    const fromLegacy =
-        document.referrer.includes('my.lern-fair.de') ||
-        document.location.host === 'my.lern-fair.de' ||
-        new URL(document.location.href).searchParams.has('from_legacy');
-
     useEffect(() => {
         trackPageView({
             documentTitle: 'Welcome Page',
@@ -39,16 +34,7 @@ const Welcome: React.FC = () => {
             defaultButtonText={t('signup')}
             defaultbuttonLink={() => navigate('/registration', { state: { retainPath: retainPath } })}
             icon={<Logo />}
-            extraContent={
-                <>
-                    {deactivated && <AlertMessage content={t('welcome.deactivationAlert')} />}
-                    {fromLegacy && (
-                        <Text color="amber.400" textAlign="center" paddingBottom="30px">
-                            <Trans i18nKey="welcome.legacyNotice" components={{ b: <b /> }} />
-                        </Text>
-                    )}
-                </>
-            }
+            extraContent={<>{deactivated && <AlertMessage content={t('welcome.deactivationAlert')} />}</>}
             footer={
                 <>
                     <Flex h="100%" flex="1" flexGrow={1}>
