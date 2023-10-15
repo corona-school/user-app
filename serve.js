@@ -10,6 +10,8 @@ if (process.env.DOMAIN) {
             res.redirect(req.url.replace(req.hostname, process.env.DOMAIN));
             return;
         }
+
+        next();
     });
 }
 
