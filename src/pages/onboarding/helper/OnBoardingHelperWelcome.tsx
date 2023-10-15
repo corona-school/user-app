@@ -57,7 +57,7 @@ const OnBoardingHelperWelcome: React.FC<Props> = () => {
                 <OnBoardingSkipModal
                     onPressClose={() => setCancelModal(false)}
                     onPressDefaultButton={() => setCancelModal(false)}
-                    onPressOutlineButton={() => navigate('/onboarding-list')}
+                    onPressOutlineButton={() => navigate(-1)}
                 />
             </Modal>
         </View>
