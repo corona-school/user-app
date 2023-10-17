@@ -24,8 +24,8 @@ export function SubjectTagList({ subjects }: { subjects: Subject[] }) {
 
     return (
         <Row space={space['0.5']}>
-            {subjects.map((it) => (
-                <SubjectTag subject={it} />
+            {subjects.map((it, id) => (
+                <SubjectTag key={id} subject={it} />
             ))}
         </Row>
     );

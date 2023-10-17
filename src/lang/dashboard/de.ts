@@ -50,6 +50,11 @@ const dashboard = {
             email: 'E-Mail',
         },
     },
+    homeworkhelp: {
+        title: 'Hausaufgabenhilfe',
+        catcher: 'Du brauchst Hilfe bei deinen Hausaufgaben?',
+        text: 'Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.',
+    },
     noproposalsPupil: 'Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!',
 };
 export default dashboard;

@@ -19,18 +19,21 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
 
     return (
         <Pressable onPress={onClick}>
-            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" minW="400px">
+            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" margin="20px" minW="400px">
                 <VStack space={space['1.5']}>
                     <VStack space={space['0.5']}>
                         <Heading color="white" fontSize="20px">
                             {pupil.firstname} {pupil.lastname}
                         </Heading>
                         <Text color="white" fontSize="15px">
+                            E-Mail: <b>{pupil.email}</b>
+                        </Text>
+                        <Text color="white" fontSize="15px">
                             {t('screening.registered_since')} {new Date(pupil!.createdAt).toLocaleDateString()}
                         </Text>
                     </VStack>
                     <HStack space={space['0.5']}>
-                        {pupil!.matches!.length && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
+                        {pupil!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
                             <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
                         )}
@@ -75,6 +78,7 @@ export function ScreeningDashboard() {
                     createdAt
                     firstname
                     lastname
+                    email
                     languages
                     subjectsFormatted { name }
                     grade
@@ -111,6 +115,7 @@ export function ScreeningDashboard() {
                 createdAt
                 firstname
                 lastname
+                email
                 languages
                 subjectsFormatted { name }
                 grade
@@ -182,11 +187,11 @@ export function ScreeningDashboard() {
                 {searchLoading && <CenterLoadingSpinner />}
                 {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
                 {!selectedPupil && (
-                    <HStack marginTop="20px">
+                    <HStack display="flex" flexWrap="wrap">
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
-                            .map((it) => (
-                                <PupilCard onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
+                            .map((it, id) => (
+                                <PupilCard key={id} onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
                             ))}
                     </HStack>
                 )}
@@ -207,10 +212,12 @@ export function ScreeningDashboard() {
                         {disputedScreenings && disputedScreenings.pupilsToBeScreened.length !== 0 && (
                             <>
                                 <Heading>{t('screening.disputed_screenings')}</Heading>
-                                <HStack marginTop="20px">
+                                <VStack marginTop="20px">
                                     {disputedScreenings &&
-                                        disputedScreenings.pupilsToBeScreened.map((it) => <PupilCard onClick={() => setSelectedPupil(it)} pupil={it} />)}
-                                </HStack>
+                                        disputedScreenings.pupilsToBeScreened.map((it, id) => (
+                                            <PupilCard key={id} onClick={() => setSelectedPupil(it)} pupil={it} />
+                                        ))}
+                                </VStack>
                             </>
                         )}
                     </>

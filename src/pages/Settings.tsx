@@ -56,7 +56,7 @@ const Settings: React.FC = () => {
                     </Button>
                 }
                 isLoading={loading}
-                headerLeft={<NotificationAlert />}
+                headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
                 <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <HStack space={space['1']} alignItems="center">

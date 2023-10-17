@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
+import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
@@ -23,6 +23,7 @@ import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
+import CTACard from '../../widgets/CTACard';
 
 type Props = {};
 
@@ -138,6 +139,7 @@ const query = gql(`
                 duration
             }
             firstLecture { start duration }
+            nextLecture { start duration }
         }
 
         myRoles
@@ -148,16 +150,12 @@ const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
-    const toast = useToast();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView, trackEvent } = useMatomo();
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>(false);
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-    const [dissolveData, setDissolveData] = useState<{ id: number }>();
-    const [toastShown, setToastShown] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -208,32 +206,6 @@ const Dashboard: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [cancelMatchRequest]
     );
-
-    const [dissolve, _dissolve] = useMutation(
-        gql(`
-            mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
-            }
-        `),
-        {
-            refetchQueries: [query],
-        }
-    );
-
-    const dissolveMatch = useCallback((match: { id: number }) => {
-        setDissolveData(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    useEffect(() => {
-        if (_dissolve?.data?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({
-                description: 'Das Match wurde aufgelöst',
-                placement: 'top',
-            });
-        }
-    }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
 
     const activeMatches = useMemo(() => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
@@ -347,7 +319,7 @@ const Dashboard: React.FC<Props> = () => {
                                             key={subcourse.id}
                                             description={subcourse.course.description}
                                             tags={subcourse.course.tags}
-                                            dateFirstLecture={subcourse?.firstLecture?.start ?? undefined}
+                                            dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
                                             image={subcourse.course.image ?? undefined}
                                             title={subcourse.course.name}
                                             countCourse={subcourse.lectures.length}
@@ -373,22 +345,25 @@ const Dashboard: React.FC<Props> = () => {
                                     ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
                             </HSection>
                         </VStack>
+                        {process.env.REACT_APP_HOMEWORKHELP !== '' && (
+                            <VStack marginBottom={space['1.5']}>
+                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                <CTACard
+                                    title={t('dashboard.homeworkhelp.catcher')}
+                                    closeable={false}
+                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                    button={
+                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                            {t('matching.homeworkhelp.button')}
+                                        </Button>
+                                    }
+                                    icon={<BooksIcon />}
+                                />
+                            </VStack>
+                        )}
                     </VStack>
                 )}
             </WithNavigation>
-            <DissolveMatchModal
-                showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: string) => {
-                    setShowDissolveModal(false);
-                    return await dissolve({
-                        variables: {
-                            matchId: dissolveData!.id,
-                            dissolveReason: parseInt(reason),
-                        },
-                    });
-                }}
-                onPressBack={() => setShowDissolveModal(false)}
-            />
             <CancelMatchRequestModal
                 showModal={showCancelModal}
                 onClose={() => setShowCancelModal(false)}

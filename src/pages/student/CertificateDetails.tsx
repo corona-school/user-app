@@ -151,7 +151,7 @@ const CertificateList: React.FC = () => {
                                 isFullHeight
                                 variant="horizontal"
                                 description={'Lorem Ipsum'}
-                                dateFirstLecture={DateTime.now().toISO()}
+                                dateNextLecture={DateTime.now().toISO()}
                                 title={'Kursname'}
                                 tags={[{ name: 'Mathe' }, { name: 'Deutsch' }]}
                             />

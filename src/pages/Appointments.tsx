@@ -122,10 +122,12 @@ const Appointments: React.FC = () => {
                 headerContent={<Hello />}
                 headerTitle={t('appointment.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    userType !== 'screener' && (
+                        <Stack alignItems="center" direction="row">
+                            <HelpNavigation />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}

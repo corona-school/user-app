@@ -9,17 +9,17 @@ export const TOKEN_LENGTH = 32;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
 
-export const toTimerString = (refDate: DateTime, compareDate: DateTime) => {
-    const days = compareDate.startOf('day').diff(refDate.startOf('day'), 'days').days;
-    if (days > 7) return `In einigen Wochen`;
+export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
+    const days = theDate.startOf('day').diff(referenceDate.startOf('day'), 'days').days;
 
-    if (days > 1) return `In ${days} Tagen`;
+    if (days > 1 && days <= 14) return `In ${days} Tagen`;
+    if (days > 14) return theDate.toLocaleString();
 
     if (days === 1) {
         return `Morgen`;
     }
 
-    const diff = Math.abs(compareDate.toUnixInteger() - refDate.toUnixInteger());
+    const diff = Math.abs(theDate.toUnixInteger() - referenceDate.toUnixInteger());
     const hrs = Math.floor((diff / (60 * 60)) % 24);
     const mins = Math.floor((diff / 60) % 60);
 
@@ -100,32 +100,6 @@ export const handleDateString: (datetime: string, format: string, locale?: strin
     });
 };
 
-export const getFirstLectureFromSubcourse: (lectures: LFLecture[], pastLectures?: boolean) => LFLecture = (lectures, pastLectures) => {
-    let firstDate: DateTime = null!;
-    let firstLecture: LFLecture = null!;
-
-    const now = DateTime.now().toMillis();
-
-    for (const lecture of lectures) {
-        const date = DateTime.fromISO(lecture.start);
-
-        if (!pastLectures && date.toMillis() < now) continue;
-
-        if (!firstLecture) {
-            firstLecture = lecture;
-            firstDate = date;
-            continue;
-        }
-
-        if (date.toMillis() < firstDate.toMillis()) {
-            firstLecture = lecture;
-            firstDate = date;
-        }
-    }
-
-    return firstLecture;
-};
-
 export const getTrafficStatus: (participants: number, maxParticipants: number) => TrafficStatus = (participants = 0, maxParticipants = 0) => {
     return participants >= maxParticipants ? 'full' : maxParticipants - participants <= 5 ? 'last' : 'free';
 };
@@ -174,7 +148,6 @@ const Utility = {
     findMinMaxClassRange,
     formatDate,
     handleDateString,
-    getFirstLectureFromSubcourse,
     getTrafficStatus,
     sortByDate,
 };
