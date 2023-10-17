@@ -18,6 +18,7 @@ const Subjects: React.FC = () => {
                 subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
                 removeSubject={removeSubject}
+                includeDaz
             />
             <NextPrevButtons
                 isDisabledNext={matchRequest.subjects.length === 0}
