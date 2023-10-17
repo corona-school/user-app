@@ -27,6 +27,7 @@ query SingleMatch($matchId: Int! ) {
   match(matchId: $matchId){
     id
     uuid
+    createdAt
     dissolved
     dissolveReason
     pupil {
@@ -123,7 +124,6 @@ const SingleMatch = () => {
             }
         `)
     );
-
     const dissolve = useCallback(
         async (reason: string) => {
             setShowDissolveModal(false);
@@ -281,6 +281,7 @@ const SingleMatch = () => {
 
                 <DissolveMatchModal
                     showDissolveModal={showDissolveModal}
+                    alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
                     onPressDissolve={async (reason: string) => {
                         return await dissolve(reason);
                     }}
