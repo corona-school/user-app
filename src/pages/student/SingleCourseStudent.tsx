@@ -301,10 +301,10 @@ const SingleCourseStudent = () => {
     };
 
     const cancelCourse = useCallback(async () => {
+        setShowCancelModal(false);
         await cancelSubcourse();
         toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
         refetchBasics();
-        setShowCancelModal(false);
     }, [canceldData]);
 
     const tabs: Tab[] = [
