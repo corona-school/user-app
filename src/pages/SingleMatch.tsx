@@ -237,16 +237,18 @@ const SingleMatch = () => {
                                         justifyContent="center"
                                         space={isMobile ? space['0.5'] : space['2']}
                                     >
-                                        <Button
-                                            onPress={() =>
-                                                (window.location.href = `mailto:${
-                                                    userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
-                                                }`)
-                                            }
-                                            my={isMobile ? '0' : '1'}
-                                        >
-                                            {t('matching.shared.contactMail')}
-                                        </Button>
+                                        {isActiveMatch && (
+                                            <Button
+                                                onPress={() =>
+                                                    (window.location.href = `mailto:${
+                                                        userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
+                                                    }`)
+                                                }
+                                                my={isMobile ? '0' : '1'}
+                                            >
+                                                {t('matching.shared.contactMail')}
+                                            </Button>
+                                        )}
 
                                         {isActiveMatch && (
                                             <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
