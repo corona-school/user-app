@@ -93,10 +93,9 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
             start
             duration
         }
-        canJoin {
-            allowed
-        }
+        canJoin { allowed reason }
         canContactInstructor { allowed reason }
+        canJoinWaitinglist { allowed reason }
         isParticipant
         isOnWaitingList
         cancelled
@@ -138,101 +137,6 @@ const SingleCoursePupil = () => {
     const { subcourse } = data ?? {};
 
     const { course } = subcourse ?? {};
-    const appointments = subcourse?.appointments ?? [];
-
-    const myNextAppointment = useMemo(() => appointments[0], [appointments]);
-    const { data: canJoinData } = useQuery(
-        gql(`
-        query CanJoin($subcourseId: Int!) { 
-            subcourse(subcourseId: $subcourseId) {
-                canJoin { allowed reason }
-            }
-        }
-    `),
-        { variables: { subcourseId: subcourseId } }
-    );
-
-    const [joinSubcourse, { loading: loadingSubcourseJoined, data: joinedSubcourseData }] = useMutation(
-        gql(`
-            mutation SubcourseJoin($subcourseId: Float!) {
-                subcourseJoin(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
-    );
-
-    const [leaveSubcourse, { loading: loadingSubcourseLeft, data: leftSubcourseData }] = useMutation(
-        gql(`
-            mutation LeaveSubcourse($subcourseId: Float!) {
-                subcourseLeave(subcourseId: $subcourseId)
-            }
-        `),
-        { variables: { subcourseId: subcourseId } }
-    );
-
-    const [joinWaitingList, { data: joinedWaitinglist, loading: loadingJoinedWaitinglist }] = useMutation(
-        gql(`
-            mutation JoinWaitingList($subcourseId: Float!) {
-                subcourseJoinWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
-    );
-
-    const [leaveWaitingList, { data: leftWaitinglist, loading: loadingLeftWaitinglist }] = useMutation(
-        gql(`
-            mutation LeaveWaitingList($subcourseId: Float!) {
-                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
-            }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
-    );
-
-    const [chatCreateForSubcourse] = useMutation(
-        gql(`
-            mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
-                participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
-            }       
-        `)
-    );
-
-    const [chatCreateAsProspect] = useMutation(
-        gql(`
-            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
-                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
-            }       
-        `)
-    );
-
-    async function contactInstructorAsParticipant() {
-        const conversation = await chatCreateForSubcourse({
-            variables: { subcourseId: subcourseId, memberUserId: `student/${data?.subcourse?.instructors[0].id}` },
-        });
-        if (conversation) {
-            navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
-        }
-    }
-
-    async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({
-            variables: { subcourseId: subcourseId, instructorUserId: `student/${data?.subcourse?.instructors[0].id}` },
-        });
-        if (conversation) {
-            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
-        }
-    }
-
-    const courseFull = (subcourse?.participantsCount ?? 0) >= (subcourse?.maxParticipants ?? 0);
 
     const isInPast = useMemo(
         () =>
@@ -299,29 +203,7 @@ const SingleCoursePupil = () => {
                     />
                 )}
 
-                {course && subcourse && !isInPast && (
-                    <PupilCourseButtons
-                        appointment={myNextAppointment as Lecture}
-                        courseFull={courseFull}
-                        subcourse={subcourse as Subcourse}
-                        canJoinSubcourse={canJoinData?.subcourse?.canJoin as any}
-                        joinedSubcourse={joinedSubcourseData?.subcourseJoin}
-                        joinedWaitinglist={joinedWaitinglist?.subcourseJoinWaitinglist}
-                        leftSubcourseData={leftSubcourseData?.subcourseLeave}
-                        leftWaitinglist={leftWaitinglist?.subcourseLeaveWaitinglist}
-                        loadingSubcourseJoined={loadingSubcourseJoined}
-                        loadingSubcourseLeft={loadingSubcourseLeft}
-                        loadingJoinedWaitinglist={loadingJoinedWaitinglist}
-                        loadingWaitinglistLeft={loadingLeftWaitinglist}
-                        joinSubcourse={() => joinSubcourse()}
-                        leaveSubcourse={() => leaveSubcourse()}
-                        joinWaitinglist={() => joinWaitingList()}
-                        leaveWaitinglist={() => leaveWaitingList()}
-                        contactInstructorAsParticipant={contactInstructorAsParticipant}
-                        contactInstructorAsProspect={contactInstructorAsProspect}
-                        refresh={refetch}
-                    />
-                )}
+                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} />}
                 <Tabs tabs={tabs} />
             </Stack>
         </WithNavigation>
