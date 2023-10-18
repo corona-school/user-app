@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import WithNavigation from '../../../components/WithNavigation';
-import German from './German';
 import SchoolClasses from './SchoolClasses';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
@@ -109,8 +108,7 @@ const RequestMatching: React.FC = () => {
                         <Box paddingX={space['1']} paddingBottom={space['1']}>
                             {currentIndex === 0 && <UpdateData state={data.me.student!.state} refetchQuery={query} />}
                             {currentIndex === 1 && <Subjects />}
-                            {currentIndex === 2 && <German />}
-                            {currentIndex === 3 && <SchoolClasses />}
+                            {currentIndex === 2 && <SchoolClasses />}
                         </Box>
                     )}
                 </RequestMatchContext.Provider>
