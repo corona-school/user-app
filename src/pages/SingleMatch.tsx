@@ -260,7 +260,7 @@ const SingleMatch = () => {
                                                 {t('matching.shared.directCall')}
                                             </Button>
                                         )}
-                                        {isActiveMatch && (
+                                        {!data?.match?.dissolved && (
                                             <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
                                                 {t('matching.shared.dissolveMatch')}
                                             </Button>
