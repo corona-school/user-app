@@ -5,12 +5,11 @@ import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../config';
 import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../widgets/AlertMessage';
 import { useTranslation } from 'react-i18next';
-import { gql, useQuery } from '@apollo/client';
-import UserType from '../pages/registration/UserType';
+import { Dissolve_Reason } from '../gql/graphql';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
-    onPressDissolve: (dissolveReason: string) => any;
+    onPressDissolve: (dissolveReason: Dissolve_Reason) => any;
     onPressBack: () => any;
 };
 
@@ -25,10 +24,12 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
     const navigate = useNavigate();
     const { space } = useTheme();
     const userType = useUserType();
-    const [reason, setReason] = useState<string>('');
+    const [reason, setReason] = useState<Dissolve_Reason>();
+    const reasons = useMemo(() => Object.values(Dissolve_Reason).filter((x) => x != Dissolve_Reason.AccountDeactivated && x != Dissolve_Reason.Unknown), []);
 
-    const reasons = useMemo(() => (userType === 'student' && studentReasonOptions) || pupilReasonOptions, [userType]);
-
+    const onReasonChange = (key: String) => {
+        setReason(Object.values(Dissolve_Reason).find((x) => x == key));
+    };
     return (
         <Modal isOpen={showDissolveModal} onClose={onPressBack}>
             <Modal.Content>
@@ -37,11 +38,11 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                     <>
                         <Modal.Header>{t('matching.dissolve.modal.title')}</Modal.Header>
                         <Modal.Body>
-                            <Radio.Group name="dissolve-reason" value={reason} onChange={setReason}>
+                            <Radio.Group name="dissolve-reason" value={reason} onChange={(key) => onReasonChange(key)}>
                                 <VStack space={space['1']}>
-                                    {reasons.map((_: number, index: number) => (
-                                        <Radio key={index} value={`${index + 1}`}>
-                                            {t(`matching.dissolveReasons.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
+                                    {reasons.map((key) => (
+                                        <Radio key={key} value={key}>
+                                            {t(`matching.dissolveReasons.${userType}.${key}` as unknown as TemplateStringsArray)}
                                         </Radio>
                                     ))}
                                 </VStack>
@@ -49,7 +50,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, o
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason)}>
+                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason ?? Dissolve_Reason.Unknown)}>
                                     {t('matching.dissolve.modal.btn')}
                                 </Button>
                                 <Button onPress={onPressBack} variant="ghost">

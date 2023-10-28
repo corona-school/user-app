@@ -23,7 +23,7 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
-import { Lecture } from '../../gql/graphql';
+import { Dissolve_Reason, Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
 
 type Props = {};
@@ -213,8 +213,8 @@ const Dashboard: React.FC<Props> = () => {
 
     const [dissolve, _dissolve] = useMutation(
         gql(`
-            mutation dissolveMatchPupil($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
+            mutation dissolveMatchPupil($matchId: Int!, $dissolveReason: dissolve_reason!) {
+                matchDissolve(info: {matchId: $matchId, dissolveReason: $dissolveReason})
             }
         `),
         {
@@ -396,12 +396,12 @@ const Dashboard: React.FC<Props> = () => {
             </WithNavigation>
             <DissolveMatchModal
                 showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: string) => {
+                onPressDissolve={async (reason: Dissolve_Reason) => {
                     setShowDissolveModal(false);
                     return await dissolve({
                         variables: {
                             matchId: dissolveData!.id,
-                            dissolveReason: parseInt(reason),
+                            dissolveReason: reason,
                         },
                     });
                 }}
