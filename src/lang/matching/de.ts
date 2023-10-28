@@ -179,9 +179,9 @@ const matching = {
     dissolveReasons: {
         student: {
             ghosted: 'Mein:e Lernpartner:in hat sich nicht zurückgemeldet',
-            noMoreHelpNeeded: 'Mein:e Lernpartner:in benötigt keine Unterstützung mehr',
             isOfNoHelp: 'Ich konnte meinem/meiner Lernpartner:in nicht behilflich sein',
             noMoreTime: 'Ich habe keine Zeit mehr mein*e Lernpartner:in zu unterstützen',
+            noMoreHelpNeeded: 'Mein:e Lernpartner:in benötigt keine Unterstützung mehr',
             personalIssues: 'Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene',
             scheduleIssues: 'Wir konnten keine gemeinsamen Termine finden',
             technicalIssues: 'Wir hatten technische Schwierigkeiten',

@@ -1,5 +1,5 @@
 import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
 import { useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
@@ -11,18 +11,23 @@ type DissolveModalProps = {
     onPressBack: () => any;
 };
 
-// corresponding dissolve reason ids in translation file
-// for now just loop through 1-9 (+1 in loop)
-export const studentReasonOptions = new Array(9).fill(0);
-export const pupilReasonOptions = new Array(9).fill(0);
-
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
     const { space } = useTheme();
     const userType = useUserType();
     const [reason, setReason] = useState<Dissolve_Reason>();
-    const reasons = useMemo(() => Object.values(Dissolve_Reason).filter((x) => x != Dissolve_Reason.AccountDeactivated && x != Dissolve_Reason.Unknown), []);
+    const reasons = [
+        Dissolve_Reason.Ghosted,
+        Dissolve_Reason.NoMoreHelpNeeded,
+        Dissolve_Reason.IsOfNoHelp,
+        Dissolve_Reason.NoMoreTime,
+        Dissolve_Reason.PersonalIssues,
+        Dissolve_Reason.ScheduleIssues,
+        Dissolve_Reason.TechnicalIssues,
+        Dissolve_Reason.LanguageIssues,
+        Dissolve_Reason.Other,
+    ];
 
     const onReasonChange = (key: String) => {
         setReason(Object.values(Dissolve_Reason).find((x) => x == key));
