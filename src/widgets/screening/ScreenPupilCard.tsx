@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { VStack, Heading, HStack, Button, TextArea, useTheme, Text } from 'native-base';
+import { Button, Heading, HStack, Text, TextArea, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -7,13 +7,13 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '../../gql/graphql';
+import { Pupil_Screening_Status_Enum, PupilScreeningStatus } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
-import { useUser } from '../../hooks/useApollo';
+import { useRoles, useUser } from '../../hooks/useApollo';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -188,8 +188,28 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
 export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
+    const myRoles = useRoles();
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
+
+    const [confirmDeactivation, setConfirmDeactivation] = useState(false);
+    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
+        gql(`
+            mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
+        `)
+    );
+
+    const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
+        gql(`
+            mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
+        `)
+    );
+    function deactivate() {
+        setConfirmDeactivation(false);
+        deactivateAccount({ variables: { pupilId: pupil!.id! } });
+        refresh();
+    }
+
     const { previousScreenings, screeningToEdit } = useMemo(() => {
         const previousScreenings: PupilScreening[] = [...pupil!.screenings!];
         let screeningToEdit: PupilScreening | null = null;
@@ -215,6 +235,23 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     // Otherwise the screening is successful and not invalidated yet, so no need to take action
 
+    const impersonate = async () => {
+        // We need to work around the popup blocker of modern browsers, as you can only
+        // call window.open(.., '_blank') in a synchronous event handler of onClick,
+        // so we open the window before we call any asynchronous functions and later set the URL when we have the data.
+        const w = window.open('', '_blank');
+        if (w != null) {
+            const res = await createLoginToken({ variables: { userId: `pupil/${pupil!.id}` } });
+            const token = res?.data?.tokenCreateAdmin;
+
+            w.location.href =
+                process.env.NODE_ENV === 'production'
+                    ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
+                    : `http://localhost:3000/login-token?secret_token=${token}&temporary`;
+            w.focus();
+        }
+    };
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
@@ -231,12 +268,23 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </Text>
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
             </HStack>
+            {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
+                <HStack space={space['1']}>
+                    <Button
+                        onPress={async () => {
+                            await impersonate();
+                        }}
+                    >
+                        Als Nutzer anmelden
+                    </Button>
+                </HStack>
+            )}
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
                 <>
                     {!needsScreening && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
                     {needsScreening && (
-                        <HStack>
+                        <HStack space={space['1']}>
                             <Button
                                 onPress={async () => {
                                     await createScreening({ variables: { pupilId: pupil.id } });
@@ -245,6 +293,20 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                             >
                                 Screening anlegen
                             </Button>
+                            {pupil.active && !loadingDeactivation && !deactivateResult && (
+                                <>
+                                    <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
+                                        {t('screening.deactivate')}
+                                    </Button>
+                                    <ConfirmModal
+                                        danger
+                                        isOpen={confirmDeactivation}
+                                        onClose={() => setConfirmDeactivation(false)}
+                                        onConfirmed={deactivate}
+                                        text={t('screening.confirm_deactivate', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                    />
+                                </>
+                            )}
                         </HStack>
                     )}
                 </>

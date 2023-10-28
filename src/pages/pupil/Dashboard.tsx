@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, useToast, Alert, Box, Stack, Heading } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -13,7 +13,6 @@ import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
@@ -23,7 +22,7 @@ import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
-import { Dissolve_Reason, Lecture } from '../../gql/graphql';
+import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
 
 type Props = {};
@@ -140,6 +139,7 @@ const query = gql(`
                 duration
             }
             firstLecture { start duration }
+            nextLecture { start duration }
         }
 
         myRoles
@@ -150,16 +150,12 @@ const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
-    const toast = useToast();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView, trackEvent } = useMatomo();
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>(false);
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-    const [dissolveData, setDissolveData] = useState<{ id: number }>();
-    const [toastShown, setToastShown] = useState<boolean>();
 
     useEffect(() => {
         trackPageView({
@@ -210,32 +206,6 @@ const Dashboard: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [cancelMatchRequest]
     );
-
-    const [dissolve, _dissolve] = useMutation(
-        gql(`
-            mutation dissolveMatchPupil($matchId: Int!, $dissolveReason: dissolve_reason!) {
-                matchDissolve(info: {matchId: $matchId, dissolveReason: $dissolveReason})
-            }
-        `),
-        {
-            refetchQueries: [query],
-        }
-    );
-
-    const dissolveMatch = useCallback((match: { id: number }) => {
-        setDissolveData(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    useEffect(() => {
-        if (_dissolve?.data?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({
-                description: 'Das Match wurde aufgelöst',
-                placement: 'top',
-            });
-        }
-    }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
 
     const activeMatches = useMemo(() => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
@@ -349,7 +319,7 @@ const Dashboard: React.FC<Props> = () => {
                                             key={subcourse.id}
                                             description={subcourse.course.description}
                                             tags={subcourse.course.tags}
-                                            dateFirstLecture={subcourse?.firstLecture?.start ?? undefined}
+                                            dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
                                             image={subcourse.course.image ?? undefined}
                                             title={subcourse.course.name}
                                             countCourse={subcourse.lectures.length}
@@ -394,19 +364,6 @@ const Dashboard: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <DissolveMatchModal
-                showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: Dissolve_Reason) => {
-                    setShowDissolveModal(false);
-                    return await dissolve({
-                        variables: {
-                            matchId: dissolveData!.id,
-                            dissolveReason: reason,
-                        },
-                    });
-                }}
-                onPressBack={() => setShowDissolveModal(false)}
-            />
             <CancelMatchRequestModal
                 showModal={showCancelModal}
                 onClose={() => setShowCancelModal(false)}

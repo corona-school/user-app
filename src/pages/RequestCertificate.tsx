@@ -9,7 +9,7 @@ import { gql } from '../gql';
 import { CertificateCreationInput, Match } from '../gql/graphql';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
-import { LFSubCourse } from '../types/lernfair/Course';
+import { Subcourse } from '../gql/graphql';
 import InstructionProgress from '../widgets/InstructionProgress';
 import RequestCertificateMatchingWizard from './certificates/RequestCertificateMatchingWizard';
 import RequestCertificateOverview from './certificates/RequestCertificateOverview';
@@ -23,7 +23,7 @@ type IRequestCertificateData = {
     otherActions: string[];
     pupilMatches: (Pick<Match, 'uuid' | 'subjectsFormatted' | 'createdAt'> & { pupil: { firstname?: string | null; lastname?: string | null } })[];
     requestData: { [matchUuid: string]: Pick<CertificateCreationInput, 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'ongoingLessons' | 'subjects'> };
-    courses: LFSubCourse[];
+    courses: Subcourse[];
 };
 type IRequestCertificateContext = {
     state: IRequestCertificateData;

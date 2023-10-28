@@ -11,6 +11,7 @@ type ACourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> & 
 type ASubcourse = Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'maxGrade' | 'minGrade' | 'published' | 'cancelled' | 'id'> &
     (Pick<Subcourse, 'isInstructor'> | Pick<Subcourse, 'isParticipant' | 'isOnWaitingList'>) & {
         firstLecture?: null | ALecture;
+        nextLecture?: null | ALecture;
         lectures: ALecture[];
         course: ACourse;
     };
@@ -30,7 +31,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
                 key={index}
                 description={subcourse.course.description}
                 tags={subcourse.course.tags}
-                dateFirstLecture={(showDate && subcourse.firstLecture?.start) || ''}
+                dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
                 image={subcourse.course.image ?? undefined}
                 title={subcourse.course.name}
                 countCourse={subcourse.lectures.length}

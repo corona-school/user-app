@@ -11,6 +11,7 @@ export enum UserType {
 export type Role =
     | 'USER'
     | 'SCREENER'
+    | 'TRUSTED_SCREENER'
     | 'PUPIL'
     | 'STUDENT'
     | 'WANNABE_TUTOR'

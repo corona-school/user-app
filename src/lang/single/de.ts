@@ -44,6 +44,7 @@ const single = {
         editCourse: 'Kurs editieren',
         courseInPast: 'Dieser Kurs ist bereits vorbei.',
         courseCancelled: 'Dieser Kurs wurde abgesagt.',
+        courseStartedButJoinable: 'Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden',
     },
     card: {
         expandCardButton: 'Mehr Infos',
@@ -159,6 +160,11 @@ const single = {
         add: 'Hinzufügen',
         amount: 'Anzahl Schüler:innen',
         success: 'Schüler:innen erfolgreich hinzugefügt',
+    },
+    removeParticipantFromCourseModal: {
+        header: 'Schüler:in aus Kurs entfernen',
+        remove: 'Entfernen',
+        success: 'Schüler:in erfolgreich entfernt',
     },
 };
 

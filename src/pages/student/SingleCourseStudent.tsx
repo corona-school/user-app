@@ -23,14 +23,18 @@ import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
+import { SubcourseParticipant } from '../../types/lernfair/Course';
+import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
 
 function Participants({
     subcourseId,
     contactParticipant,
+    removeParticipant,
     isInstructor,
 }: {
     subcourseId: number;
     contactParticipant: (participantId: string) => void;
+    removeParticipant: (participantId: number) => Promise<void>;
     isInstructor: boolean;
 }) {
     const { t } = useTranslation();
@@ -50,6 +54,18 @@ function Participants({
     `),
         { variables: { subcourseId } }
     );
+    const [isRemoveParticipantModalOpen, setIsRemoveParticipantModalOpen] = useState(false);
+    const [participantToRemove, setParticipantToRemove] = useState<SubcourseParticipant>();
+
+    const handleOpenModal = (participant: SubcourseParticipant) => {
+        setIsRemoveParticipantModalOpen(true);
+        setParticipantToRemove(participant);
+    };
+    const handleRemoveParticipant = async (pupilId: number) => {
+        await removeParticipant(pupilId);
+        setIsRemoveParticipantModalOpen(false);
+        setParticipantToRemove(undefined);
+    };
 
     if (loading) return <CenterLoadingSpinner />;
 
@@ -60,8 +76,16 @@ function Participants({
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} isInstructor={isInstructor} contactParticipant={contactParticipant} />
+                <ParticipantRow
+                    participant={participant}
+                    isInstructor={isInstructor}
+                    contactParticipant={contactParticipant}
+                    removeParticipant={handleOpenModal}
+                />
             ))}
+            <Modal isOpen={isRemoveParticipantModalOpen} onClose={() => setIsRemoveParticipantModalOpen(false)} w="full">
+                <RemoveParticipantFromCourseModal participant={participantToRemove} removeParticipantFromCourse={handleRemoveParticipant} />
+            </Modal>
         </>
     );
 }
@@ -262,11 +286,25 @@ const SingleCourseStudent = () => {
         { variables: { subcourseId: subcourseId } }
     );
 
+    const [removeParticipant] = useMutation(
+        gql(`
+					mutation removeParticipantFromCourse($subcourseId: Float!, $pupilId: Float!) {
+						subcourseLeave(subcourseId: $subcourseId, pupilId: $pupilId)
+					}
+				`)
+    );
+
+    const doRemoveParticipant = async (pupilId: number) => {
+        await removeParticipant({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
+        toast.show({ description: t('single.removeParticipantFromCourseModal.success'), placement: 'top' });
+        refetchInstructorData();
+    };
+
     const cancelCourse = useCallback(async () => {
+        setShowCancelModal(false);
         await cancelSubcourse();
         toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
         refetchBasics();
-        setShowCancelModal(false);
     }, [canceldData]);
 
     const tabs: Tab[] = [
@@ -310,6 +348,7 @@ const SingleCourseStudent = () => {
                         subcourseId={subcourseId}
                         isInstructor={subcourse.isInstructor}
                         contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
+                        removeParticipant={doRemoveParticipant}
                     />
                 </>
             ),

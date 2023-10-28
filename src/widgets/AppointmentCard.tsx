@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -44,7 +44,6 @@ type Props = {
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     tags?: { name: string }[];
-    dateFirstLecture?: string;
     dateNextLecture?: string;
     duration?: number; // in minutes
     title: string;
@@ -82,7 +81,6 @@ const AppointmentCard: React.FC<Props> = ({
     appointmentId,
     appointmentType,
     tags,
-    dateFirstLecture: _dateFirst,
     dateNextLecture: _dateNext,
     duration,
     title,
@@ -120,7 +118,6 @@ const AppointmentCard: React.FC<Props> = ({
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
-    const dateFirstLecture = _dateFirst && DateTime.fromISO(_dateFirst);
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
 
     const navigate = useNavigate();
@@ -133,13 +130,13 @@ const AppointmentCard: React.FC<Props> = ({
     let ongoingTime: string | null = null;
     let ended = false;
 
-    if (dateFirstLecture) {
-        if (currentTime < dateFirstLecture.toMillis()) {
+    if (dateNextLecture) {
+        if (currentTime < dateNextLecture.toMillis()) {
             // appointment not yet started
-            remainingTime = toTimerString(DateTime.fromMillis(currentTime), dateFirstLecture);
-        } else if (duration && currentTime < dateFirstLecture.toMillis() + duration * 60 * 1000) {
+            remainingTime = toTimerString(DateTime.fromMillis(currentTime), dateNextLecture);
+        } else if (duration && currentTime < dateNextLecture.toMillis() + duration * 60 * 1000) {
             // appointment not yet ended -> ongoing
-            ongoingTime = '' + Math.floor((currentTime - dateFirstLecture.toMillis()) / 1000 / 60) + ' Minuten';
+            ongoingTime = '' + Math.floor((currentTime - dateNextLecture.toMillis()) / 1000 / 60) + ' Minuten';
         } else {
             ended = true;
         }
@@ -151,7 +148,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateFirst && duration ? canJoinMeeting(_dateFirst, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
+    const isCurrent = _dateNext && duration ? canJoinMeeting(_dateNext, duration, isOrganizer ? 30 : 10, DateTime.now()) : false;
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
@@ -243,18 +240,16 @@ const AppointmentCard: React.FC<Props> = ({
                             </Box>
 
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
-                                {!isTeaser && dateFirstLecture && (
+                                {!isTeaser && dateNextLecture && (
                                     <>
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
-                                                {/* TODO: Replace dateFirstLecture here with dateNextLecture. Data for that must be fetched
-                                                in all parent components of this one first and passed down as prop. See issue #755 */}
-                                                {dateFirstLecture.toLocaleString(
+                                                {dateNextLecture.toLocaleString(
                                                     //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
                                                     {
-                                                        weekday: 'short',
+                                                        weekday: 'long',
+                                                        month: '2-digit',
                                                         year: 'numeric',
-                                                        month: 'long',
                                                         day: '2-digit',
                                                         hour: '2-digit',
                                                         minute: '2-digit',
@@ -269,7 +264,7 @@ const AppointmentCard: React.FC<Props> = ({
                                         </Row>
                                     </>
                                 )}
-                                {dateFirstLecture && isTeaser && (
+                                {dateNextLecture && isTeaser && (
                                     <Row marginBottom={space['1']} alignItems="center">
                                         <Column marginRight="10px">
                                             <Text>{<LFTimerIcon />}</Text>
@@ -379,7 +374,7 @@ const AppointmentCard: React.FC<Props> = ({
                                     </Button>
                                 )}
 
-                                {isTeaser && hasVideoButton && appointmentId && _dateFirst && duration && appointmentType && (
+                                {isTeaser && hasVideoButton && appointmentId && _dateNext && duration && appointmentType && (
                                     <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
                                         <VideoButton
                                             appointmentId={appointmentId}
@@ -425,12 +420,12 @@ const AppointmentCard: React.FC<Props> = ({
 
                         <Box width="72%" paddingX="10px" paddingY={space['1.5']}>
                             <Row space={1} marginTop={space['0.5']}>
-                                {dateFirstLecture && (
+                                {dateNextLecture && (
                                     <Text>
-                                        {t('from')} {dateFirstLecture.toFormat('dd.MM.yyyy')}
+                                        {t('from')} {dateNextLecture.toFormat('dd.MM.yyyy')}
                                     </Text>
                                 )}
-                                {dateFirstLecture && countCourse && (
+                                {dateNextLecture && countCourse && (
                                     <>
                                         <Text>•</Text>
                                         <Text>{t('single.card.appointments', { count: countCourse })}</Text>

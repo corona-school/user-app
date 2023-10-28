@@ -18,7 +18,7 @@ import { DateTime } from 'luxon';
 import CourseGroups from './CourseGroups';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
-import { LFSubCourse } from '../../types/lernfair/Course';
+import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import HelpNavigation from '../../components/HelpNavigation';
 
@@ -41,6 +41,10 @@ const StudentGroup: React.FC = () => {
                             minGrade
                             maxGrade
                             firstLecture {
+                                start
+                                duration
+                            }
+                            nextLecture {
                                 start
                                 duration
                             }
@@ -73,6 +77,10 @@ const StudentGroup: React.FC = () => {
                     maxParticipants
                     isInstructor
                     firstLecture {
+                        start
+                        duration
+                    }
+                    nextLecture {
                         start
                         duration
                     }
@@ -253,9 +261,9 @@ const StudentGroup: React.FC = () => {
                                             content: (
                                                 <>
                                                     <CourseGroups
-                                                        currentCourses={publishedSubcourses as LFSubCourse[]}
-                                                        draftCourses={unpublishedOrDraftedSubcourses as LFSubCourse[]}
-                                                        pastCourses={pastOrCancelledSubcourses as LFSubCourse[]}
+                                                        currentCourses={publishedSubcourses as Subcourse[]}
+                                                        draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
+                                                        pastCourses={pastOrCancelledSubcourses as Subcourse[]}
                                                     />
                                                 </>
                                             ),
