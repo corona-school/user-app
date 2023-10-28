@@ -3,7 +3,7 @@ import { Match, Pupil, Pupil_Screening, Screener } from '../gql/graphql';
 export type Opt<T> = T | null | undefined;
 
 export type MatchWithStudent = Opt<
-    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
+    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasonEnum' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
         student?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;

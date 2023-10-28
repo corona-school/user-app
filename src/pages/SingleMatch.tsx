@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
-import { Pupil, Student } from '../gql/graphql';
+import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
@@ -113,8 +113,8 @@ const SingleMatch = () => {
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
-            mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReason: dissolve_reason!) {
+                matchDissolve(info: { matchId: $matchId, dissolveReason: $dissolveReason})
             }
         `)
     );
@@ -127,7 +127,7 @@ const SingleMatch = () => {
         `)
     );
     const dissolve = useCallback(
-        async (reason: string) => {
+        async (reason: Dissolve_Reason) => {
             setShowDissolveModal(false);
             trackEvent({
                 category: 'matching',
@@ -138,7 +138,7 @@ const SingleMatch = () => {
             const dissolved = await dissolveMatch({
                 variables: {
                     matchId: matchId || 0,
-                    dissolveReason: parseInt(reason),
+                    dissolveReason: reason,
                 },
             });
             dissolved && refetch();
@@ -296,7 +296,7 @@ const SingleMatch = () => {
                 <DissolveMatchModal
                     showDissolveModal={showDissolveModal}
                     alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
-                    onPressDissolve={async (reason: string) => {
+                    onPressDissolve={async (reason: Dissolve_Reason) => {
                         return await dissolve(reason);
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
