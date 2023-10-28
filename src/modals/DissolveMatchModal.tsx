@@ -29,9 +29,6 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
         Dissolve_Reason.Other,
     ];
 
-    const onReasonChange = (key: String) => {
-        setReason(Object.values(Dissolve_Reason).find((x) => x === key));
-    };
     return (
         <Modal isOpen={showDissolveModal} onClose={onPressBack}>
             <Modal.Content>
@@ -53,7 +50,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                     <>
                         <Modal.Header>{t('matching.dissolve.modal.title')}</Modal.Header>
                         <Modal.Body>
-                            <Radio.Group name="dissolve-reason" value={reason} onChange={(key) => onReasonChange(key)}>
+                            <Radio.Group name="dissolve-reason" value={reason} onChange={(key) => setReason(key as Dissolve_Reason)}>
                                 <VStack space={space['1']}>
                                     {reasons.map((key) => (
                                         <Radio key={key} value={key}>
