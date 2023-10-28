@@ -88,6 +88,7 @@ export function ScreeningDashboard() {
                         dissolved
                         dissolvedAt
                         dissolveReasonEnum
+                        dissolvedBy
                         pupilFirstMatchRequest
                         subjectsFormatted { name }
                     }
@@ -126,6 +127,7 @@ export function ScreeningDashboard() {
                     dissolved
                     dissolvedAt
                     dissolveReasonEnum
+                    dissolvedBy
                     pupilFirstMatchRequest
                     subjectsFormatted { name }
                 }
