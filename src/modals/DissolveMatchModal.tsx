@@ -30,7 +30,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
     ];
 
     const onReasonChange = (key: String) => {
-        setReason(Object.values(Dissolve_Reason).find((x) => x == key));
+        setReason(Object.values(Dissolve_Reason).find((x) => x === key));
     };
     return (
         <Modal isOpen={showDissolveModal} onClose={onPressBack}>
