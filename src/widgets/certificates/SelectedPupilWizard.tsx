@@ -86,6 +86,7 @@ const SelectedPupilWizard = ({
                         subjects={subjects}
                         addSubject={(it) => setSubjects((prev) => [...prev, it])}
                         removeSubject={(it) => setSubjects((prev) => prev.filter((s) => s !== it))}
+                        includeDaz
                     />
                 </VStack>
 
