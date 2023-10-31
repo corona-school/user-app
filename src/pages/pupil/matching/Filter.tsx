@@ -76,10 +76,12 @@ const Filter: React.FC = () => {
                         Deshalb haben wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:
                     </Text>
 
-                    <Text>● Du brauchst Hilfe beim Lernen.</Text>
-                    <Text>● Du hast Nachteile beim Lernen.</Text>
-                    <Text>● Deine Familie kann dir nicht beim Lernen helfen.</Text>
-                    <Text>● Deine Familie kann keine Nachhilfe für dich bezahlen.</Text>
+                    <Box my={space['0.5']}>
+                        <Text>● Du brauchst Hilfe beim Lernen.</Text>
+                        <Text>● Du hast Nachteile beim Lernen.</Text>
+                        <Text>● Deine Familie kann dir nicht beim Lernen helfen.</Text>
+                        <Text>● Deine Familie kann keine Nachhilfe für dich bezahlen.</Text>
+                    </Box>
 
                     {isFit === 'no' ? (
                         <>
