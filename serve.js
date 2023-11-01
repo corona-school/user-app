@@ -7,6 +7,7 @@ const app = Express();
 if (process.env.DOMAIN) {
     app.use((req, res, next) => {
         if (req.hostname !== process.env.DOMAIN) {
+            console.log("Redirecting " + req.url + " from " + req.hostname + " to " + process.env.DOMAIN);
             res.redirect(req.url.replace(req.hostname, process.env.DOMAIN));
             return;
         }
