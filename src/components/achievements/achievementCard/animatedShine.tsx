@@ -10,10 +10,15 @@ type AnimatedShineProps = {
         positionTop: number;
         animationStart: number;
     };
+    isMobile?: boolean;
 };
 
-const AnimatedShine: React.FC<AnimatedShineProps> = ({ props }) => {
+const AnimatedShine: React.FC<AnimatedShineProps> = ({ props, isMobile }) => {
     const { initialSize, positionLeft, positionTop, animationStart } = props;
+    const thresholdY = isMobile ? -35 : -70;
+    const maxPositionY = isMobile ? 30 : 100;
+    const intervalSpeed = isMobile ? 25 : 10;
+
     const [size, setSize] = useState(initialSize);
     const [positionY, setPositionY] = useState(positionTop);
     const [opacity, setOpacity] = useState(1);
@@ -33,20 +38,20 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ props }) => {
             setScaleUp((prevScaleUp) => !prevScaleUp);
             setCount(0);
         }
-    }, 50);
+    }, intervalSpeed * 5);
 
     useInterval(() => {
-        if (positionY > -70) {
+        if (positionY > thresholdY) {
             setPositionY((prevPositionY) => prevPositionY - 1);
         } else {
-            setPositionY(100);
+            setPositionY(maxPositionY);
             setOpacity(1);
         }
 
-        if (positionY < -20) {
+        if (positionY < thresholdY / 3) {
             setOpacity((prevOpacity) => prevOpacity - 0.02);
         }
-    }, 10);
+    }, intervalSpeed);
 
     return (
         <Box position={'absolute'} top={`${positionTop}px`} left={`${positionLeft}px`}>

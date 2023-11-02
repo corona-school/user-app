@@ -1,30 +1,36 @@
 import { Box, Stack, Text } from 'native-base';
 import { ActionTypes } from './achievementCard';
+import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
+import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
+import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
+import InfoGreen from '../../../assets/icons/icon_info_green.svg';
 import ArrowRight from '../../../assets/icons/icon_arrow_right.svg';
 import Calendar from '../../../assets/icons/icon_calendar.svg';
 import Clock from '../../../assets/icons/icon_clock.svg';
 import Info from '../../../assets/icons/icon_info.svg';
+import Theme from '../../../Theme';
 
 type CardActionDescriptionProps = {
     actionType?: ActionTypes;
     actionDescription: string;
+    isMobile?: boolean;
 };
 
-const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription }) => {
+const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isMobile }) => {
     let icon;
 
     switch (actionType) {
         case ActionTypes.ACTION:
-            icon = <ArrowRight />;
+            icon = isMobile ? <ArrowRightGreen /> : <ArrowRight />;
             break;
         case ActionTypes.APPOINTMENT:
-            icon = <Calendar />;
+            icon = isMobile ? <CalendarGreen /> : <Calendar />;
             break;
         case ActionTypes.INFO:
-            icon = <Info />;
+            icon = isMobile ? <InfoGreen /> : <Info />;
             break;
         case ActionTypes.WAIT:
-            icon = <Clock />;
+            icon = isMobile ? <ClockGreen /> : <Clock />;
             break;
         default:
             break;
@@ -32,10 +38,14 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
 
     return (
         <Stack direction={'row'} alignItems={'center'} space={1}>
-            <Box width={'12px'} height={'12px'} position={'relative'}>
-                {icon}
-            </Box>
-            <Text fontSize={'xs'}>{actionDescription}</Text>
+            {actionType && (
+                <Box width={'12px'} height={'12px'} position={'relative'}>
+                    {icon}
+                </Box>
+            )}
+            <Text fontSize={'xs'} color={isMobile ? Theme.colors.primary[500] : 'black'}>
+                {actionDescription}
+            </Text>
         </Stack>
     );
 };

@@ -3,7 +3,11 @@ import Trophy from '../../assets/icons/icon_trophy.svg';
 import Theme from '../../Theme';
 import { useTranslation } from 'react-i18next';
 
-const AchievementBadge: React.FC = () => {
+type AchievementBadgeProps = {
+    isMobile?: boolean;
+};
+
+const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile }) => {
     const { t } = useTranslation();
     return (
         <div
@@ -11,7 +15,8 @@ const AchievementBadge: React.FC = () => {
                 boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.25)',
                 position: 'absolute',
                 top: '-15px',
-                left: '15px',
+                left: `${isMobile ? 'auto' : '15px'}`,
+                right: `${isMobile ? '15px' : 'auto'}`,
             }}
         >
             <Stack

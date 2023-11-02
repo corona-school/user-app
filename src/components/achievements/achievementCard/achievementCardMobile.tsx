@@ -19,7 +19,7 @@ enum CardState {
     COMPLETED = 'COMPLETED',
 }
 
-type AchievementCardProps = {
+type AchievementCardMobileProps = {
     cardState: CardState;
     actionType?: ActionTypes;
     image: string | undefined;
@@ -32,7 +32,7 @@ type AchievementCardProps = {
     actionDescription?: string;
 };
 
-const AchievementCard: React.FC<AchievementCardProps> = ({
+const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
     cardState,
     actionType,
     image,
@@ -44,29 +44,22 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     currentStep,
     actionDescription,
 }) => {
-    console.log(actionDescription);
-
     return (
         <div
             style={{
-                boxShadow: `${cardState === CardState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'}`,
-                width: 'fit-content',
+                width: '100%',
                 height: 'fit-content',
                 borderRadius: '8px',
             }}
         >
             <Box
                 display={'flex'}
+                flexDirection={'row'}
                 alignItems={'center'}
-                justifyContent={cardState !== CardState.COMPLETED ? 'flex-start' : 'center'}
-                width="280px"
-                height={cardState === CardState.COMPLETED ? '300px' : '360px'}
-                borderColor={cardState === CardState.COMPLETED ? Theme.colors.primary[900] : Theme.colors.primary.grey}
-                borderRadius="8px"
-                borderWidth="1px"
-                paddingY={'16px'}
-                paddingX={'32px'}
-                borderStyle={cardState === CardState.INACTIVE ? 'dashed' : 'solid'}
+                justifyContent="flex-start"
+                width="100%"
+                height={'114px'}
+                padding={'16px'}
                 backgroundColor={
                     cardState === CardState.ACTIVE
                         ? Theme.colors.white
@@ -77,28 +70,34 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             >
                 {newAchievement && cardState === CardState.COMPLETED && (
                     <>
-                        <AchievementBadge />
-                        <NewAchievementShine />
+                        <AchievementBadge isMobile />
+                        <NewAchievementShine isMobile />
                     </>
                 )}
-                <PolaroidImageContainer image={cardState === CardState.COMPLETED ? image : undefined} alternativeText={alternativeText} />
-                <Stack space={5} alignItems={'center'}>
-                    <Stack space={0} alignItems={'center'}>
-                        <Text fontSize="xs" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
+                <PolaroidImageContainer image={cardState === CardState.COMPLETED ? image : undefined} alternativeText={alternativeText} isMobile />
+                <Stack space={2} alignItems={'left'} paddingLeft={'8px'} flex={1}>
+                    <Stack space={0} alignItems={'left'}>
+                        <Text fontSize="2xs" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
                             {subtitle}
                         </Text>
                         <Text fontSize="md" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
                             {title}
                         </Text>
                     </Stack>
-                    {cardState !== CardState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
-                    {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
+                    {!maxSteps && actionDescription ? (
+                        <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile />
+                    ) : (
+                        <>
+                            {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile />}
+                            {cardState !== CardState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
+                        </>
+                    )}
                 </Stack>
             </Box>
         </div>
     );
 };
 
-export default AchievementCard;
+export default AchievementCardMobile;
 
 export { CardState, ActionTypes };

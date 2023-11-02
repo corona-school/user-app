@@ -1,11 +1,10 @@
-import { Box } from 'native-base';
 import AnimatedShine, { AnimatedShineProps } from './animatedShine';
 
 type NewAchievementShineProps = {
-    show?: boolean;
+    isMobile?: boolean;
 };
 
-const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ show }) => {
+const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ isMobile }) => {
     const getShineProps = (index: number): AnimatedShineProps => {
         let animatedShineProps: AnimatedShineProps = {} as AnimatedShineProps;
         switch (index) {
@@ -31,14 +30,31 @@ const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ show }) => {
                 animatedShineProps.props = { initialSize: 47, positionLeft: 147, positionTop: 100, animationStart: 2 };
                 break;
         }
+        if (isMobile) {
+            animatedShineProps.props = {
+                ...animatedShineProps.props,
+                initialSize: animatedShineProps.props.initialSize / 2,
+                positionLeft: animatedShineProps.props.positionLeft / 2,
+                positionTop: animatedShineProps.props.positionTop / 2,
+            };
+        }
         return animatedShineProps;
     };
-    const shineElements = Array.from({ length: 7 }, (_, index) => <AnimatedShine key={index} props={getShineProps(index).props} />);
+    const shineElements = Array.from({ length: 7 }, (_, index) => <AnimatedShine key={index} props={getShineProps(index).props} isMobile={isMobile} />);
 
     return (
-        <Box zIndex={1} display={show ? 'block' : 'none'} position={'absolute'} height={'inherit'} width={'inherit'} backgroundColor={'transparent'}>
+        <div
+            style={{
+                zIndex: 1,
+                position: 'absolute',
+                height: 'inherit',
+                width: 'inherit',
+                backgroundColor: 'transparent',
+                transform: isMobile ? 'translateX(-48px)' : 'none',
+            }}
+        >
             {shineElements}
-        </Box>
+        </div>
     );
 };
 
