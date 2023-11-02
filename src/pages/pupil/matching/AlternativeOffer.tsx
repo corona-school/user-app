@@ -1,5 +1,6 @@
 import { Heading, VStack, Text, Box, useTheme } from 'native-base';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
+import { useTranslation } from 'react-i18next';
 import BulletList from '../../../widgets/BulletList';
 
 type Props = {
@@ -10,26 +11,18 @@ type Props = {
 };
 
 const AlternativeOffer: React.FC<Props> = ({ heading, text, button1, button2 }) => {
-    const bulletPoints: String[] = [
-        'Du brauchst Hilfe beim Lernen.',
-        'Du hast Nachteile beim Lernen.',
-        'Deine Familie kann dir nicht beim Lernen helfen.',
-        'Deine Familie kann keine Nachhilfe für dich bezahlen.',
-    ];
+    const { t } = useTranslation();
 
     const { space } = useTheme();
 
     return (
         <VStack space={space['0.5']}>
-            <Heading fontSize="2xl">Alternative Angebote</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.pupil.alternatives.heading')}</Heading>
 
-            <Text>
-                Leider können wir dich bei Lern-Fair in diesem Fall nicht unterstützen. Unsere Hilfe wird von freiwilligen Helfer:innen angeboten. Deshalb haben
-                wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:
-            </Text>
+            <Text>{t('matching.wizard.pupil.alternatives.text')}</Text>
 
             <Box my={space['0.5']}>
-                <BulletList bulletPoints={bulletPoints} />
+                <BulletList bulletPoints={t('matching.wizard.pupil.alternatives.bulletPoints', { returnObjects: true })} />
             </Box>
 
             <Heading fontSize="md" mt={space['1']}>

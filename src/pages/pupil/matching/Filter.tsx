@@ -25,26 +25,20 @@ const Filter: React.FC = () => {
         goToIndex(1);
     }, [goToIndex, isAcceptWaitingTime, isFit]);
 
-    const bulletPoints: String[] = [
-        'Du brauchst Hilfe in der Schule',
-        'Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
-        'Deine Familie kann keine Nachhilfe für dich bezahlen',
-    ];
-
     return (
         <VStack>
             {currentIndex === 0 && (
                 <VStack space={space['0.5']}>
-                    <Heading fontSize="2xl">Die 1:1-Lernunterstützung</Heading>
-                    <Heading>Für wen ist die 1:1-Lernunterstützung gedacht?</Heading>
+                    <Heading fontSize="2xl">{t('matching.wizard.pupil.filter.heading')}</Heading>
+                    <Heading>{t('matching.wizard.pupil.filter.subheading1')}</Heading>
 
-                    <Text>Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:</Text>
+                    <Text>{t('matching.wizard.pupil.filter.text1')}</Text>
 
                     <Box my={space['0.5']}>
-                        <BulletList bulletPoints={bulletPoints} />
+                        <BulletList bulletPoints={t('matching.wizard.pupil.filter.bulletPoints', { returnObjects: true })} />
                     </Box>
 
-                    <Heading fontSize="md">Treffen diese Punkte auf dich zu?</Heading>
+                    <Heading fontSize="md">{t('matching.wizard.pupil.filter.question1')}</Heading>
                     <YesNoSelector
                         initialYes={isFit === 'yes'}
                         initialNo={isFit === 'no'}
@@ -53,13 +47,10 @@ const Filter: React.FC = () => {
                         align="left"
                     />
                     <br />
-                    <Heading>Lange Wartezeit: 3-6 Monate</Heading>
-                    <Text>
-                        Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6
-                        Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.
-                    </Text>
+                    <Heading>{t('matching.wizard.pupil.filter.subheading2')}</Heading>
+                    <Text>{t('matching.wizard.pupil.filter.text2')}</Text>
 
-                    <Heading fontSize="md">Bist du bereit, 3-6 Monate zu warten?</Heading>
+                    <Heading fontSize="md">{t('matching.wizard.pupil.filter.question2')}</Heading>
                     <YesNoSelector
                         initialYes={isAcceptWaitingTime === 'yes'}
                         initialNo={isAcceptWaitingTime === 'no'}
@@ -75,22 +66,21 @@ const Filter: React.FC = () => {
                 <>
                     {isFit === 'no' ? (
                         <AlternativeOffer
-                            heading={'Kennst du schon Edu-Cloud?'}
-                            text={
-                                'Dort findest du viele Angebote, die für dich interessant sein können. Bei Fragen kannst du dich gerne jederzeit bei uns melden.'
-                            }
-                            button1={{ text: 'Zur Edu-Cloud', link: () => window.open('https://edu-cloud.org', '_blank') }}
-                            button2={{ text: 'Zu den Gruppen-Kursen', link: () => navigate('/group') }}
+                            heading={t('matching.wizard.pupil.alternatives.educloud.heading')}
+                            text={t('matching.wizard.pupil.alternatives.educloud.text')}
+                            button1={{
+                                text: t('matching.wizard.pupil.alternatives.educloud.button'),
+                                link: () => window.open('https://edu-cloud.org', '_blank'),
+                            }}
+                            button2={{ text: t('matching.wizard.pupil.alternatives.groupcourses.button'), link: () => navigate('/group') }}
                         />
                     ) : (
                         <AlternativeOffer
-                            heading={'Kennst du schon unsere Hausaufgabenhilfe?'}
-                            text={
-                                'Du hast eine Frage zu deinen Hausaufgaben? Zwischen 16:00 und 17:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.'
-                            }
-                            button1={{ text: 'Zu den Gruppen-Kursen', link: () => navigate('/group') }}
+                            heading={t('matching.wizard.pupil.alternatives.homeworkhelp.heading')}
+                            text={t('matching.wizard.pupil.alternatives.homeworkhelp.text')}
+                            button1={{ text: t('matching.wizard.pupil.alternatives.groupcourses.button'), link: () => navigate('/group') }}
                             button2={{
-                                text: 'Zur Hausaufgabenhilfe',
+                                text: t('matching.wizard.pupil.alternatives.homeworkhelp.button'),
                                 link: () => window.open('https://www.lern-fair.de/hausaufgabenhilfe-anmeldung', '_blank'),
                             }}
                         />
