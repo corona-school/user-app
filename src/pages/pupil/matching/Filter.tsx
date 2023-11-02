@@ -1,13 +1,12 @@
-import { Box, Button, Column, Heading, Text, useTheme, VStack } from 'native-base';
+import { Box, Heading, Text, useTheme, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
-import TwoColGrid from '../../../widgets/TwoColGrid';
 import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 import AlternativeOffer from './AlternativeOffer';
+import BulletList from '../../../widgets/BulletList';
 
 const Filter: React.FC = () => {
     const { space } = useTheme();
@@ -26,6 +25,12 @@ const Filter: React.FC = () => {
         goToIndex(1);
     }, [goToIndex, isAcceptWaitingTime, isFit]);
 
+    const bulletPoints: String[] = [
+        'Du brauchst Hilfe in der Schule',
+        'Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
+        'Deine Familie kann keine Nachhilfe für dich bezahlen',
+    ];
+
     return (
         <VStack>
             {currentIndex === 0 && (
@@ -36,9 +41,7 @@ const Filter: React.FC = () => {
                     <Text>Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:</Text>
 
                     <Box my={space['0.5']}>
-                        <Text>● Du brauchst Hilfe in der Schule</Text>
-                        <Text>● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen</Text>
-                        <Text>● Deine Familie kann keine Nachhilfe für dich bezahlen</Text>
+                        <BulletList bulletPoints={bulletPoints} />
                     </Box>
 
                     <Heading fontSize="md">Treffen diese Punkte auf dich zu?</Heading>

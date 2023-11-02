@@ -1,5 +1,6 @@
 import { Heading, VStack, Text, Box, useTheme } from 'native-base';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
+import BulletList from '../../../widgets/BulletList';
 
 type Props = {
     heading: String;
@@ -18,10 +19,6 @@ const AlternativeOffer: React.FC<Props> = ({ heading, text, button1, button2 }) 
 
     const { space } = useTheme();
 
-    const bullets = bulletPoints.map((bullet, index) => {
-        return <Text key={index}>● {bullet}</Text>;
-    });
-
     return (
         <VStack space={space['0.5']}>
             <Heading fontSize="2xl">Alternative Angebote</Heading>
@@ -31,7 +28,9 @@ const AlternativeOffer: React.FC<Props> = ({ heading, text, button1, button2 }) 
                 wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:
             </Text>
 
-            <Box my={space['0.5']}>{bullets}</Box>
+            <Box my={space['0.5']}>
+                <BulletList bulletPoints={bulletPoints} />
+            </Box>
 
             <Heading fontSize="md" mt={space['1']}>
                 {heading}
