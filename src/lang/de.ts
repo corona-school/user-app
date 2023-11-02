@@ -19,6 +19,7 @@ import chat from './chat/de';
 import introduction from './introduction/de';
 import navigation from './navigation/de';
 import screening from './screening/de';
+import achievement from './achievement/de';
 
 const de = {
     ...shared,
@@ -42,5 +43,6 @@ const de = {
     introduction,
     navigation,
     screening,
+    achievement,
 };
 export default de;
