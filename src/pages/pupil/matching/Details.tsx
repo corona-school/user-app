@@ -1,4 +1,4 @@
-import { gql } from './../../../gql';
+import { gql } from '../../../gql';
 import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpointValue } from 'native-base';
 import { useCallback, useContext } from 'react';
