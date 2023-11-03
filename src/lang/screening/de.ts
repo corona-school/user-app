@@ -34,6 +34,8 @@ const screening = {
 
     has_matches: 'Hat Lernpaar',
     registered_since: 'registriert seit',
+    dissolved_by: 'Aufgelöst von: {{dissolver}}',
+    dissolve_reason: 'Grund: {{reason}}',
 };
 
 export default screening;

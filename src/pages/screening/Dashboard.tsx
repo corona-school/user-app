@@ -87,6 +87,8 @@ export function ScreeningDashboard() {
                         student { firstname lastname }
                         dissolved
                         dissolvedAt
+                        dissolveReasonEnum
+                        dissolvedBy
                         pupilFirstMatchRequest
                         subjectsFormatted { name }
                     }
@@ -124,6 +126,8 @@ export function ScreeningDashboard() {
                     student { firstname lastname }
                     dissolved
                     dissolvedAt
+                    dissolveReasonEnum
+                    dissolvedBy
                     pupilFirstMatchRequest
                     subjectsFormatted { name }
                 }
