@@ -7,6 +7,7 @@ import useModal from '../../../hooks/useModal';
 import { RequestMatchContext } from './RequestMatch';
 import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
+import { useTranslation } from 'react-i18next';
 
 type Props = {};
 
@@ -16,6 +17,7 @@ const Details: React.FC<Props> = () => {
     const toast = useToast();
     const { matchRequest, setMessage, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [update, _update] = useMutation(
         gql(`
@@ -44,12 +46,10 @@ const Details: React.FC<Props> = () => {
             <VStack paddingX={space['2']} paddingTop={space['2']} space={space['1']} alignItems="center">
                 <PartyIcon />
                 <Heading fontSize={'2xl'} color="lightText" textAlign="center">
-                    {(!isEdit && 'Geschafft, du bist auf der Warteliste!') || 'Geschafft, Änderungen gespeichert!'}
+                    {(!isEdit && t('matching.wizard.pupil.modalSuccess.heading.ver1')) || t('matching.wizard.pupil.modalSuccess.heading.ver2')}
                 </Heading>
                 <Text color="lightText" maxW="600px" textAlign="center">
-                    {(!isEdit &&
-                        'Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.') ||
-                        'Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht.'}
+                    {(!isEdit && t('matching.wizard.pupil.modalSuccess.text.ver1')) || t('matching.wizard.pupil.modalSuccess.text.ver2')}
                 </Text>
                 <Button
                     onPress={() => {
@@ -58,7 +58,7 @@ const Details: React.FC<Props> = () => {
                     }}
                     w={buttonWidth}
                 >
-                    Zu den Gruppen-Kursen
+                    {t('matching.wizard.pupil.modalSuccess.groupCourses')}
                 </Button>
                 <Button
                     w={buttonWidth}
@@ -70,7 +70,7 @@ const Details: React.FC<Props> = () => {
                         hide();
                     }}
                 >
-                    Fertig
+                    {t('done')}
                 </Button>
             </VStack>
         );
@@ -85,31 +85,28 @@ const Details: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
+                    toast.show({ description: t('error'), placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
+            toast.show({ description: t('error'), placement: 'top' });
         }
     }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Details</Heading>
-            <Heading>Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.pupil.details.heading')}</Heading>
+            <Heading>{t('matching.wizard.pupil.details.subheading')}</Heading>
 
-            <Text>
-                Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder
-                gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.
-            </Text>
+            <Text>{t('matching.wizard.pupil.details.text')}</Text>
 
             <Heading fontSize="md" mt={space['1']}>
-                Deine Angaben
+                {t('matching.wizard.pupil.details.additionalInfo')}
             </Heading>
             <TextArea
-                placeholder="Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
+                placeholder={t('matching.wizard.pupil.details.placeholder')}
                 autoCompleteType={'off'}
                 value={matchRequest.message}
                 onChangeText={setMessage}
