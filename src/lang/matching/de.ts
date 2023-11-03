@@ -79,14 +79,55 @@ const matching = {
                 ' Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.',
             noRequestsTutee: 'Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.',
             noRequestsTutor:
-                'Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf "Lernpaar bilden"-Button.',
+                "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.",
             resolveMatch: 'Das Lernpaar wurde aufgelöst',
         },
         updateData: 'Deine Daten wurden aktualisiert',
         daz: {
             heading: 'Deutsch als Zweitsprache',
             description:
-                ' Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?',
+                'Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?',
+        },
+    },
+    wizard: {
+        pupil: {
+            filter: {
+                heading: 'Die 1:1-Lernunterstützung',
+                subheading1: 'Für wen ist die 1:1-Lernunterstützung gedacht?',
+                text1: 'Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:',
+                bulletPoints: [
+                    'Du brauchst Hilfe in der Schule',
+                    'Deine Familie kann dir nicht bei deinen Hausaufgaben helfen',
+                    'Deine Familie kann keine Nachhilfe für dich bezahlen',
+                ],
+                question1: 'Treffen diese Punkte auf dich zu?',
+                subheading2: 'Lange Wartezeit: 3-6 Monate',
+                text2: 'Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.',
+                question2: 'Bist du bereit, 3-6 Monate zu warten?',
+            },
+            alternatives: {
+                heading: 'Alternative Angebote',
+                text: 'Leider können wir dich bei Lern-Fair in diesem Fall nicht unterstützen. Unsere Hilfe wird von freiwilligen Helfer:innen angeboten. Deshalb haben wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:',
+                bulletPoints: [
+                    'Du brauchst Hilfe beim Lernen.',
+                    'Du hast Nachteile beim Lernen.',
+                    'Deine Familie kann dir nicht beim Lernen helfen.',
+                    'Deine Familie kann keine Nachhilfe für dich bezahlen.',
+                ],
+                educloud: {
+                    heading: 'Kennst du schon Edu-Cloud?',
+                    text: 'Dort findest du viele Angebote, die für dich interessant sein können. Bei Fragen kannst du dich gerne jederzeit bei uns melden.',
+                    button: 'Zur Edu-Cloud',
+                },
+                groupcourses: {
+                    button: 'Zu den Gruppen-Kursen',
+                },
+                homeworkhelp: {
+                    heading: 'Kennst du schon unsere Hausaufgabenhilfe?',
+                    text: 'Du hast eine Frage zu deinen Hausaufgaben? Zwischen 16:00 und 17:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.',
+                    button: 'Zur Hausaufgabenhilfe',
+                },
+            },
         },
     },
     group: {
@@ -130,7 +171,7 @@ const matching = {
             header: 'Gruppen-Kurse',
             title: 'Gruppen-Kurse',
             content:
-                'In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und "Deutsch für Anfänger".',
+                "In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und 'Deutsch für Anfänger'.",
             button: 'Kurs anlegen',
             course: {
                 title: 'Meine Kurse',
