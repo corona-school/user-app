@@ -5,18 +5,19 @@ import { useTranslation } from 'react-i18next';
 
 type AchievementBadgeProps = {
     isMobile?: boolean;
+    isInline?: boolean;
 };
 
-const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile }) => {
+const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile, isInline }) => {
     const { t } = useTranslation();
     return (
         <div
             style={{
                 boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.25)',
-                position: 'absolute',
-                top: '-15px',
-                left: `${isMobile ? 'auto' : '15px'}`,
-                right: `${isMobile ? '15px' : 'auto'}`,
+                position: `${isInline ? 'relative' : 'absolute'}`,
+                top: `${!isInline && '-15px'}`,
+                left: `${!isInline && (isMobile ? 'auto' : '15px')}`,
+                right: `${!isInline && (isMobile ? '15px' : 'auto')}`,
             }}
         >
             <Stack

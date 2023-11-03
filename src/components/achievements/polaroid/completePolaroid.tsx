@@ -36,6 +36,7 @@ const CompletePolaroid: React.FC<CompletePolaroidProps> = ({ image, alternativeT
                               width: '120px',
                               height: '144px',
                               borderRadius: '2px',
+                              overflow: 'hidden',
                           }
                 }
             >

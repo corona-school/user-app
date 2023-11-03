@@ -1,0 +1,24 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import IndicatorStep from './indicatorStep';
+
+<Meta title="Achievements/ProgressIndicators/IndicatorStep" component={IndicatorStep} />
+
+-   The Indicator Step is used to display the current Step of achievements.
+
+# IndicatorStep
+
+<Story name="Indicator Step">
+    <IndicatorStep maxSteps={5} step={2} />
+</Story>
+
+# IndicatorStepActive
+
+<Story name="Indicator Step Active">
+    <IndicatorStep maxSteps={5} step={2} isActive />
+</Story>
+
+# IndicatorStepInactive
+
+<Story name="Indicator Step Inactive">
+    <IndicatorStep maxSteps={5} step={2} isInactive />
+</Story>

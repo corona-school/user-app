@@ -1,10 +1,11 @@
-import AnimatedShine, { AnimatedShineProps } from './animatedShine';
+import AnimatedShine, { AnimatedShineProps } from '../cosmetics/animatedShine';
 
 type NewAchievementShineProps = {
     isMobile?: boolean;
+    isLarge?: boolean;
 };
 
-const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ isMobile }) => {
+const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ isMobile, isLarge }) => {
     const getShineProps = (index: number): AnimatedShineProps => {
         let animatedShineProps: AnimatedShineProps = {} as AnimatedShineProps;
         switch (index) {
@@ -38,9 +39,19 @@ const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ isMobile }) =
                 positionTop: animatedShineProps.props.positionTop / 2,
             };
         }
+        if (isLarge) {
+            animatedShineProps.props = {
+                ...animatedShineProps.props,
+                initialSize: animatedShineProps.props.initialSize * 1.25,
+                positionLeft: animatedShineProps.props.positionLeft * 1.25,
+                positionTop: animatedShineProps.props.positionTop * 1.25,
+            };
+        }
         return animatedShineProps;
     };
-    const shineElements = Array.from({ length: 7 }, (_, index) => <AnimatedShine key={index} props={getShineProps(index).props} isMobile={isMobile} />);
+    const shineElements = Array.from({ length: 7 }, (_, index) => (
+        <AnimatedShine key={index} props={getShineProps(index).props} isMobile={isMobile} isLarge={isLarge} />
+    ));
 
     return (
         <div

@@ -11,13 +11,14 @@ type AnimatedShineProps = {
         animationStart: number;
     };
     isMobile?: boolean;
+    isLarge?: boolean;
 };
 
-const AnimatedShine: React.FC<AnimatedShineProps> = ({ props, isMobile }) => {
+const AnimatedShine: React.FC<AnimatedShineProps> = ({ props, isMobile, isLarge }) => {
     const { initialSize, positionLeft, positionTop, animationStart } = props;
-    const thresholdY = isMobile ? -35 : -70;
-    const maxPositionY = isMobile ? 30 : 100;
-    const intervalSpeed = isMobile ? 25 : 10;
+    const thresholdY = isMobile ? -35 : isLarge ? -100 : -70;
+    const maxPositionY = isMobile ? 30 : isLarge ? 130 : 100;
+    const intervalSpeed = isMobile ? 25 : isLarge ? 5 : 10;
 
     const [size, setSize] = useState(initialSize);
     const [positionY, setPositionY] = useState(positionTop);

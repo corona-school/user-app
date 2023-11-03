@@ -2,25 +2,13 @@ import { Box, Stack, Text } from 'native-base';
 import Theme from '../../../Theme';
 import PolaroidImageContainer from '../polaroid/getPolaroidImage';
 import AchievementBadge from '../achievementBadge';
-import NewAchievementShine from './newAchievementShine';
+import NewAchievementShine from '../cosmetics/newAchievementShine';
 import IndicatorBar from '../progressIndicators/indicatorBar';
 import CardActionDescription from './cardActionDescription';
-
-enum ActionTypes {
-    ACTION = 'ACTION',
-    WAIT = 'WAIT',
-    APPOINTMENT = 'APPOINTMENT',
-    INFO = 'INFO',
-}
-
-enum CardState {
-    INACTIVE = 'INACTIVE',
-    ACTIVE = 'ACTIVE',
-    COMPLETED = 'COMPLETED',
-}
+import { AchievementState, ActionTypes } from '../types';
 
 type AchievementCardProps = {
-    cardState: CardState;
+    achievementState: AchievementState;
     actionType?: ActionTypes;
     image: string | undefined;
     alternativeText: string;
@@ -33,7 +21,7 @@ type AchievementCardProps = {
 };
 
 const AchievementCard: React.FC<AchievementCardProps> = ({
-    cardState,
+    achievementState,
     actionType,
     image,
     alternativeText,
@@ -44,12 +32,12 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     currentStep,
     actionDescription,
 }) => {
-    console.log(actionDescription);
+    console.log(achievementState);
 
     return (
         <div
             style={{
-                boxShadow: `${cardState === CardState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'}`,
+                boxShadow: `${achievementState === AchievementState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'}`,
                 width: 'fit-content',
                 height: 'fit-content',
                 borderRadius: '8px',
@@ -58,40 +46,42 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             <Box
                 display={'flex'}
                 alignItems={'center'}
-                justifyContent={cardState !== CardState.COMPLETED ? 'flex-start' : 'center'}
+                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : 'center'}
                 width="280px"
-                height={cardState === CardState.COMPLETED ? '300px' : '360px'}
-                borderColor={cardState === CardState.COMPLETED ? Theme.colors.primary[900] : Theme.colors.primary.grey}
+                height={achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
+                borderColor={achievementState === AchievementState.COMPLETED ? Theme.colors.primary[900] : Theme.colors.primary.grey}
                 borderRadius="8px"
                 borderWidth="1px"
                 paddingY={'16px'}
                 paddingX={'32px'}
-                borderStyle={cardState === CardState.INACTIVE ? 'dashed' : 'solid'}
+                borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
-                    cardState === CardState.ACTIVE
+                    achievementState === AchievementState.ACTIVE
                         ? Theme.colors.white
-                        : cardState === CardState.COMPLETED
+                        : achievementState === AchievementState.COMPLETED
                         ? Theme.colors.primary[900]
                         : Theme.colors.primary.translucent
                 }
             >
-                {newAchievement && cardState === CardState.COMPLETED && (
+                {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge />
                         <NewAchievementShine />
                     </>
                 )}
-                <PolaroidImageContainer image={cardState === CardState.COMPLETED ? image : undefined} alternativeText={alternativeText} />
+                <Box>
+                    <PolaroidImageContainer image={achievementState === AchievementState.COMPLETED ? image : undefined} alternativeText={alternativeText} />
+                </Box>
                 <Stack space={5} alignItems={'center'}>
                     <Stack space={0} alignItems={'center'}>
-                        <Text fontSize="xs" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
+                        <Text fontSize="xs" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
                             {subtitle}
                         </Text>
-                        <Text fontSize="md" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
+                        <Text fontSize="md" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
                             {title}
                         </Text>
                     </Stack>
-                    {cardState !== CardState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
+                    {achievementState !== AchievementState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
                     {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
                 </Stack>
             </Box>
@@ -100,5 +90,3 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 };
 
 export default AchievementCard;
-
-export { CardState, ActionTypes };

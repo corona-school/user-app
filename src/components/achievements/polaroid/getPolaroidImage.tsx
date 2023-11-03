@@ -6,9 +6,10 @@ type PolaroidImageContainerProps = {
     image: string | undefined;
     alternativeText: string;
     isMobile?: boolean;
+    isLarge?: boolean;
 };
 
-const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, alternativeText, isMobile }) => {
+const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, alternativeText, isMobile, isLarge }) => {
     return (
         <Box display={'flex'}>
             {image ? (
@@ -16,12 +17,20 @@ const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, 
                     initial={{
                         rotate: '-5deg',
                         translateY: isMobile ? 0 : -20,
+                        scale: isLarge ? 1.5 : 1,
                     }}
                 >
                     <CompletePolaroid image={image} alternativeText={alternativeText} isMobile={isMobile} />
                 </PresenceTransition>
             ) : (
-                <EmptyPolaroidField isMobile={isMobile} />
+                <PresenceTransition
+                    initial={{
+                        translateY: isLarge ? 75 : isMobile ? 0 : 20,
+                        scale: isLarge ? 1.5 : 1,
+                    }}
+                >
+                    <EmptyPolaroidField isMobile={isMobile} />
+                </PresenceTransition>
             )}
         </Box>
     );

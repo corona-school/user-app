@@ -2,25 +2,13 @@ import { Box, Stack, Text } from 'native-base';
 import Theme from '../../../Theme';
 import PolaroidImageContainer from '../polaroid/getPolaroidImage';
 import AchievementBadge from '../achievementBadge';
-import NewAchievementShine from './newAchievementShine';
+import NewAchievementShine from '../cosmetics/newAchievementShine';
 import IndicatorBar from '../progressIndicators/indicatorBar';
 import CardActionDescription from './cardActionDescription';
-
-enum ActionTypes {
-    ACTION = 'ACTION',
-    WAIT = 'WAIT',
-    APPOINTMENT = 'APPOINTMENT',
-    INFO = 'INFO',
-}
-
-enum CardState {
-    INACTIVE = 'INACTIVE',
-    ACTIVE = 'ACTIVE',
-    COMPLETED = 'COMPLETED',
-}
+import { AchievementState, ActionTypes } from '../types';
 
 type AchievementCardMobileProps = {
-    cardState: CardState;
+    achievementState: AchievementState;
     actionType?: ActionTypes;
     image: string | undefined;
     alternativeText: string;
@@ -33,7 +21,7 @@ type AchievementCardMobileProps = {
 };
 
 const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
-    cardState,
+    achievementState,
     actionType,
     image,
     alternativeText,
@@ -47,9 +35,8 @@ const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
     return (
         <div
             style={{
-                width: '100%',
+                width: '100vw',
                 height: 'fit-content',
-                borderRadius: '8px',
             }}
         >
             <Box
@@ -57,30 +44,34 @@ const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
                 flexDirection={'row'}
                 alignItems={'center'}
                 justifyContent="flex-start"
-                width="100%"
+                width={'100%'}
                 height={'114px'}
                 padding={'16px'}
                 backgroundColor={
-                    cardState === CardState.ACTIVE
+                    achievementState === AchievementState.ACTIVE
                         ? Theme.colors.white
-                        : cardState === CardState.COMPLETED
+                        : achievementState === AchievementState.COMPLETED
                         ? Theme.colors.primary[900]
                         : Theme.colors.primary.translucent
                 }
             >
-                {newAchievement && cardState === CardState.COMPLETED && (
+                {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge isMobile />
                         <NewAchievementShine isMobile />
                     </>
                 )}
-                <PolaroidImageContainer image={cardState === CardState.COMPLETED ? image : undefined} alternativeText={alternativeText} isMobile />
+                <PolaroidImageContainer
+                    image={achievementState === AchievementState.COMPLETED ? image : undefined}
+                    alternativeText={alternativeText}
+                    isMobile
+                />
                 <Stack space={2} alignItems={'left'} paddingLeft={'8px'} flex={1}>
                     <Stack space={0} alignItems={'left'}>
-                        <Text fontSize="2xs" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
+                        <Text fontSize="2xs" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
                             {subtitle}
                         </Text>
-                        <Text fontSize="md" color={cardState === CardState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
+                        <Text fontSize="md" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
                             {title}
                         </Text>
                     </Stack>
@@ -89,7 +80,9 @@ const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
                     ) : (
                         <>
                             {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile />}
-                            {cardState !== CardState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
+                            {achievementState !== AchievementState.COMPLETED && maxSteps && (
+                                <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />
+                            )}
                         </>
                     )}
                 </Stack>
@@ -99,5 +92,3 @@ const AchievementCardMobile: React.FC<AchievementCardMobileProps> = ({
 };
 
 export default AchievementCardMobile;
-
-export { CardState, ActionTypes };
