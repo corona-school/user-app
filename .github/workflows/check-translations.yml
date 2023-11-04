@@ -1,0 +1,19 @@
+name: Check Translations
+
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+ 
+  verify-against-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Check other translations against de.json
+        run: npm run translate -- check
