@@ -3,10 +3,14 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import de from './lang/de.json';
+import en from './lang/en.json';
 
 export const resources = {
     de: {
         translation: de,
+    },
+    en: {
+        translation: en,
     },
 } as const;
 
@@ -16,7 +20,7 @@ i18next
     .init({
         debug: false && process.env.NODE_ENV === 'development',
         resources: resources,
-        lng: 'de',
+        lng: 'en',
         fallbackLng: 'de',
         interpolation: {
             escapeValue: false,

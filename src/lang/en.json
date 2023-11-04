@@ -1,0 +1,1900 @@
+{
+  "appointment": {
+    "toast": {
+      "createOneAppointmentSuccess": "translate(Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.)",
+      "createAppointmentsSuccess": "translate(Termine wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.)"
+    },
+    "empty": {
+      "noAppointments": "translate(Keine Termine)",
+      "noAppointmentsDesc": "translate(Dir wurden aktuell noch keine Termine zugeordnet.)",
+      "noFurtherAppointments": "translate(Keine weiteren Termine)",
+      "noFurtherDesc": "translate(Scrolle nach oben, um vergangene Termine zu sehen.)",
+      "createNewAppointmentDesc": "translate(Erstelle nun den ersten Kurstermin.)",
+      "noPublishedAppointmentsDesc": "translate(Es wurden noch keine Termine veröffentlicht.)"
+    },
+    "tile": {
+      "videoButton": "translate(Videochat beitreten)",
+      "clock": "translate(Uhr)"
+    },
+    "clock": {
+      "startToEnd": "translate({{start}} - {{end}} Uhr)",
+      "nowToEnd": "translate(Jetzt - {{end}} Uhr)"
+    },
+    "deleteModal": {
+      "title": "translate(Bist du dir sicher, dass du diesen Termin löschen möchtest?)",
+      "description": "translate(Der Termin wird dadurch für alle Teilnehmer:innen abgesagt. Du kannst dies nicht rückgängig machen.)",
+      "delete": "translate(Termin löschen)",
+      "cancel": "translate(Abbrechen)"
+    },
+    "declineModal": {
+      "title": "translate(Bist du dir sicher, dass du diesen Termin absagen möchtest?)",
+      "description": "translate(Du kannst dem Termin nicht wieder beitreten.)",
+      "decline": "translate(Termin absagen)"
+    },
+    "appointmentTile": {
+      "lecture": "translate(Lektion #{{position}})",
+      "title": "translate(: {{appointmentTitle}})"
+    },
+    "create": {
+      "assignmentHeader": "translate(Für welches Lernangebot soll dieser Termin erstellt werden?)",
+      "insightMatchHeader": "translate(Deine bestehenden Termine mit {{matchPartner}}.)",
+      "insightCourseHeader": "translate(Deine bestehenden Termine für {{courseTitle}}.)",
+      "noAppointments": "translate(Keine Termine vorhanden)",
+      "oneToOneTitle": "translate(Einzel)",
+      "assignmentProgress": "translate(Zuordnung wählen)",
+      "appointmentViewProgress": "translate(Termine einsehen)",
+      "appointmentAdd": "translate(Termin hinzufügen)",
+      "group": "translate(Gruppe)",
+      "date": "translate(Ab {{date}} • {{time}} Uhr)",
+      "addAppointmentButton": "translate(Termin(e) hinzufügen)",
+      "backButton": "translate(zur vorherigen Seite)",
+      "lecture": "translate(Lektion)",
+      "titleLabel": "translate(Titel)",
+      "dateLabel": "translate(Datum)",
+      "timeLabel": "translate(Uhrzeit)",
+      "durationLabel": "translate(Dauer)",
+      "descriptionLabel": "translate(Beschreibung (optional))",
+      "descriptionPlaceholder": "translate(Füge eine prägnante und verständliche Beschreibung hinzu...)",
+      "inputPlaceholder": "translate(Thema (optional))",
+      "weeklyRepeat": "translate(wöchentlich wiederholen...)",
+      "emptyFieldError": "translate(Title darf nicht leer sein)",
+      "emptySelectError": "translate(Auswahl darf nicht leer sein)",
+      "emptyDateError": "translate(Datum darf nicht leer sein)",
+      "wrongDateError": "translate(Datum kann frühestens in einer Woche sein)",
+      "emptyTimeError": "translate(Zeit darf nicht leer sein)",
+      "courseImageAltText": "translate(Kursbild)"
+    },
+    "detail": {
+      "group": "translate(Gruppentermin mit {{instructor}})",
+      "oneToOne": "translate(Einzeltermin mit {{instructor}})",
+      "without": "translate(Termin mit {{instructor}})",
+      "appointmentTitle": "translate({{appointmentTitle}})",
+      "courseName": "translate(Kurs: {{courseName}})",
+      "time": "translate({{start}} - {{end}} Uhr ({{duration}} Minuten))",
+      "repeatDate": "translate({{appointmentCount}}. von insgesamt {{appointmentsTotal}} Terminen)",
+      "participants": "translate({{participantsTotal}} Teilnehmer:innen)",
+      "videochatButton": "translate(Jetzt Videochat beitreten)",
+      "descriptionHeader": "translate(Beschreibung)",
+      "deleteButton": "translate(Termin löschen)",
+      "cancelButton": "translate(Termin absagen)",
+      "editButton": "translate(Termin bearbeiten)",
+      "canceledToast": "translate(Termin wurde abgesagt)",
+      "deleteTooltip": "translate(Der letzte Termin kann nicht gelöscht werden.)",
+      "editBlockedWarning": "translate(Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden.)"
+    },
+    "attendeesModal": {
+      "title": "translate(Teilnehmer:innen)",
+      "closeButton": "translate(Schließen)",
+      "helper": "translate(Helfer:in)",
+      "pupil": "translate(Schüler:in)"
+    },
+    "errors": {
+      "title": "translate(Title darf nicht leer sein)",
+      "date": "translate(Datum darf nicht leer sein)",
+      "dateMinOneWeek": "translate(Datum kann frühestens in einer Woche sein)",
+      "timeNotInFiveMin": "translate(Zeit kann frühestens in 5 Minuten sein)",
+      "time": "translate(Zeit darf nicht leer sein)",
+      "duration": "translate(Dauer darf nicht leer sein)"
+    },
+    "title": "translate(Termine)",
+    "saveChanges": "translate(Änderungen speichern)",
+    "editSuccess": "translate(Termin erfolgreich geändert)",
+    "deleteAppointment": "translate(Termin löschen)",
+    "goBack": "translate(zur vorherigen Seite)",
+    "loadPastAppointments": "translate(Vergangene Termine laden)",
+    "courseNotPublished": "translate(Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.)",
+    "noNextAppointment": "translate(Kein nächster Termin.)"
+  },
+  "login": {
+    "email": {
+      "sent": "translate(Wir haben dir eine E-Mail zum Login geschickt)"
+    },
+    "passwordReset": {
+      "alert": {
+        "success": "translate(Wir haben dir eine E-Mail gesendet, in der du dein Passwort zurücksetzen kannst. Klicke dazu auf den Link in unserer E-Mail. Solltest du keine E-Mail erhalten habe, warte bitte einen Moment und schau auch im Spamordner nach.)",
+        "error": "translate(Leider konnte dein Passwort nicht zurückgesetzt werden. Bitte versuche es später nochmal.)",
+        "mailNotFound": "translate(Für diese E-Mail-Adresse ist kein Account registriert. Wenn du denkst, dass das ein Fehler ist, melde dich bitte beim Support (support@lern-fair.de).)"
+      },
+      "btn": "translate(Passwort zurücksetzen)",
+      "description": "translate(Möchtest du dein Passwort wirklich zurücksetzen? Dazu senden wir eine E-Mail an {{email}})"
+    },
+    "accountNotFound": {
+      "title": "translate(Anmeldung fehlgeschlagen)",
+      "alert_html": "translate(Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut.)"
+    },
+    "invalidTokenAlert": {
+      "text": "translate(Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden.)"
+    },
+    "title": "translate(Anmeldung)",
+    "error": "translate(Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.)",
+    "forgotPassword": "translate(Passwort vergessen?)",
+    "signupNew": "translate(Neu registrieren)",
+    "noaccount": "translate(Du hast noch keinen Account? Hier geht es zur Registrierung!)",
+    "currentEmail": "translate(Aktuelle E-Mail)",
+    "setNewEmail": "translate(E-Mail neu setzen)",
+    "changeEmail": "translate(E-Mail ändern)",
+    "emailVerification": "translate(E-Mail Verifizierung)",
+    "succesEmailVerification": "translate(Dein E-Mail wurde erfolgreich geändert!)",
+    "invalidToken": "translate(Token ungültig)",
+    "invalidMailMessage": "translate(Die eingegebene E-Mail-Adresse ist fehlerhaft.)"
+  },
+  "lernfair": {
+    "languages": {
+      "albanisch": "translate(Albanisch)",
+      "arabisch": "translate(Arabisch)",
+      "armenisch": "translate(Armenisch)",
+      "aserbaidschanisch": "translate(Aserbaidschanisch)",
+      "bosnisch": "translate(Bosnisch)",
+      "bulgarisch": "translate(Bulgarisch)",
+      "chinesisch": "translate(Chinesisch)",
+      "deutsch": "translate(Deutsch)",
+      "englisch": "translate(Englisch)",
+      "franz_sisch": "translate(Französisch)",
+      "französisch": "translate(Französisch)",
+      "italienisch": "translate(Italienisch)",
+      "kasachisch": "translate(Kasachisch)",
+      "kurdisch": "translate(Kurdisch)",
+      "polnisch": "translate(Polnisch)",
+      "portugiesisch": "translate(Portugiesisch)",
+      "russisch": "translate(Russisch)",
+      "spanisch": "translate(Spanisch)",
+      "ukrainisch": "translate(Ukrainisch)",
+      "vietnamesisch": "translate(Vietnamesisch)",
+      "other": "translate(Andere)",
+      "andere": "translate(Andere)"
+    },
+    "subjects": {
+      "Altgriechisch": "translate(Altgriechisch)",
+      "Biologie": "translate(Biologie)",
+      "Chemie": "translate(Chemie)",
+      "Chinesisch": "translate(Chinesisch)",
+      "Deutsch": "translate(Deutsch)",
+      "Deutsch als Zweitsprache": "translate(Deutsch als Zweitsprache)",
+      "Englisch": "translate(Englisch)",
+      "Erdkunde": "translate(Erdkunde)",
+      "Französisch": "translate(Französisch)",
+      "Geschichte": "translate(Geschichte)",
+      "Informatik": "translate(Informatik)",
+      "Italienisch": "translate(Italienisch)",
+      "Kunst": "translate(Kunst)",
+      "Latein": "translate(Latein)",
+      "Mathematik": "translate(Mathematik)",
+      "Musik": "translate(Musik)",
+      "Niederländisch": "translate(Niederländisch)",
+      "Pädagogik": "translate(Pädagogik)",
+      "Philosophie": "translate(Philosophie)",
+      "Physik": "translate(Physik)",
+      "Politik": "translate(Politik)",
+      "Religion": "translate(Religion)",
+      "Russisch": "translate(Russisch)",
+      "Sachkunde": "translate(Sachkunde)",
+      "Spanisch": "translate(Spanisch)",
+      "Wirtschaft": "translate(Wirtschaft)"
+    },
+    "states": {
+      "bw": "translate(Baden-Württemberg)",
+      "by": "translate(Bayern)",
+      "be": "translate(Berlin)",
+      "bb": "translate(Brandenburg)",
+      "hb": "translate(Bremen)",
+      "hh": "translate(Hamburg)",
+      "he": "translate(Hessen)",
+      "mv": "translate(Mecklenburg-Vorpommern)",
+      "ni": "translate(Niedersachsen)",
+      "nw": "translate(Nordrhein-Westfalen)",
+      "rp": "translate(Rheinland-Pfalz)",
+      "sl": "translate(Saarland)",
+      "sn": "translate(Sachsen)",
+      "st": "translate(Sachsen-Anhalt)",
+      "sh": "translate(Schleswig-Holstein)",
+      "th": "translate(Thüringen)",
+      "other": "translate(Andere)"
+    },
+    "schooltypes": {
+      "grundschule": "translate(Grundschule)",
+      "hauptschule": "translate(Hauptschule)",
+      "realschule": "translate(Realschule)",
+      "gymnasium": "translate(Gymnasium)",
+      "gesamtschule": "translate(Gesamtschule)",
+      "other": "translate(Andere)",
+      "berufsschule": "translate(Berufsschule)",
+      "f_rderschule": "translate(Förderschule)"
+    },
+    "reason": {
+      "course": {
+        "instructor": {
+          "not-instructor": "translate(Du bist noch nicht als Kursleiter:in registriert.)",
+          "not-screened": "translate(Du bist noch nicht als Kursleiter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.)",
+          "null": "translate(Du darfst eigentlich neue Kurse erstellen ... Probier mal dich neu anzumelden ...)"
+        },
+        "pupil": {
+          "subcourse-full": "translate(Dieser Kurs ist leider ausgebucht.)",
+          "grade-to-high": "translate(Du kannst dich nicht zu diesem Kurs anmelden, weil du nicht in der vorgesehenen Jahrgangsstufe bist. Der Kurs ist für jüngere Schüler:innen gedacht.)",
+          "grade-to-low": "translate(Du kannst dich nicht zu diesem Kurs anmelden, weil du nicht in der vorgesehenen Jahrgangsstufe bist. Der Kurs ist für ältere Schüler:innen gedacht.)",
+          "no-lectures": "translate(Du kannst dich nicht anmelden, da keine Lektionen für diesen Kurs angelegt wurden.)",
+          "already-started": "translate(Du kannst dich nicht mehr zum Kurs anmelden, da er bereits gestartet ist.)",
+          "already-participant": "translate(Du bist bereits für diesen Kurs angemeldet.)",
+          "not-participant": "translate(Du kannst dich nicht anmelden, weil dein Account für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest.)"
+        }
+      },
+      "matching": {
+        "tutor": {
+          "not-screened": "translate(Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.)",
+          "not-tutor": "translate(Du kannst kein Lernpaar bilden, da du nicht für die Lernunterstützung registriert bist.)",
+          "max-requests": "translate(Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen.)"
+        },
+        "pupil": {
+          "max-dissolved-matches": "translate(Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.)",
+          "not-tutee": "translate(Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.)",
+          "max-requests": "translate(Du bist bereits auf der Warteliste.)",
+          "max-matches": "translate(Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.)",
+          "deactivated": "translate(Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. )"
+        }
+      }
+    },
+    "schoolclass": "translate({{class}}. Klasse)"
+  },
+  "welcome": {
+    "title": "translate(Herzlich Willkommen bei Lern-Fair)",
+    "subtitle": "translate(Hast du bereits einen Account?\nOder bist du neu bei uns und möchtest dich registrieren?)",
+    "deactivationAlert": "translate(Dein Account wurde deaktiviert)",
+    "needHelp": "translate(Brauchst du Hilfe?)",
+    "contactSupport": "translate(Kontaktiere uns)"
+  },
+  "registration": {
+    "dsgvo": {
+      "accept": "translate(Hiermit stimme ich der)",
+      "datapolicy": "translate(Datenschutzerklärung)",
+      "lastword": "translate(zu.)",
+      "pleaseaccept": "translate(Bitte akzeptiere unsere)"
+    },
+    "barrier": {
+      "btn": {
+        "yes": "translate(Ja, die Punkte treffen zu)",
+        "no": "translate(Nein, die Punkte treffen nicht zu)"
+      },
+      "title": "translate(Wichtig)",
+      "text": "translate(Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.)",
+      "point_0": "translate(● Du brauchst Hilfe in der Schule)",
+      "point_1": "translate(● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen)",
+      "point_2": "translate(● Deine Familie kann keine Nachhilfe für dich bezahlen)"
+    },
+    "hint": {
+      "password": {
+        "length": "translate(Das Passwort muss mindestens 6 Zeichen enthalten.)",
+        "nomatch": "translate(Die Passwörter stimmen nicht überein)"
+      },
+      "email": {
+        "invalid": "translate(Ungültige E-Mail-Adresse)",
+        "unavailable": "translate(Diese E-Mail-Adresse ist bereits vergeben)"
+      },
+      "userType": {
+        "missing": "translate(Bitte identifiziere deine Rolle)"
+      },
+      "name": "translate(Bitte gebe deinen vollen Namen an)"
+    },
+    "personal": {
+      "about": {
+        "label": "translate(Über mich)",
+        "text": "translate(Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können.)"
+      },
+      "title": "translate(Gib deine persönlichen Daten ein)"
+    },
+    "result": {
+      "success": {
+        "title": "translate(Erledigt!)",
+        "text": "translate(Dein Account wurde erfolgreich erstellt. Du kannst nun das Angebot von Lern-Fair nutzen!)",
+        "btn": "translate(Zur Anwendung)"
+      },
+      "error": {
+        "message": {
+          "Email is already used by another account": "translate(Diese Email ist bereits in Verwendung)",
+          "Response not successful: Received status code 400": "translate(Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.)",
+          "RateLimit Enforcement": "translate(Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.)",
+          "Unknown User Type": "translate(Dein Account-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login.)"
+        },
+        "tryagain": "translate(Erneut versuchen)"
+      }
+    },
+    "steps": {
+      "0": {
+        "title": "translate(Deine Rolle)",
+        "subtitle": "translate(Ich bin)"
+      },
+      "1": {
+        "title": "translate(Persönliche Daten)",
+        "subtitle": "translate(Persönliche Daten)"
+      },
+      "2": {
+        "title": "translate(Klasse)",
+        "subtitle": "translate(In welcher Klasse bist du?)"
+      },
+      "3": {
+        "title": "translate(Schulform)",
+        "subtitle": "translate(Auf welche Schulform gehst du?)"
+      },
+      "4": {
+        "title": "translate(Bundesland)",
+        "subtitle": "translate(Aus welchem Bundesland kommst du?)"
+      },
+      "5": {
+        "title": "translate(Einwilligungen)",
+        "subtitle": "translate(Einwilligungen)"
+      }
+    },
+    "pupil": {
+      "label": "translate(Schüler:in)"
+    },
+    "student": {
+      "label": "translate(Helfer:in)"
+    },
+    "verifyemail": {
+      "resend": {
+        "button": "translate(Bestätigungsmail erneut senden)",
+        "successAlert": "translate(Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.)",
+        "failedAlert": "translate(Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut.)"
+      },
+      "title": "translate(Überprüfe dein E-Mail-Postfach!)",
+      "mailsendto": "translate(Wir haben eine E-Mail an {{email}} gesendet.)",
+      "description": "translate(Bevor du unser Angebot nutzen kannst, musst du deine E-Mail-Adresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.)",
+      "notreceived": "translate(Keine E-Mail erhalten? Schau bitte auch im Spam nach!)",
+      "backToWelcomeButton": "translate(Zum Login-Bereich)"
+    },
+    "password_repeat": "translate(Passwort wiederholen)",
+    "to_login": "translate(Ich habe bereits einen Account)"
+  },
+  "helpcenter": {
+    "subtitle": {
+      "pupil": "translate(Klicke dich hier durch häufig gestellte Fragen oder kontaktiere unser Team.)",
+      "student": "translate(Klicke dich hier durch unsere pädagogischen & technischen Hilfestellungen, unsere häufigen Fragen oder kontaktiere unser Team.)"
+    },
+    "onboarding": {
+      "title": "translate(Onboarding)",
+      "content": "translate(Hier geht es zum Onboarding.)",
+      "button": "translate(zum Onboarding)"
+    },
+    "faq": {
+      "tabName": "translate(Häufige Fragen)"
+    },
+    "assistance": {
+      "title": "translate(Hilfestellungen)"
+    },
+    "contact": {
+      "message": {
+        "placeholder": "translate(Deine Nachricht an uns)",
+        "label": "translate(Deine Nachricht)",
+        "error": "translate(Bitte gib eine Nachricht ein)"
+      },
+      "subject": {
+        "error": "translate(Bitte wähle einen Betreff aus)",
+        "label": "translate(Betreff)"
+      },
+      "fileupload": {
+        "label": "translate(Dateien anhängen)",
+        "fileSizeToolarge": "translate(Die Datei ist zu groß! Maximal {{maxSize}} MB erlaubt.)",
+        "fileSizeToSmall": "translate(Die Datei ist zu klein!)",
+        "readerError": "translate(Die Datei konnte nicht gelesen werden!)",
+        "maxLimitExceeded": "translate(Maximale Anzahl an Dateien überschritten!)",
+        "minLimitNotReached": "translate(Minimale Anzahl an Dateien nicht erreicht!)"
+      },
+      "tabName": "translate(Kontakt)",
+      "title": "translate(Kontaktformular)",
+      "content": "translate(Du hast Fragen oder brauchst Hilfe? Schreibe uns über das Kontaktformular, wir helfen dir gerne weiter.)",
+      "popupTitle": "translate(Vielen Dank!)",
+      "popupContent": "translate(Wir haben deine Nachricht an das Lern-Fair Team erhalten. Wir melden uns schnellstmöglich zurück.)",
+      "popupBtn": "translate(Zurück zum User-Bereich)",
+      "success": "translate(Deine Nachricht wurde erfolgreich versendet)",
+      "error": "translate(Deine Nachricht konnte leider nicht versendet werden)"
+    },
+    "btn": {
+      "formsubmit": "translate(Anfrage senden)"
+    },
+    "title": "translate(Du brauchst Hilfe?)",
+    "reportSuccessToast": "translate(Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft.)"
+  },
+  "profile": {
+    "ProfileCompletion": {
+      "name": "translate(Profilvollständigkeit)"
+    },
+    "UserName": {
+      "label": {
+        "title": "translate(Dein Name)",
+        "firstname": "translate(Vorname)",
+        "lastname": "translate(Nachname)",
+        "email": "translate(Deine E-Mail)"
+      },
+      "popup": {
+        "header": "translate(Name ändern)",
+        "label": "translate(Dein Name)"
+      }
+    },
+    "AboutMe": {
+      "popup": {
+        "header": "translate(Über mich Text ändern)",
+        "label": "translate(Dein Text)"
+      },
+      "label": "translate(Über mich)",
+      "empty": "translate(Keine Angabe)"
+    },
+    "FluentLanguagenalData": {
+      "single": {
+        "optional": {
+          "label": "translate(Andere Schulform)",
+          "placeholder": "translate(Gebe deine Schulform an.)"
+        },
+        "header": "translate(Sprache ändern)",
+        "title": "translate(Meine Sprachen)",
+        "others": "translate(Weitere Sprachen)"
+      },
+      "label": "translate(Fließende Sprache)",
+      "empty": "translate(Keine Angabe)"
+    },
+    "State": {
+      "single": {
+        "selectedStates": "translate(Mein Bundesland)",
+        "otherStates": "translate(Weitere Bundesländer)",
+        "header": "translate(Bundesland ändern)",
+        "title": "translate(Mein Bundesland)",
+        "others": "translate(Bundesland wählen)"
+      },
+      "empty": "translate(Keine Angabe)",
+      "label": "translate(Bundesland)"
+    },
+    "SchoolType": {
+      "single": {
+        "optional": {
+          "label": "translate(Andere Schulform)",
+          "placeholder": "translate(Gebe deine Schulform an.)"
+        },
+        "header": "translate(Schulform ändern)",
+        "title": "translate(Meine Schulform)",
+        "others": "translate(Weitere Schulformen)"
+      },
+      "label": "translate(Schulform)",
+      "empty": "translate(Keine Angabe)"
+    },
+    "SchoolClass": {
+      "single": {
+        "optional": {
+          "label": "translate(Andere Klasse)",
+          "placeholder": "translate(Gebe deine Klasse an.)"
+        },
+        "header": "translate(Schulklasse ändern)",
+        "title": "translate(Gewählte Schulklasse)",
+        "others": "translate(Weitere Klassen)"
+      },
+      "label": "translate(Klasse)",
+      "empty": "translate(Keine Angabe)"
+    },
+    "subjects": {
+      "single": {
+        "title": "translate(Meine Fächer)"
+      },
+      "label": "translate(Meine Fächer)",
+      "empty": "translate(Keine Fächer angegeben)"
+    },
+    "NeedHelpIn": {
+      "single": {
+        "optional": {
+          "label": "translate(Anderes Fach)",
+          "placeholder": "translate(Welche Fächer möchtest du wählen?)"
+        },
+        "header": "translate(Fächer ändern)",
+        "title": "translate(Fächer, in denen ich mir Hilfe wünsche)",
+        "others": "translate(Weitere Fächer wählen)"
+      },
+      "label": "translate(Fächer, in denen ich mir Hilfe wünsche)",
+      "empty": "translate(Es wurden keine Fächer angegeben)"
+    },
+    "Helper": {
+      "certificate": {
+        "title": "translate(Meine Bescheinigungen)",
+        "button": "translate(Bescheinigung anfordern)"
+      }
+    },
+    "Notice": {
+      "noLanguage": "translate(Es wurden keine Sprachen angegeben)",
+      "noState": "translate(Es wurde kein Bundesland angegeben)",
+      "noSchoolType": "translate(Es wurde keine Schulform angegeben)",
+      "noSchoolGrade": "translate(Es wurde keine Klasse angegeben)",
+      "noSchoolSubject": "translate(Es wurden keine Fächer angegeben)"
+    },
+    "Deactivate": {
+      "modal": {
+        "other": {
+          "placeholder": "translate(Deaktivierungsgrund)"
+        },
+        "description": {
+          "pupil": "translate(Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.)",
+          "student": "translate(Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.)"
+        },
+        "title": "translate(Account deaktivieren)",
+        "btn": "translate(Account deaktivieren)"
+      },
+      "pupil": {
+        "0": "translate(Ich habe keine Zeit mehr.)",
+        "1": "translate(Ich habe kein Interesse mehr.)",
+        "2": "translate(Ich habe mich nur zu Testzwecken angemeldet.)",
+        "3": "translate(Ich habe eine andere Möglichkeit gefunden, Unterstützung zu erhalten.)",
+        "4": "translate(Ich habe mir das Programm anders vorgestellt.)",
+        "5": "translate(Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.)",
+        "6": "translate(Sonstiges)"
+      },
+      "student": {
+        "0": "translate(Ich habe keine Zeit mehr mich zu engagieren.)",
+        "1": "translate(Ich konnte/wollte das Kennenlerngespräch nicht wahrnehmen.)",
+        "2": "translate(Ich habe kein Interesse mehr.)",
+        "3": "translate(Ich habe mich nur zu Testzwecken angemeldet.)",
+        "4": "translate(Ich habe eine andere Möglichkeit gefunden mich zu engagieren.)",
+        "5": "translate(Ich habe mir das Programm anders vorgestellt.)",
+        "6": "translate(Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.)",
+        "7": "translate(Sonstiges)"
+      },
+      "error": "translate(Dein Account konnte nicht deaktiviert werden.)"
+    },
+    "title": "translate(Mein Profil)",
+    "successmessage": "translate(Änderungen wurden erfolgreich gespeichert.)",
+    "errormessage": "translate(Deine Änderungen konnten nicht gespeichert werden.)",
+    "editprofile": "translate(Profilbild ändern)",
+    "birthday": "translate(Geburtsdatum ändern)",
+    "type": "translate(Art der Unterstützung:)",
+    "availability": "translate(Verfügbarkeit verwalten)",
+    "noInfo": "translate(Keine Angabe)",
+    "PersonalData": "translate(Persönliche Daten)"
+  },
+  "single": {
+    "global": {
+      "status": {
+        "free": "translate(Freie Plätze)",
+        "last": "translate(Nur noch {{seatsLeft}} freie Plätze)",
+        "lastSeats": "translate({{seatsFull}} von {{seatsMax}} Plätzen belegt)",
+        "full": "translate(Ausgebucht)"
+      },
+      "courseState": {
+        "publish": "translate(Öffentlich)",
+        "cancelled": "translate(Abgesagt)",
+        "denied": "translate(Abgelehnt)",
+        "draft": "translate(Entwurf)",
+        "submitted": "translate(In Prüfung)"
+      },
+      "clockFrom": "translate(Ab)",
+      "from": "translate(aus)",
+      "clock": "translate(Uhr)",
+      "timeFormatLocale": "translate(de)",
+      "category": "translate(Kategorie)",
+      "participating": "translate(Teilnehmer:innen)",
+      "quantity": "translate(Anzahl)",
+      "lesson": "translate(Lektion)",
+      "lessons": "translate(Lektionen)",
+      "duration": "translate(Dauer)",
+      "tutor": "translate(Tutor:innen)",
+      "more_tutors": "translate(Weitere Tutor:innen)",
+      "hours": "translate(Stunde(n))",
+      "state": "translate(Status:)",
+      "noMembers": "translate(Es sind noch keine Teilnehmer:innen vorhanden.)",
+      "noLections": "translate(Es wurden keine Lektionen eingetragen.)",
+      "leaveCourse": "translate(Kurs verlassen)",
+      "signOut": "translate(Vom Kurs abmelden)"
+    },
+    "tabs": {
+      "description": "translate(Beschreibung)",
+      "lessons": "translate(Lektionen)",
+      "waitinglist": "translate(Warteliste)",
+      "participant": "translate(Teilnehmer:innen)"
+    },
+    "courseInfo": {
+      "grade": "translate(Jahrgangsstufe: )",
+      "class": "translate(Klasse {{minGrade}} - {{maxGrade}})",
+      "editCourse": "translate(Kurs editieren)",
+      "courseInPast": "translate(Dieser Kurs ist bereits vorbei.)",
+      "courseCancelled": "translate(Dieser Kurs wurde abgesagt.)",
+      "courseStartedButJoinable": "translate(Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden)"
+    },
+    "card": {
+      "time": {
+        "notStarted": "translate(Startet:)",
+        "ongoing": "translate(Läuft seit)",
+        "ended": "translate(Schon vorbei)"
+      },
+      "expandCardButton": "translate(Mehr Infos)",
+      "alreadyRegistered": "translate(Du bist bereits für diesen Kurs angemeldet.)",
+      "waitingListMember": "translate(Du bist bereits auf der Warteliste dieses Kurses)",
+      "appointments": "translate({{count}} Termin(e))"
+    },
+    "contact": {
+      "participants": "translate(Teilnehmer:innen kontaktieren)",
+      "messageSend": "translate(Nachricht erfolgreich versendet)",
+      "failedToSend": "translate(Deine Nachricht konnte nicht versendet werden)"
+    },
+    "actions": {
+      "leaveSubcourse": "translate(Kurs verlassen)",
+      "joinWaitinglist": "translate( Auf Warteliste setzen)",
+      "leaveWaitinglist": "translate(Warteliste verlassen)",
+      "contactInstructor": "translate(Kursleiter:in kontaktieren)",
+      "videochat": "translate(Videochat starten)",
+      "videochatShouldOpen": "translate(Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:)",
+      "openVideochatAgain": "translate(Videochat erneut öffnen)"
+    },
+    "modals": {
+      "contactMessage": {
+        "alertParticipants": "translate( Wir teilen deinen Kursleiter:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.)",
+        "alertInstructors": "translate( Wir teilen deinen Schüler:innen deine E-Mail-Adresse mit, sodass ihr bei Bedarf via E-Mail weiter kommunizieren könnt.)"
+      }
+    },
+    "buttonPromote": {
+      "button": "translate(Kurs bewerben)",
+      "toast": "translate(Kurs beworben)",
+      "toastFail": "translate(Dein Kurs konnte nicht beworben werden)"
+    },
+    "bannerPromote": {
+      "freeTitle": "translate(Auf freie Plätze aufmerksam machen?)",
+      "freeDescription": "translate(Benachrichtige (einmalig) passende Schüler:innen.)",
+      "promotedTitle": "translate(Dein Kurs wurde erneut beworben!)",
+      "promotedDescription": "translate(Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.)",
+      "participant": "translate(Teilnehmer:innen)"
+    },
+    "banner": {
+      "created": {
+        "draft": "translate(Entwurf)",
+        "button": "translate(Zur Prüfung freischalten)",
+        "info": "translate(Dein Kurs ist derzeit noch ein Entwurf. Schüler:innen können deinen Kurs nicht sehen. Bevor der Kurs veröffentlicht werden kann, muss dieser zur Prüfung für das Lern-Fair Team freigegeben werden.)"
+      },
+      "submitted": {
+        "isChecked": "translate(In Prüfung)",
+        "info": "translate(Dein Kurs wird derzeit von uns überprüft. Wenn die Überprüfung erfolgreich war, wird dein Kurs automatisch von uns veröffentlicht. Schüler:innen können sich anschließend direkt zu deinem Kurs anmelden.)"
+      },
+      "allowedNotPublished": {
+        "checked": "translate(Überprüfung erfolgreich)",
+        "button": "translate(Kurs veröffentlichen)",
+        "info": "translate(Dein Kurs wurde erfolgreich von uns überprüft. Du kannst den Kurs nun veröffentlichen und damit zur Anmeldung für Schüler:innen freigeben.)"
+      },
+      "allowedAndPublished": {
+        "published": "translate(Veröffentlicht)",
+        "button": "translate(Kurs absagen)",
+        "info": "translate(Dein Kurs ist öffentlich sichtbar. Schüler:innen können sich zu deinem Kurs anmelden, wenn sie in der für deinen Kurs vorgesehenen Jahrgangsstufe sind.)"
+      },
+      "rejected": {
+        "state": "translate(Abgelehnt)",
+        "button": "translate(Support kontaktieren)",
+        "info": "translate(Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support.)"
+      },
+      "state": "translate(Status: )"
+    },
+    "signIn": {
+      "button": "translate(Verbindlich anmelden)",
+      "description": "translate(Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.)",
+      "toast": "translate(Du hast dich erfolgreich zu dem Kurs angemeldet.)",
+      "error": "translate(Du konntest nicht zu dem Kurs angemeldet werden.)"
+    },
+    "joinWaitinglist": {
+      "button": "translate(Auf Warteliste setzen)",
+      "description": "translate(Möchtest du dich auf die Warteliste setzen?)",
+      "toast": "translate(Du bist auf der Warteliste!)"
+    },
+    "leave": {
+      "course": "translate(Kurs verlassen)",
+      "signOut": "translate(Vom Kurs abmelden)",
+      "description": "translate(Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.)",
+      "toast": "translate(Du hast dich nun erfolgreich vom Kurs abgemeldet.)"
+    },
+    "leaveWaitinglist": {
+      "button": "translate(Warteliste verlassen)",
+      "description": "translate(Bist du sicher, dass du dich von dieser Warteliste streichen möchtest?)",
+      "toast": "translate(Du hast die Warteliste erfolgreich verlassen.)"
+    },
+    "waitinglist": {
+      "modal": {
+        "info": "translate(Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?)",
+        "success": "translate(Du bist auf der Warteliste!)",
+        "button": "translate(Auf die Warteliste)",
+        "cancel": "translate(Abbrechen)"
+      },
+      "toast": "translate(Schüler wurde dem Kurs hinzugefügt.)",
+      "error": "translate(Schüler:in konnte nicht hinzugefügt werden.)",
+      "onwaitinglist": "translate(Auf Warteliste setzen)",
+      "leaveWaitinglist": "translate(Warteliste verlassen)",
+      "leaveSuccess": "translate(Du hast die Warteliste erfolgreich verlassen.)",
+      "joined": "translate(Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.)",
+      "joinMember": "translate(Du bist auf der Warteliste für diesen Kurs.)",
+      "noPupilsOnWaitinglist": "translate(Keine Schüler:innen auf der Warteliste.)"
+    },
+    "joinPupilModal": {
+      "header": "translate(Schüler:innen nachrücken)",
+      "add": "translate(Hinzufügen)",
+      "amount": "translate(Anzahl Schüler:innen)",
+      "success": "translate(Schüler:innen erfolgreich hinzugefügt)"
+    },
+    "removeParticipantFromCourseModal": {
+      "header": "translate(Schüler:in aus Kurs entfernen)",
+      "remove": "translate(Entfernen)",
+      "success": "translate(Schüler:in erfolgreich entfernt)"
+    }
+  },
+  "settings": {
+    "general": {
+      "title": "translate(Allgemein)",
+      "profile": "translate(Profil)",
+      "languageVersion": "translate(Sprachversion)",
+      "notifications": "translate(E-Mail Benachrichtigungen)",
+      "onboarding": "translate(Onboarding-Tour)"
+    },
+    "account": {
+      "title": "translate(Konto)",
+      "changeEmail": "translate(E-Mail ändern)",
+      "changePassword": "translate(Passwort ändern)",
+      "changeUser": "translate(Benutzer wechseln)",
+      "deactivateAccount": "translate(Konto deaktivieren)",
+      "logout": "translate(Abmelden)"
+    },
+    "legal": {
+      "title": "translate(Rechtliches)",
+      "imprint": "translate(Impressum)",
+      "datapolicy": "translate(Datenschutz)",
+      "terms": "translate(Nutzungsbedingungen)"
+    },
+    "header": "translate(Einstellungen)"
+  },
+  "onboardingList": {
+    "cards": {
+      "card0": {
+        "title": "translate(Onboarding-Tour allgemein)",
+        "content": "translate(Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.)",
+        "url": "translate(/onboarding/students/)"
+      },
+      "card1": {
+        "title": "translate(Onboarding-Tour 1:1 Matching)",
+        "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.)",
+        "url": "translate(/onboarding/helpermatching/)"
+      },
+      "card2": {
+        "title": "translate(Onboarding-Tour Gruppenkurs)",
+        "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.)",
+        "url": "translate(/)"
+      },
+      "card3": {
+        "title": "translate(Onboarding-Tour Hilfebereich)",
+        "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.)",
+        "url": "translate(/)"
+      },
+      "card4": {
+        "title": "translate(Onboarding-Tour Termine)",
+        "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.)",
+        "url": "translate(/)"
+      }
+    },
+    "Wizard": {
+      "students": {
+        "welcome": {
+          "popup": {
+            "title": "translate(Bist du sicher, dass du die Tour überspringen möchtest?)",
+            "content": "translate(Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt im Hilfebereich unter “Onboarding”.)",
+            "defaultButtonText": "translate(Nein, Tour beginnen)",
+            "outlineButtonText": "translate(Ja, Tour überspringen)"
+          },
+          "title": "translate(Herzlich willkommen bei Lern-Fair)",
+          "content": "translate(Wir freuen uns, dass du unser Angebot nutzt.)",
+          "question": "translate(Möchtest du sehen, was unsere Plattform alles zu bieten hat?)",
+          "answer": "translate(Wir zeigen dir die wichtigsten Funktionen.)",
+          "startTour": "translate(Tour starten)",
+          "skipTour": "translate(Tour überspringen)"
+        },
+        "matching": {
+          "title": "translate(Lernunterstützung)",
+          "content": "translate(Wenn du Einzel-Hilfe brauchst, dann ist die Lernunterstützung das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in.)"
+        },
+        "groupCourse": {
+          "title": "translate(Nachhilfe-Kurse)",
+          "content": "translate(In kleinen Gruppen gibt es Hilfe zu verschiedenen Themen.)"
+        },
+        "appointments": {
+          "title": "translate(Meine Termine)",
+          "content": "translate(Hier findest du eine Übersicht deiner geplanten Termine.)"
+        },
+        "helpCenter": {
+          "title": "translate(Hilfebereich)",
+          "content": "translate(Hier findest du häufig gestellte Fragen mit ihren Antworten. Außerdem kannst du uns hier kontaktieren)"
+        },
+        "profile": {
+          "title": "translate(Profil)",
+          "content": "translate(In deinem Profil kannst du die Fächer, in denen du Hilfe brauchst, ändern.)"
+        },
+        "settings": {
+          "title": "translate(Einstellungen)",
+          "content": "translate(In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.)"
+        },
+        "notification": {
+          "title": "translate(Benachrichtigung)",
+          "content": "translate(Du wirst über Neuigkeiten zu deinem Matching, neue Kontaktaufnahmen, allgemeine Themen informiert. Über die Glocke oben rechts siehtst du, ob du neue Nachrichten hast.)"
+        },
+        "finisher": {
+          "title": "translate(Fertig!)",
+          "content": "translate(Einen Moment, dein persönliches Dashboard wird geladen.)",
+          "button": "translate(zum Dashboard)"
+        }
+      },
+      "helper": {
+        "welcome": {
+          "popup": {
+            "title": "translate(Bist du sicher, dass du die Tour überspringen möchtest?)",
+            "content": "translate(Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.)",
+            "defaultButtonText": "translate(Nein, Tour beginnen)",
+            "outlineButtonText": "translate(Ja, Tour überspringen)"
+          },
+          "title": "translate(Herzlich Willkommen bei Lern-Fair)",
+          "content": "translate(Wir freuen uns, dass du bildungs-benachteiligte Kinder aktiv unterstützen möchtest.)",
+          "question": "translate(Möchtest du sehen, was unsere Plattform alles zu bieten hat?)",
+          "answer": "translate(Wir zeigen dir die wichtigsten Funktionen.)",
+          "startTour": "translate(Tour starten)",
+          "skipTour": "translate(Tour überspringen)"
+        },
+        "matching": {
+          "title": "translate(Lernunterstützung)",
+          "content": "translate(Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern.)"
+        },
+        "groupCourse": {
+          "title": "translate(Gruppen-Kurse)",
+          "content": "translate(Gruppen-Kurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen. Unter „Meine Kurse“ werden alle deine Gruppen-Kurse angezeigt. Hier hast du auch die Möglichkeit, neue Kurse zu erstellen.)"
+        },
+        "appointment": {
+          "title": "translate(Termine)",
+          "content": "translate(Unter „Meine Termine“ werden dir all deine Termine, angeordnet in Tabs und sortiert nach Datum, angezeigt.)"
+        },
+        "helpCenter": {
+          "title": "translate(Hilfebereich)",
+          "content": "translate(Solltest du Hilfe benötigen, findest du die wichtigsten Informationen in unserem Hilfebereich.)"
+        },
+        "profile": {
+          "title": "translate(Profil)",
+          "content": "translate(In deinem Profil kannst du alles relevanten Daten eingeben.)"
+        },
+        "settings": {
+          "title": "translate(Einstellungen)",
+          "content": "translate(In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform.)"
+        },
+        "notification": {
+          "title": "translate(Benachrichtigung)",
+          "content": "translate(Du wirst über Neuigkeiten zu deinem Matching, neue Kontaktaufnahmen, allgemeine Themen informiert. Über die Glocke oben rechts siehtst du, ob du neue Nachrichten hast.)"
+        },
+        "finisher": {
+          "title": "translate(Fertig!)",
+          "content": "translate(Einen Moment, dein persönliches Dashboard wird geladen.)",
+          "button": "translate(zum Dashboard)"
+        }
+      },
+      "helperMatching": {
+        "welcome": {
+          "popup": {
+            "title": "translate(Bist du sicher, dass du die Tour überspringen möchtest?)",
+            "content": "translate(Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.)",
+            "defaultButtonText": "translate(Nein, Tour beginnen)",
+            "outlineButtonText": "translate(Ja, Tour überspringen)"
+          },
+          "title": "translate(Onboarding-Tour Lernunterstützung)",
+          "content": "translate(Wir zeigen dir hier alle wichtigen Informationen, die du über die Lernunterstützung wissen musst.)",
+          "question": "translate(Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?)",
+          "answer": "translate(Wir zeigen dir die wichtigsten Funktionen.)",
+          "startTour": "translate(Tour starten)",
+          "skipTour": "translate(Tour überspringen)"
+        },
+        "matching": {
+          "title": "translate(Lernpartner:in anfordern)",
+          "content": "translate(Über den Button “Lernpartner:in” anfordern auf dem Dashboard oder im Bereich Einzel kannst du eine:n neue:n Lernpartner:in anfordern.)"
+        },
+        "request": {
+          "title": "translate(Anfrage stellen)",
+          "content": "translate(Damit wir dir eine:n Lernpartner:in zuteilen können, benötigen wir ein paar Informationen über dich und dein Angebot.)"
+        },
+        "match": {
+          "title": "translate(Zuteilung des Lernpaars)",
+          "content": "translate(Nachdem du deine Anfrage gestellt hast, begeben wir uns auf die Suche nach einem/einer passenden Lernpartner:in für dich.)",
+          "contentsec": "translate(Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich Einzel sind alle deine Anfragen aufgeführt.)"
+        },
+        "contact": {
+          "title": "translate(Kontaktaufnahme)",
+          "content": "translate(Wurdest du gematcht kannst du deine:n Lernpartner:in direkt über den Button „Kontakt aufnehmen“ in der Benachrichtigung kontaktieren.)",
+          "contentsec": "translate(Möchtest du deine:n Lernpartner:in zu einen späteren Zeitpunkt kontaktieren, kannst du dies auch über das Profil deines/deiner Lernpartners/Lernpartnerin tun.)"
+        },
+        "matchSolve": {
+          "title": "translate(Lernpaar auflösen)",
+          "content": "translate(Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt Einzel unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun.)"
+        },
+        "finisher": {
+          "title": "translate(Geschafft)",
+          "firstContent": "translate(Glückwunsch, du hast die Onboarding-Tour zur Lernunterstützung abgeschlossen.)",
+          "headlineContent": "translate(Hast du alles verstanden?)",
+          "answer": "translate(Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.)",
+          "linkText": "translate(Zum Hilfebereich)",
+          "helpcenter": "translate(Zum Hilfebereich)",
+          "buttonText": "translate(Tour beenden)",
+          "buttonLinkText": "translate(Tour nochmal ansehen)"
+        }
+      }
+    },
+    "header": "translate(Onboarding-Tour)",
+    "title": "translate(Onboarding)",
+    "buttontext": "translate(Tour starten)",
+    "skip": "translate(Überspringen)",
+    "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod)"
+  },
+  "dashboard": {
+    "appointmentcard": {
+      "header": "translate(Nächster Termin)"
+    },
+    "myappointments": {
+      "header": "translate(Meine Termine)",
+      "noappointments": "translate(Es wurden keine Termine gefunden.)"
+    },
+    "learningpartner": {
+      "header": "translate(Dein:e Lernpartner:in)"
+    },
+    "relatedcontent": {
+      "header": "translate(Vorschläge für dich)"
+    },
+    "offers": {
+      "noMatching": "translate(Du hast gerade kein aktives Lernpaar)",
+      "requestCreated": "translate(Anfrage erstellt am:)",
+      "waitingTimeInfo": "translate(Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.)",
+      "removeRequest": "translate(Anfrage zurücknehmen)"
+    },
+    "helpers": {
+      "headlines": {
+        "course": "translate(Meine Kurse)",
+        "importantNews": "translate(Wichtige Meldungen)",
+        "myLearningPartner": "translate(Meine Lernpartner:innen)",
+        "openedRequests": "translate(Suche nach Lernpartner:innen)",
+        "recommend": "translate(Empfiehl uns weiter)",
+        "recommendFriends": "translate(Empfiehl Lern-Fair deinen Freunden)"
+      },
+      "contents": {
+        "recommendFriends": "translate(Du stehst hinter der Mission von Lern-Fair für mehr Bildungsgerechtigkeit in Deutschland? Dann erzähle deinen Freunden von Lern-Fair und lass uns gemeinsam noch mehr benachteiligten Kindern und Jugendlichen helfen.)",
+        "recommendText": "translate(Hey, ich engagiere mich ehrenamtlich bei Lern-Fair e.V. für mehr Bildungschancen und Gerechtigkeit in Deutschland. Vielleicht wäre das ja auch etwas für dich? Es ist total einfach und komplett flexibel, da alles online stattfindet und du von zuhause aus mitmachen kannst. Ich würde mich freuen, wenn du dabei wärst! Alle Infos findest du auf der Website: www.lern-fair.de)",
+        "recommendSubject": "translate(Engagiere dich bei Lern-Fair!)",
+        "toast": "translate(Text in die Zwischenablage kopiert.)"
+      },
+      "buttons": {
+        "course": "translate(Neuen Kurs eintragen)",
+        "offer": "translate(Wichtige Meldungen)",
+        "requestMatchStudent": "translate(Ein neues Lernpaar bilden)",
+        "requestMatchPupil": "translate(Auf die Warteliste setzen)",
+        "solveMatch": "translate(Lernpaar auflösen)",
+        "recommend": "translate(Jetzt empfehlen)"
+      },
+      "channels": {
+        "whatsApp": "translate(WhatsApp)",
+        "signal": "translate(Signal)",
+        "email": "translate(E-Mail)"
+      }
+    },
+    "homeworkhelp": {
+      "title": "translate(Hausaufgabenhilfe)",
+      "catcher": "translate(Du brauchst Hilfe bei deinen Hausaufgaben?)",
+      "text": "translate(Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.)"
+    },
+    "noproposalsPupil": "translate(Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!)"
+  },
+  "helperwizard": {
+    "verifizierung": {
+      "buttons": [
+        "translate(E-Mail erneut senden)"
+      ],
+      "title": "translate(Verifiziere deine E-Mail-Adresse)",
+      "content": "translate(“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”)"
+    },
+    "passwort": {
+      "buttons": [
+        "translate(Passwort einrichten)"
+      ],
+      "title": "translate(Passwort einrichten)",
+      "content": "translate(Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.)"
+    },
+    "willkommen": {
+      "buttons": [
+        "translate(Kurse ansehen)",
+        "translate(Lernunterstützung beantragen)"
+      ],
+      "title": "translate(Willkommen bei Lern-Fair 👋)",
+      "content": "translate(Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen)"
+    },
+    "statusSchüler": {
+      "buttons": [
+        "translate(Kurse ansehen)",
+        "translate(Anfrage zurücknehmen)"
+      ],
+      "title": "translate(Du bist auf der Warteliste!)",
+      "content": "translate(Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.)"
+    },
+    "interestconfirmation": {
+      "buttons": [
+        "translate(Ja)",
+        "translate(Nein)"
+      ],
+      "title": "translate(Brauchst du noch Unterstützung?)",
+      "content": "translate(Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.)"
+    },
+    "kontaktSchüler": {
+      "buttons": [
+        "translate(Kontakt aufnehmen)",
+        "translate(Lernpartner:in ansehen)"
+      ],
+      "title": "translate(Neue Lernpartner:in)",
+      "content": "translate(Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. )"
+    },
+    "angeforderteBescheinigung": {
+      "buttons": [
+        "translate(Angaben bestätigen)"
+      ],
+      "title": "translate({{nameHelfer}} braucht eine Bestätigung von dir)",
+      "content": "translate({{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.)"
+    },
+    "kennenlernen": {
+      "buttons": [
+        "translate(Termin vereinbaren)"
+      ],
+      "title": "translate(Wir möchten dich kennenlernen 👋!)",
+      "content": "translate(Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.)"
+    },
+    "zeugnis": {
+      "buttons": [
+        "translate(Führungszeugnis einreichen)",
+        "translate(Vordruck herunterladen)"
+      ],
+      "title": "translate(Erweitertes Führungszeugnis)",
+      "content": "translate(Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}})"
+    },
+    "statusStudent": {
+      "buttons": [
+        "translate(Problem melden)"
+      ],
+      "title": "translate(Wir suchen nach einem:r Lernpartner:in für dich!)",
+      "content": "translate(Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.)"
+    },
+    "statusStudent2": {
+      "buttons": [
+        "translate(Ein weiteres Lernpaar bilden)",
+        "translate(Gruppen-Kurse ansehen)"
+      ],
+      "title": "translate(Weitere Engagement-Möglichkeiten)",
+      "content": "translate(Wenn du Lust und Zeit hast, mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpartnerschaft anfragen. Wenn du hin und wieder Kleingruppen unterrichten möchtest, kannst du einen einmaligen oder fortlaufenden Gruppenkurs anbieten. Danke für dein Engagement!)"
+    },
+    "kontaktStudent": {
+      "buttons": [
+        "translate(Kontakt aufnehmen)",
+        "translate(Lernpartner:in ansehen)"
+      ],
+      "title": "translate(Neue Lernpartner:in)",
+      "content": "translate(Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.)"
+    },
+    "homeworkHelpStudent": {
+      "buttons": [
+        "translate(Zur Hausaufgabenhilfe\n(Zoom-Registrierung))"
+      ],
+      "title": "translate(Hausaufgabenhilfe)",
+      "content": "translate(Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!)"
+    },
+    "homeworkHelpPupil": {
+      "buttons": [
+        "translate(Zur Hausaufgabenhilfe)"
+      ],
+      "title": "translate(Hilfe bei deinen Hausaufgaben)",
+      "content": "translate(Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!)"
+    },
+    "pupilScreening": {
+      "buttons": [
+        "translate(Termin vereinbaren)"
+      ],
+      "title": "translate(Wir möchten dich kennenlernen!)",
+      "content": "translate(Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.)"
+    },
+    "nextStep": "translate(Deine nächsten Schritte)"
+  },
+  "matching": {
+    "shared": {
+      "subjects": "translate(Fächer:)",
+      "schooltype": "translate(Schulform:)",
+      "class": "translate(Klasse:)",
+      "state": "translate(Status:)",
+      "videochat": "translate(Videochat)",
+      "contact": "translate(Kontaktieren)",
+      "dissolve": "translate(Lernpaar auflösen)",
+      "active": "translate(aktiv)",
+      "inactive": "translate(inaktiv)",
+      "activeMatches": "translate(Aktive Lernpaare)",
+      "inactiveMatches": "translate(Aufgelöste Lernpaare)",
+      "schoolGrade": "translate({{schooltype}} • {{grade}} )",
+      "showMore": "translate(Mehr anzeigen)",
+      "showLess": "translate(Weniger anzeigen)",
+      "contactViaChat": "translate(Per Chat kontaktieren)",
+      "directCall": "translate(Sofortbesprechung starten)",
+      "dissolveMatch": "translate(Lernpaar auflösen)",
+      "dissolved": "translate(Das Lernpaar wurde aufgelöst.)",
+      "dissolvedAlert": "translate(Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.)",
+      "contactMail": "translate(Via E-Mail kontaktieren)",
+      "tutorInstructor": "translate(Tutor:in, Kursleiter:in)",
+      "appointmentsHeadline": "translate(Termine)",
+      "createAppointment": "translate(Termin erstellen)"
+    },
+    "blocker": {
+      "header": "translate(Lernunterstützung)",
+      "title": "translate(Unterstützung anfragen)",
+      "firstContent": "translate(Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.)",
+      "headlineContent": "translate(Wichtig)",
+      "contentBox1": "translate(Es kommt bei der Lernunterstützung zu)",
+      "contentBox2": "translate(längeren Wartezeiten.)",
+      "contentBox3": "translate(Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.)",
+      "button": "translate(Unterstützung anfragen)",
+      "ctaCardHeader": "translate(Gruppen-Kurse)",
+      "ctaCardContent": "translate(Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…)",
+      "ctaCardButton": "translate(Zu den Gruppen-Kursen)"
+    },
+    "homeworkhelp": {
+      "title": "translate(Hausaufgabenhilfe)",
+      "textpupil": "translate(Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.)",
+      "texthelper": "translate(In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.)",
+      "button": "translate(Zur Hausaufgabenhilfe)"
+    },
+    "pending": {
+      "modal": {
+        "buttons": {
+          "dissolve": "translate(Anfrage zurücknehmen)",
+          "nothing": "translate(Keine Angabe machen)"
+        },
+        "title": "translate(Anfrage zurücknehmen)",
+        "description": "translate(Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere Schüler:innen vergeben.)"
+      }
+    },
+    "request": {
+      "check": {
+        "tabs": {
+          "tab1": "translate(Lernpaare)",
+          "tab2": "translate(Anfragen)"
+        },
+        "header": "translate(Lernunterstützung)",
+        "title": "translate(Lernunterstützung)",
+        "content": "translate(In der Lernunterstützung hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Lernunterstützung nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.)",
+        "request": "translate(Anfrage)",
+        "removeRequest": "translate(Anfrage zurücknehmen)",
+        "editRequest": "translate(Anfrage bearbeiten)",
+        "deleteRequest": "translate(Anfrage löschen)",
+        "areyousuretodelete": "translate(Möchtest du die Anfrage wirklich löschen?)",
+        "deleteSucess": "translate(Die Anfrage wurde gelöscht)",
+        "noMatches": "translate(Du hast (noch) keine Lernpartner:in.)",
+        "noDissolvedMatches": "translate(Du hast keine aufgelösten Lernpaare.)",
+        "editRequestDescription": "translate( Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.)",
+        "noRequestsTutee": "translate(Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.)",
+        "noRequestsTutor": "translate(Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.)",
+        "resolveMatch": "translate(Das Lernpaar wurde aufgelöst)"
+      },
+      "daz": {
+        "heading": "translate(Deutsch als Zweitsprache)",
+        "description": "translate(Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?)"
+      },
+      "updateData": "translate(Deine Daten wurden aktualisiert)"
+    },
+    "wizard": {
+      "pupil": {
+        "filter": {
+          "bulletPoints": [
+            "translate(Du brauchst Hilfe in der Schule)",
+            "translate(Deine Familie kann dir nicht bei deinen Hausaufgaben helfen)",
+            "translate(Deine Familie kann keine Nachhilfe für dich bezahlen)"
+          ],
+          "heading": "translate(Die 1:1-Lernunterstützung)",
+          "subheading1": "translate(Für wen ist die 1:1-Lernunterstützung gedacht?)",
+          "text1": "translate(Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:)",
+          "question1": "translate(Treffen diese Punkte auf dich zu?)",
+          "subheading2": "translate(Lange Wartezeit: 3-6 Monate)",
+          "text2": "translate(Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.)",
+          "question2": "translate(Bist du bereit, 3-6 Monate zu warten?)"
+        },
+        "alternatives": {
+          "bulletPoints": [
+            "translate(Du brauchst Hilfe beim Lernen.)",
+            "translate(Du hast Nachteile beim Lernen.)",
+            "translate(Deine Familie kann dir nicht beim Lernen helfen.)",
+            "translate(Deine Familie kann keine Nachhilfe für dich bezahlen.)"
+          ],
+          "educloud": {
+            "heading": "translate(Kennst du schon Edu-Cloud?)",
+            "text": "translate(Dort findest du viele Angebote, die für dich interessant sein können. Bei Fragen kannst du dich gerne jederzeit bei uns melden.)",
+            "button": "translate(Zur Edu-Cloud)"
+          },
+          "groupcourses": {
+            "button": "translate(Zu den Gruppen-Kursen)"
+          },
+          "homeworkhelp": {
+            "heading": "translate(Kennst du schon unsere Hausaufgabenhilfe?)",
+            "text": "translate(Du hast eine Frage zu deinen Hausaufgaben? Zwischen 16:00 und 17:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.)",
+            "button": "translate(Zur Hausaufgabenhilfe)"
+          },
+          "heading": "translate(Alternative Angebote)",
+          "text": "translate(Leider können wir dich bei Lern-Fair in diesem Fall nicht unterstützen. Unsere Hilfe wird von freiwilligen Helfer:innen angeboten. Deshalb haben wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:)"
+        },
+        "profiledata": {
+          "heading": "translate(Profil aktualisieren)",
+          "text": "translate(Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.)",
+          "subheading": "translate(Persönliche Daten)"
+        },
+        "german": {
+          "howlong": {
+            "heading": "translate(Seit wann lernst du Deutsch?)",
+            "option1": "translate(Weniger als 1 Jahr)",
+            "option2": "translate(1-2 Jahre)",
+            "option3": "translate(2-4 Jahre)",
+            "option4": "translate(Mehr als 4 Jahre)",
+            "alertmsg": "translate(Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft.)"
+          },
+          "heading": "translate(Deutschkenntnisse)",
+          "isNative": "translate(Ist Deutsch deine Muttersprache?)"
+        },
+        "subjects": {
+          "heading": "translate(Fachauswahl)",
+          "subheading": "translate(In welchen Fächern brauchst du Hilfe?)",
+          "text": "translate(Du kannst maximal 1 Fach auswählen.)"
+        },
+        "priority": {
+          "heading": "translate(Priorisierung)",
+          "subheading": "translate(In welchen Fach brauchst du am meisten Hilfe?)",
+          "text": "translate(Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.)"
+        },
+        "details": {
+          "heading": "translate(Details)",
+          "subheading": "translate(Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?)",
+          "text": "translate(Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.)",
+          "additionalInfo": "translate(Deine Angaben)",
+          "placeholder": "translate(Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?)"
+        },
+        "modalSuccess": {
+          "heading": {
+            "ver1": "translate(Geschafft, du bist auf der Warteliste!)",
+            "ver2": "translate(Geschafft, Änderungen gespeichert!)"
+          },
+          "text": {
+            "ver1": "translate(Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.)",
+            "ver2": "translate(Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht.)"
+          },
+          "groupCourses": "translate(Zu den Gruppen-Kursen)"
+        }
+      }
+    },
+    "group": {
+      "tabs": {
+        "tab1": {
+          "title": "translate(Meine Kurse)",
+          "content": "translate(Unsere Empfehlungen basieren auf den Angaben in deinem Profil.)"
+        },
+        "tab2": {
+          "title": "translate(Empfehlungen)",
+          "content": "translate(Unsere Empfehlungen basieren auf den Angaben in deinem Profil.)"
+        },
+        "tab3": {
+          "title": "translate(Alle Angebote)",
+          "content": "translate(Unsere Empfehlungen basieren auf den Angaben in deinem Profil.)"
+        }
+      },
+      "error": {
+        "nofound": "translate(Es wurden keine Kurse gefunden. Bitte passe deine Suche an.)"
+      },
+      "pupil": {
+        "tabs": {
+          "tab1": {
+            "title": "translate(Meine Kurse)"
+          },
+          "tab2": {
+            "title": "translate(Alle Kurse)",
+            "current": "translate(Aktuelle Kurse)",
+            "past": "translate(Vergangene Kurse)",
+            "language": "translate(Deutsch für Anfänger)",
+            "focus": "translate(Fokus-Kurse)",
+            "courses": "translate(Nachhilfe-Kurse)"
+          }
+        },
+        "header": "translate(Gruppen-Kurse)",
+        "title": "translate(Angebote)",
+        "content": "translate(Auf dieser Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.)"
+      },
+      "helper": {
+        "course": {
+          "tabs": {
+            "tab1": {
+              "title": "translate(Meine Kurse)",
+              "current": "translate(Aktuelle Kurse (veröffentlicht))",
+              "draft": "translate(Entwurf oder in Prüfung)",
+              "past": "translate(Vergangene und abgesagte Kurse)"
+            },
+            "tab2": {
+              "title": "translate(Alle Kurse)"
+            }
+          },
+          "title": "translate(Meine Kurse)"
+        },
+        "otherCourses": {
+          "title": "translate(Kurse von Anderen)"
+        },
+        "alert": {
+          "successfulEditing": "translate(Dein Kurs wurde erfolgreich bearbeitet.)",
+          "successfulCreation": "translate(Dein Kurs wurde erfolgreich erstellt. Solltest du ihn nicht direkt zur Prüfung freigegeben haben, vergiss das bitte nicht. Nur so können wir deinen Kurs rechtzeitig veröffentlichen.)"
+        },
+        "header": "translate(Gruppen-Kurse)",
+        "title": "translate(Gruppen-Kurse)",
+        "content": "translate(In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und 'Deutsch für Anfänger'.)",
+        "button": "translate(Kurs anlegen)"
+      }
+    },
+    "status": {
+      "dissolved": "translate(Das Lernpaar wurde aufgelöst.)"
+    },
+    "dissolve": {
+      "modal": {
+        "title": "translate(Warum möchtest du das Lernpaar auflösen?)",
+        "btn": "translate(Lernpaar auflösen)"
+      },
+      "warningModal": {
+        "title": "translate(Bist du sicher?)",
+        "body": "translate(Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Lernunterstützung geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.)",
+        "btn": "translate(Trotzdem auflösen)"
+      },
+      "newMatch": {
+        "title": "translate(Neues Lernpaar bilden)",
+        "descriptionPupil": "translate(Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte bitte, dass es wieder einige Zeit dauert bis wir jemanden für dich finden können.)",
+        "descriptionStudent": "translate(Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Wir freuen uns, wenn du (noch) eine:n Schüler:in unterstützt. Danke für dein Engagement!)"
+      }
+    },
+    "dissolveReasons": {
+      "student": {
+        "ghosted": "translate(Mein:e Lernpartner:in hat sich nicht zurückgemeldet)",
+        "isOfNoHelp": "translate(Ich konnte meinem/meiner Lernpartner:in nicht behilflich sein)",
+        "noMoreTime": "translate(Ich habe keine Zeit mehr mein*e Lernpartner:in zu unterstützen)",
+        "noMoreHelpNeeded": "translate(Mein:e Lernpartner:in benötigt keine Unterstützung mehr)",
+        "personalIssues": "translate(Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene)",
+        "scheduleIssues": "translate(Wir konnten keine gemeinsamen Termine finden)",
+        "technicalIssues": "translate(Wir hatten technische Schwierigkeiten)",
+        "languageIssues": "translate(Wir hatten sprachliche Schwierigkeiten)",
+        "other": "translate(Sonstiges)"
+      },
+      "pupil": {
+        "ghosted": "translate(Mein:e Lernpartner:in hat sich nicht zurückgemeldet)",
+        "isOfNoHelp": "translate(Mein:e Lernpartner:in konnte mir nicht behilflich sein)",
+        "noMoreTime": "translate(Mein:e Lernpartner:in hat keine Zeit mehr mich zu unterstützen)",
+        "noMoreHelpNeeded": "translate(Ich benötige keine Unterstützung mehr)",
+        "personalIssues": "translate(Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene)",
+        "scheduleIssues": "translate(Wir konnten keine gemeinsamen Termine finden)",
+        "technicalIssues": "translate(Wir hatten technische Schwierigkeiten)",
+        "languageIssues": "translate(Wir hatten sprachliche Schwierigkeiten)",
+        "other": "translate(Sonstiges)"
+      }
+    },
+    "certificate": {
+      "titleRequest": "translate(Bescheinigung bestätigen)",
+      "title": "translate(Lernunterstützung von {{firstname}})",
+      "from": "translate(ab dem)",
+      "to": "translate(bis zum)",
+      "approx": "translate(ca.)",
+      "sign": "translate(Unterschreiben)",
+      "correctInformation": "translate(Stimmen diese Informationen?)",
+      "hoursPerWeek": "translate(Stunden pro Woche)",
+      "totalHours": "translate(Stunden insgesamt)",
+      "contents": "translate(Inhalte:)",
+      "requestChange": "translate(Bitte {{firstname}} die Informationen anzupassen)",
+      "requestInstructions": "translate({{firstname}} kann die Informationen in seinem:ihrem Userbereich anpassen.)",
+      "areYou18": "translate(Bist du volljährig (18 Jahre oder älter)?)",
+      "askYourParents": "translate(Bitte deine Eltern um Bestätigung)",
+      "signInstructionsParents": "translate(Auf der folgenden Seite müssen deine Eltern unterschreiben, um zu bestätigen, dass {{firstname}} dich unterstützt hat.)",
+      "signPlace": "translate(Ort der Unterschrift)",
+      "goToSign": "translate(Zur Unterschrift)",
+      "dateFiller": "translate(den)",
+      "signatureParent": "translate(Unterschrift deines Erziehungsberechtigten)",
+      "signatureYour": "translate(Deine Unterschrift)",
+      "success": "translate(Zertifikat bestätigt)",
+      "successInfo": "translate(Vielen Dank, dass du uns unterstützt, die Arbeit unserer Helfer:innen zu würdigen.)"
+    },
+    "adHocMeeting": {
+      "title": "translate(Sofortbesprechung starten)",
+      "infoText": "translate(Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.)",
+      "startMeeting": "translate(Besprechung starten)"
+    }
+  },
+  "course": {
+    "selectOptions": {
+      "_15minutes": "translate(15 Minuten)",
+      "_30minutes": "translate(30 Minuten)",
+      "_45minutes": "translate(45 Minuten)",
+      "_1hour": "translate(1 Stunde)",
+      "_90minutes": "translate(90 Minuten)",
+      "_2hour": "translate(2 Stunden)",
+      "_3hour": "translate(3 Stunden)",
+      "_4hour": "translate(4 Stunden)"
+    },
+    "meeting": {
+      "videobutton": {
+        "pupil": "translate(Videochat beitreten)",
+        "student": "translate(Videochat starten)"
+      },
+      "result": {
+        "success": "translate(Deine Video-Konferenz wurde erfolgreich eingetragen.)",
+        "error": "translate(Deine Video-Konferenz konnt nicht eingetragen werden.)"
+      },
+      "modal": {
+        "title": "translate(Videocall starten)",
+        "button": "translate(Jetzt starten)",
+        "text": "translate(Trage hier den Link zur Video-Konferenz ein)"
+      },
+      "hint": {
+        "pupil": "translate(Du kannst das Meeting erst 10 Minuten vor Beginn eines Termins starten.)",
+        "student": "translate(Du kannst das Meeting 4 Stunden vor Beginn des Termins starten.)"
+      },
+      "videotext": "translate(Videochat noch nicht gestartet.)"
+    },
+    "blocker": {
+      "student": {
+        "cta": {
+          "title": "translate(Onboarding-Tour Gruppen-Kurse)",
+          "content": "translate(Wenn du dir noch nicht sicher bist, ob das Format der Nachhilfe-Kurse tatsächlich zu dir passt, klick dich durch das Onboarding für die Gruppen-Nachhilfe und erhalte so eine genauere Idee von der Tätigkeit.)",
+          "button": "translate(Tour starten)"
+        },
+        "header": "translate(Kurs erstellen)",
+        "title": "translate(Die Gruppen-Kurse)",
+        "firstContent": "translate(Du hilfst einer:m bildungsbenachteiligten Schüler:in im Gruppen-Format dabei, Wissenslücken zu schließen. Die Frequenz, Häufigkeit und Dauer der digitalen Treffen ist ganz euch überlassen!)",
+        "here": "translate(hier)",
+        "secContent": "translate(Mehr Informationen zu unseren Nachhilfe-Kursen findest du)",
+        "thrContent": "translate(auf unserer Webseite.)",
+        "contentHeadline": "translate(Wichtig)",
+        "content": "translate(Aktuell bist du für die Gruppen-Kurse noch nicht freigeschaltet, aber scrolle hier durch die nächsten Prozessschritte, um herauszufinden, wie du das änderst:)"
+      }
+    },
+    "appointments": {
+      "headline": "translate(Wann soll der Kurs stattfinden?)",
+      "content": "translate(Termin erstellen)",
+      "addOtherAppointment": "translate(Weiteren Termin anlegen)",
+      "check": "translate(Angaben prüfen)",
+      "saveDraft": "translate(Als Entwurf speichern)",
+      "prevPage": "translate( Zur vorherigen Seite)",
+      "existingAppointments": "translate(Bestehende Termin(e))"
+    },
+    "error": {
+      "course": "translate(Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.)",
+      "subcourse": "translate(Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.)",
+      "upload_image": "translate(Dein Bild konnte leider nicht hochgeladen werden.)",
+      "set_image": "translate(Dein Bild konnte leider nicht als Kursbild gesetzt werden.)",
+      "instructors": "translate(Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.)",
+      "lectures": "translate(Ein oder mehrere Termine konnten nicht hinzugefügt werden.)",
+      "tags": "translate(Deine Tags konnten nicht hinzugefügt werden.)",
+      "appointments": "translate(Keine Termine angelegt.)"
+    },
+    "CourseDate": {
+      "step": {
+        "general": "translate(Allgemeine Informationen)",
+        "subject": "translate(Einordnung)",
+        "attendees": "translate(Teilnehmer:innen)",
+        "appointments": "translate(Termin(e))",
+        "settings": "translate(Einstellungen)",
+        "checker": "translate(Überprüfung)"
+      },
+      "form": {
+        "courseNameHeadline": "translate(Kursname)",
+        "courseNamePlaceholder": "translate(Kursname eingeben)",
+        "courseCategory": "translate(Kategorie)",
+        "categoryPlaceholder": "translate(Bitte wähle eine Kategorie)",
+        "revision": "translate(Nachhilfe-Kurs)",
+        "language": "translate(Deutsch-Kurs)",
+        "focus": "translate(Fokus-Kurs)",
+        "courseSubjectLabel": "translate(Fach)",
+        "coursePhotoLabel": "translate(Foto)",
+        "changeImage": "translate(Bild ändern)",
+        "CourseInstructors": "translate(Kursleiter:innen)",
+        "courseAddOntherLeadText": "translate(Weitere Kursleiter:innen hinzufügen)",
+        "courseAlreadyaAddedLead": "translate(Du hast diese Person bereits hinzugefügt.)",
+        "shortDescriptionLabel": "translate(Kurzbeschreibung)",
+        "shortDescriptionPlaceholder": "translate(Kurzer Satz, um was es in deinem Kurs geht …)",
+        "descriptionLabel": "translate(Beschreibung)",
+        "descriptionPlaceholder": "translate(Beschreibung des Kurses)",
+        "tagsLabel": "translate(Tags)",
+        "tagsEdit": "translate(Tags bearbeiten)",
+        "tagsPlaceholder": "translate(Damit dein Kurs besser gefunden wird)",
+        "tagsInfo": "translate(Die einzelnen Tags müssen durch ein Komma (,) getrennt werden)",
+        "detailsHeadline": "translate(Details)",
+        "detailsContent": "translate(Für welche Klassen ist der Kurs geeignet?)",
+        "classRange": "translate(Klassen {{minRange}} - {{maxRange}})",
+        "maxMembersLabel": "translate(Max. Teilnehmer:innenzahl)",
+        "maxMembersInfo": "translate(Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.)",
+        "otherHeadline": "translate(Sonstiges)",
+        "otherContactHeadline": "translate(Kontaktaufnahme)",
+        "otherOptionStart": "translate(Schüler:innen können sich nach dem ersten Kurstermin anmelden)",
+        "otherProspects": "translate(Interessent:innen)",
+        "otherParticipants": "translate(Teilnehmer:innen)",
+        "otherOptionContact": "translate(Kontaktaufnahme erlauben)",
+        "otherGroupChatHeadline": "translate(Gruppen- bzw. Ankündigungchat)",
+        "allowChatContact": "translate(Teilnehmer:innen erlauben in den Chat zu schreiben)",
+        "prospectContactTooltip": "translate(Schüler:innen, die sich für deinen Kurs interessieren (vor Kursbeginn))",
+        "participantsContactTooltip": "translate(Schüler:innen, die sich für deinen Kurs angemeldet haben)",
+        "otherOptionStartToolTip": "translate(Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben.)"
+      },
+      "tags": {
+        "header": "translate(Tags wählen)",
+        "choosenTags": "translate(Ausgewählte Tags)",
+        "furtherTags": "translate(Weitere Tags)",
+        "noTagsFound": "translate(Keine Tags gefunden)"
+      },
+      "Wizard": {
+        "headline": "translate(Termin)",
+        "date": "translate(Datum)",
+        "dateInfo": "translate(Ein Kurs muss 7 Tage vor Kursbeginn angelegt werden.)",
+        "durationPlaceholder": "translate(Bessere Absprache zu UX)",
+        "repeatAppoint": "translate(Termin wiederholen)"
+      },
+      "Image": {
+        "resetPhoto": "translate(Bild zurücksetzen)",
+        "deletePhoto": "translate(Bild löschen)"
+      },
+      "Preview": {
+        "yes": "translate(Ja)",
+        "no": "translate(Nein)",
+        "headline": "translate(Angaben überprüfen)",
+        "content": "translate(Bitte überprüfe die Angaben noch einmal, bevor du deinen Kurs veröffentlichst.)",
+        "infoHeadline": "translate(Allgemeine Informationen zu deinem Kurs)",
+        "courseName": "translate(Kursname:)",
+        "courseSubject": "translate(Fach)",
+        "shortDesc": "translate(Kurzbeschreibung)",
+        "desc": "translate(Beschreibung)",
+        "tagHeadline": "translate(Tags)",
+        "classHeadline": "translate(Klassen)",
+        "image": "translate(Bild)",
+        "notags": "translate(Es wurden keine Tags angegeben.)",
+        "jahrgangsstufe": "translate(Jahrgangsstufe)",
+        "membersCountLabel": "translate(Teilnehmer:innenzahl:)",
+        "membersCountMaxLabel": "translate(Max. {{membersCount}})",
+        "startDateLabel": "translate(Beitreten nach Kursbeginn:)",
+        "allowContactLabel": "translate(Kontaktaufnahme erlauben:)",
+        "appointmentHeadline": "translate(Termin(e) zum Kurs)",
+        "appointmentLabel": "translate(Termin)",
+        "appointmentDate": "translate(Datum:)",
+        "publishCourse": "translate(Zur Prüfung freigeben)",
+        "saveCourse": "translate(Kurs erstellen und später freigeben)",
+        "editCourse": "translate(Daten bearbeiten)",
+        "updateCourse": "translate(Änderungen speichern)"
+      },
+      "modal": {
+        "headline": "translate(Fertig!)",
+        "content": "translate(  Vielen Dank, dein Kurs wurde gespeichert und an uns übermittelt. Nach Prüfung und Freigabe der Inhalte wird dein Kurs freigeschaltet und ist öffentlich sichtbar. Dies geschieht in den nächsten 7 Tagen.)"
+      },
+      "headline": "translate(Allgemeine Informationen zu deinem Kurs)"
+    },
+    "unsplash": {
+      "heading": "translate(Wähle ein Bild)",
+      "placeholder": "translate(Kursthema eingeben)",
+      "description": "translate(Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.)",
+      "noSearchoResults": "translate(Keine Suchergebnisse.)",
+      "choose": "translate(wählen)"
+    },
+    "addCourseInstructor": {
+      "search": "translate(Name oder E-Mail-Adresse)",
+      "notFound": "translate(Keine Suchergebnisse - Gebe den vollen Namen oder die E-Mail der Kursleiterin ein um sie zu finden)"
+    },
+    "empty": {
+      "nocourses": "translate(Du bietest zur Zeit keinen Kurs an.)",
+      "noremissionordraft": "translate(Du hast derzeit keinen Kurs-Entwurf und keinen Kurs zur Prüfung freigegeben.)",
+      "nopastcourses": "translate(Du hast bisher noch keinen Kurs bei uns angeboten.)"
+    },
+    "cancel": {
+      "header": "translate(Kurs absagen)",
+      "description": "translate(Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?)"
+    },
+    "header": "translate(Kurs erstellen)",
+    "edit": "translate(Kurs bearbeiten)",
+    "uploadImage": "translate(Foto hochladen)",
+    "noticeDate": "translate(Bitte fülle alle Felder korrekt aus)",
+    "selectPlaceHolderDuration": "translate(Dauer auswählen)"
+  },
+  "archive": {
+    "appointments": {
+      "header": "translate(Alle Termine)",
+      "title": "translate(Alle Termine)",
+      "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)",
+      "sectionHeadline": "translate(Alle Termine im Überblick)",
+      "sectionContent": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)"
+    },
+    "course": {
+      "header": "translate(Alle Kurse)",
+      "title": "translate(Alle Kurse)",
+      "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)",
+      "sectionHeadline": "translate(Alle Kurse im Überblick)",
+      "sectionContent": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)"
+    },
+    "learningpartner": {
+      "header": "translate(Alle Lernpartner:innen)",
+      "title": "translate(Alle Lernpartner:innen)",
+      "content": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)",
+      "sectionHeadline": "translate(Alle Lernpartner:innen im Überblick)",
+      "sectionContent": "translate(Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et)"
+    }
+  },
+  "notification": {
+    "timedifference": {
+      "yesterday": "translate(Gestern)",
+      "dayBeforeYesterday": "translate(Vorgestern)",
+      "lastWeek": "translate(letzte Woche)",
+      "lastMonth": "translate(letzten Monat)",
+      "now": "translate(gerade eben)",
+      "beforeMinutes": "translate({{minutes}} Min.)"
+    },
+    "panel": {
+      "button": {
+        "text": "translate(Ältere Benachrichtigungen anzeigen)"
+      },
+      "leavePageModal": {
+        "text": "translate(Du bist dabei, Lern-Fair zu verlassen)",
+        "description": "translate(Du wirst zu folgender Seite weitergeleitet)",
+        "button": "translate(Weiter zu externer Seite)"
+      },
+      "noNotifications": "translate(Keine Nachrichten vorhanden.)"
+    },
+    "controlPanel": {
+      "preference": {
+        "chat": {
+          "title": "translate(Chat-Nachrichten)",
+          "modalBody": "translate(Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst.)"
+        },
+        "survey": {
+          "title": "translate(Feedback & Befragungen)",
+          "modalBody": "translate(Wir möchten, dass du zufrieden mit Lern Fair bist. Deshalb schicken wir dir gelegentlich Feedback-Fragebögen zu, um von deinen Erfahrungen zu hören. Wir freuen uns, wenn du Feedback, Ideen und Verbesserungsvorschläge auf diesem Wege an uns weiterleitest.)"
+        },
+        "appointment": {
+          "title": "translate(Terminhinweis)",
+          "modalBody": "translate(Wir informieren dich über neue Termine mit deinen Lernpartner:innen und in Kursen. Zudem erinnern wir dich kurz vor Beginn des Termins nochmal an die Unterrichtsstunde.)"
+        },
+        "advice": {
+          "title": "translate(Lerntipps & Hilfestellungen)",
+          "modalBody": "translate(Lernen muss gelernt sein. Wir helfen dir mit Schulungen und Materialien, dich auf die Unterrichtsstunden vorzubereiten und senden dir zugleich die besten Tipps für einen möglichst großen Lernfortschritt. Damit bleibt ihr motiviert und spart wertvolle Zeit.)"
+        },
+        "suggestion": {
+          "title": "translate(Kursvorschläge)",
+          "modalBody": "translate(Auf unserer Plattform laden wir regelmäßig neue spannende Kurse hoch. Wenn ein passender Kurs für deine Jahrgangsstufe und deine Fächer angeboten wird, erhältst du von uns eine Benachrichtigung. Du kannst deine Fächer und damit deine Interessen im Profil jederzeit anpassen.)"
+        },
+        "announcement": {
+          "title": "translate(Wichtige Änderungen)",
+          "modalBody": "translate(Wenn sich die Funktionsweise von Lern-Fair wesentlich ändert oder es neue Programme gibt, informieren wir dich über wichtige Änderungen.)"
+        },
+        "call": {
+          "title": "translate(Aufruf zum Engagement)",
+          "modalBody": "translate(Wir informieren dich, wenn es zu einem Zeitpunkt besonders viel Unterstützungsbedarf gibt und erklären dir, wie du dich am besten für mehr Bildungsgerechtigkeit bei uns einsetzen kannst.)"
+        },
+        "news": {
+          "title": "translate(Neuigkeiten von Lern-Fair)",
+          "modalBody": "translate(Wir möchten dich gerne über neue Features und Funktionen informieren und dich auf Vorteile aufmerksam machen, die du über Lern-Fair erhalten kannst.)"
+        },
+        "event": {
+          "title": "translate(Veranstaltungen)",
+          "modalBody": "translate(Bei Lern-Fair organisieren wir regelmäßig coole Events und wertvolle Fortbildungen. Wir halten dich auf dem Laufenden und vernetzen dich mit anderen Nutzer:innen auf unserer Plattform.)"
+        },
+        "request": {
+          "title": "translate(Gesuch)",
+          "modalBody": "translate(Für Interviews, Pressebeiträge oder lokale Aktionen suchen wir manchmal Helfer:innen und Schüler:innen, die bei Lern-Fair mitmachen und von ihren Erfahrungen berichten möchten. Darüber hinaus suchen wir Testpersonen für unsere App, unsere Website oder ein neues Programm von uns.)"
+        },
+        "alternative": {
+          "title": "translate(Hinweise zu Alternativangeboten)",
+          "modalBody": "translate(Lern-Fair ist eine super Unterstützungsmöglichkeit für Schüler:innen. Es gibt aber auch viele andere hilfreiche Programme, nützliche Apps oder soziale Organisationen. Falls wir etwas Passendes für dich finden, benachrichtigen wir dich und hoffen, dass du von dem Angebot profitieren kannst.)"
+        },
+        "enableAll": "translate(Alle Newsletter aktivieren)",
+        "disableAll": "translate(Alle Newsletter deaktivieren)"
+      },
+      "tabs": {
+        "system": {
+          "title": "translate(System)",
+          "description": "translate(Systembenachrichtigungen werden dir jeweils innerhalb der App (an der Glocke im Header) angezeigt. Hier kannst du einstellen, ob du zusätzlich per Mail benachrichtigt werden möchtest.)"
+        },
+        "newsletter": {
+          "title": "translate(Newsletter)",
+          "description": "translate(Newsletter werden ausschließlich per Mail versendet.\nHier kannst du einstellen welche Arten von Mails du erhalten möchtest.)"
+        }
+      },
+      "title": "translate(E-Mail-Benachrichtigungen)",
+      "yourMail": "translate(Deine E-Mail: )",
+      "closeButton": "translate(Schließen)"
+    },
+    "send": "translate(Benachrichtigung verschickt)"
+  },
+  "chat": {
+    "modal": {
+      "startChat": "translate(Chat starten)"
+    },
+    "course": {
+      "leftVideoChat": {
+        "title": "translate(Du hast den Videochat verlassen)",
+        "subtitle": "translate(Wir hoffen, der Kurs hat dir gefallen!)",
+        "button": "translate(Zum Dashboard)"
+      }
+    },
+    "oneOnOne": {
+      "leftVideoChat": {
+        "title": "translate(Du hast den Videochat verlassen)",
+        "subtitle": "translate(Wir hoffen die 1:1-Lernunterstützung hat dir gefallen!)",
+        "button": "translate(Zum Dashboard)"
+      }
+    },
+    "report": {
+      "modalHeader": "translate(Nachricht melden)",
+      "modalMessage": "translate(Bist du dir sicher, dass du diese Nachricht melden möchtest? Wir überprüfen die Nachricht in den kommenden Tagen und werden die Nachricht löschen, falls sie gegen unsere Richtlinien verstößt.)"
+    },
+    "title": "translate(Chat)",
+    "openSubcourseChat": "translate(Gruppen-Chat öffnen)",
+    "openAnnouncementChat": "translate(Ankündigungschat öffnen)",
+    "hint": "translate(Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.)",
+    "instructor": "translate(Kursleiter:in)",
+    "participant": "translate(Kursteilnehmer:in)",
+    "prospect": "translate(Interessent:in)",
+    "matchee": "translate(Lernpartner:in)",
+    "noContactOptions": "translate(Keine Kontaktoptionen)",
+    "noContactOptionsHint": "translate(Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.)",
+    "placeholder": "translate(Schreibe etwas...)",
+    "chatError": "translate(Chat kann nicht geöffnet werden.)",
+    "groupChatError": "translate(Gruppen-Chat kann nicht geöffnet werden.)",
+    "announcementChatError": "translate(Ankündigungschat kann nicht geöffnet werden.)"
+  },
+  "introduction": {
+    "courseTypes": {
+      "groupCourses": "translate(In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an:)",
+      "oneToOneLearningSupport": "translate(Bei der Lern-Fair Nachhilfe verbinden wir dich mit einem:r Schüler:in zu einem Lernpaar. Diese Schüler:innen haben besonderen Bedarf an einer Einzelhilfe in schulischen Themen.)"
+    },
+    "toast": {
+      "success": "translate(Anfrage erfolgreich versendet)",
+      "fail": "translate(Anfrage konnte nicht versendet werden)"
+    },
+    "modal": {
+      "headline": "translate(Neue Rolle)",
+      "buttonInstructor": "translate(Kursleiter:in werden)",
+      "buttonTutor": "translate(Kursleiter:in werden)",
+      "desc": "translate(Wir freuen uns, dass du Interesse daran hast dich weiter bei Lern-Fair einzubringen. Da du bereits ein Kennenlerngespräch mit uns geführt hast, kennst du dich bestens aus. Wir melden uns schnellsmöglich per E-Mail bei dir sobald wir die zusätzliche Rolle für dich freigeschaltet haben.)"
+    },
+    "matchDescription": {
+      "first": "translate(Gemeinsam bestimmt ihr Themen und Inhalte)",
+      "second": "translate(Du bestimmst den Zeitpunkt der Nachhilfe)",
+      "third": "translate(Ihr trefft euch einmal die Woche, über einen Zeitraum, den ihr gemeinsam festgelegt habt)",
+      "fourth": "translate(Du bist gut in Mathe, Deutsch oder Englisch? Super, denn diese Nachhilfelehrer:innen werden besonders dringend gebraucht!)"
+    },
+    "groupDescription": {
+      "first": "translate(In den Nachhilfe-Kursen hilfst du Schüler:innen, die sich in einem bestimmten schulischen Thema verbessern wollen. Besonders gefragt sind Themen aus den Hauptfächern (Deutsch, Mathe, Englisch). Die Kurse finden in der Regel wöchentlich für max. 12 Wochen statt.)",
+      "second": "translate(Bei \"Deutsch für Anfänger\" kannst du geflüchteten Schüler:innen beim Lernen der deutschen Sprache helfen. Wir stellen dir Unterrichtsmaterialien zur Verfügung, damit du Kurse gestalten kannst, in denen Sprechen und Üben im Vordergrund steht. Die Kurse finden wöchentlich statt.)",
+      "third": "translate(In den Fokus-Kursen kannst du mit Schüler:innen an außerschulischen Themen arbeiten. Wir organisieren hierzu über das Jahr verteilt verschiedene Themenmonate. Die Kurse finden in der Regel als Einzeltermine statt.)"
+    },
+    "requestedDescription": {
+      "coaching": {
+        "header": "translate(Nachhilfe-Kurse)",
+        "online": "translate(Lern-Fair bietet dir kostenlose online-Schulungen von Expert:innen an. Sofern du noch keine Erfahrung in der Kursleitung hast, möchten wir dich bitten, daran teilzunehmen. Aktuelle Schulungstermine findest du auf unserer Webseite, bitte registriere dich hier:)",
+        "materials": "translate(Im Hilfestellungsbereich findest du Materialien, die dir bei der Vorbereitung und Durchführung der Kurse helfen:)",
+        "one": "translate(Listen mit typischen Schulthemen in den Hauptfächern)",
+        "two": "translate(kostenfreie Lizenz zur Lern-App Sofatutor)",
+        "three": "translate(Materialtauschbörse)"
+      },
+      "language": {
+        "header": "translate(Deutsch für Anfänger)",
+        "one": "translate(Lern-Fair bietet dir kostenlose online-Schulungen von Expert:innen an. Sofern du noch keine Erfahrung in der Kursleitung hast, möchten wir dich bitten, daran teilzunehmen. Aktuelle Schulungstermine findest du auf unserer Webseite, bitte registriere dich hier: )",
+        "two": "translate(Im Hilfestellungsbereich findest du Materialien, die dir bei der Vorbereitung und Durchführung der Kurse helfen.)"
+      },
+      "focus": {
+        "header": "translate(Fokus-Kurse)",
+        "one": "translate(Da wir die Fokus-Kurse in Themenmonaten strukturieren, bitten wir dich, vor Einstellung deines Kurses dein Thema inhaltlich mit uns abzusprechen. Bitte informiere dich dazu auf unserer Webseite über die geplanten Fokus-Monate und kontaktiere uns mit deinem Themenvorschlag unter )"
+      }
+    },
+    "banner": {
+      "instuctorTitle": "translate(Rolle als Kursleiter:in angefragt)",
+      "tutorTitle": "translate(Rolle als Tutor:in angefragt)",
+      "text": "translate(Wir melden uns schnellsmöglich per E-Mail bei dir sobald wir die zusätzliche Rolle für dich freigeschaltet haben.)"
+    },
+    "groupCourses": "translate(Gruppenkurse)",
+    "match": "translate(1:1-Lernunterstützung)",
+    "imageGroupText": "translate(Gib dein Wissen weiter und leite Gruppen-Kurse.)",
+    "imageMatchText": "translate(Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.)",
+    "becomeAnInstructor": "translate(Jetzt Kursleiter:in werden)",
+    "becomeTutor": "translate(Jetzt Tutor:in werden)",
+    "talkWithTeam": "translate(Kennenlerngespräch vereinbaren)",
+    "moreInfos": "translate(Mehr Informationen)",
+    "groupRequestedDescription": "translate(Vielen Dank, dass du dich für eine Kursleitung interessierst. Bevor es mit deinem Kurs losgehen kann, haben wir noch einige Hinweise für dich:)"
+  },
+  "navigation": {
+    "label": {
+      "start": "translate(Start)",
+      "group": "translate(Kurse)",
+      "matching": "translate(Nachhilfe)",
+      "appointments": "translate(Termine)",
+      "chat": "translate(Chat)"
+    }
+  },
+  "screening": {
+    "search": {
+      "placeholder": "translate(Name oder E-Mail eines Schülers oder Helfers)",
+      "not_found": "translate(Suche nach dem vollen Namen oder der E-Mail eines Schülers oder Helfers)"
+    },
+    "title": "translate(Screening)",
+    "howto": "translate(Nutze die Suchleiste um den Schüler oder Helfer zu finden den du screenen möchtest.)",
+    "disputed_screenings": "translate(Schülerscreenings mit offener Entscheidung)",
+    "four_eyes": "translate(Vier Augen)",
+    "was_screened_but_no_decision": "translate(Dieser Schüler wurde bereits gescreent, aber eine Entscheidung steht noch aus)",
+    "screening_saved": "translate(Screening gespeichert)",
+    "account_deactivated": "translate(Account deaktiviert)",
+    "account_deactivated_details": "translate(Der Schüler kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.)",
+    "save_and_four_eyes": "translate(Speichern & Vier Augen)",
+    "success": "translate(Annehmen)",
+    "rejection": "translate(Ablehnen)",
+    "deactivate": "translate(Account Deaktivieren)",
+    "confirm_success": "translate(Willst du {{firstname}} {{lastname}} annehmen?)",
+    "confirm_rejection": "translate(Willst du {{firstname}} {{lastname}} wirklich ablehnen?)",
+    "confirm_deactivate": "translate(Willst du {{firstname}} {{lastname}} wirklich deaktivieren?)",
+    "active_matches": "translate(Aktive Zuordnungen)",
+    "dissolved_matches": "translate(Aufgelöste Zuordnungen)",
+    "previous_screenings": "translate(Vorherige Screenings)",
+    "no_open_screening": "translate(Kein offenes Screening)",
+    "no_open_screening_long": "translate(Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht.)",
+    "success_screening": "translate(Erfolgreiches Screening)",
+    "rejection_screening": "translate(Abgelehntes Screening)",
+    "dispute_screening": "translate(Unklares Screening)",
+    "pending_screening": "translate(Ausstehendes Screening)",
+    "has_matches": "translate(Hat Lernpaar)",
+    "registered_since": "translate(registriert seit)",
+    "dissolved_by": "translate(Aufgelöst von: {{dissolver}})",
+    "dissolve_reason": "translate(Grund: {{reason}})"
+  },
+  "email": "translate(E-Mail)",
+  "password": "translate(Passwort)",
+  "hallo": "translate(Hallo)",
+  "clock": "translate(Uhr)",
+  "time": "translate(Uhrzeit)",
+  "duration": "translate(Dauer)",
+  "visitcourse": "translate(zum Kurs)",
+  "openchat": "translate(Chat beginnen)",
+  "openmatch": "translate(Ansehen)",
+  "begin": "translate(Ab)",
+  "all": "translate(Alle)",
+  "cancel": "translate(Abbrechen)",
+  "continue": "translate(Fortfahren)",
+  "from": "translate(Ab)",
+  "firstname": "translate(Vorname)",
+  "lastname": "translate(Nachname)",
+  "skip": "translate(Überspringen)",
+  "send": "translate(Senden)",
+  "save": "translate(Speichern)",
+  "edit": "translate(Bearbeiten)",
+  "signup": "translate(Registrieren)",
+  "signin": "translate(Anmelden)",
+  "done": "translate(Fertig)",
+  "saveSelection": "translate(Auswahl speichern)",
+  "sendMessage": "translate(Nachricht senden)",
+  "next": "translate(Weiter)",
+  "back": "translate(Zurück)",
+  "important": "translate(Wichtig)",
+  "error": "translate(Es ist ein Fehler aufgetreten.)",
+  "characterLimitNotice": "translate(Max. Zeichenanzahl: {{limit}})",
+  "datepickerPlaceholder": "translate(Wähle ein Datum...)",
+  "timepickerPlaceholder": "translate(00:00)",
+  "registrationTitle": "translate(Anmeldung)",
+  "deregistrationTitle": "translate(Abmeldung)",
+  "moreInfoButton": "translate(Mehr erfahren)",
+  "delete": "translate(Löschen)",
+  "yes": "translate(Ja)",
+  "no": "translate(Nein)",
+  "not_found": "translate(Nichts gefunden)",
+  "pupil": "translate(Schüler:in)",
+  "required": "translate(erforderlich)",
+  "grade": "translate(Klasse)",
+  "since": "translate(seit)",
+  "till": "translate(bis)"
+  "test": "the barrier"
+}
