@@ -128,6 +128,51 @@ const matching = {
                     button: 'Zur Hausaufgabenhilfe',
                 },
             },
+            profiledata: {
+                heading: 'Profil aktualisieren',
+                text: 'Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.',
+                subheading: 'Persönliche Daten',
+            },
+            german: {
+                heading: 'Deutschkenntnisse',
+                isNative: 'Ist Deutsch deine Muttersprache?',
+                howlong: {
+                    heading: 'Seit wann lernst du Deutsch?',
+                    option1: 'Weniger als 1 Jahr',
+                    option2: '1-2 Jahre',
+                    option3: '2-4 Jahre',
+                    option4: 'Mehr als 4 Jahre',
+                    alertmsg: 'Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft.',
+                },
+            },
+            subjects: {
+                heading: 'Fachauswahl',
+                subheading: 'In welchen Fächern brauchst du Hilfe?',
+                text: 'Du kannst maximal 1 Fach auswählen.',
+            },
+            priority: {
+                heading: 'Priorisierung',
+                subheading: 'In welchen Fach brauchst du am meisten Hilfe?',
+                text: 'Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.',
+            },
+            details: {
+                heading: 'Details',
+                subheading: 'Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?',
+                text: 'Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.',
+                additionalInfo: 'Deine Angaben',
+                placeholder: 'Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?',
+            },
+            modalSuccess: {
+                heading: {
+                    ver1: 'Geschafft, du bist auf der Warteliste!',
+                    ver2: 'Geschafft, Änderungen gespeichert!',
+                },
+                text: {
+                    ver1: 'Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.',
+                    ver2: 'Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht.',
+                },
+                groupCourses: 'Zu den Gruppen-Kursen',
+            },
         },
     },
     group: {

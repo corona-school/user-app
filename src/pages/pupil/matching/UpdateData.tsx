@@ -121,12 +121,11 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
     return (
         <>
             <VStack space={space['0.5']}>
-                <Heading fontSize="2xl">Profil aktualisieren</Heading>
-                <Text>
-                    Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen
-                    und zu vervollständigen.
-                </Text>
-                <Heading>Persönliche Daten</Heading>
+                <Heading fontSize="2xl">{t('matching.wizard.pupil.profiledata.heading')}</Heading>
+
+                <Text>{t('matching.wizard.pupil.profiledata.text')}</Text>
+
+                <Heading>{t('matching.wizard.pupil.profiledata.subheading')}</Heading>
 
                 <ProfileSettingItem
                     title={t('profile.SchoolType.label')}
