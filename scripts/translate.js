@@ -100,12 +100,26 @@ function removeObsoletePaths(tree, paths) {
 
 
 async function translate(texts, fromLanguage, toLanguage) {
+    if (!texts.length) {
+        return [];
+    }
+
+    let results;
+
     if (process.env.WEGLOT_API_KEY)
-        return await translateWithWeglot(texts, fromLanguage, toLanguage);
+        results = await translateWithWeglot(texts, fromLanguage, toLanguage);
     if (process.env.GOOGLE_API_KEY)
-        return await translateWithGoogle(texts, fromLanguage, toLanguage);
+        results = await translateWithGoogle(texts, fromLanguage, toLanguage);
     if (process.env.DEEPL_API_KEY)
-        return await translateWithDeepL(texts, fromLanguage, toLanguage);
+        results = await translateWithDeepL(texts, fromLanguage, toLanguage);
+
+    if (results) {
+        if (results.length !== texts.length) {
+            throw new Error(`Missing Translations, expected: ${texts.length} got ${results.length}`);
+        }
+
+        return results;
+    }
 
     throw new Error(`No Translator configured`);
 }
@@ -116,25 +130,30 @@ async function translateWithWeglot(texts, fromLanguage, toLanguage) {
     const { WEGLOT_API_KEY } = process.env;
     if (!WEGLOT_API_KEY) throw new Error(`Missing environment variable WEGLOT_API_KEY`);
 
+    const body = JSON.stringify({
+        l_from: fromLanguage,
+        l_to: toLanguage,
+        words: texts.map(w => ({ w, t: 1 })),
+        request_url: "https://app.lern-fair.de"
+    });
+
+    console.log(body);
+
     const response = await fetch(`https://api.weglot.com/translate?api_key=${WEGLOT_API_KEY}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            l_from: fromLanguage,
-            l_to: toLanguage,
-            words: [ texts.map(w => ({ w, t: 1 }))]
-        }),
+        body,
     });
 
     if (!response.ok) {
         console.log(response);
-        throw new Error(`Failed to fetch from Weglot`);
+        throw new Error(`Failed to fetch from Weglot: ${await response.text()}`);
     }
 
-    const result = await response.json();
-    // TODO: What is the result format?
+    const result = (await response.json()).to_words;
+    console.log("Weglot returned: ", result);
 
     return result;
 }
