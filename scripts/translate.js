@@ -47,7 +47,7 @@ function findMissingPaths(sourceTree, targetTree, path = []) {
 
 // ----------- Translation ------------------
 
-// Adds 
+// Adds missing objects or arrays
 function addMissingObjects(primaryLanguageTree, tree, paths) {
     console.log(" + add missing objects");
     for (const missingPath of paths) {
@@ -224,7 +224,7 @@ for (const languageFile of languageFiles) {
     
     if (command === "translate" || command === "") {
         addMissingObjects(primaryLanguageTree, languageTree, missingObjects);
-        addMissingStrings(primaryLanguageTree, languageTree, missingStrings, language);
+        await addMissingStrings(primaryLanguageTree, languageTree, missingStrings, language);
         removeObsoletePaths(languageTree, obsoletePaths);
         writeLanguage(languageFile, languageTree);
     }
