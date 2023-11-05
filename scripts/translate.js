@@ -108,10 +108,10 @@ async function translate(texts, fromLanguage, toLanguage) {
 
     if (process.env.WEGLOT_API_KEY)
         results = await translateWithWeglot(texts, fromLanguage, toLanguage);
-    if (process.env.GOOGLE_API_KEY)
+    /* if (process.env.GOOGLE_API_KEY)
         results = await translateWithGoogle(texts, fromLanguage, toLanguage);
     if (process.env.DEEPL_API_KEY)
-        results = await translateWithDeepL(texts, fromLanguage, toLanguage);
+        results = await translateWithDeepL(texts, fromLanguage, toLanguage); */
 
     if (results) {
         if (results.length !== texts.length) {
@@ -159,7 +159,7 @@ async function translateWithWeglot(texts, fromLanguage, toLanguage) {
 }
 
 // ------------- Google API ---------------
-async function translateWithGoogle(texts, fromLanguage, toLanguage) {
+/* async function translateWithGoogle(texts, fromLanguage, toLanguage) {
     const { GOOGLE_API_KEY } = process.env;
     if (!GOOGLE_API_KEY) throw new Error(`Missing environment variable GOOGLE_API_KEY`);
 
@@ -185,10 +185,10 @@ async function translateWithGoogle(texts, fromLanguage, toLanguage) {
     const result = data.data.map(it => it.translatedText);
 
     return result;
-}
+} */
 
 // ------------- DeepL API ---------------
-async function translateWithDeepL(texts, fromLanguage, toLanguage) {
+/* async function translateWithDeepL(texts, fromLanguage, toLanguage) {
     const { DEEPL_API_KEY } = process.env;
     if (!DEEPL_API_KEY) throw new Error(`Missing environment variable DEEPL_API_KEY`);
 
@@ -216,7 +216,7 @@ async function translateWithDeepL(texts, fromLanguage, toLanguage) {
     const result = data.translations.map(it => it.text);
 
     return result;
-}
+} */
 
 
 // ------------- Main ---------------------
