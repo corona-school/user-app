@@ -62,6 +62,8 @@ WEGLOT_API_KEY=... npm run translate
 
 With `npm run translate -- check` one can check whether all translations are maintained (this is also run in the main Barrier). Existing entries in the translation files should not be changed when changing the UI, instead add new entries to the language file and delete the old entries (for the automatic translation to diff properly).
 
+To translate a new language, create a new language file `[ISO639-1 language code].json` with an empty object `{}` in it, then run the translation script and will pick it up and fill it. Include the file in `I18n.ts`.
+
 ## Configuration
 
 Most configuration is done via `REACT_APP_` environment variables, which are inlined into the bundled version when the app is built. However as the app is only built once in Heroku and used for both staging and production and it is desirable to be able to change certain configuration without rebuilding the app, there is a separate mechanism for configuration: `RUNTIME_` variables added to the server (i.e. `RUNTIME_BACKEND_URL=https://example.com npm run serve`) are injected into `window.liveConfig`, where they can be read by frontend code. Changing these only requires the server process to restart, clients will then pick them up once the page is reloaded (while the bundle is still cached).
