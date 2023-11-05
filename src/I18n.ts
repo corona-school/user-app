@@ -16,7 +16,7 @@ i18next
     .init({
         debug: false && process.env.NODE_ENV === 'development',
         resources: resources,
-        lng: 'en',
+        lng: 'de',
         fallbackLng: 'de',
         interpolation: {
             escapeValue: false,
