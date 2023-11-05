@@ -13,7 +13,7 @@ These Query Parameters can be supplied to any path of the User-App:
 **?temporary** opens the App in a temporary session where all credentials are stored in Session Storage instead of Local Storage and no Device Token is created.
  Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
 
-**?token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
+**?secret_token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
 
 ## Development Tools
 
@@ -52,8 +52,15 @@ You can also use `useState` like this:
 This repository is set up as a React Native app although it is currently only shipped as a web app. 
 In the future it might be desirable to also offer native apps.
 
-All texts are stored in i18n files in `/src/lang` to simplify translation of the app in the future.
+## Translations
 
+All texts are stored in i18n JSON files in `/src/lang` to simplify translation of the app. The app is primarily maintained in german in `de.json`, other translation files can be synced automatically with the following command, which takes all texts in the german version and sends them to Weglot, our translation provider:
+
+```
+WEGLOT_API_KEY=... npm run translate
+```
+
+With `npm run translate -- check` one can check whether all translations are maintained (this is also run in the main Barrier). Existing entries in the translation files should not be changed when changing the UI, instead add new entries to the language file and delete the old entries (for the automatic translation to diff properly).
 
 ## Configuration
 
