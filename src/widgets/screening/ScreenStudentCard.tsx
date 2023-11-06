@@ -10,6 +10,8 @@ import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { InstructorScreeningCard } from './InstructorScreeningCard';
 import { TutorScreeningCard } from './TutorScreeningCard';
+import GroupTile from '../GroupTile';
+import { SubcourseCard } from '../course/SubCourseCard';
 
 export function ScreenStudentCard({ student }: { student: StudentForScreening }) {
     const { space } = useTheme();
@@ -74,12 +76,27 @@ export function ScreenStudentCard({ student }: { student: StudentForScreening })
                 <InstructorScreeningCard screening={instructorScreening} />
             ))}
 
-            <Heading fontSize="20px">Matches</Heading>
-            <HStack space={space['1']} display="flex" flexWrap="wrap">
-                {student.matches.map((match) => (
-                    <MatchPupilCard match={match} />
-                ))}
-            </HStack>
+            {student.matches.length > 0 && (
+                <>
+                    <Heading fontSize="20px">Matches</Heading>
+                    <HStack space={space['1']} display="flex" flexWrap="wrap">
+                        {student.matches.map((match) => (
+                            <MatchPupilCard match={match} />
+                        ))}
+                    </HStack>
+                </>
+            )}
+
+            {student.subcoursesInstructing.length > 0 && (
+                <>
+                    <Heading fontSize="20px">Kurse</Heading>
+                    <VStack space={space['1']} display="flex" flexWrap="wrap">
+                        {student.subcoursesInstructing.map((subcourse) => (
+                            <SubcourseCard subcourse={subcourse} />
+                        ))}
+                    </VStack>
+                </>
+            )}
         </VStack>
     );
 }

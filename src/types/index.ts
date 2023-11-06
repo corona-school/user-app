@@ -1,4 +1,4 @@
-import { Instructor_Screening, Match, Pupil, Pupil_Screening, Screener, Screening, Student } from '../gql/graphql';
+import { Course, Course_Tag, Instructor_Screening, Lecture, Match, Pupil, Pupil_Screening, Screener, Screening, Student, Subcourse } from '../gql/graphql';
 
 export type Opt<T> = T | null | undefined;
 
@@ -30,8 +30,14 @@ export type InstructorScreening = Pick<Instructor_Screening, 'success' | 'create
 
 export type TutorScreening = Pick<Screening, 'createdAt' | 'success' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
 
-export type StudentForScreening = Pick<Student, 'active' | 'id' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages'> & {
+export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
+    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    nextLecture?: Opt<Pick<Lecture, 'start' | 'duration'>>;
+};
+
+export type StudentForScreening = Pick<Student, 'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages'> & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
     matches: MatchWithPupil[];
+    subcoursesInstructing: SubcourseForScreening[];
 };

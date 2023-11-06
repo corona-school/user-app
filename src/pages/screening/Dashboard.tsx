@@ -68,7 +68,7 @@ function StudentCard({ student, onClick }: { student: StudentForScreening; onCli
                             {student.firstname} {student.lastname}
                         </Heading>
                         <Text color="white" fontSize="15px">
-                            E-Mail: <b>{/* student.email */ ''}</b>
+                            E-Mail: <b>{student.email}</b>
                         </Text>
                         <Text color="white" fontSize="15px">
                             {t('screening.registered_since')} {new Date(student!.createdAt).toLocaleDateString()}
@@ -138,6 +138,7 @@ export function ScreeningDashboard() {
                     active
                     id
                     createdAt
+                    email
                     firstname
                     lastname
                     languages
@@ -151,6 +152,13 @@ export function ScreeningDashboard() {
                         dissolvedBy
                         studentFirstMatchRequest
                         subjectsFormatted { name }
+                    }
+                    
+                    subcoursesInstructing {
+                        id
+                        published
+                        course { name image courseState tags { name } }
+                        nextLecture { start duration }
                     }
 
                     tutorScreenings { createdAt success comment screener { firstname lastname } }
