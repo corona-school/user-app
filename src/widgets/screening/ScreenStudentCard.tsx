@@ -10,10 +10,87 @@ import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { InstructorScreeningCard } from './InstructorScreeningCard';
 import { TutorScreeningCard } from './TutorScreeningCard';
-import GroupTile from '../GroupTile';
 import { SubcourseCard } from '../course/SubCourseCard';
 import { useState } from 'react';
 import { Modal } from 'native-base';
+import { JobStatusSelector } from './JobStatusSelector';
+import { Screening_Jobstatus_Enum } from '../../gql/graphql';
+import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+
+type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
+
+function CreateScreeningModal({
+    student,
+    title,
+    screen,
+    open,
+    onClose,
+    loading,
+}: {
+    student: StudentForScreening;
+    title: string;
+    screen: (screening: ScreeningInput) => void;
+    open: boolean;
+    onClose: () => void;
+    loading: boolean;
+}) {
+    const [comment, setComment] = useState('');
+    const [jobStatus, setJobStatus] = useState<Screening_Jobstatus_Enum>(Screening_Jobstatus_Enum.Misc);
+    const [knowsFrom, setKnowsFrom] = useState('');
+
+    const { space } = useTheme();
+
+    function doScreen(success: boolean) {
+        screen({ success, comment, jobStatus, knowsFrom });
+    }
+
+    return (
+        <Modal isOpen={open} onClose={onClose} backgroundColor="white" width="90%" height="90%" maxWidth="900px" marginX="auto" top="5%" borderRadius="20px">
+            <VStack height="90%" paddingTop="5%" textAlign="left" width="90%" display="flex">
+                <Heading>{title}</Heading>
+                <Heading paddingTop="20px" fontSize="15px">
+                    Kommentar:
+                </Heading>
+                <TextArea autoCompleteType="" numberOfLines={30} minH="300px" value={comment} onChangeText={setComment} />
+
+                <Heading paddingTop="20px" fontSize="15px">
+                    Beruflicher Status:
+                </Heading>
+                <JobStatusSelector value={jobStatus} setValue={setJobStatus} />
+
+                <Heading paddingTop="20px" fontSize="15px">
+                    Kennt Lern-Fair durch:
+                </Heading>
+
+                <TextInputWithSuggestions
+                    value={knowsFrom}
+                    setValue={setKnowsFrom}
+                    suggestions={[
+                        'Persönliche Empfehlung/Freund:innen',
+                        'Ehrenamtsbörse',
+                        'Instagram',
+                        'LinkedIn',
+                        'Suchmaschine',
+                        'Print (Flyer, Poster,…)',
+                        'Presse',
+                        'Stipendium',
+                        'Unternehmenskooperation',
+                        'Universität',
+                        'Von Schüler:in zu Helfer:in',
+                    ]}
+                />
+                <HStack space={space['1']} paddingTop={space['1']}>
+                    <Button isLoading={loading} onPress={() => doScreen(true)}>
+                        Screening erfolgreich
+                    </Button>
+                    <Button isLoading={loading} onPress={() => doScreen(false)} borderColor="red.400" variant="outline">
+                        Ablehnen
+                    </Button>
+                </HStack>
+            </VStack>
+        </Modal>
+    );
+}
 
 export function ScreenStudentCard({ student, refresh }: { student: StudentForScreening; refresh: () => void }) {
     const { space } = useTheme();
@@ -22,9 +99,6 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
     const [openScreenAsTutor, setScreenAsTutor] = useState(false);
     const [openScreenAsInstructor, setScreenAsInstructor] = useState(false);
-
-    const [instructorScreeningComment, setInstructorScreeningComment] = useState('');
-    const [tutorScreeningComment, setTutorScreeningComment] = useState('');
 
     const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
         gql(`
@@ -43,8 +117,8 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         `)
     );
 
-    async function screenAsInstructor(success: boolean) {
-        await _screenAsInstructor({ variables: { studentId: student.id, comment: instructorScreeningComment, success } });
+    async function screenAsInstructor(screening: ScreeningInput) {
+        await _screenAsInstructor({ variables: { studentId: student.id, ...screening } });
         refresh();
         setScreenAsInstructor(false);
     }
@@ -60,8 +134,8 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         `)
     );
 
-    async function screenAsTutor(success: boolean) {
-        await _screenAsTutor({ variables: { studentId: student.id, comment: tutorScreeningComment, success } });
+    async function screenAsTutor(screening: ScreeningInput) {
+        await _screenAsTutor({ variables: { studentId: student.id, ...screening } });
         refresh();
         setScreenAsTutor(false);
     }
@@ -117,71 +191,23 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 {!isInstructor && <Button onPress={() => setScreenAsInstructor(true)}>Für Kurse screenen</Button>}
             </HStack>
 
-            <Modal
-                isOpen={openScreenAsInstructor}
+            <CreateScreeningModal
+                loading={loadingInstructorScreening}
                 onClose={() => setScreenAsInstructor(false)}
-                backgroundColor="white"
-                width="90%"
-                height="90%"
-                maxWidth="900px"
-                marginX="auto"
-                top="5%"
-                borderRadius="20px"
-            >
-                <VStack height="90%" paddingTop="5%" textAlign="left" width="90%" display="flex">
-                    <Heading>
-                        {student.firstname} {student.lastname} als Kursleiter screenen
-                    </Heading>
-                    <Heading paddingTop="20px" fontSize="15px">
-                        Kommentar:
-                    </Heading>
-                    <TextArea
-                        autoCompleteType=""
-                        numberOfLines={30}
-                        minH="50%"
-                        value={instructorScreeningComment}
-                        onChangeText={setInstructorScreeningComment}
-                    />
-                    <HStack space={space['1']} paddingTop={space['1']}>
-                        <Button isLoading={loadingInstructorScreening} onPress={() => screenAsInstructor(true)}>
-                            Screening erfolgreich
-                        </Button>
-                        <Button isLoading={loadingInstructorScreening} onPress={() => screenAsInstructor(false)} borderColor="red.400" variant="outline">
-                            Ablehnen
-                        </Button>
-                    </HStack>
-                </VStack>
-            </Modal>
+                open={openScreenAsInstructor}
+                screen={screenAsInstructor}
+                student={student}
+                title="Als Kursleiter screenen"
+            />
 
-            <Modal
-                isOpen={openScreenAsTutor}
+            <CreateScreeningModal
+                loading={loadingTutorScreening}
                 onClose={() => setScreenAsTutor(false)}
-                backgroundColor="white"
-                width="90%"
-                height="90%"
-                maxWidth="900px"
-                marginX="auto"
-                top="5%"
-                borderRadius="20px"
-            >
-                <VStack height="90%" paddingTop="5%" textAlign="left" width="90%" display="flex">
-                    <Heading>
-                        {student.firstname} {student.lastname} für 1:1 screenen
-                    </Heading>
-                    <Heading paddingTop="20px" fontSize="15px">
-                        Kommentar:
-                    </Heading>
-                    <TextArea autoCompleteType="" numberOfLines={30} minH="50%" value={tutorScreeningComment} onChangeText={setTutorScreeningComment} />
-                    <HStack space={space['1']} paddingTop={space['1']}>
-                        <Button isLoading={loadingTutorScreening} onPress={() => screenAsTutor(true)}>
-                            Screening erfolgreich
-                        </Button>
-                        <Button isLoading={loadingTutorScreening} onPress={() => screenAsTutor(false)} borderColor="red.400" variant="outline">
-                            Ablehnen
-                        </Button>
-                    </HStack>
-                </VStack>
-            </Modal>
+                open={openScreenAsTutor}
+                screen={screenAsTutor}
+                student={student}
+                title="Für 1:1 screenen"
+            />
 
             {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
 
