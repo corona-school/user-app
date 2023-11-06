@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
 import { Button } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
@@ -13,6 +13,7 @@ import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
 import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
 import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
+import { useShortcut } from '../../helper/keyboard';
 
 function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
     const { space } = useTheme();
@@ -248,10 +249,15 @@ export function ScreeningDashboard() {
         }
     }, [searchResult, setSelectedPupil, setSelectedStudent]);
 
+    const searchbarRef = useRef<HTMLInputElement>();
+
+    useShortcut('KeyF', () => searchbarRef.current?.focus(), [searchbarRef]);
+
     return (
         <WithNavigation headerTitle={t('screening.title')}>
             <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
                 <SearchBar
+                    inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
                     onSearch={(search) => {
                         setSearchQuery(search);
