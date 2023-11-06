@@ -8,6 +8,7 @@ export function InstructorScreeningCard({ screening }: { screening: InstructorSc
     let message = `Entscheidung: ${new Date(screening!.createdAt).toLocaleDateString()}`;
 
     message += `\nScreener: ${screening!.screener.firstname} ${screening.screener.lastname}`;
+    message += `\n\n${screening.comment ?? ''}`;
 
     return (
         <InfoCard

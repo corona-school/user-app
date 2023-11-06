@@ -284,7 +284,14 @@ export function ScreeningDashboard() {
                         }}
                     />
                 )}
-                {selectedStudent && <ScreenStudentCard student={selectedStudent} />}
+                {selectedStudent && (
+                    <ScreenStudentCard
+                        student={selectedStudent}
+                        refresh={() => {
+                            refetchUserSearch();
+                        }}
+                    />
+                )}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
