@@ -108,10 +108,12 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
     const [_screenAsInstructor, { loading: loadingInstructorScreening }] = useMutation(
         gql(`
-            mutation ScreenAsInstructor($studentId: Float!, $success: Boolean!, $comment: String!) {
+            mutation ScreenAsInstructor($studentId: Float!, $success: Boolean!, $comment: String! $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
                 studentInstructorScreeningCreate(studentId: $studentId, screening: {
                     success: $success
                     comment: $comment
+                    jobStatus: $jobStatus
+                    knowsCoronaSchoolFrom: $knowsFrom
                 })
             }
         `)
@@ -125,10 +127,12 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
     const [_screenAsTutor, { loading: loadingTutorScreening }] = useMutation(
         gql(`
-            mutation ScreenAsTutor($studentId: Float!, $success: Boolean!, $comment: String!) {
+            mutation ScreenAsTutor($studentId: Float!, $success: Boolean!, $comment: String!, $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
                 studentTutorScreeningCreate(studentId: $studentId, screening: {
                     success: $success
                     comment: $comment
+                    jobStatus: $jobStatus
+                    knowsCoronaSchoolFrom: $knowsFrom
                 })
             }
         `)
