@@ -1,4 +1,4 @@
-import { VStack, useTheme, Heading, Column, Button, Box } from 'native-base';
+import { VStack, useTheme, Heading, Column, Box } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
@@ -7,10 +7,12 @@ import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { YesNoSelector } from '../../../widgets/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
+import { useTranslation } from 'react-i18next';
 
 const German: React.FC = () => {
     const { space } = useTheme();
     const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { t } = useTranslation();
     const [showSecond, setShowSecond] = useState<boolean>(false);
     const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
     const [learningSince, setLearningSince] = useState<'<1' | '1-2' | '2-4' | '>4'>();
@@ -46,10 +48,10 @@ const German: React.FC = () => {
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Deutschkenntnisse</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.pupil.german.heading')}</Heading>
             {!showSecond && (
                 <>
-                    <Heading>Ist Deutsch deine Muttersprache?</Heading>
+                    <Heading>{t('matching.wizard.pupil.german.isNative')}</Heading>
                     <YesNoSelector
                         initialYes={isNativeLanguage === true}
                         initialNo={isNativeLanguage === false}
@@ -63,13 +65,13 @@ const German: React.FC = () => {
             )}
             {showSecond && (
                 <>
-                    <Heading>Seit wann lernst du Deutsch?</Heading>
+                    <Heading>{t('matching.wizard.pupil.german.howlong.heading')}</Heading>
                     <TwoColGrid>
                         <Column>
                             <IconTagList
                                 initial={learningSince === '<1'}
                                 variant="selection"
-                                text="Weniger als 1 Jahr"
+                                text={t('matching.wizard.pupil.german.howlong.option1')}
                                 textIcon="<1"
                                 onPress={() => setLearningSince('<1')}
                             />
@@ -78,7 +80,7 @@ const German: React.FC = () => {
                             <IconTagList
                                 initial={learningSince === '1-2'}
                                 variant="selection"
-                                text="1-2 Jahre"
+                                text={t('matching.wizard.pupil.german.howlong.option2')}
                                 textIcon="1-2"
                                 onPress={() => setLearningSince('1-2')}
                             />
@@ -87,7 +89,7 @@ const German: React.FC = () => {
                             <IconTagList
                                 initial={learningSince === '2-4'}
                                 variant="selection"
-                                text="2-4 Jahre"
+                                text={t('matching.wizard.pupil.german.howlong.option3')}
                                 textIcon="2-4"
                                 onPress={() => setLearningSince('2-4')}
                             />
@@ -96,16 +98,14 @@ const German: React.FC = () => {
                             <IconTagList
                                 initial={learningSince === '>4'}
                                 variant="selection"
-                                text="Mehr als 4 Jahre"
+                                text={t('matching.wizard.pupil.german.howlong.option4')}
                                 textIcon=">4"
                                 onPress={() => setLearningSince('>4')}
                             />
                         </Column>
                     </TwoColGrid>
 
-                    {(learningSince === '<1' || learningSince === '1-2') && (
-                        <AlertMessage content="Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft." />
-                    )}
+                    {(learningSince === '<1' || learningSince === '1-2') && <AlertMessage content={t('matching.wizard.pupil.german.howlong.alertmsg')} />}
 
                     <NextPrevButtons isDisabledNext={!learningSince} onPressPrev={() => setShowSecond(false)} onPressNext={onSecondNext} />
                 </>
