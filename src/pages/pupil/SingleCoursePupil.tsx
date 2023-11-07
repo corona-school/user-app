@@ -17,8 +17,6 @@ import { getTrafficStatus } from '../../Utility';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
-import { Subcourse } from '../../gql/graphql';
-import { Lecture } from '../../gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -135,8 +133,8 @@ const SingleCoursePupil = () => {
     });
 
     const { subcourse } = data ?? {};
-
     const { course } = subcourse ?? {};
+    const appointments = subcourse?.appointments ?? [];
 
     const isInPast = useMemo(
         () =>
@@ -182,6 +180,17 @@ const SingleCoursePupil = () => {
         });
     }
 
+    const isActiveSubcourse = useMemo(() => {
+        const today = DateTime.now().endOf('day');
+        const isSubcourseCancelled = subcourse?.cancelled;
+        if (isSubcourseCancelled) return false;
+
+        const lastLecture = appointments[appointments.length - 1];
+        const lastLecturePlus30Days = DateTime.fromISO(lastLecture?.start).plus({ days: 30 });
+        const is30DaysBeforeToday = lastLecturePlus30Days < today;
+        return !is30DaysBeforeToday;
+    }, [appointments, subcourse?.cancelled]);
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -203,7 +212,7 @@ const SingleCoursePupil = () => {
                     />
                 )}
 
-                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} />}
+                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
                 <Tabs tabs={tabs} />
             </Stack>
         </WithNavigation>
