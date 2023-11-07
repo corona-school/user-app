@@ -1,10 +1,9 @@
-import { Box, Stack, Text } from 'native-base';
-import Theme from '../../../Theme';
-import PolaroidImageContainer from '../polaroid/getPolaroidImage';
-import AchievementBadge from '../achievementBadge';
-import NewAchievementShine from '../cosmetics/newAchievementShine';
-import IndicatorBar from '../progressIndicators/indicatorBar';
-import CardActionDescription from './cardActionDescription';
+import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import PolaroidImageContainer from '../polaroid/PolaroidImageContainer';
+import AchievementBadge from '../AchievementBadge';
+import NewAchievementShine from '../cosmetics/NewAchievementShine';
+import IndicatorBar from '../progressIndicators/IndicatorBar';
+import CardActionDescription from './CardActionDescription';
 import { AchievementState, ActionTypes } from '../types';
 
 type AchievementCardProps = {
@@ -18,6 +17,7 @@ type AchievementCardProps = {
     maxSteps?: number;
     currentStep?: number;
     actionDescription?: string;
+    isMobile?: boolean;
 };
 
 const AchievementCard: React.FC<AchievementCardProps> = ({
@@ -32,60 +32,78 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     currentStep,
     actionDescription,
 }) => {
-    console.log(achievementState);
-
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
     return (
-        <div
-            style={{
-                boxShadow: `${achievementState === AchievementState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'}`,
-                width: 'fit-content',
-                height: 'fit-content',
-                borderRadius: '8px',
-            }}
-        >
-            <Box
-                display={'flex'}
-                alignItems={'center'}
-                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : 'center'}
-                width="280px"
-                height={achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
-                borderColor={achievementState === AchievementState.COMPLETED ? Theme.colors.primary[900] : Theme.colors.primary.grey}
-                borderRadius="8px"
-                borderWidth="1px"
-                paddingY={'16px'}
-                paddingX={'32px'}
+        <Box width="fit-content" height="fit-content" borderRadius="8px">
+            {!isMobile && (
+                // This is the shadow of desktop cards. They have to be implemented with a div, since native base shadow prop has no inset option.
+                <div
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '8px',
+                        boxShadow: `${
+                            achievementState === AchievementState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'
+                        }`,
+                    }}
+                />
+            )}
+            <Stack
+                direction={isMobile ? 'row' : 'column'}
+                alignItems="center"
+                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : isMobile ? 'flex-start' : 'center'}
+                width={isMobile ? '100%' : '280px'}
+                height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
+                borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
+                borderRadius={isMobile ? 'none' : '8px'}
+                borderWidth={isMobile ? 'none' : '1px'}
+                paddingY="16px"
+                paddingX={isMobile ? '16px' : '32px'}
                 borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
                     achievementState === AchievementState.ACTIVE
-                        ? Theme.colors.white
+                        ? 'white'
                         : achievementState === AchievementState.COMPLETED
-                        ? Theme.colors.primary[900]
-                        : Theme.colors.primary.translucent
+                        ? 'primary.900'
+                        : 'primary.transparent'
                 }
             >
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
-                        <AchievementBadge />
-                        <NewAchievementShine />
+                        <AchievementBadge isMobile={isMobile} />
+                        <NewAchievementShine isMobile={isMobile} />
                     </>
                 )}
-                <Box>
-                    <PolaroidImageContainer image={achievementState === AchievementState.COMPLETED ? image : undefined} alternativeText={alternativeText} />
-                </Box>
-                <Stack space={5} alignItems={'center'}>
-                    <Stack space={0} alignItems={'center'}>
-                        <Text fontSize="xs" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]}>
+                <PolaroidImageContainer
+                    image={achievementState === AchievementState.COMPLETED ? image : undefined}
+                    alternativeText={alternativeText}
+                    isMobile={isMobile}
+                />
+                <VStack space={isMobile ? 2 : 5} alignItems={isMobile ? 'left' : 'center'} paddingLeft={isMobile ? '8px' : '0'}>
+                    <Stack space={0} alignItems={isMobile ? 'left' : 'center'}>
+                        <Text fontSize="xs" color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}>
                             {subtitle}
                         </Text>
-                        <Text fontSize="md" color={achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900]} bold>
+                        <Text fontSize="md" color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'} bold>
                             {title}
                         </Text>
                     </Stack>
-                    {achievementState !== AchievementState.COMPLETED && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
-                    {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
-                </Stack>
-            </Box>
-        </div>
+                    <VStack space={isMobile ? '0' : 'sm'} width="100%">
+                        {!isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
+                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />
+                        )}
+                        {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
+                        {isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
+                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />
+                        )}
+                    </VStack>
+                </VStack>
+            </Stack>
+        </Box>
     );
 };
 

@@ -1,6 +1,6 @@
-import { Box, PresenceTransition } from 'native-base';
-import CompletePolaroid from './completePolaroid';
-import EmptyPolaroidField from './emptyPolaroidField';
+import { PresenceTransition, VStack } from 'native-base';
+import CompletePolaroid from './CompletePolaroid';
+import EmptyPolaroidField from './EmptyPolaroidField';
 
 type PolaroidImageContainerProps = {
     image: string | undefined;
@@ -11,12 +11,12 @@ type PolaroidImageContainerProps = {
 
 const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, alternativeText, isMobile, isLarge }) => {
     return (
-        <Box display={'flex'}>
+        <VStack alignItems="center">
             {image ? (
                 <PresenceTransition
                     initial={{
                         rotate: '-5deg',
-                        translateY: isMobile ? 0 : -20,
+                        translateY: isMobile ? 0 : -15,
                         scale: isLarge ? 1.5 : 1,
                     }}
                 >
@@ -25,14 +25,14 @@ const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, 
             ) : (
                 <PresenceTransition
                     initial={{
-                        translateY: isLarge ? 75 : isMobile ? 0 : 20,
+                        translateY: isLarge ? 25 : 0,
                         scale: isLarge ? 1.5 : 1,
                     }}
                 >
                     <EmptyPolaroidField isMobile={isMobile} />
                 </PresenceTransition>
             )}
-        </Box>
+        </VStack>
     );
 };
 

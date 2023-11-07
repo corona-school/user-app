@@ -1,6 +1,5 @@
-import { Box } from 'native-base';
-import IndicatorStep from './indicatorStep';
-import Theme from '../../../Theme';
+import { Box, Progress, Stack } from 'native-base';
+import IndicatorStep from './IndicatorStep';
 import { AchievementState } from '../types';
 
 type IndicatorBarWithStepsProps = {
@@ -16,15 +15,11 @@ type IndicatorBarWithStepsProps = {
 const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, isMobile, achievementState }) => {
     const offsetPerStep = 100 / maxSteps;
     const currentStep = steps ? steps.findIndex((step) => step.isActive) + 1 : undefined;
-    const progressBarWidth = achievementState === AchievementState.COMPLETED ? '100%' : `${offsetPerStep * currentStep! - offsetPerStep / 2}%`;
+    const progress = achievementState === AchievementState.COMPLETED ? 100 : currentStep ? offsetPerStep * currentStep - offsetPerStep / 2 + 2 : 0;
     return (
-        <Box>
-            <Box alignItems={'left'} height={'2px'} width={isMobile ? '90%' : '100%'} backgroundColor={Theme.colors.gray[300]} borderRadius={'1px'} top={'9px'}>
-                {currentStep || achievementState === AchievementState.COMPLETED ? (
-                    <Box height={'2px'} width={progressBarWidth} backgroundColor={Theme.colors.primary[500]} borderRadius={'1px'} />
-                ) : (
-                    <Box />
-                )}
+        <Stack direction={isMobile ? 'row' : 'column'} alignItems={isMobile ? 'center' : 'left'} justifyContent="center" space={isMobile ? 1 : 0}>
+            <Box width={isMobile ? '90%' : '100%'}>
+                <Progress bg="gray.100" value={progress} />
             </Box>
             {steps.map((step, index) => (
                 <IndicatorStep
@@ -37,7 +32,7 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
                     achievementState={achievementState}
                 />
             ))}
-        </Box>
+        </Stack>
     );
 };
 

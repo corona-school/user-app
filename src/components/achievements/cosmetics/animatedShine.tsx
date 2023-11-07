@@ -55,7 +55,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ props, isMobile, isLarge 
     }, intervalSpeed);
 
     return (
-        <Box position={'absolute'} top={`${positionTop}px`} left={`${positionLeft}px`}>
+        <Box position="absolute" top={`${positionTop}px`} left={`${positionLeft}px`}>
             <PresenceTransition
                 visible
                 initial={{

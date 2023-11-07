@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import AchievementModal from './achievementModal';
+import AchievementModal from './AchievementModal';
 import { AchievementState, ActionTypes } from '../types';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
 
@@ -14,7 +14,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.ACTIVE}
+        buttonText="Kontakt aufnehmen"
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -27,7 +27,9 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
                 description: 'Dieser Text muss noch geliefert werden!',
             },
         ]}
-        buttonText="Kontakt aufnehmen"
+        actionDescription="Alle Schritte abgeschlossen"
+        image={KanufahrtDschungel}
+        achievementState={AchievementState.ACTIVE}
     />
 </Story>
 
@@ -38,6 +40,8 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        buttonText="Kontakt aufnehmen"
+        actionDescription="Alle Schritte abgeschlossen"
         achievementState={AchievementState.COMPLETED}
         steps={[
             {
@@ -50,9 +54,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
                 description: 'Dieser Text muss noch geliefert werden!',
             },
         ]}
-        buttonText="Kontakt aufnehmen"
         image={KanufahrtDschungel}
-        isDone
     />
 </Story>
 
@@ -63,7 +65,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.COMPLETED}
+        buttonText="Kontakt aufnehmen"
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -75,9 +77,8 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
                 description: 'Dieser Text muss noch geliefert werden!',
             },
         ]}
-        buttonText="Kontakt aufnehmen"
         image={KanufahrtDschungel}
-        isDone
+        achievementState={AchievementState.COMPLETED}
         newAchievement
     />
 </Story>

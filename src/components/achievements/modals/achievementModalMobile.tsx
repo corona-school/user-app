@@ -1,11 +1,11 @@
 import { Box, Button, Modal, Stack, Text, VStack, useMediaQuery } from 'native-base';
 import { AchievementModalProps, AchievementState } from '../types';
-import PolaroidImageContainer from '../polaroid/getPolaroidImage';
+import PolaroidImageContainer from '../polaroid/PolaroidImageContainer';
 import { useTranslation } from 'react-i18next';
 import Theme from '../../../Theme';
-import IndicatorBar from '../progressIndicators/indicatorBar';
-import NewAchievementShine from '../cosmetics/newAchievementShine';
-import AchievementBadge from '../achievementBadge';
+import IndicatorBar from '../progressIndicators/IndicatorBar';
+import NewAchievementShine from '../cosmetics/NewAchievementShine';
+import AchievementBadge from '../AchievementBadge';
 
 const AchievementModalMobile: React.FC<AchievementModalProps> = ({
     title,
