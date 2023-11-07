@@ -1,6 +1,6 @@
 import { Box, PresenceTransition } from 'native-base';
-import CompletePolaroid from './completePolaroid';
-import EmptyPolaroidField from './emptyPolaroidField';
+import CompletePolaroid from './CompletePolaroid';
+import EmptyPolaroidField from './EmptyPolaroidField';
 
 type PolaroidImageContainerProps = {
     image: string | undefined;
@@ -10,7 +10,7 @@ type PolaroidImageContainerProps = {
 
 const PolaroidImageContainer: React.FC<PolaroidImageContainerProps> = ({ image, alternativeText, isMobile }) => {
     return (
-        <Box display={'flex'}>
+        <Box display="flex">
             {image ? (
                 <PresenceTransition
                     initial={{

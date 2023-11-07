@@ -1,4 +1,4 @@
-import Theme from '../../../Theme';
+import { Box, Image, VStack } from 'native-base';
 
 type CompletePolaroidProps = {
     image: string;
@@ -8,40 +8,25 @@ type CompletePolaroidProps = {
 
 const CompletePolaroid: React.FC<CompletePolaroidProps> = ({ image, alternativeText, isMobile }) => {
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.25)',
-                backgroundColor: `${Theme.colors.white}`,
-                width: `${isMobile ? '60px' : '136px'}`,
-                height: `${isMobile ? '80px' : '184px'}`,
-                borderRadius: `${isMobile ? '2px' : '4px'}`,
-                paddingTop: `${isMobile ? '4px' : '7.5px'}`,
-            }}
+        <VStack
+            justifyContent="flex-start"
+            alignItems="center"
+            shadow="0px 2px 4px 0px rgba(0, 0, 0, 0.25)"
+            backgroundColor="white"
+            width={isMobile ? '60px' : '136px'}
+            height={isMobile ? '80px' : '184px'}
+            borderRadius={isMobile ? '2px' : '4px'}
+            paddingTop={isMobile ? '4px' : '7.5px'}
         >
-            <div
-                style={
-                    isMobile
-                        ? {
-                              width: '52px',
-                              height: '62px',
-                              borderRadius: '1px',
-                              objectFit: 'fill',
-                              overflow: 'hidden',
-                          }
-                        : {
-                              width: '120px',
-                              height: '144px',
-                              borderRadius: '2px',
-                          }
-                }
+            <Box
+                width={isMobile ? '52px' : '120px'}
+                height={isMobile ? '62px' : '144px'}
+                borderRadius={isMobile ? '1px' : '2px'}
+                overflow={isMobile ? 'hidden' : 'visible'}
             >
-                <img width={'100%'} src={image} alt={alternativeText} />
-            </div>
-        </div>
+                <Image width="100%" height="100%" src={image} alt={alternativeText} />
+            </Box>
+        </VStack>
     );
 };
 

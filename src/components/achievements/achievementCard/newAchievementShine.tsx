@@ -1,4 +1,4 @@
-import AnimatedShine, { AnimatedShineProps } from './animatedShine';
+import AnimatedShine, { AnimatedShineProps } from './AnimatedShine';
 
 type NewAchievementShineProps = {
     isMobile?: boolean;

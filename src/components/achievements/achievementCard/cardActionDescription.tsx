@@ -1,5 +1,5 @@
-import { Box, Stack, Text } from 'native-base';
-import { ActionTypes } from './achievementCard';
+import { Box, HStack, Text } from 'native-base';
+import { ActionTypes } from './AchievementCard';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
@@ -8,7 +8,6 @@ import ArrowRight from '../../../assets/icons/icon_arrow_right.svg';
 import Calendar from '../../../assets/icons/icon_calendar.svg';
 import Clock from '../../../assets/icons/icon_clock.svg';
 import Info from '../../../assets/icons/icon_info.svg';
-import Theme from '../../../Theme';
 
 type CardActionDescriptionProps = {
     actionType?: ActionTypes;
@@ -37,16 +36,16 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
     }
 
     return (
-        <Stack direction={'row'} alignItems={'center'} space={1}>
+        <HStack alignItems="center" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
             {actionType && (
-                <Box width={'12px'} height={'12px'} position={'relative'}>
+                <Box width="12px" height="12px" position="relative">
                     {icon}
                 </Box>
             )}
-            <Text fontSize={'xs'} color={isMobile ? Theme.colors.primary[500] : 'black'}>
+            <Text fontSize="xs" color={isMobile ? 'primary.500' : 'black'}>
                 {actionDescription}
             </Text>
-        </Stack>
+        </HStack>
     );
 };
 
