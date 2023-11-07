@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { FormErrors } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
-import SafariSelect from '../../widgets/SafariSelect';
+import CustomSelect from '../../widgets/CustomSelect';
 
 type FormProps = {
     errors: FormErrors;
@@ -139,7 +139,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                     {/* DURATION */}
                     <FormControl isInvalid={'duration' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
-                        <SafariSelect placeholder="Dauer der Unterrichtseinheit" onValueChange={(duration: string) => handleDurationSelection(duration)}>
+                        <CustomSelect placeholder="Dauer der Unterrichtseinheit" onValueChange={(duration: string) => handleDurationSelection(duration)}>
                             <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
                             <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
                             <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
@@ -148,7 +148,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                             <Select.Item value="120" label={t('course.selectOptions._2hour')} />
                             <Select.Item value="180" label={t('course.selectOptions._3hour')} />
                             <Select.Item value="240" label={t('course.selectOptions._4hour')} />
-                        </SafariSelect>
+                        </CustomSelect>
                         {'duration' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
                                 {t('appointment.create.emptySelectError')}
