@@ -7,7 +7,7 @@ type EmptyPolaroidFieldProps = {
 
 const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ isMobile }) => {
     return (
-        <Box flex={isMobile ? '1' : 'none'} width={isMobile ? '60px' : '136px'} height={isMobile ? '80px' : '184px'} position="relative">
+        <Box flex={isMobile ? '1' : 'none'} width={isMobile ? 'auto' : '136px'} height={isMobile ? '184px' : 'auto'} position="relative">
             <Polaroid />
         </Box>
     );

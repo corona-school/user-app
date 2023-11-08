@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import AchievementCard from './AchievementCard';
-import { AchievementState, ActionTypes } from '../types';
+import { AchievementState, AchievementType, ActionTypes } from '../types';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
 
 <Meta title="Achievements/AchievementCard" component={AchievementCard} />
@@ -12,6 +12,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
 <Story name="Achievement Completed Card">
     <AchievementCard
         achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.TIERED}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         newAchievement={false}
@@ -25,6 +26,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
 <Story name="New Achievement Completed Card">
     <AchievementCard
         achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.SEQUENTIAL}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         newAchievement
@@ -38,6 +40,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
 <Story name="Achievement Active Card">
     <AchievementCard
         achievementState={AchievementState.ACTIVE}
+        achievementType={AchievementType.TIERED}
         actionType={ActionTypes.WAIT}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
@@ -55,6 +58,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
 <Story name="Achievement Inactive Card">
     <AchievementCard
         achievementState={AchievementState.INACTIVE}
+        achievementType={AchievementType.SEQUENTIAL}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         newAchievement

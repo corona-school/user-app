@@ -1,13 +1,36 @@
 import { Box, Button, HStack, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import Theme from '../../../Theme';
 import { useTranslation } from 'react-i18next';
-import PolaroidImageContainer from '../polaroid/PolaroidImageContainer';
-import { AchievementModalProps, AchievementState } from '../types';
+import AchievementImageContainer from '../polaroid/AchievementImageContainer';
+import CheckGreen from '../../../assets/icons/icon_check_green.svg';
+import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
+import { AchievementState, AchievementType } from '../types';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
+
+type AchievementModalProps = {
+    title: string;
+    name: string;
+    description: string;
+    achievementState: AchievementState;
+    achievementType: AchievementType;
+    buttonText?: string;
+    newAchievement?: boolean;
+    steps?: {
+        description: string;
+        isActive?: boolean;
+    }[];
+    maxSteps?: number;
+    currentStep?: number;
+    actionDescription?: string;
+    achievedText?: string;
+    image?: string;
+    alternativeText?: string;
+    onClose?: () => void;
+};
 
 const AchievementModal: React.FC<AchievementModalProps> = ({
     title,
@@ -16,10 +39,14 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     buttonText,
     newAchievement,
     steps,
+    maxSteps,
+    currentStep,
     actionDescription,
+    achievedText,
     image,
     alternativeText,
     achievementState,
+    achievementType,
 }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(true);
@@ -27,8 +54,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const isMobile = useBreakpointValue({ base: true, sm: true, md: false });
     const isTablet = useBreakpointValue({ md: true, lg: false });
 
-    const currentStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
-    const textColor = achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900';
+    const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
+    const backgroundColor = achievementState === AchievementState.COMPLETED || achievementType === AchievementType.STREAK ? 'primary.900' : 'white';
+    const textColor = achievementState === AchievementState.COMPLETED || achievementType === AchievementType.STREAK ? 'white' : 'primary.900';
     return (
         <Modal
             isOpen={showModal}
@@ -43,9 +71,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                 width={isMobile || isTablet ? '100%' : '820px'}
                 maxWidth={isMobile || isTablet ? '550px' : '820px'}
                 height={isMobile ? '100vh' : isTablet ? 'max-content' : '434px'}
-                backgroundColor={`${achievementState === AchievementState.COMPLETED ? 'primary.900' : 'white'}`}
+                backgroundColor={backgroundColor}
                 borderRadius={isMobile ? '0' : '8px'}
-                marginTop={achievementState === AchievementState.COMPLETED && !isMobile && !isTablet ? '62px' : 0}
+                marginTop={achievementType === AchievementType.TIERED && achievementState === AchievementState.COMPLETED && !isMobile && !isTablet ? '62px' : 0}
                 overflow={isMobile || isTablet ? 'scroll' : 'visible'}
             >
                 <Modal.CloseButton />
@@ -69,13 +97,15 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             marginBottom={isMobile || isTablet ? 0 : 3}
                         >
                             <Box top={isMobile || isTablet ? '20px' : '0'}>
-                                <Box marginLeft={isMobile || isTablet ? 0 : '64px'} width={isMobile || isTablet ? '100%' : '142px'}>
-                                    <PolaroidImageContainer
-                                        image={achievementState === AchievementState.COMPLETED ? image : undefined}
-                                        alternativeText={alternativeText || ''}
-                                        isLarge={!isMobile && !isTablet}
-                                    />
-                                </Box>
+                                <AchievementImageContainer
+                                    image={achievementType === AchievementType.TIERED && achievementState !== AchievementState.COMPLETED ? undefined : image}
+                                    alternativeText={alternativeText || ''}
+                                    achievementType={achievementType}
+                                    streak={steps ? steps.length : maxSteps}
+                                    isRecord={maxSteps === currentStep}
+                                    isMobile={isMobile || isTablet}
+                                    isLarge
+                                />
                                 {newAchievement && (
                                     <Box position="absolute" top="-40px" left={isMobile || isTablet ? '-70px' : '-40px'}>
                                         <NewAchievementShine isLarge={!isMobile && !isTablet} />
@@ -116,29 +146,71 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                             </VStack>
                             {(isMobile || isTablet) && (
-                                <Box>
-                                    {achievementState === AchievementState.COMPLETED ? (
-                                        <Box width="100%" display="flex" alignItems="center">
-                                            {newAchievement ? (
-                                                <AchievementBadge isInline />
-                                            ) : (
-                                                <Text color={Theme.colors.primary[500]} textAlign="center">
-                                                    {actionDescription}
-                                                </Text>
-                                            )}
-                                        </Box>
-                                    ) : (
-                                        <Box width={'100%'}>{steps && <IndicatorBar maxSteps={steps.length} currentStep={currentStep} centerText />}</Box>
-                                    )}
-                                </Box>
-                            )}
-                            {(isMobile || isTablet) && (
-                                <Text width={'100%'} color={textColor}>
-                                    {description}
-                                </Text>
+                                <VStack width="100%" alignItems="center" space="8px">
+                                    <Box width="80%">
+                                        {achievementState === AchievementState.COMPLETED ? (
+                                            <Box width="100%" display="flex" alignItems="center">
+                                                {newAchievement ? (
+                                                    <AchievementBadge isInline />
+                                                ) : (
+                                                    <Text color={Theme.colors.primary[500]} textAlign="center">
+                                                        {actionDescription}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                        ) : (
+                                            <Box width="100%">
+                                                {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps ? (
+                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />
+                                                ) : (
+                                                    <Box width="100%">
+                                                        {steps && (
+                                                            <IndicatorBar
+                                                                maxSteps={steps?.length || 0}
+                                                                currentStep={activeStep}
+                                                                achievementType={achievementType}
+                                                                isMobile={isMobile}
+                                                                largeText
+                                                                centerText
+                                                            />
+                                                        )}
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        )}
+                                    </Box>
+                                    <Text width="100%" color={textColor}>
+                                        {description}
+                                    </Text>
+                                </VStack>
                             )}
                         </Stack>
-                        {!isMobile && !isTablet && steps && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} />}
+                        {!isMobile && !isTablet && (
+                            <Box>
+                                {achievementType === AchievementType.SEQUENTIAL && (
+                                    <Box width="100%">
+                                        {steps && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} achievementState={achievementState} />}
+                                    </Box>
+                                )}
+                                {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps && (
+                                    <Box width="100%">{<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} />}</Box>
+                                )}
+                            </Box>
+                        )}
+                        {!steps && !maxSteps && actionDescription && (
+                            <HStack alignItems={'center'} space={'sm'}>
+                                {achievementState === AchievementState.COMPLETED ? (
+                                    <CheckGreen />
+                                ) : (
+                                    <Box width={'10px'} height={'10px'}>
+                                        <ArrowGreen />
+                                    </Box>
+                                )}
+                                <Text fontSize={'14px'} color={Theme.colors.primary[500]}>
+                                    {actionDescription}
+                                </Text>
+                            </HStack>
+                        )}
                     </VStack>
                     {achievementState !== AchievementState.COMPLETED ? (
                         <Stack width="100%" flexDirection={isMobile || isTablet ? 'column' : 'row'} space="8px">

@@ -1,13 +1,14 @@
 import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import PolaroidImageContainer from '../polaroid/PolaroidImageContainer';
+import AchievementImageContainer from '../polaroid/AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
-import { AchievementState, ActionTypes } from '../types';
+import { AchievementState, AchievementType, ActionTypes } from '../types';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
+    achievementType: AchievementType;
     actionType?: ActionTypes;
     image: string | undefined;
     alternativeText: string;
@@ -22,6 +23,7 @@ type AchievementCardProps = {
 
 const AchievementCard: React.FC<AchievementCardProps> = ({
     achievementState,
+    achievementType,
     actionType,
     image,
     alternativeText,
@@ -78,9 +80,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         <NewAchievementShine isMobile={isMobile} />
                     </>
                 )}
-                <PolaroidImageContainer
+                <AchievementImageContainer
                     image={achievementState === AchievementState.COMPLETED ? image : undefined}
                     alternativeText={alternativeText}
+                    achievementType={achievementType}
                     isMobile={isMobile}
                 />
                 <VStack space={isMobile ? 2 : 5} alignItems={isMobile ? 'left' : 'center'} paddingLeft={isMobile ? '8px' : '0'}>

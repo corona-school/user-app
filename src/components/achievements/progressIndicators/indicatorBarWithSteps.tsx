@@ -15,7 +15,7 @@ type IndicatorBarWithStepsProps = {
 const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, isMobile, achievementState }) => {
     const offsetPerStep = 100 / maxSteps;
     const currentStep = steps ? steps.findIndex((step) => step.isActive) + 1 : undefined;
-    const progress = achievementState === AchievementState.COMPLETED ? 100 : currentStep ? offsetPerStep * currentStep - offsetPerStep / 2 + 2 : 0;
+    const progress = achievementState === AchievementState.COMPLETED ? 100 : currentStep ? offsetPerStep * currentStep - offsetPerStep / 2 + 1 : 0;
     return (
         <Stack direction={isMobile ? 'row' : 'column'} alignItems={isMobile ? 'center' : 'left'} justifyContent="center" space={isMobile ? 1 : 0}>
             <Box width={isMobile ? '90%' : '100%'}>
