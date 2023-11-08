@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import AnimatedShine from './AnimatedShine';
+import { ShineSize } from '../types';
 
 <Meta title="Achievements/AnimatedShine" component={AnimatedShine} />
 
@@ -7,13 +8,6 @@ import AnimatedShine from './AnimatedShine';
 
 -   An Animated Shine is a animated svg that shows a flickering star.
 
-<Story name="Animated Shine">
-    <AnimatedShine
-        props={{
-            initialSize: 60,
-            positionLeft: 0,
-            positionTop: 0,
-            animationStart: 0,
-        }}
-    />
+<Story name="Animated Shine" width="40px">
+    <AnimatedShine initialSize={60} positionLeft={0} positionTop={0} animationStart={0} size={ShineSize.MEDIUM} />
 </Story>

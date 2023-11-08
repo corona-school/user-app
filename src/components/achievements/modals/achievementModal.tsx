@@ -1,7 +1,7 @@
 import { Box, Button, HStack, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import Theme from '../../../Theme';
 import { useTranslation } from 'react-i18next';
-import AchievementImageContainer from '../polaroid/AchievementImageContainer';
+import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
 import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import { AchievementState, AchievementType } from '../types';
@@ -10,6 +10,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
+import { getShineSize } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;
@@ -91,7 +92,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             height={isMobile || isTablet ? 'fit-content' : '275px'}
                             direction={isMobile || isTablet ? 'column' : 'row'}
                             space={isMobile || isTablet ? '32px' : 0}
-                            alignItems={isMobile || isTablet ? 'center' : 'normal'}
+                            alignItems="center"
                             justifyContent={isMobile ? 'normal' : isTablet ? 'center' : 'space-between'}
                             padding={isMobile || isTablet ? '16px' : '32px'}
                             marginBottom={isMobile || isTablet ? 0 : 3}
@@ -103,20 +104,20 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     achievementType={achievementType}
                                     streak={steps ? steps.length : maxSteps}
                                     isRecord={maxSteps === currentStep}
-                                    isMobile={isMobile || isTablet}
+                                    isMobile={isMobile}
+                                    isTablet={isTablet}
                                     isLarge
                                 />
                                 {newAchievement && (
                                     <Box position="absolute" top="-40px" left={isMobile || isTablet ? '-70px' : '-40px'}>
-                                        <NewAchievementShine isLarge={!isMobile && !isTablet} />
+                                        <NewAchievementShine size={getShineSize(isMobile, isTablet)} />
                                     </Box>
                                 )}
                             </Box>
                             <VStack
-                                width={isMobile || isTablet ? '100%' : '555px'}
+                                width={isMobile || isTablet ? '100%' : '473px'}
                                 space={3}
-                                paddingLeft={isMobile || isTablet ? 0 : 16}
-                                maxWidth={isMobile || isTablet ? '100%' : '555px'}
+                                maxWidth={isMobile || isTablet ? '100%' : '473px'}
                                 height={isMobile || isTablet ? 'auto' : '245px'}
                                 alignItems={isMobile || isTablet ? 'center' : 'normal'}
                             >

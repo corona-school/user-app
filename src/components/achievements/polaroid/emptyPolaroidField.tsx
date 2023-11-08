@@ -1,13 +1,14 @@
 import { Box } from 'native-base';
 import Polaroid from '../../../assets/icons/icon_polaroid.svg';
+import { PolaroidImageSize } from '../types';
 
 type EmptyPolaroidFieldProps = {
-    isMobile?: boolean;
+    size: PolaroidImageSize;
 };
 
-const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ isMobile }) => {
+const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ size }) => {
     return (
-        <Box flex={isMobile ? '1' : 'none'} width={isMobile ? 'auto' : '136px'} height={isMobile ? '184px' : 'auto'} position="relative">
+        <Box width={size} height={`calc(${size} * 1.35)`} position="relative">
             <Polaroid />
         </Box>
     );

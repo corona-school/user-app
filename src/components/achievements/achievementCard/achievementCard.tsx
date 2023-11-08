@@ -1,10 +1,11 @@
 import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import AchievementImageContainer from '../polaroid/AchievementImageContainer';
+import AchievementImageContainer from '../AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
+import { getShineSize } from '../helpers/achievement-image-helper';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
@@ -57,7 +58,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             <Stack
                 direction={isMobile ? 'row' : 'column'}
                 alignItems="center"
-                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : isMobile ? 'flex-start' : 'center'}
+                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : isMobile ? 'flex-start' : 'flex-end'}
                 width={isMobile ? '100%' : '280px'}
                 height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
                 borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
@@ -77,7 +78,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge isMobile={isMobile} />
-                        <NewAchievementShine isMobile={isMobile} />
+                        <NewAchievementShine size={getShineSize(isMobile)} />
                     </>
                 )}
                 <AchievementImageContainer

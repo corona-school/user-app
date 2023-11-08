@@ -17,4 +17,22 @@ enum AchievementState {
     COMPLETED = 'COMPLETED',
 }
 
-export { ActionTypes, AchievementType, AchievementState };
+enum PolaroidImageSize {
+    SMALL = '72px',
+    MEDIUM = '136px',
+    LARGE = '210px',
+}
+
+enum StreakImageSize {
+    SMALL = '72px',
+    MEDIUM = '178px',
+    LARGE = '224px',
+}
+
+enum ShineSize {
+    SMALL = 0.5,
+    MEDIUM = 1,
+    LARGE = 1.25,
+}
+
+export { ActionTypes, AchievementType, AchievementState, PolaroidImageSize, StreakImageSize, ShineSize };
