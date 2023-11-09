@@ -51,7 +51,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
                     />
                 </PresenceTransition>
             </VStack>
-            <VStack width={isMobile ? 'auto' : '215px'} maxWidth="215px" height="100%" justifyContent="space-between">
+            <VStack width={isMobile ? 'auto' : '215px'} maxWidth="215px" height="100%" justifyContent="flex-start" space="6px">
                 <Text color="white">{title}</Text>
                 <Text color="white" fontSize="xs">
                     <Trans>{t('achievement.streak.card.info', { streak })}</Trans>
