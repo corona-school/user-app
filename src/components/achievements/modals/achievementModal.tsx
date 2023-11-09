@@ -10,7 +10,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
-import { getShineSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;
@@ -109,7 +109,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     isLarge
                                 />
                                 {newAchievement && (
-                                    <Box position="absolute" top="-40px" left={isMobile || isTablet ? '-70px' : '-40px'}>
+                                    <Box position="absolute" width={getPolaroidImageSize(isMobile, isTablet, true)} height="100%">
                                         <NewAchievementShine size={getShineSize(isMobile, isTablet)} />
                                     </Box>
                                 )}

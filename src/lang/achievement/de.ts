@@ -4,6 +4,9 @@ const achievement = {
         finishedStepsInformation: '{{currentStep}} von {{maxSteps}} Schritten abgeschlossen',
         finishedStepsInformationMobile: '{{currentStep}}/{{maxSteps}}',
     },
+    nextStepCard: {
+        finishedSteps: '{{currentStep}} von {{maxSteps}} Schritten abgeschlossen.',
+    },
     modal: {
         close: 'Schließen',
         achievements: 'Zu den Erfolgen',

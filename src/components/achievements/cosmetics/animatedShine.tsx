@@ -57,8 +57,8 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
             position="absolute"
             width={relativeSize * 1.05}
             height={relativeSize * 1.05}
-            top={`${positionTop}px`}
-            left={`${positionLeft}px`}
+            top={`${positionTop}%`}
+            left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`}
             justifyContent="center"
             alignItems="center"
         >

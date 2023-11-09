@@ -1,4 +1,4 @@
-import { PolaroidImageSize, ShineSize } from '../types';
+import { PolaroidImageSize, PuzzleImageSize, ShineOffset, ShineSize } from '../types';
 
 const getPolaroidImageSize = (isMobile?: boolean, isTablet?: boolean, isLarge?: boolean) => {
     if (isMobile && !isLarge) {
@@ -33,8 +33,11 @@ const getPolaroidOffset = (size: PolaroidImageSize) => {
     }
 };
 
-const getShineSize = (isMobile?: boolean, isTablet?: boolean) => {
+const getShineSize = (isMobile?: boolean, isTablet?: boolean, isCard?: boolean) => {
     if (isMobile && !isTablet) {
+        if (isCard) {
+            return ShineSize.XSMALL;
+        }
         return ShineSize.SMALL;
     } else if (isTablet && !isMobile) {
         return ShineSize.MEDIUM;
@@ -44,4 +47,41 @@ const getShineSize = (isMobile?: boolean, isTablet?: boolean) => {
     return ShineSize.MEDIUM;
 };
 
-export { getPolaroidImageSize, getPolaroidBorderRadius, getPolaroidOffset, getShineSize };
+function getShineOffset(size: ShineSize): ShineOffset {
+    switch (size) {
+        case ShineSize.XSMALL:
+            return ShineOffset.XSMALL;
+        case ShineSize.SMALL:
+            return ShineOffset.SMALL;
+        case ShineSize.MEDIUM:
+            return ShineOffset.MEDIUM;
+        case ShineSize.LARGE:
+            return ShineOffset.LARGE;
+        default:
+            return ShineOffset.MEDIUM;
+    }
+}
+
+const getPuzzleSize = (isMobile?: boolean, isTablet?: boolean) => {
+    if (isMobile && !isTablet) {
+        return PuzzleImageSize.SMALL;
+    } else if (isTablet && !isMobile) {
+        return PuzzleImageSize.MEDIUM;
+    } else if (!isTablet && !isMobile) {
+        return PuzzleImageSize.LARGE;
+    }
+    return PuzzleImageSize.MEDIUM;
+};
+
+const getPuzzleBorderRadius = (size: PuzzleImageSize) => {
+    switch (size) {
+        case PuzzleImageSize.SMALL:
+            return '2px';
+        case PuzzleImageSize.MEDIUM:
+            return '3px';
+        case PuzzleImageSize.LARGE:
+            return '4px';
+    }
+};
+
+export { getPolaroidImageSize, getPolaroidBorderRadius, getPolaroidOffset, getShineSize, getShineOffset, getPuzzleSize, getPuzzleBorderRadius };

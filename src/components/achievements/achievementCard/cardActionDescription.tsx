@@ -38,7 +38,7 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
     return (
         <HStack alignItems="center" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
             {actionType && (
-                <Box width="12px" height="12px" position="relative">
+                <Box width="8px" height="8px" position="relative">
                     {icon}
                 </Box>
             )}

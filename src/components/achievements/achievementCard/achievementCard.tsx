@@ -5,7 +5,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
@@ -58,13 +58,21 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             <Stack
                 direction={isMobile ? 'row' : 'column'}
                 alignItems="center"
-                justifyContent={achievementState !== AchievementState.COMPLETED ? 'flex-start' : isMobile ? 'flex-start' : 'flex-end'}
+                justifyContent={
+                    achievementState !== AchievementState.COMPLETED
+                        ? 'space-between'
+                        : isMobile
+                        ? 'flex-start'
+                        : achievementType === AchievementType.SEQUENTIAL
+                        ? 'space-between'
+                        : 'flex-end'
+                }
                 width={isMobile ? '100%' : '280px'}
                 height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
                 borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
                 borderRadius={isMobile ? 'none' : '8px'}
                 borderWidth={isMobile ? 'none' : '1px'}
-                paddingY="16px"
+                paddingY={'16px'}
                 paddingX={isMobile ? '16px' : '32px'}
                 borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
@@ -78,11 +86,18 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge isMobile={isMobile} />
-                        <NewAchievementShine size={getShineSize(isMobile)} />
+                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center">
+                            <VStack
+                                width={isMobile ? '64px' : getPolaroidImageSize(isMobile, isMobile, true)}
+                                height={isMobile ? '84px' : getPolaroidImageSize(isMobile, isMobile, true)}
+                            >
+                                <NewAchievementShine size={getShineSize(isMobile, false, true)} />
+                            </VStack>
+                        </VStack>
                     </>
                 )}
                 <AchievementImageContainer
-                    image={achievementState === AchievementState.COMPLETED ? image : undefined}
+                    image={achievementState === AchievementState.COMPLETED || achievementType === AchievementType.SEQUENTIAL ? image : undefined}
                     alternativeText={alternativeText}
                     achievementType={achievementType}
                     isMobile={isMobile}
@@ -102,7 +117,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         )}
                         {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
                         {isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />
+                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile={isMobile} />
                         )}
                     </VStack>
                 </VStack>

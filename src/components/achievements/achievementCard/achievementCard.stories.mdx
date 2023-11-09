@@ -2,10 +2,12 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import AchievementCard from './AchievementCard';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
+import SequenceExample01 from '../../../assets/images/achievements/Sequence_Example_01.png';
+import SequenceExample04 from '../../../assets/images/achievements/Sequence_Example_04.png';
 
 <Meta title="Achievements/AchievementCard" component={AchievementCard} />
 
--   An Achievement Card is a card that displays the user's achievements based on their successes.
+-   An Achievement Card is a card that displays the user"s achievements based on their successes.
 
 # Achievement Completed Card
 
@@ -27,7 +29,7 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
     <AchievementCard
         achievementState={AchievementState.COMPLETED}
         achievementType={AchievementType.SEQUENTIAL}
-        image={KanufahrtDschungel}
+        image={SequenceExample04}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         newAchievement
         subtitle="Gitarre für Anfänger"
@@ -59,13 +61,14 @@ import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDsc
     <AchievementCard
         achievementState={AchievementState.INACTIVE}
         achievementType={AchievementType.SEQUENTIAL}
-        image={KanufahrtDschungel}
+        actionType={ActionTypes.ACTION}
+        image={SequenceExample01}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         newAchievement
         subtitle="Gitarre für Anfänger"
         title="1. durchgeführter Termin"
         maxSteps={5}
         currentStep={0}
-        actionDescription="Schließe alle Lektionen ab, um diesen Erfolg zu erhalten"
+        actionDescription="Kennenlerngespräch buchen"
     />
 </Story>
