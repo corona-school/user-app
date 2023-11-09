@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from 'native-base';
+import { Box, HStack, Text, VStack } from 'native-base';
 import { ActionTypes } from '../types';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
@@ -13,36 +13,39 @@ type CardActionDescriptionProps = {
     actionType?: ActionTypes;
     actionDescription: string;
     isMobile?: boolean;
+    isColorized?: boolean;
 };
 
-const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isMobile }) => {
+const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isMobile, isColorized }) => {
     let icon;
-
+    const colorize = isMobile || isColorized;
     switch (actionType) {
         case ActionTypes.ACTION:
-            icon = isMobile ? <ArrowRightGreen /> : <ArrowRight />;
+            icon = colorize ? <ArrowRightGreen /> : <ArrowRight />;
             break;
         case ActionTypes.APPOINTMENT:
-            icon = isMobile ? <CalendarGreen /> : <Calendar />;
+            icon = colorize ? <CalendarGreen /> : <Calendar />;
             break;
         case ActionTypes.INFO:
-            icon = isMobile ? <InfoGreen /> : <Info />;
+            icon = colorize ? <InfoGreen /> : <Info />;
             break;
         case ActionTypes.WAIT:
-            icon = isMobile ? <ClockGreen /> : <Clock />;
+            icon = colorize ? <ClockGreen /> : <Clock />;
             break;
         default:
             break;
     }
 
     return (
-        <HStack alignItems="center" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
+        <HStack alignItems="flex-start" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
             {actionType && (
-                <Box width="8px" height="8px" position="relative">
-                    {icon}
-                </Box>
+                <VStack height="12px" position="relative" justifyContent="flex-end">
+                    <Box width="8px" height="8px">
+                        {icon}
+                    </Box>
+                </VStack>
             )}
-            <Text fontSize="xs" color={isMobile ? 'primary.500' : 'black'}>
+            <Text fontSize="xs" color={colorize ? 'primary.500' : 'black'}>
                 {actionDescription}
             </Text>
         </HStack>

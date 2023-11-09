@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import StreakCard from './StreakCard';
+import { ActionTypes } from '../types';
+import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_unfinished.svg';
+
+<Meta title="Achievements/Streak/StreakCard" component={StreakCard} />
+
+# StreakCard
+
+-   The Streak Card represents the current streak in different Streak Elements
+
+<Story name="Streak Card">
+    <StreakCard
+        streak={17}
+        record={27}
+        title="Pünktlichkeits-Rekord"
+        actionDescription="Weiter so, um den Rekord zu erhöhen"
+        image={ExampleStreakUnfinished}
+        alternativeText="27 day streak"
+        actionType={ActionTypes.ACTION}
+    />
+</Story>
+
+# Streak Card with finished streak
+
+<Story name="Streak Card Finished">
+    <StreakCard
+        streak={27}
+        record={27}
+        title="Pünktlichkeits-Rekord"
+        actionDescription="Weiter so, um den Rekord zu erhöhen"
+        image={ExampleStreakUnfinished}
+        alternativeText="27 day streak"
+        actionType={ActionTypes.ACTION}
+    />
+</Story>

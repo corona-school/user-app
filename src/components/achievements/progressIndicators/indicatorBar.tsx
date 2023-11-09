@@ -22,7 +22,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
             </Box>
             <Text
                 width={centerText ? '100%' : 'fit-content'}
-                textAlign={centerText ? 'center' : 'right'}
+                textAlign={centerText ? 'center' : 'left'}
                 fontSize={centerText ? 'xs' : 'xs'}
                 color="primary.500"
                 height="fit-content"
