@@ -3,6 +3,7 @@ import StreakImage from './StreakImage';
 import StreakImageContainer from './StreakImageContainer';
 import { AchievementState, StreakImageSize } from '../types';
 import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_unfinished.svg';
+import ExampleStreakFinished from '../../../assets/images/achievements/example_streak_finished.svg';
 
 <Meta title="Achievements/Streak/StreakImage" component={StreakImage} />
 
@@ -17,11 +18,11 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
 # StreakImage Record Mobile
 
 <Story name="Streak Record Mobile Image" width="150px">
-    <StreakImageContainer streak={27} image={ExampleStreakUnfinished} alternativeText="27 day streak" isRecord isMobile size={StreakImageSize.SMALL} />
+    <StreakImageContainer streak={27} image={ExampleStreakFinished} alternativeText="27 day streak" isRecord isMobile size={StreakImageSize.SMALL} />
 </Story>
 
 # StreakImage Record Large
 
 <Story name="Streak Record Image" width="150px">
-    <StreakImageContainer streak={27} image={ExampleStreakUnfinished} alternativeText="27 day streak" isRecord isMobile isLarge size={StreakImageSize.LARGE} />
+    <StreakImageContainer streak={27} image={ExampleStreakFinished} alternativeText="27 day streak" isRecord isMobile isLarge size={StreakImageSize.LARGE} />
 </Story>

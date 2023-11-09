@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, PresenceTransition, useBreakpointValue } from 'native-base';
+import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import { AchievementType, ActionTypes, ShineSize } from '../types';
 import { useTranslation, Trans } from 'react-i18next';
@@ -8,7 +8,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 
 type StreakCardProps = {
     streak: number;
-    record: number;
+    record?: number;
     title: string;
     actionDescription: string;
     image: string;
@@ -31,7 +31,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
             space={2}
         >
             <VStack alignItems="center" width="90px">
-                {streak === record && (
+                {(!record || streak === record) && (
                     <VStack zIndex={1} position="absolute" width="90px" height="100%" alignItems="center" justifyContent="center">
                         <NewAchievementShine size={ShineSize.XSMALL} />
                     </VStack>
@@ -46,7 +46,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
                         alternativeText={alternativeText}
                         achievementType={AchievementType.STREAK}
                         streak={streak}
-                        isRecord={streak === record}
+                        isRecord={!record || streak === record}
                         isMobile
                     />
                 </PresenceTransition>
@@ -56,10 +56,14 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
                 <Text color="white" fontSize="xs">
                     <Trans>{t('achievement.streak.card.info', { streak })}</Trans>
                 </Text>
-                {streak === record ? (
-                    <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} isColorized />
-                ) : (
-                    <IndicatorBar maxSteps={record} currentStep={streak} />
+                {record && (
+                    <Box>
+                        {streak === record ? (
+                            <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} isColorized />
+                        ) : (
+                            <IndicatorBar maxSteps={record} currentStep={streak} />
+                        )}
+                    </Box>
                 )}
             </VStack>
         </HStack>
