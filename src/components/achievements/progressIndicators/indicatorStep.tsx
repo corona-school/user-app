@@ -1,4 +1,4 @@
-import { Box, Text, VStack } from 'native-base';
+import { Text, VStack } from 'native-base';
 import Check from '../../../assets/icons/icon_check.svg';
 import Theme from '../../../Theme';
 import { AchievementState } from '../types';
@@ -13,11 +13,11 @@ type IndicatorStepProps = {
 };
 
 const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, description, achievementState, isActive, isInactive }) => {
-    const offsetPerStep = 100 / maxSteps;
-    const offset = offsetPerStep * (step + 1) - offsetPerStep / 2;
+    const offsetPerStep = 100 / (maxSteps - 1);
+    const offset = offsetPerStep * step;
     const textColor = achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900];
     return (
-        <Box position={'absolute'} left={`${offset}%`} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+        <VStack width="0" position={'absolute'} left={`${offset}%`} display={'flex'} alignItems={'center'}>
             <VStack
                 alignItems="center"
                 justifyContent="center"
@@ -27,7 +27,7 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
                 backgroundColor={achievementState !== AchievementState.COMPLETED && isInactive ? 'gray.100' : 'primary.500'}
                 outlineStyle="solid"
                 outlineColor="rgba(0, 169, 145, 0.2)"
-                outlineWidth="3px"
+                outlineWidth={isInactive ? '0' : '3px'}
             >
                 {achievementState !== AchievementState.COMPLETED && (isActive || isInactive) ? (
                     <Text fontSize={'xs'} color={isInactive ? Theme.colors.gray[500] : Theme.colors.white}>
@@ -37,10 +37,18 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
                     <Check />
                 )}
             </VStack>
-            <Text position={'absolute'} fontSize={'xs'} textAlign={'center'} top={'32px'} width={`calc(600px / ${maxSteps})`} color={textColor}>
+            <Text
+                position={'absolute'}
+                fontSize={'xs'}
+                textAlign={'center'}
+                top={'32px'}
+                width={`calc(600px / ${maxSteps})`}
+                maxWidth={'150px'}
+                color={textColor}
+            >
                 {description}
             </Text>
-        </Box>
+        </VStack>
     );
 };
 
