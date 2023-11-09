@@ -16,7 +16,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
     const relativeSize = initialSize * size;
     const thresholdY = -(size * 50);
     const maxPositionY = size * 100;
-    const intervalSpeed = size * 10;
+    const intervalSpeed = size * 5;
 
     const [flicker, setFlicker] = useState(1);
     const [positionY, setPositionY] = useState(positionTop);
@@ -27,9 +27,9 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
 
     useInterval(() => {
         if (scaleUp) {
-            setFlicker((prevSize) => prevSize - 0.01);
+            setFlicker((prevSize) => prevSize - 0.01 * size);
         } else {
-            setFlicker((prevSize) => prevSize + 0.01);
+            setFlicker((prevSize) => prevSize + 0.01 * size);
         }
         setCount((prevCount) => prevCount + 1);
 
