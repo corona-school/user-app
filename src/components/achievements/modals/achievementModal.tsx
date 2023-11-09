@@ -214,7 +214,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         )}
                     </VStack>
                     {achievementState !== AchievementState.COMPLETED ? (
-                        <Stack width="100%" flexDirection={isMobile || isTablet ? 'column' : 'row'} space="8px">
+                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outline" onPress={() => setShowModal(false)}>
                                 <Text color={Theme.colors.primary[500]}>{t('achievement.modal.close')}</Text>
                             </Button>
@@ -226,7 +226,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Button>
                         </Stack>
                     ) : (
-                        <Stack width="100%" flexDirection={isMobile || isTablet ? 'column' : 'row'} space="8px">
+                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outlinelight">
                                 <Text color={Theme.colors.primary[500]}>{t('achievement.modal.achievements')}</Text>
                             </Button>
