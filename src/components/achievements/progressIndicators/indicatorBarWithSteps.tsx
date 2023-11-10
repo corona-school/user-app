@@ -34,7 +34,7 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
                     maxSteps={steps.length}
                     description={step.description}
                     isActive={step.isActive}
-                    isInactive={currentStep ? index > currentStep : false}
+                    isInactive={typeof currentStep === 'number' ? index > currentStep : true}
                     achievementState={achievementState}
                 />
             ))}

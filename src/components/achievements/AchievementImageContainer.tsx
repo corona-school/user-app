@@ -3,7 +3,7 @@ import CompletePolaroid from './polaroid/CompletePolaroid';
 import EmptyPolaroidField from './polaroid/EmptyPolaroidField';
 import { AchievementType, StreakImageSize } from './types';
 import StreakImageContainer from './streak/StreakImageContainer';
-import { getPolaroidImageSize, getPuzzleSize, getPuzzleBorderRadius } from './helpers/achievement-image-helper';
+import { getPolaroidImageSize, getPuzzleSize, getPuzzleBorderRadius } from './helpers/Achievement-image-helper';
 
 type AchievementImageContainerProps = {
     image: string | undefined;
@@ -46,7 +46,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         case AchievementType.STREAK:
             if (!streak || !image) return null;
             return (
-                <VStack marginLeft={isMobile || isTablet ? 0 : '40px'} alignItems="center" width={isMobile ? '100%' : '142px'}>
+                <VStack alignItems="center" width={isMobile ? '100%' : '142px'}>
                     <StreakImageContainer
                         streak={streak}
                         image={image}

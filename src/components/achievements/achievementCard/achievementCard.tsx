@@ -5,7 +5,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/Achievement-image-helper';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
@@ -65,7 +65,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         ? 'flex-start'
                         : achievementType === AchievementType.SEQUENTIAL
                         ? 'space-between'
-                        : 'flex-end'
+                        : isMobile
+                        ? 'flex-end'
+                        : 'center'
                 }
                 width={isMobile ? '100%' : '280px'}
                 height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
@@ -111,15 +113,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             {title}
                         </Text>
                     </Stack>
-                    <VStack space={isMobile ? '0' : 'sm'} width="100%">
-                        {!isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />
-                        )}
-                        {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
-                        {isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile={isMobile} />
-                        )}
-                    </VStack>
+                    {achievementState !== AchievementState.COMPLETED && (
+                        <VStack space={isMobile ? '0' : 'sm'} width="100%">
+                            {!isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
+                            {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
+                            {isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
+                        </VStack>
+                    )}
                 </VStack>
             </Stack>
         </Box>

@@ -16,6 +16,7 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
     const offsetPerStep = 100 / (maxSteps - 1);
     const offset = offsetPerStep * step;
     const textColor = achievementState === AchievementState.COMPLETED ? Theme.colors.white : Theme.colors.primary[900];
+    console.log(step, maxSteps, description, achievementState, isActive, isInactive);
     return (
         <VStack width="0" position={'absolute'} left={`${offset}%`} display={'flex'} alignItems={'center'}>
             <VStack
