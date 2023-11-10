@@ -53,6 +53,8 @@ type Achievement = {
     name: string;
     subtitle: string;
     description: string;
+    image: string;
+    alternativeText: string;
     achievedAt: string;
     achievedText: string;
     actionType: ActionTypes;

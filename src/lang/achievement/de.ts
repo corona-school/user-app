@@ -26,6 +26,9 @@ const achievement = {
             active: 'Angefangene Erfolge',
             inactive: 'Weitere Erfolge',
         },
+        streak: {
+            headline: 'Streaks',
+        },
     },
 };
 
