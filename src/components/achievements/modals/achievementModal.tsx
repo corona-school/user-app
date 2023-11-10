@@ -1,5 +1,4 @@
 import { Box, Button, HStack, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import Theme from '../../../Theme';
 import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
@@ -10,7 +9,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
-import { getShineSize, getPolaroidImageSize } from '../helpers/Achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;
@@ -158,7 +157,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                 {newAchievement ? (
                                                     <AchievementBadge isInline />
                                                 ) : (
-                                                    <Text color={Theme.colors.primary[500]} textAlign="center">
+                                                    <Text color="primary.500" textAlign="center">
                                                         {actionDescription}
                                                     </Text>
                                                 )}
@@ -211,7 +210,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         <ArrowGreen />
                                     </Box>
                                 )}
-                                <Text fontSize={'14px'} color={Theme.colors.primary[500]}>
+                                <Text fontSize={'14px'} color="primary.500">
                                     {actionDescription}
                                 </Text>
                             </HStack>
@@ -220,10 +219,10 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                     {achievementState !== AchievementState.COMPLETED ? (
                         <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outline" onPress={() => setShowModal(false)}>
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.close')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
                             <Button flex={1} variant="outline">
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.achievements')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid">
                                 <Text>{buttonText}</Text>
@@ -232,7 +231,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                     ) : (
                         <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outlinelight">
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.achievements')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid" onPress={() => setShowModal(false)}>
                                 <Text>{t('achievement.modal.close')}</Text>

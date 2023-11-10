@@ -5,7 +5,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize, getPolaroidImageSize } from '../helpers/Achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
@@ -64,7 +64,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         : isMobile
                         ? 'flex-start'
                         : achievementType === AchievementType.SEQUENTIAL
-                        ? 'space-between'
+                        ? 'center'
                         : isMobile
                         ? 'flex-end'
                         : 'center'

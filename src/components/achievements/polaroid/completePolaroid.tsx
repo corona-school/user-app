@@ -1,6 +1,6 @@
 import { Box, Image, VStack } from 'native-base';
 import { PolaroidImageSize } from '../types';
-import { getPolaroidBorderRadius, getPolaroidOffset } from '../helpers/Achievement-image-helper';
+import { getPolaroidBorderRadius, getPolaroidOffset } from '../helpers/achievement-image-helper';
 
 type CompletePolaroidProps = {
     image: string;

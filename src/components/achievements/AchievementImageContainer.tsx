@@ -3,7 +3,7 @@ import CompletePolaroid from './polaroid/CompletePolaroid';
 import EmptyPolaroidField from './polaroid/EmptyPolaroidField';
 import { AchievementType, StreakImageSize } from './types';
 import StreakImageContainer from './streak/StreakImageContainer';
-import { getPolaroidImageSize, getPuzzleSize, getPuzzleBorderRadius } from './helpers/Achievement-image-helper';
+import { getPolaroidImageSize, getPuzzleSize, getPuzzleBorderRadius } from './helpers/achievement-image-helper';
 
 type AchievementImageContainerProps = {
     image: string | undefined;
