@@ -140,7 +140,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                             <Row flexWrap="wrap" width="100%">
                                 {languages.map(
                                     (subject, index) =>
-                                        !selections.find((sel) => sel === subject.label) && (
+                                        !selections.find((sel) => sel === subject.key) && (
                                             <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
                                                 <IconTagList
                                                     initial={false}
@@ -148,8 +148,6 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                                                     text={subject.label}
                                                     onPress={() => {
                                                         setSelections((prev) => [...prev, subject.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)
-                                                        if (!selections.find((sel) => sel === subject.label)) {
-                                                        }
                                                     }}
                                                 />
                                             </Column>
