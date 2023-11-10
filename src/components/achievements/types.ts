@@ -24,7 +24,7 @@ enum PuzzleImageSize {
 }
 
 enum PolaroidImageSize {
-    SMALL = '72px',
+    SMALL = '62px',
     MEDIUM = '136px',
     LARGE = '210px',
 }
