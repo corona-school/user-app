@@ -1,0 +1,27 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import StreakImage from './StreakImage';
+import StreakImageContainer from './StreakImageContainer';
+import { AchievementState, StreakImageSize } from '../types';
+import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_unfinished.svg';
+
+<Meta title="Achievements/Streak/StreakImage" component={StreakImage} />
+
+# StreakImage
+
+-   The StreakImage represents the current streak record for of achievements that are of this type.
+
+<Story name="Streak Image" width="150px">
+    <StreakImage streak={27} image={ExampleStreakUnfinished} alternativeText="27 day streak" size={StreakImageSize.LARGE} />
+</Story>
+
+# StreakImage Record Mobile
+
+<Story name="Streak Record Mobile Image" width="150px">
+    <StreakImageContainer streak={27} image={ExampleStreakUnfinished} alternativeText="27 day streak" isRecord isMobile size={StreakImageSize.SMALL} />
+</Story>
+
+# StreakImage Record Large
+
+<Story name="Streak Record Image" width="150px">
+    <StreakImageContainer streak={27} image={ExampleStreakUnfinished} alternativeText="27 day streak" isRecord isMobile isLarge size={StreakImageSize.LARGE} />
+</Story>

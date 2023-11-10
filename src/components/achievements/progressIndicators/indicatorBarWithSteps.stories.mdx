@@ -1,0 +1,87 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import IndicatorBarWithSteps from './IndicatorBarWithSteps';
+import { AchievementState } from '../types';
+
+<Meta title="Achievements/ProgressIndicators/IndicatorBarWithSteps" component={IndicatorBarWithSteps} />
+
+# IndicatorBarWithSteps
+
+-   The Indicator Bar With Steps is used to display the current progress and step of achievements.
+
+# IndicatorBarWithSteps Inactive
+
+<Story name="Indicator Bar With Steps Inactive">
+    <IndicatorBarWithSteps
+        maxSteps={4}
+        steps={[
+            {
+                description: 'Step 1',
+                isActive: false,
+            },
+            {
+                description: 'Step 2',
+                isActive: false,
+            },
+            {
+                description: 'Step 3',
+                isActive: false,
+            },
+            {
+                description: 'Step 4',
+                isActive: false,
+            },
+        ]}
+        achievementState={AchievementState.INACTIVE}
+    />
+</Story>
+
+<Story name="Indicator Bar With Steps">
+    <IndicatorBarWithSteps
+        maxSteps={4}
+        steps={[
+            {
+                description: 'Step 1',
+                isActive: false,
+            },
+            {
+                description: 'Step 2',
+                isActive: false,
+            },
+            {
+                description: 'Step 3',
+                isActive: true,
+            },
+            {
+                description: 'Step 4',
+                isActive: false,
+            },
+        ]}
+    />
+</Story>
+
+# IndicatorBarWithSteps Completed
+
+<Story name="Indicator Bar With Steps Completed">
+    <IndicatorBarWithSteps
+        maxSteps={4}
+        steps={[
+            {
+                description: 'Step 1',
+                isActive: false,
+            },
+            {
+                description: 'Step 2',
+                isActive: false,
+            },
+            {
+                description: 'Step 3',
+                isActive: false,
+            },
+            {
+                description: 'Step 4',
+                isActive: false,
+            },
+        ]}
+        achievementState={AchievementState.COMPLETED}
+    />
+</Story>

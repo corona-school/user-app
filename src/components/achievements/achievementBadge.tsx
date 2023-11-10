@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 type AchievementBadgeProps = {
     isMobile?: boolean;
+    isInline?: boolean;
 };
 
-const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile }) => {
+const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile, isInline }) => {
     const { t } = useTranslation();
     return (
         <Badge
@@ -20,6 +21,10 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isMobile }) => {
                 shadowOpacity: 0.25,
                 shadowOffset: { width: 0, height: 2 },
                 shadowRadius: 4,
+                position: `${isInline ? 'relative' : 'absolute'}`,
+                top: `${!isInline && '-15px'}`,
+                left: `${!isInline && (isMobile ? 'auto' : '15px')}`,
+                right: `${!isInline && (isMobile ? '15px' : 'auto')}`,
             }}
         >
             <Text fontSize="xs" color="primary.900" bold>

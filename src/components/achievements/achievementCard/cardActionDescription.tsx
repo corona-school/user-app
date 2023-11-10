@@ -1,5 +1,5 @@
 import { Box, HStack, Text } from 'native-base';
-import { ActionTypes } from './AchievementCard';
+import { ActionTypes } from '../types';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
@@ -38,7 +38,7 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
     return (
         <HStack alignItems="center" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
             {actionType && (
-                <Box width="12px" height="12px" position="relative">
+                <Box width="8px" height="8px" position="relative">
                     {icon}
                 </Box>
             )}

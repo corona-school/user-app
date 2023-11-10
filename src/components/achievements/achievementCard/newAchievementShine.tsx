@@ -1,3 +1,4 @@
+import { Box } from 'native-base';
 import AnimatedShine, { AnimatedShineProps } from './AnimatedShine';
 
 type NewAchievementShineProps = {
@@ -43,18 +44,9 @@ const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ isMobile }) =
     const shineElements = Array.from({ length: 7 }, (_, index) => <AnimatedShine key={index} props={getShineProps(index).props} isMobile={isMobile} />);
 
     return (
-        <div
-            style={{
-                zIndex: 1,
-                position: 'absolute',
-                height: 'inherit',
-                width: 'inherit',
-                backgroundColor: 'transparent',
-                transform: isMobile ? 'translateX(-48px)' : 'none',
-            }}
-        >
+        <Box zIndex={1} position="absolute" height="inherit" width="inherit" backgroundColor="transparent" left={isMobile ? '-48px' : 'none'}>
             {shineElements}
-        </div>
+        </Box>
     );
 };
 
