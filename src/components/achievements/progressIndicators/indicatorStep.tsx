@@ -21,11 +21,11 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
             height="fit-content"
             position="absolute"
             justifyContent="center"
-            left={`${offset}%`}
+            left={`calc(${offset}% - 13px)`}
             display="flex"
             alignItems="center"
-            borderColor="rgba(0, 169, 145, 0.2)"
-            borderWidth={isActive ? '3px' : '0px'}
+            borderColor={isActive ? 'rgba(0, 169, 145, 0.2)' : 'transparent'}
+            borderWidth="3px"
             borderRadius="50%"
         >
             <VStack
