@@ -3,7 +3,7 @@ import { Box, Text, VStack } from 'native-base';
 import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_unfinished.svg';
 import { useTranslation } from 'react-i18next';
 import { StreakImageSize } from '../types';
-import { getStreakFontSize, getStreakImageSize, getStreakTextOffset } from './streak-image-helper';
+import { getStreakFontSize, getStreakImageSize, getStreakTextOffset } from './Streak-image-helper';
 
 type StreakImageProps = {
     streak: number;

@@ -20,6 +20,13 @@ const achievement = {
             info: 'Du warst bei <strong>{{streak}} Terminen</strong> in Folge pünktlich!',
         },
     },
+    progress: {
+        state: {
+            completed: 'Erhaltene Erfolge',
+            active: 'Angefangene Erfolge',
+            inactive: 'Weitere Erfolge',
+        },
+    },
 };
 
 export default achievement;

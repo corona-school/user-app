@@ -49,4 +49,20 @@ enum ShineOffset {
     LARGE = 0.8,
 }
 
+type Achievement = {
+    name: string;
+    subtitle: string;
+    description: string;
+    achievedAt: string;
+    achievedText: string;
+    actionType: ActionTypes;
+    achievementType: AchievementType;
+    achievementState: AchievementState;
+    maxSteps: number;
+    currentStep: number;
+    newAchievement?: boolean;
+};
+
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
+
+export type { Achievement };
