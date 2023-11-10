@@ -46,7 +46,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         case AchievementType.STREAK:
             if (!streak || !image) return null;
             return (
-                <VStack marginLeft={isMobile || isTablet ? 0 : '40px'} alignItems="center" width={isMobile ? '100%' : '142px'}>
+                <VStack alignItems="center" width={isMobile ? '100%' : '142px'}>
                     <StreakImageContainer
                         streak={streak}
                         image={image}
@@ -57,7 +57,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
                 </VStack>
             );
         case AchievementType.SEQUENTIAL:
-            const borderWidth = getPuzzleSize(isMobile, isTablet);
+            const borderWidth = getPuzzleSize(isMobile, isTablet, isLarge);
             return (
                 <Box width={borderWidth} height={borderWidth} borderRadius={getPuzzleBorderRadius(borderWidth)} overflow={'hidden'}>
                     <Image src={image} alt={alternativeText} width="100%" height="100%" />

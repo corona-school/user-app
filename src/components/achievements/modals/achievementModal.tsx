@@ -1,5 +1,4 @@
 import { Box, Button, HStack, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import Theme from '../../../Theme';
 import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
@@ -97,7 +96,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             padding={isMobile || isTablet ? '16px' : '32px'}
                             marginBottom={isMobile || isTablet ? 0 : 3}
                         >
-                            <Box top={isMobile || isTablet ? '20px' : '0'}>
+                            <VStack
+                                top={isMobile || isTablet ? '20px' : '0'}
+                                left={achievementType === AchievementType.STREAK && !isMobile && !isTablet ? '40px' : 0}
+                                alignItems="center"
+                            >
                                 <AchievementImageContainer
                                     image={achievementType === AchievementType.TIERED && achievementState !== AchievementState.COMPLETED ? undefined : image}
                                     alternativeText={alternativeText || ''}
@@ -113,7 +116,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         <NewAchievementShine size={getShineSize(isMobile, isTablet)} />
                                     </Box>
                                 )}
-                            </Box>
+                            </VStack>
                             <VStack
                                 width={isMobile || isTablet ? '100%' : '473px'}
                                 space={3}
@@ -154,7 +157,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                 {newAchievement ? (
                                                     <AchievementBadge isInline />
                                                 ) : (
-                                                    <Text color={Theme.colors.primary[500]} textAlign="center">
+                                                    <Text color="primary.500" textAlign="center">
                                                         {actionDescription}
                                                     </Text>
                                                 )}
@@ -207,28 +210,28 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         <ArrowGreen />
                                     </Box>
                                 )}
-                                <Text fontSize={'14px'} color={Theme.colors.primary[500]}>
+                                <Text fontSize={'14px'} color="primary.500">
                                     {actionDescription}
                                 </Text>
                             </HStack>
                         )}
                     </VStack>
                     {achievementState !== AchievementState.COMPLETED ? (
-                        <Stack width="100%" flexDirection={isMobile || isTablet ? 'column' : 'row'} space="8px">
+                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outline" onPress={() => setShowModal(false)}>
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.close')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
                             <Button flex={1} variant="outline">
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.achievements')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid">
                                 <Text>{buttonText}</Text>
                             </Button>
                         </Stack>
                     ) : (
-                        <Stack width="100%" flexDirection={isMobile || isTablet ? 'column' : 'row'} space="8px">
+                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
                             <Button flex={1} variant="outlinelight">
-                                <Text color={Theme.colors.primary[500]}>{t('achievement.modal.achievements')}</Text>
+                                <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid" onPress={() => setShowModal(false)}>
                                 <Text>{t('achievement.modal.close')}</Text>

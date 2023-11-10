@@ -62,10 +62,10 @@ function getShineOffset(size: ShineSize): ShineOffset {
     }
 }
 
-const getPuzzleSize = (isMobile?: boolean, isTablet?: boolean) => {
-    if (isMobile && !isTablet) {
+const getPuzzleSize = (isMobile?: boolean, isTablet?: boolean, isLarge?: boolean) => {
+    if (isMobile && !isLarge) {
         return PuzzleImageSize.SMALL;
-    } else if (isTablet && !isMobile) {
+    } else if (isTablet || (isMobile && isLarge)) {
         return PuzzleImageSize.MEDIUM;
     } else if (!isTablet && !isMobile) {
         return PuzzleImageSize.LARGE;
