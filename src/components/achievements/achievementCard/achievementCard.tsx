@@ -38,7 +38,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 }) => {
     const isMobile = useBreakpointValue({
         base: true,
-        lg: false,
+        md: false,
     });
     return (
         <Box width="fit-content" height="fit-content" borderRadius="8px">
