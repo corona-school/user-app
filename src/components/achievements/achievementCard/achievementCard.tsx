@@ -5,7 +5,8 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/Achievement-image-helper';
+import InnerShadow from '../cosmetics/InnerShadow';
 
 type AchievementCardProps = {
     achievementState: AchievementState;
@@ -41,20 +42,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     });
     return (
         <Box width="fit-content" height="fit-content" borderRadius="8px">
-            {!isMobile && (
-                // This is the shadow of desktop cards. They have to be implemented with a div, since native base shadow prop has no inset option.
-                <div
-                    style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        borderRadius: '8px',
-                        boxShadow: `${
-                            achievementState === AchievementState.INACTIVE ? '0px 0px 15px 0px #0000000D inset' : '0px 2px 4px 0px rgba(0, 0, 0, 0.25)'
-                        }`,
-                    }}
-                />
-            )}
+            {!isMobile && <InnerShadow deviation={7.5} />}
             <Stack
                 direction={isMobile ? 'row' : 'column'}
                 alignItems="center"
@@ -64,8 +52,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         : isMobile
                         ? 'flex-start'
                         : achievementType === AchievementType.SEQUENTIAL
-                        ? 'space-between'
-                        : 'flex-end'
+                        ? 'center'
+                        : isMobile
+                        ? 'flex-end'
+                        : 'center'
                 }
                 width={isMobile ? '100%' : '280px'}
                 height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
@@ -77,7 +67,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
                     achievementState === AchievementState.ACTIVE
-                        ? 'white'
+                        ? 'gray.100'
                         : achievementState === AchievementState.COMPLETED
                         ? 'primary.900'
                         : 'primary.transparent'
@@ -107,19 +97,25 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         <Text fontSize="xs" color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}>
                             {subtitle}
                         </Text>
-                        <Text fontSize="md" color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'} bold>
+                        <Text
+                            width="216px"
+                            fontSize="md"
+                            color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
+                            bold
+                            numberOfLines={1}
+                            overflow="hidden"
+                            textAlign="center"
+                        >
                             {title}
                         </Text>
                     </Stack>
-                    <VStack space={isMobile ? '0' : 'sm'} width="100%">
-                        {!isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />
-                        )}
-                        {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
-                        {isMobile && maxSteps && achievementState !== AchievementState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile={isMobile} />
-                        )}
-                    </VStack>
+                    {achievementState !== AchievementState.COMPLETED && (
+                        <VStack space={isMobile ? '0' : 'sm'} width="100%">
+                            {!isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
+                            {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
+                            {isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
+                        </VStack>
+                    )}
                 </VStack>
             </Stack>
         </Box>

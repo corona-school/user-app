@@ -3,6 +3,8 @@ import AchievementModal from './AchievementModal';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
 import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_unfinished.svg';
+import SequenceExample01 from '../../../assets/images/achievements/Sequence_Example_01.png';
+import SequenceExample04 from '../../../assets/images/achievements/Sequence_Example_04.png';
 
 <Meta title="Achievements/AchievementModal" component={AchievementModal} />
 
@@ -22,7 +24,6 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
         currentStep={4}
         actionDescription="Alle Schritte abgeschlossen"
         image={KanufahrtDschungel}
-        achievementState={AchievementState.ACTIVE}
     />
 </Story>
 
@@ -55,7 +56,6 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
         achievementType={AchievementType.TIERED}
         maxSteps={6}
         currentStep={6}
-        buttonText="Kontakt aufnehmen"
         image={KanufahrtDschungel}
         newAchievement
     />
@@ -73,17 +73,20 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
+                isActive: true,
             },
             {
                 description: 'Dieser Text muss noch geliefert werden!',
-                isActive: true,
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
             },
             {
                 description: 'Dieser Text muss noch geliefert werden!',
             },
         ]}
         buttonText="Kontakt aufnehmen"
-        image={KanufahrtDschungel}
+        image={SequenceExample01}
     />
 </Story>
 
@@ -102,7 +105,9 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
             },
             {
                 description: 'Dieser Text muss noch geliefert werden!',
-                isActive: true,
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
             },
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -110,7 +115,7 @@ import ExampleStreakUnfinished from '../../../assets/images/achievements/example
         ]}
         buttonText="Kontakt aufnehmen"
         achievedText="Du hast alle Schritte abgeschlossen!"
-        image={KanufahrtDschungel}
+        image={SequenceExample04}
         newAchievement
     />
 </Story>
