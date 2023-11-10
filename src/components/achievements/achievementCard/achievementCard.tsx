@@ -42,7 +42,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     });
     return (
         <Box width="fit-content" height="fit-content" borderRadius="8px">
-            {!isMobile && <InnerShadow deviation={7.5} />}
+            {!isMobile && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} />}
             <Stack
                 direction={isMobile ? 'row' : 'column'}
                 alignItems="center"
@@ -66,7 +66,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 paddingX={isMobile ? '16px' : '32px'}
                 borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
-                    achievementState === AchievementState.ACTIVE ? 'white' : achievementState === AchievementState.COMPLETED ? 'primary.900' : 'gray.50'
+                    achievementState === AchievementState.ACTIVE
+                        ? 'white'
+                        : achievementState === AchievementState.COMPLETED
+                        ? 'primary.900'
+                        : isMobile
+                        ? 'white'
+                        : 'gray.50'
                 }
             >
                 {newAchievement && achievementState === AchievementState.COMPLETED && (

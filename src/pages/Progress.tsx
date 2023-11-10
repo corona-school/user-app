@@ -24,13 +24,13 @@ const Progress: React.FC<ProgressProps> = ({ achievements }) => {
     return (
         <VStack>
             {states.map((key) => (
-                <VStack space={2}>
+                <VStack space={8}>
                     <Text fontSize="md" fontWeight="bold">
                         {key === AchievementState.COMPLETED && `${t('achievement.progress.state.completed')}`}
                         {key === AchievementState.ACTIVE && `${t('achievement.progress.state.active')}`}
                         {key === AchievementState.INACTIVE && `${t('achievement.progress.state.inactive')}`}
                     </Text>
-                    <HStack overflow="hidden" flexWrap="wrap" space={10} paddingTop={key === AchievementState.COMPLETED ? 50 : 0}>
+                    <HStack overflow="hidden" flexWrap="wrap" space={10} paddingTop={key === AchievementState.COMPLETED ? 4 : 0}>
                         {sortedAchievements[key].map((achievement) => (
                             <Box marginBottom={10}>
                                 <AchievementCard

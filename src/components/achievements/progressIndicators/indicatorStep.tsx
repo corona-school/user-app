@@ -31,9 +31,8 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
             <VStack
                 alignItems="center"
                 justifyContent="center"
-                width="fit-content"
-                height="fit-content"
-                left={isActive ? '-3px' : '0px'}
+                width="20px"
+                height="20px"
                 borderColor="rgba(0, 169, 145, 0.2)"
                 borderWidth={isActive ? '3px' : '0px'}
                 borderRadius="50%"
