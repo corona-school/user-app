@@ -92,15 +92,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             {title}
                         </Text>
                     </Stack>
-                    <VStack space={isMobile ? '0' : 'sm'} width="100%">
-                        {!isMobile && maxSteps && cardState !== CardState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />
-                        )}
-                        {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
-                        {isMobile && maxSteps && cardState !== CardState.COMPLETED && maxSteps && (
-                            <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />
-                        )}
-                    </VStack>
+                    {cardState !== CardState.COMPLETED && (
+                        <VStack space={isMobile ? '0' : 'sm'} width="100%">
+                            {!isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
+                            {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
+                            {isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
+                        </VStack>
+                    )}
                 </VStack>
             </Stack>
         </Box>
