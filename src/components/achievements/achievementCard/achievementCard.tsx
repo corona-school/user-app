@@ -66,11 +66,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 paddingX={isMobile ? '16px' : '32px'}
                 borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
                 backgroundColor={
-                    achievementState === AchievementState.ACTIVE
-                        ? 'gray.100'
-                        : achievementState === AchievementState.COMPLETED
-                        ? 'primary.900'
-                        : 'primary.transparent'
+                    achievementState === AchievementState.ACTIVE ? 'white' : achievementState === AchievementState.COMPLETED ? 'primary.900' : 'gray.50'
                 }
             >
                 {newAchievement && achievementState === AchievementState.COMPLETED && (

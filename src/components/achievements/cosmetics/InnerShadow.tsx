@@ -6,7 +6,7 @@ type InnerShadowProps = {
 
 const InnerShadow: React.FC<InnerShadowProps> = ({ deviation }) => {
     return (
-        <Box width="100%" height="100%" position="absolute">
+        <Box width="100%" height="100%" position="absolute" zIndex={1}>
             <svg width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g width="100%" height="100%" filter="url(#filter0_i_1111_19771)">
                     <rect width="100%" height="100%" rx="8" fill="#D9D9D9" fill-opacity="0.15" />
