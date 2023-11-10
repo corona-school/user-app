@@ -1,6 +1,6 @@
 import { Box, Image, VStack } from 'native-base';
 import { PolaroidImageSize } from '../types';
-import { getPolaroidBorderRadius, getPolaroidOffset } from '../helpers/Achievement-image-helper';
+import { getPolaroidBorderRadius, getPolaroidOffset } from '../helpers/achievement-image-helper';
 
 type CompletePolaroidProps = {
     image: string;
@@ -19,7 +19,7 @@ const CompletePolaroid: React.FC<CompletePolaroidProps> = ({ image, alternativeT
             height={`calc(${size} * 1.35)`}
             borderRadius={getPolaroidBorderRadius(size)}
             paddingTop={`calc(${getPolaroidBorderRadius(size)} * 2)`}
-            top={size === PolaroidImageSize.SMALL ? 0 : getPolaroidOffset(size)}
+            top={getPolaroidOffset(size)}
         >
             <Box width={`calc(${size} * 0.9)`} height={`calc((${size} * 1.35)* 0.75)`} borderRadius={getPolaroidBorderRadius(size)} overflow={'hidden'}>
                 <Image width="100%" height="100%" src={image} alt={alternativeText} />

@@ -9,7 +9,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
-import { getShineSize, getPolaroidImageSize } from '../helpers/Achievement-image-helper';
+import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;

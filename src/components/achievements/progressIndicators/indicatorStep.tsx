@@ -33,8 +33,6 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
                 justifyContent="center"
                 width="20px"
                 height="20px"
-                borderColor="rgba(0, 169, 145, 0.2)"
-                borderWidth={isActive ? '3px' : '0px'}
                 borderRadius="50%"
                 backgroundColor={achievementState !== AchievementState.COMPLETED && isInactive ? 'gray.100' : 'primary.500'}
             >
