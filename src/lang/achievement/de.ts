@@ -16,6 +16,9 @@ const achievement = {
     },
     streak: {
         count: '{{streak}}x',
+        card: {
+            info: 'Du warst bei <strong>{{streak}} Terminen</strong> in Folge pünktlich!',
+        },
     },
 };
 
