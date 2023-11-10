@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority } = useContext(RequestMatchContext);
     const { t } = useTranslation();
     const [showSecond, setShowSecond] = useState<boolean>(false);
     const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
@@ -23,6 +23,7 @@ const German: React.FC = () => {
         } else {
             removeSubject(DAZ);
             setCurrentIndex(3);
+            setSkippedSubjectPriority(false);
         }
     }, [isNativeLanguage, setCurrentIndex]);
 
@@ -33,15 +34,18 @@ const German: React.FC = () => {
                 for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(5); // 5 = details, skip subjects, priorities
+                setSkippedSubjectPriority(true);
                 break;
             case '2-4':
                 setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(3); // 3 = subjects
+                setSkippedSubjectPriority(false);
                 break;
             case '>4':
             default:
                 removeSubject(DAZ);
                 setCurrentIndex(3);
+                setSkippedSubjectPriority(false);
                 break;
         }
     }, [matchRequest, learningSince, setCurrentIndex, setSubject]);
