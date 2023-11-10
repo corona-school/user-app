@@ -1,0 +1,65 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import AchievementCard, { CardState, ActionTypes } from './AchievementCard';
+import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
+
+<Meta title="Achievements/AchievementCard" component={AchievementCard} />
+
+-   An Achievement Card is a card that displays the user's achievements based on their successes.
+
+# Achievement Completed Card
+
+<Story name="Achievement Completed Card">
+    <AchievementCard
+        cardState={CardState.COMPLETED}
+        image={KanufahrtDschungel}
+        alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
+        newAchievement={false}
+        subtitle="Gitarre für Anfänger"
+        title="1. durchgeführter Termin"
+    />
+</Story>
+
+# Achievement New Completed Card
+
+<Story name="New Achievement Completed Card">
+    <AchievementCard
+        cardState={CardState.COMPLETED}
+        image={KanufahrtDschungel}
+        alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
+        newAchievement
+        subtitle="Gitarre für Anfänger"
+        title="1. durchgeführter Termin"
+    />
+</Story>
+
+# Achievement Active Card
+
+<Story name="Achievement Active Card">
+    <AchievementCard
+        cardState={CardState.ACTIVE}
+        actionType={ActionTypes.WAIT}
+        image={KanufahrtDschungel}
+        alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
+        subtitle="Gitarre für Anfänger"
+        title="1. durchgeführter Termin"
+        maxSteps={3}
+        currentStep={1}
+        actionDescription="Kurs in Prüfung"
+    />
+</Story>
+
+# Achievement Inactive Card
+
+<Story name="Achievement Inactive Card">
+    <AchievementCard
+        cardState={CardState.INACTIVE}
+        image={KanufahrtDschungel}
+        alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
+        newAchievement
+        subtitle="Gitarre für Anfänger"
+        title="1. durchgeführter Termin"
+        maxSteps={5}
+        currentStep={0}
+        actionDescription="Schließe alle Lektionen ab, um diesen Erfolg zu erhalten"
+    />
+</Story>
