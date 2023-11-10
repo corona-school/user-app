@@ -252,6 +252,8 @@
             "st": "Sachsen-Anhalt",
             "sh": "Schleswig-Holstein",
             "th": "Thüringen",
+            "at": "Österreich",
+            "ch": "Schweiz",
             "other": "Andere"
         },
         "schooltypes": {
