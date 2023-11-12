@@ -5,6 +5,9 @@
     "clock": "Uhr",
     "time": "Uhrzeit",
     "duration": "Dauer",
+    "further_details": "Weitere Details",
+    "copy_text": "Text kopieren",
+    "copied_text": "Text kopiert!",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -1858,5 +1861,21 @@
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
         "dissolve_reason": "Grund: {{reason}}"
+    },
+    "certificate": {
+        "request": {
+            "title": "Bescheinigung beantragen",
+            "subtitle": "Wir möchten uns für dein Engagement bei Lern-Fair bedanken! Für deine Tätigkeit stellen wir dir gerne eine Bescheinigung aus.",
+            "subtitle2": "Eine vollständige Lern Fair Bescheinigung besteht aus den folgenden zwei Teilen:",
+            "part1_title": "1. Bestätigung durch Lern-Fair",
+            "part1_1": "Registrieren auf unserer Plattform",
+            "part1_2": "Durchlaufen eines Eignungsgesprächs",
+            "part1_3": "Vermittlung an eine:n Schüler:in",
+            "part2_title": "2. Bestätigung durch Schüler:in",
+            "part2_1": "Ausmaß der Tätigkeit",
+            "part2_2": "Inhalte der Tätigkeit",
+            "procedure": "Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde. Ab dann findest du die Bescheinigung auch in deinem Profil.",
+            "apply": "Vollständige Bescheinigung beantragen"
+        }
     }
 }
