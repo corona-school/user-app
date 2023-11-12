@@ -2,7 +2,6 @@ import { DateTime } from 'luxon';
 import { Box, HStack, VStack, Text, Pressable, useBreakpointValue, Image, useTheme, Row } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
-import { Course, Course_Tag, Lecture, Subcourse } from '../../gql/graphql';
 import { SubcourseForScreening } from '../../types';
 
 export function SubcourseCard({ subcourse, onClick }: { subcourse: SubcourseForScreening; onClick?: () => void }) {

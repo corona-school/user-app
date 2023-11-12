@@ -10,7 +10,7 @@ import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { InstructorScreeningCard } from './InstructorScreeningCard';
 import { TutorScreeningCard } from './TutorScreeningCard';
-import { SubcourseCard } from '../course/SubCourseCard';
+import { SubcourseCard } from '../course/SubcourseCard';
 import { useState } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
