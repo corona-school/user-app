@@ -1868,7 +1868,33 @@
             "not_a_number": "Du musst hier eine Zahl eingeben.",
             "hours_per_week": "Stunden die Woche (durchschnittlich)",
             "hours_total": "Stunden insgesamt",
-            "next_pupil": "Nächste:r Schüler:in"
+            "next_pupil": "Nächste:r Schüler:in",
+            "activities": {
+                "title": "Tätigkeit",
+                "subtitle": "Wähle aus, mit welchen Tätigkeiten du deine Lernpartner:innen unterstützt hast",
+                "preparation": "Vorbereitung, Planung und Gestaltung von Unterrichtsstunden",
+                "visualization": "Bearbeitung und Vermittlung von Unterrichtsinhalten",
+                "visualization_digital": "Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten",
+                "repetition": "Vertiefung und Wiederholung von Unterrichtsinhalten",
+                "homework": "Gemeinsame Bearbeitung von Übungs- und Hausaufgaben",
+                "correct_homework": "Korrektur von Übungs- und Hausaufgaben",
+                "prepare_exam": "Digitale Unterstützung bei der Prüfungsvorbereitung",
+                "help_learning": "Digitale Unterstützung beim Lernen",
+                "other": "Sonstiges"
+            },
+            "submit": "Jetzt anfordern"
+        },
+        "download": {
+            "state": "Status",
+            "state_manual": "Manuell",
+            "state_awaiting": "Warten auf Bestätigung",
+            "state_approved": "Bestätigt",
+            "loading": "Dein Zertifikat wird heruntergeladen",
+            "error": "Beim Download ist ein Fehler aufgetreten",
+            "download": "Herunterladen",
+            "download_certificate": "Bescheinigung herunterladen",
+            "german_version": "Deutsche Version",
+            "english_version": "Englische Version"
         }
     },
     "issueReporter": {
@@ -1876,5 +1902,20 @@
         "subtitle": "Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere den Support",
         "contactSupport": "Support kontaktieren",
         "continue": "Trotzdem fortfahren"
+    },
+    "verify_email": {
+        "title": "E-Mail Verifizierung",
+        "success": "Dein Account wurde aktiviert!",
+        "proceed": "Fortfahren",
+        "invalid": "Token ungültig"
+    },
+    "set_password": {
+        "title": "Passwort neu setzen",
+        "change": "Passwort ändern",
+        "error": "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+        "success_title": "Passwort erfolgreich geändert",
+        "success_subtitle": "Dein Passwort wurde erfolgreich geändert. Du kannst dich nun mit dem neuen Passwort einloggen",
+        "failure_title": "Fehler: Passwort nicht geändert",
+        "failure_subtitle": "Dein Passwort konnte leider nicht geändert werden. Bitte versuche es erneut. Sollte der Fehler weiterhin auftreten, schicke eine neue E-Mail oder wende dich bitte an den Support."
     }
 }
