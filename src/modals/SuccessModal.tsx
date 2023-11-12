@@ -2,7 +2,6 @@ import { useTheme, Box, Heading, Row, Text, Button } from 'native-base';
 import LFParty from '../assets/icons/lernfair/lf-party.svg';
 import { useTranslation } from 'react-i18next';
 import useModal from '../hooks/useModal';
-import single from '../lang/single/de';
 
 // Usage:
 // const { show } = useModal();
