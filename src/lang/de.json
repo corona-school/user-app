@@ -9,6 +9,7 @@
     "copy_text": "Text kopieren",
     "copied_text": "Text kopiert!",
     "select": "Auswählen",
+    "change": "Ändern",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -330,6 +331,13 @@
                 "yes": "Ja, die Punkte treffen zu",
                 "no": "Nein, die Punkte treffen nicht zu"
             }
+        },
+        "barrier_failed": {
+            "title": "Registrierung fehlgeschlagen!",
+            "subtitle": "Da Du unsere Teilnahmebedingungen abgelehnt hast, können wir Dir leider keine Registrierung ermöglichen.",
+            "subtitle2": "Erst nach dem Bestätigen unserer Teilnahmebedingungen können wir Dir gerne die Registrierung gewähren.",
+            "retry": "Registrierung erneut beginnen",
+            "alternatives": "Weitere Infos erhalten"
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
@@ -1287,6 +1295,26 @@
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
                 }
+            },
+            "student": {
+                "subjects": {
+                    "title": "Fachauswahl",
+                    "subtitle": "In welchen Fächern möchtest du unterstützen?"
+                },
+                "profile": {
+                    "title": "Profil aktualisieren",
+                    "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
+                    "personalData": "Persönliche Daten"
+                },
+                "success": {
+                    "title": "Geschafft, du bist ein:e Held:in!",
+                    "subtitle": "Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!",
+                    "subtitle2": "Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden."
+                },
+                "grades": {
+                    "title": "Jahrgangsstufen",
+                    "question": "In welchen Jahrgangsstufen möchtest du helfen?"
+                }
             }
         },
         "group": {
@@ -1432,6 +1460,7 @@
         "uploadImage": "Foto hochladen",
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
         "selectPlaceHolderDuration": "Dauer auswählen",
+        "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",

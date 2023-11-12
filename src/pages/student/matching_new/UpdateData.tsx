@@ -78,12 +78,9 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
     return (
         <>
             <VStack space={space['0.5']}>
-                <Heading fontSize="2xl">Profil aktualisieren</Heading>
-                <Text>
-                    Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen
-                    und zu vervollständigen.
-                </Text>
-                <Heading>Persönliche Daten</Heading>
+                <Heading fontSize="2xl">{t('matching.wizard.student.profile.title')}</Heading>
+                <Text></Text>
+                <Heading>{t('matching.wizard.student.profile.personalData')}</Heading>
 
                 <ProfileSettingItem
                     title={t('profile.State.label')}
@@ -121,7 +118,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
             >
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Ändern</Modal.Header>
+                    <Modal.Header>{t('change')}</Modal.Header>
                     <Modal.Body>
                         <Row flexWrap="wrap">
                             {listItems.map((item: { label: string; key: string }) => (
@@ -138,7 +135,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                     </Modal.Body>
                     <Modal.Footer>
                         <Button isDisabled={data === modalSelection || isLoading} onPress={changeData}>
-                            Ändern
+                            {t('change')}
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>
