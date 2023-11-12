@@ -8,6 +8,7 @@
     "further_details": "Weitere Details",
     "copy_text": "Text kopieren",
     "copied_text": "Text kopiert!",
+    "select": "Auswählen",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -15,6 +16,7 @@
         "deleteAppointment": "Termin löschen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
+        "loadedPastAppointments": "Vergangene Termine geladen",
         "courseNotPublished": "Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.",
         "noNextAppointment": "Kein nächster Termin.",
         "toast": {
@@ -66,6 +68,7 @@
             "addAppointmentButton": "Termin(e) hinzufügen",
             "backButton": "zur vorherigen Seite",
             "lecture": "Lektion",
+            "add_lecture": "Lektion #{{position}} hinzufügen",
             "titleLabel": "Titel",
             "dateLabel": "Datum",
             "timeLabel": "Uhrzeit",
@@ -1612,30 +1615,8 @@
         "cancel": {
             "header": "Kurs absagen",
             "description": "Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?"
-        }
-    },
-    "archive": {
-        "appointments": {
-            "header": "Alle Termine",
-            "title": "Alle Termine",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Termine im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
         },
-        "course": {
-            "header": "Alle Kurse",
-            "title": "Alle Kurse",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Kurse im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-        },
-        "learningpartner": {
-            "header": "Alle Lernpartner:innen",
-            "title": "Alle Lernpartner:innen",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Lernpartner:innen im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-        }
+        "select_participant": "Teilnehmer:in auswählen"
     },
     "notification": {
         "timedifference": {
@@ -1876,6 +1857,24 @@
             "part2_2": "Inhalte der Tätigkeit",
             "procedure": "Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde. Ab dann findest du die Bescheinigung auch in deinem Profil.",
             "apply": "Vollständige Bescheinigung beantragen"
+        },
+        "request_for_match": {
+            "title": "Angaben",
+            "subtitle": "Gebe für jede:n Schüler:in an, in welchem Unfang du sie:ihn unterstützt hast.",
+            "step": "Schüler:in {{current}} von {{total}}",
+            "from": "vom Zeitraum",
+            "to": "bis zum",
+            "continues": "Unterstützung dauert noch an",
+            "not_a_number": "Du musst hier eine Zahl eingeben.",
+            "hours_per_week": "Stunden die Woche (durchschnittlich)",
+            "hours_total": "Stunden insgesamt",
+            "next_pupil": "Nächste:r Schüler:in"
         }
+    },
+    "issueReporter": {
+        "title": "Ein Fehler ist aufgetreten",
+        "subtitle": "Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere den Support",
+        "contactSupport": "Support kontaktieren",
+        "continue": "Trotzdem fortfahren"
     }
 }
