@@ -5,9 +5,9 @@ import { TutorScreening } from '../../types';
 export function TutorScreeningCard({ screening }: { screening: TutorScreening }) {
     const { t } = useTranslation();
 
-    let message = `Entscheidung: ${new Date(screening!.createdAt).toLocaleDateString()}`;
+    let message = `${t('screening.decision')}: ${new Date(screening!.createdAt).toLocaleDateString()}`;
 
-    message += `\nScreener: ${screening!.screener.firstname} ${screening.screener.lastname}`;
+    message += `\n${t('screening.screener')}: ${screening!.screener.firstname} ${screening.screener.lastname}`;
     message += `\n\n${screening.comment ?? ''}`;
 
     return (
@@ -15,7 +15,7 @@ export function TutorScreeningCard({ screening }: { screening: TutorScreening })
             noMargin
             icon={screening.success ? 'yes' : 'no'}
             background={screening.success ? 'primary.900' : 'orange.500'}
-            title={screening.success ? `Erfolgreiches Helferscreening` : `Abgelehntes Helferscreening`}
+            title={screening.success ? t('screening.successful_tutor_screening') : t('screening.rejected_tutor_screening')}
             message={message}
         />
     );

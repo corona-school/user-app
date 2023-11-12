@@ -5,6 +5,7 @@
     "clock": "Uhr",
     "time": "Uhrzeit",
     "duration": "Dauer",
+    "helper": "Helfer:in",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -1845,6 +1846,7 @@
         "confirm_success": "Willst du {{firstname}} {{lastname}} annehmen?",
         "confirm_rejection": "Willst du {{firstname}} {{lastname}} wirklich ablehnen?",
         "confirm_deactivate": "Willst du {{firstname}} {{lastname}} wirklich deaktivieren?",
+        "matches": "Zuordnungen",
         "active_matches": "Aktive Zuordnungen",
         "dissolved_matches": "Aufgelöste Zuordnungen",
         "previous_screenings": "Vorherige Screenings",
@@ -1857,6 +1859,23 @@
         "has_matches": "Hat Lernpaar",
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
-        "dissolve_reason": "Grund: {{reason}}"
+        "dissolve_reason": "Grund: {{reason}}",
+        "login_as_user": "Als Nutzer:in anmelden",
+        "screen_as_instructor": "Als Kursleiter:in screenen",
+        "screen_as_tutor": "Für 1:1 screenen",
+        "courses": "Kurse",
+        "successful_instructor_screening": "Erfolgreiches Kursleiterscreening",
+        "rejected_instructor_screening": "Abgelehntes Kursleiterscreening",
+        "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
+        "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
+        "decision": "Entscheidung",
+        "screener": "Screener:in"
+    },
+    "job_status": {
+        "Employee": "Berufstätig",
+        "Misc": "Sonstiges",
+        "Pupil": "Schüler:in",
+        "Retiree": "Rentner:in",
+        "Student": "Student:in"
     }
 }

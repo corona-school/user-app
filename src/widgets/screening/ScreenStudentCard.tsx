@@ -45,7 +45,18 @@ function CreateScreeningModal({
     }
 
     return (
-        <Modal isOpen={open} onClose={onClose} backgroundColor="white" width="90%" height="90%" maxWidth="900px" marginX="auto" top="5%" borderRadius="20px">
+        <Modal
+            isOpen={open}
+            onClose={onClose}
+            backgroundColor="white"
+            width="90%"
+            height="90%"
+            maxWidth="900px"
+            marginX="auto"
+            top="5%"
+            borderRadius="20px"
+            overflowY="scroll"
+        >
             <VStack height="90%" paddingTop="5%" textAlign="left" width="90%" display="flex">
                 <Heading>{title}</Heading>
                 <Heading paddingTop="20px" fontSize="15px">
@@ -167,7 +178,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
-                Helfer:in / {student.firstname} {student.lastname}
+                {t('helper')} / {student.firstname} {student.lastname}
             </Heading>
             <HStack>
                 <LanguageTagList languages={student.languages} />
@@ -185,7 +196,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                             await impersonate();
                         }}
                     >
-                        Als Nutzer anmelden
+                        {t('screening.login_as_user')}
                     </Button>
                 </HStack>
             )}
@@ -201,7 +212,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 open={openScreenAsInstructor}
                 screen={screenAsInstructor}
                 student={student}
-                title="Als Kursleiter screenen"
+                title={t('screening.screen_as_instructor')}
             />
 
             <CreateScreeningModal
@@ -210,12 +221,14 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 open={openScreenAsTutor}
                 screen={screenAsTutor}
                 student={student}
-                title="Für 1:1 screenen"
+                title={t('screening.screen_as_tutor')}
             />
 
             {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
 
-            <Heading fontSize="20px">Vorherige Screenings</Heading>
+            {((student.tutorScreenings?.length ?? 0) > 0 || (student.instructorScreenings?.length ?? 0) > 0) && (
+                <Heading fontSize="20px">{t('screening.previous_screenings')}</Heading>
+            )}
             {student.tutorScreenings?.map((tutorScreening) => (
                 <TutorScreeningCard screening={tutorScreening} />
             ))}
@@ -225,7 +238,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
             {student.matches.length > 0 && (
                 <>
-                    <Heading fontSize="20px">Matches</Heading>
+                    <Heading fontSize="20px">{t('screening.matches')}</Heading>
                     <HStack space={space['1']} display="flex" flexWrap="wrap">
                         {student.matches.map((match) => (
                             <MatchPupilCard match={match} />
@@ -236,7 +249,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
             {student.subcoursesInstructing.length > 0 && (
                 <>
-                    <Heading fontSize="20px">Kurse</Heading>
+                    <Heading fontSize="20px">{t('screening.courses')}</Heading>
                     <VStack space={space['1']} display="flex" flexWrap="wrap">
                         {student.subcoursesInstructing.map((subcourse) => (
                             <SubcourseCard subcourse={subcourse} />
