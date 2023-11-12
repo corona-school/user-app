@@ -1,7 +1,8 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
-import useApollo from './hooks/useApollo';
+import useApollo, { ExtendedApolloContext, LFApollo } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
+import { useApolloClient } from '@apollo/client';
 
 export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
@@ -52,3 +53,28 @@ export const SwitchUserType = ({
         else return <Navigate to="/start" state={{ from: location }} replace />;
     }
 };
+
+// -------- Mocks for Storybook & Tests -----------------
+
+export function MockScreener({ children }: React.PropsWithChildren<{}>) {
+    const context: LFApollo = {
+        client: useApolloClient() as any,
+        logout: () => Promise.resolve(),
+        onLogin: () => {},
+        loginWithPassword: () => Promise.resolve({}),
+        refreshUser: () => {},
+        sessionState: 'logged-in',
+        roles: ['SCREENER', 'TRUSTED_SCREENER'],
+        user: {
+            email: 'test+screener@lern-fair.de',
+            firstname: 'Max',
+            lastname: 'Musterscreener',
+            screener: { id: 1 },
+            userID: 'screener/1',
+            pupil: null,
+            student: null,
+        },
+    };
+
+    return <ExtendedApolloContext.Provider value={context} children={children} />;
+}

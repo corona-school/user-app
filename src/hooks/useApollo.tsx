@@ -63,7 +63,7 @@ export type LFApollo = {
 
 // Unlike the standard ApolloProvider, this context carries additional properties
 //  for managing the session
-const ExtendedApolloContext = createContext<LFApollo | null>(null);
+export const ExtendedApolloContext = createContext<LFApollo | null>(null);
 
 export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const context = useApolloInternal();
