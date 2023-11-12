@@ -6,7 +6,7 @@ export function TextInputWithSuggestions({ value, setValue, suggestions }: { val
 
     return (
         <VStack>
-            <TextInput style={{ backgroundColor: colors.primary['100'], fontSize: '15px', padding: space['2'] }} value={value} onChangeText={setValue} />
+            <TextInput style={{ backgroundColor: colors.primary['100'], fontSize: 15, padding: space['2'] }} value={value} onChangeText={setValue} />
             <HStack paddingTop={space['1']} space={space['1']} display="flex" flexWrap="wrap">
                 {suggestions.map((it) => (
                     <Pressable onPress={() => setValue(it)}>
