@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { TextInputWithSuggestions } from './TextInputWithSuggestions';
+
+<Meta title="Basic/TextInputWithSuggestions" component={TextInputWithSuggestions} />
+
+# TextInputWithSuggestions
+
+Like a `TextInput`, but shows a list of suggestions underneath that can be used to quick fill the text field:
+
+<Story name="TextInputWithSuggestions">
+    {() => {
+        const [value, setValue] = React.useState('');
+        return <TextInputWithSuggestions value={value} setValue={setValue} suggestions={['A suggestion', 'And another one']} />;
+    }}
+</Story>
