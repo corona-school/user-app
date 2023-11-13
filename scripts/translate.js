@@ -1,11 +1,12 @@
 const { readdirSync, readFileSync, writeFileSync } = require("fs");
+const { execSync } = require("child_process");
 const process = require("process");
 const path = require("path");
 
 console.log("+---- Lern-Fair User App Translation -----+");
 
 const command = process.argv[2]?.trim() ?? "";
-if (!["", "check", "translate"].includes(command))
+if (!["", "check", "translate", "export", "import"].includes(command))
     throw new Error(`Unknown Command '${command}'`)
 
 // -------- File Handling -------------
@@ -18,6 +19,27 @@ function writeLanguage(filename, translationTree) {
     const json = JSON.stringify(translationTree, null, 2);
     writeFileSync(path.resolve(__dirname, "../src/lang/", filename), json);
     console.log("Written language", filename);
+}
+
+// Gets the language file at the point in time when the current HEAD was branched off from main:
+// - A -- (B) -- C -- D  = main
+//    \    \
+//     E -- F -- G = HEAD, feat/something       
+//
+// That way, we can always check out some branch that added new translations, i.e. "feat/something" after it was merged
+// And export a diff of all the translations that were added, and can then work with all the changes that were made in there
+function readLanguageFromMain(filename) {
+    try {
+        const mergeBase = execSync(`git merge-base -a main HEAD`, { encoding: "utf-8"}).trim();
+        const mergeBaseName = execSync(`git show --oneline --no-patch ${mergeBase}`, { encoding: "utf-8"});
+        console.log(`Found merge base between main and HEAD:\n${mergeBaseName}`)
+
+        const file = execSync(`git show ${mergeBase}:src/lang/${filename}`, { encoding: "utf-8" });
+        return JSON.parse(file);
+    } catch(error) {
+        console.log("Failed to load language file from main");
+        return null
+    }
 }
 
 // ------- Tree Traversal --------------
@@ -42,6 +64,19 @@ function findMissingPaths(sourceTree, targetTree, path = []) {
         ...Object.keys(sourceTree)
             .filter(key => typeof sourceTree[key] === "object")
             .flatMap(key => findMissingPaths(sourceTree[key], targetTree[key] ?? {}, path.concat(key)))
+    ];
+}
+
+// Like findMissingPaths, but finds paths that were changed:
+function findChangedPaths(sourceTree, targetTree, path = []) {
+    return [
+        ...Object.keys(sourceTree)
+            .filter(key => key in targetTree && typeof sourceTree[key] === "string" && sourceTree[key] !== targetTree[key])
+            .map(key => ({ type: typeof sourceTree[key], path: [...path, key] })),
+
+        ...Object.keys(sourceTree)
+            .filter(key => typeof sourceTree[key] === "object" && targetTree[key])
+            .flatMap(key => findMissingPaths(sourceTree[key], targetTree[key], path.concat(key)))
     ];
 }
 
@@ -98,6 +133,73 @@ function removeObsoletePaths(tree, paths) {
     }
 }
 
+// -------------- Import / Export ---------------
+function exportDiffIntoFile(primaryLanguageTree, languageTree, paths, filename) {
+    let result = "";
+
+    for (const path of paths) {
+        let original = lookup(primaryLanguageTree, path);
+        let translated = lookup(languageTree, path);
+
+        // Escape
+        original = original.replaceAll("\n", "\\n");
+        translated = translated.replaceAll("\n", "\\n");
+        
+        result += `# ${path.join(".")}\n`;
+        result += `${original}\n`;
+        result += `${translated}\n`;
+        result += `\n\n`;
+    }
+
+
+    writeFileSync(path.resolve(__dirname, "../src/lang/", filename), result, { encoding: "utf-8"});
+}
+
+function importDiffFromFile(filename, primaryLanguageTree, languageTree) {
+    let lines = readFileSync(path.resolve(__dirname, "../src/lang/", filename), { encoding: "utf-8"}).split("\n");
+    lines = lines.filter(it => it.trim() !== "");
+
+    if (lines.length % 3 !== 0) {
+        throw new Error(`Invalid input file, number of non empty lines must be a multiple of three`);
+    }
+
+    for (let index = 0; index + 2 < lines.length; index += 3) {
+        const pathLine = lines[index];
+        let original = lines[index + 1];
+        let translated = lines[index + 2];
+
+        if (!pathLine.includes("#")) {
+            throw new Error(`Invalid input file in line ${index}: ${pathLine}`);
+        }
+
+        const path = pathLine.slice(2).split(".");
+
+        // Unescape
+        original = original.replaceAll("\\n", "\n");
+        translated = translated.replaceAll("\\n", "\n");
+        
+        const currentOriginal = lookup(primaryLanguageTree, path);
+        if (currentOriginal !== original) {
+            throw new Error(`Translation failed for ${path.join(".")}: "${original}" was translated, but "${currentOriginal}" is present currently`);
+        }
+
+        const currentTranslated = lookup(languageTree, path);
+        if (currentTranslated === translated) continue;
+
+        console.log(`# ${path.join(".")}\n ${original}\n - ${currentTranslated}\n + ${translated}`);
+
+        const root = lookup(languageTree, path.slice(0, -1));
+        root[ path[path.length - 1] ] = translated;
+    }
+
+}
+
+// Gets the current short hash of the latest commit, great way to identify a certain point in the (git) history
+function getCurrentCommit() {
+    return execSync("git rev-parse --short HEAD", { encoding: "utf-8" }).trim();
+}
+
+// -------------- Translation -------------------
 
 async function translate(texts, fromLanguage, toLanguage) {
     if (!texts.length) {
@@ -232,7 +334,9 @@ const primaryLanguageTree = readLanguage("de.json");
 let missmatches = false;
 
 for (const languageFile of languageFiles) {
-    const language = languageFile.split(".")[0];
+    const [language, extension] = languageFile.split(".");
+    if (extension !== "json") continue;
+
     console.log(`\n\n+----- ${languageFile}`);
     const languageTree = readLanguage(languageFile);
 
@@ -262,6 +366,42 @@ for (const languageFile of languageFiles) {
         } else {
             console.info(`de.json matches ${languageFile}`);
         }
+    }
+
+    if (command === "export") {
+        if (missingObjects.length || missingStrings.length || obsoletePaths.length) {
+            throw new Error(`Cannot export when the language files are not in sync`);
+        }
+
+        const onMain = readLanguageFromMain(languageFile) ?? {};
+        const addedPaths = findMissingPaths(languageTree, onMain).filter(it => it.type === "string");
+        const changedPaths = findChangedPaths(languageTree, onMain);
+        const toExport = [...addedPaths, ...changedPaths].map(it => it.path);
+
+        if (!toExport.length) {
+            console.log("no changes to export between HEAD and main");
+            continue;
+        }
+
+        const outFilename = `de_to_${language}.${getCurrentCommit()}.txt`;
+        exportDiffIntoFile(primaryLanguageTree, languageTree, toExport, outFilename);
+        console.log(`${toExport.length} changes exported to ${outFilename}`);
+    }
+
+    if (command === "import") {
+        const importFiles = languageFiles.filter(name => name.endsWith("txt") && name.startsWith(`de_to_${language}`));
+        if (!importFiles.length) {
+            console.log("Found no import file for " + language);
+        }
+
+        if (importFiles.length > 1) {
+            throw new Error(`Found multiple import files for ${language}`);
+        }
+
+        const importFile = importFiles[0];
+        console.log("importing " + importFile);
+        importDiffFromFile(importFile, primaryLanguageTree, languageTree);
+        writeLanguage(languageFile, languageTree);
     }
 }
 
