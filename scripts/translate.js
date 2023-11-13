@@ -186,6 +186,8 @@ function importDiffFromFile(filename, primaryLanguageTree, languageTree) {
         const currentTranslated = lookup(languageTree, path);
         if (currentTranslated === translated) continue;
 
+        checkTemplates(currentTranslated, translated);
+
         console.log(`# ${path.join(".")}\n ${original}\n - ${currentTranslated}\n + ${translated}`);
 
         const root = lookup(languageTree, path.slice(0, -1));
@@ -201,29 +203,79 @@ function getCurrentCommit() {
 
 // -------------- Translation -------------------
 
+function getTemplates(text) {
+    return [...text.matchAll(/\{\{([a-z]+)\}\}/ig)].map(it => it[1]);
+}
+
+function checkTemplates(expected, actual) {
+    const expectedTemplates = getTemplates(expected);
+    const actualTemplates = getTemplates(actual);
+
+    expectedTemplates.sort();
+    actualTemplates.sort();
+
+    if (expectedTemplates.length !== actualTemplates.length || expectedTemplates.some((it, i) => it !== actualTemplates[i])) {
+        throw new Error(`Expected templates: ${expectedTemplates.join(", ")}, got: ${actualTemplates.join(", ")}`);
+    }
+}
+
 async function translate(texts, fromLanguage, toLanguage) {
     if (!texts.length) {
         return [];
     }
 
+    const templatesPerText = [];
+    const escapedTexts = [];
+
+    for (let i = 0; i < texts.length; i++) {
+        let text = texts[i];
+        const templates = getTemplates(texts[i]);
+        templatesPerText.push(templates);
+
+        let escapedText = text;
+        for (const [index, template] of templates.entries()) {
+            escapedText = escapedText.replaceAll(`{{${template}}}`, `{{${index}}}`);
+        }
+
+        console.log(`escaped "${text}" to "${escapedText}"`);
+
+        escapedTexts[i] = escapedText;
+    }
+
     let results;
 
     if (process.env.WEGLOT_API_KEY)
-        results = await translateWithWeglot(texts, fromLanguage, toLanguage);
+        results = await translateWithWeglot(escapedTexts, fromLanguage, toLanguage);
     /* if (process.env.GOOGLE_API_KEY)
-        results = await translateWithGoogle(texts, fromLanguage, toLanguage);
+        results = await translateWithGoogle(escapedTexts, fromLanguage, toLanguage);
     if (process.env.DEEPL_API_KEY)
-        results = await translateWithDeepL(texts, fromLanguage, toLanguage); */
+        results = await translateWithDeepL(escapedTexts, fromLanguage, toLanguage); */
 
-    if (results) {
-        if (results.length !== texts.length) {
-            throw new Error(`Missing Translations, expected: ${texts.length} got ${results.length}`);
-        }
-
-        return results;
+    if (!results) {
+        throw new Error(`No Translator configured`);
     }
 
-    throw new Error(`No Translator configured`);
+    if (results.length !== texts.length) {
+        throw new Error(`Missing Translations, expected: ${texts.length} got ${results.length}`);
+    }
+
+    for (let i = 0; i < texts.length; i++) {
+        const text = texts[i];
+        let result = results[i];
+        const templates = templatesPerText[i];
+        
+        let unescapedResult = result;
+        for (const [index, template] of templates.entries()) {
+            unescapedResult = unescapedResult.replaceAll(`{{${index}}}`, `{{${template}}}`);
+        }
+
+        console.log(`unescaped "${result}" to "${unescapedResult}"`);
+        checkTemplates(text, unescapedResult);
+
+        results[i] = unescapedResult;
+    }
+
+    return results;
 }
 
 // ------------- Weglot API ---------------
