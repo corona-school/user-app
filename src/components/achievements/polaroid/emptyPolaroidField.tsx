@@ -1,5 +1,5 @@
-import { Box } from 'native-base';
-import Polaroid from '../../../assets/icons/icon_polaroid.svg';
+import { Box, PresenceTransition, useBreakpointValue } from 'native-base';
+import PolaroidDefault from '../../../assets/images/achievements/Polaroid_Default.svg';
 import { PolaroidImageSize } from '../types';
 
 type EmptyPolaroidFieldProps = {
@@ -7,9 +7,32 @@ type EmptyPolaroidFieldProps = {
 };
 
 const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ size }) => {
+    const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
+    const updatedSize = size === PolaroidImageSize.MEDIUM ? size : `calc(${size} * 0.85)`;
     return (
-        <Box width={size} height={`calc(${size} * 1.35)`} position="relative">
-            <Polaroid />
+        <Box width={updatedSize} height={`calc(${updatedSize} * 1.35)`} position="relative">
+            <Box position="absolute" width="100%">
+                <PresenceTransition
+                    initial={{
+                        rotate: '5deg',
+                    }}
+                >
+                    <Box shadow={shadow}>
+                        <PolaroidDefault />
+                    </Box>
+                </PresenceTransition>
+            </Box>
+            <Box position="absolute" width="100%">
+                <PresenceTransition
+                    initial={{
+                        rotate: '-5deg',
+                    }}
+                >
+                    <Box shadow={shadow}>
+                        <PolaroidDefault />
+                    </Box>
+                </PresenceTransition>
+            </Box>
         </Box>
     );
 };

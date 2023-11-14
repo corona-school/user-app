@@ -27,6 +27,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
     const breakpoint = useBreakpointValue({ base: breakpoints.base, md: breakpoints.md, lg: breakpoints.lg, xl: breakpoints.xl });
     const polaroidImageSize = getPolaroidImageSize(breakpoint, isLarge);
     const imageWrapperWidth = useBreakpointValue({ base: '100%', md: '142px' });
+    const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     switch (achievementType) {
         case AchievementType.TIERED:
             return (
@@ -60,7 +61,13 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         case AchievementType.SEQUENTIAL:
             const borderWidth = getPuzzleSize(breakpoint, isLarge);
             return (
-                <Box width={borderWidth} height={borderWidth} borderRadius={getPuzzleBorderRadius(borderWidth)} overflow={'hidden'}>
+                <Box
+                    width={borderWidth}
+                    height={borderWidth}
+                    borderRadius={getPuzzleBorderRadius(borderWidth)}
+                    overflow={'hidden'}
+                    shadow={achievementState === AchievementState.COMPLETED && shadow}
+                >
                     <Image src={image} alt={alternativeText} width="100%" height="100%" />
                 </Box>
             );

@@ -109,7 +109,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     backgroundColor={cardContainerBg}
                     borderRadius="8px"
                     height={collapsed[AchievementType.STREAK] ? '0' : 'fit-content'}
-                    overflowY={collapsed[AchievementType.STREAK] ? 'hidden' : 'unset'}
+                    overflowY="hidden"
                 >
                     {streaks.map((achievement) => (
                         <Stack marginTop={cardMargin}>
