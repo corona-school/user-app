@@ -6,11 +6,11 @@ import ProgressCollapsableHeadline from '../components/achievements/ProgressColl
 import { useMemo, useState } from 'react';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 
-type ProgressProps = {
+type AchievementProgressProps = {
     achievements: Achievement[];
 };
 
-const Progress: React.FC<ProgressProps> = ({ achievements }) => {
+const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements }) => {
     // Sortieren von Beispiel Daten: Wird entfernt, wenn die Daten von der API kommen
     const sortedAchievements: { [key in AchievementState]: Achievement[] } = {
         [AchievementState.COMPLETED]: [],
@@ -180,4 +180,4 @@ const Progress: React.FC<ProgressProps> = ({ achievements }) => {
     );
 };
 
-export default Progress;
+export default AchievementProgress;

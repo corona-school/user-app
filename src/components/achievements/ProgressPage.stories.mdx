@@ -1,13 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import Progress from '../../pages/Progress';
+import AchievementProgress from '../../pages/AchievementProgress';
 import { achievements } from './progress-page-test-data';
 
-<Meta title="Achievements/ProgressPage" component={Progress} />
+<Meta title="Achievements/AchievementProgressPage" component={AchievementProgress} />
 
-# Progress Page
+# Achievement Progress Page
 
--   The Progress Page shows all the achievements the user has earned and the progress they have made towards the next achievement.
+-   The Achievement Progress Page shows all the achievements the user has earned and the progress they have made towards the next achievement.
 
-<Story name="Progress Page">
-    <Progress achievements={achievements} />
+<Story name="Achievement Progress Page">
+    <AchievementProgress achievements={achievements} />
 </Story>

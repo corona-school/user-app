@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Link } from 'native-base';
+import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import { AchievementType, ActionTypes, ShineSize } from '../types';
 import { useTranslation, Trans } from 'react-i18next';
@@ -22,7 +22,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
     const width = useBreakpointValue({ base: '100%', md: '350px' });
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
     return (
-        <Link onPress={onClick}>
+        <Pressable onPress={onClick}>
             <HStack backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
                 <VStack alignItems="center" width="90px">
                     {(!record || streak === record) && (
@@ -62,7 +62,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
                     )}
                 </VStack>
             </HStack>
-        </Link>
+        </Pressable>
     );
 };
 

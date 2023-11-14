@@ -1,4 +1,4 @@
-import { Link, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
@@ -66,7 +66,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const indicatorFirst = useBreakpointValue({ base: false, md: true });
     const indicatorSecond = useBreakpointValue({ base: true, md: false });
     return (
-        <Link onPress={onClick}>
+        <Pressable onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center">
                 {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} />}
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
@@ -138,7 +138,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                     </VStack>
                 </Stack>
             </VStack>
-        </Link>
+        </Pressable>
     );
 };
 
