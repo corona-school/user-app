@@ -6,10 +6,9 @@ import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import { AchievementState, AchievementType } from '../types';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
-import { useState } from 'react';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
-import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize, breakpoints } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;
@@ -30,6 +29,7 @@ type AchievementModalProps = {
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
+    showModal?: boolean;
 };
 
 const AchievementModal: React.FC<AchievementModalProps> = ({
@@ -47,12 +47,48 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     alternativeText,
     achievementState,
     achievementType,
+    onClose,
+    showModal,
 }) => {
     const { t } = useTranslation();
-    const [showModal, setShowModal] = useState(true);
 
-    const isMobile = useBreakpointValue({ base: true, sm: true, md: false });
-    const isTablet = useBreakpointValue({ md: true, lg: false });
+    const justifyModalContent = useBreakpointValue({ base: 'normal', md: 'center' });
+    const alignModalItems = useBreakpointValue({ base: 'normal', md: 'center' });
+    const displayModalItems = useBreakpointValue({ base: 'flex', md: 'grid' });
+    const modalBodyWidth = useBreakpointValue({ base: '100%', lg: '820px' });
+    const modalBodyMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
+    const modalBodyHeight = useBreakpointValue({ base: '100vh', md: 'max-content', lg: '434px' });
+    const modalBodyBorderRadius = useBreakpointValue({ base: '0', md: '8px' });
+    const modalBodyOverflow = useBreakpointValue({ base: 'scroll', lg: 'visible' });
+    const modalBodyMarginTop = useBreakpointValue({ base: '0', md: '62px' });
+    const contentMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
+    const contentSpace = useBreakpointValue({ base: 0, lg: 3 });
+    const contentJustifyContent = useBreakpointValue({ base: 'normal', md: 'center', lg: 'space-between' });
+    const contentMaxHeight = useBreakpointValue({ base: 'fit-content', lg: '275px' });
+    const contentDirection = useBreakpointValue({ base: 'column', lg: 'row' });
+    const contentInnerSpace = useBreakpointValue({ base: '32px', lg: '0' });
+    const contentPadding = useBreakpointValue({ base: '16px', lg: '32px' });
+    const imageContainerOffset = useBreakpointValue({ base: { top: '20px', left: '0' }, lg: { top: '0', left: '40px' } });
+    const textBoxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
+    const textBoxMaxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
+    const textBoxHeight = useBreakpointValue({ base: 'auto', lg: '245px' });
+    const textBoxAlignItems = useBreakpointValue({ base: 'center', lg: 'normal' });
+    const showBadgeWithTitle = useBreakpointValue({ base: false, lg: true });
+    const modalNameFontSize = useBreakpointValue({ base: 'xl', lg: '4xl' });
+    const modalNameLineHeight = useBreakpointValue({ base: '26px', lg: '36px' });
+    const modalNameTextAlign = useBreakpointValue({ base: 'center', lg: 'left' });
+    const showDescriptionBeforeIndicator = useBreakpointValue({ base: false, lg: true });
+    const buttonAlignment = useBreakpointValue({ base: 'column', lg: 'row' });
+
+    const shineSize = useBreakpointValue({
+        base: getShineSize(breakpoints.base),
+        md: getShineSize(breakpoints.md),
+        lg: getShineSize(breakpoints.lg),
+    });
+    const polaroidImageSize = useBreakpointValue({
+        base: getPolaroidImageSize(breakpoints.base, true),
+        md: getPolaroidImageSize(breakpoints.md, true),
+    });
 
     const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
     const backgroundColor = achievementState === AchievementState.COMPLETED || achievementType === AchievementType.STREAK ? 'primary.900' : 'white';
@@ -60,71 +96,58 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     return (
         <Modal
             isOpen={showModal}
-            onClose={() => setShowModal(false)}
+            onClose={onClose}
             width="100vw"
             height="100vh"
-            justifyContent={isMobile ? 'normal' : 'center'}
-            alignItems={isMobile ? 'normal' : 'center'}
-            display={isMobile ? 'flex' : 'grid'}
+            justifyContent={justifyModalContent}
+            alignItems={alignModalItems}
+            display={displayModalItems}
         >
             <Modal.Body
-                width={isMobile || isTablet ? '100%' : '820px'}
-                maxWidth={isMobile || isTablet ? '550px' : '820px'}
-                height={isMobile ? '100vh' : isTablet ? 'max-content' : '434px'}
+                width={modalBodyWidth}
+                maxWidth={modalBodyMaxWidth}
+                height={modalBodyHeight}
                 backgroundColor={backgroundColor}
-                borderRadius={isMobile ? '0' : '8px'}
-                marginTop={achievementType === AchievementType.TIERED && achievementState === AchievementState.COMPLETED && !isMobile && !isTablet ? '62px' : 0}
-                overflow={isMobile || isTablet ? 'scroll' : 'visible'}
+                borderRadius={modalBodyBorderRadius}
+                marginTop={achievementType === AchievementType.TIERED && achievementState === AchievementState.COMPLETED && modalBodyMarginTop}
+                overflow={modalBodyOverflow}
             >
                 <Modal.CloseButton />
-                <VStack
-                    width="100%"
-                    maxWidth={isMobile || isTablet ? '550px' : '820px'}
-                    height="100%"
-                    space={isMobile || isTablet ? 0 : 3}
-                    justifyContent={isMobile ? 'normal' : isTablet ? 'center' : 'space-between'}
-                >
-                    <VStack width="100%" maxWidth={isMobile || isTablet ? '550px' : '820px'} height={isMobile || isTablet ? 'fit-content' : '275px'}>
+                <VStack width="100%" maxWidth={contentMaxWidth} height="100%" space={contentSpace} justifyContent={contentJustifyContent}>
+                    <VStack width="100%" maxWidth={modalBodyMaxWidth} height={contentMaxHeight}>
                         <Stack
                             width="100%"
-                            maxWidth={isMobile || isTablet ? '550px' : '820px'}
-                            height={isMobile || isTablet ? 'fit-content' : '275px'}
-                            direction={isMobile || isTablet ? 'column' : 'row'}
-                            space={isMobile || isTablet ? '32px' : 0}
+                            maxWidth={modalBodyMaxWidth}
+                            height={contentMaxHeight}
+                            direction={contentDirection}
+                            space={contentInnerSpace}
                             alignItems="center"
-                            justifyContent={isMobile ? 'normal' : isTablet ? 'center' : 'space-between'}
-                            padding={isMobile || isTablet ? '16px' : '32px'}
-                            marginBottom={isMobile || isTablet ? 0 : 3}
+                            justifyContent={contentJustifyContent}
+                            padding={contentPadding}
+                            marginBottom={contentSpace}
                         >
                             <VStack
-                                top={isMobile || isTablet ? '20px' : '0'}
-                                left={achievementType === AchievementType.STREAK && !isMobile && !isTablet ? '40px' : 0}
+                                top={imageContainerOffset.top}
+                                left={achievementType === AchievementType.STREAK && imageContainerOffset.left}
                                 alignItems="center"
                             >
                                 <AchievementImageContainer
                                     image={achievementType === AchievementType.TIERED && achievementState !== AchievementState.COMPLETED ? undefined : image}
                                     alternativeText={alternativeText || ''}
                                     achievementType={achievementType}
+                                    achievementState={achievementState}
                                     streak={steps ? steps.length : maxSteps}
                                     isRecord={maxSteps === currentStep}
-                                    isMobile={isMobile}
-                                    isTablet={isTablet}
                                     isLarge
                                 />
                                 {newAchievement && (
-                                    <Box position="absolute" width={getPolaroidImageSize(isMobile, isTablet, true)} height="100%">
-                                        <NewAchievementShine size={getShineSize(isMobile, isTablet)} />
+                                    <Box position="absolute" width={polaroidImageSize} height="100%">
+                                        <NewAchievementShine size={shineSize} />
                                     </Box>
                                 )}
                             </VStack>
-                            <VStack
-                                width={isMobile || isTablet ? '100%' : '473px'}
-                                space={3}
-                                maxWidth={isMobile || isTablet ? '100%' : '473px'}
-                                height={isMobile || isTablet ? 'auto' : '245px'}
-                                alignItems={isMobile || isTablet ? 'center' : 'normal'}
-                            >
-                                {isMobile || isTablet ? (
+                            <VStack width={textBoxWidth} space={3} maxWidth={textBoxMaxWidth} height={textBoxHeight} alignItems={textBoxAlignItems}>
+                                {!showBadgeWithTitle ? (
                                     <Text color={textColor} textAlign="center">
                                         {title}
                                     </Text>
@@ -135,21 +158,21 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     </HStack>
                                 )}
                                 <Text
-                                    fontSize={isMobile || isTablet ? 'xl' : '4xl'}
+                                    fontSize={modalNameFontSize}
                                     fontWeight="bold"
-                                    lineHeight={isMobile || isTablet ? '16px' : '36px'}
-                                    textAlign={isMobile || isTablet ? 'center' : 'left'}
+                                    lineHeight={modalNameLineHeight}
+                                    textAlign={modalNameTextAlign}
                                     color={textColor}
                                 >
                                     {name}
                                 </Text>
-                                {!isMobile && !isTablet && (
+                                {showDescriptionBeforeIndicator && (
                                     <Text color={textColor} numberOfLines={7}>
                                         {description}
                                     </Text>
                                 )}
                             </VStack>
-                            {(isMobile || isTablet) && (
+                            {!showDescriptionBeforeIndicator && (
                                 <VStack width="100%" alignItems="center" space="8px">
                                     <Box width="80%">
                                         {achievementState === AchievementState.COMPLETED ? (
@@ -165,7 +188,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         ) : (
                                             <Box width="100%">
                                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps ? (
-                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />
+                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText fullWidth />
                                                 ) : (
                                                     <Box width="100%">
                                                         {steps && (
@@ -173,9 +196,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                                 maxSteps={steps?.length || 0}
                                                                 currentStep={activeStep}
                                                                 achievementType={achievementType}
-                                                                isMobile={isMobile}
                                                                 largeText
                                                                 centerText
+                                                                fullWidth
                                                             />
                                                         )}
                                                     </Box>
@@ -189,7 +212,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 </VStack>
                             )}
                         </Stack>
-                        {!isMobile && !isTablet && (
+                        {showDescriptionBeforeIndicator && (
                             <Box>
                                 {achievementType === AchievementType.SEQUENTIAL && (
                                     <Box width="100%">
@@ -197,7 +220,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     </Box>
                                 )}
                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps && (
-                                    <Box width="100%">{<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} />}</Box>
+                                    <Box width="100%">
+                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth />}
+                                    </Box>
                                 )}
                             </Box>
                         )}
@@ -217,8 +242,8 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         )}
                     </VStack>
                     {achievementState !== AchievementState.COMPLETED ? (
-                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
-                            <Button flex={1} variant="outline" onPress={() => setShowModal(false)}>
+                        <Stack width="100%" direction={buttonAlignment} space={2}>
+                            <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
                             <Button flex={1} variant="outline">
@@ -229,11 +254,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Button>
                         </Stack>
                     ) : (
-                        <Stack width="100%" direction={isMobile || isTablet ? 'column' : 'row'} space={2}>
+                        <Stack width="100%" direction={buttonAlignment} space={2}>
                             <Button flex={1} variant="outlinelight">
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
-                            <Button flex={1} variant="solid" onPress={() => setShowModal(false)}>
+                            <Button flex={1} variant="solid" onPress={onClose}>
                                 <Text>{t('achievement.modal.close')}</Text>
                             </Button>
                         </Stack>

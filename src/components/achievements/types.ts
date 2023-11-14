@@ -19,8 +19,8 @@ enum AchievementState {
 
 enum PuzzleImageSize {
     SMALL = '62px',
-    MEDIUM = '136px',
-    LARGE = '184',
+    MEDIUM = '184px',
+    LARGE = '184px',
 }
 
 enum PolaroidImageSize {
@@ -60,9 +60,15 @@ type Achievement = {
     actionType: ActionTypes;
     achievementType: AchievementType;
     achievementState: AchievementState;
+    steps?: {
+        description: string;
+        isActive?: boolean;
+    }[];
     maxSteps: number;
     currentStep: number;
     newAchievement?: boolean;
+    actionDescription?: string;
+    buttonLabel?: string;
 };
 
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };

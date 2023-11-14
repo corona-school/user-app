@@ -37,7 +37,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
             setScaleUp((prevScaleUp) => !prevScaleUp);
             setCount(0);
         }
-    }, intervalSpeed * 5);
+    }, intervalSpeed);
 
     useInterval(() => {
         if (positionY > thresholdY) {
@@ -50,7 +50,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
         if (positionY < thresholdY / 3) {
             setOpacity((prevOpacity) => prevOpacity - 0.02);
         }
-    }, intervalSpeed);
+    }, intervalSpeed / 2);
 
     return (
         <Stack
@@ -71,7 +71,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
                     animate={{
                         translateY: positionY,
                         transition: {
-                            duration: 50,
+                            duration: intervalSpeed,
                         },
                     }}
                 >

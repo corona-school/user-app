@@ -1,11 +1,11 @@
-import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Link, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
 import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize, getPolaroidImageSize } from '../helpers/achievement-image-helper';
+import { getShineSize, getPolaroidImageSize, breakpoints } from '../helpers/achievement-image-helper';
 import InnerShadow from '../cosmetics/InnerShadow';
 
 type AchievementCardProps = {
@@ -20,7 +20,7 @@ type AchievementCardProps = {
     maxSteps?: number;
     currentStep?: number;
     actionDescription?: string;
-    isMobile?: boolean;
+    onClick?: () => void;
 };
 
 const AchievementCard: React.FC<AchievementCardProps> = ({
@@ -35,92 +35,110 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     maxSteps,
     currentStep,
     actionDescription,
+    onClick,
 }) => {
-    const isMobile = useBreakpointValue({
-        base: true,
-        md: false,
+    const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
+    const shineOffset = useBreakpointValue({ base: '15px', md: 'none' });
+    const showInnerShadow = useBreakpointValue({ base: false, md: true });
+    const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
+    const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
+    const justifyCardContentUnfinished = useBreakpointValue({
+        base: 'flex-start',
+        md: achievementType === AchievementType.SEQUENTIAL ? 'center' : justifyCardContentMobile,
     });
+    const cardSpacing = useBreakpointValue({ base: 0, md: 2 });
+    const width = useBreakpointValue({ base: '100%', md: '280px' });
+    const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 64px)', md: '100%' });
+    const textAlignment = useBreakpointValue({ base: 'left', md: 'center' });
+    const textContainerWidth = useBreakpointValue({ base: '100%', md: '214px' });
+    const cardHeight = useBreakpointValue({ base: '114px', md: achievementState === AchievementState.COMPLETED ? '300px' : '360px' });
+    const borderWidth = useBreakpointValue({ base: 'none', md: '1px' });
+    const paddingX = useBreakpointValue({ base: '16px', md: '32px' });
+    const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
+    const polaroidImageSize = useBreakpointValue({
+        base: { width: '64px', height: '84px' },
+        md: { width: getPolaroidImageSize(undefined, true), height: getPolaroidImageSize(undefined, true) },
+    });
+    const shineSize = useBreakpointValue({ base: getShineSize(breakpoints.base, true), md: getShineSize(breakpoints.md, true) });
+    const textSpace = useBreakpointValue({ base: 2, md: 5 });
+    const textPaddingLeft = useBreakpointValue({ base: '8px', md: '0' });
+    const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
+    const indicatorFirst = useBreakpointValue({ base: false, md: true });
+    const indicatorSecond = useBreakpointValue({ base: true, md: false });
     return (
-        <Box width="fit-content" height="fit-content" borderRadius="8px">
-            {!isMobile && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} />}
-            <Stack
-                direction={isMobile ? 'row' : 'column'}
-                alignItems="center"
-                justifyContent={
-                    achievementState !== AchievementState.COMPLETED
-                        ? 'space-between'
-                        : isMobile
-                        ? 'flex-start'
-                        : achievementType === AchievementType.SEQUENTIAL
-                        ? 'center'
-                        : isMobile
-                        ? 'flex-end'
-                        : 'center'
-                }
-                width={isMobile ? '100%' : '280px'}
-                height={isMobile ? '114px' : achievementState === AchievementState.COMPLETED ? '300px' : '360px'}
-                borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
-                borderRadius={isMobile ? 'none' : '8px'}
-                borderWidth={isMobile ? 'none' : '1px'}
-                paddingY={'16px'}
-                paddingX={isMobile ? '16px' : '32px'}
-                borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
-                backgroundColor={
-                    achievementState === AchievementState.ACTIVE
-                        ? 'white'
-                        : achievementState === AchievementState.COMPLETED
-                        ? 'primary.900'
-                        : isMobile
-                        ? 'white'
-                        : 'gray.50'
-                }
-            >
+        <Link onPress={onClick}>
+            <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center">
+                {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} />}
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
-                        <AchievementBadge isMobile={isMobile} />
-                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center">
-                            <VStack
-                                width={isMobile ? '64px' : getPolaroidImageSize(isMobile, isMobile, true)}
-                                height={isMobile ? '84px' : getPolaroidImageSize(isMobile, isMobile, true)}
-                            >
-                                <NewAchievementShine size={getShineSize(isMobile, false, true)} />
+                        <AchievementBadge />
+                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center" left={shineOffset}>
+                            <VStack width={polaroidImageSize.width} height={polaroidImageSize.height}>
+                                <NewAchievementShine size={shineSize} />
                             </VStack>
                         </VStack>
                     </>
                 )}
-                <AchievementImageContainer
-                    image={achievementState === AchievementState.COMPLETED || achievementType === AchievementType.SEQUENTIAL ? image : undefined}
-                    alternativeText={alternativeText}
-                    achievementType={achievementType}
-                    isMobile={isMobile}
-                />
-                <VStack space={isMobile ? 2 : 5} alignItems={isMobile ? 'left' : 'center'} paddingLeft={isMobile ? '8px' : '0'}>
-                    <Stack space={0} alignItems={isMobile ? 'left' : 'center'}>
-                        <Text fontSize="xs" color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}>
-                            {subtitle}
-                        </Text>
-                        <Text
-                            width="216px"
-                            fontSize="md"
-                            color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
-                            bold
-                            numberOfLines={1}
-                            overflow="hidden"
-                            textAlign="center"
-                        >
-                            {title}
-                        </Text>
-                    </Stack>
-                    {achievementState !== AchievementState.COMPLETED && (
-                        <VStack space={isMobile ? '0' : 'sm'} width="100%">
-                            {!isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} />}
-                            {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} />}
-                            {isMobile && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} isMobile />}
-                        </VStack>
-                    )}
-                </VStack>
-            </Stack>
-        </Box>
+                <Stack
+                    direction={cardFlexDirection}
+                    alignItems="center"
+                    justifyContent={achievementState !== AchievementState.COMPLETED ? 'space-between' : justifyCardContentUnfinished}
+                    space={cardSpacing}
+                    width={width}
+                    height={cardHeight}
+                    borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
+                    borderRadius="8px"
+                    borderWidth={borderWidth}
+                    paddingY={'16px'}
+                    paddingX={paddingX}
+                    borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
+                    backgroundColor={
+                        achievementState === AchievementState.ACTIVE
+                            ? 'white'
+                            : achievementState === AchievementState.COMPLETED
+                            ? 'primary.900'
+                            : bgColorIncomplete
+                    }
+                >
+                    <AchievementImageContainer
+                        image={achievementState !== AchievementState.COMPLETED && achievementType === AchievementType.TIERED ? undefined : image}
+                        alternativeText={alternativeText}
+                        achievementType={achievementType}
+                        achievementState={achievementState}
+                    />
+                    <VStack space={textSpace} alignItems={textAlignment} paddingLeft={textPaddingLeft} width={maxTextWidth}>
+                        <Stack space={0} alignItems={textAlignment} width={textContainerWidth}>
+                            <Text
+                                fontSize="xs"
+                                color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
+                                width="100%"
+                                textAlign={textAlignment}
+                            >
+                                {subtitle}
+                            </Text>
+                            <Text
+                                width="100%"
+                                fontSize="md"
+                                color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
+                                bold
+                                numberOfLines={1}
+                                overflow="hidden"
+                                textAlign={textAlignment}
+                            >
+                                {title}
+                            </Text>
+                        </Stack>
+                        {achievementState !== AchievementState.COMPLETED && (
+                            <VStack space={indicatorTextSpace} width="100%">
+                                {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
+                                {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
+                                {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
+                            </VStack>
+                        )}
+                    </VStack>
+                </Stack>
+            </VStack>
+        </Link>
     );
 };
 

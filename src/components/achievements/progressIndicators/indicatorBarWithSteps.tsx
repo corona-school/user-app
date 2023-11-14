@@ -1,4 +1,4 @@
-import { Box, Progress, Stack } from 'native-base';
+import { Box, Progress, Stack, useBreakpointValue } from 'native-base';
 import IndicatorStep from './IndicatorStep';
 import { AchievementState } from '../types';
 
@@ -8,22 +8,20 @@ type IndicatorBarWithStepsProps = {
         description: string;
         isActive?: boolean;
     }[];
-    isMobile?: boolean;
     achievementState?: AchievementState;
 };
 
-const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, isMobile, achievementState }) => {
+const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, achievementState }) => {
     const currentStep = steps ? steps.findIndex((step) => step.isActive) : undefined;
     const progress = achievementState === AchievementState.COMPLETED ? 100 : currentStep ? (100 / (maxSteps - 1)) * currentStep + 1 : 0;
+
+    const width = useBreakpointValue({ base: '90%', md: '80%' });
+    const left = useBreakpointValue({ base: 0, md: '10%' });
+    const direction = useBreakpointValue({ base: 'row', md: 'column' });
+    const alignItems = useBreakpointValue({ base: 'center', md: 'left' });
+    const space = useBreakpointValue({ base: 1, md: 0 });
     return (
-        <Stack
-            width={isMobile ? '90%' : '80%'}
-            left={isMobile ? 0 : '10%'}
-            direction={isMobile ? 'row' : 'column'}
-            alignItems={isMobile ? 'center' : 'left'}
-            justifyContent="center"
-            space={isMobile ? 1 : 0}
-        >
+        <Stack width={width} left={left} direction={direction} alignItems={alignItems} justifyContent="center" space={space}>
             <Box>
                 <Progress bg="gray.100" value={progress} />
             </Box>

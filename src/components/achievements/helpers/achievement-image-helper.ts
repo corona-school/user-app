@@ -1,9 +1,17 @@
 import { PolaroidImageSize, PuzzleImageSize, ShineOffset, ShineSize } from '../types';
 
-const getPolaroidImageSize = (isMobile?: boolean, isTablet?: boolean, isLarge?: boolean) => {
-    if (isMobile && !isLarge) {
+const breakpoints = {
+    base: 0,
+    sm: 480,
+    md: 768,
+    lg: 992,
+    xl: 1280,
+};
+
+const getPolaroidImageSize = (breakpoint?: number, isLarge?: boolean) => {
+    if ((breakpoint === breakpoints.base || breakpoint === breakpoints.sm) && !isLarge) {
         return PolaroidImageSize.SMALL;
-    } else if (isTablet || (isMobile && isLarge)) {
+    } else if (breakpoint === breakpoints.md || ((breakpoint === breakpoints.base || breakpoint === breakpoints.sm) && isLarge)) {
         return PolaroidImageSize.MEDIUM;
     } else if (isLarge) {
         return PolaroidImageSize.LARGE;
@@ -33,15 +41,15 @@ const getPolaroidOffset = (size: PolaroidImageSize) => {
     }
 };
 
-const getShineSize = (isMobile?: boolean, isTablet?: boolean, isCard?: boolean) => {
-    if (isMobile && !isTablet) {
+const getShineSize = (breakpoint: number, isCard?: boolean) => {
+    if (breakpoint === breakpoints.base || breakpoint === breakpoints.sm) {
         if (isCard) {
             return ShineSize.XSMALL;
         }
         return ShineSize.SMALL;
-    } else if (isTablet && !isMobile) {
+    } else if (breakpoint === breakpoints.md) {
         return ShineSize.MEDIUM;
-    } else if (!isTablet && !isMobile) {
+    } else if (breakpoint === breakpoints.lg || breakpoint === breakpoints.xl) {
         return ShineSize.LARGE;
     }
     return ShineSize.MEDIUM;
@@ -62,12 +70,12 @@ function getShineOffset(size: ShineSize): ShineOffset {
     }
 }
 
-const getPuzzleSize = (isMobile?: boolean, isTablet?: boolean, isLarge?: boolean) => {
-    if (isMobile && !isLarge) {
+const getPuzzleSize = (breakpoint: number, isLarge?: boolean) => {
+    if ((breakpoint === breakpoints.base || breakpoint === breakpoints.sm) && !isLarge) {
         return PuzzleImageSize.SMALL;
-    } else if (isTablet || (isMobile && isLarge)) {
+    } else if (breakpoint === breakpoints.md || (breakpoint === (breakpoints.base || breakpoints.sm) && isLarge)) {
         return PuzzleImageSize.MEDIUM;
-    } else if (!isTablet && !isMobile) {
+    } else if ((breakpoint !== breakpoints.base || breakpoint !== breakpoints.sm || breakpoint !== breakpoints.md) && isLarge) {
         return PuzzleImageSize.LARGE;
     }
     return PuzzleImageSize.MEDIUM;
@@ -84,4 +92,4 @@ const getPuzzleBorderRadius = (size: PuzzleImageSize) => {
     }
 };
 
-export { getPolaroidImageSize, getPolaroidBorderRadius, getPolaroidOffset, getShineSize, getShineOffset, getPuzzleSize, getPuzzleBorderRadius };
+export { breakpoints, getPolaroidImageSize, getPolaroidBorderRadius, getPolaroidOffset, getShineSize, getShineOffset, getPuzzleSize, getPuzzleBorderRadius };

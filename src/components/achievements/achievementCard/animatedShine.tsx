@@ -1,23 +1,19 @@
-import { Box, PresenceTransition } from 'native-base';
+import { Box, PresenceTransition, useBreakpointValue } from 'native-base';
 import ShimmerIcon from '../../../assets/icons/icon_shimmer.svg';
 import { useState } from 'react';
 import useInterval from '../../../hooks/useInterval';
 
 type AnimatedShineProps = {
-    props: {
-        initialSize: number;
-        positionLeft: number;
-        positionTop: number;
-        animationStart: number;
-    };
-    isMobile?: boolean;
+    initialSize: number;
+    positionLeft: number;
+    positionTop: number;
+    animationStart: number;
 };
 
-const AnimatedShine: React.FC<AnimatedShineProps> = ({ props, isMobile }) => {
-    const { initialSize, positionLeft, positionTop, animationStart } = props;
-    const thresholdY = isMobile ? -35 : -70;
-    const maxPositionY = isMobile ? 30 : 100;
-    const intervalSpeed = isMobile ? 25 : 10;
+const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationStart }) => {
+    const thresholdY = useBreakpointValue({ base: -35, md: -75 });
+    const maxPositionY = useBreakpointValue({ base: 30, md: 100 });
+    const intervalSpeed = useBreakpointValue({ base: 25, md: 10 });
 
     const [size, setSize] = useState(initialSize);
     const [positionY, setPositionY] = useState(positionTop);

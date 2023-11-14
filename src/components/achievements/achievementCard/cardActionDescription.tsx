@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from 'native-base';
+import { Box, HStack, Text, VStack, useBreakpointValue } from 'native-base';
 import { ActionTypes } from '../types';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
@@ -12,13 +12,12 @@ import Info from '../../../assets/icons/icon_info.svg';
 type CardActionDescriptionProps = {
     actionType?: ActionTypes;
     actionDescription: string;
-    isMobile?: boolean;
     isColorized?: boolean;
 };
 
-const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isMobile, isColorized }) => {
+const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isColorized }) => {
     let icon;
-    const colorize = isMobile || isColorized;
+    const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
         case ActionTypes.ACTION:
             icon = colorize ? <ArrowRightGreen /> : <ArrowRight />;
@@ -35,9 +34,11 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
         default:
             break;
     }
+    const numberOfLines = useBreakpointValue({ base: 2, md: 1 });
+    const justifyContent = useBreakpointValue({ base: 'flex-start', md: 'center' });
 
     return (
-        <HStack alignItems="flex-start" space="4px" justifyContent={isMobile ? 'flex-start' : 'center'}>
+        <HStack alignItems="flex-start" space="4px" justifyContent={justifyContent}>
             {actionType && (
                 <VStack height="12px" position="relative" justifyContent="flex-end">
                     <Box width="8px" height="8px">
@@ -45,7 +46,7 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
                     </Box>
                 </VStack>
             )}
-            <Text fontSize="xs" color={colorize ? 'primary.500' : 'black'}>
+            <Text fontSize="xs" color={colorize ? 'primary.500' : 'black'} numberOfLines={numberOfLines}>
                 {actionDescription}
             </Text>
         </HStack>

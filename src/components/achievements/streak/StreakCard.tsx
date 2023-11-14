@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box } from 'native-base';
+import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Link } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import { AchievementType, ActionTypes, ShineSize } from '../types';
 import { useTranslation, Trans } from 'react-i18next';
@@ -14,61 +14,55 @@ type StreakCardProps = {
     image: string;
     alternativeText: string;
     actionType: ActionTypes;
+    onClick: () => void;
 };
 
-const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDescription, image, alternativeText, actionType }) => {
+const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDescription, image, alternativeText, actionType, onClick }) => {
     const { t } = useTranslation();
-    const isMobile = useBreakpointValue({ base: true, lg: false });
+    const width = useBreakpointValue({ base: '100%', md: '350px' });
+    const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
     return (
-        <HStack
-            backgroundColor="primary.900"
-            width={isMobile ? '100%' : '350px'}
-            maxWidth="350px"
-            height="128px"
-            padding="16px"
-            alignItems="center"
-            borderRadius={isMobile ? 0 : 8}
-            space={2}
-        >
-            <VStack alignItems="center" width="90px">
-                {(!record || streak === record) && (
-                    <VStack zIndex={1} position="absolute" width="90px" height="100%" alignItems="center" justifyContent="center">
-                        <NewAchievementShine size={ShineSize.XSMALL} />
-                    </VStack>
-                )}
-                <PresenceTransition
-                    initial={{
-                        scale: 0.75,
-                    }}
-                >
-                    <AchievementImageContainer
-                        image={image}
-                        alternativeText={alternativeText}
-                        achievementType={AchievementType.STREAK}
-                        streak={streak}
-                        isRecord={!record || streak === record}
-                        isMobile
-                    />
-                </PresenceTransition>
-            </VStack>
-            <VStack width={isMobile ? 'auto' : '215px'} maxWidth="215px" height="100%" justifyContent="flex-start" space="6px">
-                <Text color="white" noOfLines={1}>
-                    {title}
-                </Text>
-                <Text color="white" fontSize="xs" noOfLines={2}>
-                    <Trans>{t('achievement.streak.card.info', { streak })}</Trans>
-                </Text>
-                {record && (
-                    <Box>
-                        {streak === record ? (
-                            <CardActionDescription actionType={actionType} actionDescription={actionDescription} isMobile={isMobile} isColorized />
-                        ) : (
-                            <IndicatorBar maxSteps={record} currentStep={streak} />
-                        )}
-                    </Box>
-                )}
-            </VStack>
-        </HStack>
+        <Link onPress={onClick}>
+            <HStack backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
+                <VStack alignItems="center" width="90px">
+                    {(!record || streak === record) && (
+                        <VStack zIndex={1} position="absolute" width="90px" height="100%" alignItems="center" justifyContent="center">
+                            <NewAchievementShine size={ShineSize.XSMALL} />
+                        </VStack>
+                    )}
+                    <PresenceTransition
+                        initial={{
+                            scale: 0.75,
+                        }}
+                    >
+                        <AchievementImageContainer
+                            image={image}
+                            alternativeText={alternativeText}
+                            achievementType={AchievementType.STREAK}
+                            streak={streak}
+                            isRecord={!record || streak === record}
+                        />
+                    </PresenceTransition>
+                </VStack>
+                <VStack maxWidth={maxTextWidth} height="100%" justifyContent="flex-start" space="6px">
+                    <Text width="100%" color="white" noOfLines={1}>
+                        {title}
+                    </Text>
+                    <Text color="white" fontSize="xs" noOfLines={2}>
+                        <Trans>{t('achievement.streak.card.info', { streak })}</Trans>
+                    </Text>
+                    {record && (
+                        <Box>
+                            {streak === record ? (
+                                <CardActionDescription actionType={actionType} actionDescription={actionDescription} isColorized />
+                            ) : (
+                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={AchievementType.STREAK} />
+                            )}
+                        </Box>
+                    )}
+                </VStack>
+            </HStack>
+        </Link>
     );
 };
 

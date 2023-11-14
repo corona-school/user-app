@@ -1,8 +1,9 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 import AchievementModal from './AchievementModal';
-import { AchievementState, AchievementType, ActionTypes } from '../types';
+import { AchievementState, AchievementType } from '../types';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
-import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_image.png';
+import ExampleStreakImageRecord from '../../../assets/images/achievements/example_streak_image_record.png';
+import ExampleStreakImage from '../../../assets/images/achievements/example_streak_image.png';
 import SequenceExample01 from '../../../assets/images/achievements/Sequence_Example_01.png';
 import SequenceExample04 from '../../../assets/images/achievements/Sequence_Example_04.png';
 
@@ -188,7 +189,7 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         currentStep={5}
         actionDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
         buttonText="Kontakt aufnehmen"
-        image={'image'}
+        image={ExampleStreakImage}
     />
 </Story>
 
@@ -205,7 +206,7 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         currentStep={27}
         actionDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
         buttonText="Kontakt aufnehmen"
-        image={'image'}
+        image={ExampleStreakImageRecord}
         newAchievement
     />
 </Story>
