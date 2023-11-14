@@ -4,8 +4,7 @@ import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
-import { AchievementState, AchievementType, ActionTypes } from '../types';
-import { getShineSize, getPolaroidImageSize, breakpoints } from '../helpers/achievement-image-helper';
+import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../types';
 import InnerShadow from '../cosmetics/InnerShadow';
 
 type AchievementCardProps = {
@@ -38,7 +37,8 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
-    const shineOffset = useBreakpointValue({ base: '15px', md: 'none' });
+    const shineOffsetLeft = useBreakpointValue({ base: '15px', md: 'none' });
+    const shineOffsetTop = useBreakpointValue({ base: 'none', md: '-20px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
     const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
@@ -57,9 +57,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
     const polaroidImageSize = useBreakpointValue({
         base: { width: '64px', height: '84px' },
-        md: { width: getPolaroidImageSize(undefined, true), height: getPolaroidImageSize(undefined, true) },
+        md: { width: PolaroidImageSize.LARGE, height: PolaroidImageSize.LARGE },
     });
-    const shineSize = useBreakpointValue({ base: getShineSize(breakpoints.base, true), md: getShineSize(breakpoints.md, true) });
+    const shineSize = useBreakpointValue({ base: ShineSize.XSMALL, md: ShineSize.MEDIUM });
     const textSpace = useBreakpointValue({ base: 2, md: 5 });
     const textPaddingLeft = useBreakpointValue({ base: '8px', md: '0' });
     const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
@@ -72,7 +72,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge />
-                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center" left={shineOffset}>
+                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center" left={shineOffsetLeft} top={shineOffsetTop}>
                             <VStack width={polaroidImageSize.width} height={polaroidImageSize.height}>
                                 <NewAchievementShine size={shineSize} />
                             </VStack>

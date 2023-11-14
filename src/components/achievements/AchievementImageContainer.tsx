@@ -1,9 +1,8 @@
 import { Box, VStack, PresenceTransition, Image, useBreakpointValue } from 'native-base';
 import CompletePolaroid from './polaroid/CompletePolaroid';
 import EmptyPolaroidField from './polaroid/EmptyPolaroidField';
-import { AchievementState, AchievementType, StreakImageSize } from './types';
+import { AchievementState, AchievementType, PuzzleImageSize, StreakImageSize } from './types';
 import StreakImageContainer from './streak/StreakImageContainer';
-import { getPolaroidImageSize, getPuzzleSize, getPuzzleBorderRadius, breakpoints } from './helpers/achievement-image-helper';
 
 type AchievementImageContainerProps = {
     image: string | undefined;
@@ -24,8 +23,12 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
     isRecord,
     isLarge,
 }) => {
-    const breakpoint = useBreakpointValue({ base: breakpoints.base, md: breakpoints.md, lg: breakpoints.lg, xl: breakpoints.xl });
-    const polaroidImageSize = getPolaroidImageSize(breakpoint, isLarge);
+    const puzzleBorderWidth = useBreakpointValue({
+        base: isLarge ? PuzzleImageSize.MEDIUM : PuzzleImageSize.SMALL,
+        md: PuzzleImageSize.MEDIUM,
+        lg: isLarge ? PuzzleImageSize.LARGE : PuzzleImageSize.MEDIUM,
+    });
+    const puzzleBorderRadius = useBreakpointValue({ base: isLarge ? '3px' : '2px', md: '3px', lg: isLarge ? '4px' : '3px' });
     const imageWrapperWidth = useBreakpointValue({ base: '100%', md: '142px' });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     switch (achievementType) {
@@ -38,10 +41,10 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
                                 rotate: '-5deg',
                             }}
                         >
-                            <CompletePolaroid image={image} alternativeText={alternativeText} size={polaroidImageSize} />
+                            <CompletePolaroid image={image} alternativeText={alternativeText} isLarge={isLarge} />
                         </PresenceTransition>
                     ) : (
-                        <EmptyPolaroidField size={polaroidImageSize} />
+                        <EmptyPolaroidField isLarge={isLarge} />
                     )}
                 </VStack>
             );
@@ -59,12 +62,11 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
                 </VStack>
             );
         case AchievementType.SEQUENTIAL:
-            const borderWidth = getPuzzleSize(breakpoint, isLarge);
             return (
                 <Box
-                    width={borderWidth}
-                    height={borderWidth}
-                    borderRadius={getPuzzleBorderRadius(borderWidth)}
+                    width={puzzleBorderWidth}
+                    height={puzzleBorderWidth}
+                    borderRadius={puzzleBorderRadius}
                     overflow={'hidden'}
                     shadow={achievementState === AchievementState.COMPLETED && shadow}
                 >

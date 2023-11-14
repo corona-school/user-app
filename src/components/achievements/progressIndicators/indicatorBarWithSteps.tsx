@@ -27,7 +27,6 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
             </Box>
             {steps.map((step, index) => (
                 <IndicatorStep
-                    key={index}
                     step={index}
                     maxSteps={steps.length}
                     description={step.description}

@@ -11,24 +11,33 @@ type AchievementProgressProps = {
 };
 
 const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements }) => {
-    // Sortieren von Beispiel Daten: Wird entfernt, wenn die Daten von der API kommen
-    const sortedAchievements: { [key in AchievementState]: Achievement[] } = {
-        [AchievementState.COMPLETED]: [],
-        [AchievementState.ACTIVE]: [],
-        [AchievementState.INACTIVE]: [],
-    };
-    const streaks: Achievement[] = [];
+    // Sort Example Data: Will be removed when the API data is implemented
+    const streaks: Achievement[] = useMemo(() => {
+        const allStreaks: Achievement[] = [];
+        achievements.forEach((achievement) => {
+            if (achievement.achievementType === AchievementType.STREAK) {
+                allStreaks.push(achievement);
+            }
+        });
+        return allStreaks;
+    }, [achievements]);
+    const sortedAchievements: { [key in AchievementState]: Achievement[] } = useMemo(() => {
+        const elements: { [key in AchievementState]: Achievement[] } = {
+            [AchievementState.COMPLETED]: [],
+            [AchievementState.ACTIVE]: [],
+            [AchievementState.INACTIVE]: [],
+        };
+        achievements.forEach((achievement) => {
+            if (achievement.achievementType !== AchievementType.STREAK) {
+                elements[achievement.achievementState].push(achievement);
+            }
+        });
+        return elements;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [achievements]);
     const keys = Object.keys(sortedAchievements);
     const states = keys.map((key) => AchievementState[key as keyof typeof AchievementState]);
-
-    achievements.forEach((achievement) => {
-        if (achievement.achievementType === AchievementType.STREAK) {
-            streaks.push(achievement);
-            return;
-        }
-        sortedAchievements[achievement.achievementState].push(achievement);
-    });
-    // ------ Ende der Beispieldaten ------
+    // ------ End of Example Data ------
 
     const [collapsed, setCollapsed] = useState({
         [AchievementType.STREAK]: false,
@@ -72,6 +81,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
         md: 'fit-content',
     });
     const cardSpace = useBreakpointValue({ base: 0, md: 5 });
+    const spaceAfterHeadline = useBreakpointValue({ base: 3, md: 1 });
 
     const handleOnClick = (type?: AchievementType, state?: AchievementState) => {
         if (type && type === AchievementType.STREAK) {
@@ -100,7 +110,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                 onClose={() => setOpenModal(false)}
                 showModal={openModal}
             />
-            <VStack space={3}>
+            <VStack space={spaceAfterHeadline}>
                 <ProgressCollapsableHeadline achievementType={AchievementType.STREAK} onClick={() => handleOnClick(AchievementType.STREAK, undefined)} />
                 <Stack
                     direction={stackDirection}

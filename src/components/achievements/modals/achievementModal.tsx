@@ -3,12 +3,11 @@ import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
 import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
-import { AchievementState, AchievementType } from '../types';
+import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from '../types';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
-import { getShineSize, getPolaroidImageSize, breakpoints } from '../helpers/achievement-image-helper';
 
 type AchievementModalProps = {
     title: string;
@@ -81,13 +80,13 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const buttonAlignment = useBreakpointValue({ base: 'column', lg: 'row' });
 
     const shineSize = useBreakpointValue({
-        base: getShineSize(breakpoints.base),
-        md: getShineSize(breakpoints.md),
-        lg: getShineSize(breakpoints.lg),
+        base: ShineSize.SMALL,
+        md: ShineSize.MEDIUM,
+        lg: ShineSize.LARGE,
     });
     const polaroidImageSize = useBreakpointValue({
-        base: getPolaroidImageSize(breakpoints.base, true),
-        md: getPolaroidImageSize(breakpoints.md, true),
+        base: PolaroidImageSize.MEDIUM,
+        md: PolaroidImageSize.MEDIUM,
     });
 
     const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;

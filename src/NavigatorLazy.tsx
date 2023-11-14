@@ -65,6 +65,7 @@ import { lazyWithRetry } from './lazy';
 import { Suspense } from 'react';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import { datadogRum } from '@datadog/browser-rum';
+import Progress from './pages/Progress';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -410,6 +411,7 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
+            <Route path="/progress" element={<Progress />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />

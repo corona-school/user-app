@@ -107,6 +107,12 @@ const achievements: Achievement[] = [
         achievementType: AchievementType.SEQUENTIAL,
         maxSteps: 4,
         currentStep: 4,
+        steps: [
+            { description: 'Step 1', isActive: false },
+            { description: 'Step 2', isActive: false },
+            { description: 'Step 3', isActive: false },
+            { description: 'Step 4', isActive: false },
+        ],
         achievementState: AchievementState.COMPLETED,
         buttonLabel: 'Kontakt aufnehmen',
     },
@@ -141,7 +147,7 @@ const achievements: Achievement[] = [
         currentStep: 0,
         achievementState: AchievementState.INACTIVE,
         steps: [
-            { description: 'Step 1', isActive: true },
+            { description: 'Step 1', isActive: false },
             { description: 'Step 2', isActive: false },
             { description: 'Step 3', isActive: false },
             { description: 'Step 4', isActive: false },
@@ -228,8 +234,8 @@ const achievements: Achievement[] = [
         currentStep: 1,
         achievementState: AchievementState.ACTIVE,
         steps: [
-            { description: 'Step 1', isActive: false },
-            { description: 'Step 2', isActive: true },
+            { description: 'Step 1', isActive: true },
+            { description: 'Step 2', isActive: false },
             { description: 'Step 3', isActive: false },
             { description: 'Step 4', isActive: false },
         ],

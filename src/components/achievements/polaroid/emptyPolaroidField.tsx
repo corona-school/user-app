@@ -3,10 +3,15 @@ import PolaroidDefault from '../../../assets/images/achievements/Polaroid_Defaul
 import { PolaroidImageSize } from '../types';
 
 type EmptyPolaroidFieldProps = {
-    size: PolaroidImageSize;
+    isLarge?: boolean;
 };
 
-const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ size }) => {
+const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ isLarge }) => {
+    const size = useBreakpointValue({
+        base: isLarge ? PolaroidImageSize.MEDIUM : PolaroidImageSize.SMALL,
+        md: PolaroidImageSize.MEDIUM,
+        lg: isLarge ? PolaroidImageSize.LARGE : PolaroidImageSize.MEDIUM,
+    });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     const updatedSize = size === PolaroidImageSize.MEDIUM ? size : `calc(${size} * 0.85)`;
     return (
