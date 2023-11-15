@@ -8,18 +8,18 @@ type NewAchievementShineProps = {
 
 const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ size }) => {
     const shineElementProps = [
-        { initialSize: 47, positionLeft: 84, positionTop: 8, animationStart: 5 },
-        { initialSize: 33, positionLeft: 1, positionTop: 32, animationStart: 8 },
-        { initialSize: 15, positionLeft: 18, positionTop: 39, animationStart: 4 },
-        { initialSize: 37, positionLeft: 29, positionTop: 49, animationStart: 3 },
-        { initialSize: 15, positionLeft: 95, positionTop: 46, animationStart: 0 },
-        { initialSize: 18, positionLeft: 88, positionTop: 21, animationStart: 10 },
-        { initialSize: 47, positionLeft: 73, positionTop: 45, animationStart: 2 },
+        { initialSize: 47, positionLeft: 84, positionTop: size === ShineSize.XSMALL ? 4 : size === ShineSize.MEDIUM ? 9 : 12, animationSpeed: 1.05 },
+        { initialSize: 33, positionLeft: 1, positionTop: size === ShineSize.XSMALL ? 64 : size === ShineSize.MEDIUM ? 79 : 135, animationSpeed: 0.87 },
+        { initialSize: 15, positionLeft: 18, positionTop: size === ShineSize.XSMALL ? 51 : size === ShineSize.MEDIUM ? 70 : 109, animationSpeed: 1 },
+        { initialSize: 37, positionLeft: 29, positionTop: size === ShineSize.XSMALL ? 96 : size === ShineSize.MEDIUM ? 135 : 187, animationSpeed: 1.3 },
+        { initialSize: 15, positionLeft: 95, positionTop: size === ShineSize.XSMALL ? 27 : size === ShineSize.MEDIUM ? 54 : 52, animationSpeed: 0.98 },
+        { initialSize: 18, positionLeft: 88, positionTop: size === ShineSize.XSMALL ? 41 : size === ShineSize.MEDIUM ? 108 : 87, animationSpeed: 0.9 },
+        { initialSize: 47, positionLeft: 73, positionTop: size === ShineSize.XSMALL ? 83 : size === ShineSize.MEDIUM ? 115 : 165, animationSpeed: 1.12 },
     ];
     const shineElements = shineElementProps.map((props) => <AnimatedShine key={props.positionLeft} size={size} {...props} />);
 
     return (
-        <Box zIndex={1} position="absolute" height="inherit" width="100%" backgroundColor="transparent">
+        <Box zIndex={5} position="absolute" height="inherit" width="100%" backgroundColor="transparent">
             {shineElements}
         </Box>
     );

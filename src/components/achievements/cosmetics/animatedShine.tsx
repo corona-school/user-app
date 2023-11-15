@@ -1,83 +1,74 @@
-import { Box, PresenceTransition, Stack } from 'native-base';
+import { PresenceTransition, Stack, VStack } from 'native-base';
 import ShimmerIcon from '../../../assets/icons/icon_shimmer.svg';
 import { useState } from 'react';
-import useInterval from '../../../hooks/useInterval';
 import { ShineSize } from '../types';
+import useInterval from '../../../hooks/useInterval';
 
 type AnimatedShineProps = {
     initialSize: number;
     positionLeft: number;
     positionTop: number;
-    animationStart: number;
+    animationSpeed: number;
     size: ShineSize;
 };
 
-const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationStart, size }) => {
+const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationSpeed, size }) => {
     const relativeSize = initialSize * size;
-    const thresholdY = -(size * 50);
-    const maxPositionY = size * 100;
-    const intervalSpeed = size * 5;
+    const thresholdY = -(size * 10);
+    const maxPositionY = size === ShineSize.XSMALL ? 80 : 200;
 
-    const [flicker, setFlicker] = useState(1);
+    const [firstRender, setFirstRender] = useState(true);
     const [positionY, setPositionY] = useState(positionTop);
-    const [opacity, setOpacity] = useState(1);
-
-    const [scaleUp, setScaleUp] = useState(true);
-    const [count, setCount] = useState(animationStart);
+    const [startAnimation, setStartAnimation] = useState(true);
+    const intervalSpeed = (2000 / maxPositionY) * positionY * animationSpeed;
 
     useInterval(() => {
-        if (scaleUp) {
-            setFlicker((prevSize) => prevSize - 0.01 * size);
-        } else {
-            setFlicker((prevSize) => prevSize + 0.01 * size);
-        }
-        setCount((prevCount) => prevCount + 1);
-
-        if (count >= 5) {
-            setScaleUp((prevScaleUp) => !prevScaleUp);
-            setCount(0);
-        }
-    }, intervalSpeed);
-
-    useInterval(() => {
-        if (positionY > thresholdY) {
-            setPositionY((prevPositionY) => prevPositionY - 1);
-        } else {
+        if (firstRender) {
             setPositionY(maxPositionY);
-            setOpacity(1);
+            setFirstRender(false);
         }
-
-        if (positionY < thresholdY / 3) {
-            setOpacity((prevOpacity) => prevOpacity - 0.02);
-        }
-    }, intervalSpeed / 2);
-
+        setStartAnimation(!startAnimation);
+    }, intervalSpeed);
     return (
-        <Stack
-            position="absolute"
-            width={relativeSize * 1.05}
-            height={relativeSize * 1.05}
-            top={`${positionTop}%`}
-            left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`}
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Box opacity={opacity} width={relativeSize * flicker} height={relativeSize * flicker}>
-                <PresenceTransition
-                    visible
-                    initial={{
-                        translateY: positionTop,
-                    }}
-                    animate={{
-                        translateY: positionY,
-                        transition: {
-                            duration: intervalSpeed,
-                        },
-                    }}
-                >
+        <Stack position="absolute" left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`} justifyContent="center" alignItems="center">
+            <PresenceTransition
+                style={{
+                    opacity: startAnimation ? 1 : 0,
+                }}
+                visible={startAnimation}
+                initial={{
+                    translateY: positionY,
+                }}
+                animate={{
+                    translateY: thresholdY,
+                    transition: {
+                        easing: (value: number) => value * 1,
+                        duration: intervalSpeed,
+                    },
+                }}
+            >
+                <VStack width={relativeSize * 1.05} height={relativeSize * 1.05}>
                     <ShimmerIcon />
-                </PresenceTransition>
-            </Box>
+                </VStack>
+            </PresenceTransition>
+            <PresenceTransition
+                style={{ opacity: startAnimation ? 0 : 1 }}
+                visible={!startAnimation}
+                initial={{
+                    translateY: positionY,
+                }}
+                animate={{
+                    translateY: thresholdY,
+                    transition: {
+                        easing: (value: number) => value * 1,
+                        duration: intervalSpeed,
+                    },
+                }}
+            >
+                <VStack width={relativeSize * 1.05} height={relativeSize * 1.05}>
+                    <ShimmerIcon />
+                </VStack>
+            </PresenceTransition>
         </Stack>
     );
 };

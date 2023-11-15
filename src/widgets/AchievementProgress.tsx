@@ -3,7 +3,7 @@ import { Achievement, AchievementState, AchievementType } from '../components/ac
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 
 type AchievementProgressProps = {
@@ -59,6 +59,19 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
         return selectedAchievement.newAchievement;
     }, [selectedAchievement, openModal]);
 
+    const mobile = useBreakpointValue({ base: true, md: false });
+    useEffect(() => {
+        if (!mobile) {
+            setCollapsed({
+                ...collapsed,
+                [AchievementType.STREAK]: false,
+                [AchievementState.ACTIVE]: false,
+                [AchievementState.COMPLETED]: false,
+                [AchievementState.INACTIVE]: false,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mobile]);
     const cardMargin = useBreakpointValue({ base: 2, md: 5 });
     const cardContainerBg = useBreakpointValue({
         base: 'primary.800',

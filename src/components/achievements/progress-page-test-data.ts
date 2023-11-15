@@ -200,7 +200,6 @@ const achievements: Achievement[] = [
         maxSteps: 20,
         currentStep: 20,
         achievementState: AchievementState.COMPLETED,
-        newAchievement: true,
         buttonLabel: 'Kontakt aufnehmen',
     },
     {

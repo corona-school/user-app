@@ -24,9 +24,9 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
     return (
         <Pressable onPress={onClick}>
             <HStack backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
-                <VStack alignItems="center" width="90px">
+                <VStack alignItems="center" width="90px" justifyContent="center">
                     {(!record || streak === record) && (
-                        <VStack zIndex={1} position="absolute" width="90px" height="100%" alignItems="center" justifyContent="center">
+                        <VStack zIndex={1} position="absolute" width="90px" height="80px" alignItems="center" justifyContent="center" alignSelf="center">
                             <NewAchievementShine size={ShineSize.XSMALL} />
                         </VStack>
                     )}
