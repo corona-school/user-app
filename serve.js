@@ -3,6 +3,20 @@ const compression = require("compression");
 
 const app = Express();
 
+// Enforce the App to be visited under app.lern-fair.de (or whatever is in DOMAIN)
+if (process.env.DOMAIN) {
+    app.use((req, res, next) => {
+        if (req.hostname !== process.env.DOMAIN) {
+            const target = "https://" + process.env.DOMAIN + req.url;
+            console.log("Redirecting " + req.url + " from " + req.hostname + " to " + target);
+            res.redirect(target);
+            return;
+        }
+
+        next();
+    });
+}
+
 // Enforce HTTPS - The backend will reject requests from HTTP frontends anyways
 app.use((req, res, next) => {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
@@ -10,6 +24,7 @@ app.use((req, res, next) => {
       }
       next();
 });
+
 
 // Provide environment variables from the process,
 // so that they can easily be switched in the deployment without rebuilding the app

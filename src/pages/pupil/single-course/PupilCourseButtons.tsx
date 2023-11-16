@@ -35,6 +35,7 @@ type ActionButtonProps = {
         | 'isOnWaitingList'
     > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
+    isActiveSubcourse: boolean;
 };
 
 const courseConversationId = gql(`
@@ -45,7 +46,7 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 }
 `);
 
-const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh }) => {
+const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, isActiveSubcourse }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
@@ -183,7 +184,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh })
     }, [joinedSubcourse, leftSubcourse, joinedWaitinglist, leftWaitinglist]);
 
     const appointment = subcourse.appointments[0];
-
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
@@ -196,7 +196,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh })
                     <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
                 )}
 
-                {subcourse.isParticipant && !loading && (
+                {subcourse.isParticipant && !loading && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={conversationId}
@@ -206,17 +206,17 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh })
                         refresh={refresh}
                     />
                 )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && isActiveSubcourse && (
                     <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && (
                     <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse.isParticipant && (
+                {subcourse.isParticipant && isActiveSubcourse && (
                     <>
                         <VideoButton
                             appointmentId={appointment.id}

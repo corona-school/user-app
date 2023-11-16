@@ -18,18 +18,20 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isInline }) => {
             left={offsetLeft}
             right={offsetRight}
             backgroundColor="secondary.900"
-            style={{
-                shadowColor: '#000000',
-                shadowOpacity: 0.25,
-                shadowOffset: { width: 0, height: 2 },
-                shadowRadius: 4,
-                position: `${isInline ? 'relative' : 'absolute'}`,
-                ...(!isInline && {
-                    top: '-15px',
-                    left: offsetLeft,
-                    right: offsetRight,
-                }),
-            }}
+            style={[
+                {
+                    shadowColor: '#000000',
+                    shadowOpacity: 0.25,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowRadius: 4,
+                    position: `${isInline ? 'relative' : 'absolute'}`,
+                },
+                isInline && {
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                },
+            ]}
         >
             <Text fontSize="xs" color="primary.900" bold>
                 <HStack alignItems="center" space="4px">
