@@ -2,6 +2,7 @@ import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, Link } from 'na
 import { useTranslation } from 'react-i18next';
 import { AchievementState, AchievementType } from './types';
 import { useMemo } from 'react';
+import { Pressable } from 'react-native';
 
 type ProgressCollapsableHeadlineProps = {
     achievementState?: AchievementState;
@@ -25,7 +26,6 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
             default:
                 return '';
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [achievementState, achievementType]);
     const isCollapsable = useBreakpointValue({
         base: true,
@@ -35,7 +35,7 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
         isCollapsable && onClick();
     };
     return (
-        <Link
+        <Pressable
             onPress={handlePress}
             style={{
                 width: '100%',
@@ -63,7 +63,7 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
                     </Text>
                 )}
             </HStack>
-        </Link>
+        </Pressable>
     );
 };
 

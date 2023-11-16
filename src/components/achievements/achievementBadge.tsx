@@ -24,9 +24,11 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isInline }) => {
                 shadowOffset: { width: 0, height: 2 },
                 shadowRadius: 4,
                 position: `${isInline ? 'relative' : 'absolute'}`,
-                top: `${!isInline && '-15px'}`,
-                left: `${!isInline && offsetLeft}`,
-                right: `${!isInline && offsetRight}`,
+                ...(!isInline && {
+                    top: '-15px',
+                    left: offsetLeft,
+                    right: offsetRight,
+                }),
             }}
         >
             <Text fontSize="xs" color="primary.900" bold>

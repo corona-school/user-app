@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Box, Button, HStack, Link, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
@@ -16,6 +16,7 @@ type AchievementModalProps = {
     achievementState: AchievementState;
     achievementType: AchievementType;
     buttonText?: string;
+    buttonLink?: string;
     newAchievement?: boolean;
     steps?: {
         description: string;
@@ -36,6 +37,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     name,
     description,
     buttonText,
+    buttonLink,
     newAchievement,
     steps,
     maxSteps,
@@ -240,7 +242,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </HStack>
                         )}
                     </VStack>
-                    {achievementState !== AchievementState.COMPLETED ? (
+                    {buttonLink && buttonText && achievementState !== AchievementState.COMPLETED ? (
                         <Stack width="100%" direction={buttonAlignment} space={2}>
                             <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
@@ -248,9 +250,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             <Button flex={1} variant="outline">
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
-                            <Button flex={1} variant="solid">
+                            <Link href={buttonLink} flex={1} backgroundColor="secondary.900" borderRadius={4} justifyContent="center" alignItems="center">
                                 <Text>{buttonText}</Text>
-                            </Button>
+                            </Link>
                         </Stack>
                     ) : (
                         <Stack width="100%" direction={buttonAlignment} space={2}>
