@@ -365,6 +365,14 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+            <Route
+                path="/progress"
+                element={
+                    <RequireAuth>
+                        <Progress />
+                    </RequireAuth>
+                }
+            />
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
