@@ -1,6 +1,6 @@
 import { Box, PresenceTransition, useBreakpointValue } from 'native-base';
 import PolaroidDefault from '../../../assets/images/achievements/Polaroid_Default.svg';
-import { PolaroidImageSize } from '../types';
+import { PolaroidImageSize } from '../../../types/achievement';
 
 type EmptyPolaroidFieldProps = {
     isLarge?: boolean;

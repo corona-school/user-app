@@ -1,6 +1,6 @@
 import { Box, Progress, Stack, Text, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AchievementType } from '../types';
+import { AchievementType } from '../../../types/achievement';
 
 type IndicatorBarProps = {
     maxSteps: number;

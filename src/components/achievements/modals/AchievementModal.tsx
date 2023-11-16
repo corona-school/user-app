@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
 import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
-import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from '../types';
+import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';

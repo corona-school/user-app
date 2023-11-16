@@ -1,6 +1,6 @@
 import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
-import { AchievementType, ActionTypes, ShineSize } from '../types';
+import { AchievementType, ActionTypes, ShineSize } from '../../../types/achievement';
 import { useTranslation, Trans } from 'react-i18next';
 import CardActionDescription from '../achievementCard/CardActionDescription';
 import IndicatorBar from '../progressIndicators/IndicatorBar';

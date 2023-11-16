@@ -1,6 +1,6 @@
 import { Box } from 'native-base';
 import AnimatedShine from './AnimatedShine';
-import { ShineSize } from '../types';
+import { ShineSize } from '../../../types/achievement';
 
 type NewAchievementShineProps = {
     size: ShineSize;

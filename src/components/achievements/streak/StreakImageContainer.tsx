@@ -3,7 +3,7 @@ import StreakImage from './StreakImage';
 import StarBackgroundOne from '../../../assets/images/achievements/star_bg_1.svg';
 import StarBackgroundTwo from '../../../assets/images/achievements/star_bg_2.svg';
 import StreakSparks from '../../../assets/images/achievements/streak_sparks.svg';
-import { StreakImageSize } from '../types';
+import { StreakImageSize } from '../../../types/achievement';
 import { getStreakImageSize } from './streak-image-helper';
 
 type StreakImageContainerProps = {

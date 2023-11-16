@@ -1,5 +1,5 @@
 import { Box, HStack, Text, VStack, useBreakpointValue } from 'native-base';
-import { ActionTypes } from '../types';
+import { ActionTypes } from '../../../types/achievement';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';

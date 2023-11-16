@@ -1,5 +1,5 @@
 import { Box, Divider, HStack, Stack, VStack, useBreakpointValue } from 'native-base';
-import { Achievement, AchievementState, AchievementType } from '../components/achievements/types';
+import { Achievement, AchievementState, AchievementType } from '../types/achievement';
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';

@@ -4,7 +4,7 @@ import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardActionDescription from './CardActionDescription';
-import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../types';
+import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import InnerShadow from '../cosmetics/InnerShadow';
 
 type AchievementCardProps = {

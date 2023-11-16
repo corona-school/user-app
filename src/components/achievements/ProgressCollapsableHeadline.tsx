@@ -1,6 +1,6 @@
 import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, Link } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AchievementState, AchievementType } from './types';
+import { AchievementState, AchievementType } from '../../types/achievement';
 import { useMemo } from 'react';
 import { Pressable } from 'react-native';
 

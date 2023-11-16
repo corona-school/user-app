@@ -1,4 +1,4 @@
-import { StreakImageSize } from '../types';
+import { StreakImageSize } from '../../../types/achievement';
 
 const getStreakImageSize = (size: StreakImageSize) => {
     switch (size) {

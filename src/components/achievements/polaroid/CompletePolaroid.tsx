@@ -1,5 +1,5 @@
 import { Box, Image, VStack, useBreakpointValue } from 'native-base';
-import { PolaroidImageSize } from '../types';
+import { PolaroidImageSize } from '../../../types/achievement';
 
 type CompletePolaroidProps = {
     image: string;

@@ -1,7 +1,7 @@
 import { PresenceTransition, Stack, VStack } from 'native-base';
 import ShimmerIcon from '../../../assets/icons/icon_shimmer.svg';
 import { useState } from 'react';
-import { ShineSize } from '../types';
+import { ShineSize } from '../../../types/achievement';
 import useInterval from '../../../hooks/useInterval';
 
 type AnimatedShineProps = {

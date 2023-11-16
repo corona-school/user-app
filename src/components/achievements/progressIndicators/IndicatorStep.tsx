@@ -1,6 +1,6 @@
 import { Text, VStack } from 'native-base';
 import Check from '../../../assets/icons/icon_check.svg';
-import { AchievementState } from '../types';
+import { AchievementState } from '../../../types/achievement';
 
 type IndicatorStepProps = {
     step: number;

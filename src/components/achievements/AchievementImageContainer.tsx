@@ -1,7 +1,7 @@
 import { Box, VStack, PresenceTransition, Image, useBreakpointValue } from 'native-base';
 import CompletePolaroid from './polaroid/CompletePolaroid';
 import EmptyPolaroidField from './polaroid/EmptyPolaroidField';
-import { AchievementState, AchievementType, PuzzleImageSize, StreakImageSize } from './types';
+import { AchievementState, AchievementType, PuzzleImageSize, StreakImageSize } from '../../types/achievement';
 import StreakImageContainer from './streak/StreakImageContainer';
 
 type AchievementImageContainerProps = {

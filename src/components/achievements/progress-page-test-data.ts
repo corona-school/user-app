@@ -1,4 +1,4 @@
-import { Achievement, AchievementState, AchievementType, ActionTypes } from './types';
+import { Achievement, AchievementState, AchievementType, ActionTypes } from '../../types/achievement';
 import KanufahrtDschungel from '../../assets/images/achievements/KanufahrtDschungel.png';
 import ExampleStreakImage from '../../assets/images/achievements/example_streak_image.png';
 import ExampleStreakImageRecord from '../../assets/images/achievements/example_streak_image_record.png';

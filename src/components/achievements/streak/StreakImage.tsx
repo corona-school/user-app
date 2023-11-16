@@ -1,7 +1,7 @@
 import Theme from '../../../Theme';
 import { Box, Image, Text, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { StreakImageSize } from '../types';
+import { StreakImageSize } from '../../../types/achievement';
 import { getStreakFontSize, getStreakImageSize, getStreakTextOffset } from './streak-image-helper';
 
 type StreakImageProps = {
