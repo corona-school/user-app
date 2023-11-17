@@ -4,10 +4,10 @@ import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
 import InfoGreen from '../../../assets/icons/icon_info_green.svg';
-import ArrowRight from '../../../assets/icons/icon_arrow_right.svg';
-import Calendar from '../../../assets/icons/icon_calendar.svg';
-import Clock from '../../../assets/icons/icon_clock.svg';
-import Info from '../../../assets/icons/icon_info.svg';
+import ArrowRight from '../../../assets/icons/icon_arrow_right_dk_green.svg';
+import Calendar from '../../../assets/icons/icon_calendar_dk_green.svg';
+import Clock from '../../../assets/icons/icon_clock_dk_green.svg';
+import Info from '../../../assets/icons/icon_info_dk_green.svg';
 
 type CardprogressDescriptionProps = {
     actionType?: ActionTypes;
@@ -15,7 +15,7 @@ type CardprogressDescriptionProps = {
     isColorized?: boolean;
 };
 
-const CardprogressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, progressDescription, isColorized }) => {
+const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, progressDescription, isColorized }) => {
     let icon;
     const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
@@ -36,21 +36,23 @@ const CardprogressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
     }
     const numberOfLines = useBreakpointValue({ base: 2, md: 1 });
     const justifyContent = useBreakpointValue({ base: 'flex-start', md: 'center' });
+    const iconHeight = useBreakpointValue({ base: '11.5px', md: '12.5px' });
+    const fontSize = useBreakpointValue({ base: '10px', md: '12px' });
 
     return (
         <HStack alignItems="flex-start" space="4px" justifyContent={justifyContent}>
             {actionType && (
-                <VStack height="12px" position="relative" justifyContent="flex-end">
+                <VStack height={iconHeight} position="relative" justifyContent="flex-end">
                     <Box width="8px" height="8px">
                         {icon}
                     </Box>
                 </VStack>
             )}
-            <Text fontSize="xs" color={colorize ? 'primary.500' : 'black'} numberOfLines={numberOfLines}>
+            <Text fontSize={fontSize} color={colorize ? 'primary.500' : 'primary.900'} numberOfLines={numberOfLines}>
                 {progressDescription}
             </Text>
         </HStack>
     );
 };
 
-export default CardprogressDescription;
+export default CardProgressDescription;

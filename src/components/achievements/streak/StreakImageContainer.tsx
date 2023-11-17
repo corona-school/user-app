@@ -4,7 +4,6 @@ import StarBackgroundOne from '../../../assets/images/achievements/star_bg_1.svg
 import StarBackgroundTwo from '../../../assets/images/achievements/star_bg_2.svg';
 import StreakSparks from '../../../assets/images/achievements/streak_sparks.svg';
 import { StreakImageSize } from '../../../types/achievement';
-import { getStreakImageSize } from './streak-image-helper';
 
 type StreakImageContainerProps = {
     streak: number;
@@ -15,7 +14,21 @@ type StreakImageContainerProps = {
 };
 
 const StreakImageContainer: React.FC<StreakImageContainerProps> = ({ streak, image, alternativeText, size, isRecord }) => {
-    const sparkSize = `calc(${getStreakImageSize(size)}*1.5)`;
+    let imageSize: number;
+    switch (size) {
+        case StreakImageSize.SMALL:
+            imageSize = 52;
+            break;
+        case StreakImageSize.MEDIUM:
+            imageSize = 120;
+            break;
+        case StreakImageSize.LARGE:
+            imageSize = 180;
+            break;
+        default:
+            imageSize = 120;
+    }
+    const sparkSize = `${imageSize * 1.5}px`;
     return (
         <VStack justifyContent={'center'} alignItems="center" width={size}>
             {isRecord && (

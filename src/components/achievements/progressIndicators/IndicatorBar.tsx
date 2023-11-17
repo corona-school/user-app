@@ -31,7 +31,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
     });
     return (
         <Stack direction={flexDirection} alignItems={alignItems} space={space}>
-            <Text width={textWidth} textAlign={alignText} fontSize={centerText ? 'xs' : 'xs'} color="primary.500" height="fit-content" numberOfLines={1}>
+            <Text width={textWidth} textAlign={alignText} fontSize={centerText ? '12px' : '14px'} color="primary.500" height="fit-content" numberOfLines={1}>
                 {achievementType === AchievementType.STREAK
                     ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
                     : `${finishedStepsInformation}`}

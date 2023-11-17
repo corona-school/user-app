@@ -68,9 +68,10 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const contentInnerSpace = useBreakpointValue({ base: '32px', lg: '0' });
     const contentPadding = useBreakpointValue({ base: '16px', lg: '32px' });
     const imageContainerOffset = useBreakpointValue({ base: { top: '20px', left: '0' }, lg: { top: '0', left: '40px' } });
+    const imageContainerHeight = useBreakpointValue({ base: 'fit-content', lg: '100%' });
     const textBoxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
     const textBoxMaxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
-    const textBoxHeight = useBreakpointValue({ base: 'auto', lg: '245px' });
+    const textBoxHeight = useBreakpointValue({ base: 'auto', lg: '100%' });
     const textBoxAlignItems = useBreakpointValue({ base: 'center', lg: 'normal' });
     const showBadgeWithTitle = useBreakpointValue({ base: false, lg: true });
     const modalNameFontSize = useBreakpointValue({ base: 'xl', lg: '4xl' });
@@ -129,6 +130,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 top={imageContainerOffset.top}
                                 left={achievementType === AchievementType.STREAK && imageContainerOffset.left}
                                 alignItems="center"
+                                height={imageContainerHeight}
                             >
                                 <AchievementImageContainer
                                     image={achievementType === AchievementType.TIERED && achievementState !== AchievementState.COMPLETED ? undefined : image}

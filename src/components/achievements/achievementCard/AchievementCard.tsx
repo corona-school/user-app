@@ -38,7 +38,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
     const shineOffsetLeft = useBreakpointValue({ base: '15px', md: 'none' });
-    const shineOffsetTop = useBreakpointValue({ base: 'none', md: '-20px' });
+    const shineOffsetTop = useBreakpointValue({ base: '-10px', md: '-20px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
     const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
@@ -65,6 +65,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
     const indicatorFirst = useBreakpointValue({ base: false, md: true });
     const indicatorSecond = useBreakpointValue({ base: true, md: false });
+    const colorozeCard = useBreakpointValue({ base: true, md: false });
     return (
         <Pressable onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center">
@@ -131,7 +132,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         {achievementState !== AchievementState.COMPLETED && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
-                                {progressDescription && <CardProgressDescription actionType={actionType} progressDescription={progressDescription} />}
+                                {progressDescription && (
+                                    <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized={colorozeCard} />
+                                )}
                                 {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                             </VStack>
                         )}

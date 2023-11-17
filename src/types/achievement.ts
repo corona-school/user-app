@@ -20,7 +20,7 @@ enum AchievementState {
 enum PuzzleImageSize {
     SMALL = '62px',
     MEDIUM = '184px',
-    LARGE = '184px',
+    LARGE = '210px',
 }
 
 enum PolaroidImageSize {

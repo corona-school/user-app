@@ -13,7 +13,7 @@ const CompletePolaroid: React.FC<CompletePolaroidProps> = ({ image, alternativeT
         md: PolaroidImageSize.MEDIUM,
         lg: isLarge ? PolaroidImageSize.LARGE : PolaroidImageSize.MEDIUM,
     });
-    const polaroidOffset = useBreakpointValue({ base: isLarge ? '-20px' : 'opx', md: '-20px', lg: isLarge ? '-40px' : '-20px' });
+    const polaroidOffset = useBreakpointValue({ base: isLarge ? '-20px' : '0px', md: '-20px', lg: isLarge ? '-40px' : '-20px' });
     const polaroidBorderRadius = useBreakpointValue({ base: isLarge ? '3px' : '2px', md: '3px', lg: isLarge ? '4px' : '3px' });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     return (
