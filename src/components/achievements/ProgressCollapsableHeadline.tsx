@@ -41,7 +41,7 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
                 width: '100%',
                 flexDirection: 'column',
             }}
-        >
+            disabled={!isCollapsable} >
             <HStack
                 width="100%"
                 height="100%"
