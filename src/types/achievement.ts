@@ -55,13 +55,10 @@ type Achievement = {
     description: string;
     image: string;
     alternativeText: string;
-    actionType: ActionTypes;
+    actionType?: ActionTypes;
     achievementType: AchievementType;
     achievementState: AchievementState;
-    steps?: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps?: Step[];
     maxSteps: number;
     currentStep: number;
     newAchievement?: boolean;
@@ -70,6 +67,11 @@ type Achievement = {
     actionRedirectLink?: string;
 };
 
+type Step = {
+    description: string;
+    isActive?: boolean;
+};
+
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
 
-export type { Achievement };
+export type { Achievement, Step };

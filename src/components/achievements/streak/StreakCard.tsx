@@ -13,7 +13,7 @@ type StreakCardProps = {
     progressDescription: string;
     image: string;
     alternativeText: string;
-    actionType: ActionTypes;
+    actionType?: ActionTypes;
     onClick: () => void;
 };
 
