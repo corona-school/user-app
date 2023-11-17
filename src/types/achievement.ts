@@ -55,8 +55,6 @@ type Achievement = {
     description: string;
     image: string;
     alternativeText: string;
-    achievedAt: string;
-    achievedText: string;
     actionType: ActionTypes;
     achievementType: AchievementType;
     achievementState: AchievementState;

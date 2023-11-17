@@ -116,7 +116,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                 maxSteps={selectedAchievement.maxSteps}
                 currentStep={selectedAchievement.currentStep}
                 actionDescription={selectedAchievement.actionDescription}
-                achievedText={selectedAchievement.achievedText}
                 image={selectedAchievement.image}
                 alternativeText={selectedAchievement.alternativeText}
                 buttonText={selectedAchievement.buttonLabel}

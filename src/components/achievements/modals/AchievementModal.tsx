@@ -25,7 +25,6 @@ type AchievementModalProps = {
     maxSteps?: number;
     currentStep?: number;
     actionDescription?: string;
-    achievedText?: string;
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
@@ -43,7 +42,6 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     maxSteps,
     currentStep,
     actionDescription,
-    achievedText,
     image,
     alternativeText,
     achievementState,
