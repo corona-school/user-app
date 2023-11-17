@@ -24,7 +24,7 @@ type AchievementModalProps = {
     }[];
     maxSteps?: number;
     currentStep?: number;
-    actionDescription?: string;
+    progressDescription?: string;
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
@@ -41,7 +41,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     steps,
     maxSteps,
     currentStep,
-    actionDescription,
+    progressDescription,
     image,
     alternativeText,
     achievementState,
@@ -180,7 +180,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                     <AchievementBadge isInline />
                                                 ) : (
                                                     <Text color="primary.500" textAlign="center">
-                                                        {actionDescription}
+                                                        {progressDescription}
                                                     </Text>
                                                 )}
                                             </Box>
@@ -225,7 +225,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                             </Box>
                         )}
-                        {!steps && !maxSteps && actionDescription && (
+                        {!steps && !maxSteps && progressDescription && (
                             <HStack alignItems={'center'} space={'sm'}>
                                 {achievementState === AchievementState.COMPLETED ? (
                                     <CheckGreen />
@@ -235,7 +235,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     </Box>
                                 )}
                                 <Text fontSize={'14px'} color="primary.500">
-                                    {actionDescription}
+                                    {progressDescription}
                                 </Text>
                             </HStack>
                         )}

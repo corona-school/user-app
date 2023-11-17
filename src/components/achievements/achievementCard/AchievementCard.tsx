@@ -3,7 +3,7 @@ import AchievementImageContainer from '../AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
-import CardActionDescription from './CardActionDescription';
+import CardProgressDescription from './CardProgressDescription';
 import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import InnerShadow from '../cosmetics/InnerShadow';
 
@@ -18,7 +18,7 @@ type AchievementCardProps = {
     title: string;
     maxSteps?: number;
     currentStep?: number;
-    actionDescription?: string;
+    progressDescription?: string;
     onClick?: () => void;
 };
 
@@ -33,7 +33,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     title,
     maxSteps,
     currentStep,
-    actionDescription,
+    progressDescription,
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
@@ -131,7 +131,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         {achievementState !== AchievementState.COMPLETED && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
-                                {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
+                                {progressDescription && <CardProgressDescription actionType={actionType} progressDescription={progressDescription} />}
                                 {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                             </VStack>
                         )}

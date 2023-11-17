@@ -2,7 +2,7 @@ import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Pres
 import AchievementImageContainer from '../AchievementImageContainer';
 import { AchievementType, ActionTypes, ShineSize } from '../../../types/achievement';
 import { useTranslation, Trans } from 'react-i18next';
-import CardActionDescription from '../achievementCard/CardActionDescription';
+import CardProgressDescription from '../achievementCard/CardProgressDescription';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 
@@ -10,14 +10,14 @@ type StreakCardProps = {
     streak: number;
     record?: number;
     title: string;
-    actionDescription: string;
+    progressDescription: string;
     image: string;
     alternativeText: string;
     actionType: ActionTypes;
     onClick: () => void;
 };
 
-const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDescription, image, alternativeText, actionType, onClick }) => {
+const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progressDescription, image, alternativeText, actionType, onClick }) => {
     const { t } = useTranslation();
     const width = useBreakpointValue({ base: '100%', md: '350px' });
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
@@ -54,7 +54,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, actionDe
                     {record && (
                         <Box>
                             {streak === record ? (
-                                <CardActionDescription actionType={actionType} actionDescription={actionDescription} isColorized />
+                                <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized />
                             ) : (
                                 <IndicatorBar maxSteps={record} currentStep={streak} achievementType={AchievementType.STREAK} />
                             )}

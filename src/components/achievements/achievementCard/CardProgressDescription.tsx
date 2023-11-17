@@ -9,13 +9,13 @@ import Calendar from '../../../assets/icons/icon_calendar.svg';
 import Clock from '../../../assets/icons/icon_clock.svg';
 import Info from '../../../assets/icons/icon_info.svg';
 
-type CardActionDescriptionProps = {
+type CardprogressDescriptionProps = {
     actionType?: ActionTypes;
-    actionDescription: string;
+    progressDescription: string;
     isColorized?: boolean;
 };
 
-const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionType, actionDescription, isColorized }) => {
+const CardprogressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, progressDescription, isColorized }) => {
     let icon;
     const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
@@ -47,10 +47,10 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
                 </VStack>
             )}
             <Text fontSize="xs" color={colorize ? 'primary.500' : 'black'} numberOfLines={numberOfLines}>
-                {actionDescription}
+                {progressDescription}
             </Text>
         </HStack>
     );
 };
 
-export default CardActionDescription;
+export default CardprogressDescription;

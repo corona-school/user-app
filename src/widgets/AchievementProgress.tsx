@@ -115,10 +115,10 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                 steps={selectedAchievement.steps}
                 maxSteps={selectedAchievement.maxSteps}
                 currentStep={selectedAchievement.currentStep}
-                actionDescription={selectedAchievement.actionDescription}
+                progressDescription={selectedAchievement.progressDescription}
                 image={selectedAchievement.image}
                 alternativeText={selectedAchievement.alternativeText}
-                buttonText={selectedAchievement.buttonLabel}
+                buttonText={selectedAchievement.actionName}
                 onClose={() => setOpenModal(false)}
                 showModal={openModal}
             />
@@ -138,7 +138,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                             <StreakCard
                                 streak={achievement.currentStep}
                                 title={achievement.name}
-                                actionDescription={achievement.description}
+                                progressDescription={achievement.description}
                                 image={achievement.image}
                                 alternativeText={achievement.alternativeText}
                                 actionType={achievement.actionType}
@@ -174,7 +174,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                         alternativeText={''}
                                         subtitle={achievement.subtitle}
                                         title={achievement.name}
-                                        actionDescription={achievement.description}
+                                        progressDescription={achievement.description}
                                         maxSteps={achievement.maxSteps}
                                         currentStep={achievement.currentStep}
                                         newAchievement={achievement.newAchievement}

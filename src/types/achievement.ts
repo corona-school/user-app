@@ -65,8 +65,9 @@ type Achievement = {
     maxSteps: number;
     currentStep: number;
     newAchievement?: boolean;
-    actionDescription?: string;
-    buttonLabel?: string;
+    progressDescription?: string;
+    actionName?: string;
+    actionRedirectLink?: string;
 };
 
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
