@@ -8,8 +8,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql/gql';
 import { useUserType } from '../hooks/useApollo';
-import { Pupil, Student } from '../gql/graphql';
-import { useCallback, useEffect, useState } from 'react';
+import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -21,13 +21,16 @@ import AppointmentCreation from './create-appointment/AppointmentCreation';
 import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 import AsNavigationItem from '../components/AsNavigationItem';
 import AdHocMeetingModal from '../modals/AdHocMeetingModal';
+import { DateTime } from 'luxon';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
   match(matchId: $matchId){
     id
     uuid
+    createdAt
     dissolved
+    dissolvedAt
     dissolveReason
     pupil {
         id
@@ -111,8 +114,8 @@ const SingleMatch = () => {
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
-            mutation dissolveMatchStudent2($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(matchId: $matchId, dissolveReason: $dissolveReason)
+            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReason: dissolve_reason!) {
+                matchDissolve(info: { matchId: $matchId, dissolveReason: $dissolveReason})
             }
         `)
     );
@@ -124,9 +127,8 @@ const SingleMatch = () => {
             }
         `)
     );
-
     const dissolve = useCallback(
-        async (reason: string) => {
+        async (reason: Dissolve_Reason) => {
             setShowDissolveModal(false);
             trackEvent({
                 category: 'matching',
@@ -137,7 +139,7 @@ const SingleMatch = () => {
             const dissolved = await dissolveMatch({
                 variables: {
                     matchId: matchId || 0,
-                    dissolveReason: parseInt(reason),
+                    dissolveReason: reason,
                 },
             });
             dissolved && refetch();
@@ -171,6 +173,14 @@ const SingleMatch = () => {
 
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
     }, [createAdHocMeeting, matchId, navigate, refetch]);
+
+    const isActiveMatch = useMemo(() => {
+        if (!data?.match.dissolved) return true;
+        const today = DateTime.now().endOf('day');
+        const dissolvedAtPlus30Days = DateTime.fromISO(data?.match.dissolvedAt).plus({ days: 30 });
+        const before = dissolvedAtPlus30Days < today;
+        return !before;
+    }, [data?.match.dissolved, data?.match.dissolvedAt]);
 
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
@@ -228,21 +238,25 @@ const SingleMatch = () => {
                                         justifyContent="center"
                                         space={isMobile ? space['0.5'] : space['2']}
                                     >
-                                        <Button
-                                            onPress={() =>
-                                                (window.location.href = `mailto:${
-                                                    userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
-                                                }`)
-                                            }
-                                            my={isMobile ? '0' : '1'}
-                                        >
-                                            {t('matching.shared.contactMail')}
-                                        </Button>
+                                        {isActiveMatch && (
+                                            <Button
+                                                onPress={() =>
+                                                    (window.location.href = `mailto:${
+                                                        userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
+                                                    }`)
+                                                }
+                                                my={isMobile ? '0' : '1'}
+                                            >
+                                                {t('matching.shared.contactMail')}
+                                            </Button>
+                                        )}
 
-                                        <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
-                                            {t('matching.shared.contactViaChat')}
-                                        </Button>
-                                        {userType === 'student' && (
+                                        {isActiveMatch && (
+                                            <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
+                                                {t('matching.shared.contactViaChat')}
+                                            </Button>
+                                        )}
+                                        {userType === 'student' && !data?.match?.dissolved && (
                                             <Button onPress={() => setShowAdHocMeetingModal(true)} variant="outline" my={isMobile ? '0' : '1'}>
                                                 {t('matching.shared.directCall')}
                                             </Button>
@@ -282,7 +296,8 @@ const SingleMatch = () => {
 
                 <DissolveMatchModal
                     showDissolveModal={showDissolveModal}
-                    onPressDissolve={async (reason: string) => {
+                    alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
+                    onPressDissolve={async (reason: Dissolve_Reason) => {
                         return await dissolve(reason);
                     }}
                     onPressBack={() => setShowDissolveModal(false)}

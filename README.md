@@ -13,7 +13,7 @@ These Query Parameters can be supplied to any path of the User-App:
 **?temporary** opens the App in a temporary session where all credentials are stored in Session Storage instead of Local Storage and no Device Token is created.
  Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
 
-**?token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
+**?secret_token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
 
 ## Development Tools
 
@@ -52,8 +52,30 @@ You can also use `useState` like this:
 This repository is set up as a React Native app although it is currently only shipped as a web app. 
 In the future it might be desirable to also offer native apps.
 
-All texts are stored in i18n files in `/src/lang` to simplify translation of the app in the future.
+## Translations
 
+All texts are stored in i18n JSON files in `/src/lang` to simplify translation of the app. The app is primarily maintained in german in `de.json`, other translation files can be synced automatically with the following command, which takes all texts in the german version and sends them to Weglot, our translation provider:
+
+```
+WEGLOT_API_KEY=... npm run translate
+```
+
+With `npm run translate -- check` one can check whether all translations are maintained (this is also run in the main Barrier). Existing entries in the translation files should not be changed when changing the UI, instead add new entries to the language file and delete the old entries (for the automatic translation to diff properly).
+
+To translate a new language, create a new language file `[ISO639-1 language code].json` with an empty object `{}` in it, then run the translation script and will pick it up and fill it. Include the file in `I18n.ts`.
+
+For manual translation, with `npm run translate -- export` one can generate a diff file that contains all the translations that were added or changed _between the current HEAD and the point where it branched of the last time from main_. For example to manually review all the changes that came in with `feat/something`, just checkout that branch and run the export command. 
+As a result, a new file is written to the `src/lang` folder, which looks like this:
+
+```
+# email    <- path in the translation file 
+E-Mail     <- original german translation
+e-mail     <- current translation (i.e. from Weglot)
+
+...
+```
+
+This file can then be shared with translators, which can just delete all entries from the file that look good, and they can then just adapt the third line in each group with the translation. When placing the modified file back in `src/lang`, one can run `npm run translate -- import`, which will compare the german translation with the current state in the repo, and if it matches, it'll replace the desired translation. This can also be done after the automatic translation was deployed, as long as the german entries were not changed in the meantime.
 
 ## Configuration
 

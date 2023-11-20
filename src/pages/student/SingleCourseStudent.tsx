@@ -23,14 +23,18 @@ import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import HelpNavigation from '../../components/HelpNavigation';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
+import { SubcourseParticipant } from '../../types/lernfair/Course';
+import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
 
 function Participants({
     subcourseId,
     contactParticipant,
+    removeParticipant,
     isInstructor,
 }: {
     subcourseId: number;
     contactParticipant: (participantId: string) => void;
+    removeParticipant: (participantId: number) => Promise<void>;
     isInstructor: boolean;
 }) {
     const { t } = useTranslation();
@@ -50,6 +54,18 @@ function Participants({
     `),
         { variables: { subcourseId } }
     );
+    const [isRemoveParticipantModalOpen, setIsRemoveParticipantModalOpen] = useState(false);
+    const [participantToRemove, setParticipantToRemove] = useState<SubcourseParticipant>();
+
+    const handleOpenModal = (participant: SubcourseParticipant) => {
+        setIsRemoveParticipantModalOpen(true);
+        setParticipantToRemove(participant);
+    };
+    const handleRemoveParticipant = async (pupilId: number) => {
+        await removeParticipant(pupilId);
+        setIsRemoveParticipantModalOpen(false);
+        setParticipantToRemove(undefined);
+    };
 
     if (loading) return <CenterLoadingSpinner />;
 
@@ -60,8 +76,16 @@ function Participants({
     return (
         <>
             {participants.map((participant) => (
-                <ParticipantRow participant={participant} isInstructor={isInstructor} contactParticipant={contactParticipant} />
+                <ParticipantRow
+                    participant={participant}
+                    isInstructor={isInstructor}
+                    contactParticipant={contactParticipant}
+                    removeParticipant={handleOpenModal}
+                />
             ))}
+            <Modal isOpen={isRemoveParticipantModalOpen} onClose={() => setIsRemoveParticipantModalOpen(false)} w="full">
+                <RemoveParticipantFromCourseModal participant={participantToRemove} removeParticipantFromCourse={handleRemoveParticipant} />
+            </Modal>
         </>
     );
 }
@@ -210,7 +234,7 @@ const SingleCourseStudent = () => {
             const appointmentStart = DateTime.fromISO(appointment.start);
             const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
 
-            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 30 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
 
             return isWithinTimeFrame;
         });
@@ -263,11 +287,25 @@ const SingleCourseStudent = () => {
         { variables: { subcourseId: subcourseId } }
     );
 
+    const [removeParticipant] = useMutation(
+        gql(`
+					mutation removeParticipantFromCourse($subcourseId: Float!, $pupilId: Float!) {
+						subcourseLeave(subcourseId: $subcourseId, pupilId: $pupilId)
+					}
+				`)
+    );
+
+    const doRemoveParticipant = async (pupilId: number) => {
+        await removeParticipant({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
+        toast.show({ description: t('single.removeParticipantFromCourseModal.success'), placement: 'top' });
+        refetchInstructorData();
+    };
+
     const cancelCourse = useCallback(async () => {
+        setShowCancelModal(false);
         await cancelSubcourse();
         toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
         refetchBasics();
-        setShowCancelModal(false);
     }, [canceldData]);
 
     const tabs: Tab[] = [
@@ -311,6 +349,7 @@ const SingleCourseStudent = () => {
                         subcourseId={subcourseId}
                         isInstructor={subcourse.isInstructor}
                         contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
+                        removeParticipant={doRemoveParticipant}
                     />
                 </>
             ),
@@ -396,6 +435,17 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
+    const isActiveSubcourse = useMemo(() => {
+        const today = DateTime.now().endOf('day');
+        const isSubcourseCancelled = subcourse?.cancelled;
+        if (isSubcourseCancelled) return false;
+
+        const lastLecture = appointments[appointments.length - 1];
+        const lastLecturePlus30Days = DateTime.fromISO(lastLecture?.start).plus({ days: 30 });
+        const is30DaysBeforeToday = lastLecturePlus30Days < today;
+        return !is30DaysBeforeToday;
+    }, [appointments, subcourse?.cancelled]);
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -423,6 +473,7 @@ const SingleCourseStudent = () => {
                             subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
                             refresh={refetchBasics}
                             appointment={myNextAppointment as Lecture}
+                            isActiveSubcourse={isActiveSubcourse}
                         />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (

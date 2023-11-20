@@ -1,15 +1,17 @@
 import { Heading, useTheme, Text, Button, HStack, VStack, Spacer } from 'native-base';
-import { Participant } from '../../gql/graphql';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
 import NewChatIcon from '../../assets/icons/lernfair/ic_new_chat.svg';
+import RemovePupilIcon from '../../assets/icons/lernfair/cancel.svg';
 import { pupilIdToUserId } from '../../helper/chat-helper';
+import { SubcourseParticipant } from '../../types/lernfair/Course';
 
 type RowProps = {
-    participant: Pick<Participant, 'id' | 'firstname' | 'grade'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
+    participant: SubcourseParticipant;
     isInstructor?: boolean;
     contactParticipant?: (participantId: string) => void;
+    removeParticipant?: (participant: SubcourseParticipant) => void;
 };
-const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contactParticipant }) => {
+const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contactParticipant, removeParticipant }) => {
     const { space } = useTheme();
 
     return (
@@ -28,6 +30,12 @@ const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contact
             {isInstructor && contactParticipant && (
                 <Button variant="outlinelight" ml={space['3']} onPress={() => contactParticipant(pupilIdToUserId(participant.id))}>
                     <NewChatIcon />
+                </Button>
+            )}
+            <Spacer />
+            {isInstructor && removeParticipant && (
+                <Button variant="outline" ml={space['3']} onPress={() => removeParticipant(participant)}>
+                    <RemovePupilIcon />
                 </Button>
             )}
         </HStack>

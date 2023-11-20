@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useToast, useBreakpointValue, Box, Stack } from 'native-base';
+import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -7,16 +7,14 @@ import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
-import { LFMatch } from '../../types/lernfair/Match';
 import { DateTime } from 'luxon';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import DissolveMatchModal from '../../modals/DissolveMatchModal';
 import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -140,7 +138,6 @@ const query = gql(`
 
 const DashboardStudent: React.FC<Props> = () => {
     const { roles } = useApollo();
-    const toast = useToast();
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
@@ -148,11 +145,7 @@ const DashboardStudent: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [toastShown, setToastShown] = useState<boolean>();
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [showRecommendModal, setShowRecommendModal] = useState<boolean>(false);
-    const [dissolveData, setDissolveData] = useState<LFMatch>();
-
     const { trackPageView, trackEvent } = useMatomo();
 
     const CardGrid = useBreakpointValue({
@@ -167,35 +160,9 @@ const DashboardStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [dissolve, _dissolve] = useMutation(
-        gql(`
-            mutation dissolveMatchStudent($matchId: Float!, $dissolveReason: Float!) {
-                matchDissolve(dissolveReason: $dissolveReason, matchId: $matchId)
-            }
-        `),
-        {
-            refetchQueries: [query],
-        }
-    );
-
     const requestMatch = useCallback(async () => {
         navigate('/request-match');
     }, [navigate]);
-
-    const dissolveMatch = useCallback((match: LFMatch) => {
-        setDissolveData(match);
-        setShowDissolveModal(true);
-    }, []);
-
-    useEffect(() => {
-        if (_dissolve?.data?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({
-                description: 'Das Match wurde aufgelöst',
-                placement: 'top',
-            });
-        }
-    }, [_dissolve?.data?.matchDissolve, toast, toastShown]);
 
     const isMobile = useBreakpointValue({ base: true, lg: false });
 
@@ -374,13 +341,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     </Stack>
 
                                     {data?.me?.student?.canRequestMatch?.allowed ? (
-                                        <Button
-                                            marginTop={space['1']}
-                                            width={ButtonContainer}
-                                            isDisabled={_dissolve.loading}
-                                            marginY={space['1']}
-                                            onPress={requestMatch}
-                                        >
+                                        <Button marginTop={space['1']} width={ButtonContainer} marginY={space['1']} onPress={requestMatch}>
                                             {t('dashboard.helpers.buttons.requestMatchStudent')}
                                         </Button>
                                     ) : (
@@ -410,19 +371,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <DissolveMatchModal
-                showDissolveModal={showDissolveModal}
-                onPressDissolve={async (reason: string) => {
-                    setShowDissolveModal(false);
-                    return await dissolve({
-                        variables: {
-                            matchId: dissolveData?.id || 0,
-                            dissolveReason: parseInt(reason),
-                        },
-                    });
-                }}
-                onPressBack={() => setShowDissolveModal(false)}
-            />
             <RecommendModal showRecommendModal={showRecommendModal} onClose={() => setShowRecommendModal(false)} />
         </AsNavigationItem>
     );

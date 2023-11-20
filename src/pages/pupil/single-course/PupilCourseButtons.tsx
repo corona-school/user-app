@@ -1,8 +1,8 @@
-import { ApolloQueryResult, useQuery } from '@apollo/client';
+import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
 import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Lecture, Subcourse } from '../../../gql/graphql';
+import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
@@ -13,24 +13,11 @@ import { canJoinMeeting } from '../../../widgets/AppointmentDay';
 import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
+import { useNavigate } from 'react-router-dom';
 
-type CanJoin = {
-    allowed: boolean;
-    reason?: 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full' | null;
-};
+type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
 type ActionButtonProps = {
-    appointment: Lecture;
-    courseFull: boolean;
-    canJoinSubcourse?: CanJoin;
-    joinedSubcourse?: boolean;
-    joinedWaitinglist?: boolean;
-    leftSubcourseData?: boolean;
-    leftWaitinglist?: boolean;
-    loadingSubcourseJoined: boolean;
-    loadingSubcourseLeft: boolean;
-    loadingJoinedWaitinglist: boolean;
-    loadingWaitinglistLeft: boolean;
     subcourse: Pick<
         Subcourse,
         | 'id'
@@ -42,15 +29,13 @@ type ActionButtonProps = {
         | 'allowChatContactProspects'
         | 'allowChatContactParticipants'
         | 'groupChatType'
-    >;
-
-    joinSubcourse: () => Promise<any>;
-    leaveSubcourse: () => void;
-    joinWaitinglist: () => void;
-    leaveWaitinglist: () => void;
-    contactInstructorAsParticipant: () => Promise<void>;
-    contactInstructorAsProspect: () => Promise<void>;
+        | 'canJoin'
+        | 'canJoinWaitinglist'
+        | 'isParticipant'
+        | 'isOnWaitingList'
+    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
+    isActiveSubcourse: boolean;
 };
 
 const courseConversationId = gql(`
@@ -61,27 +46,7 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 }
 `);
 
-const PupilCourseButtons: React.FC<ActionButtonProps> = ({
-    appointment,
-    courseFull,
-    canJoinSubcourse,
-    joinedSubcourse,
-    joinedWaitinglist,
-    leftSubcourseData,
-    leftWaitinglist,
-    loadingSubcourseJoined,
-    loadingSubcourseLeft,
-    subcourse,
-    loadingJoinedWaitinglist,
-    loadingWaitinglistLeft,
-    joinSubcourse,
-    leaveSubcourse,
-    joinWaitinglist,
-    leaveWaitinglist,
-    contactInstructorAsParticipant,
-    contactInstructorAsProspect,
-    refresh,
-}) => {
+const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, isActiveSubcourse }) => {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signOutModal, setSignOutModal] = useState<boolean>(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
@@ -91,6 +56,87 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
     const toast = useToast();
+    const navigate = useNavigate();
+
+    const [joinSubcourse, { loading: loadingSubcourseJoined, data: joinedSubcourse }] = useMutation(
+        gql(`
+            mutation SubcourseJoin($subcourseId: Float!) {
+                subcourseJoin(subcourseId: $subcourseId)
+            }
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
+
+    const [leaveSubcourse, { loading: loadingSubcourseLeft, data: leftSubcourse }] = useMutation(
+        gql(`
+            mutation LeaveSubcourse($subcourseId: Float!) {
+                subcourseLeave(subcourseId: $subcourseId)
+            }
+        `),
+        { variables: { subcourseId: subcourse.id } }
+    );
+
+    const [joinWaitinglist, { data: joinedWaitinglist, loading: loadingJoinedWaitinglist }] = useMutation(
+        gql(`
+            mutation JoinWaitingList($subcourseId: Float!) {
+                subcourseJoinWaitinglist(subcourseId: $subcourseId)
+            }
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
+
+    const [leaveWaitinglist, { data: leftWaitinglist, loading: loadingLeftWaitinglist }] = useMutation(
+        gql(`
+            mutation LeaveWaitingList($subcourseId: Float!) {
+                subcourseLeaveWaitinglist(subcourseId: $subcourseId)
+            }
+        `),
+        {
+            variables: { subcourseId: subcourse.id },
+        }
+    );
+
+    const [chatCreateForSubcourse] = useMutation(
+        gql(`
+            mutation createInstructorChat($subcourseId: Float!, $memberUserId: String!) {
+                participantChatCreate(subcourseId: $subcourseId, memberUserId: $memberUserId, )
+            }       
+        `)
+    );
+
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsParticipant() {
+        const conversation = await chatCreateForSubcourse({
+            variables: { subcourseId: subcourse.id, memberUserId: `student/${subcourse.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
+    }
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourse.id, instructorUserId: `student/${subcourse.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
+    }
 
     const { data, loading } = useQuery(courseConversationId, {
         variables: { subcourseId: subcourse.id, isParticipant: subcourse?.isParticipant! },
@@ -132,24 +178,25 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
     );
 
     useEffect(() => {
-        if (joinedSubcourse || leftSubcourseData || joinedWaitinglist || leftWaitinglist) {
+        if (joinedSubcourse || leftSubcourse || joinedWaitinglist || leftWaitinglist) {
             refresh();
         }
-    }, [joinedSubcourse, leftSubcourseData, joinedWaitinglist, leftWaitinglist]);
+    }, [joinedSubcourse, leftSubcourse, joinedWaitinglist, leftWaitinglist]);
 
+    const appointment = subcourse.appointments[0];
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {!subcourse.isParticipant && canJoinSubcourse?.allowed && (
+                {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
                     <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
                         {t('signin')}
                     </Button>
                 )}
-                {!subcourse.isParticipant && canJoinSubcourse?.allowed === false && (
-                    <AlertMessage content={t(`lernfair.reason.course.pupil.${canJoinSubcourse.reason!}`)} />
+                {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
+                    <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
                 )}
 
-                {subcourse.isParticipant && !loading && (
+                {subcourse.isParticipant && !loading && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={conversationId}
@@ -159,17 +206,17 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         refresh={refresh}
                     />
                 )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && (
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && isActiveSubcourse && (
                     <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {!subcourse.isParticipant && subcourse.allowChatContactProspects && (
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && (
                     <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {subcourse.isParticipant && (
+                {subcourse.isParticipant && isActiveSubcourse && (
                     <>
                         <VideoButton
                             appointmentId={appointment.id}
@@ -182,14 +229,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({
                         </Button>
                     </>
                 )}
-                {!subcourse.isParticipant && courseFull && !subcourse.isOnWaitingList && (
+                {!subcourse.isParticipant && !subcourse.isOnWaitingList && !subcourse.canJoin.allowed && subcourse.canJoinWaitinglist.allowed && (
                     <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
                         {t('single.actions.joinWaitinglist')}
                     </Button>
                 )}
                 {subcourse.isOnWaitingList && (
                     <VStack space={space['0.5']} mb="5">
-                        <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingWaitinglistLeft} />
+                        <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
                     </VStack>
                 )}
             </Stack>

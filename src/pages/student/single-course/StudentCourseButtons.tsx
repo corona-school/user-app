@@ -27,9 +27,10 @@ type ActionButtonProps = {
     >;
     appointment: Lecture;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
+    isActiveSubcourse?: boolean;
 };
 
-const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, appointment }) => {
+const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, appointment, isActiveSubcourse }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
     const { isMobile } = useLayoutHelper();
@@ -43,7 +44,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
-                {subcourse.published && (
+                {subcourse.published && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
@@ -53,7 +54,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         refresh={refresh}
                     />
                 )}
-                {subcourse.published && appointment && (
+                {subcourse.published && appointment && isActiveSubcourse && (
                     <VideoButton
                         isInstructor
                         appointmentId={appointment.id}
