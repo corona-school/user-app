@@ -64,6 +64,19 @@ With `npm run translate -- check` one can check whether all translations are mai
 
 To translate a new language, create a new language file `[ISO639-1 language code].json` with an empty object `{}` in it, then run the translation script and will pick it up and fill it. Include the file in `I18n.ts`.
 
+For manual translation, with `npm run translate -- export` one can generate a diff file that contains all the translations that were added or changed _between the current HEAD and the point where it branched of the last time from main_. For example to manually review all the changes that came in with `feat/something`, just checkout that branch and run the export command. 
+As a result, a new file is written to the `src/lang` folder, which looks like this:
+
+```
+# email    <- path in the translation file 
+E-Mail     <- original german translation
+e-mail     <- current translation (i.e. from Weglot)
+
+...
+```
+
+This file can then be shared with translators, which can just delete all entries from the file that look good, and they can then just adapt the third line in each group with the translation. When placing the modified file back in `src/lang`, one can run `npm run translate -- import`, which will compare the german translation with the current state in the repo, and if it matches, it'll replace the desired translation. This can also be done after the automatic translation was deployed, as long as the german entries were not changed in the meantime.
+
 ## Configuration
 
 Most configuration is done via `REACT_APP_` environment variables, which are inlined into the bundled version when the app is built. However as the app is only built once in Heroku and used for both staging and production and it is desirable to be able to change certain configuration without rebuilding the app, there is a separate mechanism for configuration: `RUNTIME_` variables added to the server (i.e. `RUNTIME_BACKEND_URL=https://example.com npm run serve`) are injected into `window.liveConfig`, where they can be read by frontend code. Changing these only requires the server process to restart, clients will then pick them up once the page is reloaded (while the bundle is still cached).
