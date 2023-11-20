@@ -115,6 +115,7 @@ const query = gql(`
                         image
                     }
               }
+              override_meeting_link
     }
         }
 
@@ -148,7 +149,6 @@ const query = gql(`
 
 const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
-
     const { space, sizes } = useTheme();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

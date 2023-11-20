@@ -83,6 +83,7 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                     appointmentId={myNextAppointment.id}
                                     appointmentType={myNextAppointment.appointmentType}
                                     isOrganizer={myNextAppointment.isOrganizer}
+                                    overrideLink={myNextAppointment.override_meeting_link ?? undefined}
                                 />
                             );
                         })}

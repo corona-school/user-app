@@ -48,6 +48,7 @@ const getMyAppointments = gql(`
                 subcourse {
                     published
                 }
+                override_meeting_link
             }            
         }
     }
