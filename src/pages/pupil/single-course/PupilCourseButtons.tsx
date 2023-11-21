@@ -33,7 +33,7 @@ type ActionButtonProps = {
         | 'canJoinWaitinglist'
         | 'isParticipant'
         | 'isOnWaitingList'
-    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType' | 'override_meeting_link'>[] };
+    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse: boolean;
 };
@@ -222,7 +222,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
                             canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
-                            overrideLink={appointment.override_meeting_link ?? undefined}
                         />
                         <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
                             {t('single.actions.leaveSubcourse')}

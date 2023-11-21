@@ -75,7 +75,6 @@ type Props = {
     showCourseTraffic?: boolean;
     showSchoolclass?: boolean;
     trafficLightStatus?: TrafficStatus;
-    overrideLink?: string;
 };
 
 const AppointmentCard: React.FC<Props> = ({
@@ -114,13 +113,14 @@ const AppointmentCard: React.FC<Props> = ({
     trafficLightStatus,
     hasVideoButton,
     isOrganizer,
-    overrideLink,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
+
+    const navigate = useNavigate();
 
     useInterval(() => {
         setCurrentTime(Date.now());
@@ -381,7 +381,6 @@ const AppointmentCard: React.FC<Props> = ({
                                             appointmentType={appointmentType}
                                             isInstructor={isOrganizer}
                                             canJoinMeeting={isCurrent}
-                                            overrideLink={overrideLink}
                                         />
                                     </VStack>
                                 )}

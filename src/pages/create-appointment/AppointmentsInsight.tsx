@@ -42,7 +42,6 @@ const GET_COURSE_APPOINTMENTS = gql`
                     firstname
                     lastname
                 }
-                override_meeting_link
             }
         }
     }
@@ -79,7 +78,6 @@ const GET_MATCH_APPOINTMENTS = gql`
                     firstname
                     lastname
                 }
-                override_meeting_link
             }
         }
     }

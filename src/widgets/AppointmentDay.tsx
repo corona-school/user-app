@@ -23,7 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
-    overrideLink?: string;
     canJoinVideochat?: boolean;
 };
 
@@ -49,7 +48,6 @@ const AppointmentDay: React.FC<Props> = ({
     isOrganizer,
     displayName,
     appointmentId,
-    overrideLink,
     canJoinVideochat,
 }) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
@@ -105,7 +103,6 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 appointmentId={appointmentId}
-                                overrideLink={overrideLink}
                             />
                         </HStack>
                     </Box>
@@ -127,7 +124,6 @@ const AppointmentDay: React.FC<Props> = ({
                                 displayName={displayName}
                                 isReadOnly={isReadOnly}
                                 appointmentId={appointmentId}
-                                overrideLink={overrideLink}
                             />
                         </HStack>
                     </Box>

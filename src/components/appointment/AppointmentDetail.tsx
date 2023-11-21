@@ -140,7 +140,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     participants={appointment.participants ?? []}
                     declinedBy={appointment?.declinedBy ?? []}
                     appointmentId={appointment.id}
-                    overrideLink={appointment.override_meeting_link}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
                 />
