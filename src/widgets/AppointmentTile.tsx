@@ -23,7 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
-    overrideLink?: string;
     canJoinVideochat?: boolean;
 };
 
@@ -39,7 +38,6 @@ const AppointmentTile: React.FC<Props> = ({
     position,
     displayName,
     appointmentId,
-    overrideLink,
     appointmentType,
     isOrganizer,
 }) => {
@@ -106,7 +104,6 @@ const AppointmentTile: React.FC<Props> = ({
                                     isInstructor={isOrganizer}
                                     canJoinMeeting
                                     appointmentId={appointmentId}
-                                    overrideLink={overrideLink}
                                     appointmentType={appointmentType}
                                     width={buttonWidth}
                                 />
