@@ -1,0 +1,39 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading, Button } from 'native-base';
+import { SubcourseCard } from './SubcourseCard';
+
+<Meta title="Course/SubcourseCard" component={SubcourseCard} />
+
+# SubcourseCard
+
+The SubcourseCard shows information about a subcourse:
+
+<Story name="SubcourseCard / basic">
+    <SubcourseCard
+        subcourse={{
+            id: 10,
+            course: {
+                name: 'Ein Beispielkurs',
+                image: 'https://uploads-ssl.webflow.com/63906379538296472e0ae3d2/6429d27f5fbce260dd6a53f5_marten-bjork-rH8O0FHFpfw-unsplash.jpg',
+                tags: [{ name: 'Englisch' }],
+            },
+            nextLecture: null,
+        }}
+    />
+</Story>
+
+It also shows the next lecture of a course:
+
+<Story name="SubcourseCard / next-lecture">
+    <SubcourseCard
+        subcourse={{
+            id: 10,
+            course: {
+                name: 'Ein Beispielkurs',
+                image: 'https://uploads-ssl.webflow.com/63906379538296472e0ae3d2/6429d27f5fbce260dd6a53f5_marten-bjork-rH8O0FHFpfw-unsplash.jpg',
+                tags: [{ name: 'Deutsch' }],
+            },
+            nextLecture: { start: new Date().toISOString(), duration: 60 },
+        }}
+    />
+</Story>
