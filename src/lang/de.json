@@ -1884,7 +1884,7 @@
         "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
         "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
         "decision": "Entscheidung",
-        "screener": "Screener:in"
+        "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}"
     },
     "certificate": {
