@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { Text, useTheme, VStack, Checkbox, Button, Row, Column, Heading } from 'native-base';
 import { useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import TextInput from '../../components/TextInput';
 import { Match, Pupil } from '../../gql/graphql';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
@@ -50,7 +50,9 @@ const SelectedPupilWizard = ({
 
                 <VStack>
                     <UserProgress showPercent={false} percent={(currentIndex + 1 / pupilCount) * 100} />
-                    <Text fontSize="sm">{t('certificate.request_for_match.step', { context: { current: currentIndex + 1, total: pupilCount } })}</Text>
+                    <Text fontSize="sm">
+                        <Trans i18nKey="certificate.request_for_match.step" values={{ current: currentIndex + 1, total: pupilCount }} />
+                    </Text>
                 </VStack>
 
                 <VStack>
