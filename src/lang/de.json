@@ -11,6 +11,7 @@
     "select": "Auswählen",
     "change": "Ändern",
     "helper": "Helfer:in",
+    "to": "An",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -1646,7 +1647,8 @@
             "header": "Kurs absagen",
             "description": "Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?"
         },
-        "select_participant": "Teilnehmer:in auswählen"
+        "select_participant": "Teilnehmer:in auswählen",
+        "all_participants": "alle Teilnehmer:innen"
     },
     "notification": {
         "timedifference": {

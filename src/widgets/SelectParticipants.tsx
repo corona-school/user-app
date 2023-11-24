@@ -23,7 +23,7 @@ export function SelectParticipants({
             <Box display="flex" flexDirection="row" flexWrap="wrap" marginY={space['1']}>
                 <EmailIcon width="50px" height="50px" viewBox="0 0 100 100" />
                 <Text fontWeight="bold" flexGrow="1" lineHeight="50px" paddingLeft="20px">
-                    An {selectedParticipants.length === 0 && 'alle Teilnehmer:innen'}
+                    {t('to')} {selectedParticipants.length === 0 && t('course.all_participants')}
                     {selectedParticipants.length !== 0 && selectedParticipants.map((it) => participants.find((p) => p.id === it)?.firstname).join(', ')}
                 </Text>
                 <Button variant="outline" onPress={() => setOpen(true)}>

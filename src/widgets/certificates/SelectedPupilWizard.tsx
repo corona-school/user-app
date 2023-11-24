@@ -88,7 +88,7 @@ const SelectedPupilWizard = ({
                 </VStack>
 
                 <VStack space={space['0.5']}>
-                    <Text bold>Zeit</Text>
+                    <Text bold>{t('duration')}</Text>
                     {((hoursPerWeek && !isValidNumber(hoursPerWeek)) || (hoursTotal && !isValidNumber(hoursTotal))) && (
                         <Text color="danger.700">{t('certificate.request_for_match.not_a_number')}</Text>
                     )}
