@@ -1,6 +1,7 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Text, VStack, Heading, useTheme, Box, Button, HStack } from 'native-base';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     onNext: () => any;
@@ -10,6 +11,7 @@ type Props = {
 const RequestCertificateOverview: React.FC<Props> = ({ onNext, onBack }) => {
     const { space, colors } = useTheme();
     const { trackPageView } = useMatomo();
+    const { t } = useTranslation();
 
     useEffect(() => {
         trackPageView({
@@ -19,39 +21,32 @@ const RequestCertificateOverview: React.FC<Props> = ({ onNext, onBack }) => {
 
     return (
         <VStack space={space['1']}>
-            <Heading>Bescheinigung beantragen</Heading>
-            <Text>Wir möchten uns für dein Engagement bei Lern-Fair bedanken! Für deine Tätigkeit stellen wir dir gerne eine Bescheinigung aus.</Text>
-            <Text>Eine vollständige Lern Fair Bescheinigung besteht aus den folgenden zwei Teilen:</Text>
+            <Heading>{t('certificate.request.title')}</Heading>
+            <Text>{t('certificate.request.subtitle')}</Text>
+            <Text>{t('certificate.request.subtitle2')}</Text>
 
             <HStack space={space['0.5']} flexWrap="wrap">
                 <Box bgColor={colors['primary']['100']} marginTop={space['1']} padding={space['1']} borderRadius={4} flexGrow="1">
                     <Text bold mb={space['0.5']}>
-                        1. Bestätigung durch Lern-Fair
+                        {t('certificate.request.part1_title')}
                     </Text>
-                    <Text>· Registrieren auf unserer Plattform</Text>
-                    <Text>· Durchlaufen eines Eignungsgesprächs</Text>
-                    <Text>· Vermittlung an eine:n Schüler:in</Text>
+                    <Text>· {t('certificate.request.part1_1')}</Text>
+                    <Text>· {t('certificate.request.part1_2')}</Text>
+                    <Text>· {t('certificate.request.part1_3')}</Text>
                 </Box>
                 <Box bgColor={colors['primary']['100']} marginTop={space['1']} padding={space['1']} borderRadius={4} flexGrow="1">
                     <Text bold mb={space['0.5']}>
-                        2. Bestätigung durch Schüler:in
+                        {t('certificate.request.part2_title')}
                     </Text>
-                    <Text>· Ausmaß der Tätigkeit</Text>
-                    <Text>· Inhalte der Tätigkeit</Text>
+                    <Text>· {t('certificate.request.part2_1')}</Text>
+                    <Text>· {t('certificate.request.part2_2')}</Text>
                 </Box>
             </HStack>
-            <Text>
-                Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde.
-                Ab dann findest du die Bescheinigung auch in deinem Profil.
-            </Text>
-            <Button onPress={onNext}>Vollständige Bescheinigung beantragen</Button>
-            {/* <Text>
-                Falls du ausschließlich eine Bestätigung von Lern Fair erhalten möchtest, die keine Informationen zum Ausmaß oder den Inhalten der Tätigkeit
-                enthält, kannst du dies hier tun.
-            </Text>*/}
+            <Text>{t('certificate.request.procedure')}</Text>
+            <Button onPress={onNext}>{t('certificate.request.apply')}</Button>
 
             <Button variant="link" onPress={onBack}>
-                Zurück
+                {t('back')}
             </Button>
         </VStack>
     );

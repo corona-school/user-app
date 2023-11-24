@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
 import TextInput from '../../components/TextInput';
 import { Participation_Certificate } from '../../gql/graphql';
-import { YesNoSelector } from '../YesNoSelector';
+import { YesNoSelector } from '../../components/YesNoSelector';
 import SignatureCanvas from 'react-signature-canvas';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';

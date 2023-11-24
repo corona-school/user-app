@@ -3,6 +3,7 @@ import { useWeeklyAppointments } from '../context/AppointmentContext';
 import { WeeklyReducerActionType } from '../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import AppointmentDate from './AppointmentDate';
+import { useTranslation } from 'react-i18next';
 
 type ButtonProps = {
     length: number;
@@ -11,6 +12,7 @@ type ButtonProps = {
 const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length, nextDate }) => {
     const { isMobile } = useLayoutHelper();
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
+    const { t } = useTranslation();
 
     const handleAddLecture = () => {
         dispatchWeeklyAppointment({
@@ -32,7 +34,7 @@ const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length, nextDate })
                 width={isMobile ? '86%' : '46%'}
                 onPress={() => handleAddLecture()}
             >
-                {`Lektion #${length + 1} hinzufügen`}
+                {t('appointment.create.add_lecture', { context: { position: length + 1 } })}
             </Button>
         </HStack>
     );
