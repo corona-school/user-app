@@ -11,6 +11,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import EditDataRow from '../widgets/EditDataRow';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -21,7 +22,8 @@ const Settings: React.FC = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
 
-    const [showDeactivate, setShowDeactivate] = useState<boolean>(false);
+    const [showDeactivate, setShowDeactivate] = useState(false);
+    const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
     useEffect(() => {
         trackPageView({
@@ -62,6 +64,9 @@ const Settings: React.FC = () => {
                     <HStack space={space['1']} alignItems="center">
                         <Heading>{data?.me?.firstname}</Heading>
                     </HStack>
+                    <Column paddingY={space['1']} mb={tabspace}>
+                        <EditDataRow label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
+                    </Column>
                 </VStack>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     {userType !== 'screener' && (
@@ -111,6 +116,7 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
         </>
     );
 };
