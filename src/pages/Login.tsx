@@ -168,7 +168,6 @@ export default function Login() {
         loginButton();
         const res = await loginWithPassword(email!, password!);
         onLogin(res);
-        console.log('Result: ', res);
         setLoginResult(res);
     }, [email, loginButton, password]);
 
