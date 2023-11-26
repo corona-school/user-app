@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -36,11 +36,11 @@ import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import { canJoinMeeting } from './AppointmentDay';
 
 type Props = {
     appointmentId?: number;
+    subcourseId?: number;
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     tags?: { name: string }[];
@@ -79,6 +79,7 @@ type Props = {
 
 const AppointmentCard: React.FC<Props> = ({
     appointmentId,
+    subcourseId,
     appointmentType,
     tags,
     dateNextLecture: _dateNext,
@@ -120,11 +121,29 @@ const AppointmentCard: React.FC<Props> = ({
     const userType = useUserType();
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
 
-    const navigate = useNavigate();
-
     useInterval(() => {
         setCurrentTime(Date.now());
     }, 1000);
+
+    function onPress() {
+        if (subcourseId) {
+            // Swap the current location with the "jump off location", so that it can be restored afterwards
+            window.history.replaceState(null, '', '#subcourse-' + subcourseId);
+        }
+
+        onPressToCourse?.();
+    }
+
+    const rootRef = useRef<HTMLElement>();
+
+    useLayoutEffect(() => {
+        if (rootRef.current && window.location.hash && subcourseId) {
+            const [part, partId] = window.location.hash.slice(1).split('-');
+            if (part === 'subcourse' && partId === '' + subcourseId) {
+                rootRef.current.scrollIntoView();
+            }
+        }
+    }, [subcourseId]);
 
     let remainingTime: string | null = null;
     let ongoingTime: string | null = null;
@@ -207,10 +226,10 @@ const AppointmentCard: React.FC<Props> = ({
     });
 
     return (
-        <View height={isFullHeight ? '100%' : 'auto'}>
+        <View ref={rootRef} height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
                 <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser && isCurrent ? 'dark' : 'normal'}>
-                    <Pressable onPress={onPressToCourse}>
+                    <Pressable onPress={onPress}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
                                 {!isMatch && (
@@ -369,7 +388,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 marginBottom={buttonteaser}
                             >
                                 {isTeaser && (
-                                    <Button width="100%" onPress={onPressToCourse}>
+                                    <Button width="100%" onPress={onPress}>
                                         {t('single.card.expandCardButton')}
                                     </Button>
                                 )}
@@ -396,7 +415,7 @@ const AppointmentCard: React.FC<Props> = ({
                     </Pressable>
                 </Card>
             ) : (
-                <Pressable onPress={onPressToCourse} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+                <Pressable onPress={onPress} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                     <Flex flexDirection="row" height="100%" marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
                         {image && (
                             <Box width="26%" display="block" marginRight="3px" position={'relative'}>

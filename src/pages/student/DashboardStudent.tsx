@@ -260,6 +260,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 return (
                                                     <AppointmentCard
                                                         key={index}
+                                                        subcourseId={sub.id}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
                                                         dateNextLecture={sub?.nextLecture?.start ?? undefined}
