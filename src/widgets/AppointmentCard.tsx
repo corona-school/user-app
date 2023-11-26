@@ -37,6 +37,7 @@ import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { canJoinMeeting } from './AppointmentDay';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 type Props = {
     appointmentId?: number;
@@ -125,25 +126,16 @@ const AppointmentCard: React.FC<Props> = ({
         setCurrentTime(Date.now());
     }, 1000);
 
+    const rootRef = useRef<HTMLElement>();
+    const rememberScroll = useScrollRestoration({ ref: rootRef, scrollGroup: 'subcourse', scrollId: subcourseId + '' });
+
     function onPress() {
         if (subcourseId) {
-            // Swap the current location with the "jump off location", so that it can be restored afterwards
-            window.history.replaceState(null, '', '#subcourse-' + subcourseId);
+            rememberScroll();
         }
 
         onPressToCourse?.();
     }
-
-    const rootRef = useRef<HTMLElement>();
-
-    useLayoutEffect(() => {
-        if (rootRef.current && window.location.hash && subcourseId) {
-            const [part, partId] = window.location.hash.slice(1).split('-');
-            if (part === 'subcourse' && partId === '' + subcourseId) {
-                rootRef.current.scrollIntoView();
-            }
-        }
-    }, [subcourseId]);
 
     let remainingTime: string | null = null;
     let ongoingTime: string | null = null;
